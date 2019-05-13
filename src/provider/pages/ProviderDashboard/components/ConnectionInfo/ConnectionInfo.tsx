@@ -1,7 +1,7 @@
 import * as React from 'react'
 import trans from '../../../../../trans'
 
-const styles = require('./ConnectionInfo.scss')
+const styles = require('./ConnectionInfo.module.scss')
 
 const ConnectionInfo = () => (
   <div className={styles.infoBar}>

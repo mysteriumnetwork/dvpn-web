@@ -9,7 +9,7 @@ import * as enLocaleData from 'react-intl/locale-data/en'
 
 import { DEFAULT_LOCALE } from './reducer'
 
-import * as enTranslationMessages from '../translations/en.json'
+import enTranslationMessages from '../translations/en.json'
 
 addLocaleData(enLocaleData)
 

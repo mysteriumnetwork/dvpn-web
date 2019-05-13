@@ -7,7 +7,7 @@ import BottomBar from './components/BottomBar/BottomBar'
 import ConnectionInfo from './components/ConnectionInfo/ConnectionInfo'
 import UsersList from './components/UsersList/UsersList'
 
-const styles = require('./ProviderDashboard.scss')
+const styles = require('./ProviderDashboard.module.scss')
 
 const ProviderDashboard = () => (
   <div className={styles.dashboardCover}>

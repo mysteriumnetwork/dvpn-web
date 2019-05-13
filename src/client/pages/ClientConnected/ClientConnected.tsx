@@ -7,7 +7,7 @@ import ConnectedImgBlock from './components/ConnectedImgBlock/ConnectedImgBlock'
 import ConnectedInfoBlock from './components/ConnectedInfoBlock/ConnectedInfoBlock'
 import BottomBar from './components/BottomBar/BottomBar'
 
-const styles = require('./ClientConnected.scss')
+const styles = require('./ClientConnected.module.scss')
 
 const ClientConnected = () => (
   <div className={styles.root}>

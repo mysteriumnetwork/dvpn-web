@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const styles = require('./ConnectionImgBlock.scss')
+const styles = require('./ConnectionImgBlock.module.scss')
 
 const ConnectionImgBlock = () => (
   <div className={styles.root}>

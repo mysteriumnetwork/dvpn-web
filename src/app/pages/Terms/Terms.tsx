@@ -6,7 +6,7 @@ import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
 import Checkbox from '../../../ui-kit/components/Checkbox/Checkbox'
 
-const styles = require('./Terms.scss')
+const styles = require('./Terms.module.scss')
 
 const Terms = () => (
   <div className={styles.appTermsCover}>

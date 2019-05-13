@@ -1,9 +1,0 @@
-.sideBarRoot {
-  padding: 2px;
-  height: 100%;
-  flex: 0 0.3 30%;
-  min-width: 240px;
-  background: #fafafa;
-  z-index: 2;
-  position: relative;
-}

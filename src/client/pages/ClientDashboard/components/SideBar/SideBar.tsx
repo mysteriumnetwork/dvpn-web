@@ -4,7 +4,7 @@ import MenuItemFavorite from './components/MenuItemFavorite/MenuItemFavorite'
 import MenuByConnectionType from './components/MenuByConnectionType/MenuByConnectionType'
 import MenuItemByCountry from './components/MenuItemByCountry/MenuItemByCountry'
 
-const styles = require('./SideBar.scss')
+const styles = require('./SideBar.module.scss')
 
 const SideBar = () => (
   <div className={styles.sideBarRoot}>

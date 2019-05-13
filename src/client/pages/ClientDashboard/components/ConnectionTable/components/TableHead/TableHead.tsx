@@ -1,7 +1,7 @@
 import * as React from 'react'
 import trans from '../../../../../../../trans'
 
-const styles = require('./TableHead.scss')
+const styles = require('./TableHead.module.scss')
 
 const TableHead = () => (
   <div className={styles.root}>

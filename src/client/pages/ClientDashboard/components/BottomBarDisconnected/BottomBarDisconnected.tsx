@@ -4,7 +4,7 @@ import { NAV_CLIENT_DASHBOARD } from '../../../../client.links'
 import trans from '../../../../../trans'
 import Button from '../../../../../ui-kit/components/Button/Button'
 
-const styles = require('./BottomBarDisconnected.scss')
+const styles = require('./BottomBarDisconnected.module.scss')
 
 const BottomBarDisconnected = () => (
   <div className={styles.root}>

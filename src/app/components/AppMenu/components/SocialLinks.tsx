@@ -2,7 +2,7 @@ import * as React from 'react'
 import { MenuItem } from '@material-ui/core'
 import trans from '../../../../trans'
 
-const styles = require('./SocialLinks.scss')
+const styles = require('./SocialLinks.module.scss')
 
 const SocialLinks = () => (
   <MenuItem button={false} className={styles.followMenuItem}>

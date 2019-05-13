@@ -6,7 +6,7 @@ import Button from '../../../../../../../ui-kit/components/Button/Button'
 import CountryItem from './components/CountryItem'
 import ConnectionTypeItem from './components/ConnectionTypeItem'
 
-const styles = require('./ConnectionBlock.scss')
+const styles = require('./ConnectionBlock.module.scss')
 
 const ConnectionBlock = () => (
   <div className={styles.root}>

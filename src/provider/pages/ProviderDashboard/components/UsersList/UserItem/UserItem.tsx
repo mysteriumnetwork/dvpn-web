@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const styles = require('./UserItem.scss')
+const styles = require('./UserItem.module.scss')
 
 const UserItem = () => (
   <tr>

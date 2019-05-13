@@ -6,7 +6,7 @@ import Button from '../../../ui-kit/components/Button/Button'
 import ConnectionInformation from './components/ConnectionInformation/ConnectionInformation'
 import AirdropWallet from './components/AirdropWallet/AirdropWallet'
 
-const styles = require('./ProviderSettings.scss')
+const styles = require('./ProviderSettings.module.scss')
 
 const ProviderSettings = () => (
   <div className={styles.appProviderSettingsCover}>

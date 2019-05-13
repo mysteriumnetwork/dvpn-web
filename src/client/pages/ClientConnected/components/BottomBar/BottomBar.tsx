@@ -1,7 +1,7 @@
 import * as React from 'react'
 import trans from '../../../../../trans'
 
-const styles = require('./BottomBar.scss')
+const styles = require('./BottomBar.module.scss')
 
 const BottomBar = () => (
   <div className={styles.bottomBar}>

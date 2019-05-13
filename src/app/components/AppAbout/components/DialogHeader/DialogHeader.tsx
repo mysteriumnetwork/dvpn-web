@@ -6,7 +6,7 @@ interface IStyles {
   titleRoot: string
   dialogHeader: string
   dialogHeaderBack: string
-  tab: string
+  tab?: string
   mysteriumLogo: string
 }
 

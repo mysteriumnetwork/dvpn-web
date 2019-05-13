@@ -3,7 +3,7 @@ import AppTextfield from '../../../../../ui-kit/components/AppTextField/AppTextF
 import RadioButton from '../../../../../ui-kit/components/RadioButton/RadioButton'
 import trans from '../../../../../trans'
 
-const styles = require('./AirdropWallet.scss')
+const styles = require('./AirdropWallet.module.scss')
 
 const AirdropWallet = () => (
   <div>

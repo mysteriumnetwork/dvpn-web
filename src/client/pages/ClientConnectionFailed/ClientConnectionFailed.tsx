@@ -6,7 +6,7 @@ import Button from '../../../ui-kit/components/Button/Button'
 import ConnectionFailedImgBlock from './components/ConnectionFailedImgBlock/ConnectionFailedImgBlock'
 import ConnectionFailedInfoBlock from './components/ConnectionFailedInfoBlock/ConnectionFailedInfoBlock'
 
-const styles = require('./ClientConnectionFailed.scss')
+const styles = require('./ClientConnectionFailed.module.scss')
 
 const ConnectionFailed = () => (
   <div className={styles.root}>

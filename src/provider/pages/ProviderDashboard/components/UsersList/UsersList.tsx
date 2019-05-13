@@ -2,7 +2,7 @@ import * as React from 'react'
 import trans from '../../../../../trans'
 import UserItem from './UserItem/UserItem'
 
-const styles = require('./UsersList.scss')
+const styles = require('./UsersList.module.scss')
 
 const UsersList = () => (
   <div className={styles.usersList}>

@@ -7,7 +7,7 @@ import Loader from '../../../ui-kit/components/Loader/Loader'
 import ConnectionImgBlock from './components/ConnectionImgBlock/ConnectionImgBlock'
 import ConnectionInfoBlock from './components/ConnectionInfoBlock/ConnectionInfoBlock'
 
-const styles = require('./ClientConnecting.scss')
+const styles = require('./ClientConnecting.module.scss')
 
 const ClientConnecting = () => (
   <div className={styles.root}>

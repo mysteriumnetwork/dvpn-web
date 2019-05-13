@@ -10,7 +10,7 @@ const classNames = require('classnames')
 
 interface IStyles {
   appHeader: string
-  dialogHeader: string
+  dialogHeader?: string
   tabContainer: string
   tab: string
   active: string

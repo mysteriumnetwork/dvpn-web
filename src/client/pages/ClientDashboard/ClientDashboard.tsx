@@ -4,7 +4,7 @@ import SideBar from './components/SideBar/SideBar'
 import BottomBar from './components/BottomBar/BottomBar'
 import ConnectionTable from './components/ConnectionTable/ConnectionTable'
 
-const styles = require('./ClientDashboard.scss')
+const styles = require('./ClientDashboard.module.scss')
 
 const ClientDashboard = () => (
   <div className={styles.dashboardCover}>

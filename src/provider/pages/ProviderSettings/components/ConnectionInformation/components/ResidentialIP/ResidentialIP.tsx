@@ -3,7 +3,7 @@ import Checkbox from '../../../../../../../ui-kit/components/Checkbox/Checkbox'
 
 import trans from '../../../../../../../trans'
 
-const styles = require('./ResidentialIP.scss')
+const styles = require('./ResidentialIP.module.scss')
 
 const ResidentialIP = () => (
   <div className={styles.connectionFlexedRow}>

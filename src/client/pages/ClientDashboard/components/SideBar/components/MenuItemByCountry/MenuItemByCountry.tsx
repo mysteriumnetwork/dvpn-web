@@ -2,7 +2,7 @@ import * as React from 'react'
 import trans from '../../../../../../../trans'
 import CountryItem from './CountryItem/CountryItem'
 
-const styles = require('./MenuItemByCountry.scss')
+const styles = require('./MenuItemByCountry.module.scss')
 
 const MenuItemByCountry = () => (
   <div className={styles.root}>

@@ -1,53 +1,133 @@
 {
-  "name": "react-typescript-tutorial",
-  "version": "0.1.0",
-  "private": true,
+  "name": "dvpn-web",
+  "productName": "MysteriumVPN",
+  "version": "0.10.0",
+  "description": "Mysterium VPN is a web application for accessing Mysterium Network - decentralized VPN built on blockchain.",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mysteriumnetwork/dvpn-web.git"
+  },
+  "author": {
+    "name": "Mysterium Network",
+    "email": "mysterium-dev@mysterium.network",
+    "url": "https://mysterium.network/"
+  },
+  "homepage": "https://github.com/mysteriumnetwork/dvpn-web#readme",
+  "bugs": {
+    "url": "https://github.com/mysteriumnetwork/dvpn-web/issues"
+  },
+  "keywords": [
+    "mysterium",
+    "vpn",
+    "dvpn",
+    "distributed-vpn",
+    "electron"
+  ],
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "cross-env NODE_ENV=development eslint --cache --format=pretty",
+      "prettier --ignore-path .eslintignore --single-quote --write",
+      "git add"
+    ],
+    "{*.json,.{babelrc,eslintrc,prettierrc,stylelintrc}}": [
+      "prettier --ignore-path .eslintignore --parser json --write",
+      "git add"
+    ],
+    "*.{css,scss}": [
+      "stylelint --ignore-path .eslintignore --syntax scss --fix",
+      "prettier --ignore-path .eslintignore --single-quote --write",
+      "git add"
+    ],
+    "*.{yml,md}": [
+      "prettier --ignore-path .eslintignore --single-quote --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
-    "react-addons-test-utils": "^15.6.2",
-    "react-scripts-ts": "^3.1.0",
-    "typescript": "^3.4.5"
+    "@types/enzyme": "^3.9.1",
+    "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/jest": "^24.0.12",
+    "@types/node": "^10.14.6",
+    "@types/react": "^16.8.17",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-intl": "^2.3.17",
+    "@types/react-jss": "^8.6.3",
+    "@types/react-redux": "^7.0.8",
+    "@types/react-router": "^5.0.0",
+    "@types/react-router-dom": "^4.3.3",
+    "@types/redux": "^3.6.0",
+    "@types/redux-form": "^8.1.1",
+    "@types/redux-logger": "^3.0.7",
+    "@types/redux-thunk": "^2.1.0",
+    "typescript": "^3.4.5",
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-formatter-pretty": "^2.0.0",
+    "eslint-import-resolver-webpack": "^0.11.0",
+    "eslint-plugin-compat": "^2.6.3",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.2",
+    "eslint-plugin-jsx-a11y": "6.1.2",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.12.3",
+    "eslint-plugin-testcafe": "^0.2.1",
+    "stylelint": "^9.9.0",
+    "stylelint-config-prettier": "^4.0.0",
+    "stylelint-config-standard": "^18.2.0",
+    "cross-env": "^5.2.0",
+    "husky": "^2.2.0",
+    "lint-staged": "^8.1.6",
+    "node-sass": "^4.12.0",
+    "prettier": "^1.17.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.6.3",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "@types/enzyme": "^3.9.1",
-    "@types/jest": "^24.0.12",
-    "@types/node": "^10.14.6",
-    "@types/react": "^16.8.17",
-    "@types/react-dom": "^16.8.4",
-    "@types/react-redux": "^7.0.8",
-    "@types/react-jss": "^8.6.3",
-    "@types/react-intl": "^2.3.17",
-    "@types/react-router": "^5.0.0",
-    "@types/react-router-dom": "^4.3.3",
-    "@types/redux": "^3.6.0",
-    "@types/redux-form": "^8.1.1",
-    "@types/redux-thunk": "^2.1.0",
-    "@types/redux-logger": "^3.0.7",
-    "@types/hoist-non-react-statics": "^3.3.1",
-    "enzyme": "^3.9.0",
     "connected-react-router": "^6.1.0",
     "history": "^4.7.2",
+    "hoist-non-react-statics": "^3.3.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-redux": "^7.0.3",
     "react-intl": "^2.8.0",
     "react-jss": "^8.6.1",
+    "react-redux": "^7.0.3",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "react-scripts": "^3.0.1",
     "redux": "^4.0.1",
     "redux-form": "^8.2.0",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "hoist-non-react-statics": "^3.3.0"
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty . --ext ts,tsx,js,jsx",
+    "lint-fix": "yarn --silent lint --fix; exit 0",
+    "lint-styles": "stylelint --ignore-path .eslintignore '**/*.*(css|scss)' --syntax scss",
+    "lint-styles-fix": "yarn --silent lint-styles --fix; exit 0"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import ConnectionItem from './ConnectionItem/ConnectionItem'
 
-const styles = require('./TableBody.scss')
+const styles = require('./TableBody.module.scss')
 
 const TableBody = () => (
   <div className={styles.root}>

@@ -4,7 +4,7 @@ import { NAV_TERMS } from '../../app.links'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
 
-const styles = require('./Welcome.scss')
+const styles = require('./Welcome.module.scss')
 
 const Welcome = () => (
   <div className={styles.appCover}>
