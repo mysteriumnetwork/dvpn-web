@@ -47,7 +47,7 @@ const styles = theme => ({
 })
 
 export interface IQualityProps {
-  selected: boolean
+  selected?: boolean
   classes: IStyles
   style?: React.CSSProperties
 }

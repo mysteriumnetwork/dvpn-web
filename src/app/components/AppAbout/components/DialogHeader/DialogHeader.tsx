@@ -10,7 +10,7 @@ interface IStyles {
   mysteriumLogo: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   titleRoot: {
     padding: '0 !important',
     minWidth: 360,
@@ -64,7 +64,7 @@ const styles = theme => ({
 })
 
 export interface IDialogHeaderProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

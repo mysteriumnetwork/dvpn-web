@@ -35,7 +35,7 @@ const styles = theme => ({
 })
 
 export interface IStartIconProps {
-  selected: boolean
+  selected?: boolean
   classes: IStyles
   style?: React.CSSProperties
 }

@@ -10,7 +10,7 @@ interface IStyles {
   ipItem: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   rootStyled: {
     padding: '0 !important',
   },
@@ -45,7 +45,7 @@ const styles = theme => ({
 })
 
 export interface IConnectionsListProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

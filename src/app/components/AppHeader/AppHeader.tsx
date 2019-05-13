@@ -16,7 +16,7 @@ interface IStyles {
   active: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   appHeader: {
     display: 'flex',
     justifyContent: 'center',
@@ -65,7 +65,7 @@ const styles = theme => ({
 })
 
 export interface IAppHeaderProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

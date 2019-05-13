@@ -30,7 +30,7 @@ const styles = theme => ({
 })
 
 export interface ICountryItemProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

@@ -13,7 +13,7 @@ interface IStyles {
   image: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   rootStyled: {
     height: '100%',
     textAlign: 'center',
@@ -51,7 +51,7 @@ const styles = theme => ({
 })
 
 export interface IDialogContentProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

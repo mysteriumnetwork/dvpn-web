@@ -11,7 +11,7 @@ interface IStyles {
   rootBackdrop: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   rootStyled: {
     color: theme.colors.actionPurple,
   },

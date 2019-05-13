@@ -45,7 +45,7 @@ const styles = theme => ({
 })
 
 export interface IMenuItemProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

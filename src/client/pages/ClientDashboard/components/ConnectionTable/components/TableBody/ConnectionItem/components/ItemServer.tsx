@@ -25,7 +25,7 @@ const styles = theme => ({
 })
 
 export interface IItemServerProps {
-  selected: boolean
+  selected?: boolean
   classes: IStyles
   style?: React.CSSProperties
 }

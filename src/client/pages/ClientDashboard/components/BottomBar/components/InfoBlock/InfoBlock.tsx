@@ -10,7 +10,7 @@ interface IStyles {
   flagIcon: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   root: {
     padding: 16,
     flex: '0 0.3 30%',
@@ -39,7 +39,7 @@ const styles = theme => ({
 })
 
 export interface IInfoBlockProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

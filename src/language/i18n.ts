@@ -5,13 +5,11 @@
  *
  */
 import { addLocaleData } from 'react-intl'
-import enLocaleData from 'react-intl/locale-data/en'
+import * as enLocaleData from 'react-intl/locale-data/en'
 
 import { DEFAULT_LOCALE } from './reducer'
 
-import * as enJson from '../translations/en.json'
-
-const enTranslationMessages = (<any>enJson).default
+import * as enTranslationMessages from '../translations/en.json'
 
 addLocaleData(enLocaleData)
 

@@ -15,7 +15,7 @@ interface IStyles {
   customIconChecked: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   formControlLabel: {
     margin: '0 !important',
     alignItems: 'flex-start !important',
@@ -61,11 +61,11 @@ const styles = theme => ({
 })
 
 export interface IAppCheckboxProps {
-  id: any
+  id?: any
   label: string
-  value: string
-  checked: any
-  onChange: any
+  value?: string
+  checked?: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

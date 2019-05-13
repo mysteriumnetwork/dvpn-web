@@ -13,7 +13,7 @@ interface IStyles {
   flatSecondaryStyled: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   disabled: {
     color: '#fff !important',
     background: '#cccccc !important',
@@ -54,11 +54,12 @@ const styles = theme => ({
 
 export interface IButtonProps {
   children: any
-  color: any
-  onClick: any
-  fullWidth: boolean
+  color?: any
+  onClick?: any
+  fullWidth?: boolean
   classes: IStyles
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  variant?: any
 }
 
 const AppButton: React.SFC<IButtonProps> = (props: IButtonProps) => (

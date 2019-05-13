@@ -58,10 +58,10 @@ const styles = theme => ({
 })
 
 export interface IRadioButtonProps {
-  label: string
-  value: string
-  checked: any
-  onChange: any
+  label?: string
+  value?: string
+  checked?: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

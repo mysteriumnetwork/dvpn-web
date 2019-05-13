@@ -4,7 +4,7 @@ import injectSheet from 'react-jss'
 interface IStyles {
   ipItem: string
 }
-const styles = theme => ({
+const styles = (theme: any) => ({
   ipItem: {
     display: 'flex',
     '& > p': {

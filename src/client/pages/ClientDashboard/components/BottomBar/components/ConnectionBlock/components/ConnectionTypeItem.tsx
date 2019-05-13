@@ -43,7 +43,7 @@ const styles = theme => ({
 })
 
 export interface IInfoBlockProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }

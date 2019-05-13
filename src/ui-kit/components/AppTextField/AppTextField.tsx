@@ -54,14 +54,14 @@ const styles = theme => ({
 })
 
 export interface IAppTextFieldProps {
-  error: any
-  label: string
-  placeholder: string
-  value: string
-  errorText: string
-  shrink: any
-  onChange: any
-  name: any
+  error?: any
+  label?: string
+  placeholder?: string
+  value?: string
+  errorText?: string
+  shrink?: any
+  onChange?: any
+  name?: any
   classes: IStyles
   style?: React.CSSProperties
 }

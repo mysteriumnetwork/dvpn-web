@@ -56,8 +56,8 @@ class AppAbout extends React.Component<IAppAboutProps> {
           },
         }}
       >
-        <DialogHeader />
-        <DialogContent />
+        <DialogHeader onChange={() =>{}}/>
+        <DialogContent onChange={() =>{}} />
       </Dialog>
     )
   }

@@ -10,7 +10,7 @@ interface IStyles {
   action: string
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   rootStyled: {
     textAlign: 'center',
   },
@@ -45,7 +45,7 @@ const AppDialogContent: React.SFC<IDialogContentProps> = (props: IDialogContentP
     <p className={props.classes.textStyled}>{trans('app.about.app.version')} 1.2</p>
     <p className={props.classes.textStyled}>{trans('app.about.checked.for.updates')}</p>
     <div className={props.classes.action}>
-      <Button>{trans('app.about.check.for.updates')}</Button>
+      <Button onClick={() => {}}>{trans('app.about.check.for.updates')}</Button>
     </div>
   </DialogContent>
 )
