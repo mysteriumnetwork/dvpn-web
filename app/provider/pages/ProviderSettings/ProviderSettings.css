@@ -1,0 +1,55 @@
+.appProviderSettingsCover {
+  height: calc(100vh - 40px);
+  padding-bottom: 73px;
+  position: relative;
+  background: #fff;
+}
+.appProviderSettingsCover h1 {
+  text-align: center;
+  font-weight: 300;
+  margin-bottom: 46px;
+  font-size: 1.5rem;
+  color: #843a72;
+}
+
+.scrollView {
+  height: 100%;
+  overflow-y: auto;
+  padding-top: 36px;
+}
+
+.contentContainer {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 448px;
+}
+
+.flexedRow {
+  display: flex;
+  font-size: 0.875rem;
+  margin-bottom: 14px;
+}
+.flexedRow p {
+  min-width: 128px;
+  font-size: 0.875rem;
+  color: #808080;
+}
+.flexedRow div {
+  color: #404040;
+  font-family: 'mplus-1m', sans-serif;
+}
+.flexedRow .helperText {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #808080;
+}
+
+.bottomBar {
+  bottom: 0;
+  width: 100%;
+  padding: 16px 0;
+  text-align: center;
+  background: #f7f7f7;
+  position: absolute;
+  border-top: 1px solid rgba(191, 191, 191, 0.4);
+}

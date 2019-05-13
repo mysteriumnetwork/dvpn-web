@@ -1,0 +1,29 @@
+@import '../../../../../../../constatnts';
+
+.connectionFlexedRow {
+  display: flex;
+  margin-bottom: 16px;
+  .connectionDetails {
+    color: $textGrey;
+    font-size: $buttonText;
+    padding-left: 16px;
+  }
+}
+.textBold {
+  font-weight: bold;
+  margin-right: 8px;
+}
+.connectionDetails a {
+  color: $actionPurple;
+  font-size: $tableHeadFont;
+  display: block;
+}
+.helperText {
+  margin-top: 8px;
+  font-size: $tableHeadFont;
+  color: $textLightGrey;
+}
+.checkbox {
+  display: block;
+  margin: 12px 0;
+}

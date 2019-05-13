@@ -1,0 +1,48 @@
+.root {
+  padding: 40px 24px;
+  position: relative;
+  height: calc(100vh - 40px);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background: url('../../../app/components/assets/images/app-pattern.svg');
+}
+
+.title {
+  font-weight: 300;
+  color: #fff;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.action {
+  margin: 50px auto 0;
+}
+.action a button {
+  font-weight: bold;
+  color: #d93c3c;
+  min-width: 200px !important;
+}
+.action a:first-child {
+  margin-right: 1rem;
+}
+.action a:last-child {
+  margin-left: 1rem;
+}
+
+.buttonLabel {
+  display: flex;
+  align-items: center;
+}
+.buttonLabel div {
+  width: 15px;
+  height: 15px;
+  background: url('../../../app/components/assets/images/app-icons.svg') no-repeat;
+  background-size: 170px 214px;
+  background-position: -22px -81px;
+}
+.buttonLabel p {
+  margin-left: 10px;
+  font-weight: normal;
+}

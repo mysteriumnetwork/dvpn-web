@@ -1,0 +1,39 @@
+.infoBar {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.infoBar table {
+  width: 100%;
+  color: #fff;
+  border-collapse: collapse;
+}
+.infoBar table th {
+  width: 62%;
+  opacity: 0.7;
+  text-align: left;
+  font-weight: normal;
+  font-size: 0.75rem;
+}
+.infoBar table th:first-child {
+  width: 38%;
+}
+.infoBar table td {
+  width: 68%;
+  padding: 9px 0;
+  text-align: left;
+  font-size: 1rem;
+}
+.infoBar table td:first-child {
+  width: 32%;
+}
+
+.ipItem {
+  display: flex;
+}
+.ipItem p {
+  margin-left: 8px;
+}
+
+.infoID {
+  font-family: 'mplus-1m', sans-serif;
+}

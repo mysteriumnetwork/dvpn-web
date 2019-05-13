@@ -1,0 +1,40 @@
+@import '../../../../../../../constatnts';
+
+.root {
+  padding: 12px 16px;
+  flex: 0 0.7 70%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #e6e6e6;
+}
+.info {
+  color: $textMain;
+  h3 {
+    font-weight: bold;
+    color: $textSecondary;
+    font-size: $buttonText;
+  }
+  p {
+    font-size: $buttonText;
+  }
+}
+.infoID {
+  font-family: 'mplus-1m', sans-serif;
+}
+.flagIcon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: url('../../../../../../../app/components/assets/images/flag-icon-temp.svg') no-repeat center;
+}
+.infoRow {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+.action {
+  a button {
+    min-width: 92px;
+  }
+}

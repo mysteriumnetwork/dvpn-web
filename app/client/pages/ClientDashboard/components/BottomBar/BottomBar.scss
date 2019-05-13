@@ -1,0 +1,10 @@
+@import '../../../../../constatnts';
+
+.root {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 3;
+  position: absolute;
+  display: flex;
+}

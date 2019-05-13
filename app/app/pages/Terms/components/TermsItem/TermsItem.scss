@@ -1,0 +1,37 @@
+@import '../../../../../constatnts';
+
+.termsItem {
+  margin-top: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  h3 {
+    font-weight: 600;
+    font-size: 15px;
+    color: $actionPurple;
+  }
+}
+.termsItemText {
+  font-size: $tableHeadFont;
+  color: $textDarkGrey;
+  margin: 6px 0;
+  a {
+    cursor: pointer;
+    margin-left: 8px;
+    padding-right: 5px;
+    position: relative;
+    color: $actionPurple;
+    &:hover {
+      border-bottom: 1px solid;
+    }
+    &::after {
+      right: -3px;
+      position: relative;
+      content: '>';
+      vertical-align: baseline;
+    }
+  }
+}
+.date {
+  font-size: $tableHeadFont;
+  color: $textLightGrey;
+}

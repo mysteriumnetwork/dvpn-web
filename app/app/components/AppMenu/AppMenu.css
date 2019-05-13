@@ -1,0 +1,28 @@
+.menuContainer button {
+  padding: 10px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.menuContainer button:hover {
+  background: transparent;
+}
+
+li.menuItem {
+  font-size: 0.875rem;
+  color: #404040;
+  padding: 4px 16px;
+}
+li.menuItem:first-child {
+  border-bottom: 2px solid #e6e6e6;
+}
+li.menuItem:last-child {
+  border-top: 2px solid #e6e6e6;
+}
+li.menuItem:focus {
+  background: transparent;
+}
+li.menuItem:hover {
+  color: #fff;
+  background: #843a72;
+}

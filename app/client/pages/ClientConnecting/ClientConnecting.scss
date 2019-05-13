@@ -1,0 +1,24 @@
+@import '../../../constatnts';
+
+.root {
+  padding: 40px 24px;
+  position: relative;
+  height: calc(100vh - 40px);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background: url('../../../app/components/assets/images/app-pattern.svg');
+}
+.title {
+  font-weight: 300;
+  color: $whiteColor;
+  font-size: $mainTitle;
+  text-align: center;
+}
+.action {
+  margin: 32px auto 0;
+  a button {
+    min-width: 80px;
+  }
+}

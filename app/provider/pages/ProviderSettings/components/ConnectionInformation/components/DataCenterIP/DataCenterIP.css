@@ -1,0 +1,26 @@
+.connectionFlexedRow {
+  display: flex;
+  margin-bottom: 16px;
+}
+.connectionFlexedRow .connectionDetails {
+  color: #4e4e4e;
+  font-size: 0.875rem;
+  padding-left: 16px;
+}
+
+.textBold {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.connectionDetails a {
+  color: #843a72;
+  font-size: 0.75rem;
+  display: block;
+}
+
+.helperText {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: #808080;
+}

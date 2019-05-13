@@ -1,0 +1,33 @@
+.root table {
+  width: 100%;
+  color: #666;
+  border-collapse: collapse;
+}
+.root table tr {
+  box-shadow: 0 0.5px 1px 0 rgba(0, 0, 0, 0.2);
+}
+.root table th {
+  opacity: 0.7;
+  padding: 8px 16px;
+  text-align: left;
+  font-weight: normal;
+  font-size: 0.75rem;
+  border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+}
+.root table th:first-child {
+  width: 23%;
+}
+.root table th:nth-child(2) {
+  width: 44%;
+}
+.root table th:last-child {
+  width: 23%;
+  text-align: right;
+}
+.root table td {
+  text-align: left;
+  padding: 8px 16px;
+  color: #404040;
+  font-size: 0.875rem;
+  border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="96px" height="96px" viewBox="0 0 96 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Network error</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.0.5-Discovery-Down" transform="translate(-352.000000, -240.000000)">
+            <g id="Window" transform="translate(80.000000, 69.000000)">
+                <g id="Network-error" transform="translate(272.000000, 171.000000)">
+                    <rect id="Area" x="0" y="0" width="96" height="96"></rect>
+                    <path d="M7.592,69.996 L44,69.996" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M10.048,21.996 L85.984,21.996" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M50,46 L2.044,45.996" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M34,91.832 C11.8049145,84.7155703 -1.5597394,62.123203 2.8913005,39.2440939 C7.3423404,16.3649847 28.2021714,0.430855134 51.4464085,2.15446534 C74.6906457,3.87807555 92.9721563,22.7146198 94,46" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M45.076,2.1 C23.552,25.424 21.68,55.044 38.844,84" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M50.92,2.1 C60.3722075,11.9175783 66.4477958,24.4933175 68.264,38" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M70,82 C70.5522847,82 71,82.4477153 71,83 C71,83.5522847 70.5522847,84 70,84 C69.4477153,84 69,83.5522847 69,83 C69,82.4477153 69.4477153,82 70,82" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M70,74 L70,62" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M73.352,50 C72.69127,48.7626992 71.402668,47.9899989 70,47.9899989 C68.597332,47.9899989 67.30873,48.7626992 66.648,50 L46.424,88.54 C45.8162551,89.6949278 45.8633987,91.0849045 46.548,92.196 C47.2409198,93.3121893 48.4622223,93.9901862 49.776,93.988 L90.224,93.988 C91.5377777,93.9901862 92.7590802,93.3121893 93.452,92.196 C94.1366013,91.0849045 94.1837449,89.6949278 93.576,88.54 L73.352,50 Z" id="Path" stroke="#666666" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

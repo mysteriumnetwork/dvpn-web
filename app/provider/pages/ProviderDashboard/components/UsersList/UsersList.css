@@ -1,0 +1,41 @@
+.usersList {
+  width: 100%;
+  overflow: hidden;
+  height: calc(100% - 150px);
+}
+.usersList table {
+  width: 100%;
+  color: #fff;
+  border-collapse: collapse;
+}
+.usersList table th {
+  width: 18%;
+  opacity: 0.7;
+  text-align: left;
+  font-weight: normal;
+  font-size: 0.75rem;
+}
+.usersList table th:first-child {
+  width: 38%;
+}
+.usersList table th:nth-child(2) {
+  width: 26%;
+}
+.usersList table td {
+  width: 18%;
+  padding: 9px 0;
+  text-align: left;
+  font-size: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.usersList table td:first-child {
+  width: 38%;
+}
+.usersList table td:nth-child(2) {
+  width: 26%;
+}
+
+.scrollView {
+  height: 95%;
+  overflow-y: auto;
+}

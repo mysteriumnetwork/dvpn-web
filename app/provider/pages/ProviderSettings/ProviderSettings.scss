@@ -1,0 +1,53 @@
+@import '../../../constatnts';
+
+.appProviderSettingsCover {
+  height: calc(100vh - 40px);
+  padding-bottom: 73px;
+  position: relative;
+  background: $whiteColor;
+  h1 {
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 46px;
+    font-size: $mainTitle;
+    color: $actionPurple;
+  }
+}
+.scrollView {
+  height: 100%;
+  overflow-y: auto;
+  padding-top: 36px;
+}
+.contentContainer {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 448px;
+}
+.flexedRow {
+  display: flex;
+  font-size: $buttonText;
+  margin-bottom: 14px;
+  p {
+    min-width: 128px;
+    font-size: $buttonText;
+    color: $textLightGrey;
+  }
+  div {
+    color: $textMain;
+    font-family: 'mplus-1m', sans-serif;
+  }
+  .helperText {
+    margin-top: 8px;
+    font-size: 12px;
+    color: $textLightGrey;
+  }
+}
+.bottomBar {
+  bottom: 0;
+  width: 100%;
+  padding: 16px 0;
+  text-align: center;
+  background: #f7f7f7;
+  position: absolute;
+  border-top: 1px solid rgba(191, 191, 191, 0.4);
+}

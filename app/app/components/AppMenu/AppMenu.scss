@@ -1,0 +1,31 @@
+@import '../../../constatnts';
+
+.menuContainer {
+  button {
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+li.menuItem {
+  font-size: $buttonText;
+  color: $textMain;
+  padding: 4px 16px;
+  &:first-child {
+    border-bottom: 2px solid #e6e6e6;
+  }
+  &:last-child {
+    border-top: 2px solid #e6e6e6;
+  }
+  &:focus {
+    background: transparent;
+  }
+  &:hover {
+    color: $whiteColor;
+    background: $actionPurple;
+  }
+}

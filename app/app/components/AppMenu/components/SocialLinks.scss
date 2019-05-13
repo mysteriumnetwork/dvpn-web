@@ -1,0 +1,35 @@
+@import '../../../../constatnts';
+
+li.followMenuItem {
+  padding: 4px 16px;
+  height: auto;
+  &:hover {
+    background: transparent;
+  }
+}
+.followList {
+  width: 100%;
+  font-size: $tableHeadFont;
+  color: $textSecondary;
+  ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    display: inline-flex;
+    li {
+      padding: 5px;
+      display: inline-block;
+      &:first-child,
+      &:last-child {
+        border: none;
+      }
+      &:hover {
+        background: transparent;
+      }
+      a {
+        display: block;
+      }
+    }
+  }
+}

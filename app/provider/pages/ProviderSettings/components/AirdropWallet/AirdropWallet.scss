@@ -1,0 +1,64 @@
+@import '../../../../../constatnts';
+
+.flexedRow {
+  display: flex;
+  font-size: $buttonText;
+  margin-bottom: 14px;
+  p {
+    min-width: 128px;
+    font-size: 14px;
+    color: $textLightGrey;
+  }
+  div {
+    color: $textMain;
+  }
+  input {
+    color: $textLightGrey;
+    font-size: $tableHeadFont;
+    padding: 4px 12px;
+    border-radius: 4px;
+  }
+  svg {
+    height: 16px;
+    width: 16px;
+    path {
+      opacity: 0;
+    }
+  }
+  .helperText {
+    margin-top: 8px;
+    font-size: $tableHeadFont;
+    color: $textLightGrey;
+  }
+  .errorText {
+    margin-top: 8px;
+    font-size: $tableHeadFont;
+    color: $warningRed;
+    display: none;
+  }
+}
+.radioForm {
+  margin-bottom: 12px;
+  p {
+    margin-left: 26px;
+  }
+  label {
+    color: $textMain;
+    font-size: $buttonText;
+    margin-right: 8px;
+    margin-left: 0;
+  }
+}
+.savedWallet {
+  display: none;
+  p {
+    color: $textMain;
+    font-family: 'mplus-1m', sans-serif;
+  }
+  a {
+    display: block;
+    margin-top: 6px;
+    color: $darkPurple;
+    font-size: $tableHeadFont;
+  }
+}

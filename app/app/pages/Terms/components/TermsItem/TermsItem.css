@@ -1,0 +1,37 @@
+.termsItem {
+  margin-top: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.termsItem h3 {
+  font-weight: 600;
+  font-size: 15px;
+  color: #843a72;
+}
+
+.termsItemText {
+  font-size: 0.75rem;
+  color: #333;
+  margin: 6px 0;
+}
+.termsItemText a {
+  cursor: pointer;
+  margin-left: 8px;
+  padding-right: 5px;
+  position: relative;
+  color: #843a72;
+}
+.termsItemText a:hover {
+  border-bottom: 1px solid;
+}
+.termsItemText a::after {
+  right: -3px;
+  position: relative;
+  content: '>';
+  vertical-align: baseline;
+}
+
+.date {
+  font-size: 0.75rem;
+  color: #808080;
+}
