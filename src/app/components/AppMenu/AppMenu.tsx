@@ -4,7 +4,6 @@ import trans from '../../../trans'
 import SocialLinks from './components/SocialLinks'
 
 import styles from './AppMenu.module.scss'
-console.log('AppMenu.scss', styles)
 
 class AppMenu extends React.Component {
   public state = {

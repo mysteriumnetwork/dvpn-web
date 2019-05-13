@@ -35,7 +35,7 @@ const styles = (theme: any) => ({
 })
 
 export interface IDialogContentProps {
-  onChange: any
+  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
 }
