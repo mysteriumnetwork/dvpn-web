@@ -59,7 +59,7 @@ const styles = theme => ({
 
 export interface IRadioButtonProps {
   label?: string
-  value?: string
+  value?: string | number | boolean
   checked?: any
   onChange?: any
   classes: IStyles

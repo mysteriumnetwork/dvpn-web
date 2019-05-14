@@ -42,7 +42,7 @@ const styles = (theme: any) => ({
       color: theme.colors.actionPurple,
     },
   },
-  customIcon: {
+  customIconChecked: {
     height: 16,
     width: 16,
     margin: '3px 0',
@@ -50,7 +50,7 @@ const styles = (theme: any) => ({
     backgroundSize: '85px 32px',
     backgroundPosition: '0 -16px',
   },
-  customIconChecked: {
+  customIcon: {
     height: 16,
     width: 16,
     margin: '3px 0',

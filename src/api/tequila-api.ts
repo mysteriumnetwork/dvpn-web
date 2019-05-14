@@ -27,7 +27,12 @@ export class TequilaApi implements TequilaApiInterface {
   }
 
   public async accessPolicies(): Promise<AccessPolicy[]> {
-    return undefined
+    const response = await this.http.get('access-policies')
+    if (!response) {
+      throw new Error('Access policies response body is missing')
+    }
+
+    return response && response.entries
   }
 
   public async location(timeout?: number): Promise<OriginalLocation> {
