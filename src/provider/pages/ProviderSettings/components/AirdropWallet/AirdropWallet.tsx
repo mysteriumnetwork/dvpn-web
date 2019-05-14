@@ -17,7 +17,7 @@ const AirdropWallet = () => (
         </div>
         <AppTextfield placeholder="0x..." name="airdropWallet" />
         {/* TODO show error if wallet address invalid */}
-        <p className={styles.errorText}>{trans('app.provider.settings.wallet.error')}</p>
+        <p className={styles.errorText}>{trans('app.provider.settings.wallet.api-error.ts')}</p>
         <p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>
       </div>
     </div>
