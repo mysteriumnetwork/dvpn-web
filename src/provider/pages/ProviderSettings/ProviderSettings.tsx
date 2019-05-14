@@ -9,6 +9,8 @@ import { connect } from 'react-redux'
 import { ProviderReducer } from '../../reducer'
 import { DefaultProps } from '../../../types'
 import { setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
+import { withStyles } from '@material-ui/core'
+import { startVpnServerStory } from '../../stories'
 
 const styles = require('./ProviderSettings.module.scss')
 
@@ -17,9 +19,11 @@ type Props = DefaultProps & {
 
   onChangeTrafficOption: (value: string) => void
   onChangeResidentialConfirm: (value: boolean) => void
+  onStartVpnServer: () => void
 }
 
 const ProviderSettings = (props: Props) => {
+
   return (
     <div className={styles.appProviderSettingsCover}>
       <div className={styles.scrollView}>
@@ -54,8 +58,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeTrafficOption: (value) => dispatch(setTrafficOptionAction(value)),
-  onChangeResidentialConfirm: (value) => dispatch(setResidentialConfirmAction(value))
+  onChangeResidentialConfirm: (value) => dispatch(setResidentialConfirmAction(value)),
+  onStartVpnServer: () => startVpnServerStory(dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProviderSettings)
+export default withStyles({})(connect(mapStateToProps, mapDispatchToProps)(ProviderSettings))
 

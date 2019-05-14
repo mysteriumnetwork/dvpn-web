@@ -15,7 +15,7 @@ const DataCenterIP = () => (
       <p className={styles.helperText}>
         {trans('app.provider.settings.connection.info.helper.text.data.center')}
       </p>
-      <a href="/">{trans('app.provider.settings.connection.info.change')}</a>
+      <a href="javascript:void(0)">{trans('app.provider.settings.connection.info.change')}</a>
     </div>
   </div>
 )

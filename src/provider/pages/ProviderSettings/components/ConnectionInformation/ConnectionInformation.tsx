@@ -16,7 +16,7 @@ type Props = {
 
 const ConnectionInformation = (props: Props) => {
   const { provider, onChangeResidentialConfirm } = props
-  const { originalLocation, accessPolicy } = provider
+  const { originalLocation } = provider
   const isResidential = originalLocation && originalLocation.node_type === 'residential'
 
   return (

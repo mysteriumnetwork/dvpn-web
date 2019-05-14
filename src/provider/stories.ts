@@ -46,3 +46,11 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
 export const stopAccessPolicyFetchingStory = () => {
   clearInterval(_accessPolicyInterval)
 }
+
+export const startVpnServerStory = async (dispatch: Dispatch) => {
+
+}
+
+export const stopVpnServerStory = async (dispatch: Dispatch) => {
+
+}

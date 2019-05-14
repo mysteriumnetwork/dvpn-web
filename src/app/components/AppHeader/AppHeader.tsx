@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import injectSheet from 'react-jss'
-import { NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
+import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
 import { NAV_CLIENT_DASHBOARD } from '../../../client/client.links'
 import trans from '../../../trans'
 import AppMenu from '../AppMenu/AppMenu'
+import { connect } from 'react-redux'
 
 const classNames = require('classnames')
 
@@ -68,6 +69,7 @@ export interface IAppHeaderProps {
   onChange?: any
   classes: IStyles
   style?: React.CSSProperties
+  started?: boolean
 }
 
 const AppHeader: React.SFC<IAppHeaderProps> = (props: IAppHeaderProps) => (
@@ -83,7 +85,7 @@ const AppHeader: React.SFC<IAppHeaderProps> = (props: IAppHeaderProps) => (
           {trans('app.header.connect.vpn')}
         </div>
       </Link>
-      <Link to={NAV_PROVIDER_SETTINGS}>
+      <Link to={props.started ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
         <div
           className={classNames(props.classes.tab, {
             // add class active when tab is open
@@ -98,4 +100,8 @@ const AppHeader: React.SFC<IAppHeaderProps> = (props: IAppHeaderProps) => (
   </div>
 )
 
-export default injectSheet(styles)(AppHeader)
+const mapStateToProps = (state) => ({
+  started: Boolean(state.provider && state.provider.startedService)
+})
+
+export default injectSheet(styles)(connect(mapStateToProps)(AppHeader))
