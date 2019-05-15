@@ -24,41 +24,48 @@ type Props = DefaultProps & {
   onStartVpnServer: (provider: ProviderReducer) => void
 }
 
-const ProviderSettings = (props: Props) => {
-  const { provider, onChangeResidentialConfirm, onStartVpnServer } = props
-  const id = (provider && provider.identity && provider.identity.id) || ''
-  return (
-    <div className={styles.appProviderSettingsCover}>
-      <div className={styles.scrollView}>
-        <h1>{trans('app.provider.settings.share.your.connection')}</h1>
-        <div className={styles.contentContainer}>
-          <div>
-            <div className={styles.flexedRow}>
-              <p>{trans('app.provider.settings.my.id')}</p>
-              <div title={id}>{id.substr(2)}</div>
+class ProviderSettings extends React.PureComponent<Props> {
+
+  handleStartVpnServer = () => {
+    const { provider, onStartVpnServer } = this.props
+
+    onStartVpnServer(provider)
+  }
+
+  render() {
+    const { provider, onChangeResidentialConfirm } = this.props
+    const id = (provider && provider.identity && provider.identity.id) || ''
+
+    return (<div className={styles.appProviderSettingsCover}>
+        <div className={styles.scrollView}>
+          <h1>{trans('app.provider.settings.share.your.connection')}</h1>
+          <div className={styles.contentContainer}>
+            <div>
+              <div className={styles.flexedRow}>
+                <p>{trans('app.provider.settings.my.id')}</p>
+                <div title={id}>{id.substr(2)}</div>
+              </div>
+              {/* render dynamic Airdrop Wallet */}
+              <AirdropWallet {...this.props} />
             </div>
-            {/* render dynamic Airdrop Wallet */}
-            <AirdropWallet {...props}/>
+            {/* ExpansionPanel component with connection information */}
+            <ConnectionInformation provider={provider}
+                                   onChangeResidentialConfirm={onChangeResidentialConfirm} />
           </div>
-          {/* ExpansionPanel component with connection information */}
-          <ConnectionInformation provider={provider}
-                                 onChangeResidentialConfirm={onChangeResidentialConfirm}/>
         </div>
-      </div>
-      <div className={styles.bottomBar}>
-        <Button onClick={() => onStartVpnServer(provider)}
-                color="primary"
-                disabled={!id}>
-          {trans('app.provider.settings.start.vpn')}
-        </Button>
-      </div>
-    </div>
-  )
+        <div className={styles.bottomBar}>
+          <Button onClick={this.handleStartVpnServer}
+                  color="primary"
+                  disabled={!id || provider.tartedServicePending}>
+            {trans('app.provider.settings.start.vpn')}
+          </Button>
+        </div>
+      </div>)
+  }
 }
 
 const mapStateToProps = (state) => ({
-  provider: state.provider || {},
-  formWalletAddressData: getFormValues('walletAddress')(state),
+  provider: state.provider || {}, formWalletAddressData: getFormValues('walletAddress')(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -71,8 +78,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)
 
-export default withStyles({})(compose(
-  withConnect,
-  immutableProps,
-)(ProviderSettings))
+export default withStyles({})(compose(withConnect, immutableProps)(ProviderSettings))
 

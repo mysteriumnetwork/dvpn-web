@@ -1,9 +1,14 @@
 import * as React from 'react'
 import trans from '../../../../../trans'
+import { ProviderReducer } from '../../../../reducer'
 
 const styles = require('./BottomBar.module.scss')
 
-const BottomBar = () => (
+type Props = {
+  provider: ProviderReducer,
+}
+
+const BottomBar = (props: Props) => (
   <div className={styles.bottomBar}>
     {/* Render dynamic values */}
     <div className={styles.bottomBarItem}>
