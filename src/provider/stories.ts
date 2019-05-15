@@ -1,5 +1,5 @@
 import { Dispatch, Store } from 'redux'
-import { getFirstAccessPolicy, getOriginalLocation } from './pages/api'
+import { getFirstAccessPolicy, getOriginalLocation } from './api'
 import { setAccessPolicyAction, setLocationAction } from './actions'
 
 export const initProviderStory = (store: Store) => {

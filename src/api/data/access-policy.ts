@@ -10,3 +10,7 @@ export interface AccessPolicy {
   title?: string
   source?: string
 }
+
+export interface AccessPolicyResponse {
+  entries?: AccessPolicy[]
+}

@@ -1,11 +1,14 @@
 import { HttpAdapter } from './http'
 import { OriginalLocation } from './data/original-location'
-import { AccessPolicy } from './data/access-policy'
+import { AccessPolicy, AccessPolicyResponse } from './data/access-policy'
 import { ServiceParams } from './data/service-params'
 import { Service } from './data/service'
 import { NatStatus } from './data/nat-status'
+import { Identity, IdentityResponse } from './data/identity'
 
 export interface TequilaApiInterface {
+
+  identities(): Promise<Identity[]>
 
   location(timeout?: number): Promise<OriginalLocation>
 
@@ -26,24 +29,37 @@ export class TequilaApi implements TequilaApiInterface {
 
   }
 
-  public async accessPolicies(): Promise<AccessPolicy[]> {
-    const response = await this.http.get('access-policies')
+  public async identities(): Promise<Identity[]> {
+    const response = await this.http.get<IdentityResponse>('identities')
     if (!response) {
       throw new Error('Access policies response body is missing')
     }
 
-    return response && response.entries
+    return (response && response.identities) || []
+  }
+
+  public async accessPolicies(): Promise<AccessPolicy[]> {
+    const response = await this.http.get<AccessPolicyResponse>('access-policies')
+    if (!response) {
+      throw new Error('Access policies response body is missing')
+    }
+
+    return (response && response.entries) || []
   }
 
   public async location(timeout?: number): Promise<OriginalLocation> {
-    const location = await this.http.get<OriginalLocation>('location', undefined, { timeout })
+    const location = await this.http.get<OriginalLocation>(
+      'location',
+      undefined,
+      { timeout })
     if (!location) {
       throw new Error('Location response body is missing')
     }
     return location
   }
 
-  public async serviceStart(params: ServiceParams, timeout?: number): Promise<Service> {
+  public async serviceStart(
+    params: ServiceParams, timeout?: number): Promise<Service> {
     const { providerId, type, accessPolicies, options } = params
 
     const service = await this.http.post<Service>(
@@ -67,7 +83,8 @@ export class TequilaApi implements TequilaApiInterface {
     return await this.http.get<NatStatus>('nat/status')
   }
 
-  public async updateIdentityPayout(id: string, ethAddress: string): Promise<void> {
+  public async updateIdentityPayout(
+    id: string, ethAddress: string): Promise<void> {
     await this.http.put(`identities/${id}/payout`, { ethAddress })
   }
 
