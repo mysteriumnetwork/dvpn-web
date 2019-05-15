@@ -1,19 +1,8 @@
 import { Dispatch, Store } from 'redux'
-import {
-  getFirstAccessPolicy,
-  getFirstIdentity,
-  getOriginalLocation,
-  startService,
-  stopService
-} from './api'
-import {
-  setAccessPolicyAction,
-  setIdentityAction,
-  setLocationAction,
-  setStartedServiceAction
-} from './actions'
+import { getFirstAccessPolicy, getFirstIdentity, getOriginalLocation, startService, stopService } from './api'
+import { setAccessPolicyAction, setIdentityAction, setLocationAction, setStartedServiceAction } from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
-import { Service, ServiceOptions } from '../api/data/service'
+import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
 
 export const initProviderStory = (store: Store) => {
 
@@ -71,26 +60,30 @@ export const stopAccessPolicyFetchingStory = () => {
 export const startVpnServerStory = async (
   dispatch: Dispatch, provider: ProviderReducer) => {
   const providerId = provider.identity && provider.identity.id
-  const type = ''
-  const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE &&
-    provider.accessPolicy) ? provider.accessPolicy.id : undefined
+  const type = ServiceTypes.OPENVPN ///TODO: tmp
+  const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE && provider.accessPolicy)
+    ? provider.accessPolicy.id
+    : undefined
   const options: ServiceOptions = undefined
 
   const promise = startService(providerId, type, accessPolicyId, options)
 
-  const result = await dispatch(setStartedServiceAction(promise))
+  const service: Service = await dispatch(setStartedServiceAction(promise))
 
-  console.log(result)
+  console.log('startVpnServerStory:', service)
+
+  if (service && service.id) {
+    stopAccessPolicyFetchingStory()
+  }
 
 }
 
-export const stopVpnServerStory = async (
-  dispatch: Dispatch, service: Service) => {
-
+export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
   if (!service) return
 
   const promise = stopService(service)
 
   await dispatch(setStartedServiceAction(promise))
 
+  return startAccessPolicyFetchingStory(dispatch)
 }

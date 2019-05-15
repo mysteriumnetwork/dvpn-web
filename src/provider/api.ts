@@ -47,7 +47,7 @@ export const startService = async (
   providerId: string,
   type: string,
   accessPolicyId?: string,
-  options?: ServiceOptions): Promise<any> => {
+  options?: ServiceOptions): Promise<Service | Error> => {
 
   const params: ServiceParams = {
     providerId,

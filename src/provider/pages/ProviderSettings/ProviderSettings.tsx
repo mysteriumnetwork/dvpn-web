@@ -1,18 +1,12 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
-import { NAV_PROVIDER_DASHBOARD } from '../../provider.links'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
-import ConnectionInformation
-  from './components/ConnectionInformation/ConnectionInformation'
+import ConnectionInformation from './components/ConnectionInformation/ConnectionInformation'
 import AirdropWallet from './components/AirdropWallet/AirdropWallet'
 import { connect } from 'react-redux'
 import { ProviderReducer } from '../../reducer'
 import { DefaultProps } from '../../../types'
-import {
-  setResidentialConfirmAction,
-  setTrafficOptionAction
-} from '../../actions'
+import { setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
 import { withStyles } from '@material-ui/core'
 import { startVpnServerStory } from '../../stories'
 
