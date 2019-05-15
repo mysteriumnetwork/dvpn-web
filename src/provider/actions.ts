@@ -11,7 +11,15 @@ import {
   UNLOKS_IDENTITY,
   UPDATE_IDENTITY
 } from './constants'
-import { startService, StartServiceInterface, stopService } from './api'
+import {
+  getFirstIdentity,
+  getOriginalLocation,
+  startService,
+  StartServiceInterface,
+  stopService,
+  unlocksIdentity,
+  updateIdentity
+} from './api'
 import { Service } from '../api/data/service'
 
 export const setLocationAction = createAction(ORIGINAL_LOCATION, async () => await getOriginalLocation())

@@ -1,5 +1,5 @@
 import { Dispatch, Store } from 'redux'
-import { getFirstAccessPolicy, getFirstIdentity, getOriginalLocation } from './api'
+import { getFirstAccessPolicy } from './api'
 import {
   setAccessPolicyAction,
   setIdentityAction,
