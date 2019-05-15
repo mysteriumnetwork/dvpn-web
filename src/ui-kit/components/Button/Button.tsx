@@ -59,7 +59,8 @@ export interface IButtonProps {
   fullWidth?: boolean
   classes: IStyles
   style?: React.CSSProperties,
-  variant?: any
+  variant?: any,
+  disabled?: boolean,
 }
 
 const AppButton: React.SFC<IButtonProps> = (props: IButtonProps) => (
@@ -67,6 +68,7 @@ const AppButton: React.SFC<IButtonProps> = (props: IButtonProps) => (
     onClick={props.onClick}
     fullWidth={props.fullWidth}
     color={props.color}
+    disabled={props.disabled}
     classes={{
       root: props.classes.rootStyled,
       label: props.classes.labelStyled,
