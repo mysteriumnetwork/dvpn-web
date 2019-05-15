@@ -2,6 +2,8 @@ import { AccessPolicy } from '../api/data/access-policy'
 import { tequilaApi } from '../api'
 import { OriginalLocation } from '../api/data/original-location'
 import { Identity } from '../api/data/identity'
+import { Service, ServiceOptions } from '../api/data/service'
+import { ServiceParams } from '../api/data/service-params'
 
 export const getFirstAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
@@ -39,4 +41,27 @@ export const getOriginalLocation = async (): Promise<OriginalLocation | null> =>
   }
 
   return null
+}
+
+export const startService = async (
+  providerId: string,
+  type: string,
+  accessPolicyId?: string,
+  options?: ServiceOptions): Promise<any> => {
+
+  const params: ServiceParams = {
+    providerId,
+    type,
+    options
+  }
+
+  if (accessPolicyId) {
+    params.accessPolicies = { ids: [accessPolicyId] }
+  }
+
+  return await tequilaApi.serviceStart(params)
+}
+
+export const stopService = async (service: Service): Promise<any> => {
+  return service && await tequilaApi.serviceStop(service.id)
 }

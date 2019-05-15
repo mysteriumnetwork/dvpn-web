@@ -1,15 +1,26 @@
 import typeToReducer from "type-to-reducer";
-import { ACCESS_POLICY, ORIGINAL_LOCATION, RESIDENTIAL_CONFIRM, STARTED_SERVICE, TRAFFIC_OPTION } from "./constants";
+import {
+  ACCESS_POLICY,
+  IDENTITY,
+  ORIGINAL_LOCATION,
+  RESIDENTIAL_CONFIRM,
+  STARTED_SERVICE,
+  TRAFFIC_OPTION
+} from './constants'
 import { Action } from "redux-actions";
 import { OriginalLocation } from "../api/data/original-location";
 import { AccessPolicy } from "../api/data/access-policy";
+import { Identity } from '../api/data/identity'
 
 export interface ProviderReducer {
-  originalLocation: OriginalLocation,
-  accessPolicy: AccessPolicy,
-  trafficOption: TrafficOptions
-  residentialConfirm: boolean,
-  startedService: any
+  identity?: Identity,
+  originalLocation?: OriginalLocation,
+  accessPolicy?: AccessPolicy,
+  trafficOption?: TrafficOptions
+  residentialConfirm?: boolean,
+  startedService?: any,
+  startedServiceReject?: any,
+  tartedServicePending?: boolean
 }
 
 export enum TrafficOptions {
@@ -18,6 +29,11 @@ export enum TrafficOptions {
 }
 
 export default typeToReducer({
+  [IDENTITY]: (state, action: Action<Identity>) => ({
+    ...state,
+    identity: action.payload
+  }),
+
   [ORIGINAL_LOCATION]: (state, action: Action<OriginalLocation>) => ({
     ...state,
     originalLocation: action.payload
@@ -36,11 +52,6 @@ export default typeToReducer({
   [RESIDENTIAL_CONFIRM]: (state, action: Action<boolean>) => ({
     ...state,
     residentialConfirm: action.payload
-  }),
-
-  [STARTED_SERVICE]: (state, action: Action<any>) => ({
-    ...state,
-    startedService: action.payload
   }),
 
   [STARTED_SERVICE]: {

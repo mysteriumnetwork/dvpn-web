@@ -1,12 +1,33 @@
 import { Dispatch, Store } from 'redux'
-import { getFirstAccessPolicy, getOriginalLocation } from './api'
-import { setAccessPolicyAction, setLocationAction } from './actions'
+import {
+  getFirstAccessPolicy,
+  getFirstIdentity,
+  getOriginalLocation,
+  startService,
+  stopService
+} from './api'
+import {
+  setAccessPolicyAction,
+  setIdentityAction,
+  setLocationAction,
+  setStartedServiceAction
+} from './actions'
+import { ProviderReducer, TrafficOptions } from './reducer'
+import { Service, ServiceOptions } from '../api/data/service'
 
 export const initProviderStory = (store: Store) => {
 
-  fetchLocationStory(store.dispatch).catch(console.error)
+  Promise.all([
+    fetchLocationStory(store.dispatch),
+    fetchIdentityStory(store.dispatch)
+  ]).catch(console.error)
 
   startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
+}
+
+export const fetchIdentityStory = async (dispatch: Dispatch) => {
+  const identity = await getFirstIdentity()
+  dispatch(setIdentityAction(identity))
 }
 
 export const fetchLocationStory = async (dispatch: Dispatch) => {
@@ -47,10 +68,29 @@ export const stopAccessPolicyFetchingStory = () => {
   clearInterval(_accessPolicyInterval)
 }
 
-export const startVpnServerStory = async (dispatch: Dispatch) => {
+export const startVpnServerStory = async (
+  dispatch: Dispatch, provider: ProviderReducer) => {
+  const providerId = provider.identity && provider.identity.id
+  const type = ''
+  const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE &&
+    provider.accessPolicy) ? provider.accessPolicy.id : undefined
+  const options: ServiceOptions = undefined
+
+  const promise = startService(providerId, type, accessPolicyId, options)
+
+  const result = await dispatch(setStartedServiceAction(promise))
+
+  console.log(result)
 
 }
 
-export const stopVpnServerStory = async (dispatch: Dispatch) => {
+export const stopVpnServerStory = async (
+  dispatch: Dispatch, service: Service) => {
+
+  if (!service) return
+
+  const promise = stopService(service)
+
+  await dispatch(setStartedServiceAction(promise))
 
 }
