@@ -1,20 +1,10 @@
 import { createAction } from 'redux-actions'
-
-export const ORIGINAL_LOCATION = 'provider/ORIGINAL_LOCATION'
-
-export const IDENTITIES = 'provider/IDENTITIES'
-
-export const IDENTITY = 'provider/IDENTITY'
-
-export const ACCESS_POLICIES = 'provider/ACCESS_POLICIES'
-
-export const ACCESS_POLICY = 'provider/ACCESS_POLICY'
-
-export const STARTED_SERVICE = 'provider/STARTED_SERVICE'
-
-export const TRAFFIC_OPTION = 'provider/TRAFFIC_OPTION'
-
-export const RESIDENTIAL_CONFIRM = 'provider/RESIDENTIAL_CONFIRM'
+import {
+  ACCESS_POLICIES, ACCESS_POLICY,
+  IDENTITIES,
+  IDENTITY,
+  ORIGINAL_LOCATION, RESIDENTIAL_CONFIRM, STARTED_SERVICE, TRAFFIC_OPTION
+} from './constants'
 
 export const setLocationAction = createAction(ORIGINAL_LOCATION)
 

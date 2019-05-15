@@ -1,5 +1,5 @@
 import typeToReducer from "type-to-reducer";
-import { ACCESS_POLICY, ORIGINAL_LOCATION, RESIDENTIAL_CONFIRM, STARTED_SERVICE, TRAFFIC_OPTION } from "./actions";
+import { ACCESS_POLICY, ORIGINAL_LOCATION, RESIDENTIAL_CONFIRM, STARTED_SERVICE, TRAFFIC_OPTION } from "./constants";
 import { Action } from "redux-actions";
 import { OriginalLocation } from "../api/data/original-location";
 import { AccessPolicy } from "../api/data/access-policy";
