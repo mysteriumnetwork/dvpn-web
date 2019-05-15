@@ -11,7 +11,8 @@ import {
   UNLOKS_IDENTITY,
   UPDATE_IDENTITY
 } from './constants'
-import { getFirstIdentity, getOriginalLocation, unlocksIdentity, updateIdentity } from './api'
+import { startService, StartServiceInterface, stopService } from './api'
+import { Service } from '../api/data/service'
 
 export const setLocationAction = createAction(ORIGINAL_LOCATION, async () => await getOriginalLocation())
 
@@ -27,7 +28,11 @@ export const setAccessPoliciesAction = createAction(ACCESS_POLICIES)
 
 export const setAccessPolicyAction = createAction(ACCESS_POLICY)
 
-export const setStartedServiceAction = createAction(STARTED_SERVICE)
+export const startServiceAction = createAction(STARTED_SERVICE,
+  async (data: StartServiceInterface) => await startService(data),
+  value => value)
+
+export const stopServiceAction = createAction(STARTED_SERVICE, async (service: Service) => await stopService(service))
 
 export const setTrafficOptionAction = createAction(TRAFFIC_OPTION)
 

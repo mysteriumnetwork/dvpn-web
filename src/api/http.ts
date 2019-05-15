@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { ApiError } from './api-error'
 
 export const HTTP_API_URL = process.env.REACT_APP_HTTP_API_URL
@@ -32,14 +32,17 @@ export class HttpAdapter implements HttpAdapterInterface {
     this.http = axios.create({
       baseURL: HTTP_API_URL,
       timeout: HTTP_TIMEOUT_DEFAULT,
-      headers: { 'Cache-Control': 'no-cache, no-store' },
+      headers: { 'Cache-Control': 'no-cache, no-store' }
     })
   }
 
   private async decodeResponse<T>(promise: Promise<AxiosResponse>): Promise<T> {
-    return promise
-      .then((response: AxiosResponse) => response.data as T)
-      .catch((error: AxiosError) => Promise.reject(new ApiError(error)))
+    try {
+      const response: AxiosResponse = await promise
+      return response.data
+    } catch (error) {
+      throw new ApiError(error)
+    }
   }
 
   delete<T = any>(path: string, options?: HttpOptions): Promise<T> {

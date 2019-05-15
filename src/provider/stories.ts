@@ -1,15 +1,16 @@
 import { Dispatch, Store } from 'redux'
-import { getFirstAccessPolicy, startService, stopService } from './api'
+import { getFirstAccessPolicy, getFirstIdentity, getOriginalLocation } from './api'
 import {
   setAccessPolicyAction,
   setIdentityAction,
   setLocationAction,
-  setStartedServiceAction,
+  startServiceAction,
+  stopServiceAction,
   unlocksIdentityAction,
   updateIdentitiesAction
 } from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
-import { Service, ServiceOptions } from '../api/data/service'
+import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
 
 export const initProviderStory = (store: Store) => {
 
@@ -61,28 +62,28 @@ export const stopAccessPolicyFetchingStory = () => {
 export const startVpnServerStory = async (
   dispatch: Dispatch, provider: ProviderReducer) => {
   const providerId = provider.identity && provider.identity.id
-  const type = ''
-  const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE &&
-    provider.accessPolicy) ? provider.accessPolicy.id : undefined
+  const type = ServiceTypes.OPENVPN ///TODO: tmp
+  const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE && provider.accessPolicy)
+    ? provider.accessPolicy.id
+    : undefined
   const options: ServiceOptions = undefined
 
-  const promise = startService(providerId, type, accessPolicyId, options)
+  const service: Service = await dispatch(startServiceAction({ providerId, type, accessPolicyId, options }))
 
-  const result = await dispatch(setStartedServiceAction(promise))
+  console.log('startVpnServerStory:', service)
 
-  console.log(result)
+  if (service && service.id) {
+    stopAccessPolicyFetchingStory()
+  }
 
 }
 
-export const stopVpnServerStory = async (
-  dispatch: Dispatch, service: Service) => {
-
+export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
   if (!service) return
 
-  const promise = stopService(service)
+  await dispatch(stopServiceAction(service))
 
-  await dispatch(setStartedServiceAction(promise))
-
+  return startAccessPolicyFetchingStory(dispatch)
 }
 
 export const updateIdentitiesStory = async (dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
