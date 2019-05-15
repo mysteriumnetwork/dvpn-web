@@ -11,6 +11,9 @@ import { DefaultProps } from '../../../types'
 import { setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
 import { withStyles } from '@material-ui/core'
 import { startVpnServerStory } from '../../stories'
+import { getFormValues } from 'redux-form'
+import { compose } from 'redux'
+import immutableProps from '../../../hocs/immutableProps'
 
 const styles = require('./ProviderSettings.module.scss')
 
@@ -36,11 +39,11 @@ const ProviderSettings = (props: Props) => {
               <div>d617f200ef28a3a3ca2fc78a86d190e5c6f8eb0c</div>
             </div>
             {/* render dynamic Airdrop Wallet */}
-            <AirdropWallet provider={props.provider} onChangeTrafficOption={props.onChangeTrafficOption} />
+            <AirdropWallet provider={props.provider} onChangeTrafficOption={props.onChangeTrafficOption}/>
           </div>
           {/* ExpansionPanel component with connection information */}
           <ConnectionInformation provider={props.provider}
-                                 onChangeResidentialConfirm={props.onChangeResidentialConfirm} />
+                                 onChangeResidentialConfirm={props.onChangeResidentialConfirm}/>
         </div>
       </div>
       <div className={styles.bottomBar}>
@@ -53,14 +56,23 @@ const ProviderSettings = (props: Props) => {
 }
 
 const mapStateToProps = (state) => ({
-  ...state
+  provider: state.provider || {},
+  formWalletAddressData: getFormValues('walletAddress')(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeTrafficOption: (value) => dispatch(setTrafficOptionAction(value)),
   onChangeResidentialConfirm: (value) => dispatch(setResidentialConfirmAction(value)),
-  onStartVpnServer: () => startVpnServerStory(dispatch)
+  onStartVpnServer: () => startVpnServerStory(dispatch),
+  onSaveWalletAddress: (data) => {
+    console.log('onSaveWalletAddress', data)
+  },
 })
 
-export default withStyles({})(connect(mapStateToProps, mapDispatchToProps)(ProviderSettings))
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+
+export default withStyles({})(compose(
+  withConnect,
+  immutableProps,
+)(ProviderSettings))
 

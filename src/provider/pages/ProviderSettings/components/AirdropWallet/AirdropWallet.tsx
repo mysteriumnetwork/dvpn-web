@@ -1,5 +1,5 @@
 import * as React from 'react'
-import AppTextfield from '../../../../../ui-kit/components/AppTextField/AppTextField'
+import TextField from '../../../../../app/components/ReduxForm/TextField'
 import RadioButton from '../../../../../ui-kit/components/RadioButton/RadioButton'
 import trans from '../../../../../trans'
 import { ProviderReducer, TrafficOptions } from '../../../../reducer'
@@ -7,12 +7,18 @@ import { reduxForm } from 'redux-form/immutable'
 import { compose } from 'redux'
 import immutableProps from '../../../../../hocs/immutableProps'
 import injectSheet from 'react-jss'
+import SaveIcon from '@material-ui/icons/Save'
+import CancelIcon from '@material-ui/icons/Cancel'
+import IconButton from '@material-ui/core/IconButton'
+import { submit } from '../../../../../utils/reduxForm'
 
 const styles = require('./AirdropWallet.module.scss')
 
 type Props = {
   provider: ProviderReducer
-  onChangeTrafficOption: (value: string) => void
+  onChangeTrafficOption?: (value: string) => void
+  formWalletAddressData?: Object
+  onSaveWalletAddress?: (data: Object) => void
 }
 
 interface State {
@@ -21,16 +27,23 @@ interface State {
 
 class AirdropWallet extends React.PureComponent<Props> {
   state: Readonly<State> = {
-    isWalletEditMode: true
+    isWalletEditMode: false
   }
   handleTrafficChange = event => {
     const { onChangeTrafficOption } = this.props
     onChangeTrafficOption(event.target.value)
   }
 
-  handleWalletEditMode = () => {
+  handleToggleWalletEditMode = () => {
     const { isWalletEditMode } = this.state
     this.setState({ isWalletEditMode: !isWalletEditMode })
+  }
+
+  handleWalletChange = () => {
+    const { formWalletAddressData, onSaveWalletAddress } = this.props
+    console.log({ formWalletAddressData })
+    submit(this.props, () => onSaveWalletAddress(formWalletAddressData))
+    // this.handleToggleWalletEditMode()
   }
 
   get showTrafficOptions() {
@@ -50,15 +63,19 @@ class AirdropWallet extends React.PureComponent<Props> {
           <div>
             {/* display saved Wallet */}
             {isWalletEditMode ? (
-              <div>
-                <form>
-                  <AppTextfield placeholder="0x..." name="airdropWallet"/>
-                </form>
+              <div className={styles.editableField}>
+                <TextField placeholder="0x..." name="airdropWallet"/>
+                <IconButton color="primary">
+                  <SaveIcon fontSize="small" onClick={this.handleWalletChange}/>
+                </IconButton>
+                <IconButton color="secondary" onClick={this.handleToggleWalletEditMode}>
+                  <CancelIcon fontSize="small"/>
+                </IconButton>
               </div>
             ) : (
               <div className={styles.savedWallet}>
                 <p>0x701D8FFF10ce5BbFC05FA6cd0dBF18189bC492eb</p>
-                <button onClick={this.handleWalletEditMode}>{trans('app.provider.settings.change')}</button>
+                <button onClick={this.handleToggleWalletEditMode}>{trans('app.provider.settings.change')}</button>
               </div>
             )}
 

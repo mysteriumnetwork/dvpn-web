@@ -18,13 +18,13 @@
     padding: 4px 12px;
     border-radius: 4px;
   }
-  svg {
-    height: 16px;
-    width: 16px;
-    path {
-      opacity: 0;
-    }
-  }
+  //svg {
+  //  height: 16px;
+  //  width: 16px;
+  //  path {
+  //    //opacity: 0;
+  //  }
+  //}
   .helperText {
     margin-top: 8px;
     font-size: $tableHeadFont;
@@ -54,10 +54,18 @@
     color: $textMain;
     font-family: 'mplus-1m', sans-serif;
   }
-  a {
+  button {
     display: block;
     margin-top: 6px;
     color: $darkPurple;
     font-size: $tableHeadFont;
   }
+}
+.editableField{
+  display: flex;
+  align-items: center;
+  button {
+    margin-bottom: 8px;
+  }
+
 }
