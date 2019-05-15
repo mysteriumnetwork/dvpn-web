@@ -93,6 +93,7 @@
     "connected-react-router": "^6.1.0",
     "history": "^4.7.2",
     "hoist-non-react-statics": "^3.3.0",
+    "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

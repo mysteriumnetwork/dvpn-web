@@ -4,6 +4,7 @@ import { OriginalLocation } from '../api/data/original-location'
 import { Identity } from '../api/data/identity'
 import { Service, ServiceOptions } from '../api/data/service'
 import { ServiceParams } from '../api/data/service-params'
+import apiSubmissionError from '../utils/apiSubmissionError'
 
 export const getFirstAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
@@ -19,12 +20,12 @@ export const getFirstAccessPolicy = async (): Promise<AccessPolicy | null> => {
   return null
 }
 
-export const getFirstIdentity = async (): Promise<Identity | null> => {
+export const getCurrentIdentity = async (): Promise<Identity | null> => {
   try {
     const identities = await tequilaApi.identities()
 
     if (identities && identities.length > 0) {
-      return identities[0]
+      return identities.pop()
     }
   } catch (e) {
     console.error('Failed fetching first identity', e)
@@ -77,5 +78,6 @@ export const updateIdentity = async (data: { id: string, ethAddress: string }): 
 
 export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
   const { id, passphrase } = data
-  await tequilaApi.unlocksIdentity(id, passphrase)
+  await tequilaApi.unlocksIdentity(id, passphrase).catch(apiSubmissionError('walletAddress'))
 }
+

@@ -11,10 +11,11 @@ import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
 import IconButton from '@material-ui/core/IconButton'
 import { submit } from '../../../../../utils/reduxForm'
+import { InjectedFormProps } from 'redux-form'
 
 const styles = require('./AirdropWallet.module.scss')
 
-type Props = {
+type Props = InjectedFormProps &{
   provider: ProviderReducer
   onChangeTrafficOption?: (value: string) => void
   formWalletAddressData?: Object
@@ -40,10 +41,9 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 
   handleWalletChange = () => {
-    const { formWalletAddressData, onSaveWalletAddress } = this.props
-    console.log({ formWalletAddressData })
-    submit(this.props, () => onSaveWalletAddress(formWalletAddressData))
-    // this.handleToggleWalletEditMode()
+    const { formWalletAddressData, provider, onSaveWalletAddress } = this.props
+    submit(this.props, () => onSaveWalletAddress({ ...formWalletAddressData, id: provider.identity.id ,passphrase:'test2'}))
+    this.handleToggleWalletEditMode()
   }
 
   get showTrafficOptions() {
@@ -54,8 +54,9 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 
   render() {
-    const { provider } = this.props
+    const { provider,error } = this.props
     const { isWalletEditMode } = this.state
+    console.log(this.props)
     return (
       <div>
         <div className={styles.flexedRow}>
@@ -81,8 +82,11 @@ class AirdropWallet extends React.PureComponent<Props> {
 
 
             {/* TODO show error if wallet address invalid */}
-            <p className={styles.errorText}>{trans('app.provider.settings.wallet.api-error.ts')}</p>
-            <p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>
+            {error && (
+              <p className={styles.errorText}>{error}</p>
+            )}
+            {/*<p className={styles.errorText}>{trans('app.provider.settings.wallet.api-error.ts')}</p>*/}
+            {/*<p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>*/}
           </div>
         </div>
         {this.showTrafficOptions && (

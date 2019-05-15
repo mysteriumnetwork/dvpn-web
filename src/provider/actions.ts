@@ -12,7 +12,7 @@ import {
   UPDATE_IDENTITY
 } from './constants'
 import {
-  getFirstIdentity,
+  getCurrentIdentity,
   getOriginalLocation,
   startService,
   StartServiceInterface,
@@ -30,7 +30,7 @@ export const updateIdentitiesAction = createAction(UPDATE_IDENTITY, async (d) =>
 
 export const unlocksIdentityAction = createAction(UNLOKS_IDENTITY, async (d) => await unlocksIdentity(d), d => d)
 
-export const setIdentityAction = createAction(IDENTITY, async () => await getFirstIdentity())
+export const setIdentityAction = createAction(IDENTITY, async () => await getCurrentIdentity())
 
 export const setAccessPoliciesAction = createAction(ACCESS_POLICIES)
 
