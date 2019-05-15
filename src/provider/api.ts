@@ -43,23 +43,27 @@ export const getOriginalLocation = async (): Promise<OriginalLocation | null> =>
   return null
 }
 
-export const startService = async (
+export interface StartServiceInterface {
   providerId: string,
   type: string,
   accessPolicyId?: string,
-  options?: ServiceOptions): Promise<Service | Error> => {
+  options?: ServiceOptions
+}
 
-  const params: ServiceParams = {
+export const startService = async (data: StartServiceInterface): Promise<Service> => {
+  const {providerId, type, options, accessPolicyId} = data
+
+  const request: ServiceParams = {
     providerId,
     type,
     options
   }
 
   if (accessPolicyId) {
-    params.accessPolicies = { ids: [accessPolicyId] }
+    request.accessPolicies = { ids: [accessPolicyId] }
   }
 
-  return await tequilaApi.serviceStart(params)
+  return await tequilaApi.serviceStart(request)
 }
 
 export const stopService = async (service: Service): Promise<any> => {

@@ -1,6 +1,12 @@
 import { Dispatch, Store } from 'redux'
-import { getFirstAccessPolicy, getFirstIdentity, getOriginalLocation, startService, stopService } from './api'
-import { setAccessPolicyAction, setIdentityAction, setLocationAction, setStartedServiceAction } from './actions'
+import { getFirstAccessPolicy, getFirstIdentity, getOriginalLocation } from './api'
+import {
+  setAccessPolicyAction,
+  setIdentityAction,
+  setLocationAction,
+  startServiceAction,
+  stopServiceAction
+} from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
 import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
 
@@ -66,9 +72,7 @@ export const startVpnServerStory = async (
     : undefined
   const options: ServiceOptions = undefined
 
-  const promise = startService(providerId, type, accessPolicyId, options)
-
-  const service: Service = await dispatch(setStartedServiceAction(promise))
+  const service: Service = await dispatch(startServiceAction({ providerId, type, accessPolicyId, options }))
 
   console.log('startVpnServerStory:', service)
 
@@ -81,9 +85,7 @@ export const startVpnServerStory = async (
 export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
   if (!service) return
 
-  const promise = stopService(service)
-
-  await dispatch(setStartedServiceAction(promise))
+  await dispatch(stopServiceAction(service))
 
   return startAccessPolicyFetchingStory(dispatch)
 }
