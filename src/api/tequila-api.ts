@@ -5,6 +5,7 @@ import { ServiceParams } from './data/service-params'
 import { Service } from './data/service'
 import { NatStatus } from './data/nat-status'
 import { Identity, IdentityResponse } from './data/identity'
+import { IdentityPayout } from './data/identity-payout'
 
 export interface TequilaApiInterface {
 
@@ -14,11 +15,15 @@ export interface TequilaApiInterface {
 
   accessPolicies(): Promise<AccessPolicy[]>
 
+  services(timeout?: number): Promise<Service[]>
+
   serviceStart(params: ServiceParams, timeout?: number): Promise<Service>
 
   serviceStop(id: string): Promise<void>
 
   natStatus(): Promise<NatStatus>
+
+  identityPayout(id: string): Promise<IdentityPayout>
 
   updateIdentityPayout(id: string, ethAddress: string): Promise<void>
 
@@ -34,7 +39,7 @@ export class TequilaApi implements TequilaApiInterface {
   public async identities(): Promise<Identity[]> {
     const response = await this.http.get<IdentityResponse>('identities')
     if (!response) {
-      throw new Error('Access policies response body is missing')
+      throw new Error('Identity response body is missing')
     }
 
     return (response && response.identities) || []
@@ -60,6 +65,15 @@ export class TequilaApi implements TequilaApiInterface {
     return location
   }
 
+  public async services(): Promise<Service[]> {
+    const services = await this.http.get<Service[]>('services')
+    if (!services) {
+      throw new Error('Service response body is missing')
+    }
+
+    return services || []
+  }
+
   public async serviceStart(
     params: ServiceParams, timeout?: number): Promise<Service> {
     const { providerId, type, accessPolicies, options } = params
@@ -83,6 +97,14 @@ export class TequilaApi implements TequilaApiInterface {
 
   public async natStatus(): Promise<NatStatus> {
     return this.http.get<NatStatus>('nat/status')
+  }
+
+  public async identityPayout(id: string): Promise<IdentityPayout> {
+    const payout = await this.http.get(`identities/${id}/payout`)
+    if (!payout) {
+      throw new Error('Identity payout response body is missing')
+    }
+    return payout
   }
 
   public async updateIdentityPayout(id: string, ethAddress: string): Promise<void> {
