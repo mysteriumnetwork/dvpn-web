@@ -54,12 +54,14 @@ const styles = theme => ({
 })
 
 export interface IAppTextFieldProps {
+  disabled?: any
   error?: any
   label?: string
   placeholder?: string
   value?: string
   errorText?: string
   shrink?: any
+  className?: string
   onChange?: any
   name?: any
   classes: IStyles
@@ -67,7 +69,7 @@ export interface IAppTextFieldProps {
 }
 
 const AppTextField: React.SFC<IAppTextFieldProps> = (props: IAppTextFieldProps) => (
-  <FormControl className={props.classes.formControl}>
+  <FormControl className={`${props.classes.formControl} ${props.className||''}`}>
     <InputLabel
       shrink={props.shrink}
       htmlFor={`id-${props.name}`}
@@ -82,6 +84,7 @@ const AppTextField: React.SFC<IAppTextFieldProps> = (props: IAppTextFieldProps) 
       placeholder={props.placeholder}
       value={props.value}
       name={props.name}
+      disabled={props.disabled}
       classes={{
         root: props.classes.bootstrapRoot,
         input: props.classes.bootstrapInput,

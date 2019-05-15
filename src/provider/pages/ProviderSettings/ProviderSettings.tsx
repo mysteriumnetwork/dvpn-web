@@ -6,7 +6,7 @@ import AirdropWallet from './components/AirdropWallet/AirdropWallet'
 import { connect } from 'react-redux'
 import { ProviderReducer } from '../../reducer'
 import { DefaultProps } from '../../../types'
-import { setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
+import { setProviderStateAction, setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
 import { withStyles } from '@material-ui/core'
 import { startVpnServerStory, updateIdentitiesStory } from '../../stories'
 import { getFormValues } from 'redux-form/immutable'
@@ -66,6 +66,7 @@ const mapDispatchToProps = (dispatch) => ({
   onChangeResidentialConfirm: (value) => dispatch(setResidentialConfirmAction(value)),
   onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),
   onSaveWalletAddress: (value) => updateIdentitiesStory(dispatch, value),
+  onSetState: (value) => dispatch(setProviderStateAction(value))
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

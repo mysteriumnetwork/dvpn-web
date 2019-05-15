@@ -5,7 +5,7 @@ import {
   setAccessPolicyAction,
   setIdentityAction,
   setIdentityPayoutAction,
-  setLocationAction,
+  setLocationAction, setProviderStateAction,
   startServiceAction,
   stopServiceAction,
   unlocksIdentityAction,
@@ -110,5 +110,7 @@ export const updateIdentitiesStory = async (
   console.log('2',a)
   const d= await dispatch(updateIdentitiesAction({ id, ethAddress }))
   console.log('3',d)
+  const c= await dispatch(setProviderStateAction({ isWalletEditMode:false }))
+  console.log('4',c)
 }
 

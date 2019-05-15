@@ -5,6 +5,7 @@ import {
   IDENTITY_PAYOUT,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
+  SET_PROVIDER_STATE,
   STARTED_SERVICE,
   TRAFFIC_OPTION,
   UPDATE_IDENTITY
@@ -22,6 +23,7 @@ export interface ProviderReducer {
   trafficOption?: TrafficOptions
   residentialConfirm?: boolean,
   startedService?: any,
+  state?: any,
   startedServiceReject?: any,
   tartedServicePending?: boolean
 }
@@ -65,6 +67,14 @@ export default typeToReducer({
     accessPolicy: action.payload
   }),
 
+  [SET_PROVIDER_STATE]: (state, action: Action<AccessPolicy>) => ({
+    ...state,
+    state: {
+      ...state.state,
+      ...action.payload
+    }
+  }),
+
   [TRAFFIC_OPTION]: (state, action: Action<TrafficOptions>) => ({
     ...state,
     trafficOption: action.payload
@@ -96,5 +106,6 @@ export default typeToReducer({
 
 }, {
   trafficOption: TrafficOptions.SAFE,
-  residentialConfirm: false
+  residentialConfirm: false,
+  state: {}
 })

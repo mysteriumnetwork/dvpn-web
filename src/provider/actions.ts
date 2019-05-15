@@ -3,18 +3,20 @@ import {
   ACCESS_POLICIES,
   ACCESS_POLICY,
   IDENTITIES,
-  IDENTITY, IDENTITY_PAYOUT,
+  IDENTITY,
+  IDENTITY_PAYOUT,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
   STARTED_SERVICE,
   TRAFFIC_OPTION,
   UNLOKS_IDENTITY,
-  UPDATE_IDENTITY
+  UPDATE_IDENTITY,
+  SET_PROVIDER_STATE
 } from './constants'
+
 import {
   getCurrentIdentity,
   getCurrentService,
-  getFirstIdentity,
   getIdentityPayout,
   getOriginalLocation,
   startService,
@@ -23,6 +25,7 @@ import {
   unlocksIdentity,
   updateIdentity
 } from './api'
+
 import { Service } from '../api/data/service'
 
 export const setLocationAction = createAction(ORIGINAL_LOCATION, async () => await getOriginalLocation())
@@ -52,4 +55,6 @@ export const getServiceAction = createAction(STARTED_SERVICE, async () => await 
 export const setTrafficOptionAction = createAction(TRAFFIC_OPTION)
 
 export const setResidentialConfirmAction = createAction(RESIDENTIAL_CONFIRM)
+
+export const setProviderStateAction = createAction(SET_PROVIDER_STATE)
 

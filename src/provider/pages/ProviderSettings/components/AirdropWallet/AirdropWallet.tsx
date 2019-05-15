@@ -15,35 +15,40 @@ import { InjectedFormProps } from 'redux-form'
 
 const styles = require('./AirdropWallet.module.scss')
 
-type Props = InjectedFormProps &{
+type Props = InjectedFormProps & {
+  state: { isWalletEditMode: boolean }
   provider: ProviderReducer
   onChangeTrafficOption?: (value: string) => void
   formWalletAddressData?: Object
   onSaveWalletAddress?: (data: Object) => void
-}
-
-interface State {
-  isWalletEditMode: Boolean
+  onSetState?: (data: Object) => void
 }
 
 class AirdropWallet extends React.PureComponent<Props> {
-  state: Readonly<State> = {
-    isWalletEditMode: false
-  }
   handleTrafficChange = event => {
     const { onChangeTrafficOption } = this.props
     onChangeTrafficOption(event.target.value)
   }
 
   handleToggleWalletEditMode = () => {
-    const { isWalletEditMode } = this.state
-    this.setState({ isWalletEditMode: !isWalletEditMode })
+    const { provider, onSetState, initialize, reset } = this.props
+    const { isWalletEditMode } = provider.state
+    onSetState({ isWalletEditMode: !isWalletEditMode })
+    if (!isWalletEditMode) {
+      reset()
+      initialize({
+        ethAddress: '0xd3fe1c237a5ddbb86d27b3c2ff00885629176765'
+      })
+    }
   }
 
   handleWalletChange = () => {
     const { formWalletAddressData, provider, onSaveWalletAddress } = this.props
-    submit(this.props, () => onSaveWalletAddress({ ...formWalletAddressData, id: provider.identity.id ,passphrase:'test2'}))
-    this.handleToggleWalletEditMode()
+    submit(this.props, () => onSaveWalletAddress({
+      ...formWalletAddressData,
+      id: provider.identity.id,
+      passphrase: 'test2'
+    }))
   }
 
   get showTrafficOptions() {
@@ -54,9 +59,8 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 
   render() {
-    const { provider,error } = this.props
-    const { isWalletEditMode } = this.state
-    console.log(this.props)
+    const { provider, error, submitting } = this.props
+    const { isWalletEditMode } = provider.state
     return (
       <div>
         <div className={styles.flexedRow}>
@@ -65,11 +69,11 @@ class AirdropWallet extends React.PureComponent<Props> {
             {/* display saved Wallet */}
             {isWalletEditMode ? (
               <div className={styles.editableField}>
-                <TextField placeholder="0x..." name="ethAddress"/>
-                <IconButton color="primary">
-                  <SaveIcon fontSize="small" onClick={this.handleWalletChange}/>
+                <TextField placeholder="0x..." name="ethAddress" disabled={submitting} className={styles.editableTextField}/>
+                <IconButton color="primary" onClick={this.handleWalletChange} disabled={submitting}>
+                  <SaveIcon fontSize="small"/>
                 </IconButton>
-                <IconButton color="secondary" onClick={this.handleToggleWalletEditMode}>
+                <IconButton color="secondary" onClick={this.handleToggleWalletEditMode} disabled={submitting}>
                   <CancelIcon fontSize="small"/>
                 </IconButton>
               </div>
@@ -79,10 +83,8 @@ class AirdropWallet extends React.PureComponent<Props> {
                 <button onClick={this.handleToggleWalletEditMode}>{trans('app.provider.settings.change')}</button>
               </div>
             )}
-
-
             {/* TODO show error if wallet address invalid */}
-            {error && (
+            {isWalletEditMode && error && (
               <p className={styles.errorText}>{error}</p>
             )}
             {/*<p className={styles.errorText}>{trans('app.provider.settings.wallet.api-error.ts')}</p>*/}
