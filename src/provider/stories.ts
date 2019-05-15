@@ -1,4 +1,4 @@
-import { Dispatch, Store } from 'redux'
+import { AnyAction, Dispatch, Store } from 'redux'
 import { getCurrentAccessPolicy } from './api'
 import {
   getServiceAction,
@@ -13,23 +13,24 @@ import {
 } from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
 import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
-import { Identity } from '../api/data/identity'
 
 export const initProviderStory = (store: Store) => {
 
   Promise.all([
     fetchLocationStory(store.dispatch),
     fetchIdentityStory(store.dispatch),
-    fetchServiceStory(store.dispatch)
-  ]).catch(console.error)
+    fetchServiceStory(store.dispatch)]).
+    catch(console.error)
 
   startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
 }
 
 export const fetchIdentityStory = async (dispatch: Dispatch) => {
-  const identity = await dispatch(setIdentityAction()).payload
+  const { value: identity } = (await dispatch(setIdentityAction())) as AnyAction
 
-  await fetchIdentityPayoutStory(dispatch, identity)
+  console.log('fetchIdentityStory', identity)
+
+  if (identity) dispatch(setIdentityPayoutAction(identity))
 
   return identity
 }
@@ -37,9 +38,6 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 export const fetchLocationStory = async (dispatch: Dispatch) => dispatch(setLocationAction())
 
 export const fetchServiceStory = async (dispatch: Dispatch) => dispatch(getServiceAction())
-
-export const fetchIdentityPayoutStory = async (dispatch: Dispatch, identity: Identity) => dispatch(
-  setIdentityPayoutAction(identity))
 
 let _accessPolicyInterval
 
@@ -74,8 +72,7 @@ export const stopAccessPolicyFetchingStory = () => {
   clearInterval(_accessPolicyInterval)
 }
 
-export const startVpnServerStory = async (
-  dispatch: Dispatch, provider: ProviderReducer) => {
+export const startVpnServerStory = async (dispatch: Dispatch, provider: ProviderReducer) => {
   const providerId = provider.identity && provider.identity.id
   const type = ServiceTypes.OPENVPN ///TODO: tmp
   const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE && provider.accessPolicy)
