@@ -65,3 +65,13 @@ export const startService = async (
 export const stopService = async (service: Service): Promise<any> => {
   return service && await tequilaApi.serviceStop(service.id)
 }
+
+export const updateIdentity = async (data: { id: string, ethAddress: string }): Promise<void> => {
+  const { id, ethAddress } = data
+  await tequilaApi.updateIdentityPayout(id, ethAddress)
+}
+
+export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
+  const { id, passphrase } = data
+  await tequilaApi.unlocksIdentity(id, passphrase)
+}

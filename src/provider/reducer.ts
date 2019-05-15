@@ -1,15 +1,15 @@
-import typeToReducer from "type-to-reducer";
+import typeToReducer from 'type-to-reducer'
 import {
   ACCESS_POLICY,
   IDENTITY,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
   STARTED_SERVICE,
-  TRAFFIC_OPTION
+  TRAFFIC_OPTION, UPDATE_IDENTITY
 } from './constants'
-import { Action } from "redux-actions";
-import { OriginalLocation } from "../api/data/original-location";
-import { AccessPolicy } from "../api/data/access-policy";
+import { Action } from 'redux-actions'
+import { OriginalLocation } from '../api/data/original-location'
+import { AccessPolicy } from '../api/data/access-policy'
 import { Identity } from '../api/data/identity'
 
 export interface ProviderReducer {
@@ -24,20 +24,31 @@ export interface ProviderReducer {
 }
 
 export enum TrafficOptions {
-  SAFE = "safe",
-  ALL = "all"
+  SAFE = 'safe',
+  ALL = 'all'
 }
 
 export default typeToReducer({
-  [IDENTITY]: (state, action: Action<Identity>) => ({
-    ...state,
-    identity: action.payload
-  }),
+  [UPDATE_IDENTITY]: {
+    FULFILLED: (state, action: Action<Identity>) => ({
+      ...state,
+      identity: action.payload
+    })
+  },
 
-  [ORIGINAL_LOCATION]: (state, action: Action<OriginalLocation>) => ({
-    ...state,
-    originalLocation: action.payload
-  }),
+  [ORIGINAL_LOCATION]: {
+    FULFILLED: (state, action: Action<OriginalLocation>) => ({
+      ...state,
+      originalLocation: action.payload
+    })
+  },
+
+  [IDENTITY]: {
+    FULFILLED: (state, action: Action<Identity>) => ({
+      ...state,
+      identity: action.payload
+    })
+  },
 
   [ACCESS_POLICY]: (state, action: Action<AccessPolicy>) => ({
     ...state,
@@ -76,4 +87,4 @@ export default typeToReducer({
 }, {
   trafficOption: TrafficOptions.SAFE,
   residentialConfirm: false
-});
+})

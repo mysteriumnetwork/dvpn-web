@@ -21,6 +21,8 @@ export interface TequilaApiInterface {
   natStatus(): Promise<NatStatus>
 
   updateIdentityPayout(id: string, ethAddress: string): Promise<void>
+
+  unlocksIdentity(id: string, passphrase: string): Promise<void>
 }
 
 export class TequilaApi implements TequilaApiInterface {
@@ -80,12 +82,15 @@ export class TequilaApi implements TequilaApiInterface {
   }
 
   public async natStatus(): Promise<NatStatus> {
-    return await this.http.get<NatStatus>('nat/status')
+    return this.http.get<NatStatus>('nat/status')
   }
 
-  public async updateIdentityPayout(
-    id: string, ethAddress: string): Promise<void> {
+  public async updateIdentityPayout(id: string, ethAddress: string): Promise<void> {
     await this.http.put(`identities/${id}/payout`, { ethAddress })
+  }
+
+  public async unlocksIdentity(id: string, passphrase: string): Promise<void> {
+    await this.http.put(`identities/${id}/unlock`, { passphrase })
   }
 
 }

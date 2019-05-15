@@ -4,6 +4,10 @@ export const IDENTITIES = 'provider/IDENTITIES'
 
 export const IDENTITY = 'provider/IDENTITY'
 
+export const UPDATE_IDENTITY = 'provider/UPDATE_IDENTITY'
+
+export const UNLOKS_IDENTITY = 'provider/UNLOKS_IDENTITY'
+
 export const ACCESS_POLICIES = 'provider/ACCESS_POLICIES'
 
 export const ACCESS_POLICY = 'provider/ACCESS_POLICY'

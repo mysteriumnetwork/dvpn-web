@@ -1,21 +1,15 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
-import { NAV_PROVIDER_DASHBOARD } from '../../provider.links'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
-import ConnectionInformation
-  from './components/ConnectionInformation/ConnectionInformation'
+import ConnectionInformation from './components/ConnectionInformation/ConnectionInformation'
 import AirdropWallet from './components/AirdropWallet/AirdropWallet'
 import { connect } from 'react-redux'
 import { ProviderReducer } from '../../reducer'
 import { DefaultProps } from '../../../types'
-import {
-  setResidentialConfirmAction,
-  setTrafficOptionAction
-} from '../../actions'
+import { setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
 import { withStyles } from '@material-ui/core'
-import { startVpnServerStory } from '../../stories'
-import { getFormValues } from 'redux-form'
+import { startVpnServerStory, updateIdentitiesStory } from '../../stories'
+import { getFormValues } from 'redux-form/immutable'
 import { compose } from 'redux'
 import immutableProps from '../../../hocs/immutableProps'
 
@@ -23,16 +17,16 @@ const styles = require('./ProviderSettings.module.scss')
 
 type Props = DefaultProps & {
   provider: ProviderReducer
-
+  formWalletAddressData?: Object
+  onSaveWalletAddress?: (data: Object) => void
   onChangeTrafficOption: (value: string) => void
   onChangeResidentialConfirm: (value: boolean) => void
   onStartVpnServer: (provider: ProviderReducer) => void
 }
 
 const ProviderSettings = (props: Props) => {
-  const { provider, onChangeTrafficOption, onChangeResidentialConfirm, onStartVpnServer } = props
+  const { provider, onChangeResidentialConfirm, onStartVpnServer } = props
   const id = (provider && provider.identity && provider.identity.id) || ''
-
   return (
     <div className={styles.appProviderSettingsCover}>
       <div className={styles.scrollView}>
@@ -44,12 +38,11 @@ const ProviderSettings = (props: Props) => {
               <div title={id}>{id.substr(2)}</div>
             </div>
             {/* render dynamic Airdrop Wallet */}
-            <AirdropWallet provider={provider}
-                           onChangeTrafficOption={onChangeTrafficOption} />
+            <AirdropWallet {...props}/>
           </div>
           {/* ExpansionPanel component with connection information */}
           <ConnectionInformation provider={provider}
-                                 onChangeResidentialConfirm={onChangeResidentialConfirm} />
+                                 onChangeResidentialConfirm={onChangeResidentialConfirm}/>
         </div>
       </div>
       <div className={styles.bottomBar}>
@@ -70,9 +63,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeTrafficOption: (value) => dispatch(setTrafficOptionAction(value)),
-  onChangeResidentialConfirm: (value) => dispatch(
-  setResidentialConfirmAction(value)),
-  onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider)
+  onChangeResidentialConfirm: (value) => dispatch(setResidentialConfirmAction(value)),
+  onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),
+  onSaveWalletAddress: (value) => updateIdentitiesStory(dispatch, value),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

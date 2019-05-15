@@ -64,7 +64,7 @@ class AirdropWallet extends React.PureComponent<Props> {
             {/* display saved Wallet */}
             {isWalletEditMode ? (
               <div className={styles.editableField}>
-                <TextField placeholder="0x..." name="airdropWallet"/>
+                <TextField placeholder="0x..." name="ethAddress"/>
                 <IconButton color="primary">
                   <SaveIcon fontSize="small" onClick={this.handleWalletChange}/>
                 </IconButton>

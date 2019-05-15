@@ -1,16 +1,12 @@
 import { Dispatch, Store } from 'redux'
-import {
-  getFirstAccessPolicy,
-  getFirstIdentity,
-  getOriginalLocation,
-  startService,
-  stopService
-} from './api'
+import { getFirstAccessPolicy, startService, stopService } from './api'
 import {
   setAccessPolicyAction,
   setIdentityAction,
   setLocationAction,
-  setStartedServiceAction
+  setStartedServiceAction,
+  unlocksIdentityAction,
+  updateIdentitiesAction
 } from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
 import { Service, ServiceOptions } from '../api/data/service'
@@ -25,15 +21,9 @@ export const initProviderStory = (store: Store) => {
   startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
 }
 
-export const fetchIdentityStory = async (dispatch: Dispatch) => {
-  const identity = await getFirstIdentity()
-  dispatch(setIdentityAction(identity))
-}
+export const fetchIdentityStory = async (dispatch: Dispatch) => dispatch(setIdentityAction())
 
-export const fetchLocationStory = async (dispatch: Dispatch) => {
-  const location = await getOriginalLocation()
-  dispatch(setLocationAction(location))
-}
+export const fetchLocationStory = async (dispatch: Dispatch) => dispatch(setLocationAction())
 
 let _accessPolicyInterval
 
@@ -94,3 +84,10 @@ export const stopVpnServerStory = async (
   await dispatch(setStartedServiceAction(promise))
 
 }
+
+export const updateIdentitiesStory = async (dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
+  const { id, passphrase, ethAddress } = data
+  await dispatch(unlocksIdentityAction({ id, passphrase }))
+  await dispatch(updateIdentitiesAction({ id, ethAddress }))
+}
+
