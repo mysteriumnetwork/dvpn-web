@@ -34,7 +34,7 @@ const ConnectionInformation = (props: Props) => {
                 <span className={styles.textBold}>{originalLocation && originalLocation.ip}</span>
                 {originalLocation && originalLocation.country}
               </p>
-              <a href="javascript:void(0)">{trans('app.provider.settings.connection.info.change')}</a>
+              <button>{trans('app.provider.settings.connection.info.change')}</button>
             </div>
           </div>
           {isResidential ? (
