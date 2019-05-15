@@ -1,8 +1,10 @@
 import { Dispatch, Store } from 'redux'
-import { getFirstAccessPolicy } from './api'
+import { getCurrentAccessPolicy } from './api'
 import {
+  getServiceAction,
   setAccessPolicyAction,
   setIdentityAction,
+  setIdentityPayoutAction,
   setLocationAction,
   startServiceAction,
   stopServiceAction,
@@ -11,20 +13,33 @@ import {
 } from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
 import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
+import { Identity } from '../api/data/identity'
 
 export const initProviderStory = (store: Store) => {
 
   Promise.all([
     fetchLocationStory(store.dispatch),
-    fetchIdentityStory(store.dispatch)
+    fetchIdentityStory(store.dispatch),
+    fetchServiceStory(store.dispatch)
   ]).catch(console.error)
 
   startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
 }
 
-export const fetchIdentityStory = async (dispatch: Dispatch) => dispatch(setIdentityAction())
+export const fetchIdentityStory = async (dispatch: Dispatch) => {
+  const identity = await dispatch(setIdentityAction()).payload
+
+  await fetchIdentityPayoutStory(dispatch, identity)
+
+  return identity
+}
 
 export const fetchLocationStory = async (dispatch: Dispatch) => dispatch(setLocationAction())
+
+export const fetchServiceStory = async (dispatch: Dispatch) => dispatch(getServiceAction())
+
+export const fetchIdentityPayoutStory = async (dispatch: Dispatch, identity: Identity) => dispatch(
+  setIdentityPayoutAction(identity))
 
 let _accessPolicyInterval
 
@@ -34,7 +49,7 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
   const ALLOWED_FAILS = 10000
 
   const fetch = async () => {
-    const accessPolicy = await getFirstAccessPolicy()
+    const accessPolicy = await getCurrentAccessPolicy()
     if (accessPolicy) {
       failedCount = 0
       dispatch(setAccessPolicyAction(accessPolicy))
@@ -86,7 +101,8 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
   return startAccessPolicyFetchingStory(dispatch)
 }
 
-export const updateIdentitiesStory = async (dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
+export const updateIdentitiesStory = async (
+  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
   const { id, passphrase, ethAddress } = data
   await dispatch(unlocksIdentityAction({ id, passphrase }))
   await dispatch(updateIdentitiesAction({ id, ethAddress }))

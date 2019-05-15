@@ -2,15 +2,18 @@ import typeToReducer from 'type-to-reducer'
 import {
   ACCESS_POLICY,
   IDENTITY,
+  IDENTITY_PAYOUT,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
   STARTED_SERVICE,
-  TRAFFIC_OPTION, UPDATE_IDENTITY
+  TRAFFIC_OPTION,
+  UPDATE_IDENTITY
 } from './constants'
 import { Action } from 'redux-actions'
 import { OriginalLocation } from '../api/data/original-location'
 import { AccessPolicy } from '../api/data/access-policy'
 import { Identity } from '../api/data/identity'
+import { IdentityPayout } from '../api/data/identity-payout'
 
 export interface ProviderReducer {
   identity?: Identity,
@@ -47,6 +50,13 @@ export default typeToReducer({
     FULFILLED: (state, action: Action<Identity>) => ({
       ...state,
       identity: action.payload
+    })
+  },
+
+  [IDENTITY_PAYOUT]: {
+    FULFILLED: (state, action: Action<IdentityPayout>) => ({
+      ...state,
+      payout: action.payload
     })
   },
 
