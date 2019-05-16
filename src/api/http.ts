@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ApiError } from './api-error'
 
 export const HTTP_API_URL = process.env.REACT_APP_HTTP_API_URL
@@ -28,12 +28,8 @@ export class HttpAdapter implements HttpAdapterInterface {
 
   private http: AxiosInstance
 
-  constructor() {
-    this.http = axios.create({
-      baseURL: HTTP_API_URL,
-      timeout: HTTP_TIMEOUT_DEFAULT,
-      headers: { 'Cache-Control': 'no-cache, no-store' }
-    })
+  constructor(config : AxiosRequestConfig) {
+    this.http = axios.create(config)
   }
 
   private async decodeResponse<T>(promise: Promise<AxiosResponse>): Promise<T> {

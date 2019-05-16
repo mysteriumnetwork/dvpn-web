@@ -3,7 +3,10 @@ import thunk from 'redux-thunk'
 import { createHashHistory } from 'history'
 import { routerMiddleware, routerActions } from 'connected-react-router'
 import { createLogger } from 'redux-logger'
+import promiseMiddleware from 'redux-promise-middleware'
+// import { reducer as reduxFormReducer } from 'redux-form/immutable';
 import createRootReducer from '../rootReducer'
+
 
 const history = createHashHistory()
 
@@ -16,6 +19,10 @@ const configureStore = (initialState?: any) => {
 
   // Thunk Middleware
   middleware.push(thunk)
+  middleware.push(promiseMiddleware)
+
+  // Redux Form Middleware
+  // middleware.push(reduxFormReducer)
 
   // Logging Middleware
   const logger = createLogger({

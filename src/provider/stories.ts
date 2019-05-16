@@ -1,33 +1,93 @@
-import { Dispatch, Store } from 'redux'
-import { getFirstAccessPolicy, getFirstIdentity, getOriginalLocation } from './api'
+import { AnyAction, Dispatch, Store } from 'redux'
+import { getCurrentAccessPolicy, getNatStatus, getServiceSessions } from './api'
 import {
+  getIdentityPayoutAction,
+  getServiceAction,
   setAccessPolicyAction,
   setIdentityAction,
   setLocationAction,
+  setNatStatusAction,
+  setProviderStateAction,
+  setServiceSessionAction,
   startServiceAction,
-  stopServiceAction
+  stopServiceAction,
+  unlocksIdentityAction,
+  updateIdentitiesAction
 } from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
 import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
+import { Identity } from '../api/data/identity'
+import { push } from 'connected-react-router'
+import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
+import { ApiError } from '../api/api-error'
+import apiSubmissionError from '../utils/apiSubmissionError'
+import _ from 'lodash'
 
 export const initProviderStory = (store: Store) => {
 
   Promise.all([
     fetchLocationStory(store.dispatch),
-    fetchIdentityStory(store.dispatch)
+    fetchIdentityStory(store.dispatch),
+    startServiceFetchingStory(store)
   ]).catch(console.error)
-
-  startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
 }
+
+export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({
+  generalError: e.message
+}))
 
 export const fetchIdentityStory = async (dispatch: Dispatch) => {
-  const identity = await getFirstIdentity()
-  dispatch(setIdentityAction(identity))
+  const result: AnyAction = await dispatch(setIdentityAction())
+  const identity: Identity = result.value
+
+  if (identity) {
+    Promise.resolve(dispatch(unlocksIdentityAction({
+      id: identity.id
+      // passphrase: '123'
+    }))).catch((e: ApiError) => setGeneralError(dispatch, e))
+  }
+
+  Promise.resolve(dispatch(getIdentityPayoutAction(identity))).catch((e: ApiError) => {
+    if (!e.isNotFound) {
+      setGeneralError(dispatch, e)
+    }
+  })
+
+  return identity
 }
 
-export const fetchLocationStory = async (dispatch: Dispatch) => {
-  const location = await getOriginalLocation()
-  dispatch(setLocationAction(location))
+export const fetchLocationStory = async (dispatch: Dispatch) => dispatch(setLocationAction())
+
+export const fetchServiceStory = async (dispatch: Dispatch) => dispatch(getServiceAction())
+
+let _serviceInterval
+
+export const startServiceFetchingStory = async (store: Store) => {
+
+  const fetch = async () => {
+    const prevService: Service = _.get(store.getState(), 'provider.startedService')
+
+    const service: Service = await fetchServiceStory(store.dispatch)
+      .then((result: any) => result && result.value)
+      .catch(console.error)
+
+    if (String(prevService && prevService.id) !== String(service && service.id)) {
+      return (service && service.id)
+        ? onServiceStarted(store.dispatch, service).catch(console.error)
+        : onServiceStopped(store.dispatch).catch(console.error)
+    }
+  }
+
+  fetch().catch(console.error)
+
+  if (!_serviceInterval) {
+    _serviceInterval = setInterval(fetch, 5000)
+  }
+}
+
+export const stopSrviceFetchingStory = async () => {
+  clearInterval(_serviceInterval)
+  _serviceInterval = null
 }
 
 let _accessPolicyInterval
@@ -38,7 +98,7 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
   const ALLOWED_FAILS = 10000
 
   const fetch = async () => {
-    const accessPolicy = await getFirstAccessPolicy()
+    const accessPolicy = await getCurrentAccessPolicy()
     if (accessPolicy) {
       failedCount = 0
       dispatch(setAccessPolicyAction(accessPolicy))
@@ -61,10 +121,10 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
 
 export const stopAccessPolicyFetchingStory = () => {
   clearInterval(_accessPolicyInterval)
+  _accessPolicyInterval = null
 }
 
-export const startVpnServerStory = async (
-  dispatch: Dispatch, provider: ProviderReducer) => {
+export const startVpnServerStory = async (dispatch: Dispatch, provider: ProviderReducer) => {
   const providerId = provider.identity && provider.identity.id
   const type = ServiceTypes.OPENVPN ///TODO: tmp
   const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE && provider.accessPolicy)
@@ -72,20 +132,72 @@ export const startVpnServerStory = async (
     : undefined
   const options: ServiceOptions = undefined
 
-  const service: Service = await dispatch(startServiceAction({ providerId, type, accessPolicyId, options }))
-
-  console.log('startVpnServerStory:', service)
+  const service: Service = await Promise
+    .resolve(dispatch(startServiceAction({ providerId, type, accessPolicyId, options })))
+    .then((result: any) => result && result.value)
+    .catch(error => {
+      setGeneralError(dispatch, error)
+      return null
+    })
 
   if (service && service.id) {
-    stopAccessPolicyFetchingStory()
+    dispatch(push(NAV_PROVIDER_DASHBOARD))
+    onServiceStarted(dispatch, service).catch(console.error)
   }
-
 }
+
+const onServiceStarted = (dispatch: Dispatch, service: Service) => Promise.all([
+  startVpnStateFetchingStory(dispatch, service).catch(console.error),
+  stopAccessPolicyFetchingStory()
+]).then(() => service)
+
+const onServiceStopped = async (dispatch: Dispatch) => Promise.all([
+  stopVpnStateFetchingStory(dispatch),
+  startAccessPolicyFetchingStory(dispatch).catch(console.error)
+]).then(() => null)
 
 export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
-  if (!service) return
+  if (!service) {
+    return
+  }
 
-  await dispatch(stopServiceAction(service))
+  await Promise.resolve(dispatch(stopServiceAction(service))).catch(console.error)
 
-  return startAccessPolicyFetchingStory(dispatch)
+  dispatch(push(NAV_PROVIDER_SETTINGS))
+  onServiceStopped(dispatch).catch(console.error)
 }
+
+let _VpnStateInterval
+
+export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Service) => {
+  const fetch = async () => Promise.all([
+    dispatch(setNatStatusAction(await getNatStatus())),
+    dispatch(setServiceSessionAction(await getServiceSessions(service)))
+  ])
+
+  fetch().catch(console.error)
+
+  if (!_VpnStateInterval) {
+    _VpnStateInterval = setInterval(fetch, 3000)
+  }
+}
+
+export const stopVpnStateFetchingStory = (dispatch) => {
+  clearInterval(_VpnStateInterval)
+  dispatch(setNatStatusAction(null))
+  dispatch(setServiceSessionAction(null))
+  _VpnStateInterval = null
+}
+
+export const updateIdentitiesStory = async (
+  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
+  const { id, passphrase, ethAddress } = data
+  try {
+    await dispatch(unlocksIdentityAction({ id, passphrase }))
+    await dispatch(updateIdentitiesAction({ id, ethAddress }))
+    await dispatch(setProviderStateAction({ isWalletEditMode: false }))
+  } catch (e) {
+    apiSubmissionError('walletAddress')(e)
+  }
+}
+

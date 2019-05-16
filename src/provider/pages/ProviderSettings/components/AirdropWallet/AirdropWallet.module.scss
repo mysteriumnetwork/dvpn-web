@@ -1,7 +1,8 @@
 @import '../../../../../constatnts';
 
-.flexedRow {
+.flexed_row {
   display: flex;
+  align-items: flex-start;
   font-size: $buttonText;
   margin-bottom: 14px;
   p {
@@ -18,13 +19,13 @@
     padding: 4px 12px;
     border-radius: 4px;
   }
-  svg {
-    height: 16px;
-    width: 16px;
-    path {
-      opacity: 0;
-    }
-  }
+  //svg {
+  //  height: 16px;
+  //  width: 16px;
+  //  path {
+  //    //opacity: 0;
+  //  }
+  //}
   .helperText {
     margin-top: 8px;
     font-size: $tableHeadFont;
@@ -34,7 +35,7 @@
     margin-top: 8px;
     font-size: $tableHeadFont;
     color: $warningRed;
-    display: none;
+    word-break: break-word;
   }
 }
 .radioForm {
@@ -50,15 +51,39 @@
   }
 }
 .savedWallet {
-  display: none;
+  display: flex;
+  align-items: flex-start;
+  height:34px;
   p {
     color: $textMain;
     font-family: 'mplus-1m', sans-serif;
   }
-  a {
+  button {
     display: block;
-    margin-top: 6px;
     color: $darkPurple;
     font-size: $tableHeadFont;
   }
+}
+.editableField{
+  margin-top: -5px;
+  margin-left: -12px;
+  display: flex;
+  height:39px;
+  align-items: flex-start;
+  button {
+    margin-top: -4px;
+    padding: 6px!important;
+  }
+}
+.editableTextField{
+  min-width: 372px!important;
+}
+.flexCenter{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.buttons{
+  position: absolute;
+  margin-left: 376px;
 }

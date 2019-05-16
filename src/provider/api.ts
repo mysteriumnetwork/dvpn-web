@@ -4,8 +4,11 @@ import { OriginalLocation } from '../api/data/original-location'
 import { Identity } from '../api/data/identity'
 import { Service, ServiceOptions } from '../api/data/service'
 import { ServiceParams } from '../api/data/service-params'
+import { IdentityPayout } from '../api/data/identity-payout'
+import { NatStatus } from '../api/data/nat-status'
+import { ServiceSession } from '../api/data/service-session'
 
-export const getFirstAccessPolicy = async (): Promise<AccessPolicy | null> => {
+export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
     const accessPolicies = await tequilaApi.accessPolicies()
 
@@ -19,12 +22,12 @@ export const getFirstAccessPolicy = async (): Promise<AccessPolicy | null> => {
   return null
 }
 
-export const getFirstIdentity = async (): Promise<Identity | null> => {
+export const getCurrentIdentity = async (): Promise<Identity | null> => {
   try {
     const identities = await tequilaApi.identities()
 
     if (identities && identities.length > 0) {
-      return identities[0]
+      return identities.pop()
     }
   } catch (e) {
     console.error('Failed fetching first identity', e)
@@ -43,6 +46,16 @@ export const getOriginalLocation = async (): Promise<OriginalLocation | null> =>
   return null
 }
 
+export const getNatStatus = async (): Promise<NatStatus | null> => {
+  try {
+    return await tequilaApi.natStatus()
+  } catch (e) {
+    console.error('Failed fetching NatStatus', e)
+  }
+
+  return null
+}
+
 export interface StartServiceInterface {
   providerId: string,
   type: string,
@@ -51,7 +64,7 @@ export interface StartServiceInterface {
 }
 
 export const startService = async (data: StartServiceInterface): Promise<Service> => {
-  const {providerId, type, options, accessPolicyId} = data
+  const { providerId, type, options, accessPolicyId } = data
 
   const request: ServiceParams = {
     providerId,
@@ -69,3 +82,38 @@ export const startService = async (data: StartServiceInterface): Promise<Service
 export const stopService = async (service: Service): Promise<any> => {
   return service && await tequilaApi.serviceStop(service.id)
 }
+
+export const getServiceSessions = async (service: Service): Promise<ServiceSession[]> => {
+  return service && await tequilaApi.serviceSessions(service.id)
+}
+
+export const getCurrentService = async (): Promise<Service | null> => {
+  try {
+    const services = await tequilaApi.services()
+
+    if (services && services.length > 0) {
+      return services[0]
+    }
+  } catch (e) {
+    console.error('Failed fetching first access policy', e)
+  }
+
+  return null
+}
+
+export const getIdentityPayout = async (identity: Identity): Promise<IdentityPayout> => {
+  if (!(identity && identity.id)) return
+
+  return await tequilaApi.identityPayout(identity.id)
+}
+
+export const updateIdentity = async (data: { id: string, ethAddress: string }): Promise<void> => {
+  const { id, ethAddress } = data
+  await tequilaApi.updateIdentityPayout(id, ethAddress)
+}
+
+export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
+  const { id, passphrase = '' } = data
+  await tequilaApi.unlocksIdentity(id, passphrase)
+}
+

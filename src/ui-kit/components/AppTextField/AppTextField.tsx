@@ -50,24 +50,29 @@ const styles = theme => ({
   },
   errorStyle: {
     color: theme.colors.whiteColor,
+    marginTop: 3,
+    fontSize:'0.75rem!important',
+    marginLeft: 12
   },
 })
 
 export interface IAppTextFieldProps {
+  disabled?: any
   error?: any
   label?: string
   placeholder?: string
   value?: string
   errorText?: string
   shrink?: any
+  className?: string
   onChange?: any
   name?: any
   classes: IStyles
   style?: React.CSSProperties
 }
 
-const AppTextField: React.SFC<IAppTextFieldProps> = (props: IAppTextFieldProps) => (
-  <FormControl className={props.classes.formControl}>
+const AppTextField = (props: IAppTextFieldProps) => (
+  <FormControl className={`${props.classes.formControl} ${props.className||''}`}>
     <InputLabel
       shrink={props.shrink}
       htmlFor={`id-${props.name}`}
@@ -82,6 +87,7 @@ const AppTextField: React.SFC<IAppTextFieldProps> = (props: IAppTextFieldProps) 
       placeholder={props.placeholder}
       value={props.value}
       name={props.name}
+      disabled={props.disabled}
       classes={{
         root: props.classes.bootstrapRoot,
         input: props.classes.bootstrapInput,
@@ -91,8 +97,8 @@ const AppTextField: React.SFC<IAppTextFieldProps> = (props: IAppTextFieldProps) 
       disableUnderline
     />
     {props.error ? (
-      <FormHelperText className={props.classes.errorStyle} id={`${props.name}-field`}>
-        {props.errorText}
+      <FormHelperText error className={props.classes.errorStyle} id={`${props.name}-field`}>
+        {props.error}
       </FormHelperText>
     ) : (
       <FormHelperTextSpace />

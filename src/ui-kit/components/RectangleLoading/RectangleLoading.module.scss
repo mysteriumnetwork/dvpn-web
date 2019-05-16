@@ -1,0 +1,27 @@
+@import '../../../constatnts';
+
+.loadingBlock {
+  opacity: 0.5;
+  animation-name: animation-background-gray;
+  animation-duration: 2500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes animation-background-gray {
+  0% {
+    background-color: $whiteColor
+  }
+  25% {
+    background-color: $textLightGrey
+  }
+  50% {
+    background-color: $borderColor
+  }
+  75% {
+    background-color: $textLightGrey
+  }
+  100% {
+    background-color:$whiteColor
+  }
+}

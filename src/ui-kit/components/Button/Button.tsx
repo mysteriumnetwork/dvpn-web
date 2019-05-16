@@ -53,11 +53,11 @@ const styles = (theme: any) => ({
 })
 
 export interface IButtonProps {
-  children: any
+  children?: any
   color?: any
   onClick?: any
   fullWidth?: boolean
-  classes: IStyles
+  classes?: IStyles
   style?: React.CSSProperties,
   variant?: any,
   disabled?: boolean,
