@@ -71,7 +71,7 @@ class ProviderSettings extends React.PureComponent<Props> {
       <div className={styles.bottomBar}>
         <Button onClick={this.handleStartVpnServer}
                 color="primary"
-                disabled={!id || provider.startedServicePending}>
+                disabled={!id || provider.startedServicePending || !provider.residentialConfirm}>
           {trans('app.provider.settings.start.vpn')}
         </Button>
       </div>

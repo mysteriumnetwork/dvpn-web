@@ -16,13 +16,13 @@ type Props = {
 
 const ConnectionInformation = (props: Props) => {
   const { provider, onChangeResidentialConfirm } = props
-  const { originalLocation } = provider
+  const { originalLocation, residentialConfirm } = provider
   const isResidential = originalLocation && originalLocation.node_type === 'residential'
   const isDataCenter = originalLocation && originalLocation.node_type === 'data center'
 
   return (
     <div>
-      <ExpansionPanel>
+      <ExpansionPanel defaultExpanded={!residentialConfirm}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <p className={styles.appConnectionTitle}>{trans('app.provider.settings.your.connection.info')}</p>
         </ExpansionPanelSummary>

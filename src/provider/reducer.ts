@@ -24,9 +24,8 @@ import { ServiceSession } from '../api/data/service-session'
 
 export interface ProviderReducer {
   identity?: Identity,
-  payout?: {
-    ethAddress?: string,
-    loading?: boolean,
+  payout?: IdentityPayout & {
+    loading?: boolean
   },
   originalLocation?: OriginalLocation,
   accessPolicy?: AccessPolicy,
@@ -42,6 +41,12 @@ export interface ProviderReducer {
 export enum TrafficOptions {
   SAFE = 'safe',
   ALL = 'all'
+}
+
+export const providerInitState = {
+  trafficOption: TrafficOptions.SAFE,
+  residentialConfirm: false,
+  state: {}
 }
 
 export default typeToReducer({
@@ -141,8 +146,4 @@ export default typeToReducer({
     })
   }
 
-}, {
-  trafficOption: TrafficOptions.SAFE,
-  residentialConfirm: false,
-  state: {}
-})
+}, providerInitState)
