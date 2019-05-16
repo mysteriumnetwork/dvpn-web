@@ -23,7 +23,6 @@ type Props = DefaultProps & {
 }
 
 class ProviderDashboard extends React.PureComponent<Props> {
-
   get service(): Service {
     return (this.props.provider && this.props.provider.startedService) || {}
   }
@@ -40,9 +39,7 @@ class ProviderDashboard extends React.PureComponent<Props> {
     if (!(provider.startedService && provider.startedService.id)) {
       return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
     }
-
     const sessions = Number(provider.sessions && provider.sessions.length)
-
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
         <h4>
