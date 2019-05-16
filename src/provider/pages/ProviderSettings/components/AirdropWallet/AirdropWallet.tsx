@@ -15,8 +15,7 @@ import IconButton from '@material-ui/core/IconButton'
 import { submit } from '../../../../../utils/reduxForm'
 import { InjectedFormProps } from 'redux-form'
 import validate from './validate'
-
-const styles = require('./AirdropWallet.module.scss')
+import styles from  "./AirdropWallet.module.scss"
 
 type Props = InjectedFormProps & {
   state: { isWalletEditMode: boolean }
@@ -66,7 +65,7 @@ class AirdropWallet extends React.PureComponent<Props> {
     const isWalletEditMode = _.get(provider, 'state.isWalletEditMode')
     return (
       <div>
-        <div className={styles.flexedRow}>
+        <div className={styles.flexed_row}>
           <p>{trans('app.provider.settings.wallet')}</p>
 
           <div>
@@ -131,7 +130,7 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 }
 
-export default injectSheet(styles)(compose(
+export default injectSheet({})(compose(
   reduxForm({
     form: 'walletAddress',
     validate
