@@ -166,8 +166,8 @@ let _VpnStateInterval
 
 export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Service) => {
   const fetch = async () => Promise.all([
-    dispatch(setNatStatusAction(await getNatStatus())),
-    dispatch(setServiceSessionAction(await getServiceSessions(service)))
+    dispatch(setNatStatusAction(await getNatStatus().catch(() => null))),
+    dispatch(setServiceSessionAction(await getServiceSessions(service).catch(() => null)))
   ]).catch(console.error)
 
   fetch().catch(console.error)
