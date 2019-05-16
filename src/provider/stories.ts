@@ -112,7 +112,6 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
 export const updateIdentitiesStory = async (
   dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
   const { id, passphrase, ethAddress } = data
-  console.log({ id, passphrase, ethAddress })
   await dispatch(unlocksIdentityAction({ id, passphrase }))
   await dispatch(updateIdentitiesAction({ id, ethAddress }))
   await dispatch(setProviderStateAction({ isWalletEditMode: false }))
