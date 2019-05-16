@@ -9,12 +9,15 @@ import { IdentityPayout } from './data/identity-payout'
 import { ServiceSession, ServiceSessionResponse } from './data/service-session'
 
 export interface TequilaApiInterface {
-
-  identities(): Promise<Identity[]>
+  //location
 
   location(timeout?: number): Promise<OriginalLocation>
 
+  //access policies
+
   accessPolicies(): Promise<AccessPolicy[]>
+
+  //service
 
   services(timeout?: number): Promise<Service[]>
 
@@ -26,6 +29,12 @@ export interface TequilaApiInterface {
 
   natStatus(): Promise<NatStatus>
 
+  //identity
+
+  me(passphrase: string): Promise<Identity>
+
+  identities(): Promise<Identity[]>
+
   identityPayout(id: string): Promise<IdentityPayout>
 
   updateIdentityPayout(id: string, ethAddress: string): Promise<void>
@@ -34,9 +43,18 @@ export interface TequilaApiInterface {
 }
 
 export class TequilaApi implements TequilaApiInterface {
-
   constructor(protected http: HttpAdapter) {
 
+  }
+
+  public async me(passphrase: string): Promise<Identity> {
+    const identity = await this.http.put<Identity>('me', { passphrase })
+
+    if (!identity) {
+      throw new Error('Identity response body is missing')
+    }
+
+    return identity
   }
 
   public async identities(): Promise<Identity[]> {

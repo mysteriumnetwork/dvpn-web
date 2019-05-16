@@ -22,13 +22,9 @@ export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => 
   return null
 }
 
-export const getCurrentIdentity = async (): Promise<Identity | null> => {
+export const getCurrentIdentity = async (passphrase: string = ''): Promise<Identity | null> => {
   try {
-    const identities = await tequilaApi.identities()
-
-    if (identities && identities.length > 0) {
-      return identities.pop()
-    }
+    return await tequilaApi.me(passphrase)
   } catch (e) {
     console.error('Failed fetching first identity', e)
   }
@@ -102,17 +98,19 @@ export const getCurrentService = async (): Promise<Service | null> => {
 }
 
 export const getIdentityPayout = async (identity: Identity): Promise<IdentityPayout> => {
-  if (!(identity && identity.id)) return
+  if (!(identity && identity.id)) {
+    return
+  }
 
   return await tequilaApi.identityPayout(identity.id)
 }
 
-export const updateIdentity = async (data: { id: string, ethAddress: string }): Promise<void> => {
+export const updateIdentity = async (data: {id: string, ethAddress: string}): Promise<void> => {
   const { id, ethAddress } = data
   await tequilaApi.updateIdentityPayout(id, ethAddress)
 }
 
-export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
+export const unlocksIdentity = async (data: {id: string, passphrase: string}): Promise<void> => {
   const { id, passphrase = '' } = data
   await tequilaApi.unlocksIdentity(id, passphrase)
 }

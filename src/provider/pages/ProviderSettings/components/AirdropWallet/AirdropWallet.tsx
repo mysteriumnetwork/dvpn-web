@@ -65,7 +65,7 @@ class AirdropWallet extends React.PureComponent<Props> {
     const isWalletEditMode = _.get(provider, 'state.isWalletEditMode')
     return (
       <div>
-        <div className={styles.flexed_row}>
+        <div className={styles.flexedRow}>
           <p>{trans('app.provider.settings.wallet')}</p>
 
           <div>
