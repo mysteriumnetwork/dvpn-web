@@ -29,7 +29,7 @@ jobs:
       name: "Deploy 0.0.0-dev"
       script:
         - git tag -f $TRAVIS_TAG
-        - git remote add gh https://${TRAVIS_REPO_SLUG%/*}:${GITHUB_API_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
+        - git remote add gh https://${TRAVIS_REPO_SLUG%/*}:${GITHUB_API_KEY}@github.com/${TRAVIS_REPO_SLUG}.git
         - git push gh :refs/tags/$TRAVIS_TAG
         - git push -f gh $TRAVIS_TAG
 
@@ -47,6 +47,6 @@ jobs:
           file: dist.tar.gz
           overwrite: true
           skip_cleanup: true
-          api_key: "$GITHUB_API_TOKEN"
+          api_key: "$GITHUB_API_KEY"
           on:
             tags: true
