@@ -39,7 +39,7 @@ jobs:
       before_deploy:
         - mkdir releases
         - yarn run build
-        - tar -zcvf dist.tar.gz dist/
+        - tar -zcvf dist.tar.gz build/
         - echo uname -a
       deploy:
         - provider: releases
