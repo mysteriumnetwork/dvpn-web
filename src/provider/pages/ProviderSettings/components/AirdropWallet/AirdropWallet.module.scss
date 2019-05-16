@@ -2,7 +2,7 @@
 
 .flexedRow {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-size: $buttonText;
   margin-bottom: 14px;
   p {
@@ -51,8 +51,8 @@
 }
 .savedWallet {
   display: flex;
-  align-items: center;
-  height:74px;
+  align-items: flex-start;
+  height:34px;
   p {
     color: $textMain;
     font-family: 'mplus-1m', sans-serif;
@@ -64,20 +64,28 @@
   }
 }
 .editableField{
-  padding-top: 9px;
+  margin-top: -5px;
   margin-left: -12px;
   display: flex;
-  height:74px;
-  align-items: center;
+  height:39px;
+  align-items: flex-start;
+  input{
+    margin-right: 6px;
+  }
   button {
-    margin-bottom: 8px;
+    margin-top: -4px;
+    padding: 6px!important;
   }
 }
 .editableTextField{
-  min-width: 366px!important;
+  min-width: 372px!important;
 }
 .flexCenter{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.buttons{
+  position: absolute;
+  margin-left: 370px;
 }

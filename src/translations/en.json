@@ -81,6 +81,8 @@
   "app.warning.report.problem": "Report Problem",
   "app.warning.retry": "Retry",
   "app.client.button.ok": "OK",
+  "close": "Close",
+  "error.title": "Something went wrong",
   "app.client.node.disconnected": "The node has disconnected.",
 
 

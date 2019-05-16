@@ -11,10 +11,12 @@ import immutableProps from '../../../hocs/immutableProps'
 import { fetchTermsAction } from './actions'
 import ReactMarkdown from 'react-markdown'
 import { DefaultProps } from '../../../types'
+import RectangleLoading from '../../../ui-kit/components/RectangleLoading'
 
 const styles = require('./Terms.module.scss')
 type Props = DefaultProps & {
   mdText: string
+  loading: boolean,
   onLoadTerms: () => void
 }
 
@@ -26,13 +28,16 @@ class Terms extends React.PureComponent<Props> {
   }
 
   render() {
-    const { mdText } = this.props
+    const { mdText, loading } = this.props
     return (
       <div className={styles.appTermsCover}>
         <div className={styles.appTermsListCover}>
-          <ReactMarkdown
-            escapeHtml={false}
-            source={mdText}/>
+          {loading ? (
+            <RectangleLoading width='100%' height='500px'/>
+          ) : (
+            <ReactMarkdown escapeHtml={false} source={mdText}/>
+          )}
+
         </div>
         <div className={styles.bottomBar}>
           <div className={styles.barContent}>
@@ -53,7 +58,8 @@ class Terms extends React.PureComponent<Props> {
 }
 
 const mapStateToProps = (state) => ({
-  mdText: state.terms.mdText || {}
+  mdText: state.terms.mdText || {},
+  loading: state.terms.loading || false,
 })
 
 const mapDispatchToProps = (dispatch) => ({

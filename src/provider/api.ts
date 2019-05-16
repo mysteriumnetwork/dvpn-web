@@ -5,7 +5,6 @@ import { Identity } from '../api/data/identity'
 import { Service, ServiceOptions } from '../api/data/service'
 import { ServiceParams } from '../api/data/service-params'
 import { IdentityPayout } from '../api/data/identity-payout'
-import apiSubmissionError from '../utils/apiSubmissionError'
 import { NatStatus } from '../api/data/nat-status'
 import { ServiceSession } from '../api/data/service-session'
 
@@ -114,7 +113,7 @@ export const updateIdentity = async (data: { id: string, ethAddress: string }): 
 }
 
 export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
-  const { id, passphrase = 'test' } = data
-  await tequilaApi.unlocksIdentity(id, passphrase).catch(apiSubmissionError('walletAddress'))
+  const { id, passphrase = '' } = data
+  await tequilaApi.unlocksIdentity(id, passphrase)
 }
 

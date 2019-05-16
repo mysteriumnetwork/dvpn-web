@@ -126,7 +126,7 @@ export class TequilaApi implements TequilaApiInterface {
   }
 
   public async unlocksIdentity(id: string, passphrase: string): Promise<void> {
-    await this.http.put(`identities/${id}/unlock`, { passphrase })
+    return this.http.put(`identities/${id}/unlock`, { passphrase })
   }
 
 }

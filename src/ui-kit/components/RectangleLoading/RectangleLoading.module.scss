@@ -10,7 +10,7 @@
 
 @keyframes animation-background-gray {
   0% {
-    background-color: $borderColor
+    background-color: $whiteColor
   }
   25% {
     background-color: $textLightGrey
@@ -22,6 +22,6 @@
     background-color: $textLightGrey
   }
   100% {
-    background-color:$borderColor
+    background-color:$whiteColor
   }
 }

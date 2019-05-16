@@ -11,7 +11,9 @@ import { withStyles } from '@material-ui/core'
 import { startVpnServerStory, updateIdentitiesStory } from '../../stories'
 import { getFormValues } from 'redux-form/immutable'
 import { compose } from 'redux'
+import _ from 'lodash'
 import immutableProps from '../../../hocs/immutableProps'
+import ErrorDialog from '../../../ui-kit/components/ErrorDialog'
 import { Redirect } from 'react-router'
 import { NAV_PROVIDER_DASHBOARD } from '../../provider.links'
 
@@ -21,6 +23,7 @@ type Props = DefaultProps & {
   provider: ProviderReducer
   formWalletAddressData?: Object
   onSaveWalletAddress?: (data: Object) => void
+  onSetState?: (data: Object) => void
   onChangeTrafficOption: (value: string) => void
   onChangeResidentialConfirm: (value: boolean) => void
   onStartVpnServer: (provider: ProviderReducer) => void
@@ -33,10 +36,15 @@ class ProviderSettings extends React.PureComponent<Props> {
 
     onStartVpnServer(provider)
   }
+  handleCloseErrorDialog = () => {
+    const { onSetState } = this.props
+    onSetState({
+      generalError: null
+    })
+  }
 
   render() {
     const { provider, onChangeResidentialConfirm } = this.props
-
     if (provider.startedService && provider.startedService.id) {
       return (<Redirect to={NAV_PROVIDER_DASHBOARD}/>)
     }
@@ -67,6 +75,12 @@ class ProviderSettings extends React.PureComponent<Props> {
           {trans('app.provider.settings.start.vpn')}
         </Button>
       </div>
+      {_.get(provider, 'state.generalError') && (
+        <ErrorDialog onClose={this.handleCloseErrorDialog}>
+          {_.get(provider, 'state.generalError')}
+        </ErrorDialog>
+      )}
+
     </div>)
   }
 }

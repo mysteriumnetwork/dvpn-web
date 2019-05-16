@@ -1,10 +1,10 @@
 import { AnyAction, Dispatch, Store } from 'redux'
 import { getCurrentAccessPolicy, getNatStatus, getServiceSessions } from './api'
 import {
+  getIdentityPayoutAction,
   getServiceAction,
   setAccessPolicyAction,
   setIdentityAction,
-  setIdentityPayoutAction,
   setLocationAction,
   setNatStatusAction,
   setProviderStateAction,
@@ -19,6 +19,8 @@ import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
 import { Identity } from '../api/data/identity'
 import { push } from 'connected-react-router'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
+import { ApiError } from '../api/api-error'
+import apiSubmissionError from '../utils/apiSubmissionError'
 
 export const initProviderStory = (store: Store) => {
 
@@ -37,14 +39,22 @@ export const initProviderStory = (store: Store) => {
     .catch(console.error)
 }
 
+export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({
+  generalError: e.message
+}))
+
 export const fetchIdentityStory = async (dispatch: Dispatch) => {
   const result: AnyAction = await dispatch(setIdentityAction())
   const identity: Identity = result.value
 
   if (identity) {
-    await dispatch(unlocksIdentityAction({ id: identity.id }))
-    Promise.resolve(dispatch(setIdentityPayoutAction(identity))).catch(console.error)
+    Promise.resolve(dispatch(unlocksIdentityAction({
+      id: identity.id,
+      // passphrase: '123'
+    }))).catch((e: ApiError) => setGeneralError(dispatch, e))
   }
+
+  Promise.resolve(dispatch(getIdentityPayoutAction(identity))).catch((e: ApiError) => setGeneralError(dispatch, e))
 
   return identity
 }
@@ -142,10 +152,10 @@ export const stopVpnStateFetchingStory = (dispatch) => {
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
+  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
   const { id, passphrase, ethAddress } = data
   await dispatch(unlocksIdentityAction({ id, passphrase }))
-  await dispatch(updateIdentitiesAction({ id, ethAddress }))
+  await Promise.resolve(dispatch(updateIdentitiesAction({ id, ethAddress }))).catch(apiSubmissionError('walletAddress'))
   await dispatch(setProviderStateAction({ isWalletEditMode: false }))
 }
 

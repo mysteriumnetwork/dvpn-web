@@ -18,7 +18,7 @@ import { InjectedFormProps } from 'redux-form'
 const styles = require('./AirdropWallet.module.scss')
 
 type Props = InjectedFormProps & {
-  state: {isWalletEditMode: boolean}
+  state: { isWalletEditMode: boolean }
   provider: ProviderReducer
   onChangeTrafficOption?: (value: string) => void
   formWalletAddressData?: Object
@@ -39,6 +39,7 @@ class AirdropWallet extends React.PureComponent<Props> {
     if (!isWalletEditMode) {
       reset()
       initialize({
+        passphrase: '',
         ethAddress: _.get(provider, 'payout.ethAddress', '')
       })
     }
@@ -72,18 +73,20 @@ class AirdropWallet extends React.PureComponent<Props> {
               <div className={styles.editableField}>
                 <TextField placeholder="0x..." name="ethAddress" disabled={submitting}
                            className={styles.editableTextField}/>
-                <IconButton color="primary" onClick={this.handleWalletChange} disabled={submitting}>
-                  <SaveIcon fontSize="small"/>
-                </IconButton>
-                <IconButton color="secondary" onClick={this.handleToggleWalletEditMode} disabled={submitting}>
-                  <CancelIcon fontSize="small"/>
-                </IconButton>
+                <div className={styles.buttons}>
+                  <IconButton color="primary" onClick={this.handleWalletChange} disabled={submitting}>
+                    <SaveIcon fontSize="small"/>
+                  </IconButton>
+                  <IconButton color="secondary" onClick={this.handleToggleWalletEditMode} disabled={submitting}>
+                    <CancelIcon fontSize="small"/>
+                  </IconButton>
+                </div>
               </div>
             ) : (
               <div className={styles.savedWallet}>
                 {_.get(provider, 'payout.loading') !== false ? (
                   <div className={styles.flexCenter}>
-                    <RectangleLoading width={370} height={16}/>
+                    <RectangleLoading width='370px' height='16px'/>
                   </div>
                 ) : (
                   <div className={styles.flexCenter}>
@@ -94,12 +97,11 @@ class AirdropWallet extends React.PureComponent<Props> {
 
               </div>
             )}
-            {/* TODO show error if wallet address invalid */}
-            {isWalletEditMode && error && (
+            {error && (
               <p className={styles.errorText}>{error}</p>
             )}
             {/*<p className={styles.errorText}>{trans('app.provider.settings.wallet.api-error.ts')}</p>*/}
-            {/*<p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>*/}
+            <p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>
           </div>
         </div>
 

@@ -31,13 +31,13 @@ export const setLocationAction = createAction(ORIGINAL_LOCATION, getOriginalLoca
 
 export const setIdentitiesAction = createAction(IDENTITIES)
 
-export const updateIdentitiesAction = createAction(UPDATE_IDENTITY, async (d) => await updateIdentity(d), d => d)
+export const updateIdentitiesAction = createAction(UPDATE_IDENTITY, updateIdentity, d => d)
 
-export const unlocksIdentityAction = createAction(UNLOCK_IDENTITY, async (d) => await unlocksIdentity(d), d => d)
+export const unlocksIdentityAction = createAction(UNLOCK_IDENTITY, unlocksIdentity, d => d)
 
-export const setIdentityAction = createAction(IDENTITY, async () => await getCurrentIdentity())
+export const setIdentityAction = createAction(IDENTITY, getCurrentIdentity)
 
-export const setIdentityPayoutAction = createAction(IDENTITY_PAYOUT, async (identity) => await getIdentityPayout(identity))
+export const getIdentityPayoutAction = createAction(IDENTITY_PAYOUT, getIdentityPayout)
 
 export const setAccessPoliciesAction = createAction(ACCESS_POLICIES)
 
