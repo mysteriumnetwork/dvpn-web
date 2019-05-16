@@ -47,6 +47,7 @@
   "app.node.running.server.id": "Server ID",
   "app.node.running.user": "User",
   "app.node.running.duration": "Duration",
+  "app.node.running.nat.status": "NAT status",
   "app.provider.settings.change": "Change",
   "app.connection.history.client": "Client",
   "app.connection.history.provider": "Provider",
@@ -86,6 +87,7 @@
   "error.address.format": "Invalid wallet address format",
   "error.title": "Something went wrong",
   "app.client.node.disconnected": "The node has disconnected.",
+  "how.fix.nat": "How to configure NAT manually?",
 
 
   "": ""
