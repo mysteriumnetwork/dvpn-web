@@ -1,4 +1,5 @@
 import typeToReducer from 'type-to-reducer'
+import _ from 'lodash'
 import {
   ACCESS_POLICY,
   IDENTITY,
@@ -18,6 +19,10 @@ import { IdentityPayout } from '../api/data/identity-payout'
 
 export interface ProviderReducer {
   identity?: Identity,
+  payout?: {
+    ethAddress?: string,
+    loading?: boolean,
+  },
   originalLocation?: OriginalLocation,
   accessPolicy?: AccessPolicy,
   trafficOption?: TrafficOptions
@@ -37,7 +42,11 @@ export default typeToReducer({
   [UPDATE_IDENTITY]: {
     FULFILLED: (state, action: Action<Identity>) => ({
       ...state,
-      identity: action.payload
+      payout: {
+        ...state.payout,
+        ethAddress: _.get(action, 'meta.ethAddress')
+      }
+
     })
   },
 
@@ -56,9 +65,24 @@ export default typeToReducer({
   },
 
   [IDENTITY_PAYOUT]: {
+    PENDING: (state) => ({
+      ...state,
+      payout: {
+        loading: true
+      }
+    }),
+    REJECTED: (state, action: Action<any>) => ({
+      ...state,
+      payout: {
+        loading: false
+      }
+    }),
     FULFILLED: (state, action: Action<IdentityPayout>) => ({
       ...state,
-      payout: action.payload
+      payout: {
+        ethAddress: _.get(action, 'payload.eth_address'),
+        loading: false
+      }
     })
   },
 

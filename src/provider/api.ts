@@ -98,7 +98,7 @@ export const updateIdentity = async (data: { id: string, ethAddress: string }): 
 }
 
 export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
-  const { id, passphrase } = data
+  const { id, passphrase = 'test' } = data
   await tequilaApi.unlocksIdentity(id, passphrase).catch(apiSubmissionError('walletAddress'))
 }
 

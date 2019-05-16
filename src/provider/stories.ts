@@ -19,8 +19,9 @@ import { Identity } from '../api/data/identity'
 export const initProviderStory = (store: Store) => {
 
   Promise.all([
-    fetchLocationStory(store.dispatch), fetchIdentityStory(store.dispatch), fetchServiceStory(store.dispatch)]).
-    catch(console.error)
+    fetchLocationStory(store.dispatch),
+    fetchIdentityStory(store.dispatch),
+    fetchServiceStory(store.dispatch)]).catch(console.error)
 
   startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
 }
@@ -31,7 +32,7 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 
   console.log('fetchIdentityStory', identity)
 
-  //if (identity) Promise.resolve(await dispatch(unlocksIdentityAction({ id: identity.id, passphrase })))
+  if (identity) Promise.resolve(await dispatch(unlocksIdentityAction({ id: identity.id })))
 
   dispatch(setIdentityPayoutAction(identity))
 

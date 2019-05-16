@@ -1,4 +1,5 @@
 import * as React from 'react'
+import _ from 'lodash'
 import TextField from '../../../../../app/components/ReduxForm/TextField'
 import RadioButton from '../../../../../ui-kit/components/RadioButton/RadioButton'
 import trans from '../../../../../trans'
@@ -6,6 +7,7 @@ import { ProviderReducer, TrafficOptions } from '../../../../reducer'
 import { reduxForm } from 'redux-form/immutable'
 import { compose } from 'redux'
 import immutableProps from '../../../../../hocs/immutableProps'
+import RectangleLoading from '../../../../../ui-kit/components/RectangleLoading'
 import injectSheet from 'react-jss'
 import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -37,7 +39,7 @@ class AirdropWallet extends React.PureComponent<Props> {
     if (!isWalletEditMode) {
       reset()
       initialize({
-        ethAddress: '0xd3fe1c237a5ddbb86d27b3c2ff00885629176765'
+        ethAddress: _.get(provider, 'payout.ethAddress', '')
       })
     }
   }
@@ -46,8 +48,7 @@ class AirdropWallet extends React.PureComponent<Props> {
     const { formWalletAddressData, provider, onSaveWalletAddress } = this.props
     submit(this.props, () => onSaveWalletAddress({
       ...formWalletAddressData,
-      id: provider.identity.id,
-      passphrase: 'test2'
+      id: provider.identity.id
     }))
   }
 
@@ -65,11 +66,12 @@ class AirdropWallet extends React.PureComponent<Props> {
       <div>
         <div className={styles.flexedRow}>
           <p>{trans('app.provider.settings.wallet')}</p>
+
           <div>
-            {/* display saved Wallet */}
             {isWalletEditMode ? (
               <div className={styles.editableField}>
-                <TextField placeholder="0x..." name="ethAddress" disabled={submitting} className={styles.editableTextField}/>
+                <TextField placeholder="0x..." name="ethAddress" disabled={submitting}
+                           className={styles.editableTextField}/>
                 <IconButton color="primary" onClick={this.handleWalletChange} disabled={submitting}>
                   <SaveIcon fontSize="small"/>
                 </IconButton>
@@ -79,8 +81,17 @@ class AirdropWallet extends React.PureComponent<Props> {
               </div>
             ) : (
               <div className={styles.savedWallet}>
-                <p>0x701D8FFF10ce5BbFC05FA6cd0dBF18189bC492eb</p>
-                <button onClick={this.handleToggleWalletEditMode}>{trans('app.provider.settings.change')}</button>
+                {_.get(provider, 'payout.loading') !== false ? (
+                  <div className={styles.flexCenter}>
+                    <RectangleLoading width={370} height={16}/>
+                  </div>
+                ) : (
+                  <div className={styles.flexCenter}>
+                    <p>{_.get(provider, 'payout.ethAddress', '')}</p>
+                    <button onClick={this.handleToggleWalletEditMode}>{trans('app.provider.settings.change')}</button>
+                  </div>
+                )}
+
               </div>
             )}
             {/* TODO show error if wallet address invalid */}
@@ -91,6 +102,7 @@ class AirdropWallet extends React.PureComponent<Props> {
             {/*<p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>*/}
           </div>
         </div>
+
         {this.showTrafficOptions && (
           <div className={styles.flexedRow}>
             <p>{trans('app.provider.settings.traffic')}</p>

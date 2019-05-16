@@ -37,35 +37,35 @@ class ProviderSettings extends React.PureComponent<Props> {
     const id = (provider && provider.identity && provider.identity.id) || ''
 
     return (<div className={styles.appProviderSettingsCover}>
-        <div className={styles.scrollView}>
-          <h1>{trans('app.provider.settings.share.your.connection')}</h1>
-          <div className={styles.contentContainer}>
-            <div>
-              <div className={styles.flexedRow}>
-                <p>{trans('app.provider.settings.my.id')}</p>
-                <div title={id}>{id.substr(2)}</div>
-              </div>
-              {/* render dynamic Airdrop Wallet */}
-              <AirdropWallet {...this.props} />
+      <div className={styles.scrollView}>
+        <h1>{trans('app.provider.settings.share.your.connection')}</h1>
+        <div className={styles.contentContainer}>
+          <div>
+            <div className={styles.flexedRow}>
+              <p>{trans('app.provider.settings.my.id')}</p>
+              <div title={id}>{id.substr(2)}</div>
             </div>
-            {/* ExpansionPanel component with connection information */}
-            <ConnectionInformation provider={provider}
-                                   onChangeResidentialConfirm={onChangeResidentialConfirm} />
+            {/* render dynamic Airdrop Wallet */}
+            <AirdropWallet {...this.props} />
           </div>
+          {/* ExpansionPanel component with connection information */}
+          <ConnectionInformation provider={provider} onChangeResidentialConfirm={onChangeResidentialConfirm}/>
         </div>
-        <div className={styles.bottomBar}>
-          <Button onClick={this.handleStartVpnServer}
-                  color="primary"
-                  disabled={!id || provider.tartedServicePending}>
-            {trans('app.provider.settings.start.vpn')}
-          </Button>
-        </div>
-      </div>)
+      </div>
+      <div className={styles.bottomBar}>
+        <Button onClick={this.handleStartVpnServer}
+                color="primary"
+                disabled={!id || provider.tartedServicePending}>
+          {trans('app.provider.settings.start.vpn')}
+        </Button>
+      </div>
+    </div>)
   }
 }
 
 const mapStateToProps = (state) => ({
-  provider: state.provider || {}, formWalletAddressData: getFormValues('walletAddress')(state)
+  provider: state.provider || {},
+  formWalletAddressData: getFormValues('walletAddress')(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
