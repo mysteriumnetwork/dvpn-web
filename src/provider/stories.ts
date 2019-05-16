@@ -14,14 +14,14 @@ import {
 import { ProviderReducer, TrafficOptions } from './reducer'
 import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
 import { Identity } from '../api/data/identity'
+import { push } from 'connected-react-router'
+import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 
 export const initProviderStory = (store: Store) => {
 
   Promise.all([
-    fetchLocationStory(store.dispatch),
-    fetchIdentityStory(store.dispatch),
-    fetchServiceStory(store.dispatch)
-  ]).catch(console.error)
+    fetchLocationStory(store.dispatch), fetchIdentityStory(store.dispatch), fetchServiceStory(store.dispatch)]).
+    catch(console.error)
 
   startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
 }
@@ -84,11 +84,11 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
     : undefined
   const options: ServiceOptions = undefined
 
-  const service: Service = await dispatch(startServiceAction({ providerId, type, accessPolicyId, options }))
-
-  console.log('startVpnServerStory:', service)
+  const result: any = await dispatch(startServiceAction({ providerId, type, accessPolicyId, options }))
+  const service: Service = result && result.value
 
   if (service && service.id) {
+    dispatch(push(NAV_PROVIDER_DASHBOARD))
     stopAccessPolicyFetchingStory()
   }
 
@@ -98,6 +98,8 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
   if (!service) return
 
   await dispatch(stopServiceAction(service))
+
+  dispatch(push(NAV_PROVIDER_SETTINGS))
 
   return startAccessPolicyFetchingStory(dispatch)
 }

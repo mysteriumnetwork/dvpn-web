@@ -11,6 +11,8 @@ import { stopVpnServerStory } from '../../stories'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
 import { Service } from '../../../api/data/service'
+import { Redirect } from 'react-router'
+import { NAV_PROVIDER_SETTINGS } from '../../provider.links'
 
 const styles = require('./ProviderDashboard.module.scss')
 
@@ -33,6 +35,10 @@ class ProviderDashboard extends React.PureComponent<Props> {
   }
 
   render() {
+    const { provider } = this.props
+
+    if (!(provider.startedService && provider.startedService.id)) return (<Redirect to={NAV_PROVIDER_SETTINGS} />)
+
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
         <h4>
@@ -43,13 +49,14 @@ class ProviderDashboard extends React.PureComponent<Props> {
             11{trans('app.node.running.attempted')}
           </p>
         </h4>
-        <Button onClick={this.handleDisconnect} variant="contained" color="secondary">
+        <Button disabled={provider.startedServicePending} onClick={this.handleDisconnect} variant="contained"
+                color="secondary">
           Disconnect
         </Button>
       </div>
-      <ConnectionInfo provider={this.props.provider} />
-      <UsersList provider={this.props.provider} />
-      <BottomBar provider={this.props.provider} />
+      <ConnectionInfo provider={provider} />
+      <UsersList provider={provider} />
+      <BottomBar provider={provider} />
     </div>)
   }
 }

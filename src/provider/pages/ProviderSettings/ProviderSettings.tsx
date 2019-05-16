@@ -12,6 +12,8 @@ import { startVpnServerStory, updateIdentitiesStory } from '../../stories'
 import { getFormValues } from 'redux-form/immutable'
 import { compose } from 'redux'
 import immutableProps from '../../../hocs/immutableProps'
+import { Redirect } from 'react-router'
+import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../provider.links'
 
 const styles = require('./ProviderSettings.module.scss')
 
@@ -34,6 +36,9 @@ class ProviderSettings extends React.PureComponent<Props> {
 
   render() {
     const { provider, onChangeResidentialConfirm } = this.props
+
+    if (provider.startedService && provider.startedService.id) return (<Redirect to={NAV_PROVIDER_DASHBOARD} />)
+
     const id = (provider && provider.identity && provider.identity.id) || ''
 
     return (<div className={styles.appProviderSettingsCover}>
@@ -56,7 +61,7 @@ class ProviderSettings extends React.PureComponent<Props> {
         <div className={styles.bottomBar}>
           <Button onClick={this.handleStartVpnServer}
                   color="primary"
-                  disabled={!id || provider.tartedServicePending}>
+                  disabled={!id || provider.startedServicePending}>
             {trans('app.provider.settings.start.vpn')}
           </Button>
         </div>
