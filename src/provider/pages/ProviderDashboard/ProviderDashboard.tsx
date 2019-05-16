@@ -37,7 +37,9 @@ class ProviderDashboard extends React.PureComponent<Props> {
   render() {
     const { provider } = this.props
 
-    if (!(provider.startedService && provider.startedService.id)) return (<Redirect to={NAV_PROVIDER_SETTINGS} />)
+    if (!(provider.startedService && provider.startedService.id)) {
+      return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
+    }
 
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
@@ -54,9 +56,9 @@ class ProviderDashboard extends React.PureComponent<Props> {
           Disconnect
         </Button>
       </div>
-      <ConnectionInfo provider={provider} />
-      <UsersList provider={provider} />
-      <BottomBar provider={provider} />
+      <ConnectionInfo provider={provider}/>
+      <UsersList provider={provider}/>
+      <BottomBar provider={provider}/>
     </div>)
   }
 }

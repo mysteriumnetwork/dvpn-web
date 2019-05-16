@@ -1,11 +1,12 @@
 import { AnyAction, Dispatch, Store } from 'redux'
-import { getCurrentAccessPolicy } from './api'
+import { getCurrentAccessPolicy, getNatStatus } from './api'
 import {
   getServiceAction,
   setAccessPolicyAction,
   setIdentityAction,
   setIdentityPayoutAction,
   setLocationAction,
+  setNatStatus,
   setProviderStateAction,
   startServiceAction,
   stopServiceAction,
@@ -22,10 +23,17 @@ export const initProviderStory = (store: Store) => {
 
   Promise.all([
     fetchLocationStory(store.dispatch),
-    fetchIdentityStory(store.dispatch),
-    fetchServiceStory(store.dispatch)]).catch(console.error)
+    fetchIdentityStory(store.dispatch)
+  ]).catch(console.error)
 
-  startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
+  fetchServiceStory(store.dispatch)
+    .then((result: any) => {
+      const service: Service = result && result.value
+      return (service && service.id)
+        ? startNatStatusFetchingStory(store.dispatch)
+        : startAccessPolicyFetchingStory(store.dispatch)
+    })
+    .catch(console.error)
 }
 
 export const fetchIdentityStory = async (dispatch: Dispatch) => {
@@ -34,7 +42,9 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 
   console.log('fetchIdentityStory', identity)
 
-  if (identity) Promise.resolve(await dispatch(unlocksIdentityAction({ id: identity.id })))
+  if (identity) {
+    Promise.resolve(await dispatch(unlocksIdentityAction({ id: identity.id })))
+  }
 
   Promise.resolve(dispatch(setIdentityPayoutAction(identity))).catch(console.error)
 
@@ -92,9 +102,9 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
 
   if (service && service.id) {
     dispatch(push(NAV_PROVIDER_DASHBOARD))
+    startNatStatusFetchingStory(dispatch).catch(console.error)
     stopAccessPolicyFetchingStory()
   }
-
 }
 
 export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
@@ -102,11 +112,31 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
     return
   }
 
+  stopNatStatusFetchingStory(dispatch)
   await dispatch(stopServiceAction(service))
 
   dispatch(push(NAV_PROVIDER_SETTINGS))
 
   return startAccessPolicyFetchingStory(dispatch)
+}
+
+let _natStatusInterval
+
+export const startNatStatusFetchingStory = async (dispatch: Dispatch) => {
+
+  const fetch = async () => dispatch(setNatStatus(await getNatStatus()))
+
+  fetch().catch(console.error)
+
+  if (!_natStatusInterval) {
+    _natStatusInterval = setInterval(fetch, 3000)
+  }
+}
+
+export const stopNatStatusFetchingStory = (dispatch) => {
+  clearInterval(_natStatusInterval)
+  dispatch(setNatStatus(null))
+  _natStatusInterval = null
 }
 
 export const updateIdentitiesStory = async (

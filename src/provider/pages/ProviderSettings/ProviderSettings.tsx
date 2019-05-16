@@ -37,7 +37,9 @@ class ProviderSettings extends React.PureComponent<Props> {
   render() {
     const { provider, onChangeResidentialConfirm } = this.props
 
-    if (provider.startedService && provider.startedService.id) return (<Redirect to={NAV_PROVIDER_DASHBOARD} />)
+    if (provider.startedService && provider.startedService.id) {
+      return (<Redirect to={NAV_PROVIDER_DASHBOARD}/>)
+    }
 
     const id = (provider && provider.identity && provider.identity.id) || ''
 
@@ -55,7 +57,7 @@ class ProviderSettings extends React.PureComponent<Props> {
           </div>
           {/* ExpansionPanel component with connection information */}
           <ConnectionInformation provider={provider}
-                                 onChangeResidentialConfirm={onChangeResidentialConfirm} />
+                                 onChangeResidentialConfirm={onChangeResidentialConfirm}/>
         </div>
       </div>
       <div className={styles.bottomBar}>
@@ -71,7 +73,7 @@ class ProviderSettings extends React.PureComponent<Props> {
 
 const mapStateToProps = (state) => ({
   provider: state.provider || {},
-  formWalletAddressData: getFormValues('walletAddress')(state),
+  formWalletAddressData: getFormValues('walletAddress')(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

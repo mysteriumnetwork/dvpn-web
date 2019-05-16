@@ -6,6 +6,7 @@ import { Service, ServiceOptions } from '../api/data/service'
 import { ServiceParams } from '../api/data/service-params'
 import { IdentityPayout } from '../api/data/identity-payout'
 import apiSubmissionError from '../utils/apiSubmissionError'
+import { NatStatus } from '../api/data/nat-status'
 
 export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
@@ -40,6 +41,16 @@ export const getOriginalLocation = async (): Promise<OriginalLocation | null> =>
     return await tequilaApi.location()
   } catch (e) {
     console.error('Failed fetching location', e)
+  }
+
+  return null
+}
+
+export const getNatStatus = async (): Promise<NatStatus | null> => {
+  try {
+    return await tequilaApi.natStatus()
+  } catch (e) {
+    console.error('Failed fetching NatStatus', e)
   }
 
   return null

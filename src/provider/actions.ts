@@ -4,14 +4,14 @@ import {
   ACCESS_POLICY,
   IDENTITIES,
   IDENTITY,
-  IDENTITY_PAYOUT,
+  IDENTITY_PAYOUT, NAT_STATUS,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
+  SET_PROVIDER_STATE,
   STARTED_SERVICE,
   TRAFFIC_OPTION,
-  UNLOKS_IDENTITY,
-  UPDATE_IDENTITY,
-  SET_PROVIDER_STATE
+  UNLOCK_IDENTITY,
+  UPDATE_IDENTITY
 } from './constants'
 
 import {
@@ -34,7 +34,7 @@ export const setIdentitiesAction = createAction(IDENTITIES)
 
 export const updateIdentitiesAction = createAction(UPDATE_IDENTITY, async (d) => await updateIdentity(d), d => d)
 
-export const unlocksIdentityAction = createAction(UNLOKS_IDENTITY, async (d) => await unlocksIdentity(d), d => d)
+export const unlocksIdentityAction = createAction(UNLOCK_IDENTITY, async (d) => await unlocksIdentity(d), d => d)
 
 export const setIdentityAction = createAction(IDENTITY, async () => await getCurrentIdentity())
 
@@ -44,13 +44,17 @@ export const setAccessPoliciesAction = createAction(ACCESS_POLICIES)
 
 export const setAccessPolicyAction = createAction(ACCESS_POLICY)
 
-export const startServiceAction = createAction(STARTED_SERVICE,
+export const startServiceAction = createAction(
+  STARTED_SERVICE,
   async (data: StartServiceInterface) => await startService(data),
-  value => value)
+  value => value
+)
 
 export const stopServiceAction = createAction(STARTED_SERVICE, async (service: Service) => await stopService(service))
 
 export const getServiceAction = createAction(STARTED_SERVICE, async () => await getCurrentService())
+
+export const setNatStatus = createAction(NAT_STATUS)
 
 export const setTrafficOptionAction = createAction(TRAFFIC_OPTION)
 

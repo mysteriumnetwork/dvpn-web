@@ -3,7 +3,7 @@ import _ from 'lodash'
 import {
   ACCESS_POLICY,
   IDENTITY,
-  IDENTITY_PAYOUT,
+  IDENTITY_PAYOUT, NAT_STATUS,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
   SET_PROVIDER_STATE,
@@ -16,6 +16,8 @@ import { OriginalLocation } from '../api/data/original-location'
 import { AccessPolicy } from '../api/data/access-policy'
 import { Identity } from '../api/data/identity'
 import { IdentityPayout } from '../api/data/identity-payout'
+import { NatStatus } from '../api/data/nat-status'
+import { Service } from '../api/data/service'
 
 export interface ProviderReducer {
   identity?: Identity,
@@ -27,10 +29,11 @@ export interface ProviderReducer {
   accessPolicy?: AccessPolicy,
   trafficOption?: TrafficOptions
   residentialConfirm?: boolean,
-  startedService?: any,
+  startedService?: Service,
   state?: any,
   startedServiceReject?: any,
-  startedServicePending?: boolean
+  startedServicePending?: boolean,
+  natStatus?: NatStatus
 }
 
 export enum TrafficOptions {
@@ -107,6 +110,11 @@ export default typeToReducer({
   [RESIDENTIAL_CONFIRM]: (state, action: Action<boolean>) => ({
     ...state,
     residentialConfirm: action.payload
+  }),
+
+  [NAT_STATUS]: (state, action: Action<boolean>) => ({
+    ...state,
+    natStatus: action.payload
   }),
 
   [STARTED_SERVICE]: {

@@ -8,13 +8,15 @@ export const IDENTITY_PAYOUT = 'provider/IDENTITY_PAYOUT'
 
 export const UPDATE_IDENTITY = 'provider/UPDATE_IDENTITY'
 
-export const UNLOKS_IDENTITY = 'provider/UNLOKS_IDENTITY'
+export const UNLOCK_IDENTITY = 'provider/UNLOCK_IDENTITY'
 
 export const ACCESS_POLICIES = 'provider/ACCESS_POLICIES'
 
 export const ACCESS_POLICY = 'provider/ACCESS_POLICY'
 
 export const STARTED_SERVICE = 'provider/STARTED_SERVICE'
+
+export const NAT_STATUS = 'provider/NAT_STATUS'
 
 export const TRAFFIC_OPTION = 'provider/TRAFFIC_OPTION'
 
