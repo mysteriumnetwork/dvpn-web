@@ -27,17 +27,9 @@ export const initProviderStory = (store: Store) => {
 
   Promise.all([
     fetchLocationStory(store.dispatch),
-    fetchIdentityStory(store.dispatch)
+    fetchIdentityStory(store.dispatch),
+    startServiceFetchingStory(store)
   ]).catch(console.error)
-
-  fetchServiceStory(store.dispatch)
-    .then((result: any) => {
-      const service: Service = result && result.value
-      return (service && service.id)
-        ? startVpnStateFetchingStory(store.dispatch, service)
-        : startAccessPolicyFetchingStory(store.dispatch)
-    })
-    .catch(console.error)
 }
 
 export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({
