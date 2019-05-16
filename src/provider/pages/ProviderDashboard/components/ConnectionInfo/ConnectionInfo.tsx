@@ -28,7 +28,7 @@ const ConnectionInfo = (props: Props) => {
           </div>
         </td>
         <td>
-          <span className={styles.infoID}>{service.id}</span>
+          <span className={styles.infoID}>{service.providerId}</span>
         </td>
       </tr>
       </tbody>
