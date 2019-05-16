@@ -14,6 +14,7 @@ import CancelIcon from '@material-ui/icons/Cancel'
 import IconButton from '@material-ui/core/IconButton'
 import { submit } from '../../../../../utils/reduxForm'
 import { InjectedFormProps } from 'redux-form'
+import validate from './validate'
 
 const styles = require('./AirdropWallet.module.scss')
 
@@ -36,8 +37,8 @@ class AirdropWallet extends React.PureComponent<Props> {
     const { provider, onSetState, initialize, reset } = this.props
     const isWalletEditMode = _.get(provider, 'state.isWalletEditMode')
     onSetState({ isWalletEditMode: !isWalletEditMode })
+    reset()
     if (!isWalletEditMode) {
-      reset()
       initialize({
         passphrase: '',
         ethAddress: _.get(provider, 'payout.ethAddress', '')
@@ -132,7 +133,8 @@ class AirdropWallet extends React.PureComponent<Props> {
 
 export default injectSheet(styles)(compose(
   reduxForm({
-    form: 'walletAddress'
+    form: 'walletAddress',
+    validate
   }),
   immutableProps
 )(AirdropWallet))

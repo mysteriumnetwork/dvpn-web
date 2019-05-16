@@ -21,6 +21,7 @@ import { push } from 'connected-react-router'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
+import { HTTP_NOT_FOUND } from '../constants'
 
 export const initProviderStory = (store: Store) => {
 
@@ -54,7 +55,10 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
     }))).catch((e: ApiError) => setGeneralError(dispatch, e))
   }
 
-  Promise.resolve(dispatch(getIdentityPayoutAction(identity))).catch((e: ApiError) => setGeneralError(dispatch, e))
+  Promise.resolve(dispatch(getIdentityPayoutAction(identity))).catch((e: ApiError) => {
+    if (e.status !== HTTP_NOT_FOUND)
+      setGeneralError(dispatch, e)
+  })
 
   return identity
 }

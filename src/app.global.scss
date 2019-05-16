@@ -109,7 +109,7 @@ input {
 }
 
 input:focus {
-  outline: none;
+  outline: none!important;
 }
 
 /* Change text in autofill textbox */

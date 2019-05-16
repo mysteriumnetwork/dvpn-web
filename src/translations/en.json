@@ -82,6 +82,7 @@
   "app.warning.retry": "Retry",
   "app.client.button.ok": "OK",
   "close": "Close",
+  "error.address.format": "Invalid wallet address format",
   "error.title": "Something went wrong",
   "app.client.node.disconnected": "The node has disconnected.",
 

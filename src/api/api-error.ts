@@ -8,6 +8,10 @@ export class ApiError extends Error {
     super(_.get(original, 'response.data.message', original.message))
   }
 
+  public get status(): number | undefined {
+    return parseInt(_.get(this.original, 'request.status'), 10)
+  }
+
   public get code(): string | undefined {
     return this.original && this.original.code
   }
