@@ -30,8 +30,6 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
   const result: AnyAction = await dispatch(setIdentityAction())
   const identity: Identity = result.value
 
-  console.log('fetchIdentityStory', identity)
-
   //if (identity) Promise.resolve(await dispatch(unlocksIdentityAction({ id: identity.id, passphrase })))
 
   Promise.resolve(dispatch(setIdentityPayoutAction(identity))).catch(console.error)
@@ -66,7 +64,6 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
   }
 
   fetch().catch(console.error)
-  console.log('* startAccessPolicyFetchingStory')
 
   if (!_accessPolicyInterval) {
     _accessPolicyInterval = setInterval(fetch, 3000)
