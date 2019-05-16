@@ -16,6 +16,8 @@ export const ACCESS_POLICY = 'provider/ACCESS_POLICY'
 
 export const STARTED_SERVICE = 'provider/STARTED_SERVICE'
 
+export const SERVICE_SESSIONS = 'provider/SERVICE_SESSIONS'
+
 export const NAT_STATUS = 'provider/NAT_STATUS'
 
 export const TRAFFIC_OPTION = 'provider/TRAFFIC_OPTION'

@@ -1,13 +1,14 @@
 import { AnyAction, Dispatch, Store } from 'redux'
-import { getCurrentAccessPolicy, getNatStatus } from './api'
+import { getCurrentAccessPolicy, getNatStatus, getServiceSessions } from './api'
 import {
   getServiceAction,
   setAccessPolicyAction,
   setIdentityAction,
   setIdentityPayoutAction,
   setLocationAction,
-  setNatStatus,
+  setNatStatusAction,
   setProviderStateAction,
+  setServiceSessionAction,
   startServiceAction,
   stopServiceAction,
   unlocksIdentityAction,
@@ -30,7 +31,7 @@ export const initProviderStory = (store: Store) => {
     .then((result: any) => {
       const service: Service = result && result.value
       return (service && service.id)
-        ? startNatStatusFetchingStory(store.dispatch)
+        ? startVpnStateFetchingStory(store.dispatch, service)
         : startAccessPolicyFetchingStory(store.dispatch)
     })
     .catch(console.error)
@@ -40,13 +41,10 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
   const result: AnyAction = await dispatch(setIdentityAction())
   const identity: Identity = result.value
 
-  console.log('fetchIdentityStory', identity)
-
   if (identity) {
-    Promise.resolve(await dispatch(unlocksIdentityAction({ id: identity.id })))
+    await dispatch(unlocksIdentityAction({ id: identity.id }))
+    Promise.resolve(dispatch(setIdentityPayoutAction(identity))).catch(console.error)
   }
-
-  Promise.resolve(dispatch(setIdentityPayoutAction(identity))).catch(console.error)
 
   return identity
 }
@@ -102,7 +100,7 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
 
   if (service && service.id) {
     dispatch(push(NAV_PROVIDER_DASHBOARD))
-    startNatStatusFetchingStory(dispatch).catch(console.error)
+    startVpnStateFetchingStory(dispatch, service).catch(console.error)
     stopAccessPolicyFetchingStory()
   }
 }
@@ -112,7 +110,7 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
     return
   }
 
-  stopNatStatusFetchingStory(dispatch)
+  stopVpnStateFetchingStory(dispatch)
   await dispatch(stopServiceAction(service))
 
   dispatch(push(NAV_PROVIDER_SETTINGS))
@@ -120,23 +118,27 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
   return startAccessPolicyFetchingStory(dispatch)
 }
 
-let _natStatusInterval
+let _VpnStateInterval
 
-export const startNatStatusFetchingStory = async (dispatch: Dispatch) => {
+export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Service) => {
 
-  const fetch = async () => dispatch(setNatStatus(await getNatStatus()))
+  const fetch = async () => Promise.all([
+    dispatch(setNatStatusAction(await getNatStatus())),
+    dispatch(setServiceSessionAction(await getServiceSessions(service)))
+  ])
 
   fetch().catch(console.error)
 
-  if (!_natStatusInterval) {
-    _natStatusInterval = setInterval(fetch, 3000)
+  if (!_VpnStateInterval) {
+    _VpnStateInterval = setInterval(fetch, 3000)
   }
 }
 
-export const stopNatStatusFetchingStory = (dispatch) => {
-  clearInterval(_natStatusInterval)
-  dispatch(setNatStatus(null))
-  _natStatusInterval = null
+export const stopVpnStateFetchingStory = (dispatch) => {
+  clearInterval(_VpnStateInterval)
+  dispatch(setNatStatusAction(null))
+  dispatch(setServiceSessionAction(null))
+  _VpnStateInterval = null
 }
 
 export const updateIdentitiesStory = async (

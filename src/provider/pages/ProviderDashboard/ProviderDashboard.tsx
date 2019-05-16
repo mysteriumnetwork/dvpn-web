@@ -41,14 +41,16 @@ class ProviderDashboard extends React.PureComponent<Props> {
       return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
     }
 
+    const sessions = Number(provider.sessions && provider.sessions.length)
+
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
         <h4>
-          <p>9{trans('app.node.running.users.connected')}</p>
+          <p>{sessions} {trans('app.node.running.users.connected')}</p>
           <p>
-            9{trans('app.node.running.successful.connections')}
-            <span>/</span>
-            11{trans('app.node.running.attempted')}
+            {sessions} {trans('app.node.running.successful.connections')}
+            <span> / </span>
+            {sessions} {trans('app.node.running.attempted')}
           </p>
         </h4>
         <Button disabled={provider.startedServicePending} onClick={this.handleDisconnect} variant="contained"

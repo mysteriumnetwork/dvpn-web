@@ -7,6 +7,7 @@ import { ServiceParams } from '../api/data/service-params'
 import { IdentityPayout } from '../api/data/identity-payout'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { NatStatus } from '../api/data/nat-status'
+import { ServiceSession } from '../api/data/service-session'
 
 export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
@@ -81,6 +82,10 @@ export const startService = async (data: StartServiceInterface): Promise<Service
 
 export const stopService = async (service: Service): Promise<any> => {
   return service && await tequilaApi.serviceStop(service.id)
+}
+
+export const getServiceSessions = async (service: Service): Promise<ServiceSession[]> => {
+  return service && await tequilaApi.serviceSessions(service.id)
 }
 
 export const getCurrentService = async (): Promise<Service | null> => {

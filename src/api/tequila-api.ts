@@ -6,6 +6,7 @@ import { Service } from './data/service'
 import { NatStatus } from './data/nat-status'
 import { Identity, IdentityResponse } from './data/identity'
 import { IdentityPayout } from './data/identity-payout'
+import { ServiceSession, ServiceSessionResponse } from './data/service-session'
 
 export interface TequilaApiInterface {
 
@@ -20,6 +21,8 @@ export interface TequilaApiInterface {
   serviceStart(params: ServiceParams, timeout?: number): Promise<Service>
 
   serviceStop(id: string): Promise<void>
+
+  serviceSessions(id: string): Promise<ServiceSession[]>
 
   natStatus(): Promise<NatStatus>
 
@@ -58,7 +61,8 @@ export class TequilaApi implements TequilaApiInterface {
     const location = await this.http.get<OriginalLocation>(
       'location',
       undefined,
-      { timeout })
+      { timeout }
+    )
     if (!location) {
       throw new Error('Location response body is missing')
     }
@@ -93,6 +97,16 @@ export class TequilaApi implements TequilaApiInterface {
 
   public async serviceStop(id: string): Promise<void> {
     await this.http.delete(`services/${id}`)
+  }
+
+  public async serviceSessions(id: string): Promise<ServiceSession[]> {
+    // const response = await this.http.get<ServiceSessionResponse>(`service/${id}/sessions`)
+    const response = await this.http.get<ServiceSessionResponse>(`service-sessions`)
+    if (!response) {
+      throw new Error('Service response body is missing')
+    }
+
+    return (response && response.sessions) || []
   }
 
   public async natStatus(): Promise<NatStatus> {
