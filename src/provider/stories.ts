@@ -168,7 +168,7 @@ export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Se
   const fetch = async () => Promise.all([
     dispatch(setNatStatusAction(await getNatStatus())),
     dispatch(setServiceSessionAction(await getServiceSessions(service)))
-  ])
+  ]).catch(console.error)
 
   fetch().catch(console.error)
 
