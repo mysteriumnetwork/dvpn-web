@@ -7,22 +7,27 @@
   height: calc(100vh - 40px);
   background: url('../../../app/components/assets/images/app-pattern.svg');
 }
+
 .dashboardHeader {
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+
   h4 {
     color: $whiteColor;
+
     p:first-child {
       font-size: $subTitle;
       margin-bottom: 6px;
     }
+
     p:last-child {
       font-size: $tableHeadFont;
       opacity: 0.7;
     }
   }
+
   button span {
     min-width: 200px;
     color: $warningRed;

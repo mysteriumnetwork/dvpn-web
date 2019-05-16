@@ -20,8 +20,8 @@ import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 export const initProviderStory = (store: Store) => {
 
   Promise.all([
-    fetchLocationStory(store.dispatch), fetchIdentityStory(store.dispatch), fetchServiceStory(store.dispatch)]).
-    catch(console.error)
+    fetchLocationStory(store.dispatch), fetchIdentityStory(store.dispatch), fetchServiceStory(store.dispatch)
+  ]).catch(console.error)
 
   startAccessPolicyFetchingStory(store.dispatch).catch(console.error)
 }
@@ -66,6 +66,7 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
   }
 
   fetch().catch(console.error)
+  console.log('* startAccessPolicyFetchingStory')
 
   if (!_accessPolicyInterval) {
     _accessPolicyInterval = setInterval(fetch, 3000)
@@ -74,6 +75,7 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
 
 export const stopAccessPolicyFetchingStory = () => {
   clearInterval(_accessPolicyInterval)
+  _accessPolicyInterval = null
 }
 
 export const startVpnServerStory = async (dispatch: Dispatch, provider: ProviderReducer) => {
@@ -95,7 +97,9 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
 }
 
 export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
-  if (!service) return
+  if (!service) {
+    return
+  }
 
   await dispatch(stopServiceAction(service))
 
@@ -105,7 +109,7 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
+  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
   const { id, passphrase, ethAddress } = data
   await dispatch(unlocksIdentityAction({ id, passphrase }))
   await dispatch(updateIdentitiesAction({ id, ethAddress }))
