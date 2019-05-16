@@ -75,16 +75,16 @@ export interface IAppHeaderProps {
 const AppHeader: React.SFC<IAppHeaderProps> = (props: IAppHeaderProps) => (
   <div className={props.classes.appHeader}>
     <div className={props.classes.tabContainer}>
-      <Link to={NAV_CLIENT_DASHBOARD}>
-        <div
-          className={classNames(props.classes.tab, {
-            // add class active when tab is open
-            //   [props.classes.active]&&selected
-          })}
-        >
-          {trans('app.header.connect.vpn')}
-        </div>
-      </Link>
+      {/*<Link to={NAV_CLIENT_DASHBOARD}>*/}
+      {/*  <div*/}
+      {/*    className={classNames(props.classes.tab, {*/}
+      {/*      // add class active when tab is open*/}
+      {/*      //   [props.classes.active]&&selected*/}
+      {/*    })}*/}
+      {/*  >*/}
+      {/*    {trans('app.header.connect.vpn')}*/}
+      {/*  </div>*/}
+      {/*</Link>*/}
       <Link to={props.started ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
         <div
           className={classNames(props.classes.tab, {
@@ -96,7 +96,7 @@ const AppHeader: React.SFC<IAppHeaderProps> = (props: IAppHeaderProps) => (
         </div>
       </Link>
     </div>
-    <AppMenu />
+    {/*<AppMenu />*/}
   </div>
 )
 
