@@ -28,7 +28,7 @@ import {
 
 import { Service } from '../api/data/service'
 
-export const setLocationAction = createAction(ORIGINAL_LOCATION, async () => await getOriginalLocation())
+export const setLocationAction = createAction(ORIGINAL_LOCATION, getOriginalLocation)
 
 export const setIdentitiesAction = createAction(IDENTITIES)
 

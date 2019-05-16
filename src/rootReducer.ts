@@ -4,12 +4,14 @@ import { reducer as formReducer } from 'redux-form/immutable'
 import { History } from 'history'
 import langReducer from './language/reducer'
 import providerReducer from './provider/reducer'
+import termsReducer from './app/pages/Terms/reducer'
 
 export default function createRootReducer(history: History) {
   return combineReducers({
     router: connectRouter(history),
     form: formReducer,
     language: langReducer,
-    provider: providerReducer
+    provider: providerReducer,
+    terms: termsReducer
   })
 }

@@ -9,8 +9,10 @@
   background: $whiteColor;
 }
 .appTermsListCover {
-  max-width: 300px;
+  max-width: 440px;
   margin: 0 auto;
+  overflow-y: auto;
+  max-height: 100%;
 }
 .appTermsListCover h2 {
   text-align: center;
