@@ -21,7 +21,6 @@ import { push } from 'connected-react-router'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
-import { HTTP_NOT_FOUND } from '../constants'
 
 export const initProviderStory = (store: Store) => {
 
@@ -56,8 +55,9 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
   }
 
   Promise.resolve(dispatch(getIdentityPayoutAction(identity))).catch((e: ApiError) => {
-    if (e.status !== HTTP_NOT_FOUND)
+    if (!e.isNotFound) {
       setGeneralError(dispatch, e)
+    }
   })
 
   return identity
@@ -161,7 +161,7 @@ export const stopVpnStateFetchingStory = (dispatch) => {
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
+  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
   const { id, passphrase, ethAddress } = data
   try {
     await dispatch(unlocksIdentityAction({ id, passphrase }))

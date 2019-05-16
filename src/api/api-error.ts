@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios'
 import _ from 'lodash'
+import { HTTP_NOT_FOUND } from '../constants'
 
 export class ApiError extends Error {
   public name: string = 'ApiError'
@@ -12,8 +13,8 @@ export class ApiError extends Error {
     return parseInt(_.get(this.original, 'request.status'), 10)
   }
 
-  public get code(): string | undefined {
-    return this.original && this.original.code
+  public get isNotFound(): boolean {
+    return this.status === HTTP_NOT_FOUND
   }
 
   public get data(): string | undefined {

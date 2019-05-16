@@ -55,7 +55,7 @@ class ProviderDashboard extends React.PureComponent<Props> {
         </h4>
         <Button disabled={provider.startedServicePending} onClick={this.handleDisconnect} variant="contained"
                 color="secondary">
-          Disconnect
+          {trans('app.provider.disconnect.button')}
         </Button>
       </div>
       <ConnectionInfo provider={provider}/>
