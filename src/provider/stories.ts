@@ -49,7 +49,7 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 
   if (identity) {
     Promise.resolve(dispatch(unlocksIdentityAction({
-      id: identity.id,
+      id: identity.id
       // passphrase: '123'
     }))).catch((e: ApiError) => setGeneralError(dispatch, e))
   }
@@ -105,8 +105,13 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
     : undefined
   const options: ServiceOptions = undefined
 
-  const result: any = await dispatch(startServiceAction({ providerId, type, accessPolicyId, options }))
-  const service: Service = result && result.value
+  const service: Service = await Promise
+    .resolve(dispatch(startServiceAction({ providerId, type, accessPolicyId, options })))
+    .then((result: any) => result && result.value)
+    .catch(error => {
+      setGeneralError(dispatch, error)
+      return null
+    })
 
   if (service && service.id) {
     dispatch(push(NAV_PROVIDER_DASHBOARD))
@@ -152,10 +157,14 @@ export const stopVpnStateFetchingStory = (dispatch) => {
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
+  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
   const { id, passphrase, ethAddress } = data
-  await dispatch(unlocksIdentityAction({ id, passphrase }))
-  await Promise.resolve(dispatch(updateIdentitiesAction({ id, ethAddress }))).catch(apiSubmissionError('walletAddress'))
-  await dispatch(setProviderStateAction({ isWalletEditMode: false }))
+  try {
+    await dispatch(unlocksIdentityAction({ id, passphrase }))
+    await dispatch(updateIdentitiesAction({ id, ethAddress }))
+    await dispatch(setProviderStateAction({ isWalletEditMode: false }))
+  } catch (e) {
+    apiSubmissionError('walletAddress')(e)
+  }
 }
 

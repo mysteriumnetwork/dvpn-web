@@ -32,9 +32,8 @@ export interface ProviderReducer {
   accessPolicy?: AccessPolicy,
   trafficOption?: TrafficOptions
   residentialConfirm?: boolean,
-  startedService?: Service,
   state?: any,
-  startedServiceReject?: any,
+  startedService?: Service,
   startedServicePending?: boolean,
   sessions?: ServiceSession[],
   natStatus?: NatStatus
@@ -129,18 +128,15 @@ export default typeToReducer({
   [STARTED_SERVICE]: {
     PENDING: (state) => ({
       ...state,
-      startedServiceReject: null,
       startedServicePending: true
     }),
-    REJECTED: (state, action: Action<any>) => ({
+    REJECTED: (state) => ({
       ...state,
-      startedServiceReject: action.payload,
       startedServicePending: false
     }),
     FULFILLED: (state, action: Action<any>) => ({
       ...state,
       startedService: action.payload,
-      startedServiceReject: null,
       startedServicePending: false
     })
   }
