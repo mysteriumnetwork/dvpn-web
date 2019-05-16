@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
-import TermsItem from './components/TermsItem/TermsItem'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
 import Checkbox from '../../../ui-kit/components/Checkbox/Checkbox'
@@ -54,11 +53,11 @@ class Terms extends React.PureComponent<Props> {
 }
 
 const mapStateToProps = (state) => ({
-  mdText: state.terms.mdText || {},
+  mdText: state.terms.mdText || {}
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onLoadTerms: () => dispatch(fetchTermsAction()),
+  onLoadTerms: () => dispatch(fetchTermsAction())
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

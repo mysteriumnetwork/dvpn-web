@@ -11,7 +11,7 @@ type Props = {
 
 const UsersList = (props: Props) => {
 
-  const { sessions = [] } = props.provider
+  const { sessions } = props.provider
 
   return (<div className={styles.usersList}>
       <table>
@@ -27,7 +27,7 @@ const UsersList = (props: Props) => {
       <div className={styles.scrollView}>
         <table>
           <tbody>
-          {sessions.map((value) => (<UserItem session={value}/>))}
+          {sessions && sessions.map((value) => (<UserItem session={value}/>))}
           </tbody>
         </table>
       </div>

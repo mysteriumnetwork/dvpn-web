@@ -18,7 +18,7 @@ import { InjectedFormProps } from 'redux-form'
 const styles = require('./AirdropWallet.module.scss')
 
 type Props = InjectedFormProps & {
-  state: { isWalletEditMode: boolean }
+  state: {isWalletEditMode: boolean}
   provider: ProviderReducer
   onChangeTrafficOption?: (value: string) => void
   formWalletAddressData?: Object
@@ -34,7 +34,7 @@ class AirdropWallet extends React.PureComponent<Props> {
 
   handleToggleWalletEditMode = () => {
     const { provider, onSetState, initialize, reset } = this.props
-    const { isWalletEditMode } = provider.state
+    const isWalletEditMode = _.get(provider, 'state.isWalletEditMode')
     onSetState({ isWalletEditMode: !isWalletEditMode })
     if (!isWalletEditMode) {
       reset()
@@ -61,7 +61,7 @@ class AirdropWallet extends React.PureComponent<Props> {
 
   render() {
     const { provider, error, submitting } = this.props
-    const { isWalletEditMode } = provider.state
+    const isWalletEditMode = _.get(provider, 'state.isWalletEditMode')
     return (
       <div>
         <div className={styles.flexedRow}>
@@ -132,5 +132,5 @@ export default injectSheet(styles)(compose(
   reduxForm({
     form: 'walletAddress'
   }),
-  immutableProps,
+  immutableProps
 )(AirdropWallet))

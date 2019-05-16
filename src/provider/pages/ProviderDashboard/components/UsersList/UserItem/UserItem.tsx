@@ -8,7 +8,7 @@ type Props = {
 }
 
 const UserItem = (props: Props) => {
-  const { consumerId, id } = props.session
+  const { consumerId } = props.session
   return (
     <tr>
       <td>
