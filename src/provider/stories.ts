@@ -15,6 +15,8 @@ import {
 import { ProviderReducer, TrafficOptions } from './reducer'
 import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
 import { Identity } from '../api/data/identity'
+import { push } from 'connected-react-router'
+import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 
 export const initProviderStory = (store: Store) => {
 
@@ -34,7 +36,7 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 
   if (identity) Promise.resolve(await dispatch(unlocksIdentityAction({ id: identity.id })))
 
-  dispatch(setIdentityPayoutAction(identity))
+  Promise.resolve(dispatch(setIdentityPayoutAction(identity))).catch(console.error)
 
   return identity
 }
@@ -74,6 +76,7 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
 
 export const stopAccessPolicyFetchingStory = () => {
   clearInterval(_accessPolicyInterval)
+  _accessPolicyInterval = null
 }
 
 export const startVpnServerStory = async (dispatch: Dispatch, provider: ProviderReducer) => {
@@ -84,26 +87,30 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
     : undefined
   const options: ServiceOptions = undefined
 
-  const service: Service = await dispatch(startServiceAction({ providerId, type, accessPolicyId, options }))
-
-  console.log('startVpnServerStory:', service)
+  const result: any = await dispatch(startServiceAction({ providerId, type, accessPolicyId, options }))
+  const service: Service = result && result.value
 
   if (service && service.id) {
+    dispatch(push(NAV_PROVIDER_DASHBOARD))
     stopAccessPolicyFetchingStory()
   }
 
 }
 
 export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
-  if (!service) return
+  if (!service) {
+    return
+  }
 
   await dispatch(stopServiceAction(service))
+
+  dispatch(push(NAV_PROVIDER_SETTINGS))
 
   return startAccessPolicyFetchingStory(dispatch)
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
+  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
   const { id, passphrase, ethAddress } = data
   console.log({ id, passphrase, ethAddress })
   await dispatch(unlocksIdentityAction({ id, passphrase }))

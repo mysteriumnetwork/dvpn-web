@@ -30,7 +30,7 @@ export interface ProviderReducer {
   startedService?: any,
   state?: any,
   startedServiceReject?: any,
-  tartedServicePending?: boolean
+  startedServicePending?: boolean
 }
 
 export enum TrafficOptions {
@@ -124,7 +124,7 @@ export default typeToReducer({
       ...state,
       startedService: action.payload,
       startedServiceReject: null,
-      tartedServicePending: false
+      startedServicePending: false
     })
   }
 
