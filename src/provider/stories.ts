@@ -5,7 +5,8 @@ import {
   setAccessPolicyAction,
   setIdentityAction,
   setIdentityPayoutAction,
-  setLocationAction, setProviderStateAction,
+  setLocationAction,
+  setProviderStateAction,
   startServiceAction,
   stopServiceAction,
   unlocksIdentityAction,
@@ -102,12 +103,8 @@ export const updateIdentitiesStory = async (
   dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
   const { id, passphrase, ethAddress } = data
   console.log({ id, passphrase, ethAddress })
-  console.log('1')
-  const a = await dispatch(unlocksIdentityAction({ id, passphrase }))
-  console.log('2',a)
-  const d= await dispatch(updateIdentitiesAction({ id, ethAddress }))
-  console.log('3',d)
-  const c= await dispatch(setProviderStateAction({ isWalletEditMode:false }))
-  console.log('4',c)
+  await dispatch(unlocksIdentityAction({ id, passphrase }))
+  await dispatch(updateIdentitiesAction({ id, ethAddress }))
+  await dispatch(setProviderStateAction({ isWalletEditMode: false }))
 }
 
