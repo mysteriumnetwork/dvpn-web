@@ -5,6 +5,7 @@ import trans from '../../../../../trans'
 import ResidentialIP from './components/ResidentialIP/ResidentialIP'
 import DataCenterIP from './components/DataCenterIP/DataCenterIP'
 import { ProviderReducer } from '../../../../reducer'
+import FlagIcon from '../../../../../ui-kit/components/FlagIcon'
 
 const styles = require('./ConnectionInformation.module.scss')
 
@@ -23,13 +24,13 @@ const ConnectionInformation = (props: Props) => {
   return (
     <div>
       <ExpansionPanel defaultExpanded={!residentialConfirm}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
           <p className={styles.appConnectionTitle}>{trans('app.provider.settings.your.connection.info')}</p>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <div className={styles.connectionFlexedRow}>
             {/*  TODO replace with dynamic country flag */}
-            <div className="flag-icon" />
+            {originalLocation && (<FlagIcon code={String(originalLocation.country).toLowerCase()}/>)}
             <div className={styles.connectionDetails}>
               <p>
                 <span className={styles.textBold}>{originalLocation && originalLocation.ip}</span>
@@ -39,9 +40,9 @@ const ConnectionInformation = (props: Props) => {
             </div>
           </div>
           {isResidential ? (
-            <ResidentialIP provider={provider} onChangeResidentialConfirm={onChangeResidentialConfirm} />
+            <ResidentialIP provider={provider} onChangeResidentialConfirm={onChangeResidentialConfirm}/>
           ) : isDataCenter && (
-            <DataCenterIP />
+            <DataCenterIP/>
           )}
         </ExpansionPanelDetails>
       </ExpansionPanel>

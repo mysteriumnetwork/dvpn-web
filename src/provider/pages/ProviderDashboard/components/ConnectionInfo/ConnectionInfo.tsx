@@ -1,6 +1,7 @@
 import * as React from 'react'
 import trans from '../../../../../trans'
 import { ProviderReducer } from '../../../../reducer'
+import FlagIcon from '../../../../../ui-kit/components/FlagIcon'
 
 const styles = require('./ConnectionInfo.module.scss')
 
@@ -23,7 +24,7 @@ const ConnectionInfo = (props: Props) => {
       <tr>
         <td>
           <div className={styles.ipItem}>
-            <div className="flag-icon" />
+            {location.country && (<FlagIcon code={String(location.country).toLowerCase()}/>)}
             <p>{location.ip}</p>
           </div>
         </td>

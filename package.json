@@ -98,6 +98,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-flag-icon-css": "^1.0.25",
     "react-intl": "^2.8.0",
     "react-jss": "^8.6.1",
     "react-markdown": "^4.0.8",
