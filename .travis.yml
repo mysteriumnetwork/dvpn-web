@@ -50,3 +50,18 @@ jobs:
           api_key: "$GITHUB_API_KEY"
           on:
             tags: true
+      after_success:
+        - >
+          curl -X POST \
+          https://api.travis-ci.com/repo/mysteriumnetwork%2Fgo-dvpn-web/requests \
+          -H 'authorization: token ${TRAVIS_API_TOKEN}' \
+          -H 'cache-control: no-cache' \
+          -H 'content-type: application/json' \
+          -H 'travis-api-version: 3' \
+          -d '{ "request": {
+            "config": {
+              "env": {
+                "GIT_TAG_VERSION": "${TRAVIS_TAG}"
+              }
+            }}
+          }'
