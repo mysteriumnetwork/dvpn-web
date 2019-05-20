@@ -11,7 +11,6 @@ import {
   setServiceSessionAction,
   startServiceAction,
   stopServiceAction,
-  unlocksIdentityAction,
   updateIdentitiesAction
 } from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
@@ -41,17 +40,13 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
   const identity: Identity = result.value
 
   if (identity) {
-    Promise.resolve(dispatch(unlocksIdentityAction({
-      id: identity.id
-      // passphrase: '123'
-    }))).catch((e: ApiError) => setGeneralError(dispatch, e))
+    Promise.resolve(dispatch(getIdentityPayoutAction(identity)))
+      .catch((e: ApiError) => {
+        if (!e.isNotFound) {
+          setGeneralError(dispatch, e)
+        }
+      })
   }
-
-  Promise.resolve(dispatch(getIdentityPayoutAction(identity))).catch((e: ApiError) => {
-    if (!e.isNotFound) {
-      setGeneralError(dispatch, e)
-    }
-  })
 
   return identity
 }
@@ -171,9 +166,9 @@ let _VpnStateInterval
 
 export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Service) => {
   const fetch = async () => Promise.all([
-    dispatch(setNatStatusAction(await getNatStatus())),
-    dispatch(setServiceSessionAction(await getServiceSessions(service)))
-  ])
+    dispatch(setNatStatusAction(await getNatStatus().catch(() => null))),
+    dispatch(setServiceSessionAction(await getServiceSessions(service).catch(() => null)))
+  ]).catch(console.error)
 
   fetch().catch(console.error)
 
@@ -191,9 +186,8 @@ export const stopVpnStateFetchingStory = (dispatch) => {
 
 export const updateIdentitiesStory = async (
   dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
-  const { id, passphrase, ethAddress } = data
+  const { id, ethAddress } = data
   try {
-    await dispatch(unlocksIdentityAction({ id, passphrase }))
     await dispatch(updateIdentitiesAction({ id, ethAddress }))
     await dispatch(setProviderStateAction({ isWalletEditMode: false }))
   } catch (e) {

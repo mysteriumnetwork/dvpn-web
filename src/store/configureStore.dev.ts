@@ -6,6 +6,7 @@ import { createLogger } from 'redux-logger'
 import promiseMiddleware from 'redux-promise-middleware'
 // import { reducer as reduxFormReducer } from 'redux-form/immutable';
 import createRootReducer from '../rootReducer'
+import { socketIoMiddleware } from '../utils/socketIo'
 
 
 const history = createHashHistory()
@@ -19,10 +20,12 @@ const configureStore = (initialState?: any) => {
 
   // Thunk Middleware
   middleware.push(thunk)
+
+  // Promise Middleware
   middleware.push(promiseMiddleware)
 
-  // Redux Form Middleware
-  // middleware.push(reduxFormReducer)
+  // Socket.IO Middleware
+  middleware.push(socketIoMiddleware)
 
   // Logging Middleware
   const logger = createLogger({

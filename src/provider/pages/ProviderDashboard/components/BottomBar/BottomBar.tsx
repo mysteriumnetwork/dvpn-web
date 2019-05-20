@@ -22,7 +22,7 @@ const BottomBar = (props: Props) => (
     <div className={styles.bottomBar}>
       <div className={styles.bottomBarItemNat}>
         <h4>{trans('app.node.running.nat.status')}</h4>
-        <p><NatStatus status={_.get(props, 'provider.natStatus.status')}/></p>
+        <div><NatStatus status={_.get(props, 'provider.natStatus.status')}/></div>
       </div>
       {/*<div className={styles.bottomBarItem}>*/}
       {/*  <h4>{trans('app.node.running.uptime')}</h4>*/}
