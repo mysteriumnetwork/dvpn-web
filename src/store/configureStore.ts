@@ -16,7 +16,7 @@ export const initState = (id: string = 'default') => {
   console.log('*initState', { ...initState })
   try {
     const data = localStorage.getItem(`myst-${id}`)
-    return data && JSON.parse(data)
+    initState = _.defaultsDeep(data && JSON.parse(data), initState)
   } catch (e) {
     console.error(e)
   }
@@ -25,7 +25,7 @@ export const initState = (id: string = 'default') => {
   return initState
 }
 
-export const saveState = (state: {provider: ProviderReducer}, id: string = 'default') => {
+export const saveState = (state: { provider: ProviderReducer }, id: string = 'default') => {
   try {
     const initialState = {
       provider: {
