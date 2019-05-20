@@ -21,6 +21,7 @@ import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import _ from 'lodash'
+import { createAction } from 'redux-actions'
 
 export const initProviderStory = (store: Store) => {
 
@@ -29,6 +30,9 @@ export const initProviderStory = (store: Store) => {
     fetchIdentityStory(store.dispatch),
     startServiceFetchingStory(store)
   ]).catch(console.error)
+  setInterval(()=>{
+    store.dispatch(createAction("socket/emit/test")("test"))
+  },10000)
 }
 
 export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({
@@ -76,7 +80,7 @@ export const startServiceFetchingStory = async (store: Store) => {
   fetch().catch(console.error)
 
   if (!_serviceInterval) {
-    _serviceInterval = setInterval(fetch, 5000)
+    // _serviceInterval = setInterval(fetch, 5000)
   }
 }
 
@@ -110,7 +114,7 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
   fetch().catch(console.error)
 
   if (!_accessPolicyInterval) {
-    _accessPolicyInterval = setInterval(fetch, 3000)
+    // _accessPolicyInterval = setInterval(fetch, 3000)
   }
 }
 
@@ -173,7 +177,7 @@ export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Se
   fetch().catch(console.error)
 
   if (!_VpnStateInterval) {
-    _VpnStateInterval = setInterval(fetch, 3000)
+    // _VpnStateInterval = setInterval(fetch, 3000)
   }
 }
 

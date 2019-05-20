@@ -148,7 +148,7 @@ export default typeToReducer({
   },
 
   [WS_TEST]: (state, action: Action<boolean>) => {
-    alert(action.payload)
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!',action.payload)
     return state
   }
 
