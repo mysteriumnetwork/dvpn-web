@@ -48,7 +48,7 @@ export class TequilaApi implements TequilaApiInterface {
   }
 
   public async me(passphrase: string): Promise<Identity> {
-    const identity = await this.http.put<Identity>('me', { passphrase })
+    const identity = await this.http.put<Identity>('identities/current', { passphrase })
 
     if (!identity) {
       throw new Error('Identity response body is missing')
