@@ -43,9 +43,9 @@ export const setAccessPoliciesAction = createAction(ACCESS_POLICIES)
 
 export const setAccessPolicyAction = createAction(ACCESS_POLICY)
 
-export const startServiceAction = createAction(STARTED_SERVICE, startService, d => d)
+export const startServiceAction = createAction(STARTED_SERVICE, startService, d => ({ ...d, pending: true }))
 
-export const stopServiceAction = createAction(STARTED_SERVICE, stopService)
+export const stopServiceAction = createAction(STARTED_SERVICE, stopService, d => ({ ...d, pending: true }))
 
 export const getServiceAction = createAction(STARTED_SERVICE, getCurrentService)
 

@@ -58,7 +58,6 @@ export default typeToReducer({
         ...state.payout,
         ethAddress: _.get(action, 'meta.ethAddress')
       }
-
     })
   },
 
@@ -132,9 +131,9 @@ export default typeToReducer({
   }),
 
   [STARTED_SERVICE]: {
-    PENDING: (state) => ({
+    PENDING: (state, { meta }) => ({
       ...state,
-      startedServicePending: true
+      startedServicePending: meta && meta.pending
     }),
     REJECTED: (state) => ({
       ...state,
