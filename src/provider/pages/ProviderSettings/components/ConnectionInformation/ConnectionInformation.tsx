@@ -11,7 +11,6 @@ const styles = require('./ConnectionInformation.module.scss')
 
 type Props = {
   provider: ProviderReducer
-
   onChangeResidentialConfirm: (value: boolean) => void
 }
 
@@ -22,29 +21,31 @@ const ConnectionInformation = (props: Props) => {
   const isDataCenter = originalLocation && originalLocation.node_type === 'data center'
 
   return (
-    <ExpansionPanel defaultExpanded={!residentialConfirm}>
-      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-        <p className={styles.appConnectionTitle}>{trans('app.provider.settings.your.connection.info')}</p>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={styles.expansionPanelDetails}>
-        <div className={styles.connectionFlexedRow}>
-          {/*  TODO replace with dynamic country flag */}
-          {originalLocation && (<FlagIcon code={String(originalLocation.country).toLowerCase()}/>)}
-          <div className={styles.connectionDetails}>
-            <p>
-              <span className={styles.textBold}>{originalLocation && originalLocation.ip}</span>
-              {originalLocation && originalLocation.country}
-            </p>
-            <button>{trans('app.provider.settings.connection.info.change')}</button>
+    <div>
+      <ExpansionPanel defaultExpanded={!residentialConfirm}>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+          <p className={styles.appConnectionTitle}>{trans('app.provider.settings.your.connection.info')}</p>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={styles.expansionPanelDetails}>
+          <div className={styles.connectionFlexedRow}>
+            {/*  TODO replace with dynamic country flag */}
+            {originalLocation && (<FlagIcon code={String(originalLocation.country).toLowerCase()}/>)}
+            <div className={styles.connectionDetails}>
+              <p>
+                <span className={styles.textBold}>{originalLocation && originalLocation.ip}</span>
+                {originalLocation && originalLocation.country}
+              </p>
+              <button>{trans('app.provider.settings.connection.info.change')}</button>
+            </div>
           </div>
-        </div>
-        {isResidential ? (
-          <ResidentialIP provider={provider} onChangeResidentialConfirm={onChangeResidentialConfirm}/>
-        ) : isDataCenter && (
-          <DataCenterIP/>
-        )}
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+          {isResidential ? (
+            <ResidentialIP provider={provider} onChangeResidentialConfirm={onChangeResidentialConfirm}/>
+          ) : isDataCenter && (
+            <DataCenterIP/>
+          )}
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    </div>
   )
 }
 
