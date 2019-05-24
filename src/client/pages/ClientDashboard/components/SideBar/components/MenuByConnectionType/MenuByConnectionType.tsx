@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { MouseEventHandler } from 'react'
 import injectSheet from 'react-jss'
 import trans from '../../../../../../../trans'
+import ConnectionTypeIcon from '../../../../../../../ui-kit/components/ConnectionTypeIcon'
 
 const classNames = require('classnames')
 
@@ -19,8 +19,11 @@ const styles = theme => ({
       color: theme.colors.textLightGrey
     },
     '& > button': {
-      width: '100%'
-    }
+      width: '100%',
+      outline: 'none',
+      border: 'none',
+      background: 'transparent',
+    },
   },
   menuItem: {
     display: 'flex',
@@ -30,30 +33,15 @@ const styles = theme => ({
     borderRadius: 4,
     marginBottom: 2,
     color: theme.colors.textMain,
-    '& .iconWireGuard': {
-      width: 24,
-      height: 24,
-      minWidth: 24,
-      marginRight: 10,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
-      backgroundSize: '184px 232px',
-      backgroundPosition: '-52px -60px'
-    },
-    '& .iconOpenVPN': {
-      width: 24,
-      height: 24,
-      minWidth: 24,
-      marginRight: 10,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
-      backgroundSize: '184px 232px',
-      backgroundPosition: '-52px -36px'
-    },
     '& .itemsCount': {
       position: 'absolute',
       top: 10,
       right: 14,
       color: theme.colors.textLightGrey
-    }
+    },
+    '& > p': {
+      fontSize: 14,
+    },
   },
   active: {
     color: theme.colors.whiteColor,
@@ -61,12 +49,6 @@ const styles = theme => ({
     '& .itemsCount': {
       opacity: '0.5',
       color: theme.colors.whiteColor
-    },
-    '& .iconWireGuard': {
-      backgroundPosition: '-76px -60px'
-    },
-    '& .iconOpenVPN': {
-      backgroundPosition: '-76px -36px'
     }
   }
 })
@@ -74,39 +56,31 @@ const styles = theme => ({
 export interface IMenuItemProps {
   classes: IStyles
   style?: React.CSSProperties,
-  onClick?: MouseEventHandler
-  list?: {name: string, value: string}[]
+  onClick?: Function
+  counts?: Map<string, number>
   active?: string
 }
 
-const MenuByConnectionType: React.FunctionComponent<IMenuItemProps> = (props: IMenuItemProps) => (
-  <div className={props.classes.root}>
-    <h3>{trans('app.client.side.bar.by.connection.type')}</h3>
-    <button onClick={props.onClick}>
-      <div
-        className={classNames(props.classes.menuItem, {
-          // add class active when item selected
-          // [props.classes.active]
-        })}
-      >
-        <div className="iconWireGuard"/>
-        <p>WireGuard</p>
-        <div className="itemsCount">1</div>
+class MenuByConnectionType extends React.PureComponent<IMenuItemProps> {
+
+  render() {
+    const { classes, counts, active, onClick } = this.props
+
+    return (
+      <div className={classes.root}>
+        <h3>{trans('app.client.side.bar.by.connection.type')}</h3>
+        {counts && Array.from(counts).map(([type, count]) => (
+          <button type="button" onClick={() => onClick && onClick(type)}>
+            <div className={classNames(classes.menuItem, { [classes.active]: Boolean(active) })}>
+              <ConnectionTypeIcon type={type}/>
+              <p>{trans(`connection.type.${type}`)}</p>
+              <div className="itemsCount">{Number(count)}</div>
+            </div>
+          </button>
+        ))}
       </div>
-    </button>
-    <button onClick={props.onClick}>
-      <div
-        className={classNames(props.classes.menuItem, {
-          // add class active when item selected
-          // [props.classes.active]
-        })}
-      >
-        <div className="iconOpenVPN"/>
-        <p>OpenVPN</p>
-        <div className="itemsCount">2</div>
-      </div>
-    </button>
-  </div>
-)
+    )
+  }
+}
 
 export default injectSheet(styles)(MenuByConnectionType)

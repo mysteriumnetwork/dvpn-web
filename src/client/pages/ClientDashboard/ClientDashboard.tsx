@@ -5,7 +5,7 @@ import BottomBar from './components/BottomBar/BottomBar'
 import ConnectionTable from './components/ConnectionTable/ConnectionTable'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
-import { initClientDashboardStory } from '../../stories'
+import { applyFilterStory, initClientDashboardStory, selectProposalStory } from '../../stories'
 import { ClientReducer } from '../../reducer'
 import { Proposal } from '../../../api/data/proposal'
 import { DefaultProps } from '../../../types'
@@ -13,7 +13,10 @@ import { DefaultProps } from '../../../types'
 const styles = require('./ClientDashboard.module.scss')
 
 type Props = ClientReducer & DefaultProps & {
-  onInit: Function
+  onInit?: Function
+  onDestroy?: Function
+  onSelectConnection?: Function
+  onSelectFilter?: Function
 }
 
 class ClientDashboard extends React.PureComponent<Props> {
@@ -23,27 +26,31 @@ class ClientDashboard extends React.PureComponent<Props> {
     props.onInit && props.onInit()
   }
 
-  get proposals(): Proposal[] {
-    const { proposals } = this.props
+  componentWillUnmount() {
+    const { onDestroy } = this.props
 
-    return proposals || []
+    return onDestroy && onDestroy()
   }
 
-  get proposalsCount(): number {
-    return this.proposals.length
-  }
-
-  get proposalsFaCount(): number {
-    return 0
+  get filteredProposals(): Proposal[] {
+    return this.props.proposals || []
   }
 
   render() {
-    console.log('ClientDashboard:', this.props)
+    console.log('ClientDashboard:', this.filteredProposals)
+
+    const { onSelectConnection, onSelectFilter, proposalSelected, proposalsCount, proposalsFavoritesCount, proposalsByTypeCounts, proposalsByCountryCounts } = this.props
 
     return (
       <div className={styles.dashboardCover}>
-        <SideBar proposals={this.proposalsCount}/>
-        <ConnectionTable/>
+        <SideBar proposals={proposalsCount}
+                 favorites={proposalsFavoritesCount}
+                 byCountry={proposalsByCountryCounts}
+                 byType={proposalsByTypeCounts}
+                 onChange={onSelectFilter}/>
+        <ConnectionTable proposals={this.filteredProposals}
+                         selected={proposalSelected}
+                         onSelect={onSelectConnection}/>
         <BottomBar/>
       </div>
     )
@@ -55,7 +62,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onInit: () => initClientDashboardStory(dispatch)
+  onInit: () => initClientDashboardStory(dispatch),
+  onSelectConnection: (proposal) => selectProposalStory(dispatch, proposal),
+  onSelectFilter: (filter) => applyFilterStory(dispatch, filter)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

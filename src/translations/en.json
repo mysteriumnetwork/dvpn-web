@@ -88,7 +88,9 @@
   "error.title": "Something went wrong",
   "app.client.node.disconnected": "The node has disconnected.",
   "how.fix.nat": "How to configure NAT manually?",
-
+  "connection.type.openvpn":"OpenVPN",
+  "connection.type.wireguard":"WireGuard",
+  "connection.type.noop":"noop",
 
   "": ""
 }

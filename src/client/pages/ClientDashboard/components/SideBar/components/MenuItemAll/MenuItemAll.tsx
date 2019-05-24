@@ -2,6 +2,7 @@ import * as React from 'react'
 import { MouseEventHandler } from 'react'
 import injectSheet from 'react-jss'
 import trans from '../../../../../../../trans'
+import icons from 'app/components/assets/images/app-icons.svg'
 
 const classNames = require('classnames')
 
@@ -16,11 +17,11 @@ interface IStyles {
 const styles = theme => ({
   root: {
     '& > button': {
-      width: '100%'
+      width: '100%',
+      outline: 'none',
+      border: 'none',
+      background: 'transparent',
     },
-    '& > a': {
-      width: '100%'
-    }
   },
   menuItem: {
     display: 'flex',
@@ -35,28 +36,32 @@ const styles = theme => ({
       height: 24,
       minWidth: 24,
       marginRight: 10,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
+      background: `url(${icons}) no-repeat`,
       backgroundSize: '184px 232px',
-      backgroundPosition: '4px -36px'
+      backgroundPosition: '4px -36px',
     },
     '& .itemsCount': {
       position: 'absolute',
       top: 10,
       right: 14,
-      color: theme.colors.textLightGrey
-    }
+      fontSize: 14,
+      color: theme.colors.textLightGrey,
+    },
+    '& > p': {
+      fontSize: 14,
+    },
   },
   active: {
     color: theme.colors.whiteColor,
     background: theme.colors.actionPurple,
     '& .allIcon': {
-      backgroundPosition: '-20px -36px'
+      backgroundPosition: '-20px -36px',
     },
     '& .itemsCount': {
       opacity: '0.5',
-      color: theme.colors.whiteColor
-    }
-  }
+      color: theme.colors.whiteColor,
+    },
+  },
 })
 
 export interface IMenuItemAllProps {
@@ -69,28 +74,13 @@ export interface IMenuItemAllProps {
 
 const MenuItemAll: React.FunctionComponent<IMenuItemAllProps> = (props: IMenuItemAllProps) => (
   <div className={props.classes.root}>
-    <button onClick={props.onClick}>
-      <div
-        className={classNames(props.classes.menuItem, {
-          [props.classes.active]: Boolean(props.active)
-        })}
-      >
+    <button type="submit">
+      <div className={classNames(props.classes.menuItem, { [props.classes.active]: Boolean(props.active) })}>
         <div className="allIcon"/>
         <p>{trans('app.client.side.bar.all')}</p>
         <div className="itemsCount">{Number(props.count)}</div>
       </div>
     </button>
-    <a href="/">
-      <div
-        className={classNames(props.classes.menuItem, {
-          [props.classes.active]: Boolean(props.active)
-        })}
-      >
-        <div className="allIcon"/>
-        <p>{trans('app.client.side.bar.all')}</p>
-        <div className="itemsCount">{Number(props.count)}</div>
-      </div>
-    </a>
   </div>
 )
 

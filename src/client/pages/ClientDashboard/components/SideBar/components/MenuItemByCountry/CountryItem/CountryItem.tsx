@@ -1,6 +1,7 @@
 import * as React from 'react'
+import { MouseEventHandler } from 'react'
 import injectSheet from 'react-jss'
-import trans from '../../../../../../../../trans'
+import FlagIcon from '../../../../../../../../ui-kit/components/FlagIcon'
 
 const classNames = require('classnames')
 
@@ -12,8 +13,11 @@ interface IStyles {
 
 const styles = theme => ({
   root: {
-    '& > a': {
+    '& > button': {
       width: '100%',
+      outline: 'none',
+      border: 'none',
+      background: 'transparent',
     },
   },
   menuItem: {
@@ -30,8 +34,12 @@ const styles = theme => ({
     '& .itemsCount': {
       position: 'absolute',
       top: 10,
-      right: 14,
+      right: 10,
+      fontSize: 14,
       color: theme.colors.textLightGrey,
+    },
+    '& > p': {
+      fontSize: 14,
     },
   },
   active: {
@@ -45,25 +53,23 @@ const styles = theme => ({
 })
 
 export interface IMenuItemProps {
-  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
+  onClick?: MouseEventHandler
+  country?: string
+  count?: number
+  active?: string
 }
 
-const CountryItem: React.SFC<IMenuItemProps> = (props: IMenuItemProps) => (
+const CountryItem: React.FunctionComponent<IMenuItemProps> = (props: IMenuItemProps) => (
   <div className={props.classes.root}>
-    <a href="/">
-      <div
-        className={classNames(props.classes.menuItem, {
-          // add class active when item selected
-          // [props.classes.active]
-        })}
-      >
-        <div className="flag-icon" />
-        <p>{trans('app.client.side.bar.ireland')}</p>
-        <div className="itemsCount">23</div>
+    <button type="submit" onClick={props.onClick}>
+      <div className={classNames(props.classes.menuItem, { [props.classes.active]: props.active })}>
+        <FlagIcon code={String(props.country).toLowerCase()}/>
+        <p>{props.country}</p>
+        <div className="itemsCount">{props.count}</div>
       </div>
-    </a>
+    </button>
   </div>
 )
 

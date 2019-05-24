@@ -3,23 +3,71 @@ import MenuItemAll from './components/MenuItemAll/MenuItemAll'
 import MenuItemFavorite from './components/MenuItemFavorite/MenuItemFavorite'
 import MenuByConnectionType from './components/MenuByConnectionType/MenuByConnectionType'
 import MenuItemByCountry from './components/MenuItemByCountry/MenuItemByCountry'
+import { ProposalsFilter } from '../../../../reducer'
 
 const styles = require('./SideBar.module.scss')
 
 type Props = {
   proposals?: number,
   favorites?: number,
-  byType?: {name: string, value: string}[]
-  byCountry?: {name: string, value: string}[]
+  byType?: Map<string, number>
+  byCountry?: Map<string, number>
+  onChange?: Function
+  filter?: ProposalsFilter
 }
 
-const SideBar = (props: Props) => (
-  <div className={styles.sideBarRoot}>
-    <MenuItemAll count={props.proposals}/>
-    {props.favorites && (<MenuItemFavorite count={props.favorites}/>)}
-    {(props.byType && props.byType.length && <MenuByConnectionType/>)}
-    {(props.byCountry && props.byCountry.length && <MenuItemByCountry/>)}
-  </div>
-)
+class SideBar extends React.PureComponent<Props> {
+
+  protected changeFilter(filter?: ProposalsFilter) {
+    const { onChange } = this.props
+
+    return onChange && onChange(filter)
+  }
+
+  handleClickItemAll = () => this.changeFilter()
+
+  handleItemFavorite = () => this.changeFilter({ favorite: true })
+
+  handleConnectionType = (type) => this.changeFilter({ type })
+
+  handleItemByCountry = (country) => this.changeFilter({ country })
+
+  render() {
+    const { proposals, favorites, byCountry, byType, filter } = this.props
+
+    return (
+      <div className={styles.sideBarRoot}>
+        <MenuItemAll count={proposals || 0} onClick={this.handleClickItemAll} active={!filter}/>
+        {
+          favorites
+            ? (
+              <MenuItemFavorite count={favorites}
+                                onClick={this.handleItemFavorite}
+                                active={filter && filter.favorite}/>
+            )
+            : null
+        }
+        {
+          byType && byType.size
+            ? (
+              <MenuByConnectionType counts={byType}
+                                    onClick={this.handleConnectionType}
+                                    active={filter && filter.type}/>
+            )
+            : null
+        }
+        {
+          byCountry && byCountry.size
+            ? (
+              <MenuItemByCountry counts={byCountry}
+                                 onClick={this.handleItemByCountry}
+                                 active={filter && filter.country}/>
+            )
+            : null
+        }
+      </div>
+    )
+  }
+}
 
 export default SideBar
