@@ -8,5 +8,8 @@ export interface Proposal {
   providerId: string
   serviceType: string
   serviceDefinition: ServiceDefinition
+}
 
+export interface ProposalsResponse {
+  proposals?: Proposal[]
 }

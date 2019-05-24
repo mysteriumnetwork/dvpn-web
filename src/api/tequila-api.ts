@@ -7,6 +7,8 @@ import { NatStatus } from './data/nat-status'
 import { Identity, IdentityResponse } from './data/identity'
 import { IdentityPayout } from './data/identity-payout'
 import { ServiceSession, ServiceSessionResponse } from './data/service-session'
+import { Proposal, ProposalsResponse } from './data/proposal'
+import { ProposalParams } from './data/proposal-params'
 
 export interface TequilaApiInterface {
   //location
@@ -40,6 +42,10 @@ export interface TequilaApiInterface {
   updateIdentityPayout(id: string, ethAddress: string): Promise<void>
 
   unlocksIdentity(id: string, passphrase: string): Promise<void>
+
+  //proposals
+
+  proposals(params?: ProposalParams): Promise<Proposal[]>
 }
 
 export class TequilaApi implements TequilaApiInterface {
@@ -145,6 +151,17 @@ export class TequilaApi implements TequilaApiInterface {
 
   public async unlocksIdentity(id: string, passphrase: string): Promise<void> {
     return this.http.put(`identities/${id}/unlock`, { passphrase })
+  }
+
+  //proposals
+
+  public async proposals(params?: ProposalParams): Promise<Proposal[]> {
+    const response = await this.http.get<ProposalsResponse>(`proposals`, params)
+    if (!response) {
+      throw new Error('Proposals response body is missing')
+    }
+
+    return (response && response.proposals) || []
   }
 
 }

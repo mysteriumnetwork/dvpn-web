@@ -6,12 +6,19 @@ import MenuItemByCountry from './components/MenuItemByCountry/MenuItemByCountry'
 
 const styles = require('./SideBar.module.scss')
 
-const SideBar = () => (
+type Props = {
+  proposals?: number,
+  favorites?: number,
+  byType?: {name: string, value: string}[]
+  byCountry?: {name: string, value: string}[]
+}
+
+const SideBar = (props: Props) => (
   <div className={styles.sideBarRoot}>
-    <MenuItemAll />
-    <MenuItemFavorite />
-    <MenuByConnectionType />
-    <MenuItemByCountry />
+    <MenuItemAll count={props.proposals}/>
+    {props.favorites && (<MenuItemFavorite count={props.favorites}/>)}
+    {(props.byType && props.byType.length && <MenuByConnectionType/>)}
+    {(props.byCountry && props.byCountry.length && <MenuItemByCountry/>)}
   </div>
 )
 
