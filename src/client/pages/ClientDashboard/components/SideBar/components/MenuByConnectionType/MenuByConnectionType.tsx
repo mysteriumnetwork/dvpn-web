@@ -33,11 +33,15 @@ const styles = theme => ({
     borderRadius: 4,
     marginBottom: 2,
     color: theme.colors.textMain,
+    '& .connection-type-icon': {
+      marginRight: 6
+    },
     '& .itemsCount': {
       position: 'absolute',
       top: 10,
       right: 14,
-      color: theme.colors.textLightGrey
+      fontSize: 14,
+      color: theme.colors.textLightGrey,
     },
     '& > p': {
       fontSize: 14,
@@ -70,7 +74,7 @@ class MenuByConnectionType extends React.PureComponent<IMenuItemProps> {
       <div className={classes.root}>
         <h3>{trans('app.client.side.bar.by.connection.type')}</h3>
         {counts && Array.from(counts).map(([type, count]) => (
-          <button type="button" onClick={() => onClick && onClick(type)}>
+          <button type="button" key={type} onClick={() => onClick && onClick(type)}>
             <div className={classNames(classes.menuItem, { [classes.active]: Boolean(active) })}>
               <ConnectionTypeIcon type={type}/>
               <p>{trans(`connection.type.${type}`)}</p>

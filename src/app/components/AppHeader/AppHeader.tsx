@@ -4,8 +4,10 @@ import injectSheet from 'react-jss'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
 import trans from '../../../trans'
 import { connect } from 'react-redux'
-import { NAV_CLIENT_DASHBOARD } from '../../../client/client.links'
+import { NAV_CLIENT_CONNECTED, NAV_CLIENT_CONNECTING, NAV_CLIENT_DASHBOARD } from '../../../client/client.links'
 import AppMenu from '../AppMenu/AppMenu'
+import _ from 'lodash'
+import { ConnectionStatus } from 'mysterium-vpn-js'
 
 const classNames = require('classnames')
 
@@ -69,39 +71,53 @@ export interface IAppHeaderProps {
   onChange?: any
   classes: IStyles
   style?: React.CSSProperties
-  started?: boolean
+  startedService?: boolean
+  connectionStatus?: ConnectionStatus
+  routerLocation?: string
 }
 
-const AppHeader: React.SFC<IAppHeaderProps> = (props: IAppHeaderProps) => (
+const clientLinkByConnectionStatus = (status: ConnectionStatus) => {
+  switch (status) {
+    case ConnectionStatus.CONNECTING:
+      return NAV_CLIENT_CONNECTING
+    case ConnectionStatus.DISCONNECTING:
+    case ConnectionStatus.CONNECTED:
+      return NAV_CLIENT_CONNECTED
+    default:
+      return NAV_CLIENT_DASHBOARD
+  }
+}
+
+const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderProps) => (
   <div className={props.classes.appHeader}>
     <div className={props.classes.tabContainer}>
-      <Link to={NAV_CLIENT_DASHBOARD}>
+      <Link to={clientLinkByConnectionStatus(props.connectionStatus)}>
         <div
           className={classNames(props.classes.tab, {
-            // add class active when tab is open
-            //   [props.classes.active]&&selected
+            [props.classes.active]: String(props.routerLocation).startsWith('/client')
           })}
         >
           {trans('app.header.connect.vpn')}
         </div>
       </Link>
-      <Link to={props.started ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
+      <Link to={props.startedService ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
         <div
           className={classNames(props.classes.tab, {
-            // add class active when tab is open
-            //   [props.classes.active]&&selected
+            [props.classes.active]: String(props.routerLocation).startsWith('/provider')
           })}
         >
           {trans('app.header.provide.vpn')}
         </div>
       </Link>
     </div>
-    <AppMenu />
+    <AppMenu/>
   </div>
 )
 
-const mapStateToProps = (state) => ({
-  started: Boolean(state.provider && state.provider.startedService)
+const mapStateToProps = (state): any => ({
+  routerLocation: _.get(state, 'router.location.pathname'),
+  startedService: Boolean(state.provider && state.provider.startedService),
+  connectionStatus: Boolean(state.client && state.client.connectionStatus),
 })
 
 export default injectSheet(styles)(connect(mapStateToProps)(AppHeader))

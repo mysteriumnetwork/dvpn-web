@@ -1,6 +1,10 @@
 @import '../../../../../../../constatnts';
 
 .root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
   h3 {
     padding: 6px 14px;
     font-size: $buttonText;
@@ -10,4 +14,6 @@
 .menuList {
   margin: 0;
   padding: 0;
+  flex: 1;
+  overflow: auto;
 }

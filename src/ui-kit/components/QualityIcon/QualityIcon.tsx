@@ -1,5 +1,8 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
+import icons from '../../../app/components/assets/images/app-icons.svg'
+import { Metrics, QualityLevel } from 'mysterium-vpn-js'
+import { qualityCalculator } from '../../../utils/quality-calculator'
 
 const classNames = require('classnames')
 
@@ -14,7 +17,7 @@ const styles = theme => ({
       width: 24,
       height: 24,
       minWidth: 24,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
+      background: `url(${icons}) no-repeat`,
       backgroundSize: '184px 232px',
     },
     '& .quality-1': {
@@ -49,19 +52,51 @@ const styles = theme => ({
 export interface IQualityProps {
   selected?: boolean
   classes: IStyles
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  metrics?: Metrics,
+  active?: boolean
 }
 
-const Quality: React.SFC<IQualityProps> = (props: IQualityProps) => (
-  <div
-    className={classNames(props.classes.root, {
-      // set class highlight when item selected
-      // selected&&[props.classes.highlight]
-    })}
-  >
-    {/* //render Quality icon class quality-1/quality-2/quality-3/quality-4 */}
-    <div className="quality-1" />
-  </div>
-)
+interface IQualityState {
+  level?: QualityLevel
+}
+
+class Quality extends React.PureComponent<IQualityProps, IQualityState> {
+  state: Readonly<IQualityState> = { level: QualityLevel.UNKNOWN }
+
+  static getDerivedStateFromProps(props: IQualityProps, state: IQualityState): IQualityState {
+    const { metrics } = props
+
+    if (!metrics) {
+      return { ...state, level: QualityLevel.UNKNOWN }
+    }
+
+    const value = qualityCalculator.calculateValue(metrics)
+
+    return { ...state, level: qualityCalculator.calculateLevel(value) }
+  }
+
+  get levelClassName() {
+    switch (this.state.level) {
+      case QualityLevel.HIGH:
+        return 'quality-4'
+      case QualityLevel.MEDIUM:
+        return 'quality-3'
+      case QualityLevel.LOW:
+        return 'quality-2'
+      default:
+        return 'quality-1'
+    }
+  }
+
+  render() {
+    const { classes, active } = this.props
+    return (
+      <div className={classNames(classes.root, { [classes.highlight]: active })}>
+        <div className={this.levelClassName}/>
+      </div>
+    )
+  }
+}
 
 export default injectSheet(styles)(Quality)

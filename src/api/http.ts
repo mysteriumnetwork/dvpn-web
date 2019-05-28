@@ -1,10 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ApiError } from './api-error'
 
-export const HTTP_API_URL = process.env.REACT_APP_HTTP_API_URL
-export const HTTP_TIMEOUT_DEFAULT = Number(process.env.REACT_APP_HTTP_TIMEOUT_DEFAULT)
-export const HTTP_REACT_APP_HTTP = Number(process.env.REACT_APP_HTTP_REACT_APP_HTTP)
-
 export interface HttpParams {
   [s: string]: any
 }

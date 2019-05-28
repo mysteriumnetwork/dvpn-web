@@ -2,10 +2,10 @@ import { Proposal } from '../api/data/proposal'
 import _ from 'lodash'
 
 export interface ProposalsCountsInterface {
-  proposalsCount: number,
-  proposalsFavoritesCount: number,
-  proposalsByCountryCounts: Map<string, number>,
-  proposalsByTypeCounts: Map<string, number>
+  proposalsCount?: number,
+  proposalsFavoritesCount?: number,
+  proposalsByCountryCounts?: Map<string, number>,
+  proposalsByTypeCounts?: Map<string, number>
 }
 
 function increase(values: Map<string, number>, key: string): Map<string, number> {

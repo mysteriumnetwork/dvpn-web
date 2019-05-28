@@ -40,8 +40,9 @@ const styles = theme => ({
       position: 'absolute',
       top: 10,
       right: 14,
-      color: theme.colors.textLightGrey
-    }
+      fontSize: 14,
+      color: theme.colors.textLightGrey,
+    },
   },
   active: {
     color: theme.colors.whiteColor,

@@ -13,12 +13,10 @@ interface IStyles {
 
 const styles = theme => ({
   root: {
-    '& > button': {
-      width: '100%',
-      outline: 'none',
-      border: 'none',
-      background: 'transparent',
-    },
+    width: '100%',
+    outline: 'none',
+    border: 'none',
+    background: 'transparent',
   },
   menuItem: {
     display: 'flex',
@@ -29,12 +27,14 @@ const styles = theme => ({
     marginBottom: 2,
     color: theme.colors.textMain,
     '& .flag-icon': {
-      marginRight: 12,
+      margin: '2px 8px 2px 2px',
+      width: 20,
+      height: 20
     },
     '& .itemsCount': {
       position: 'absolute',
       top: 10,
-      right: 10,
+      right: 14,
       fontSize: 14,
       color: theme.colors.textLightGrey,
     },
@@ -58,19 +58,17 @@ export interface IMenuItemProps {
   onClick?: MouseEventHandler
   country?: string
   count?: number
-  active?: string
+  active?: boolean
 }
 
 const CountryItem: React.FunctionComponent<IMenuItemProps> = (props: IMenuItemProps) => (
-  <div className={props.classes.root}>
-    <button type="submit" onClick={props.onClick}>
-      <div className={classNames(props.classes.menuItem, { [props.classes.active]: props.active })}>
-        <FlagIcon code={String(props.country).toLowerCase()}/>
-        <p>{props.country}</p>
-        <div className="itemsCount">{props.count}</div>
-      </div>
-    </button>
-  </div>
+  <button type="button" className={props.classes.root} onClick={props.onClick}>
+    <div className={classNames(props.classes.menuItem, { [props.classes.active]: props.active })}>
+      <FlagIcon code={String(props.country).toLowerCase()}/>
+      <p>{props.country}</p>
+      <div className="itemsCount">{props.count}</div>
+    </div>
+  </button>
 )
 
 export default injectSheet(styles)(CountryItem)

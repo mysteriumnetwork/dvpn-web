@@ -62,7 +62,6 @@
   "app.client.side.bar.favorites": "Favorites",
   "app.client.side.bar.by.connection.type": "By Connection Type",
   "app.client.side.bar.by.country": "By Country",
-  "app.client.side.bar.ireland": "Ireland",
   "app.client.dashboard.server": "Server",
   "app.client.dashboard.connection.type": "Connection Type",
   "app.client.dashboard.not.connected": "Not connected",

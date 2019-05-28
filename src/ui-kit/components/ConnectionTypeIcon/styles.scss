@@ -1,11 +1,11 @@
 @import '../../../constatnts';
 
-.icon {
+.connection-type-icon {
   width: 24px;
   height: 24px;
   display: inline-block;
 
-  &.wireguard {
+  &.connection-type-wireguard {
     background: url('../../../app/components/assets/images/app-icons.svg') no-repeat -52px -60px;
 
     &.active {
@@ -13,7 +13,7 @@
     }
   }
 
-  &.openvpn {
+  &.connection-type-openvpn {
     background: url('../../../app/components/assets/images/app-icons.svg') no-repeat -52px -36px;
 
     &.active {

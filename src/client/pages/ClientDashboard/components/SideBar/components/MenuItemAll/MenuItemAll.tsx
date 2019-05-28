@@ -35,7 +35,7 @@ const styles = theme => ({
       width: 24,
       height: 24,
       minWidth: 24,
-      marginRight: 10,
+      marginRight: 6,
       background: `url(${icons}) no-repeat`,
       backgroundSize: '184px 232px',
       backgroundPosition: '4px -36px',
@@ -74,7 +74,7 @@ export interface IMenuItemAllProps {
 
 const MenuItemAll: React.FunctionComponent<IMenuItemAllProps> = (props: IMenuItemAllProps) => (
   <div className={props.classes.root}>
-    <button type="submit">
+    <button type="button" onClick={props.onClick}>
       <div className={classNames(props.classes.menuItem, { [props.classes.active]: Boolean(props.active) })}>
         <div className="allIcon"/>
         <p>{trans('app.client.side.bar.all')}</p>

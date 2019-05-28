@@ -29,8 +29,8 @@ export interface IItemProps {
 const ItemQuality: React.FunctionComponent<IItemProps> = (props: IItemProps) => (
   <td>
     <div className={props.classes.ipItem}>
-      <Quality />
-      <StartIcon />
+      <Quality metrics={props.proposal.metrics}/>
+      <StartIcon/>
     </div>
   </td>
 )

@@ -1,8 +1,10 @@
 import typeToReducer from 'type-to-reducer'
-import { APPLY_FILTER, PROPOSALS, SELECT_PROPOSAL } from './constants'
-import { Action } from 'redux-actions'
+import { APPLY_FILTER, CONNECTION, PROPOSALS, PROPOSALS_COUNTS, SELECT_PROPOSAL } from './constants'
+import { Action, ActionMeta } from 'redux-actions'
 import { Proposal } from '../api/data/proposal'
-import { proposalsCounts } from '../utils/proposalsCounts'
+import { ProposalsCountsInterface } from '../utils/proposalsCounts'
+import { ConnectionStatus } from 'mysterium-vpn-js'
+import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
 
 export interface ProposalsFilter {
   country?: string
@@ -15,10 +17,13 @@ export interface ClientReducer {
   proposals?: Proposal[],
   proposalsPending?: boolean,
   proposalSelected?: Proposal,
-  proposalsCount: number,
-  proposalsFavoritesCount: number,
-  proposalsByCountryCounts: Map<string, number>,
-  proposalsByTypeCounts: Map<string, number>
+  proposalsCount?: number,
+  proposalsFavoritesCount?: number,
+  proposalsByCountryCounts?: Map<string, number>,
+  proposalsByTypeCounts: Map<string, number>,
+  connectionFailed: any
+  connectionStatus: ConnectionStatus
+  connectionSessionId: string
 }
 
 export const clientInitState = {
@@ -28,19 +33,19 @@ export const clientInitState = {
 export default typeToReducer({
 
   [PROPOSALS]: {
-    PENDING: (state) => ({
-      ...state,
-      proposalsPending: true
-    }),
-    REJECTED: (state) => ({
-      ...state,
-      proposalsPending: false
-    }),
+    PENDING: (state) => ({ ...state, proposalsPending: true }),
+    REJECTED: (state) => ({ ...state, proposalsPending: false }),
     FULFILLED: (state, action: Action<Proposal[]>) => ({
       ...state,
       proposals: action.payload,
-      ...proposalsCounts(action.payload),
       proposalsPending: false,
+    })
+  },
+
+  [PROPOSALS_COUNTS]: {
+    FULFILLED: (state, action: Action<ProposalsCountsInterface>) => ({
+      ...state,
+      ...action.payload,
     })
   },
 
@@ -52,6 +57,28 @@ export default typeToReducer({
   [APPLY_FILTER]: (state, action: Action<ProposalsFilter>) => ({
     ...state,
     filter: action.payload,
-  })
+  }),
+
+  [CONNECTION]: {
+    PENDING: (state, action: ActionMeta<Proposal, any>) => ({
+      ...state,
+      connectionStatus: action.meta || state.connectionStatus
+    }),
+    REJECTED: (state, action: Action<Error>) => ({
+      ...state,
+      connectionStatus: ConnectionStatus.NOT_CONNECTED,
+      connectionFailed: action.payload
+    }),
+    FULFILLED: (state, action: Action<ConnectionStatusResponse>) => {
+      const { status, sessionId } = action.payload
+
+      return {
+        ...state,
+        connectionPending: false,
+        connectionStatus: status,
+        connectionSessionId: sessionId
+      }
+    }
+  },
 
 }, clientInitState)

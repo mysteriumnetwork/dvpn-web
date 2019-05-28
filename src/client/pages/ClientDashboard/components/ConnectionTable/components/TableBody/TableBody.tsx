@@ -16,7 +16,8 @@ const TableBody = (props: Props) => (
       <table>
         <tbody>
         {Array.from(props.proposals || []).map(value => (
-          <ConnectionItem proposal={value}
+          <ConnectionItem key={value.providerId}
+                          proposal={value}
                           onSelect={props.onSelect}
                           active={props.selected && props.selected.providerId === value.providerId}/>
         ))}
