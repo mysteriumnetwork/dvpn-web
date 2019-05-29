@@ -76,7 +76,7 @@ export const startServiceFetchingStory = async (store: Store) => {
   fetch().catch(console.error)
 
   if (!_serviceInterval) {
-    _serviceInterval = setInterval(fetch, 5000)
+    // _serviceInterval = setInterval(fetch, 5000)
   }
 }
 
@@ -110,7 +110,7 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
   fetch().catch(console.error)
 
   if (!_accessPolicyInterval) {
-    _accessPolicyInterval = setInterval(fetch, 3000)
+    // _accessPolicyInterval = setInterval(fetch, 3000)
   }
 }
 
@@ -173,7 +173,7 @@ export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Se
   fetch().catch(console.error)
 
   if (!_VpnStateInterval) {
-    _VpnStateInterval = setInterval(fetch, 3000)
+    // _VpnStateInterval = setInterval(fetch, 3000)
   }
 }
 
@@ -185,7 +185,7 @@ export const stopVpnStateFetchingStory = (dispatch) => {
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
+  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
   const { id, ethAddress } = data
   try {
     await dispatch(updateIdentitiesAction({ id, ethAddress }))

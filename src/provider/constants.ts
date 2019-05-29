@@ -26,4 +26,4 @@ export const RESIDENTIAL_CONFIRM = 'provider/RESIDENTIAL_CONFIRM'
 
 export const SET_PROVIDER_STATE = 'provider/SET_PROVIDER_STATE'
 
-export const WS_TEST = 'socket/on/TEST'
+export const SERVER_SERVICE_UPDATE_STATUS = 'server/SERVICE_UPDATE_STATUS'
