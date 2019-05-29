@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ApiError } from './api-error'
 
+export const HTTP_API_PORT = Number(process.env.REACT_APP_HTTP_API_PORT)
+
 export interface HttpParams {
   [s: string]: any
 }
