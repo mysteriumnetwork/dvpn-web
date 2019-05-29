@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { getHttpApiUrl } from '../constants'
 
 interface Options {reconnect: number}
 
@@ -12,7 +13,7 @@ class WebsocketClient {
   private options: Options
 
   constructor(endpoint: string, options: Options) {
-    this.endpoint = endpoint
+    this.endpoint = endpoint.replace("https","wss").replace("http","ws")
     this.ws = null
     this.pending = false
     this.connected = false
@@ -94,8 +95,7 @@ class WebsocketClient {
     this.ws.send(JSON.stringify(payload))
   }
 }
-
-const websocketClient = new WebsocketClient('ws://localhost:4050/socket.io/', {
+const websocketClient = new WebsocketClient(`${getHttpApiUrl()}/ws/`, {
   reconnect: Infinity
 })
 websocketClient.connect()

@@ -145,8 +145,19 @@ export default typeToReducer({
       startedServicePending: false
     })
   },
-  [SERVER_SERVICE_UPDATE_STATUS]: (state, action: Action<boolean>) => {
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!', action.payload)
+  [SERVER_SERVICE_UPDATE_STATUS]: (state, action: Action<{ payload: { id: string, status: string } }>) => {
+    const { id, status, providerId } = _.get(action, 'payload', null)
+    console.log(id, status)
+    if (_.get(state, 'startedService.providerId') === providerId && providerId !== undefined) {
+      state = {
+        ...state,
+        startedService: {
+          ..._.get(state, 'startedService'),
+          status,
+          id
+        }
+      }
+    }
     return state
   }
 
