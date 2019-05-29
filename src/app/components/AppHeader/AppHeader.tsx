@@ -2,9 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import injectSheet from 'react-jss'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
-import { NAV_CLIENT_DASHBOARD } from '../../../client/client.links'
 import trans from '../../../trans'
-import AppMenu from '../AppMenu/AppMenu'
 import { connect } from 'react-redux'
 
 const classNames = require('classnames')

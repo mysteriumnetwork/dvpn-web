@@ -21,7 +21,6 @@ import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import _ from 'lodash'
-import { createAction } from 'redux-actions'
 
 export const initProviderStory = (store: Store) => {
 
@@ -30,9 +29,6 @@ export const initProviderStory = (store: Store) => {
     fetchIdentityStory(store.dispatch),
     startServiceFetchingStory(store)
   ]).catch(console.error)
-  setInterval(()=>{
-    store.dispatch(createAction("socket/emit/test")("test"))
-  },10000)
 }
 
 export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({
@@ -189,7 +185,7 @@ export const stopVpnStateFetchingStory = (dispatch) => {
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
+  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
   const { id, ethAddress } = data
   try {
     await dispatch(updateIdentitiesAction({ id, ethAddress }))
