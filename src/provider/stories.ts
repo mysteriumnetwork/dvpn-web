@@ -20,7 +20,9 @@ import { push } from 'connected-react-router'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
+import socket from '../utils/socketIo'
 import _ from 'lodash'
+import { SERVER_SERVICE_UPDATE_STATUS } from './constants'
 
 export const initProviderStory = (store: Store) => {
 
@@ -29,6 +31,15 @@ export const initProviderStory = (store: Store) => {
     fetchIdentityStory(store.dispatch),
     startServiceFetchingStory(store)
   ]).catch(console.error)
+
+  socket.on(SERVER_SERVICE_UPDATE_STATUS, (payload) => {
+    const state = store.getState()
+    const { id, status } = payload || null
+    if ((_.get(state, 'provider.startedService.id') !== id && id !== undefined) || status === 'NotRunning') {
+      startServiceFetchingStory(store).catch(console.log)
+    }
+  })
+
 }
 
 export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({
@@ -59,24 +70,16 @@ let _serviceInterval
 
 export const startServiceFetchingStory = async (store: Store) => {
 
-  const fetch = async () => {
-    const prevService: Service = _.get(store.getState(), 'provider.startedService')
+  const prevService: Service = _.get(store.getState(), 'provider.startedService')
 
-    const service: Service = await fetchServiceStory(store.dispatch)
-      .then((result: any) => result && result.value)
-      .catch(console.error)
+  const service: Service = await fetchServiceStory(store.dispatch)
+    .then((result: any) => result && result.value)
+    .catch(console.error)
 
-    if (String(prevService && prevService.id) !== String(service && service.id)) {
-      return (service && service.id)
-        ? onServiceStarted(store.dispatch, service).catch(console.error)
-        : onServiceStopped(store.dispatch).catch(console.error)
-    }
-  }
-
-  fetch().catch(console.error)
-
-  if (!_serviceInterval) {
-    // _serviceInterval = setInterval(fetch, 5000)
+  if (String(prevService && prevService.id) !== String(service && service.id)) {
+    return (service && service.id)
+      ? onServiceStarted(store.dispatch, service).catch(console.error)
+      : onServiceStopped(store.dispatch).catch(console.error)
   }
 }
 
@@ -110,7 +113,7 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
   fetch().catch(console.error)
 
   if (!_accessPolicyInterval) {
-    // _accessPolicyInterval = setInterval(fetch, 3000)
+    _accessPolicyInterval = setInterval(fetch, 3000)
   }
 }
 
@@ -173,7 +176,7 @@ export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Se
   fetch().catch(console.error)
 
   if (!_VpnStateInterval) {
-    // _VpnStateInterval = setInterval(fetch, 3000)
+    _VpnStateInterval = setInterval(fetch, 3000)
   }
 }
 

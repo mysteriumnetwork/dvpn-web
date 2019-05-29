@@ -1,9 +1,10 @@
 import _ from 'lodash'
 import { getHttpApiUrl } from '../constants'
+import { EventEmitter } from 'events'
 
 interface Options {reconnect: number}
 
-class WebsocketClient {
+class WebsocketClient extends EventEmitter {
   protected endpoint: string
   private ws: any
   private pending: boolean
@@ -13,7 +14,8 @@ class WebsocketClient {
   private options: Options
 
   constructor(endpoint: string, options: Options) {
-    this.endpoint = endpoint.replace("https","wss").replace("http","ws")
+    super()
+    this.endpoint = endpoint.replace('https', 'wss').replace('http', 'ws')
     this.ws = null
     this.pending = false
     this.connected = false
@@ -51,14 +53,15 @@ class WebsocketClient {
     }
   }
   onMessage = (s) => {
-    let payload
+    let action
     try {
-      payload = JSON.parse(s.data)
+      action = JSON.parse(s.data)
     } catch (err) {
       console.warn('[Websocket] parse incoming message error:', err)
       return
     }
-    this.storeApi.dispatch(payload)
+    this.storeApi.dispatch(action)
+    this.emit(action.type, action.payload, { store: this.storeApi, action })
   }
 
   middleware() {
@@ -95,6 +98,7 @@ class WebsocketClient {
     this.ws.send(JSON.stringify(payload))
   }
 }
+
 const websocketClient = new WebsocketClient(`${getHttpApiUrl()}/ws/`, {
   reconnect: Infinity
 })

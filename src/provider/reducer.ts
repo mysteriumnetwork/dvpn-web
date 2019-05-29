@@ -146,15 +146,13 @@ export default typeToReducer({
     })
   },
   [SERVER_SERVICE_UPDATE_STATUS]: (state, action: Action<{ payload: { id: string, status: string } }>) => {
-    const { id, status, providerId } = _.get(action, 'payload', null)
-    console.log(id, status)
-    if (_.get(state, 'startedService.providerId') === providerId && providerId !== undefined) {
+    const { id, status } = _.get(action, 'payload', null)
+    if (_.get(state, 'startedService.id') === id && id !== undefined) {
       state = {
         ...state,
         startedService: {
           ..._.get(state, 'startedService'),
           status,
-          id
         }
       }
     }
