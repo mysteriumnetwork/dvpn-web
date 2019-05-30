@@ -25,7 +25,6 @@ import _ from 'lodash'
 import { SERVER_SERVICE_UPDATE_STATUS } from './constants'
 
 export const initProviderStory = (store: Store) => {
-
   Promise.all([
     fetchLocationStory(store.dispatch),
     fetchIdentityStory(store.dispatch),
@@ -39,7 +38,6 @@ export const initProviderStory = (store: Store) => {
       startServiceFetchingStory(store).catch(console.log)
     }
   })
-
 }
 
 export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({

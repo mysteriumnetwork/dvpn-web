@@ -98,7 +98,6 @@ class WebsocketClient extends EventEmitter {
     this.ws.send(JSON.stringify(payload))
   }
 }
-
 const websocketClient = new WebsocketClient(`${getHttpApiUrl()}/ws/`, {
   reconnect: Infinity
 })
