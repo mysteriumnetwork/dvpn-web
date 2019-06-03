@@ -1,7 +1,7 @@
 import { HTTP_TIMEOUT_DEFAULT, HttpAdapter } from './http'
 import { TequilaApi } from './tequila-api'
 import { getHttpApiUrl } from '../constants'
-import { TEQUILAPI_URL, TequilapiClient, TequilapiClientFactory, } from 'mysterium-vpn-js'
+import { TequilapiClient, TequilapiClientFactory, } from 'mysterium-vpn-js'
 
 export const httpAdapter = new HttpAdapter({
   baseURL: getHttpApiUrl(),
@@ -13,10 +13,6 @@ export const tequilaApi = new TequilaApi(httpAdapter)
 
 // using mysterium-vpn-js
 
-const tequilapiUrl = Boolean(process.env.REACT_APP_HTTP_API_USE_LOCATION)
-  ? `${window.location.protocol}//${window.location.hostname}:${HTTP_API_PORT}`
-  : TEQUILAPI_URL
-
-const factory = new TequilapiClientFactory(tequilapiUrl)
+const factory = new TequilapiClientFactory(getHttpApiUrl())
 
 export const tequilapiClient: TequilapiClient = factory.build(factory.buildAdapter())
