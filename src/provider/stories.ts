@@ -22,6 +22,7 @@ import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import socket from '../utils/socketIo'
 import _ from 'lodash'
+import { DispatchResult } from '../types'
 import { SERVER_SERVICE_UPDATE_STATUS } from './constants'
 
 export const initProviderStory = (store: Store) => {
@@ -71,7 +72,7 @@ export const startServiceFetchingStory = async (store: Store) => {
   const prevService: Service = _.get(store.getState(), 'provider.startedService')
 
   const service: Service = await fetchServiceStory(store.dispatch)
-    .then((result: any) => result && result.value)
+    .then((result: DispatchResult) => result && result.value)
     .catch(console.error)
 
   if (String(prevService && prevService.id) !== String(service && service.id)) {
@@ -130,7 +131,7 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
 
   const service: Service = await Promise
     .resolve(dispatch(startServiceAction({ providerId, type, accessPolicyId, options })))
-    .then((result: any) => result && result.value)
+    .then((result: DispatchResult<Service>) => result && result.value)
     .catch(error => {
       setGeneralError(dispatch, error)
       return null

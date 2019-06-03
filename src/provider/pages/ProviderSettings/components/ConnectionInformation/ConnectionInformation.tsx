@@ -29,7 +29,9 @@ const ConnectionInformation = (props: Props) => {
         <ExpansionPanelDetails className={styles.expansionPanelDetails}>
           <div className={styles.connectionFlexedRow}>
             {/*  TODO replace with dynamic country flag */}
-            {originalLocation && (<FlagIcon code={String(originalLocation.country).toLowerCase()}/>)}
+            {originalLocation && (
+              <FlagIcon code={String(originalLocation.country).toLowerCase()} className={styles.flag}/>
+            )}
             <div className={styles.connectionDetails}>
               <p>
                 <span className={styles.textBold}>{originalLocation && originalLocation.ip}</span>

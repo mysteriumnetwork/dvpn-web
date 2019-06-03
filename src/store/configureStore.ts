@@ -2,6 +2,7 @@ import configureStoreDev from './configureStore.dev'
 import configureStoreProd from './configureStore.prod'
 import { providerInitState, ProviderReducer } from '../provider/reducer'
 import _ from 'lodash'
+import { clientInitState } from '../client/reducer'
 
 const selectedConfigureStore = process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev
 
@@ -11,7 +12,8 @@ export const { history } = selectedConfigureStore
 
 export const initState = (id: string = 'default') => {
   let initState = {
-    provider: providerInitState
+    provider: providerInitState,
+    client: clientInitState
   }
   console.log('*initState', { ...initState })
   try {
@@ -33,7 +35,8 @@ export const saveState = (state: { provider: ProviderReducer }, id: string = 'de
         identity: _.get(state, 'provider.identity'),
         originalLocation: _.get(state, 'provider.originalLocation'),
         trafficOption: _.get(state, 'provider.trafficOption')
-      }
+      },
+      client: {}
     }
 
     localStorage.setItem(`myst-${id}`, JSON.stringify(initialState))

@@ -40,6 +40,7 @@ export interface TequilaApiInterface {
   updateIdentityPayout(id: string, ethAddress: string): Promise<void>
 
   unlocksIdentity(id: string, passphrase: string): Promise<void>
+
 }
 
 export class TequilaApi implements TequilaApiInterface {

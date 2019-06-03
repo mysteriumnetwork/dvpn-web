@@ -1,6 +1,8 @@
 import * as React from 'react'
+import { MouseEventHandler } from 'react'
 import injectSheet from 'react-jss'
 import trans from '../../../../../../../trans'
+import icons from 'app/components/assets/images/app-icons.svg'
 
 const classNames = require('classnames')
 
@@ -14,8 +16,11 @@ interface IStyles {
 
 const styles = theme => ({
   root: {
-    '& > a': {
+    '& > button': {
       width: '100%',
+      outline: 'none',
+      border: 'none',
+      background: 'transparent',
     },
   },
   menuItem: {
@@ -30,8 +35,8 @@ const styles = theme => ({
       width: 24,
       height: 24,
       minWidth: 24,
-      marginRight: 10,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
+      marginRight: 6,
+      background: `url(${icons}) no-repeat`,
       backgroundSize: '184px 232px',
       backgroundPosition: '4px -36px',
     },
@@ -39,7 +44,11 @@ const styles = theme => ({
       position: 'absolute',
       top: 10,
       right: 14,
+      fontSize: 14,
       color: theme.colors.textLightGrey,
+    },
+    '& > p': {
+      fontSize: 14,
     },
   },
   active: {
@@ -56,25 +65,22 @@ const styles = theme => ({
 })
 
 export interface IMenuItemAllProps {
-  onChange?: any
   classes: IStyles
   style?: React.CSSProperties
+  onClick?: MouseEventHandler
+  count?: number
+  active?: boolean
 }
 
-const MenuItemAll: React.SFC<IMenuItemAllProps> = (props: IMenuItemAllProps) => (
+const MenuItemAll: React.FunctionComponent<IMenuItemAllProps> = (props: IMenuItemAllProps) => (
   <div className={props.classes.root}>
-    <a href="/">
-      <div
-        className={classNames(props.classes.menuItem, {
-          // add class active when item selected
-          // [props.classes.active]
-        })}
-      >
-        <div className="allIcon" />
+    <button type="button" onClick={props.onClick}>
+      <div className={classNames(props.classes.menuItem, { [props.classes.active]: Boolean(props.active) })}>
+        <div className="allIcon"/>
         <p>{trans('app.client.side.bar.all')}</p>
-        <div className="itemsCount">23</div>
+        <div className="itemsCount">{Number(props.count)}</div>
       </div>
-    </a>
+    </button>
   </div>
 )
 
