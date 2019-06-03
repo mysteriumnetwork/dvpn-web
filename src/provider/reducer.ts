@@ -7,12 +7,12 @@ import {
   NAT_STATUS,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
+  SERVER_SERVICE_UPDATE_STATUS,
   SERVICE_SESSIONS,
   SET_PROVIDER_STATE,
   STARTED_SERVICE,
   TRAFFIC_OPTION,
-  UPDATE_IDENTITY,
-  WS_TEST
+  UPDATE_IDENTITY
 } from './constants'
 import { Action } from 'redux-actions'
 import { OriginalLocation } from '../api/data/original-location'
@@ -145,9 +145,17 @@ export default typeToReducer({
       startedServicePending: false
     })
   },
-
-  [WS_TEST]: (state, action: Action<boolean>) => {
-    alert(action.payload)
+  [SERVER_SERVICE_UPDATE_STATUS]: (state, action: Action<{ payload: { id: string, status: string } }>) => {
+    const { id, status } = _.get(action, 'payload', null)
+    if (_.get(state, 'startedService.id') === id && id !== undefined) {
+      state = {
+        ...state,
+        startedService: {
+          ..._.get(state, 'startedService'),
+          status,
+        }
+      }
+    }
     return state
   }
 
