@@ -1,12 +1,22 @@
 import { createAction } from 'redux-actions'
 import {
   getConnection,
+  getConnectionIp,
+  getConnectionStatistics,
   getProposalsByFilter,
   getProposalsWithConnectCounts,
   startConnection,
   stopConnection
 } from './api'
-import { APPLY_FILTER, CONNECTION, PROPOSALS, PROPOSALS_COUNTS, SELECT_PROPOSAL } from './constants'
+import {
+  APPLY_FILTER,
+  CONNECTION,
+  CONNECTION_IP,
+  CONNECTION_STATISTICS,
+  PROPOSALS,
+  PROPOSALS_COUNTS,
+  SELECT_PROPOSAL
+} from './constants'
 import { ConnectionStatus } from 'mysterium-vpn-js'
 
 export const getProposalsCountsAction = createAction(PROPOSALS_COUNTS, getProposalsWithConnectCounts)
@@ -23,4 +33,6 @@ export const stopConnectionAction = createAction(CONNECTION, stopConnection, () 
 
 export const getConnectionAction = createAction(CONNECTION, getConnection)
 
+export const getConnectionIpAction = createAction(CONNECTION_IP, getConnectionIp)
 
+export const getConnectionStatisticsAction = createAction(CONNECTION_STATISTICS, getConnectionStatistics)

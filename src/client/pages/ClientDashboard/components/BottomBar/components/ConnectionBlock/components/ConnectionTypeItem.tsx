@@ -31,11 +31,14 @@ export interface IInfoBlockProps {
   type?: string
 }
 
-const InfoBlock: React.FunctionComponent<IInfoBlockProps> = (props: IInfoBlockProps) => props.type ? (
-  <div className={props.classes.root}>
-    <ConnectionTypeIcon type={props.type}/>
-    <p>{trans(`connection.type.${props.type}`)}</p>
-  </div>
-) : null
+const ConnectionTypeItem: React.FunctionComponent<IInfoBlockProps> = (props: IInfoBlockProps) => {
+  return props.type ? (
+    <div className={props.classes.root}>
+      <ConnectionTypeIcon type={props.type}/>
+      <p>{trans(`connection.type.${props.type}`)}</p>
+    </div>
+  ) : null
+}
 
-export default injectSheet(styles)(InfoBlock)
+// @ts-ignore
+export default injectSheet(styles)(ConnectionTypeItem)

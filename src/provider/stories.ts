@@ -21,6 +21,7 @@ import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import _ from 'lodash'
+import { DispatchResult } from '../types'
 
 export const initProviderStory = (store: Store) => {
 
@@ -129,7 +130,7 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
 
   const service: Service = await Promise
     .resolve(dispatch(startServiceAction({ providerId, type, accessPolicyId, options })))
-    .then((result: any) => result && result.level)
+    .then((result: DispatchResult<Service>) => result && result.value)
     .catch(error => {
       setGeneralError(dispatch, error)
       return null
@@ -185,7 +186,7 @@ export const stopVpnStateFetchingStory = (dispatch) => {
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: {passphrase: string, id: string, ethAddress: string}) => {
+  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
   const { id, ethAddress } = data
   try {
     await dispatch(updateIdentitiesAction({ id, ethAddress }))

@@ -5,7 +5,7 @@ import { Proposal } from '../../../../../../../api/data/proposal'
 const styles = require('./TableBody.module.scss')
 
 type Props = {
-  proposals: Proposal[]
+  proposals?: Proposal[]
   onSelect?: Function
   selected?: Proposal
 }

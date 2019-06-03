@@ -95,11 +95,14 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
+    "byte-size": "^5.0.1",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.1.0",
+    "format-duration": "^1.3.1",
     "history": "^4.7.2",
     "hoist-non-react-statics": "^3.3.0",
     "lodash": "^4.17.11",
+    "mysterium-vpn-js": "^1.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -120,8 +123,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "socket.io-client": "^2.2.0",
-    "type-to-reducer": "^1.1.0",
-    "mysterium-vpn-js": "^1.0.1"
+    "type-to-reducer": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

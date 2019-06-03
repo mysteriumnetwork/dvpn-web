@@ -5,8 +5,8 @@ import FlagIcon from '../../../../../../../../ui-kit/components/FlagIcon'
 import _ from 'lodash'
 
 interface IStyles {
-  root: string
-  flagIcon: string
+  root?: string
+  flagIcon?: string
 }
 
 const styles = theme => ({
@@ -41,4 +41,5 @@ const CountryItem: React.FunctionComponent<ICountryItemProps> = (props: ICountry
   ) : null
 }
 
+// @ts-ignore
 export default injectSheet(styles)(CountryItem)

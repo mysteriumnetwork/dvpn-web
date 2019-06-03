@@ -8,7 +8,7 @@ import { qualityCalculator } from '../../../../../utils/quality-calculator'
 const styles = require('./ConnectionTable.module.scss')
 
 type Props = {
-  proposals: Proposal[]
+  proposals?: Proposal[]
   onSelect?: Function
   selected?: Proposal
 }

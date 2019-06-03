@@ -1,10 +1,11 @@
 import { tequilapiClient } from '../api'
 import { Proposal } from '../api/data/proposal'
-import { ConnectionRequest, ConnectionStatus, Identity, ProposalQuery } from 'mysterium-vpn-js'
+import { ConnectionIp, ConnectionRequest, ConnectionStatus, Identity, ProposalQuery } from 'mysterium-vpn-js'
 import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
 import { ProposalsFilter } from './reducer'
 import { proposalsCounts, ProposalsCountsInterface } from '../utils/proposalsCounts'
 import _ from 'lodash'
+import { ConnectionStatistics } from 'mysterium-vpn-js/lib/connection/statistics'
 
 export const getProposalsWithConnectCounts = async (): Promise<ProposalsCountsInterface> => {
   try {
@@ -76,3 +77,24 @@ export const stopConnection = async (): Promise<ConnectionStatusResponse> => {
 
   return await getConnection()
 }
+
+export const getConnectionStatistics = async (): Promise<ConnectionStatistics> => {
+  try {
+    return await tequilapiClient.connectionStatistics()
+  } catch (e) {
+    console.log('getProposalsWithConnectCounts:', e)
+  }
+
+  return null
+}
+
+export const getConnectionIp = async (): Promise<ConnectionIp> => {
+  try {
+    return await tequilapiClient.connectionIp()
+  } catch (e) {
+    console.log('getProposalsWithConnectCounts:', e)
+  }
+
+  return { }
+}
+

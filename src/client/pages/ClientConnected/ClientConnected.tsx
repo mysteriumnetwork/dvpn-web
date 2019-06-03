@@ -12,6 +12,7 @@ import { NAV_CLIENT_DASHBOARD } from '../../client.links'
 import { stopConnectionStory } from '../../stories'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
+import _ from 'lodash'
 
 const styles = require('./ClientConnected.module.scss')
 
@@ -28,7 +29,7 @@ class ClientConnected extends React.PureComponent<Props> {
   }
 
   render() {
-    const { connectionStatus } = this.props
+    const { connectionStatus, proposalSelected, location, connectionIp, connectionStatistics } = this.props
 
     if (!(connectionStatus === ConnectionStatus.CONNECTED || connectionStatus === ConnectionStatus.DISCONNECTING)) {
       return (<Redirect to={NAV_CLIENT_DASHBOARD}/>)
@@ -38,8 +39,8 @@ class ClientConnected extends React.PureComponent<Props> {
       <div className={styles.root}>
         <h3 className={styles.title}>{trans('app.client.connected')}</h3>
         <div>
-          <ConnectedImgBlock/>
-          <ConnectedInfoBlock/>
+          <ConnectedImgBlock proposal={proposalSelected} location={location}/>
+          <ConnectedInfoBlock proposal={proposalSelected} ip={connectionIp}/>
         </div>
         <div className={styles.action}>
           <Button color="primary">
@@ -54,14 +55,16 @@ class ClientConnected extends React.PureComponent<Props> {
             {trans('app.client.disconnect.button')}
           </Button>
         </div>
-        <BottomBar/>
+        <BottomBar statistics={connectionStatistics}/>
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  ...(state.client || {})
+  ...(state.client || {}),
+  location: _.get(state, 'provider.originalLocation'),
+  identity: _.get(state, 'provider.identity')
 })
 
 const mapDispatchToProps = (dispatch) => ({
