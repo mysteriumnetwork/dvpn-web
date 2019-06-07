@@ -1,14 +1,12 @@
 import { AnyAction, Dispatch, Store } from 'redux'
-import { getCurrentAccessPolicy, getNatStatus, getServiceSessions } from './api'
+import { getCurrentAccessPolicy } from './api'
 import {
   getIdentityPayoutAction,
   getServiceAction,
   setAccessPolicyAction,
   setIdentityAction,
   setLocationAction,
-  setNatStatusAction,
   setProviderStateAction,
-  setServiceSessionAction,
   startServiceAction,
   stopServiceAction,
   updateIdentitiesAction
@@ -20,24 +18,23 @@ import { push } from 'connected-react-router'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
-import socket from '../utils/socketIo'
 import _ from 'lodash'
 import { DispatchResult } from '../types'
-import { SERVER_SERVICE_UPDATE_STATUS } from './constants'
+import serverSentEvents from '../utils/serverSentEvents'
 
 export const initProviderStory = (store: Store) => {
   Promise.all([
     fetchLocationStory(store.dispatch),
     fetchIdentityStory(store.dispatch),
-    startServiceFetchingStory(store)
   ]).catch(console.error)
 
-  socket.on(SERVER_SERVICE_UPDATE_STATUS, (payload) => {
-    const state = store.getState()
-    const { id, status } = payload || null
-    if ((_.get(state, 'provider.startedService.id') !== id && id !== undefined) || status === 'NotRunning') {
-      startServiceFetchingStory(store).catch(console.log)
-    }
+  serverSentEvents.subscribe((payload) => {
+    const { serviceInfo = [] } = payload || null
+    const service = serviceInfo[0] ///TODO: list of service
+
+    return (service && service.id)
+      ? onServiceStarted(store.dispatch, service).catch(console.error)
+      : onServiceStopped(store.dispatch).catch(console.error)
   })
 }
 
@@ -65,8 +62,6 @@ export const fetchLocationStory = async (dispatch: Dispatch) => dispatch(setLoca
 
 export const fetchServiceStory = async (dispatch: Dispatch) => dispatch(getServiceAction())
 
-let _serviceInterval
-
 export const startServiceFetchingStory = async (store: Store) => {
 
   const prevService: Service = _.get(store.getState(), 'provider.startedService')
@@ -80,11 +75,6 @@ export const startServiceFetchingStory = async (store: Store) => {
       ? onServiceStarted(store.dispatch, service).catch(console.error)
       : onServiceStopped(store.dispatch).catch(console.error)
   }
-}
-
-export const stopSrviceFetchingStory = async () => {
-  clearInterval(_serviceInterval)
-  _serviceInterval = null
 }
 
 let _accessPolicyInterval
@@ -144,12 +134,12 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
 }
 
 const onServiceStarted = (dispatch: Dispatch, service: Service) => Promise.all([
-  startVpnStateFetchingStory(dispatch, service).catch(console.error),
+  // startVpnStateFetchingStory(dispatch, service).catch(console.error),
   stopAccessPolicyFetchingStory()
 ]).then(() => service)
 
 const onServiceStopped = async (dispatch: Dispatch) => Promise.all([
-  stopVpnStateFetchingStory(dispatch),
+  // stopVpnStateFetchingStory(dispatch),
   startAccessPolicyFetchingStory(dispatch).catch(console.error)
 ]).then(() => null)
 
@@ -162,28 +152,6 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
 
   dispatch(push(NAV_PROVIDER_SETTINGS))
   onServiceStopped(dispatch).catch(console.error)
-}
-
-let _VpnStateInterval
-
-export const startVpnStateFetchingStory = async (dispatch: Dispatch, service: Service) => {
-  const fetch = async () => Promise.all([
-    dispatch(setNatStatusAction(await getNatStatus().catch(() => null))),
-    dispatch(setServiceSessionAction(await getServiceSessions(service).catch(() => null)))
-  ]).catch(console.error)
-
-  fetch().catch(console.error)
-
-  if (!_VpnStateInterval) {
-    _VpnStateInterval = setInterval(fetch, 3000)
-  }
-}
-
-export const stopVpnStateFetchingStory = (dispatch) => {
-  clearInterval(_VpnStateInterval)
-  dispatch(setNatStatusAction(null))
-  dispatch(setServiceSessionAction(null))
-  _VpnStateInterval = null
 }
 
 export const updateIdentitiesStory = async (

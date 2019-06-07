@@ -47,6 +47,7 @@ export const startServiceAction = createAction(STARTED_SERVICE, startService, d 
 
 export const stopServiceAction = createAction(STARTED_SERVICE, stopService, d => ({ ...d, pending: true }))
 
+///TODO: list of service
 export const getServiceAction = createAction(STARTED_SERVICE, getCurrentService)
 
 export const setNatStatusAction = createAction(NAT_STATUS)

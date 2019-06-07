@@ -75,7 +75,7 @@ class MenuByConnectionType extends React.PureComponent<IMenuItemProps> {
         <h3>{trans('app.client.side.bar.by.connection.type')}</h3>
         {counts && Array.from(counts).map(([type, count]) => (
           <button type="button" key={type} onClick={() => onClick && onClick(type)}>
-            <div className={classNames(classes.menuItem, { [classes.active]: Boolean(active) })}>
+            <div className={classNames(classes.menuItem, { [classes.active]: Boolean(active === type) })}>
               <ConnectionTypeIcon type={type}/>
               <p>{trans(`connection.type.${type}`)}</p>
               <div className="itemsCount">{Number(count)}</div>

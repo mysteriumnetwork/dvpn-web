@@ -7,7 +7,6 @@ import {
   NAT_STATUS,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
-  SERVER_SERVICE_UPDATE_STATUS,
   SERVICE_SESSIONS,
   SET_PROVIDER_STATE,
   STARTED_SERVICE,
@@ -22,6 +21,7 @@ import { IdentityPayout } from '../api/data/identity-payout'
 import { NatStatus } from '../api/data/nat-status'
 import { Service } from '../api/data/service'
 import { ServiceSession } from '../api/data/service-session'
+import { ServerSentPayload, SSE_ACTION } from '../utils/serverSentEvents'
 
 export interface ProviderReducer {
   identity?: Identity,
@@ -145,18 +145,17 @@ export default typeToReducer({
       startedServicePending: false
     })
   },
-  [SERVER_SERVICE_UPDATE_STATUS]: (state, action: Action<{ payload: { id: string, status: string } }>) => {
-    const { id, status } = _.get(action, 'payload', null)
-    if (_.get(state, 'startedService.id') === id && id !== undefined) {
-      state = {
-        ...state,
-        startedService: {
-          ..._.get(state, 'startedService'),
-          status,
-        }
-      }
+
+  [SSE_ACTION]: (state, action: Action<ServerSentPayload>) => {
+    const { natStatus = null, serviceInfo = null, sessions = null } = action.payload || {}
+
+    return {
+      ...state,
+      natStatus: natStatus ? _.assign(state.natStatus, natStatus) : state.natStatus,
+      ///TODO: list of service
+      startedService: (serviceInfo && serviceInfo[0]) ? _.assign(state.startedService, serviceInfo[0]) : state.startedService,
+      sessions: sessions ? _.assign(state.sessions, sessions) : state.sessions,
     }
-    return state
   }
 
 }, providerInitState)
