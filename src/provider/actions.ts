@@ -10,7 +10,7 @@ import {
   RESIDENTIAL_CONFIRM,
   SERVICE_SESSIONS,
   SET_PROVIDER_STATE,
-  STARTED_SERVICE,
+  STARTED_SERVICES,
   TRAFFIC_OPTION,
   UNLOCK_IDENTITY,
   UPDATE_IDENTITY
@@ -18,9 +18,9 @@ import {
 
 import {
   getCurrentIdentity,
-  getCurrentService,
   getIdentityPayout,
   getOriginalLocation,
+  getServiceList,
   startService,
   stopService,
   unlocksIdentity,
@@ -43,12 +43,12 @@ export const setAccessPoliciesAction = createAction(ACCESS_POLICIES)
 
 export const setAccessPolicyAction = createAction(ACCESS_POLICY)
 
-export const startServiceAction = createAction(STARTED_SERVICE, startService, d => ({ ...d, pending: true }))
+export const startServiceAction = createAction(STARTED_SERVICES, startService, d => ({ ...d, pending: true }))
 
-export const stopServiceAction = createAction(STARTED_SERVICE, stopService, d => ({ ...d, pending: true }))
+export const stopServiceAction = createAction(STARTED_SERVICES, stopService, d => ({ ...d, pending: true }))
 
 ///TODO: list of service
-export const getServiceAction = createAction(STARTED_SERVICE, getCurrentService)
+export const getServicesAction = createAction(STARTED_SERVICES, getServiceList)
 
 export const setNatStatusAction = createAction(NAT_STATUS)
 

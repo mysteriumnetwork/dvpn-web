@@ -1,5 +1,5 @@
 import { AccessPolicy } from '../api/data/access-policy'
-import { tequilaApi } from '../api'
+import { tequilaApi, tequilapiClient } from '../api'
 import { OriginalLocation } from '../api/data/original-location'
 import { Identity } from '../api/data/identity'
 import { Service, ServiceOptions } from '../api/data/service'
@@ -7,6 +7,7 @@ import { ServiceParams } from '../api/data/service-params'
 import { IdentityPayout } from '../api/data/identity-payout'
 import { NatStatus } from '../api/data/nat-status'
 import { ServiceSession } from '../api/data/service-session'
+import { ServiceInfo } from 'mysterium-vpn-js'
 
 export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
@@ -83,13 +84,10 @@ export const getServiceSessions = async (service: Service): Promise<ServiceSessi
   return service && await tequilaApi.serviceSessions(service.id)
 }
 
-export const getCurrentService = async (): Promise<Service | null> => {
+export const getServiceList = async (): Promise<ServiceInfo[] | null> => {
   try {
-    const services = await tequilaApi.services()
+    return await tequilapiClient.serviceList()
 
-    if (services && services.length > 0) {
-      return services[0]
-    }
   } catch (e) {
     console.error('Failed fetching first access policy', e)
   }

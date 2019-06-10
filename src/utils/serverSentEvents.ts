@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import { getHttpApiUrl } from '../constants'
 import { Middleware, MiddlewareAPI } from 'redux'
-import { Action, ActionFunctionAny, createAction } from 'redux-actions'
+import { createAction } from 'redux-actions'
 import { NatStatus, ServiceInfo, ServiceSession } from 'mysterium-vpn-js'
 
 export enum ServerSentState {
@@ -16,13 +16,19 @@ export interface ServerSentPayload {
   sessions?: ServiceSession[]
 }
 
-export const SSE_ACTION = 'SERVER_SENT_EVENTS'
+export interface ServerSentResponse {
+  payload: ServerSentPayload,
+  type: string
+}
+
+export enum ServerSentEventTypes {
+  STATE_CHANGE = 'state-change'
+}
 
 export class ServerSentEvents extends EventEmitter {
 
   protected evtSource: EventSource
   protected middlewareAPI: MiddlewareAPI
-  protected readonly action: ActionFunctionAny<Action<ServerSentPayload>>
 
   constructor(public readonly url, public readonly withCredentials: boolean = false) {
     super()
@@ -30,8 +36,6 @@ export class ServerSentEvents extends EventEmitter {
     if (ServerSentEvents.SUPPORTED) {
       this.connect()
     }
-
-    this.action = createAction(SSE_ACTION)
   }
 
   static get SUPPORTED() {
@@ -42,8 +46,8 @@ export class ServerSentEvents extends EventEmitter {
     return this.evtSource ? this.evtSource.readyState as ServerSentState : ServerSentState.CLOSED
   }
 
-  subscribe(cb: (payload: ServerSentPayload) => void) {
-    this.on('data', cb)
+  subscribe(type: ServerSentEventTypes, cb: (payload: ServerSentPayload) => void) {
+    this.on(type, cb)
   }
 
   get middleware(): Middleware {
@@ -70,16 +74,22 @@ export class ServerSentEvents extends EventEmitter {
   }
 
   protected onMessage = (event) => {
-    let payload: ServerSentPayload = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data
-    console.log('[ServerSentEvents] message!', payload)
+    try {
+      const { payload, type }: ServerSentResponse = (typeof event.data === 'string')
+        ? JSON.parse(event.data)
+        : event.data
+      console.log('[ServerSentEvents] message!', type, payload)
 
-    ///TODO: maybe should be fixes server data
-    payload = ((payload as any).payload) || payload
-    this.emit('data', payload)
+      this.emit(type, payload)
 
-    if (this.middlewareAPI) {
-      this.middlewareAPI.dispatch(this.action(payload))
+      if (this.middlewareAPI) {
+        const action = createAction(`sse/${type}`)
+        this.middlewareAPI.dispatch(action(payload))
+      }
+    } catch (e) {
+
     }
+
   }
 
   protected onOpen = (event) => {
@@ -88,4 +98,4 @@ export class ServerSentEvents extends EventEmitter {
   }
 }
 
-export default new ServerSentEvents(`${getHttpApiUrl()}/events`)
+export default new ServerSentEvents(`${getHttpApiUrl()}/events/state`)

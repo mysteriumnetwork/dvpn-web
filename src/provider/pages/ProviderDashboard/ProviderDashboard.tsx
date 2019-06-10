@@ -13,6 +13,7 @@ import { withStyles } from '@material-ui/core'
 import { Service } from '../../../api/data/service'
 import { Redirect } from 'react-router'
 import { NAV_PROVIDER_SETTINGS } from '../../provider.links'
+import _ from 'lodash'
 
 const styles = require('./ProviderDashboard.module.scss')
 
@@ -24,7 +25,10 @@ type Props = DefaultProps & {
 
 class ProviderDashboard extends React.PureComponent<Props> {
   get service(): Service {
-    return (this.props.provider && this.props.provider.startedService) || {}
+    const startedServices = _.get(this.props, 'provider.startedServices')
+
+    ///TODO: startedServices list
+    return startedServices && startedServices[0]
   }
 
   handleDisconnect = () => {
@@ -36,7 +40,7 @@ class ProviderDashboard extends React.PureComponent<Props> {
   render() {
     const { provider } = this.props
 
-    if (!(provider.startedService && provider.startedService.id)) {
+    if (!(provider.startedServices && provider.startedServices.length)) {
       return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
     }
     const sessions = Number(provider.sessions && provider.sessions.length)

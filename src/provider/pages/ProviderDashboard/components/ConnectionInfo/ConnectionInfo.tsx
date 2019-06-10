@@ -10,7 +10,9 @@ type Props = {
 }
 
 const ConnectionInfo = (props: Props) => {
-  const { originalLocation: location = {}, startedService: service = {} } = props.provider
+  const { originalLocation: location = {}, startedServices = [] } = props.provider
+  ///TODO: startedServices list
+  const service: any = startedServices[0] || {}
 
   return (<div className={styles.infoBar}>
     <table>

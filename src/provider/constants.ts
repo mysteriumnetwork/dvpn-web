@@ -14,7 +14,7 @@ export const ACCESS_POLICIES = 'provider/ACCESS_POLICIES'
 
 export const ACCESS_POLICY = 'provider/ACCESS_POLICY'
 
-export const STARTED_SERVICE = 'provider/STARTED_SERVICE'
+export const STARTED_SERVICES = 'provider/STARTED_SERVICES'
 
 export const SERVICE_SESSIONS = 'provider/SERVICE_SESSIONS'
 

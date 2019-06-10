@@ -2,7 +2,7 @@ import { AnyAction, Dispatch, Store } from 'redux'
 import { getCurrentAccessPolicy } from './api'
 import {
   getIdentityPayoutAction,
-  getServiceAction,
+  getServicesAction,
   setAccessPolicyAction,
   setIdentityAction,
   setLocationAction,
@@ -20,7 +20,7 @@ import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import _ from 'lodash'
 import { DispatchResult } from '../types'
-import serverSentEvents from '../utils/serverSentEvents'
+import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
 
 export const initProviderStory = (store: Store) => {
   Promise.all([
@@ -28,7 +28,7 @@ export const initProviderStory = (store: Store) => {
     fetchIdentityStory(store.dispatch),
   ]).catch(console.error)
 
-  serverSentEvents.subscribe((payload) => {
+  serverSentEvents.subscribe(ServerSentEventTypes.STATE_CHANGE, (payload) => {
     const { serviceInfo = [] } = payload || null
     const service = serviceInfo[0] ///TODO: list of service
 
@@ -60,7 +60,7 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 
 export const fetchLocationStory = async (dispatch: Dispatch) => dispatch(setLocationAction())
 
-export const fetchServiceStory = async (dispatch: Dispatch) => dispatch(getServiceAction())
+export const fetchServiceStory = async (dispatch: Dispatch) => dispatch(getServicesAction())
 
 export const startServiceFetchingStory = async (store: Store) => {
 
