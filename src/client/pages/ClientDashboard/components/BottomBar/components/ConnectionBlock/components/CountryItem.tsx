@@ -1,12 +1,12 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
-import trans from '../../../../../../../../trans'
-
-const classNames = require('classnames')
+import { Location as OriginalLocation } from 'mysterium-vpn-js'
+import FlagIcon from '../../../../../../../../ui-kit/components/FlagIcon'
+import _ from 'lodash'
 
 interface IStyles {
-  root: string
-  flagIcon: string
+  root?: string
+  flagIcon?: string
 }
 
 const styles = theme => ({
@@ -18,33 +18,28 @@ const styles = theme => ({
       color: theme.colors.textSecondary,
       fontSize: theme.typography.fontSizes.tableHeadFont,
     },
-  },
-  flagIcon: {
-    width: 16,
-    height: 16,
-    minWidth: 16,
-    marginRight: 8,
-    background: 'url("app/components/assets/images/flag-icon-temp.svg") no-repeat center',
-    backgroundSize: 'contain',
-  },
+    '& .flag-icon': {
+      marginRight: 6
+    }
+  }
 })
 
 export interface ICountryItemProps {
   onChange?: any
   classes: IStyles
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  location: OriginalLocation
 }
 
-const CountryItem: React.SFC<ICountryItemProps> = (props: ICountryItemProps) => (
-  <div className={props.classes.root}>
-    {/* render flag icon class */}
-    <div
-      className={classNames(props.classes.flagIcon, {
-        // [props.classes.iconClass]
-      })}
-    />
-    <p>{trans('app.client.side.bar.ireland')}</p>
-  </div>
-)
+const CountryItem: React.FunctionComponent<ICountryItemProps> = (props: ICountryItemProps) => {
+  const country = _.get(props, 'location.country')
+  return country ? (
+    <div className={props.classes.root}>
+      <FlagIcon code={String(country).toLowerCase()}/>
+      <p>{country}</p>
+    </div>
+  ) : null
+}
 
+// @ts-ignore
 export default injectSheet(styles)(CountryItem)

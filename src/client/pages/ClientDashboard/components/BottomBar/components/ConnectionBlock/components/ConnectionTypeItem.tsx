@@ -1,5 +1,7 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
+import trans from '../../../../../../../../trans'
+import ConnectionTypeIcon from '../../../../../../../../ui-kit/components/ConnectionTypeIcon'
 
 interface IStyles {
   root: string
@@ -10,50 +12,33 @@ interface IStyles {
 const styles = theme => ({
   root: {
     display: 'flex',
-    '& .iconWireGuard': {
-      width: 16,
-      height: 16,
-      minWidth: 16,
-      marginRight: 8,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
-      backgroundSize: '160px 200px',
-      backgroundPosition: '-48px -54px',
-    },
-    '& .iconOpenVPN': {
-      width: 16,
-      height: 16,
-      minWidth: 16,
-      marginRight: 8,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
-      backgroundSize: '160px 200px',
-      backgroundPosition: '-48px -33px',
+    '& .connection-type-icon': {
+      margin: '-5px 0',
+      marginRight: 6
     },
     '& > p': {
       opacity: '0.9',
       color: theme.colors.textSecondary,
       fontSize: theme.typography.fontSizes.tableHeadFont,
     },
-  },
-  flagIcon: {
-    width: 32,
-    height: 32,
-    minWidth: 32,
-    background: 'url("app/components/assets/images/flag-icon-temp.svg") no-repeat center',
-  },
+  }
 })
 
 export interface IInfoBlockProps {
   onChange?: any
   classes: IStyles
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  type?: string
 }
 
-const InfoBlock: React.SFC<IInfoBlockProps> = (props: IInfoBlockProps) => (
-  <div className={props.classes.root}>
-    {/* set connection type icon class iconWireGuard/iconOpenVPN */}
-    <div className="iconWireGuard" />
-    <p>WireGuard</p>
-  </div>
-)
+const ConnectionTypeItem: React.FunctionComponent<IInfoBlockProps> = (props: IInfoBlockProps) => {
+  return props.type ? (
+    <div className={props.classes.root}>
+      <ConnectionTypeIcon type={props.type}/>
+      <p>{trans(`connection.type.${props.type}`)}</p>
+    </div>
+  ) : null
+}
 
-export default injectSheet(styles)(InfoBlock)
+// @ts-ignore
+export default injectSheet(styles)(ConnectionTypeItem)

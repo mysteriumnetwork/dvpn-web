@@ -28,7 +28,7 @@ const UsersList = (props: Props) => {
       <table>
         <tbody>
         {sessions && sessions.map((value) => (
-          <UserItem session={value}/>
+          <UserItem key={value.id} session={value}/>
         ))}
         </tbody>
       </table>

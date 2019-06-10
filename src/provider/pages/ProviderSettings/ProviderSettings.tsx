@@ -45,7 +45,7 @@ class ProviderSettings extends React.PureComponent<Props> {
 
   render() {
     const { provider, onChangeResidentialConfirm } = this.props
-    if (provider.startedService && provider.startedService.id) {
+    if (provider.startedServices && provider.startedServices.length) {
       return (<Redirect to={NAV_PROVIDER_DASHBOARD}/>)
     }
 

@@ -10,31 +10,32 @@
   justify-content: center;
   background: url('../../../app/components/assets/images/app-pattern.svg');
 }
+
 .title {
   font-weight: 300;
   color: $whiteColor;
   font-size: $mainTitle;
   text-align: center;
 }
+
 .action {
   margin: 50px auto 0;
-  a {
-    button {
-      font-weight: bold;
-      color: $warningRed;
-      min-width: 200px !important;
-    }
-    &:first-child {
-      margin-right: 1rem;
-    }
-    &:last-child {
-      margin-left: 1rem;
-    }
+
+  button {
+    font-weight: bold;
+    color: $warningRed;
+    min-width: 200px !important;
+  }
+
+  button + button {
+    margin-left: 2rem;
   }
 }
+
 .buttonLabel {
   display: flex;
   align-items: center;
+
   div {
     width: 15px;
     height: 15px;
@@ -42,6 +43,7 @@
     background-size: 170px 214px;
     background-position: -22px -81px;
   }
+
   p {
     margin-left: 10px;
     font-weight: normal;

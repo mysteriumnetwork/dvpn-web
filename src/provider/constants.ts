@@ -14,7 +14,7 @@ export const ACCESS_POLICIES = 'provider/ACCESS_POLICIES'
 
 export const ACCESS_POLICY = 'provider/ACCESS_POLICY'
 
-export const STARTED_SERVICE = 'provider/STARTED_SERVICE'
+export const STARTED_SERVICES = 'provider/STARTED_SERVICES'
 
 export const SERVICE_SESSIONS = 'provider/SERVICE_SESSIONS'
 
@@ -25,5 +25,3 @@ export const TRAFFIC_OPTION = 'provider/TRAFFIC_OPTION'
 export const RESIDENTIAL_CONFIRM = 'provider/RESIDENTIAL_CONFIRM'
 
 export const SET_PROVIDER_STATE = 'provider/SET_PROVIDER_STATE'
-
-export const SERVER_SERVICE_UPDATE_STATUS = 'server/SERVICE_UPDATE_STATUS'

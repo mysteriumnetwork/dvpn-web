@@ -29,7 +29,7 @@ type Props = InjectedFormProps & {
 class AirdropWallet extends React.PureComponent<Props> {
   handleTrafficChange = event => {
     const { onChangeTrafficOption } = this.props
-    onChangeTrafficOption(event.target.value)
+    onChangeTrafficOption(event.target.level)
   }
 
   handleToggleWalletEditMode = () => {

@@ -56,6 +56,7 @@ const options: any = {
     purpleAppBg: 'linear-gradient(to bottom, #9b2463, #312461)',
     purpleMain: 'linear-gradient(to bottom, #7c2463, #552462)',
     greyMain: 'linear-gradient(to bottom, #fefefe, #f2f2f2)',
+    grayBackground: "#f7f7f7"
   },
   typography: {
     useNextVariants: true,

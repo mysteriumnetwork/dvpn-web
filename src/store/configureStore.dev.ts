@@ -5,7 +5,7 @@ import { routerActions, routerMiddleware } from 'connected-react-router'
 import { createLogger } from 'redux-logger'
 import promiseMiddleware from 'redux-promise-middleware'
 import createRootReducer from '../rootReducer'
-import socketio from '../utils/socketIo'
+import serverSentEvents from '../utils/serverSentEvents'
 
 const history = createHashHistory()
 
@@ -22,8 +22,8 @@ const configureStore = (initialState?: any) => {
   // Promise Middleware
   middleware.push(promiseMiddleware)
 
-  // Socket.IO Middleware
-  middleware.push(socketio.middleware())
+  // ServerSentEvents Middleware
+  middleware.push(serverSentEvents.middleware)
 
   // Logging Middleware
   const logger = createLogger({

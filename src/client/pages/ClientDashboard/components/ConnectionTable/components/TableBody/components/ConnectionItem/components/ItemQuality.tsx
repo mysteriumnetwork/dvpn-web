@@ -1,7 +1,8 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
-import Quality from '../../../../../../../../../ui-kit/components/QualityIcon/QualityIcon'
-import StartIcon from '../../../../../../../../../ui-kit/components/StartIcon/StartIcon'
+import Quality from '../../../../../../../../../../ui-kit/components/QualityIcon/QualityIcon'
+import StartIcon from '../../../../../../../../../../ui-kit/components/StartIcon/StartIcon'
+import { Proposal } from '../../../../../../../../../../api/data/proposal'
 
 interface IStyles {
   ipItem: string
@@ -21,13 +22,15 @@ const styles = theme => ({
 export interface IItemProps {
   classes: IStyles
   style?: React.CSSProperties
+  proposal: Proposal
+  active?: boolean
 }
 
-const ItemQuality: React.SFC<IItemProps> = (props: IItemProps) => (
+const ItemQuality: React.FunctionComponent<IItemProps> = (props: IItemProps) => (
   <td>
     <div className={props.classes.ipItem}>
-      <Quality />
-      <StartIcon />
+      <Quality metrics={props.proposal.metrics}/>
+      <StartIcon/>
     </div>
   </td>
 )

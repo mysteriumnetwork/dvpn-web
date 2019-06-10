@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { MouseEventHandler } from 'react'
 import injectSheet from 'react-jss'
 import trans from '../../../../../../../trans'
 
@@ -14,9 +15,9 @@ interface IStyles {
 
 const styles = theme => ({
   root: {
-    '& > a': {
-      width: '100%',
-    },
+    '& > button': {
+      width: '100%'
+    }
   },
   menuItem: {
     display: 'flex',
@@ -33,12 +34,13 @@ const styles = theme => ({
       marginRight: 10,
       background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
       backgroundSize: '184px 232px',
-      backgroundPosition: '4px -62px',
+      backgroundPosition: '4px -62px'
     },
     '& .itemsCount': {
       position: 'absolute',
       top: 10,
       right: 14,
+      fontSize: 14,
       color: theme.colors.textLightGrey,
     },
   },
@@ -46,35 +48,36 @@ const styles = theme => ({
     color: theme.colors.whiteColor,
     background: theme.colors.actionPurple,
     '& .faveIcon': {
-      backgroundPosition: '-20px -62px',
+      backgroundPosition: '-20px -62px'
     },
     '& .itemsCount': {
       opacity: '0.5',
-      color: theme.colors.whiteColor,
-    },
-  },
+      color: theme.colors.whiteColor
+    }
+  }
 })
 
 export interface IMenuItemFavoriteProps {
-  onChange?: any
   classes: IStyles
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  onClick?: MouseEventHandler
+  count?: number
+  active?: boolean
 }
 
-const MenuItemFavorite: React.SFC<IMenuItemFavoriteProps> = (props: IMenuItemFavoriteProps) => (
+const MenuItemFavorite: React.FunctionComponent<IMenuItemFavoriteProps> = (props: IMenuItemFavoriteProps) => (
   <div className={props.classes.root}>
-    <a href="/">
+    <button onClick={props.onClick}>
       <div
         className={classNames(props.classes.menuItem, {
-          // add class active when item selected
-          // [props.classes.active]
+          [props.classes.active]: Boolean(props.active)
         })}
       >
-        <div className="faveIcon" />
+        <div className="faveIcon"/>
         <p>{trans('app.client.side.bar.favorites')}</p>
-        <div className="itemsCount">3</div>
+        <div className="itemsCount">{Number(props.count)}</div>
       </div>
-    </a>
+    </button>
   </div>
 )
 

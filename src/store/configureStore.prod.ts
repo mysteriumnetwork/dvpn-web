@@ -4,12 +4,12 @@ import { createHashHistory } from 'history'
 import { routerMiddleware } from 'connected-react-router'
 import createRootReducer from '../rootReducer'
 import promiseMiddleware from 'redux-promise-middleware'
-import socketio  from '../utils/socketIo'
+import serverSentEvents from '../utils/serverSentEvents'
 
 const history = createHashHistory()
 const rootReducer = createRootReducer(history)
 const router = routerMiddleware(history)
-const enhancer = applyMiddleware(thunk, promiseMiddleware, socketio.middleware(), router)
+const enhancer = applyMiddleware(thunk, promiseMiddleware, serverSentEvents.middleware, router)
 
 function configureStore(initialState?: any) {
   return createStore(rootReducer, initialState, enhancer)

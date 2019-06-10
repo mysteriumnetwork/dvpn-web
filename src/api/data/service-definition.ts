@@ -1,6 +1,6 @@
-import { ServiceLocation } from './service-location'
+import { OriginalLocation } from './original-location'
 
 export interface ServiceDefinition {
-  locationOriginate?: ServiceLocation
+  locationOriginate?: OriginalLocation
 }
 

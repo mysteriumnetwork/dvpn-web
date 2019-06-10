@@ -62,7 +62,6 @@
   "app.client.side.bar.favorites": "Favorites",
   "app.client.side.bar.by.connection.type": "By Connection Type",
   "app.client.side.bar.by.country": "By Country",
-  "app.client.side.bar.ireland": "Ireland",
   "app.client.dashboard.server": "Server",
   "app.client.dashboard.connection.type": "Connection Type",
   "app.client.dashboard.not.connected": "Not connected",
@@ -88,7 +87,9 @@
   "error.title": "Something went wrong",
   "app.client.node.disconnected": "The node has disconnected.",
   "how.fix.nat": "How to configure NAT manually?",
-
+  "connection.type.openvpn":"OpenVPN",
+  "connection.type.wireguard":"WireGuard",
+  "connection.type.noop":"noop",
 
   "": ""
 }

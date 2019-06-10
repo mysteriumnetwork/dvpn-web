@@ -1,8 +1,8 @@
 import * as React from 'react'
-import injectSheet from 'react-jss'
 import trans from '../../../../../../../trans'
-
-const classNames = require('classnames')
+import { OriginalLocation } from '../../../../../../../api/data/original-location'
+import FlagIcon from '../../../../../../../ui-kit/components/FlagIcon'
+import injectSheet from 'react-jss'
 
 interface IStyles {
   root: string
@@ -33,8 +33,6 @@ const styles = (theme: any) => ({
   flagIcon: {
     width: 32,
     height: 32,
-    minWidth: 32,
-    background: 'url("app/components/assets/images/flag-icon-temp.svg") no-repeat center',
   },
 })
 
@@ -42,19 +40,15 @@ export interface IInfoBlockProps {
   onChange?: any
   classes: IStyles
   style?: React.CSSProperties
+  location?: OriginalLocation
 }
 
-const InfoBlock: React.SFC<IInfoBlockProps> = (props: IInfoBlockProps) => (
+const InfoBlock: React.FunctionComponent<IInfoBlockProps> = (props: IInfoBlockProps) => props.location && (
   <div className={props.classes.root}>
-    {/* render flag icon class */}
-    <div
-      className={classNames(props.classes.flagIcon, {
-        // [props.classes.iconClass]
-      })}
-    />
+    <FlagIcon className={props.classes.flagIcon} code={String(props.location.country).toLowerCase()}/>
     <div className={props.classes.info}>
       <h3>{trans('app.client.dashboard.not.connected')}</h3>
-      <p>IP: 88.17.13.176</p>
+      <p>{String(props.location && props.location.ip)}</p>
     </div>
   </div>
 )

@@ -7,10 +7,9 @@ import {
   NAT_STATUS,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
-  SERVER_SERVICE_UPDATE_STATUS,
   SERVICE_SESSIONS,
   SET_PROVIDER_STATE,
-  STARTED_SERVICE,
+  STARTED_SERVICES,
   TRAFFIC_OPTION,
   UPDATE_IDENTITY
 } from './constants'
@@ -20,8 +19,9 @@ import { AccessPolicy } from '../api/data/access-policy'
 import { Identity } from '../api/data/identity'
 import { IdentityPayout } from '../api/data/identity-payout'
 import { NatStatus } from '../api/data/nat-status'
-import { Service } from '../api/data/service'
 import { ServiceSession } from '../api/data/service-session'
+import { ServerSentEventTypes, ServerSentPayload } from '../utils/serverSentEvents'
+import { ServiceInfo } from 'mysterium-vpn-js'
 
 export interface ProviderReducer {
   identity?: Identity,
@@ -33,7 +33,7 @@ export interface ProviderReducer {
   trafficOption?: TrafficOptions
   residentialConfirm?: boolean,
   state?: any,
-  startedService?: Service,
+  startedServices?: ServiceInfo[],
   startedServicePending?: boolean,
   sessions?: ServiceSession[],
   natStatus?: NatStatus
@@ -130,7 +130,7 @@ export default typeToReducer({
     sessions: action.payload
   }),
 
-  [STARTED_SERVICE]: {
+  [STARTED_SERVICES]: {
     PENDING: (state, { meta }) => ({
       ...state,
       startedServicePending: meta && meta.pending
@@ -139,24 +139,22 @@ export default typeToReducer({
       ...state,
       startedServicePending: false
     }),
-    FULFILLED: (state, action: Action<any>) => ({
+    FULFILLED: (state, action: Action<ServiceInfo[]>) => ({
       ...state,
-      startedService: action.payload,
+      startedServices: action.payload,
       startedServicePending: false
     })
   },
-  [SERVER_SERVICE_UPDATE_STATUS]: (state, action: Action<{ payload: { id: string, status: string } }>) => {
-    const { id, status } = _.get(action, 'payload', null)
-    if (_.get(state, 'startedService.id') === id && id !== undefined) {
-      state = {
-        ...state,
-        startedService: {
-          ..._.get(state, 'startedService'),
-          status,
-        }
-      }
+
+  [`sse/${ServerSentEventTypes.STATE_CHANGE}`]: (state, action: Action<ServerSentPayload>) => {
+    const { natStatus = null, serviceInfo = null, sessions = null } = action.payload || {}
+
+    return {
+      ...state,
+      natStatus: natStatus ? _.assign(state.natStatus, natStatus) : state.natStatus,
+      startedServices: serviceInfo,
+      sessions: sessions,
     }
-    return state
   }
 
 }, providerInitState)
