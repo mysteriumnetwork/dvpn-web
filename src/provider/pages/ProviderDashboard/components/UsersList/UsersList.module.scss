@@ -23,7 +23,7 @@
     }
     td {
       width: 18%;
-      padding: 9px 0;
+      padding: 9px 6px;
       text-align: left;
       font-size: $tableContentFont;
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -32,9 +32,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        padding-left: 0;
       }
       &:nth-child(2) {
         width: 26%;
+        padding-right: 0;
       }
     }
   }
