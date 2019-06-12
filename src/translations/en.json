@@ -36,8 +36,8 @@
   "app.menu.send.feedback": "Send Feedback",
   "app.menu.follow.us": "Follow us",
   "app.menu.about": "About the App",
-  "app.node.running.users.connected": " users connected",
-  "app.node.running.successful.connections": " successful connections",
+  "app.node.running.users.connected": "Users connected:",
+  "app.node.running.successful.connections": "{count, plural, one {# successful connection} other {# successful connections}}",
   "app.node.running.attempted": " attempted",
   "app.node.running.uptime": "Uptime",
   "app.node.running.downloaded": "Downloaded",
@@ -88,9 +88,8 @@
   "error.title": "Something went wrong",
   "app.client.node.disconnected": "The node has disconnected.",
   "how.fix.nat": "How to configure NAT manually?",
-  "connection.type.openvpn":"OpenVPN",
-  "connection.type.wireguard":"WireGuard",
-  "connection.type.noop":"noop",
-
+  "connection.type.openvpn": "OpenVPN",
+  "connection.type.wireguard": "WireGuard",
+  "connection.type.noop": "noop",
   "": ""
 }
