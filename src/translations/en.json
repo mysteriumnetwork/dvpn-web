@@ -44,6 +44,7 @@
   "app.node.running.uploaded": "Uploaded",
   "app.node.running.quality": "Quality",
   "app.node.running.external.ip": "External IP",
+  "app.node.running.public.ip": "Public IP",
   "app.node.running.server.id": "Server ID",
   "app.node.running.user": "User",
   "app.node.running.duration": "Duration",

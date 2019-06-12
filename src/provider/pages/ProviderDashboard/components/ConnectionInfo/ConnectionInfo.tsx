@@ -18,7 +18,7 @@ const ConnectionInfo = (props: Props) => {
     <table>
       <thead>
       <tr>
-        <th>{trans('app.node.running.external.ip')}</th>
+        <th>{trans('app.node.running.public.ip')}</th>
         <th>{trans('app.node.running.server.id')}</th>
       </tr>
       </thead>
