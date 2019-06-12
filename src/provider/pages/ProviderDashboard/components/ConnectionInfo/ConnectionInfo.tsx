@@ -32,7 +32,9 @@ const ConnectionInfo = (props: Props) => {
           </div>
         </td>
         <td>
-          <a target="_blank" href={`${process.env.REACT_APP_MYSTERIUM_NETWORK}/node/${service.providerId}/${service.type}`} className={styles.infoID}>{service.providerId}</a>
+          <a target={'_blank'}
+             href={`${process.env.REACT_APP_MYSTERIUM_NETWORK}/node/${service.providerId}/${service.type}`}
+             className={styles.infoID}>{service.providerId}</a>
         </td>
       </tr>
       </tbody>
