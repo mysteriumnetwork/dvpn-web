@@ -9,15 +9,19 @@ type Props = {
 
 const UserItem = (props: Props) => {
   const { consumerId } = props.session
+  //const duration = (Date.now() - Date.parse(createdAt)) || 0
+
   return (
     <tr>
-      <td>
+      <td title={consumerId}>
         <div className={styles.ipItem}>
-          <div className="flag-icon"/>
-          <p>{consumerId}</p>
+          {/*<div className="flag-icon"/>*/}
+          <a target={'_blank'}
+             href={`${process.env.REACT_APP_MYSTERIUM_NETWORK}/session/${consumerId}`}>{consumerId}</a>
         </div>
       </td>
-      <td>--{/*00:00:02:15*/}</td>
+      {/*<td>{duration ? formatDuration(duration, { leading: true }) : '--'}</td>*/}
+      <td>--</td>
       <td>--{/*9.11 GB*/}</td>
       <td>--{/*39.12 MB*/}</td>
     </tr>

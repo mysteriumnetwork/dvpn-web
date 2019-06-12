@@ -1,6 +1,7 @@
 export interface ServiceSession {
   consumerId?: string
-  id?: string
+  id?: string,
+  createdAt?: string
 }
 
 export interface ServiceSessionResponse {

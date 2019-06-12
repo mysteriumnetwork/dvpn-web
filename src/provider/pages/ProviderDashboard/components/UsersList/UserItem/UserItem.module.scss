@@ -2,8 +2,9 @@
 
 .ipItem {
   display: flex;
-  p {
+  a {
     margin-left: 8px;
     font-family: 'mplus-1m', sans-serif;
+    text-decoration: none;
   }
 }
