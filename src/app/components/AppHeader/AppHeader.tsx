@@ -37,11 +37,13 @@ const styles = (theme: any) => ({
     display: 'flex',
     boxShadow: '0 0.3px 0.3px 0 rgba(0, 0, 0, 0.15)',
     '& > a:first-child div': {
-      borderRadius: '4px 0 0 4px',
+      borderTopLeftRadius: 4,
+      borderBottomLeftRadius: 4,
       borderRight: 'none',
     },
     '& > a:last-child div': {
-      borderRadius: '0 4px 4px 0',
+      borderTopRightRadius: 4,
+      borderTopLeftRadius: 4,
       borderLeft: 'none',
     },
   },
@@ -91,15 +93,15 @@ const clientLinkByConnectionStatus = (status: ConnectionStatus) => {
 const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderProps) => (
   <div className={props.classes.appHeader}>
     <div className={props.classes.tabContainer}>
-      <Link to={clientLinkByConnectionStatus(props.connectionStatus)}>
-        <div
-          className={classNames(props.classes.tab, {
-            [props.classes.active]: String(props.routerLocation).startsWith('/client')
-          })}
-        >
-          {trans('app.header.connect.vpn')}
-        </div>
-      </Link>
+      {/*<Link to={clientLinkByConnectionStatus(props.connectionStatus)}>*/}
+      {/*  <div*/}
+      {/*    className={classNames(props.classes.tab, {*/}
+      {/*      [props.classes.active]: String(props.routerLocation).startsWith('/client')*/}
+      {/*    })}*/}
+      {/*  >*/}
+      {/*    {trans('app.header.connect.vpn')}*/}
+      {/*  </div>*/}
+      {/*</Link>*/}
       <Link to={props.startedService ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
         <div
           className={classNames(props.classes.tab, {

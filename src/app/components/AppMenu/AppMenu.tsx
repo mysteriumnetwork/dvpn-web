@@ -33,7 +33,7 @@ class AppMenu extends React.Component {
           <div className="app-icons appMenuIcon" />
         </IconButton>
         <Menu id="menu-appbar" open={open} anchorEl={anchorEl} onClose={this.handleMenuClose}>
-          <MenuItem className={styles.menuItem}>{trans('app.menu.connection.history')}</MenuItem>
+          {/*<MenuItem className={styles.menuItem}>{trans('app.menu.connection.history')}</MenuItem>*/}
           <MenuItem className={styles.menuItem}>{trans('app.menu.terms.conditions')}</MenuItem>
           <MenuItem className={styles.menuItem}>{trans('app.menu.privacy.policy')}</MenuItem>
           <MenuItem className={styles.menuItem}>{trans('app.menu.send.feedback')}</MenuItem>
