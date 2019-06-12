@@ -2,6 +2,7 @@ import * as React from 'react'
 import trans from '../../../../../trans'
 import UserItem from './UserItem/UserItem'
 import { ProviderReducer } from '../../../../reducer'
+import Timer from '../../../../../ui-kit/components/Timer'
 
 const styles = require('./UsersList.module.scss')
 
@@ -14,6 +15,7 @@ const UsersList = (props: Props) => {
   const { sessions } = props.provider
 
   return (<div className={styles.usersList}>
+    <Timer leader/>
     <table>
       <thead>
       <tr>

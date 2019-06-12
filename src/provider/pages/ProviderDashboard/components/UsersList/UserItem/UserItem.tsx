@@ -1,5 +1,7 @@
 import * as React from 'react'
 import { ServiceSession } from '../../../../../../api/data/service-session'
+import Timer from '../../../../../../ui-kit/components/Timer'
+import formatDuration from 'format-duration'
 
 const styles = require('./UserItem.module.scss')
 
@@ -8,16 +10,22 @@ type Props = {
 }
 
 const UserItem = (props: Props) => {
-  const { consumerId } = props.session
+  const { consumerId, id, createdAt } = props.session
+
   return (
     <tr>
-      <td>
+      <td title={consumerId}>
         <div className={styles.ipItem}>
-          <div className="flag-icon"/>
-          <p>{consumerId}</p>
+          {/*<div className="flag-icon"/>*/}
+          <a target={'_blank'}
+             href={`${process.env.REACT_APP_MYSTERIUM_NETWORK}/session/${id}`}>{id}</a>
         </div>
       </td>
-      <td>--{/*00:00:02:15*/}</td>
+      <td>
+        <Timer>
+          {(value) => formatDuration((value - Date.parse(createdAt)) || 0, { leading: true })}
+        </Timer>
+      </td>
       <td>--{/*9.11 GB*/}</td>
       <td>--{/*39.12 MB*/}</td>
     </tr>

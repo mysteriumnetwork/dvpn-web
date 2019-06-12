@@ -6,9 +6,11 @@ import langReducer from './language/reducer'
 import providerReducer from './provider/reducer'
 import clientReducer from './client/reducer'
 import termsReducer from './app/pages/Terms/reducer'
+import { timerReducer } from './ui-kit/components/Timer'
 
 export default function createRootReducer(history: History) {
   return combineReducers({
+    timer: timerReducer,
     router: connectRouter(history),
     form: formReducer,
     language: langReducer,

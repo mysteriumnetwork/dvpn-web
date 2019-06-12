@@ -26,6 +26,7 @@ export const initProviderStory = (store: Store) => {
   Promise.all([
     fetchLocationStory(store.dispatch),
     fetchIdentityStory(store.dispatch),
+    startAccessPolicyFetchingStory(store.dispatch)
   ]).catch(console.error)
 
   serverSentEvents.subscribe(ServerSentEventTypes.STATE_CHANGE, (payload) => {
