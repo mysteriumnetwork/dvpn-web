@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
+import { settingsRoutes } from '../../../settings/settings.routes'
 import { RouteDef } from '../../app.types'
 import { providerRoutes } from '../../../provider/provider.routes'
 import { clientRoutes } from '../../../client/client.routes'
@@ -11,7 +12,7 @@ import ConnectionHistory from '../ConnectionHistory/ConnectionHistory'
 import AppAbout from '../AppAbout/AppAbout'
 import AppWarningPopup from '../AppWarningPopup/AppWarningPopup'
 
-const mainRoutes: RouteDef[] = [...clientRoutes, ...providerRoutes]
+const mainRoutes: RouteDef[] = [...clientRoutes, ...providerRoutes, ...settingsRoutes]
 
 const Main = () => (
   <div>

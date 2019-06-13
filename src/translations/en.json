@@ -36,6 +36,7 @@
   "app.menu.privacy.policy": "Privacy Policy",
   "app.menu.send.feedback": "Send Feedback",
   "app.menu.follow.us": "Follow us",
+  "app.menu.settings.password": "Change password",
   "app.menu.about": "About the App",
   "app.node.running.users.connected": "Users connected:",
   "app.node.running.successful.connections": "{count, plural, one {# successful connection} other {# successful connections}}",

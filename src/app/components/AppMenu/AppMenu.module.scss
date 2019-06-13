@@ -11,15 +11,25 @@
     }
   }
 }
+li.groupItem {
+  width: 100%;
+  font-size: $tableHeadFont;
+  color: $textSecondary;
+  padding-top: 0;
+  padding-bottom: 0;
+  outline: none !important;
+}
 li.menuItem {
   font-size: $buttonText;
   color: $textMain;
   padding: 4px 16px;
+  outline: none !important;
+
   &:first-child {
     //border-bottom: 2px solid #e6e6e6;
   }
   &:last-child {
-    border-top: 2px solid #e6e6e6;
+    //border-top: 2px solid #e6e6e6;
   }
   &:focus {
     background: transparent;

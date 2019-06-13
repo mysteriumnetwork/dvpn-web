@@ -3,6 +3,7 @@
 li.followMenuItem {
   padding: 4px 16px;
   height: auto;
+  outline: none !important;
   &:hover {
     background: transparent;
   }
