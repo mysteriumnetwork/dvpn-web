@@ -56,7 +56,8 @@ export default typeToReducer({
       ...state,
       payout: {
         ...state.payout,
-        ethAddress: _.get(action, 'meta.ethAddress')
+        ethAddress: _.get(action, 'meta.ethAddress'),
+        referralCode: _.get(action, 'meta.referralCode'),
       }
     })
   },
@@ -92,6 +93,7 @@ export default typeToReducer({
       ...state,
       payout: {
         ethAddress: _.get(action, 'payload.eth_address'),
+        referralCode: _.get(action, 'payload.referral_code'),
         loading: false
       }
     })

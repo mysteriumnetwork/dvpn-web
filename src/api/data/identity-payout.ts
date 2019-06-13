@@ -1,3 +1,4 @@
 export interface IdentityPayout {
-  ethAddress?: string
+  ethAddress?: string,
+  referralCode?: string
 }

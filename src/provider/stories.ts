@@ -156,10 +156,10 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
-  const { id, ethAddress } = data
+  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string, referralCode: string }) => {
+  const { id, ethAddress, referralCode } = data
   try {
-    await dispatch(updateIdentitiesAction({ id, ethAddress }))
+    await dispatch(updateIdentitiesAction({ id, ethAddress, referralCode }))
     await dispatch(setProviderStateAction({ isWalletEditMode: false }))
   } catch (e) {
     apiSubmissionError('walletAddress')(e)

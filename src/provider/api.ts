@@ -103,9 +103,9 @@ export const getIdentityPayout = async (identity: Identity): Promise<IdentityPay
   return await tequilaApi.identityPayout(identity.id)
 }
 
-export const updateIdentity = async (data: {id: string, ethAddress: string}): Promise<void> => {
-  const { id, ethAddress } = data
-  await tequilaApi.updateIdentityPayout(id, ethAddress)
+export const updateIdentity = async (data: {id: string, ethAddress: string, referralCode: string}): Promise<void> => {
+  const { id, ethAddress, referralCode } = data
+  await tequilaApi.updateIdentityPayout(id, ethAddress, referralCode)
 }
 
 export const unlocksIdentity = async (data: {id: string, passphrase: string}): Promise<void> => {

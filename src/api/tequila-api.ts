@@ -37,7 +37,7 @@ export interface TequilaApiInterface {
 
   identityPayout(id: string): Promise<IdentityPayout>
 
-  updateIdentityPayout(id: string, ethAddress: string): Promise<void>
+  updateIdentityPayout(id: string, ethAddress: string, referralCode: string): Promise<void>
 
   unlocksIdentity(id: string, passphrase: string): Promise<void>
 
@@ -140,8 +140,8 @@ export class TequilaApi implements TequilaApiInterface {
     return payout
   }
 
-  public async updateIdentityPayout(id: string, ethAddress: string): Promise<void> {
-    await this.http.put(`identities/${id}/payout`, { ethAddress })
+  public async updateIdentityPayout(id: string, ethAddress: string, referralCode: string): Promise<void> {
+    await this.http.put(`identities/${id}/payout`, { ethAddress, referral_code: referralCode })
   }
 
   public async unlocksIdentity(id: string, passphrase: string): Promise<void> {

@@ -15,7 +15,7 @@ import IconButton from '@material-ui/core/IconButton'
 import { submit } from '../../../../../utils/reduxForm'
 import { InjectedFormProps } from 'redux-form'
 import validate from './validate'
-import styles from  "./AirdropWallet.module.scss"
+import styles from './AirdropWallet.module.scss'
 
 type Props = InjectedFormProps & {
   state: { isWalletEditMode: boolean }
@@ -40,7 +40,8 @@ class AirdropWallet extends React.PureComponent<Props> {
     if (!isWalletEditMode) {
       initialize({
         passphrase: '',
-        ethAddress: _.get(provider, 'payout.ethAddress', '')
+        ethAddress: _.get(provider, 'payout.ethAddress', ''),
+        referralCode: _.get(provider, 'payout.referralCode', ''),
       })
     }
   }
@@ -49,7 +50,7 @@ class AirdropWallet extends React.PureComponent<Props> {
     const { formWalletAddressData, provider, onSaveWalletAddress } = this.props
     submit(this.props, () => onSaveWalletAddress({
       ...formWalletAddressData,
-      id: provider.identity.id
+      id: provider.identity.id,
     }))
   }
 
@@ -94,7 +95,6 @@ class AirdropWallet extends React.PureComponent<Props> {
                     <button onClick={this.handleToggleWalletEditMode}>{trans('app.provider.settings.change')}</button>
                   </div>
                 )}
-
               </div>
             )}
             {error && (
@@ -104,7 +104,27 @@ class AirdropWallet extends React.PureComponent<Props> {
             <p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>
           </div>
         </div>
-
+        <div className={styles.flexedRow}>
+          <p>{trans('app.provider.settings.referral.code')}</p>
+          <div>
+            {isWalletEditMode && !_.get(provider, 'payout.referralCode') ? (
+              <div className={styles.editableField}>
+                <TextField placeholder="ABC123" name="referralCode" disabled={submitting}
+                           className={styles.editableTextField}/>
+              </div>
+            ) : (
+              <div className={styles.savedWallet}>
+                {_.get(provider, 'payout.loading') !== false ? (
+                  <div className={styles.flexCenter}>
+                    <RectangleLoading width='370px' height='16px'/>
+                  </div>
+                ) : (
+                  <p>{_.get(provider, 'payout.referralCode', 'N/A')}</p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
         {this.showTrafficOptions && (
           <div className={styles.flexedRow}>
             <p>{trans('app.provider.settings.traffic')}</p>
@@ -133,7 +153,7 @@ class AirdropWallet extends React.PureComponent<Props> {
 export default injectSheet({})(compose(
   reduxForm({
     form: 'walletAddress',
-    validate
+    validate,
   }),
-  immutableProps
+  immutableProps,
 )(AirdropWallet))
