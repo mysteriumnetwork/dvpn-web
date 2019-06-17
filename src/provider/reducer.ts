@@ -11,7 +11,7 @@ import {
   SET_PROVIDER_STATE,
   STARTED_SERVICES,
   TRAFFIC_OPTION,
-  UPDATE_IDENTITY
+  UPDATE_IDENTITY, UPDATE_REFERRAL_CODE,
 } from './constants'
 import { Action } from 'redux-actions'
 import { OriginalLocation } from '../api/data/original-location'
@@ -47,7 +47,6 @@ export enum TrafficOptions {
 export const providerInitState = {
   trafficOption: TrafficOptions.SAFE,
   residentialConfirm: false,
-  state: {}
 }
 
 export default typeToReducer({
@@ -57,95 +56,124 @@ export default typeToReducer({
       payout: {
         ...state.payout,
         ethAddress: _.get(action, 'meta.ethAddress'),
-        referralCode: _.get(action, 'meta.referralCode'),
-      }
-    })
+      },
+    }),
   },
 
   [ORIGINAL_LOCATION]: {
     FULFILLED: (state, action: Action<OriginalLocation>) => ({
       ...state,
-      originalLocation: action.payload
-    })
+      originalLocation: action.payload,
+    }),
   },
 
   [IDENTITY]: {
     FULFILLED: (state, action: Action<Identity>) => ({
       ...state,
-      identity: action.payload
-    })
+      identity: action.payload,
+    }),
   },
 
   [IDENTITY_PAYOUT]: {
     PENDING: (state) => ({
       ...state,
       payout: {
-        loading: true
-      }
+        loading: true,
+      },
     }),
     REJECTED: (state, action: Action<any>) => ({
       ...state,
       payout: {
-        loading: false
-      }
+        loading: false,
+      },
     }),
     FULFILLED: (state, action: Action<IdentityPayout>) => ({
       ...state,
       payout: {
         ethAddress: _.get(action, 'payload.eth_address'),
         referralCode: _.get(action, 'payload.referral_code'),
-        loading: false
+        loading: false,
+      },
+      referral: {
+        loading: false,
+      },
+    }),
+  },
+
+  [UPDATE_REFERRAL_CODE]: {
+    PENDING: (state) => ({
+      ...state,
+      referral: {
+        loading: true,
+      },
+    }),
+    REJECTED: (state, action: Action<any>) => ({
+      ...state,
+      referral: {
+        loading: false,
+      },
+    }),
+    FULFILLED: (state, action: Action<IdentityPayout>) => {
+      return {
+        ...state,
+        payout: {
+          ...state.payout,
+          referralCode: _.get(action, 'meta.referralCode'),
+        },
+        referral: {
+          loading: false,
+        },
       }
-    })
+    },
   },
 
   [ACCESS_POLICY]: (state, action: Action<AccessPolicy>) => ({
     ...state,
-    accessPolicy: action.payload
+    accessPolicy: action.payload,
   }),
 
   [SET_PROVIDER_STATE]: (state, action: Action<AccessPolicy>) => ({
     ...state,
     state: {
       ...state.state,
-      ...action.payload
-    }
+      ...action.payload,
+    },
   }),
 
   [TRAFFIC_OPTION]: (state, action: Action<TrafficOptions>) => ({
     ...state,
-    trafficOption: action.payload
+    trafficOption: action.payload,
   }),
 
   [RESIDENTIAL_CONFIRM]: (state, action: Action<boolean>) => ({
     ...state,
-    residentialConfirm: action.payload
+    residentialConfirm: action.payload,
   }),
 
   [NAT_STATUS]: (state, action: Action<boolean>) => ({
     ...state,
-    natStatus: action.payload
+    natStatus: action.payload,
   }),
 
   [SERVICE_SESSIONS]: (state, action: Action<ServiceSession[] | null>) => ({
     ...state,
-    sessions: action.payload
+    sessions: action.payload,
   }),
 
   [STARTED_SERVICES]: {
     PENDING: (state, { meta }) => ({
       ...state,
-      startedServicePending: meta && meta.pending
+      startedServicePending: meta && meta.pending,
     }),
     REJECTED: (state) => ({
       ...state,
-      startedServicePending: false
+      startedServicePending: false,
     }),
     FULFILLED: (state, action: Action<ServiceInfo[]>) => ({
       ...state,
       startedServices: action.payload,
-      startedServicePending: false
-    })
+      startedServicePending: false,
+    }),
   },
 
   [`sse/${ServerSentEventTypes.STATE_CHANGE}`]: (state, action: Action<ServerSentPayload>) => {
@@ -157,6 +185,6 @@ export default typeToReducer({
       startedServices: serviceInfo,
       sessions: sessions,
     }
-  }
+  },
 
 }, providerInitState)

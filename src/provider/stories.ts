@@ -9,7 +9,7 @@ import {
   setProviderStateAction,
   startServiceAction,
   stopServiceAction,
-  updateIdentitiesAction
+  updateIdentitiesAction, updateReferralAction,
 } from './actions'
 import { ProviderReducer, TrafficOptions } from './reducer'
 import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
@@ -156,13 +156,23 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
 }
 
 export const updateIdentitiesStory = async (
-  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string, referralCode: string }) => {
-  const { id, ethAddress, referralCode } = data
+  dispatch: Dispatch, data: { passphrase: string, id: string, ethAddress: string }) => {
+  const { id, ethAddress } = data
   try {
-    await dispatch(updateIdentitiesAction({ id, ethAddress, referralCode }))
+    await dispatch(updateIdentitiesAction({ id, ethAddress }))
     await dispatch(setProviderStateAction({ isWalletEditMode: false }))
   } catch (e) {
     apiSubmissionError('walletAddress')(e)
   }
 }
 
+export const updateReferralStory = async (
+  dispatch: Dispatch, data: { passphrase: string, id: string, referralCode: string }) => {
+  const { id, referralCode } = data
+  try {
+    await dispatch(updateReferralAction({ id, referralCode }))
+    await dispatch(setProviderStateAction({ isReferralEditMode: false }))
+  } catch (e) {
+    apiSubmissionError('walletAddress')(e)
+  }
+}

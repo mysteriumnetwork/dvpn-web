@@ -8,7 +8,7 @@ import { ProviderReducer } from '../../reducer'
 import { DefaultProps } from '../../../types'
 import { setProviderStateAction, setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
 import { withStyles } from '@material-ui/core'
-import { startVpnServerStory, updateIdentitiesStory } from '../../stories'
+import { startVpnServerStory, updateIdentitiesStory, updateReferralStory } from '../../stories'
 import { getFormValues } from 'redux-form/immutable'
 import { compose } from 'redux'
 import _ from 'lodash'
@@ -23,6 +23,7 @@ type Props = DefaultProps & {
   provider: ProviderReducer
   formWalletAddressData?: Object
   onSaveWalletAddress?: (data: Object) => void
+  onSaveReferralCode?: (data: Object) => void
   onSetState?: (data: Object) => void
   onChangeTrafficOption: (value: string) => void
   onChangeResidentialConfirm: (value: boolean) => void
@@ -95,6 +96,7 @@ const mapDispatchToProps = (dispatch) => ({
   onChangeResidentialConfirm: (value) => dispatch(setResidentialConfirmAction(value)),
   onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),
   onSaveWalletAddress: (value) => updateIdentitiesStory(dispatch, value),
+  onSaveReferralCode: (value) => updateReferralStory(dispatch, value),
   onSetState: (value) => dispatch(setProviderStateAction(value))
 })
 

@@ -23,6 +23,7 @@ type Props = InjectedFormProps & {
   onChangeTrafficOption?: (value: string) => void
   formWalletAddressData?: Object
   onSaveWalletAddress?: (data: Object) => void
+  onSaveReferralCode?: (data: Object) => void
   onSetState?: (data: Object) => void
 }
 
@@ -46,9 +47,31 @@ class AirdropWallet extends React.PureComponent<Props> {
     }
   }
 
+  handleReferralEditMode = () => {
+    const { provider, onSetState, initialize, reset } = this.props
+    const isReferralEditMode = _.get(provider, 'state.isReferralEditMode')
+    onSetState({ isReferralEditMode: !isReferralEditMode })
+    reset()
+    if (!isReferralEditMode) {
+      initialize({
+        passphrase: '',
+        ethAddress: _.get(provider, 'payout.ethAddress', ''),
+        referralCode: _.get(provider, 'payout.referralCode', ''),
+      })
+    }
+  }
+
   handleWalletChange = () => {
     const { formWalletAddressData, provider, onSaveWalletAddress } = this.props
     submit(this.props, () => onSaveWalletAddress({
+      ...formWalletAddressData,
+      id: provider.identity.id,
+    }))
+  }
+
+  handleReferralChange = () => {
+    const { formWalletAddressData, provider, onSaveReferralCode } = this.props
+    submit(this.props, () => onSaveReferralCode({
       ...formWalletAddressData,
       id: provider.identity.id,
     }))
@@ -63,7 +86,10 @@ class AirdropWallet extends React.PureComponent<Props> {
 
   render() {
     const { provider, error, submitting } = this.props
-    const isWalletEditMode = _.get(provider, 'state.isWalletEditMode')
+    const isWalletEditMode = _.get(provider, 'state.isWalletEditMode') || !_.get(provider, 'payout.ethAddress')
+    const isReferralEditMode = _.get(provider, 'state.isReferralEditMode') || !_.get(provider, 'payout.referralCode')
+
+    console.log(isReferralEditMode, _.get(provider, 'payout.referralCode'))
     return (
       <div>
         <div className={styles.flexedRow}>
@@ -107,19 +133,24 @@ class AirdropWallet extends React.PureComponent<Props> {
         <div className={styles.flexedRow}>
           <p>{trans('app.provider.settings.referral.code')}</p>
           <div>
-            {isWalletEditMode && !_.get(provider, 'payout.referralCode') ? (
+            {isReferralEditMode ? (
               <div className={styles.editableField}>
                 <TextField placeholder="ABC123" name="referralCode" disabled={submitting}
                            className={styles.editableTextField}/>
+                <div className={styles.buttons}>
+                  <IconButton color="primary" onClick={this.handleReferralChange} disabled={submitting}>
+                    <SaveIcon fontSize="small"/>
+                  </IconButton>
+                </div>
               </div>
             ) : (
               <div className={styles.savedWallet}>
-                {_.get(provider, 'payout.loading') !== false ? (
+                {_.get(provider, 'referral.loading') !== false ? (
                   <div className={styles.flexCenter}>
                     <RectangleLoading width='370px' height='16px'/>
                   </div>
                 ) : (
-                  <p>{_.get(provider, 'payout.referralCode', 'N/A')}</p>
+                  <p>{_.get(provider, 'payout.referralCode', '')}</p>
                 )}
               </div>
             )}

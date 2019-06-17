@@ -140,8 +140,12 @@ export class TequilaApi implements TequilaApiInterface {
     return payout
   }
 
-  public async updateIdentityPayout(id: string, ethAddress: string, referralCode: string): Promise<void> {
-    await this.http.put(`identities/${id}/payout`, { ethAddress, referral_code: referralCode })
+  public async updateIdentityPayout(id: string, ethAddress: string): Promise<void> {
+    await this.http.put(`identities/${id}/payout`, { ethAddress })
+  }
+
+  public async updateReferralCode(id: string, referralCode: string): Promise<void> {
+    await this.http.put(`identities/${id}/referral`, { referral_code: referralCode })
   }
 
   public async unlocksIdentity(id: string, passphrase: string): Promise<void> {

@@ -8,6 +8,8 @@ export const IDENTITY_PAYOUT = 'provider/IDENTITY_PAYOUT'
 
 export const UPDATE_IDENTITY = 'provider/UPDATE_IDENTITY'
 
+export const UPDATE_REFERRAL_CODE = 'provider/UPDATE_REFERRAL_CODE'
+
 export const UNLOCK_IDENTITY = 'provider/UNLOCK_IDENTITY'
 
 export const ACCESS_POLICIES = 'provider/ACCESS_POLICIES'
