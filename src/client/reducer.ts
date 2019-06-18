@@ -6,10 +6,11 @@ import {
   CONNECTION_STATISTICS,
   PROPOSALS,
   PROPOSALS_COUNTS,
-  SELECT_PROPOSAL
+  SELECT_PROPOSAL,
+  TOGGLE_ASK_PROPOSAL
 } from './constants'
 import { Action, ActionMeta } from 'redux-actions'
-import { Proposal } from '../api/data/proposal'
+import { Proposal, SortProposals } from '../api/data/proposal'
 import { ProposalsCountsInterface } from '../utils/proposalsCounts'
 import { ConnectionIp, ConnectionStatus } from 'mysterium-vpn-js'
 import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
@@ -22,6 +23,7 @@ export interface ProposalsFilter {
 }
 
 export interface ClientReducer {
+  isAskSortProposal: boolean,
   filter?: ProposalsFilter
   proposals?: Proposal[],
   proposalsPending?: boolean,
@@ -38,7 +40,8 @@ export interface ClientReducer {
 }
 
 export const clientInitState = {
-  proposals: []
+  proposals: [],
+  isAskSortProposal: true
 }
 
 export default typeToReducer({
@@ -59,6 +62,11 @@ export default typeToReducer({
       ...action.payload,
     })
   },
+
+  [TOGGLE_ASK_PROPOSAL]: (state, action: Action<SortProposals>)=>({
+    ...state,
+    ...action.payload
+  }),
 
   [SELECT_PROPOSAL]: (state, action: Action<Proposal>) => ({
     ...state,
