@@ -145,7 +145,7 @@ export class TequilaApi implements TequilaApiInterface {
   }
 
   public async updateReferralCode(id: string, referralCode: string): Promise<void> {
-    await this.http.put(`identities/${id}/referral`, { referral_code: referralCode })
+    await this.http.put(`identities/${id}/referral`, { referralCode: referralCode })
   }
 
   public async unlocksIdentity(id: string, passphrase: string): Promise<void> {

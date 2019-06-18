@@ -90,8 +90,8 @@ export default typeToReducer({
     FULFILLED: (state, action: Action<IdentityPayout>) => ({
       ...state,
       payout: {
-        ethAddress: _.get(action, 'payload.eth_address'),
-        referralCode: _.get(action, 'payload.referral_code'),
+        ethAddress: _.get(action, 'payload.ethAddress'),
+        referralCode: _.get(action, 'payload.referralCode'),
         loading: false,
       },
       referral: {
