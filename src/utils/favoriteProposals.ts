@@ -1,4 +1,5 @@
 import { Proposal } from '../api/data/proposal'
+import { compareProposals } from './compareProposals'
 
 interface FavoriteProposalsInterface {
   favoriteProposals: Proposal[],
@@ -49,7 +50,7 @@ class FavoriteProposals implements FavoriteProposalsInterface {
   public isFavorite(proposal: Proposal, favorites?: Proposal[]) {
     favorites = Array.isArray(favorites) ? favorites : this.favoriteProposals
 
-    return proposal && favorites.some(p => p && p.providerId === proposal.providerId && p.serviceType === proposal.serviceType)
+    return proposal && favorites.some(p => compareProposals(p, proposal))
   }
 }
 
