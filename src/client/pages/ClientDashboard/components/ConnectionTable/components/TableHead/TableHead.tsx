@@ -2,18 +2,17 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 
 import trans from '../../../../../../../trans'
-import { toggleAskProposal } from '../../../../../../actions';
+import { toggleAskProposalAction } from '../../../../../../actions';
 
 const styles = require('./TableHead.module.scss')
 
 type Props = {
     isAskSortProposal: boolean,
-    toggleAskProposal: Function
+    onToggleAskProposal: Function
 }
 
-
 class TableHead extends React.PureComponent<Props> {
-    handleToggleAskProposal = () => this.props.toggleAskProposal(!this.props.isAskSortProposal)
+    handleToggleAskProposal = () => this.props.onToggleAskProposal(!this.props.isAskSortProposal)
 
     render() {
         return (
@@ -39,7 +38,7 @@ class TableHead extends React.PureComponent<Props> {
 const mapStateToProps = ({ client: { isAskSortProposal } }) => ({ isAskSortProposal })
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleAskProposal: (isAskSortProposal) => dispatch(toggleAskProposal(isAskSortProposal)),
+    onToggleAskProposal: (isAskSortProposal) => dispatch(toggleAskProposalAction(isAskSortProposal)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableHead)

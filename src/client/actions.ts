@@ -15,10 +15,12 @@ import {
   CONNECTION_STATISTICS,
   PROPOSALS,
   PROPOSALS_COUNTS,
+  FAVORITE_PROPOSALS,
   SELECT_PROPOSAL,
-  TOGGLE_ASK_PROPOSAL
+  ASK_PROPOSAL
 } from './constants'
 import { ConnectionStatus } from 'mysterium-vpn-js'
+import FavoriteProposals from '../utils/favoriteProposals'
 
 export const getProposalsCountsAction = createAction(PROPOSALS_COUNTS, getProposalsWithConnectCounts)
 
@@ -38,4 +40,8 @@ export const getConnectionIpAction = createAction(CONNECTION_IP, getConnectionIp
 
 export const getConnectionStatisticsAction = createAction(CONNECTION_STATISTICS, getConnectionStatistics)
 
-export const toggleAskProposal = createAction(TOGGLE_ASK_PROPOSAL, (isAskSortProposal) => ({ isAskSortProposal }))
+export const toggleAskProposalAction = createAction(ASK_PROPOSAL, (isAskSortProposal) => ({ isAskSortProposal }))
+
+export const addFavoriteProposalsAction = createAction(FAVORITE_PROPOSALS, (proposal) => FavoriteProposals.addFavoriteProposals(proposal))
+
+export const removeFavoriteProposalsAction = createAction(FAVORITE_PROPOSALS, (proposal) => FavoriteProposals.removeFavoriteProposals(proposal))
