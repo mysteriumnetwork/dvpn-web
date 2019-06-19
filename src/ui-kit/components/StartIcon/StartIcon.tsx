@@ -1,5 +1,6 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
+import icons from '../../../app/components/assets/images/app-icons.svg'
 
 const classNames = require('classnames')
 
@@ -14,7 +15,7 @@ const styles = theme => ({
       width: 24,
       height: 24,
       minWidth: 24,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
+      background: `url(${icons}) no-repeat`,
       backgroundSize: '184px 232px',
     },
     '& .favorite': {
@@ -35,20 +36,15 @@ const styles = theme => ({
 })
 
 export interface IStartIconProps {
-  selected?: boolean
+  active?: boolean
+  favorite?: boolean
   classes: IStyles
   style?: React.CSSProperties
 }
 
-const StartIcon: React.SFC<IStartIconProps> = (props: IStartIconProps) => (
-  <div
-    className={classNames(props.classes.root, {
-      // set class highlight when item selected
-      // selected&&[props.classes.highlight]
-    })}
-  >
-    {/* //render icon class favorite/minor */}
-    <div className="minor" />
+const StartIcon: React.FunctionComponent<IStartIconProps> = (props: IStartIconProps) => (
+  <div className={classNames(props.classes.root, { [props.classes.highlight]: props.active })}>
+    <div className={props.favorite ? 'favorite' : 'minor'}/>
   </div>
 )
 

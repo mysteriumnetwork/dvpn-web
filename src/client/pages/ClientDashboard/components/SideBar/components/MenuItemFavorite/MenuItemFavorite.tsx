@@ -2,6 +2,7 @@ import * as React from 'react'
 import { MouseEventHandler } from 'react'
 import injectSheet from 'react-jss'
 import trans from '../../../../../../../trans'
+import icons from '../../../../../../../app/components/assets/images/app-icons.svg'
 
 const classNames = require('classnames')
 
@@ -16,8 +17,11 @@ interface IStyles {
 const styles = theme => ({
   root: {
     '& > button': {
-      width: '100%'
-    }
+      width: '100%',
+      outline: 'none',
+      border: 'none',
+      background: 'transparent',
+    },
   },
   menuItem: {
     display: 'flex',
@@ -31,8 +35,8 @@ const styles = theme => ({
       width: 24,
       height: 24,
       minWidth: 24,
-      marginRight: 10,
-      background: 'url("app/components/assets/images/app-icons.svg") no-repeat',
+      marginRight: 6,
+      background: `url(${icons}) no-repeat`,
       backgroundSize: '184px 232px',
       backgroundPosition: '4px -62px'
     },
@@ -42,6 +46,9 @@ const styles = theme => ({
       right: 14,
       fontSize: 14,
       color: theme.colors.textLightGrey,
+    },
+    '& > p': {
+      fontSize: 14,
     },
   },
   active: {
@@ -68,11 +75,7 @@ export interface IMenuItemFavoriteProps {
 const MenuItemFavorite: React.FunctionComponent<IMenuItemFavoriteProps> = (props: IMenuItemFavoriteProps) => (
   <div className={props.classes.root}>
     <button onClick={props.onClick}>
-      <div
-        className={classNames(props.classes.menuItem, {
-          [props.classes.active]: Boolean(props.active)
-        })}
-      >
+      <div className={classNames(props.classes.menuItem, { [props.classes.active]: Boolean(props.active) })}>
         <div className="faveIcon"/>
         <p>{trans('app.client.side.bar.favorites')}</p>
         <div className="itemsCount">{Number(props.count)}</div>

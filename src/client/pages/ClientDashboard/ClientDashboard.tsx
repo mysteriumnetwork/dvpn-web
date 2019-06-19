@@ -62,7 +62,7 @@ class ClientDashboard extends React.PureComponent<Props> {
       filter,
       location,
       identity,
-      connectionStatus
+      connectionStatus,
     } = this.props
 
     if (connectionStatus === ConnectionStatus.CONNECTING) {

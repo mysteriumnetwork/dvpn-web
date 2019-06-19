@@ -45,3 +45,5 @@ export const toggleAskProposalAction = createAction(ASK_PROPOSAL, (isAskSortProp
 export const addFavoriteProposalsAction = createAction(FAVORITE_PROPOSALS, (proposal) => FavoriteProposals.addFavoriteProposals(proposal))
 
 export const removeFavoriteProposalsAction = createAction(FAVORITE_PROPOSALS, (proposal) => FavoriteProposals.removeFavoriteProposals(proposal))
+
+export const setFavoriteProposalsAction = createAction(FAVORITE_PROPOSALS)

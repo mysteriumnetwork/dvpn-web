@@ -6,6 +6,7 @@ import { ProposalsFilter } from './reducer'
 import { proposalsCounts, ProposalsCountsInterface } from '../utils/proposalsCounts'
 import _ from 'lodash'
 import { ConnectionStatistics } from 'mysterium-vpn-js/lib/connection/statistics'
+import favoriteProposals from '../utils/favoriteProposals'
 
 export const getProposalsWithConnectCounts = async (): Promise<ProposalsCountsInterface> => {
   try {
@@ -31,6 +32,10 @@ export const getProposalsByFilter = async (filter: ProposalsFilter): Promise<Pro
 
     if (filter && filter.country) {
       return proposals.filter(value => _.get(value, 'serviceDefinition.locationOriginate.country') === filter.country)
+    }
+
+    if (filter && filter.favorite) {
+      return proposals.filter(value => favoriteProposals.isFavorite(value))
     }
 
     return proposals
@@ -95,6 +100,6 @@ export const getConnectionIp = async (): Promise<ConnectionIp> => {
     console.log('getProposalsWithConnectCounts:', e)
   }
 
-  return { }
+  return {}
 }
 

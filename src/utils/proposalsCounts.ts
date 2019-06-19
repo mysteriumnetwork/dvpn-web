@@ -1,5 +1,6 @@
 import { Proposal } from '../api/data/proposal'
 import _ from 'lodash'
+import favoriteProposals from './favoriteProposals'
 
 export interface ProposalsCountsInterface {
   proposalsCount?: number,
@@ -22,7 +23,7 @@ export function proposalsCounts(proposals: Proposal[]): ProposalsCountsInterface
 
   return {
     proposalsCount: proposals.length,
-    proposalsFavoritesCount: 0,
+    proposalsFavoritesCount: proposals.filter(value => value && favoriteProposals.isFavorite(value)).length,
     proposalsByCountryCounts: proposals.reduce((values, proposal) => {
       return increase(values, _.get(proposal, 'serviceDefinition.locationOriginate.country'))
     }, new Map<string, number>()),

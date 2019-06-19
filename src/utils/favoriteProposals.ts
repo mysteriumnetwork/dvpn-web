@@ -8,15 +8,20 @@ interface FavoriteProposalsInterface {
 
 class FavoriteProposals implements FavoriteProposalsInterface {
 
+  private _favoriteProposals: Proposal[]
 
   get favoriteProposals(): Proposal[] {
-    try {
-      const favoriteProposals = localStorage.getItem('favoriteProposals')
-      return favoriteProposals ? JSON.parse(favoriteProposals) : []
-    } catch (err) {
-      console.warn('Parsing of favoriteProposals failed: ', err)
+    if (!this._favoriteProposals) {
+      try {
+        const favoriteProposals = localStorage.getItem('favoriteProposals')
+        this._favoriteProposals = favoriteProposals ? JSON.parse(favoriteProposals) : []
+      } catch (err) {
+        console.debug('Parsing of favoriteProposals failed: ', err)
+        this._favoriteProposals = []
+      }
     }
-    return []
+
+    return this._favoriteProposals
   }
 
   public addFavoriteProposals: Function = (newProposal: Proposal) => {
@@ -39,6 +44,12 @@ class FavoriteProposals implements FavoriteProposalsInterface {
       localStorage.setItem('favoriteProposals', JSON.stringify(favoriteProposals))
     }
     return favoriteProposals
+  }
+
+  public isFavorite(proposal: Proposal, favorites?: Proposal[]) {
+    favorites = Array.isArray(favorites) ? favorites : this.favoriteProposals
+
+    return proposal && favorites.some(p => p && p.providerId === proposal.providerId && p.serviceType === proposal.serviceType)
   }
 }
 
