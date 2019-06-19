@@ -1,21 +1,17 @@
 import { Proposal } from '../api/data/proposal'
-import { compareProposals } from './compareProposals'
+import compareProposals from './compareProposals'
+import { appStorage } from './storages'
 
-interface FavoriteProposalsInterface {
-  favoriteProposals: Proposal[],
-  addFavoriteProposals: Function,
-  removeFavoriteProposals: Function,
-}
-
-class FavoriteProposals implements FavoriteProposalsInterface {
+class FavoriteProposals {
 
   private _favoriteProposals: Proposal[]
+
+  constructor(private storage: StorageInterface) {}
 
   get favoriteProposals(): Proposal[] {
     if (!this._favoriteProposals) {
       try {
-        const favoriteProposals = localStorage.getItem('favoriteProposals')
-        this._favoriteProposals = favoriteProposals ? JSON.parse(favoriteProposals) : []
+        this._favoriteProposals = this.storage.get<Proposal[]>('favoriteProposals') || []
       } catch (err) {
         console.debug('Parsing of favoriteProposals failed: ', err)
         this._favoriteProposals = []
@@ -26,25 +22,23 @@ class FavoriteProposals implements FavoriteProposalsInterface {
   }
 
   public addFavoriteProposals: Function = (newProposal: Proposal) => {
-    const favoriteProposals = this.favoriteProposals
-    const isProposalAdded = favoriteProposals.find(item => item.providerId === newProposal.providerId)
+    const isProposalAdded = this.favoriteProposals.find(item => item.providerId === newProposal.providerId)
 
     if (!isProposalAdded) {
-      favoriteProposals.push(newProposal)
-      localStorage.setItem('favoriteProposals', JSON.stringify(favoriteProposals))
+      this.favoriteProposals.push(newProposal)
+      this.storage.set('favoriteProposals', this.favoriteProposals)
     }
-    return favoriteProposals
+    return this.favoriteProposals
   }
 
   public removeFavoriteProposals: Function = (proposal: Proposal) => {
-    const favoriteProposals = this.favoriteProposals
-    const index = favoriteProposals.findIndex(item => item.providerId === proposal.providerId)
+    const index = this.favoriteProposals.findIndex(item => item.providerId === proposal.providerId)
 
     if (index > -1) {
-      favoriteProposals.splice(index, 1)
-      localStorage.setItem('favoriteProposals', JSON.stringify(favoriteProposals))
+      this.favoriteProposals.splice(index, 1)
+      this.storage.set('favoriteProposals', this.favoriteProposals)
     }
-    return favoriteProposals
+    return this.favoriteProposals
   }
 
   public isFavorite(proposal: Proposal, favorites?: Proposal[]) {
@@ -54,4 +48,4 @@ class FavoriteProposals implements FavoriteProposalsInterface {
   }
 }
 
-export default new FavoriteProposals()
+export default new FavoriteProposals(appStorage)

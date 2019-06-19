@@ -1,7 +1,7 @@
 import * as React from 'react'
 import ConnectionItem from './components/ConnectionItem/ConnectionItem'
 import { Proposal } from '../../../../../../../api/data/proposal'
-import { compareProposals } from '../../../../../../../utils/compareProposals'
+import compareProposals from '../../../../../../../utils/compareProposals'
 
 const styles = require('./TableBody.module.scss')
 
