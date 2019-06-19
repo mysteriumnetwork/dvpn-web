@@ -49,7 +49,11 @@ export class TequilaApi implements TequilaApiInterface {
   }
 
   public async me(passphrase: string): Promise<Identity> {
-    const identity = await this.http.put<Identity>('identities/current', { passphrase })
+    const identity = await this.http.put<Identity>(
+      'identities/current',
+      { passphrase },
+      { timeout: 10000 },
+    )
 
     if (!identity) {
       throw new Error('Identity response body is missing')
@@ -80,7 +84,7 @@ export class TequilaApi implements TequilaApiInterface {
     const location = await this.http.get<OriginalLocation>(
       'location',
       undefined,
-      { timeout }
+      { timeout },
     )
     if (!location) {
       throw new Error('Location response body is missing')
@@ -104,7 +108,7 @@ export class TequilaApi implements TequilaApiInterface {
     const service = await this.http.post<Service>(
       'services',
       { providerId, type, accessPolicies, options },
-      { timeout }
+      { timeout },
     )
 
     if (!service) {
