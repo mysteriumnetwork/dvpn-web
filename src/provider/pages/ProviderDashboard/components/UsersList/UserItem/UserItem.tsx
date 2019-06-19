@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ServiceSession } from '../../../../../../api/data/service-session'
 import Timer from '../../../../../../ui-kit/components/Timer'
 import formatDuration from 'format-duration'
+import formatBytes from '../../../../../../utils/formatBytes'
 
 const styles = require('./UserItem.module.scss')
 
@@ -10,7 +11,7 @@ type Props = {
 }
 
 const UserItem = (props: Props) => {
-  const { consumerId, id, createdAt } = props.session
+  const { consumerId, id, createdAt, bytesIn, bytesOut } = props.session
 
   return (
     <tr>
@@ -26,8 +27,8 @@ const UserItem = (props: Props) => {
           {(value) => formatDuration((value - Date.parse(createdAt)) || 0, { leading: true })}
         </Timer>
       </td>
-      <td>--{/*9.11 GB*/}</td>
-      <td>--{/*39.12 MB*/}</td>
+      <td>{formatBytes(bytesIn)}</td>
+      <td>{formatBytes(bytesOut)}</td>
     </tr>
   )
 }
