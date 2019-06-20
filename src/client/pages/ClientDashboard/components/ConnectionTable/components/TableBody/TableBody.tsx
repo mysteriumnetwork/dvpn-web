@@ -1,6 +1,7 @@
 import * as React from 'react'
 import ConnectionItem from './components/ConnectionItem/ConnectionItem'
 import { Proposal } from '../../../../../../../api/data/proposal'
+import compareProposals from '../../../../../../../utils/compareProposals'
 
 const styles = require('./TableBody.module.scss')
 
@@ -19,7 +20,7 @@ const TableBody = (props: Props) => (
           <ConnectionItem key={`${value.providerId}-${value.serviceType}`}
                           proposal={value}
                           onSelect={props.onSelect}
-                          active={props.selected && props.selected.providerId === value.providerId}/>
+                          active={compareProposals(props.selected, value)}/>
         ))}
         </tbody>
       </table>

@@ -3,6 +3,9 @@ import { getHttpApiUrl } from '../constants'
 import { Middleware, MiddlewareAPI } from 'redux'
 import { createAction } from 'redux-actions'
 import { NatStatus, ServiceInfo, ServiceSession } from 'mysterium-vpn-js'
+import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill'
+
+const EventSource = NativeEventSource || EventSourcePolyfill;
 
 export enum ServerSentState {
   CONNECTING = 0,

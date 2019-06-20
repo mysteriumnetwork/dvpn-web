@@ -1,15 +1,17 @@
 import typeToReducer from 'type-to-reducer'
 import {
   APPLY_FILTER,
+  ASK_PROPOSAL,
   CONNECTION,
   CONNECTION_IP,
   CONNECTION_STATISTICS,
+  FAVORITE_PROPOSALS,
   PROPOSALS,
   PROPOSALS_COUNTS,
   SELECT_PROPOSAL
 } from './constants'
 import { Action, ActionMeta } from 'redux-actions'
-import { Proposal } from '../api/data/proposal'
+import { Proposal, SortProposals } from '../api/data/proposal'
 import { ProposalsCountsInterface } from '../utils/proposalsCounts'
 import { ConnectionIp, ConnectionStatus } from 'mysterium-vpn-js'
 import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
@@ -22,6 +24,7 @@ export interface ProposalsFilter {
 }
 
 export interface ClientReducer {
+  isAskSortProposal: boolean,
   filter?: ProposalsFilter
   proposals?: Proposal[],
   proposalsPending?: boolean,
@@ -34,11 +37,13 @@ export interface ClientReducer {
   connectionStatus?: ConnectionStatus
   connectionSessionId?: string
   connectionIp?: string
-  connectionStatistics?: ConnectionStatistics
+  connectionStatistics?: ConnectionStatistics,
+  favoriteProposals?: Proposal[]
 }
 
 export const clientInitState = {
-  proposals: []
+  proposals: [],
+  isAskSortProposal: true
 }
 
 export default typeToReducer({
@@ -59,6 +64,11 @@ export default typeToReducer({
       ...action.payload,
     })
   },
+
+  [ASK_PROPOSAL]: (state, action: Action<SortProposals>) => ({
+    ...state,
+    ...action.payload
+  }),
 
   [SELECT_PROPOSAL]: (state, action: Action<Proposal>) => ({
     ...state,
@@ -110,6 +120,11 @@ export default typeToReducer({
         connectionStatistics: action.payload
       }
     }
-  }
+  },
+
+  [FAVORITE_PROPOSALS]: (state, action: Action<Proposal[]>) => ({
+    ...state,
+    favoriteProposals: action.payload
+  })
 
 }, clientInitState)

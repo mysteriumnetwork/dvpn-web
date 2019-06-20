@@ -6,6 +6,7 @@ import ResidentialIP from './components/ResidentialIP/ResidentialIP'
 import DataCenterIP from './components/DataCenterIP/DataCenterIP'
 import { ProviderReducer } from '../../../../reducer'
 import FlagIcon from '../../../../../ui-kit/components/FlagIcon'
+import { NODE_TYPE } from '../../../../../constants';
 
 const styles = require('./ConnectionInformation.module.scss')
 
@@ -17,8 +18,8 @@ type Props = {
 const ConnectionInformation = (props: Props) => {
   const { provider, onChangeResidentialConfirm } = props
   const { originalLocation, residentialConfirm } = provider
-  const isResidential = originalLocation && originalLocation.node_type === 'residential'
-  const isDataCenter = originalLocation && originalLocation.node_type === 'data center'
+  const isResidential = originalLocation && originalLocation.node_type === NODE_TYPE.RESIDENTIAL
+  const isDataCenter = originalLocation && originalLocation.node_type === NODE_TYPE.DATA_CENTER
 
   return (
     <div>

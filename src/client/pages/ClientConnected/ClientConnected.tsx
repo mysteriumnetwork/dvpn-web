@@ -13,14 +13,21 @@ import { stopConnectionStory } from '../../stories'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
 import _ from 'lodash'
-
+import { Proposal } from '../../../api/data/proposal'
+import { addFavoriteProposalsAction, removeFavoriteProposalsAction } from '../../actions';
 const styles = require('./ClientConnected.module.scss')
 
 type Props = ClientReducer & DefaultProps & {
   onStopConnection?: Function,
+  onAddFavoriteProposals: Function,
+  onRemoveFavoriteProposals: Function,
+  favoriteProposals: Proposal[]
 }
 
 class ClientConnected extends React.PureComponent<Props> {
+  handleAddProposalsClick = () => this.props.onAddFavoriteProposals(this.props.proposalSelected)
+
+  handleRemoveProposalsClick = () => this.props.onRemoveFavoriteProposals(this.props.proposalSelected)
 
   handleDisconnectClick = () => {
     const { onStopConnection } = this.props
@@ -29,11 +36,14 @@ class ClientConnected extends React.PureComponent<Props> {
   }
 
   render() {
-    const { connectionStatus, proposalSelected, location, connectionIp, connectionStatistics } = this.props
+    const { connectionStatus, proposalSelected, location, connectionIp, favoriteProposals, connectionStatistics } = this.props
 
     if (!(connectionStatus === ConnectionStatus.CONNECTED || connectionStatus === ConnectionStatus.DISCONNECTING)) {
       return (<Redirect to={NAV_CLIENT_DASHBOARD}/>)
     }
+
+    const isAddedToFavorites = Array.isArray(favoriteProposals) && favoriteProposals.find(item => item.providerId === (proposalSelected && proposalSelected.providerId))
+
 
     return (
       <div className={styles.root}>
@@ -43,10 +53,13 @@ class ClientConnected extends React.PureComponent<Props> {
           <ConnectedInfoBlock proposal={proposalSelected} ip={connectionIp}/>
         </div>
         <div className={styles.action}>
-          <Button color="primary">
+          <Button onClick={isAddedToFavorites ? this.handleRemoveProposalsClick : this.handleAddProposalsClick} color="primary">
             <div className={styles.buttonLabel}>
-              <div/>
-              <p>{trans('app.client.remove.from.favorites.button')}</p>
+              <p>
+                {trans(isAddedToFavorites
+                  ? 'app.client.remove.from.favorites.button'
+                  : 'app.client.add.to.favorites.button')}
+              </p>
             </div>
           </Button>
           <Button color="secondary"
@@ -64,11 +77,14 @@ class ClientConnected extends React.PureComponent<Props> {
 const mapStateToProps = (state) => ({
   ...(state.client || {}),
   location: _.get(state, 'provider.originalLocation'),
-  identity: _.get(state, 'provider.identity')
+  identity: _.get(state, 'provider.identity'),
+  favoriteProposals: _.get(state,'client.favoriteProposals')
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onStopConnection: () => stopConnectionStory(dispatch)
+  onStopConnection: () => stopConnectionStory(dispatch),
+  onAddFavoriteProposals: (proposal) => dispatch(addFavoriteProposalsAction(proposal)),
+  onRemoveFavoriteProposals: (proposal) => dispatch(removeFavoriteProposalsAction(proposal)),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

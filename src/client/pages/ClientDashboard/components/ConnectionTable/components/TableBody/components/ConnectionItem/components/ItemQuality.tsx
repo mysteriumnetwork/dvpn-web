@@ -3,6 +3,7 @@ import injectSheet from 'react-jss'
 import Quality from '../../../../../../../../../../ui-kit/components/QualityIcon/QualityIcon'
 import StartIcon from '../../../../../../../../../../ui-kit/components/StartIcon/StartIcon'
 import { Proposal } from '../../../../../../../../../../api/data/proposal'
+import favoriteProposals from '../../../../../../../../../../utils/favoriteProposals'
 
 interface IStyles {
   ipItem: string
@@ -30,7 +31,7 @@ const ItemQuality: React.FunctionComponent<IItemProps> = (props: IItemProps) => 
   <td>
     <div className={props.classes.ipItem}>
       <Quality metrics={props.proposal.metrics}/>
-      <StartIcon/>
+      <StartIcon active={props.active} favorite={favoriteProposals.isFavorite(props.proposal)}/>
     </div>
   </td>
 )

@@ -50,7 +50,6 @@ const styles = theme => ({
 })
 
 export interface IQualityProps {
-  selected?: boolean
   classes: IStyles
   style?: React.CSSProperties,
   metrics?: Metrics,

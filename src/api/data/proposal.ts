@@ -13,3 +13,7 @@ export interface Proposal {
 export interface ProposalsResponse {
   proposals?: Proposal[]
 }
+
+export interface SortProposals {
+  isAskSortProposal: boolean
+}

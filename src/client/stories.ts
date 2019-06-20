@@ -7,6 +7,7 @@ import {
   getProposalsAction,
   getProposalsCountsAction,
   selectProposalAction,
+  setFavoriteProposalsAction,
   startConnectionAction,
   stopConnectionAction
 } from './actions'
@@ -15,9 +16,11 @@ import { Proposal } from '../api/data/proposal'
 import { ConnectionStatus, Identity } from 'mysterium-vpn-js'
 import { DispatchResult } from '../types'
 import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
+import favoriteProposals from '../utils/favoriteProposals'
 
 export const initClientDashboardStory = (dispatch: Dispatch, filter?: ProposalsFilter): void => {
   startFetchingProposals(dispatch, filter)
+  fetchFavoriteProposals(dispatch)
   Promise.resolve(getConnectionStory(dispatch))
     .then((result: DispatchResult) => {
       if (result.value && result.value.proposal) {
@@ -26,7 +29,10 @@ export const initClientDashboardStory = (dispatch: Dispatch, filter?: ProposalsF
       }
     })
     .catch(console.error)
+
 }
+
+export const fetchFavoriteProposals = (dispatch: Dispatch) => dispatch(setFavoriteProposalsAction(favoriteProposals.favoriteProposals))
 
 export const destroyClientDashboardStory = (dispatch: Dispatch): void => {
   stopFetchingProposals()
