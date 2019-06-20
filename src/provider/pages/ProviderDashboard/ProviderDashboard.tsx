@@ -5,7 +5,7 @@ import BottomBar from './components/BottomBar/BottomBar'
 import ConnectionInfo from './components/ConnectionInfo/ConnectionInfo'
 import UsersList from './components/UsersList/UsersList'
 import { DefaultProps } from '../../../types'
-import { ProviderReducer } from '../../reducer'
+import { ProviderState } from '../../reducer'
 import { getFormValues } from 'redux-form'
 import { stopVpnServerStory } from '../../stories'
 import { connect } from 'react-redux'
@@ -18,7 +18,7 @@ import _ from 'lodash'
 const styles = require('./ProviderDashboard.module.scss')
 
 type Props = DefaultProps & {
-  provider: ProviderReducer,
+  provider: ProviderState,
 
   onStopVpnServer: (service: Service) => void
 }

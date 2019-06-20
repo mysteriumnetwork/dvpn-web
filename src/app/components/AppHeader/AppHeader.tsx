@@ -8,6 +8,7 @@ import { NAV_CLIENT_CONNECTED, NAV_CLIENT_CONNECTING, NAV_CLIENT_DASHBOARD } fro
 import AppMenu from '../AppMenu/AppMenu'
 import _ from 'lodash'
 import { ConnectionStatus } from 'mysterium-vpn-js'
+import { RootState } from '../../../rootState.type'
 
 const classNames = require('classnames')
 
@@ -73,7 +74,7 @@ export interface IAppHeaderProps {
   onChange?: any
   classes: IStyles
   style?: React.CSSProperties
-  startedService?: boolean
+  startedServices?: boolean
   connectionStatus?: ConnectionStatus
   routerLocation?: string
 }
@@ -102,7 +103,7 @@ const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderPr
           {trans('app.header.connect.vpn')}
         </div>
       </Link>
-      <Link to={props.startedService ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
+      <Link to={props.startedServices ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
         <div
           className={classNames(props.classes.tab, {
             [props.classes.active]: String(props.routerLocation).startsWith('/provider')
@@ -116,9 +117,9 @@ const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderPr
   </div>
 )
 
-const mapStateToProps = (state): any => ({
+const mapStateToProps = (state: RootState): any => ({
   routerLocation: _.get(state, 'router.location.pathname'),
-  startedService: Boolean(state.provider && state.provider.startedService),
+  startedServices: Boolean(state.provider && state.provider.startedServices && state.provider.startedServices.length),
   connectionStatus: Boolean(state.client && state.client.connectionStatus),
 })
 

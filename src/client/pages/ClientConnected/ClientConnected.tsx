@@ -4,7 +4,7 @@ import Button from '../../../ui-kit/components/Button/Button'
 import ConnectedImgBlock from './components/ConnectedImgBlock/ConnectedImgBlock'
 import ConnectedInfoBlock from './components/ConnectedInfoBlock/ConnectedInfoBlock'
 import BottomBar from './components/BottomBar/BottomBar'
-import { ClientReducer } from '../../reducer'
+import { ClientState } from '../../reducer'
 import { DefaultProps } from '../../../types'
 import { ConnectionStatus } from 'mysterium-vpn-js'
 import { Redirect } from 'react-router'
@@ -17,7 +17,7 @@ import { Proposal } from '../../../api/data/proposal'
 import { addFavoriteProposalsAction, removeFavoriteProposalsAction } from '../../actions';
 const styles = require('./ClientConnected.module.scss')
 
-type Props = ClientReducer & DefaultProps & {
+type Props = ClientState & DefaultProps & {
   onStopConnection?: Function,
   onAddFavoriteProposals: Function,
   onRemoveFavoriteProposals: Function,

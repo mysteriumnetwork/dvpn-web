@@ -3,7 +3,7 @@ import _ from 'lodash'
 import TextField from '../../../../../app/components/ReduxForm/TextField'
 import RadioButton from '../../../../../ui-kit/components/RadioButton/RadioButton'
 import trans from '../../../../../trans'
-import { ProviderReducer, TrafficOptions } from '../../../../reducer'
+import { ProviderState, TrafficOptions } from '../../../../reducer'
 import { reduxForm } from 'redux-form/immutable'
 import { compose } from 'redux'
 import immutableProps from '../../../../../hocs/immutableProps'
@@ -19,7 +19,7 @@ import styles from './AirdropWallet.module.scss'
 
 type Props = InjectedFormProps & {
   state: { isWalletEditMode: boolean }
-  provider: ProviderReducer
+  provider: ProviderState
   onChangeTrafficOption?: (value: string) => void
   formWalletAddressData?: Object
   onSaveWalletAddress?: (data: Object) => void

@@ -1,13 +1,13 @@
 import * as React from 'react'
 import trans from '../../../../../trans'
 import UserItem from './UserItem/UserItem'
-import { ProviderReducer } from '../../../../reducer'
+import { ProviderState } from '../../../../reducer'
 import Timer from '../../../../../ui-kit/components/Timer'
 
 const styles = require('./UsersList.module.scss')
 
 type Props = {
-  provider: ProviderReducer,
+  provider: ProviderState,
 }
 
 const UsersList = (props: Props) => {

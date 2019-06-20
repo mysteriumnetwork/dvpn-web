@@ -23,7 +23,7 @@ export interface ProposalsFilter {
   favorite?: boolean
 }
 
-export interface ClientReducer {
+export interface ClientState {
   isAskSortProposal: boolean,
   filter?: ProposalsFilter
   proposals?: Proposal[],

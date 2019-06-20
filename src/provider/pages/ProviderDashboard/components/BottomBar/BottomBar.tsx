@@ -1,7 +1,7 @@
 import * as React from 'react'
 import _ from 'lodash'
 import trans from '../../../../../trans'
-import { ProviderReducer } from '../../../../reducer'
+import { ProviderState } from '../../../../reducer'
 import NatStatus from '../../../../../ui-kit/components/NatStatus'
 import { NAT_FIX_URL } from '../../../../../constants'
 import { NatStatuses } from '../../../../../api/data/nat-status'
@@ -9,7 +9,7 @@ import { NatStatuses } from '../../../../../api/data/nat-status'
 const styles = require('./BottomBar.module.scss')
 
 type Props = {
-  provider: ProviderReducer,
+  provider: ProviderState,
 }
 
 const BottomBar = (props: Props) => (

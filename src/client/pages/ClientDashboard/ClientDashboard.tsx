@@ -12,7 +12,7 @@ import {
   selectProposalStory,
   startConnectionStory
 } from '../../stories'
-import { ClientReducer } from '../../reducer'
+import { ClientState } from '../../reducer'
 import { Proposal } from '../../../api/data/proposal'
 import { DefaultProps } from '../../../types'
 import _ from 'lodash'
@@ -22,7 +22,7 @@ import { Redirect } from 'react-router'
 
 const styles = require('./ClientDashboard.module.scss')
 
-type Props = ClientReducer & DefaultProps & {
+type Props = ClientState & DefaultProps & {
   onInit?: Function
   onDestroy?: Function
   onSelectConnection?: Function

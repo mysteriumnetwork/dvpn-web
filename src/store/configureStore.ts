@@ -1,6 +1,6 @@
 import configureStoreDev from './configureStore.dev'
 import configureStoreProd from './configureStore.prod'
-import { providerInitState, ProviderReducer } from '../provider/reducer'
+import { providerInitState, ProviderState } from '../provider/reducer'
 import _ from 'lodash'
 import { clientInitState } from '../client/reducer'
 
@@ -33,7 +33,7 @@ export const initState = (id: string = 'default') => {
   return initState
 }
 
-export const saveState = (state: { provider: ProviderReducer }, id: string = 'default') => {
+export const saveState = (state: { provider: ProviderState }, id: string = 'default') => {
   try {
     const initialState = {
       provider: {
