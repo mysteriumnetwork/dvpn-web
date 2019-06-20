@@ -88,8 +88,9 @@ class AirdropWallet extends React.PureComponent<Props> {
     const { provider, error, submitting } = this.props
     const isWalletEditMode = _.get(provider, 'state.isWalletEditMode') || !_.get(provider, 'payout.ethAddress')
     const isReferralEditMode = _.get(provider, 'state.isReferralEditMode') || !_.get(provider, 'payout.referralCode')
-
-    console.log(isReferralEditMode, _.get(provider, 'payout.referralCode'))
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(isReferralEditMode, _.get(provider, 'payout.referralCode'))
+    }
     return (
       <div>
         <div className={styles.flexedRow}>

@@ -2,8 +2,8 @@ export interface ServiceSession {
   consumerId?: string
   id?: string,
   createdAt?: string
-  bytesIn?: number
-  bytesOut?: number
+  bytesIn?: string
+  bytesOut?: string
 }
 
 export interface ServiceSessionResponse {

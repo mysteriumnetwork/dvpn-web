@@ -8,7 +8,9 @@ export const fetchTerms = async (): Promise<string | null> => {
     })
     return await http.get('')
   } catch (e) {
-    console.error('Failed fetching first access policy', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching first access policy', e)
+    }
   }
   return null
 }

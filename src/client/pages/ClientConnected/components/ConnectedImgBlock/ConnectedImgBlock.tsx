@@ -12,7 +12,9 @@ type Props = {
 }
 
 const ConnectedImgBlock = (props: Props) => {
-  console.log('ConnectedImgBlock',props)
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('ConnectedImgBlock', props)
+  }
   const fromCountry = _.get(props, 'location.country')
   const toCountry = _.get(props, 'proposal.serviceDefinition.locationOriginate.country')
 

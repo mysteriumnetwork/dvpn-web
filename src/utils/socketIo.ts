@@ -29,25 +29,35 @@ class WebsocketClient extends EventEmitter {
       this.pending = false
       this.connected = false
       if (this.options && this.options.reconnect > 0) {
-        console.log('[Websocket] trying reconnect ...')
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('[Websocket] trying reconnect ...')
+        }
         this.options.reconnect--
         this.reconnect()
       }
     }
-    console.warn('[Websocket] lifetime error:' + err)
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('[Websocket] lifetime error:' + err)
+    }
   }
   onOpen = () => {
     this.pending = false
     this.connected = true
-    console.log('[Websocket] connected')
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[Websocket] connected')
+    }
   }
   onClose = () => {
     this.pending = false
     this.connected = false
     this.ws = undefined
-    console.log('[Websocket] closed')
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[Websocket] closed')
+    }
     if (this.options && this.options.reconnect > 0) {
-      console.log('[Websocket] trying reconnect ...')
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('[Websocket] trying reconnect ...')
+      }
       this.options.reconnect--
       this.reconnect()
     }
@@ -57,7 +67,9 @@ class WebsocketClient extends EventEmitter {
     try {
       action = JSON.parse(s.data)
     } catch (err) {
-      console.warn('[Websocket] parse incoming message error:', err)
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('[Websocket] parse incoming message error:', err)
+      }
       return
     }
     this.storeApi.dispatch(action)

@@ -15,15 +15,21 @@ export const initState = (id: string = 'default') => {
     provider: providerInitState,
     client: clientInitState
   }
-  console.log('*initState', { ...initState })
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('*initState', { ...initState })
+  }
   try {
     const data = localStorage.getItem(`myst-${id}`)
     initState = _.defaultsDeep(data && JSON.parse(data), initState)
   } catch (e) {
-    console.error(e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
   }
 
-  console.log('*initState', { ...initState })
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('*initState', { ...initState })
+  }
   return initState
 }
 
@@ -41,6 +47,8 @@ export const saveState = (state: { provider: ProviderReducer }, id: string = 'de
 
     localStorage.setItem(`myst-${id}`, JSON.stringify(initialState))
   } catch (e) {
-    console.error(e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
   }
 }

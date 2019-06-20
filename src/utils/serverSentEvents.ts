@@ -72,7 +72,9 @@ export class ServerSentEvents extends EventEmitter {
   }
 
   protected onError = (event) => {
-    console.warn('[ServerSentEvents]' + event)
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('[ServerSentEvents]' + event)
+    }
     this.emit('error', event)
   }
 
@@ -81,8 +83,9 @@ export class ServerSentEvents extends EventEmitter {
       const { payload, type }: ServerSentResponse = (typeof event.data === 'string')
         ? JSON.parse(event.data)
         : event.data
-      console.log('[ServerSentEvents] message!', type, payload)
-
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('[ServerSentEvents] message!', type, payload)
+      }
       this.emit(type, payload)
 
       if (this.middlewareAPI) {
@@ -96,7 +99,9 @@ export class ServerSentEvents extends EventEmitter {
   }
 
   protected onOpen = (event) => {
-    console.log('[ServerSentEvents] connected!')
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[ServerSentEvents] connected!')
+    }
     this.emit('open', event)
   }
 }

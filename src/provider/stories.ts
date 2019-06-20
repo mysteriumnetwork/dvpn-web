@@ -27,15 +27,27 @@ export const initProviderStory = (store: Store) => {
     fetchLocationStory(store.dispatch),
     fetchIdentityStory(store.dispatch),
     startAccessPolicyFetchingStory(store.dispatch)
-  ]).catch(console.error)
+  ]).catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 
   serverSentEvents.subscribe(ServerSentEventTypes.STATE_CHANGE, (payload) => {
     const { serviceInfo = [] } = payload || null
     const service = serviceInfo[0] ///TODO: list of service
 
     return (service && service.id)
-      ? onServiceStarted(store.dispatch, service).catch(console.error)
-      : onServiceStopped(store.dispatch).catch(console.error)
+      ? onServiceStarted(store.dispatch, service).catch((e) => {
+        if (process.env.NODE_ENV !== 'production') {
+          console.error(e)
+        }
+      })
+      : onServiceStopped(store.dispatch).catch((e) => {
+        if (process.env.NODE_ENV !== 'production') {
+          console.error(e)
+        }
+      })
   })
 }
 
@@ -69,12 +81,24 @@ export const startServiceFetchingStory = async (store: Store) => {
 
   const service: Service = await fetchServiceStory(store.dispatch)
     .then((result: DispatchResult) => result && result.value)
-    .catch(console.error)
+    .catch((e) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(e)
+      }
+    })
 
   if (String(prevService && prevService.id) !== String(service && service.id)) {
     return (service && service.id)
-      ? onServiceStarted(store.dispatch, service).catch(console.error)
-      : onServiceStopped(store.dispatch).catch(console.error)
+      ? onServiceStarted(store.dispatch, service).catch((e) => {
+          if (process.env.NODE_ENV !== 'production') {
+            console.error(e)
+          }
+      })
+      : onServiceStopped(store.dispatch).catch((e) => {
+        if (process.env.NODE_ENV !== 'production') {
+          console.error(e)
+        }
+      })
   }
 }
 
@@ -100,7 +124,11 @@ export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
     }
   }
 
-  fetch().catch(console.error)
+  fetch().catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 
   if (!_accessPolicyInterval) {
     _accessPolicyInterval = setInterval(fetch, 3000)
@@ -130,7 +158,11 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
 
   if (service && service.id) {
     dispatch(push(NAV_PROVIDER_DASHBOARD))
-    onServiceStarted(dispatch, service).catch(console.error)
+    onServiceStarted(dispatch, service).catch((e) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(e)
+      }
+    })
   }
 }
 
@@ -141,7 +173,11 @@ const onServiceStarted = (dispatch: Dispatch, service: Service) => Promise.all([
 
 const onServiceStopped = async (dispatch: Dispatch) => Promise.all([
   // stopVpnStateFetchingStory(dispatch),
-  startAccessPolicyFetchingStory(dispatch).catch(console.error)
+  startAccessPolicyFetchingStory(dispatch).catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 ]).then(() => null)
 
 export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
@@ -149,10 +185,18 @@ export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) =
     return
   }
 
-  await Promise.resolve(dispatch(stopServiceAction(service))).catch(console.error)
+  await Promise.resolve(dispatch(stopServiceAction(service))).catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 
   dispatch(push(NAV_PROVIDER_SETTINGS))
-  onServiceStopped(dispatch).catch(console.error)
+  onServiceStopped(dispatch).catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 }
 
 export const updateIdentitiesStory = async (

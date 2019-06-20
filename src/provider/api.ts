@@ -17,7 +17,9 @@ export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => 
       return accessPolicies[0]
     }
   } catch (e) {
-    console.error('Failed fetching first access policy', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching first access policy', e)
+    }
   }
 
   return null
@@ -27,7 +29,9 @@ export const getCurrentIdentity = async (passphrase: string = ''): Promise<Ident
   try {
     return await tequilaApi.me(passphrase)
   } catch (e) {
-    console.error('Failed fetching first identity', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching first identity', e)
+    }
   }
 
   return null
@@ -37,7 +41,9 @@ export const getOriginalLocation = async (): Promise<OriginalLocation | null> =>
   try {
     return await tequilaApi.location()
   } catch (e) {
-    console.error('Failed fetching location', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching location', e)
+    }
   }
 
   return null
@@ -47,7 +53,9 @@ export const getNatStatus = async (): Promise<NatStatus | null> => {
   try {
     return await tequilaApi.natStatus()
   } catch (e) {
-    console.error('Failed fetching NatStatus', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching NatStatus', e)
+    }
   }
 
   return null
@@ -89,7 +97,9 @@ export const getServiceList = async (): Promise<ServiceInfo[] | null> => {
     return await tequilapiClient.serviceList()
 
   } catch (e) {
-    console.error('Failed fetching first access policy', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching first access policy', e)
+    }
   }
 
   return null

@@ -14,7 +14,9 @@ export const getProposalsWithConnectCounts = async (): Promise<ProposalsCountsIn
 
     return proposalsCounts(proposals)
   } catch (e) {
-    console.log('getProposalsWithConnectCounts:', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('getProposalsWithConnectCounts:', e)
+    }
   }
 
   return {}
@@ -40,14 +42,18 @@ export const getProposalsByFilter = async (filter: ProposalsFilter): Promise<Pro
 
     return proposals
   } catch (e) {
-    console.log('getProposalsByFilter:', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('getProposalsByFilter:', e)
+    }
   }
 
   return []
 }
 
 export const startConnection = async (proposal: Proposal, identity: Identity): Promise<ConnectionStatusResponse> => {
-  console.log('startConnection', { proposal, identity })
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('startConnection', { proposal, identity })
+  }
   try {
     const request: ConnectionRequest = {
       consumerId: identity.id,
@@ -57,7 +63,9 @@ export const startConnection = async (proposal: Proposal, identity: Identity): P
 
     return await tequilapiClient.connectionCreate(request)
   } catch (e) {
-    console.log('getProposalsWithConnectCounts:', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('getProposalsWithConnectCounts:', e)
+    }
   }
 
   return { status: ConnectionStatus.NOT_CONNECTED }
@@ -67,7 +75,9 @@ export const getConnection = async (): Promise<ConnectionStatusResponse> => {
   try {
     return await tequilapiClient.connectionStatus()
   } catch (e) {
-    console.log('getProposalsWithConnectCounts:', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('getProposalsWithConnectCounts:', e)
+    }
   }
 
   return { status: ConnectionStatus.NOT_CONNECTED }
@@ -77,7 +87,9 @@ export const stopConnection = async (): Promise<ConnectionStatusResponse> => {
   try {
     await tequilapiClient.connectionCancel()
   } catch (e) {
-    console.log('getProposalsWithConnectCounts:', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('getProposalsWithConnectCounts:', e)
+    }
   }
 
   return await getConnection()
@@ -87,7 +99,9 @@ export const getConnectionStatistics = async (): Promise<ConnectionStatistics> =
   try {
     return await tequilapiClient.connectionStatistics()
   } catch (e) {
-    console.log('getProposalsWithConnectCounts:', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('getProposalsWithConnectCounts:', e)
+    }
   }
 
   return null
@@ -97,7 +111,9 @@ export const getConnectionIp = async (): Promise<ConnectionIp> => {
   try {
     return await tequilapiClient.connectionIp()
   } catch (e) {
-    console.log('getProposalsWithConnectCounts:', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('getProposalsWithConnectCounts:', e)
+    }
   }
 
   return {}
