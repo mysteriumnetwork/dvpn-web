@@ -2,12 +2,12 @@ import * as React from 'react'
 import Checkbox from '../../../../../../../ui-kit/components/Checkbox/Checkbox'
 
 import trans from '../../../../../../../trans'
-import { ProviderReducer } from '../../../../../../reducer'
+import { ProviderState } from '../../../../../../reducer'
 
 const styles = require('./ResidentialIP.module.scss')
 
 type Props = {
-  provider: ProviderReducer
+  provider: ProviderState
 
   onChangeResidentialConfirm: (value: boolean) => void
 }

@@ -4,7 +4,7 @@ import Button from '../../../ui-kit/components/Button/Button'
 import ConnectionInformation from './components/ConnectionInformation/ConnectionInformation'
 import AirdropWallet from './components/AirdropWallet/AirdropWallet'
 import { connect } from 'react-redux'
-import { ProviderReducer } from '../../reducer'
+import { ProviderState } from '../../reducer'
 import { DefaultProps } from '../../../types'
 import { setProviderStateAction, setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
 import { withStyles } from '@material-ui/core'
@@ -20,14 +20,14 @@ import { NAV_PROVIDER_DASHBOARD } from '../../provider.links'
 const styles = require('./ProviderSettings.module.scss')
 
 type Props = DefaultProps & {
-  provider: ProviderReducer
+  provider: ProviderState
   formWalletAddressData?: Object
   onSaveWalletAddress?: (data: Object) => void
   onSaveReferralCode?: (data: Object) => void
   onSetState?: (data: Object) => void
   onChangeTrafficOption: (value: string) => void
   onChangeResidentialConfirm: (value: boolean) => void
-  onStartVpnServer: (provider: ProviderReducer) => void
+  onStartVpnServer: (provider: ProviderState) => void
 }
 
 class ProviderSettings extends React.PureComponent<Props> {

@@ -20,8 +20,9 @@ class SideBar extends React.PureComponent<Props> {
 
   protected changeFilter(filter?: ProposalsFilter) {
     const { onChange } = this.props
-    console.log('changeFilter', filter)
-
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('changeFilter', filter)
+    }
     return onChange && onChange(filter)
   }
 

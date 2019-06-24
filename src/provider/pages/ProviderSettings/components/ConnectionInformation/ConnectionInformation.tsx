@@ -4,14 +4,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded'
 import trans from '../../../../../trans'
 import ResidentialIP from './components/ResidentialIP/ResidentialIP'
 import DataCenterIP from './components/DataCenterIP/DataCenterIP'
-import { ProviderReducer } from '../../../../reducer'
+import { ProviderState } from '../../../../reducer'
 import FlagIcon from '../../../../../ui-kit/components/FlagIcon'
 import { NODE_TYPE } from '../../../../../constants';
 
 const styles = require('./ConnectionInformation.module.scss')
 
 type Props = {
-  provider: ProviderReducer
+  provider: ProviderState
   onChangeResidentialConfirm: (value: boolean) => void
 }
 

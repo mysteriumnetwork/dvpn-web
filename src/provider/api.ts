@@ -3,11 +3,10 @@ import { tequilaApi, tequilapiClient } from '../api'
 import { OriginalLocation } from '../api/data/original-location'
 import { Identity } from '../api/data/identity'
 import { Service, ServiceOptions } from '../api/data/service'
-import { ServiceParams } from '../api/data/service-params'
 import { IdentityPayout } from '../api/data/identity-payout'
 import { NatStatus } from '../api/data/nat-status'
 import { ServiceSession } from '../api/data/service-session'
-import { ServiceInfo } from 'mysterium-vpn-js'
+import { ServiceInfo, ServiceRequest } from 'mysterium-vpn-js'
 
 export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
@@ -17,7 +16,9 @@ export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => 
       return accessPolicies[0]
     }
   } catch (e) {
-    console.error('Failed fetching first access policy', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching first access policy', e)
+    }
   }
 
   return null
@@ -27,7 +28,9 @@ export const getCurrentIdentity = async (passphrase: string = ''): Promise<Ident
   try {
     return await tequilaApi.me(passphrase)
   } catch (e) {
-    console.error('Failed fetching first identity', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching first identity', e)
+    }
   }
 
   return null
@@ -37,7 +40,9 @@ export const getOriginalLocation = async (): Promise<OriginalLocation | null> =>
   try {
     return await tequilaApi.location()
   } catch (e) {
-    console.error('Failed fetching location', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching location', e)
+    }
   }
 
   return null
@@ -47,7 +52,9 @@ export const getNatStatus = async (): Promise<NatStatus | null> => {
   try {
     return await tequilaApi.natStatus()
   } catch (e) {
-    console.error('Failed fetching NatStatus', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching NatStatus', e)
+    }
   }
 
   return null
@@ -60,10 +67,10 @@ export interface StartServiceInterface {
   options?: ServiceOptions
 }
 
-export const startService = async (data: StartServiceInterface): Promise<Service> => {
+export const startService = async (data: StartServiceInterface): Promise<ServiceInfo[]> => {
   const { providerId, type, options, accessPolicyId } = data
 
-  const request: ServiceParams = {
+  const request: ServiceRequest = {
     providerId,
     type,
     options
@@ -73,11 +80,17 @@ export const startService = async (data: StartServiceInterface): Promise<Service
     request.accessPolicies = { ids: [accessPolicyId] }
   }
 
-  return await tequilaApi.serviceStart(request)
+  const service = await tequilapiClient.serviceStart(request)
+
+  return service ? [service] : undefined
 }
 
-export const stopService = async (service: Service): Promise<any> => {
-  return service && await tequilaApi.serviceStop(service.id)
+export const stopService = async (service: Service): Promise<ServiceInfo[] | void> => {
+  try {
+    return service && await tequilapiClient.serviceStop(service.id)
+  } catch (e) {
+    return getServiceList()
+  }
 }
 
 export const getServiceSessions = async (service: Service): Promise<ServiceSession[]> => {
@@ -89,7 +102,9 @@ export const getServiceList = async (): Promise<ServiceInfo[] | null> => {
     return await tequilapiClient.serviceList()
 
   } catch (e) {
-    console.error('Failed fetching first access policy', e)
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Failed fetching first access policy', e)
+    }
   }
 
   return null
@@ -103,17 +118,17 @@ export const getIdentityPayout = async (identity: Identity): Promise<IdentityPay
   return await tequilaApi.identityPayout(identity.id)
 }
 
-export const updateIdentity = async (data: {id: string, ethAddress: string}): Promise<void> => {
+export const updateIdentity = async (data: { id: string, ethAddress: string }): Promise<void> => {
   const { id, ethAddress } = data
   await tequilaApi.updateIdentityPayout(id, ethAddress)
 }
 
-export const updateReferralCode = async (data: {id: string, referralCode: string}): Promise<void> => {
+export const updateReferralCode = async (data: { id: string, referralCode: string }): Promise<void> => {
   const { id, referralCode } = data
   await tequilaApi.updateReferralCode(id, referralCode)
 }
 
-export const unlocksIdentity = async (data: {id: string, passphrase: string}): Promise<void> => {
+export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
   const { id, passphrase = '' } = data
   await tequilaApi.unlocksIdentity(id, passphrase)
 }

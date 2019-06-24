@@ -1,2 +1,16 @@
 // eslint-disable-next-line import/prefer-default-export
-export type RootState = {}
+import { FormStateMap } from 'redux-form'
+import { ProviderState } from './provider/reducer'
+import { ClientState } from './client/reducer'
+import { TermsState } from './app/pages/Terms/reducer'
+import { RouterState } from 'connected-react-router'
+
+export type RootState = {
+  timer: string,
+  router: RouterState,
+  form: FormStateMap,
+  language: any,
+  provider: ProviderState,
+  client: ClientState,
+  terms: TermsState
+}

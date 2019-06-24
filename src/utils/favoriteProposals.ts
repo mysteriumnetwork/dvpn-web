@@ -13,7 +13,9 @@ class FavoriteProposals {
       try {
         this._favoriteProposals = this.storage.get<Proposal[]>('favoriteProposals') || []
       } catch (err) {
-        console.debug('Parsing of favoriteProposals failed: ', err)
+        if (process.env.NODE_ENV !== 'production') {
+          console.debug('Parsing of favoriteProposals failed: ', err)
+        }
         this._favoriteProposals = []
       }
     }

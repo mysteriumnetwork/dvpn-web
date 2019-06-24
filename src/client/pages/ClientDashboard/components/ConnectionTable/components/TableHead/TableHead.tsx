@@ -24,7 +24,9 @@ class TableHead extends React.PureComponent<Props> {
                         <th>{trans('app.client.dashboard.connection.type')}</th>
                         <th>
                             <button onClick={this.handleToggleAskProposal}>
-                                Sort: Quality
+                                Sort: Quality {this.props.isAskSortProposal
+                                    ? <React.Fragment>&#8593;</React.Fragment>
+                                    : <React.Fragment>&#8595;</React.Fragment>}
                             </button>
                         </th>
                     </tr>

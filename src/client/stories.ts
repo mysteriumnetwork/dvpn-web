@@ -25,10 +25,18 @@ export const initClientDashboardStory = (dispatch: Dispatch, filter?: ProposalsF
     .then((result: DispatchResult) => {
       if (result.value && result.value.proposal) {
         selectProposalStory(dispatch, result.value.proposal)
-        onStartConnectionStory(dispatch).catch(console.error)
+        onStartConnectionStory(dispatch).catch((e) => {
+          if (process.env.NODE_ENV !== 'production') {
+            console.error(e)
+          }
+        })
       }
     })
-    .catch(console.error)
+    .catch((e) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(e)
+      }
+    })
 
 }
 
@@ -52,7 +60,11 @@ export const startFetchingProposals = (dispatch: Dispatch, filter: ProposalsFilt
   ])
 
   _FetchingProposalsInterval = setInterval(fetch, 30 * 1000)
-  fetch().catch(console.error)
+  fetch().catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 }
 
 export const stopFetchingProposals = (): void => {
@@ -62,7 +74,11 @@ export const stopFetchingProposals = (): void => {
 
 export const applyFilterStory = (dispatch: Dispatch, filter: ProposalsFilter) => {
   _FetchingProposalsFilter = filter
-  Promise.resolve(dispatch(getProposalsAction(_FetchingProposalsFilter))).catch(console.error)
+  Promise.resolve(dispatch(getProposalsAction(_FetchingProposalsFilter))).catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
   dispatch(selectProposalAction())
 
   return dispatch(applyFilterAction(filter))
@@ -73,7 +89,11 @@ export const selectProposalStory = (dispatch: Dispatch, proposal: Proposal) => d
 export const startConnectionStory = async (dispatch: Dispatch, proposal: Proposal, identity: Identity) => {
   await dispatch(startConnectionAction(proposal, identity))
   stopFetchingProposals()
-  onStartConnectionStory(dispatch).catch(console.error)
+  onStartConnectionStory(dispatch).catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 }
 
 export const onStartConnectionStory = async (dispatch: Dispatch) => Promise.all([
@@ -90,10 +110,18 @@ export const getConnectionStory = (dispatch: Dispatch) => dispatch(getConnection
 export const stopConnectionStory = async (dispatch: Dispatch) => {
   const connection: ConnectionStatusResponse = await Promise.resolve(dispatch(stopConnectionAction()))
     .then((result: DispatchResult) => result && result.value)
-    .catch(console.error)
+    .catch((e) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(e)
+      }
+    })
 
   startFetchingProposals(dispatch, _FetchingProposalsFilter)
-  onStopConnectionStory(dispatch).catch(console.error)
+  onStopConnectionStory(dispatch).catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 
   if (!(connection && connection.status === ConnectionStatus.NOT_CONNECTED)) {
     const interval = setInterval(async () => Promise.resolve(getConnectionStory(dispatch))
@@ -103,7 +131,11 @@ export const stopConnectionStory = async (dispatch: Dispatch) => {
           clearInterval(interval)
         }
       })
-      .catch(console.error), 1000)
+      .catch((e) => {
+        if (process.env.NODE_ENV !== 'production') {
+          console.error(e)
+        }
+      }), 1000)
   }
 }
 
@@ -118,7 +150,11 @@ export const startFetchingConnectionStatistics = (dispatch: Dispatch): void => {
     await dispatch(getConnectionStatisticsAction())
   }
 
-  fetch().catch(console.error)
+  fetch().catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
 
   if (!_FetchingConnectionStatisticsInterval) {
     _FetchingConnectionStatisticsInterval = setInterval(fetch, 5 * 1000)

@@ -1,13 +1,13 @@
 import * as React from 'react'
 import trans from '../../../../../trans'
-import { ProviderReducer } from '../../../../reducer'
+import { ProviderState } from '../../../../reducer'
 import FlagIcon from '../../../../../ui-kit/components/FlagIcon'
 import { ServiceInfo } from 'mysterium-vpn-js'
 
 const styles = require('./ConnectionInfo.module.scss')
 
 type Props = {
-  provider: ProviderReducer,
+  provider: ProviderState,
 }
 
 const ConnectionInfo = (props: Props) => {

@@ -26,6 +26,11 @@
         text-align: right;
       }
     }
+    button {
+      &:hover {
+        cursor: pointer;
+      }
+    }
     td {
       text-align: left;
       padding: 8px 16px;

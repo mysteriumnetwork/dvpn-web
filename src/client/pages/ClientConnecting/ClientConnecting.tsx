@@ -8,13 +8,13 @@ import ConnectionInfoBlock from './components/ConnectionInfoBlock/ConnectionInfo
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
 import { ConnectionStatus, Identity, Location as OriginalLocation } from 'mysterium-vpn-js'
-import { ClientReducer } from '../../reducer'
+import { ClientState } from '../../reducer'
 import { DefaultProps } from '../../../types'
 import _ from 'lodash'
 
 const styles = require('./ClientConnecting.module.scss')
 
-type Props = ClientReducer & DefaultProps & {
+type Props = ClientState & DefaultProps & {
   location: OriginalLocation
   identity: Identity
 }

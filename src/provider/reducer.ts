@@ -23,7 +23,7 @@ import { ServiceSession } from '../api/data/service-session'
 import { ServerSentEventTypes, ServerSentPayload } from '../utils/serverSentEvents'
 import { ServiceInfo } from 'mysterium-vpn-js'
 
-export interface ProviderReducer {
+export interface ProviderState {
   identity?: Identity,
   payout?: IdentityPayout & {
     loading?: boolean
