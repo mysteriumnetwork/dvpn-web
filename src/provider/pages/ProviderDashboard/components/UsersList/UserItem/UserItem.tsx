@@ -1,4 +1,5 @@
 import * as React from 'react'
+import formatBytes from 'utils/formatBytes'
 import { ServiceSession } from '../../../../../../api/data/service-session'
 import Timer from '../../../../../../ui-kit/components/Timer'
 import formatDuration from 'format-duration'
@@ -26,8 +27,8 @@ const UserItem = (props: Props) => {
           {(value) => formatDuration((value - Date.parse(createdAt)) || 0, { leading: true })}
         </Timer>
       </td>
-      <td>--{bytesIn}</td>
-      <td>--{bytesOut}</td>
+      <td>{formatBytes(parseInt(bytesIn, 10))}</td>
+      <td>{formatBytes(parseInt(bytesOut, 10))}</td>
     </tr>
   )
 }
