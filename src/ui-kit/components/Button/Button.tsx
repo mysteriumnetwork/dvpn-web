@@ -1,6 +1,7 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
 import { Button } from '@material-ui/core'
+import { ButtonProps } from '@material-ui/core/Button'
 
 interface IStyles {
   rootStyled: string
@@ -52,35 +53,28 @@ const styles = (theme: any) => ({
   },
 })
 
-export interface IButtonProps {
-  children?: any
-  color?: any
-  onClick?: any
-  fullWidth?: boolean
+export interface IButtonProps extends ButtonProps {
   classes?: IStyles
-  style?: React.CSSProperties,
-  variant?: any,
-  disabled?: boolean,
 }
 
-const AppButton: React.SFC<IButtonProps> = (props: IButtonProps) => (
-  <Button
-    onClick={props.onClick}
-    fullWidth={props.fullWidth}
-    color={props.color}
-    disabled={props.disabled}
-    classes={{
-      root: props.classes.rootStyled,
-      label: props.classes.labelStyled,
-      disabled: props.classes.disabled,
-      flatPrimary: props.classes.flatPrimaryStyled,
-      textPrimary: props.classes.textPrimaryStyled,
-      textSecondary: props.classes.textSecondaryStyled,
-      flatSecondary: props.classes.flatSecondaryStyled,
-    }}
-  >
-    {props.children}
-  </Button>
-)
+const AppButton: React.FunctionComponent<IButtonProps> = (props: IButtonProps) => {
+  const { classes, children, ...btnProps } = props
+  return (
+    <Button
+      {...btnProps}
+      classes={{
+        root: classes.rootStyled,
+        label: classes.labelStyled,
+        disabled: classes.disabled,
+        flatPrimary: classes.flatPrimaryStyled,
+        textPrimary: classes.textPrimaryStyled,
+        textSecondary: classes.textSecondaryStyled,
+        flatSecondary: classes.flatSecondaryStyled,
+      }}
+    >
+      {children}
+    </Button>
+  )
+}
 
 export default injectSheet(styles)(AppButton)

@@ -6,12 +6,14 @@ import {
   IDENTITY_PAYOUT,
   NAT_STATUS,
   ORIGINAL_LOCATION,
+  PASSWORD_CHANGE,
   RESIDENTIAL_CONFIRM,
   SERVICE_SESSIONS,
   SET_PROVIDER_STATE,
   STARTED_SERVICES,
   TRAFFIC_OPTION,
-  UPDATE_IDENTITY, UPDATE_REFERRAL_CODE,
+  UPDATE_IDENTITY,
+  UPDATE_REFERRAL_CODE,
 } from './constants'
 import { Action } from 'redux-actions'
 import { OriginalLocation } from '../api/data/original-location'
@@ -36,7 +38,9 @@ export interface ProviderState {
   startedServices?: ServiceInfo[],
   startedServicePending?: boolean,
   sessions?: ServiceSession[],
-  natStatus?: NatStatus
+  natStatus?: NatStatus,
+
+  [key: string]: any
 }
 
 export enum TrafficOptions {
@@ -149,6 +153,12 @@ export default typeToReducer({
     ...state,
     residentialConfirm: action.payload,
   }),
+
+  [PASSWORD_CHANGE]: {
+    PENDING: (state) => ({ ...state, changePasswordPending: true }),
+    REJECTED: (state, action: Action<any>) => ({ ...state, changePasswordPending: false }),
+    FULFILLED: (state, action: Action<any>) => ({ ...state, changePasswordPending: false }),
+  },
 
   [NAT_STATUS]: (state, action: Action<boolean>) => ({
     ...state,

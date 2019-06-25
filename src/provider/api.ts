@@ -7,6 +7,7 @@ import { IdentityPayout } from '../api/data/identity-payout'
 import { NatStatus } from '../api/data/nat-status'
 import { ServiceSession } from '../api/data/service-session'
 import { ServiceInfo, ServiceRequest } from 'mysterium-vpn-js'
+import { SubmissionError } from 'redux-form/immutable'
 
 export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
@@ -131,5 +132,13 @@ export const updateReferralCode = async (data: { id: string, referralCode: strin
 export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
   const { id, passphrase = '' } = data
   await tequilaApi.unlocksIdentity(id, passphrase)
+}
+
+export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<any> => {
+  const { newPassword, oldPassword, username } = data
+  return tequilaApi.authChangePassword(username, oldPassword, newPassword).catch((reason: Error) => {
+    console.log('authChangePassword', reason)
+    throw new SubmissionError({ _error: reason.message })
+  })
 }
 

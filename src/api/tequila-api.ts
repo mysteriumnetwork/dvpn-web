@@ -41,6 +41,8 @@ export interface TequilaApiInterface {
 
   unlocksIdentity(id: string, passphrase: string): Promise<void>
 
+  authChangePassword(username: string, oldPassword: string, new_password: string): Promise<void>
+
 }
 
 export class TequilaApi implements TequilaApiInterface {
@@ -154,6 +156,10 @@ export class TequilaApi implements TequilaApiInterface {
 
   public async unlocksIdentity(id: string, passphrase: string): Promise<void> {
     return this.http.put(`identities/${id}/unlock`, { passphrase })
+  }
+
+  authChangePassword(username: string, oldPassword: string, newPassword: string): Promise<void> {
+    return this.http.put(`/auth/password`, { username, old_password: oldPassword, new_password: newPassword })
   }
 
 }

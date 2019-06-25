@@ -27,3 +27,5 @@ export const TRAFFIC_OPTION = 'provider/TRAFFIC_OPTION'
 export const RESIDENTIAL_CONFIRM = 'provider/RESIDENTIAL_CONFIRM'
 
 export const SET_PROVIDER_STATE = 'provider/SET_PROVIDER_STATE'
+
+export const PASSWORD_CHANGE = 'provider/PASSWORD_CHANGE'

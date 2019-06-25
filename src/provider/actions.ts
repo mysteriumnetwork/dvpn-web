@@ -7,6 +7,7 @@ import {
   IDENTITY_PAYOUT,
   NAT_STATUS,
   ORIGINAL_LOCATION,
+  PASSWORD_CHANGE,
   RESIDENTIAL_CONFIRM,
   SERVICE_SESSIONS,
   SET_PROVIDER_STATE,
@@ -18,6 +19,7 @@ import {
 } from './constants'
 
 import {
+  authChangePassword,
   getCurrentIdentity,
   getIdentityPayout,
   getOriginalLocation,
@@ -51,7 +53,6 @@ export const startServiceAction = createAction(STARTED_SERVICES, startService, d
 
 export const stopServiceAction = createAction(STARTED_SERVICES, stopService, d => ({ ...d, pending: true }))
 
-///TODO: list of service
 export const getServicesAction = createAction(STARTED_SERVICES, getServiceList)
 
 export const setNatStatusAction = createAction(NAT_STATUS)
@@ -63,4 +64,6 @@ export const setTrafficOptionAction = createAction(TRAFFIC_OPTION)
 export const setResidentialConfirmAction = createAction(RESIDENTIAL_CONFIRM)
 
 export const setProviderStateAction = createAction(SET_PROVIDER_STATE)
+
+export const setPasswordChangeAction = createAction(PASSWORD_CHANGE, authChangePassword)
 
