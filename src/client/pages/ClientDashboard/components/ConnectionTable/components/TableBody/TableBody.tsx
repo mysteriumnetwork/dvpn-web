@@ -1,6 +1,6 @@
 import * as React from 'react'
 import ConnectionItem from './components/ConnectionItem/ConnectionItem'
-import { Proposal } from '../../../../../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import compareProposals from '../../../../../../../utils/compareProposals'
 
 const styles = require('./TableBody.module.scss')

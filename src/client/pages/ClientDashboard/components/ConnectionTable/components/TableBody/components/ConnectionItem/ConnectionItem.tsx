@@ -3,7 +3,7 @@ import injectSheet from 'react-jss'
 import ItemServer from './components/ItemServer'
 import ItemQuality from './components/ItemQuality'
 import ItemConnectionType from './components/ItemConnectionType'
-import { Proposal } from '../../../../../../../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 
 interface IStyles {
   highlight: string

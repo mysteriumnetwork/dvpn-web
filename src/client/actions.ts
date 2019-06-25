@@ -10,14 +10,14 @@ import {
 } from './api'
 import {
   APPLY_FILTER,
+  ASK_PROPOSAL,
   CONNECTION,
   CONNECTION_IP,
   CONNECTION_STATISTICS,
+  FAVORITE_PROPOSALS,
   PROPOSALS,
   PROPOSALS_COUNTS,
-  FAVORITE_PROPOSALS,
-  SELECT_PROPOSAL,
-  ASK_PROPOSAL
+  SELECT_PROPOSAL
 } from './constants'
 import { ConnectionStatus } from 'mysterium-vpn-js'
 import FavoriteProposals from '../utils/favoriteProposals'
@@ -40,7 +40,7 @@ export const getConnectionIpAction = createAction(CONNECTION_IP, getConnectionIp
 
 export const getConnectionStatisticsAction = createAction(CONNECTION_STATISTICS, getConnectionStatistics)
 
-export const toggleAskProposalAction = createAction(ASK_PROPOSAL, (isAskSortProposal) => ({ isAskSortProposal }))
+export const toggleAskProposalAction = createAction(ASK_PROPOSAL)
 
 export const addFavoriteProposalsAction = createAction(FAVORITE_PROPOSALS, (proposal) => FavoriteProposals.addFavoriteProposals(proposal))
 

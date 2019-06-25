@@ -11,24 +11,27 @@ import {
   SET_PROVIDER_STATE,
   STARTED_SERVICES,
   TRAFFIC_OPTION,
-  UPDATE_IDENTITY, UPDATE_REFERRAL_CODE,
+  UPDATE_IDENTITY,
+  UPDATE_REFERRAL_CODE,
 } from './constants'
 import { Action } from 'redux-actions'
-import { OriginalLocation } from '../api/data/original-location'
-import { AccessPolicy } from '../api/data/access-policy'
-import { Identity } from '../api/data/identity'
-import { IdentityPayout } from '../api/data/identity-payout'
-import { NatStatus } from '../api/data/nat-status'
-import { ServiceSession } from '../api/data/service-session'
+import {
+  AccessPolicy,
+  ConsumerLocation,
+  Identity,
+  IdentityPayout,
+  NatStatus,
+  ServiceInfo,
+  ServiceSession
+} from 'mysterium-vpn-js'
 import { ServerSentEventTypes, ServerSentPayload } from '../utils/serverSentEvents'
-import { ServiceInfo } from 'mysterium-vpn-js'
 
 export interface ProviderState {
   identity?: Identity,
   payout?: IdentityPayout & {
     loading?: boolean
   },
-  originalLocation?: OriginalLocation,
+  originalLocation?: ConsumerLocation,
   accessPolicy?: AccessPolicy,
   trafficOption?: TrafficOptions
   residentialConfirm?: boolean,
@@ -61,7 +64,7 @@ export default typeToReducer({
   },
 
   [ORIGINAL_LOCATION]: {
-    FULFILLED: (state, action: Action<OriginalLocation>) => ({
+    FULFILLED: (state, action: Action<ConsumerLocation>) => ({
       ...state,
       originalLocation: action.payload,
     }),

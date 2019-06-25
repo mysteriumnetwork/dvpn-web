@@ -10,21 +10,20 @@ import { getFormValues } from 'redux-form'
 import { stopVpnServerStory } from '../../stories'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
-import { Service } from '../../../api/data/service'
 import { Redirect } from 'react-router'
 import { NAV_PROVIDER_SETTINGS } from '../../provider.links'
 import _ from 'lodash'
+import { ServiceInfo } from 'mysterium-vpn-js'
 
 const styles = require('./ProviderDashboard.module.scss')
 
 type Props = DefaultProps & {
   provider: ProviderState,
-
-  onStopVpnServer: (service: Service) => void
+  onStopVpnServer: (service: ServiceInfo) => void
 }
 
 class ProviderDashboard extends React.PureComponent<Props> {
-  get service(): Service {
+  get service(): ServiceInfo {
     const startedServices = _.get(this.props, 'provider.startedServices')
 
     ///TODO: startedServices list
@@ -71,7 +70,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onStopVpnServer: (service: Service) => stopVpnServerStory(dispatch, service)
+  onStopVpnServer: (service: ServiceInfo) => stopVpnServerStory(dispatch, service)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

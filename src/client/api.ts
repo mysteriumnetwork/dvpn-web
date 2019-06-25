@@ -1,5 +1,5 @@
 import { tequilapiClient } from '../api'
-import { Proposal } from '../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import { ConnectionIp, ConnectionRequest, ConnectionStatus, Identity, ProposalQuery } from 'mysterium-vpn-js'
 import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
 import { ProposalsFilter } from './reducer'

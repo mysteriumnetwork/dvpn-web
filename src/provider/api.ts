@@ -1,16 +1,18 @@
-import { AccessPolicy } from '../api/data/access-policy'
 import { tequilaApi, tequilapiClient } from '../api'
-import { OriginalLocation } from '../api/data/original-location'
-import { Identity } from '../api/data/identity'
-import { Service, ServiceOptions } from '../api/data/service'
-import { IdentityPayout } from '../api/data/identity-payout'
-import { NatStatus } from '../api/data/nat-status'
-import { ServiceSession } from '../api/data/service-session'
-import { ServiceInfo, ServiceRequest } from 'mysterium-vpn-js'
+import { ServiceOptions } from '../api/data/service'
+import {
+  AccessPolicy,
+  ConsumerLocation,
+  Identity,
+  IdentityPayout,
+  NatStatusResponse,
+  ServiceInfo,
+  ServiceRequest
+} from 'mysterium-vpn-js'
 
 export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
-    const accessPolicies = await tequilaApi.accessPolicies()
+    const accessPolicies = await tequilapiClient.accessPolicies()
 
     if (accessPolicies && accessPolicies.length > 0) {
       return accessPolicies[0]
@@ -26,7 +28,8 @@ export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => 
 
 export const getCurrentIdentity = async (passphrase: string = ''): Promise<Identity | null> => {
   try {
-    return await tequilaApi.me(passphrase)
+    //TODO: move to mysterium-vpn-js
+    return await tequilaApi.current(passphrase)
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching first identity', e)
@@ -36,9 +39,9 @@ export const getCurrentIdentity = async (passphrase: string = ''): Promise<Ident
   return null
 }
 
-export const getOriginalLocation = async (): Promise<OriginalLocation | null> => {
+export const getOriginalLocation = async (): Promise<ConsumerLocation | null> => {
   try {
-    return await tequilaApi.location()
+    return await tequilapiClient.location()
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching location', e)
@@ -48,9 +51,9 @@ export const getOriginalLocation = async (): Promise<OriginalLocation | null> =>
   return null
 }
 
-export const getNatStatus = async (): Promise<NatStatus | null> => {
+export const getNatStatus = async (): Promise<NatStatusResponse | null> => {
   try {
-    return await tequilaApi.natStatus()
+    return await tequilapiClient.natStatus()
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching NatStatus', e)
@@ -85,16 +88,12 @@ export const startService = async (data: StartServiceInterface): Promise<Service
   return service ? [service] : undefined
 }
 
-export const stopService = async (service: Service): Promise<ServiceInfo[] | void> => {
+export const stopService = async (service: ServiceInfo): Promise<ServiceInfo[] | void> => {
   try {
     return service && await tequilapiClient.serviceStop(service.id)
   } catch (e) {
     return getServiceList()
   }
-}
-
-export const getServiceSessions = async (service: Service): Promise<ServiceSession[]> => {
-  return service && await tequilaApi.serviceSessions(service.id)
 }
 
 export const getServiceList = async (): Promise<ServiceInfo[] | null> => {
@@ -114,22 +113,23 @@ export const getIdentityPayout = async (identity: Identity): Promise<IdentityPay
   if (!(identity && identity.id)) {
     return
   }
-
+  //TODO: move to mysterium-vpn-js - fix eth_address
   return await tequilaApi.identityPayout(identity.id)
 }
 
 export const updateIdentity = async (data: { id: string, ethAddress: string }): Promise<void> => {
   const { id, ethAddress } = data
-  await tequilaApi.updateIdentityPayout(id, ethAddress)
+  await tequilapiClient.updateIdentityPayout(id, ethAddress)
 }
 
 export const updateReferralCode = async (data: { id: string, referralCode: string }): Promise<void> => {
   const { id, referralCode } = data
+  //TODO: move to mysterium-vpn-js
   await tequilaApi.updateReferralCode(id, referralCode)
 }
 
 export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
   const { id, passphrase = '' } = data
-  await tequilaApi.unlocksIdentity(id, passphrase)
+  await tequilapiClient.identityUnlock(id, passphrase)
 }
 
