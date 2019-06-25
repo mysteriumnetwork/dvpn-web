@@ -3,9 +3,9 @@ import { getHttpApiUrl } from '../constants'
 import { Middleware, MiddlewareAPI } from 'redux'
 import { createAction } from 'redux-actions'
 import { NatStatus, ServiceInfo, ServiceSession } from 'mysterium-vpn-js'
-import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill'
+import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill'
 
-const EventSource = NativeEventSource || EventSourcePolyfill;
+const EventSource = NativeEventSource || EventSourcePolyfill
 
 export enum ServerSentState {
   CONNECTING = 0,
@@ -73,9 +73,16 @@ export class ServerSentEvents extends EventEmitter {
 
   protected onError = (event) => {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn('[ServerSentEvents]' + event)
+      console.warn('[ServerSentEvents]', event)
     }
-    this.emit('error', event)
+
+    try {
+      this.emit('error', 'Connection failed!')
+    } catch (e) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.debug('[ServerSentEvents] Exception:', e)
+      }
+    }
   }
 
   protected onMessage = (event) => {
@@ -93,9 +100,10 @@ export class ServerSentEvents extends EventEmitter {
         this.middlewareAPI.dispatch(action(payload))
       }
     } catch (e) {
-
+      if (process.env.NODE_ENV !== 'production') {
+        console.debug('[ServerSentEvents] Exception:', e)
+      }
     }
-
   }
 
   protected onOpen = (event) => {
