@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import immutableProps from '../../../hocs/immutableProps'
 import { setPasswordChangeAction } from '../../../provider/actions'
-import { ProviderReducer } from '../../../provider/reducer'
 import injectSheet from 'react-jss'
 import Button from '../../../ui-kit/components/Button/Button'
 import trans from '../../../trans'
@@ -17,9 +16,6 @@ const styles = require('./Password.module.scss')
 
 type Props = InjectedFormProps & {
   onPasswordChange?: Function
-  oldPassword: string
-  newPassword: string
-  provider: ProviderReducer
 }
 
 class Settings extends React.PureComponent<Props> {
@@ -91,14 +87,12 @@ class Settings extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({})
-
 const mapDispatchToProps = (dispatch) => ({
   onPasswordChange: (value) => dispatch(setPasswordChangeAction(value)),
 })
 
 export default injectSheet({})(compose(
   reduxForm({ form: 'changePassword' }),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(undefined, mapDispatchToProps),
   immutableProps
 )(Settings))
