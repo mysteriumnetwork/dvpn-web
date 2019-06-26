@@ -20,8 +20,8 @@ type Props = InjectedFormProps & {
 
 class Settings extends React.PureComponent<Props> {
   handleChange = (data: any) => {
-    console.log('handleChange', data.toJS())
     const { onPasswordChange } = this.props
+
     return onPasswordChange && onPasswordChange(data.toJS())
   }
 
@@ -29,8 +29,6 @@ class Settings extends React.PureComponent<Props> {
 
   render() {
     const { handleSubmit, submitting, pristine, invalid, error, submitSucceeded } = this.props
-
-    console.log(this.props)
 
     return (
       <form onSubmit={handleSubmit(this.handleChange)} className={styles.settingsCover}>
@@ -69,7 +67,7 @@ class Settings extends React.PureComponent<Props> {
               {(submitSucceeded) && (
                 <div className={styles.successText}>
                   <SuccessIcon/>
-                  <span>{'successfully'}</span>
+                  <span>{'Password changed!'}</span>
                 </div>
               )}
             </div>
@@ -94,5 +92,5 @@ const mapDispatchToProps = (dispatch) => ({
 export default injectSheet({})(compose(
   reduxForm({ form: 'changePassword' }),
   connect(undefined, mapDispatchToProps),
-  immutableProps
+  immutableProps,
 )(Settings))
