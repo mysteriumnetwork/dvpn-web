@@ -11,8 +11,15 @@ type Props = {
 }
 
 const UsersList = (props: Props) => {
-
   const { sessions } = props.provider
+
+  const sessionList = sessions && sessions.sort(function (a, b) {
+    const aDate = new Date(a.createdAt)
+    const bDate = new Date(b.createdAt)
+    if (aDate > bDate) return -1
+    if (aDate < bDate) return 1
+    return 0
+  })
 
   return (<div className={styles.usersList}>
     <Timer leader/>
@@ -29,7 +36,7 @@ const UsersList = (props: Props) => {
     <div className={styles.scrollView}>
       <table>
         <tbody>
-        {sessions && sessions.map((value) => (
+        {sessionList && sessionList.map((value) => (
           <UserItem key={value.id} session={value}/>
         ))}
         </tbody>
