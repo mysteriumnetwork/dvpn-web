@@ -1,7 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { ApiError } from './api-error'
-
-export const HTTP_TIMEOUT_DEFAULT = Number(process.env.REACT_APP_HTTP_TIMEOUT_DEFAULT)
+import { HttpError } from './http-error'
 
 export interface HttpParams {
   [s: string]: any
@@ -26,7 +24,7 @@ export class HttpAdapter implements HttpAdapterInterface {
 
   private http: AxiosInstance
 
-  constructor(config : AxiosRequestConfig) {
+  constructor(config: AxiosRequestConfig) {
     this.http = axios.create(config)
   }
 
@@ -35,7 +33,7 @@ export class HttpAdapter implements HttpAdapterInterface {
       const response: AxiosResponse = await promise
       return response.data
     } catch (error) {
-      throw new ApiError(error)
+      throw new HttpError(error)
     }
   }
 

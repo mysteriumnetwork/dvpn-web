@@ -1,5 +1,4 @@
-import { HttpAdapter } from './http'
-import { Identity, IdentityPayout } from 'mysterium-vpn-js'
+import { HttpInterface, Identity, IdentityPayout } from 'mysterium-vpn-js'
 
 export interface TequilaApiInterface {
   current(passphrase: string): Promise<Identity>
@@ -8,10 +7,10 @@ export interface TequilaApiInterface {
 }
 
 export class TequilaApi implements TequilaApiInterface {
-  constructor(protected http: HttpAdapter) {}
+  constructor(protected http: HttpInterface) {}
 
   public async current(passphrase: string): Promise<Identity> {
-    const identity = await this.http.put<Identity>('identities/current', { passphrase })
+    const identity = await this.http.put('identities/current', { passphrase })
 
     if (!identity) {
       throw new Error('Identity response body is missing')

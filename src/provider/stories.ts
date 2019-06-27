@@ -17,12 +17,12 @@ import { ServiceOptions, ServiceTypes } from '../api/data/service'
 import { ConsumerLocation, Identity, ServiceInfo } from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
-import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { DispatchResult } from '../types'
 import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
 import _ from 'lodash'
 import { RootState } from '../rootState.type'
+import TequilapiError from 'mysterium-vpn-js/lib/tequilapi-error'
 
 export const initProviderStory = (store: Store<RootState>) => {
   Promise.all([
@@ -71,8 +71,8 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 
   if (identity) {
     Promise.resolve(dispatch(getIdentityPayoutAction(identity)))
-      .catch((e: ApiError) => {
-        if (!e.isNotFound) {
+      .catch((e: TequilapiError) => {
+        if (!e.isNotFoundError) {
           setGeneralError(dispatch, e)
         }
       })

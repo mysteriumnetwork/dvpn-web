@@ -2,8 +2,8 @@ import { AxiosError } from 'axios'
 import _ from 'lodash'
 import { HTTP_NOT_FOUND } from '../constants'
 
-export class ApiError extends Error {
-  public name: string = 'ApiError'
+export class HttpError extends Error {
+  public name: string = 'HttpError'
 
   constructor(private original: AxiosError) {
     super(_.get(original, 'response.data.message', original.message))
