@@ -94,6 +94,7 @@ const clientLinkByConnectionStatus = (status: ConnectionStatus) => {
 const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderProps) => (
   <div className={props.classes.appHeader}>
     <div className={props.classes.tabContainer}>
+      {process.env.NODE_ENV !== 'production' ?
       <Link to={clientLinkByConnectionStatus(props.connectionStatus)}>
         <div
           className={classNames(props.classes.tab, {
@@ -103,6 +104,7 @@ const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderPr
           {trans('app.header.connect.vpn')}
         </div>
       </Link>
+      : null}
       <Link to={props.startedServices ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
         <div
           className={classNames(props.classes.tab, {

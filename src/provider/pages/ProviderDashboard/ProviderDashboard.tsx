@@ -46,7 +46,7 @@ class ProviderDashboard extends React.PureComponent<Props> {
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
         <h4>
-          <p>{trans('app.node.running.users.connected')} {sessions}</p>
+          <p>{trans('app.node.running.sessions.connected')} {sessions}</p>
           <p>
             {trans('app.node.running.successful.connections', { count: sessions })}
             <span> / </span>
