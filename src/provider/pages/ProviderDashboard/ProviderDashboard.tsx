@@ -42,7 +42,7 @@ class ProviderDashboard extends React.PureComponent<Props> {
     if (!(provider.startedServices && provider.startedServices.length)) {
       return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
     }
-    const sessions = Number(provider.sessions && provider.sessions.length)
+    const sessions = Number(provider.sessions && provider.sessions.length) || 0
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
         <h4>

@@ -1,4 +1,4 @@
-import { tequilaApi, tequilapiClient } from '../api'
+import { tequilapiClient } from '../api'
 import { ServiceOptions } from '../api/data/service'
 import {
   AccessPolicy,
@@ -28,8 +28,7 @@ export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => 
 
 export const getCurrentIdentity = async (passphrase: string = ''): Promise<Identity | null> => {
   try {
-    //TODO: move to mysterium-vpn-js
-    return await tequilaApi.current(passphrase)
+    return await tequilapiClient.identityCurrent(passphrase)
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching first identity', e)
@@ -113,8 +112,7 @@ export const getIdentityPayout = async (identity: Identity): Promise<IdentityPay
   if (!(identity && identity.id)) {
     return
   }
-  //TODO: move to mysterium-vpn-js - fix eth_address
-  return await tequilaApi.identityPayout(identity.id)
+  return await tequilapiClient.identityPayout(identity.id)
 }
 
 export const updateIdentity = async (data: { id: string, ethAddress: string }): Promise<void> => {
@@ -124,8 +122,7 @@ export const updateIdentity = async (data: { id: string, ethAddress: string }): 
 
 export const updateReferralCode = async (data: { id: string, referralCode: string }): Promise<void> => {
   const { id, referralCode } = data
-  //TODO: move to mysterium-vpn-js
-  await tequilaApi.updateReferralCode(id, referralCode)
+  await tequilapiClient.updateReferralCode(id, referralCode)
 }
 
 export const unlocksIdentity = async (data: { id: string, passphrase: string }): Promise<void> => {
