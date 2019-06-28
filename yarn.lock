@@ -3905,9 +3905,9 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
 
 event-source-polyfill@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/event-source-polyfill/-/event-source-polyfill-1.0.5.tgz#b34be2740a685a8dc65ae750065fc983538ffcfe"
-  integrity sha512-PdStgZ3+G2o2gjqsBYbV4931ByVmwLwSrX7mFgawCL+9I1npo9dwAQTnWtNWXe5IY2P8+AbbPteeOueiEtRCUA==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/event-source-polyfill/-/event-source-polyfill-1.0.7.tgz#79a0a432e00ef53387309d6213d98332bab0a4ea"
+  integrity sha512-TPbIjt4c3dlO7WTdsaTdwcxD1jKl+2gGD6dfauEmGqRNtpoB9ith/c4qa+X8XbTV5FsvTrkjepXfamWxntklVA==
 
 eventemitter3@^3.0.0:
   version "3.1.2"
@@ -6758,10 +6758,10 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-mysterium-vpn-js@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-1.0.1.tgz#4a8009ed67c371790e6bdd3d91aae1e59dedea0c"
-  integrity sha512-HQQ1gTT3wfKn9cemfWKsVA0sg2sVZBneminNUCdTkLYhDuUO7ek9PVu9enafqMtKSWP2EZmMXsHEslx0u33L3g==
+mysterium-vpn-js@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-1.0.2.tgz#ef9939c531df5d862ee401ddc32cc68452541561"
+  integrity sha512-8EEF3RLl8KXzUKIbYexTfMMGvM94OJ5HmSiQ80BK/t9d8yMIV8ha5gxZkrfIFSBY/pUH/xljHpWX4MT7gba8pg==
   dependencies:
     axios "^0.18.0"
     filesize "^4.1.2"
