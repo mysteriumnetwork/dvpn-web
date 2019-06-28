@@ -1,6 +1,5 @@
 import * as React from 'react'
 import formatBytes from 'utils/formatBytes'
-import { ServiceSession } from '../../../../../../api/data/service-session'
 import Timer from '../../../../../../ui-kit/components/Timer'
 import formatDuration from 'format-duration'
 import { ServiceSession } from 'mysterium-vpn-js'
