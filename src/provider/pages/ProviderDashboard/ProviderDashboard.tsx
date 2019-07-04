@@ -6,7 +6,6 @@ import ConnectionInfo from './components/ConnectionInfo/ConnectionInfo'
 import UsersList from './components/UsersList/UsersList'
 import { DefaultProps } from '../../../types'
 import { ProviderState } from '../../reducer'
-import { getFormValues } from 'redux-form'
 import { stopVpnServerStory } from '../../stories'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
@@ -19,21 +18,16 @@ const styles = require('./ProviderDashboard.module.scss')
 
 type Props = DefaultProps & {
   provider: ProviderState,
-  onStopVpnServer: (service: ServiceInfo) => void
+  onStopVpnServer: (services: ServiceInfo[]) => Promise<void>
 }
 
 class ProviderDashboard extends React.PureComponent<Props> {
-  get service(): ServiceInfo {
-    const startedServices = _.get(this.props, 'provider.startedServices')
-
-    ///TODO: startedServices list
-    return startedServices && startedServices[0]
-  }
 
   handleDisconnect = () => {
     const { onStopVpnServer } = this.props
+    const startedServices = _.get(this.props, 'provider.startedServices')
 
-    return onStopVpnServer(this.service)
+    return onStopVpnServer(startedServices)
   }
 
   render() {
@@ -66,11 +60,11 @@ class ProviderDashboard extends React.PureComponent<Props> {
 }
 
 const mapStateToProps = (state) => ({
-  provider: state.provider || {}, formWalletAddressData: getFormValues('walletAddress')(state)
+  provider: state.provider || {}
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onStopVpnServer: (service: ServiceInfo) => stopVpnServerStory(dispatch, service)
+  onStopVpnServer: (services: ServiceInfo[]) => stopVpnServerStory(dispatch, services)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)
