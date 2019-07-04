@@ -163,16 +163,17 @@ const onServiceStopped = async (dispatch: Dispatch) => Promise.all([
   })
 ])
 
-export const stopVpnServerStory = async (dispatch: Dispatch, service: ServiceInfo) => {
-  if (!service) {
+export const stopVpnServerStory = async (dispatch: Dispatch, services: ServiceInfo[]) => {
+  if (!(services && services.length)) {
     return
   }
 
-  await Promise.resolve(dispatch(stopServiceAction(service))).catch((e) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(e)
-    }
-  })
+  await Promise.all(services.map(service => dispatch(stopServiceAction(service))))
+    .catch((e) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(e)
+      }
+    })
 
   dispatch(push(NAV_PROVIDER_SETTINGS))
   onServiceStopped(dispatch).catch((e) => {
