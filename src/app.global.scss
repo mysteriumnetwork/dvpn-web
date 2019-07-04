@@ -34,10 +34,13 @@
 @font-face {
   font-family: 'mplus-1m';
   font-weight: 400;
-  src: url('app/components/assets/fonts/mplus-1m-regular.eot'),
-    url('app/components/assets/fonts/mplus-1m-regular.ttf') format('truetype'),
-    url('app/components/assets/fonts/mplus-1m-regular.woff') format('woff'),
-    url('app/components/assets/fonts/mplus-1m-regular.woff2') format('woff2');
+  //src: url('app/components/assets/fonts/mplus-1m-regular.eot'),
+  //  url('app/components/assets/fonts/mplus-1m-regular.ttf') format('truetype'),
+  //  url('app/components/assets/fonts/mplus-1m-regular.woff') format('woff'),
+  //  url('app/components/assets/fonts/mplus-1m-regular.woff2') format('woff2');
+  src: url('app/components/assets/fonts/mplus-1m-regular-sub.eot'),
+  url('app/components/assets/fonts/mplus-1m-regular-sub.ttf') format('truetype'),
+  url('app/components/assets/fonts/mplus-1m-regular-sub.woff') format('woff');
 }
 
 @import 'constatnts';
@@ -108,7 +111,7 @@ input {
 }
 
 input:focus {
-  outline: none!important;
+  outline: none !important;
 }
 
 /* Change text in autofill textbox */

@@ -8,6 +8,7 @@ const classNames = require('classnames')
 interface IStyles {
   root: string
   menuItem: string
+  flagIcon: string
   active: string
 }
 
@@ -26,11 +27,6 @@ const styles = theme => ({
     borderRadius: 4,
     marginBottom: 2,
     color: theme.colors.textMain,
-    '& .flag-icon': {
-      margin: '2px 8px 2px 2px',
-      width: 20,
-      height: 20
-    },
     '& .itemsCount': {
       position: 'absolute',
       top: 10,
@@ -41,6 +37,11 @@ const styles = theme => ({
     '& > p': {
       fontSize: 14,
     },
+  },
+  flagIcon: {
+    margin: '2px 8px 2px 2px',
+    width: 20,
+    height: 20
   },
   active: {
     color: theme.colors.whiteColor,
@@ -64,7 +65,7 @@ export interface IMenuItemProps {
 const CountryItem: React.FunctionComponent<IMenuItemProps> = (props: IMenuItemProps) => (
   <button type="button" className={props.classes.root} onClick={props.onClick}>
     <div className={classNames(props.classes.menuItem, { [props.classes.active]: props.active })}>
-      <FlagIcon code={String(props.country).toLowerCase()}/>
+      <FlagIcon className={props.classes.flagIcon} code={String(props.country).toLowerCase()}/>
       <p>{props.country}</p>
       <div className="itemsCount">{props.count}</div>
     </div>
