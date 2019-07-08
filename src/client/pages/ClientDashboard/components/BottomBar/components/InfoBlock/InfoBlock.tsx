@@ -1,8 +1,8 @@
 import * as React from 'react'
 import trans from '../../../../../../../trans'
-import { OriginalLocation } from '../../../../../../../api/data/original-location'
 import FlagIcon from '../../../../../../../ui-kit/components/FlagIcon'
 import injectSheet from 'react-jss'
+import { ConsumerLocation } from 'mysterium-vpn-js'
 
 interface IStyles {
   root: string
@@ -40,10 +40,10 @@ export interface IInfoBlockProps {
   onChange?: any
   classes: IStyles
   style?: React.CSSProperties
-  location?: OriginalLocation
+  location?: ConsumerLocation
 }
 
-const InfoBlock: React.FunctionComponent<IInfoBlockProps> = (props: IInfoBlockProps) => props.location && (
+const InfoBlock: React.FunctionComponent<IInfoBlockProps> = (props: IInfoBlockProps) => props.location ? (
   <div className={props.classes.root}>
     <FlagIcon className={props.classes.flagIcon} code={String(props.location.country).toLowerCase()}/>
     <div className={props.classes.info}>
@@ -51,6 +51,6 @@ const InfoBlock: React.FunctionComponent<IInfoBlockProps> = (props: IInfoBlockPr
       <p>{String(props.location && props.location.ip)}</p>
     </div>
   </div>
-)
+) : null
 
 export default injectSheet(styles)(InfoBlock)

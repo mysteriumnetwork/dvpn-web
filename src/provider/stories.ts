@@ -13,18 +13,16 @@ import {
   updateReferralAction,
 } from './actions'
 import { ProviderState, TrafficOptions } from './reducer'
-import { Service, ServiceOptions, ServiceTypes } from '../api/data/service'
-import { Identity } from '../api/data/identity'
+import { ServiceOptions, ServiceTypes } from '../api/data/service'
+import { ConsumerLocation, Identity, ServiceInfo } from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
-import { ApiError } from '../api/api-error'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { DispatchResult } from '../types'
 import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
 import _ from 'lodash'
 import { RootState } from '../rootState.type'
-import { ServiceInfo } from 'mysterium-vpn-js'
-import { OriginalLocation } from '../api/data/original-location'
+import TequilapiError from 'mysterium-vpn-js/lib/tequilapi-error'
 
 export const initProviderStory = (store: Store<RootState>) => {
   Promise.all([
@@ -73,8 +71,8 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 
   if (identity) {
     Promise.resolve(dispatch(getIdentityPayoutAction(identity)))
-      .catch((e: ApiError) => {
-        if (!e.isNotFound) {
+      .catch((e: TequilapiError) => {
+        if (!e.isNotFoundError) {
           setGeneralError(dispatch, e)
         }
       })
@@ -84,7 +82,7 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
 }
 
 export const fetchLocationStory = async (dispatch: Dispatch) => Promise.resolve(dispatch(setLocationAction()))
-  .then((result: DispatchResult<OriginalLocation>) => result.value)
+  .then((result: DispatchResult<ConsumerLocation>) => result.value)
 
 export const fetchServiceStory = async (dispatch: Dispatch) => Promise.resolve(dispatch(getServicesAction()))
   .then((result: DispatchResult<ServiceInfo[]>) => result.value)
@@ -135,9 +133,9 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
     : undefined
   const options: ServiceOptions = undefined
 
-  const services: Service[] = await Promise
+  const services: ServiceInfo[] = await Promise
     .resolve(dispatch(startServiceAction({ providerId, type, accessPolicyId, options })))
-    .then((result: DispatchResult<Service[]>) => result && result.value)
+    .then((result: DispatchResult<ServiceInfo[]>) => result && result.value)
     .catch(error => {
       setGeneralError(dispatch, error)
       return null
@@ -165,16 +163,17 @@ const onServiceStopped = async (dispatch: Dispatch) => Promise.all([
   })
 ])
 
-export const stopVpnServerStory = async (dispatch: Dispatch, service: Service) => {
-  if (!service) {
+export const stopVpnServerStory = async (dispatch: Dispatch, services: ServiceInfo[]) => {
+  if (!(services && services.length)) {
     return
   }
 
-  await Promise.resolve(dispatch(stopServiceAction(service))).catch((e) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(e)
-    }
-  })
+  await Promise.all(services.map(service => dispatch(stopServiceAction(service))))
+    .catch((e) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(e)
+      }
+    })
 
   dispatch(push(NAV_PROVIDER_SETTINGS))
   onServiceStopped(dispatch).catch((e) => {

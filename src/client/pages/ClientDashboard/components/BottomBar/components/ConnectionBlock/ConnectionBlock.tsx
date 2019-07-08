@@ -4,7 +4,7 @@ import trans from '../../../../../../../trans'
 import Button from '../../../../../../../ui-kit/components/Button/Button'
 import CountryItem from './components/CountryItem'
 import ConnectionTypeItem from './components/ConnectionTypeItem'
-import { Proposal } from '../../../../../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import _ from 'lodash'
 
 const styles = require('./ConnectionBlock.module.scss')

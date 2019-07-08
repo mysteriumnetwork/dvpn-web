@@ -11,7 +11,7 @@ type Props = {
 }
 
 const ConnectionInfo = (props: Props) => {
-  const { originalLocation: location = {}, startedServices = [] } = props.provider
+  const { originalLocation: location, startedServices = [] } = props.provider
   ///TODO: startedServices list
   const service: ServiceInfo = startedServices[0]
 
@@ -27,8 +27,8 @@ const ConnectionInfo = (props: Props) => {
       <tr>
         <td>
           <div className={styles.ipItem}>
-            {location.country && (<FlagIcon code={String(location.country).toLowerCase()}/>)}
-            <p>{location.ip}</p>
+            {location && location.country && (<FlagIcon code={String(location.country).toLowerCase()}/>)}
+            <p>{location && location.ip}</p>
           </div>
         </td>
         <td>

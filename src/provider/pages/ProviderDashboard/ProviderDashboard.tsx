@@ -6,35 +6,28 @@ import ConnectionInfo from './components/ConnectionInfo/ConnectionInfo'
 import UsersList from './components/UsersList/UsersList'
 import { DefaultProps } from '../../../types'
 import { ProviderState } from '../../reducer'
-import { getFormValues } from 'redux-form'
 import { stopVpnServerStory } from '../../stories'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
-import { Service } from '../../../api/data/service'
 import { Redirect } from 'react-router'
 import { NAV_PROVIDER_SETTINGS } from '../../provider.links'
 import _ from 'lodash'
+import { ServiceInfo } from 'mysterium-vpn-js'
 
 const styles = require('./ProviderDashboard.module.scss')
 
 type Props = DefaultProps & {
   provider: ProviderState,
-
-  onStopVpnServer: (service: Service) => void
+  onStopVpnServer: (services: ServiceInfo[]) => Promise<void>
 }
 
 class ProviderDashboard extends React.PureComponent<Props> {
-  get service(): Service {
-    const startedServices = _.get(this.props, 'provider.startedServices')
-
-    ///TODO: startedServices list
-    return startedServices && startedServices[0]
-  }
 
   handleDisconnect = () => {
     const { onStopVpnServer } = this.props
+    const startedServices = _.get(this.props, 'provider.startedServices')
 
-    return onStopVpnServer(this.service)
+    return onStopVpnServer(startedServices)
   }
 
   render() {
@@ -43,7 +36,7 @@ class ProviderDashboard extends React.PureComponent<Props> {
     if (!(provider.startedServices && provider.startedServices.length)) {
       return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
     }
-    const sessions = Number(provider.sessions && provider.sessions.length)
+    const sessions = Number(provider.sessions && provider.sessions.length) || 0
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
         <h4>
@@ -66,11 +59,11 @@ class ProviderDashboard extends React.PureComponent<Props> {
 }
 
 const mapStateToProps = (state) => ({
-  provider: state.provider || {}, formWalletAddressData: getFormValues('walletAddress')(state)
+  provider: state.provider || {}
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onStopVpnServer: (service: Service) => stopVpnServerStory(dispatch, service)
+  onStopVpnServer: (services: ServiceInfo[]) => stopVpnServerStory(dispatch, services)
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

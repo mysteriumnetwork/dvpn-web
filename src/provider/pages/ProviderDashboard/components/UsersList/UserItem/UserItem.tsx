@@ -1,8 +1,8 @@
 import * as React from 'react'
 import formatBytes from 'utils/formatBytes'
-import { ServiceSession } from '../../../../../../api/data/service-session'
 import Timer from '../../../../../../ui-kit/components/Timer'
 import formatDuration from 'format-duration'
+import { ServiceSession } from 'mysterium-vpn-js'
 
 const styles = require('./UserItem.module.scss')
 
@@ -11,7 +11,7 @@ type Props = {
 }
 
 const UserItem = (props: Props) => {
-  const { consumerId, id, createdAt, bytesIn, bytesOut } = props.session
+  const { consumerId, id, createdAt, bytesIn, bytesOut } = props.session as any
 
   return (
     <tr>

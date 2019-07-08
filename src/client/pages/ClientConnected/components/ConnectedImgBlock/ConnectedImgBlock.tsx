@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { Proposal } from 'mysterium-vpn-js'
-import { OriginalLocation } from '../../../../../api/data/original-location'
+import { ConsumerLocation, Proposal } from 'mysterium-vpn-js'
 import FlagIcon from '../../../../../ui-kit/components/FlagIcon'
 import _ from 'lodash'
 
@@ -8,7 +7,7 @@ const styles = require('./ConnectedImgBlock.module.scss')
 
 type Props = {
   proposal: Proposal
-  location: OriginalLocation
+  location: ConsumerLocation
 }
 
 const ConnectedImgBlock = (props: Props) => {

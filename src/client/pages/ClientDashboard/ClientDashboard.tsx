@@ -13,7 +13,7 @@ import {
   startConnectionStory
 } from '../../stories'
 import { ClientState } from '../../reducer'
-import { Proposal } from '../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import { DefaultProps } from '../../../types'
 import _ from 'lodash'
 import { ConnectionStatus, Identity, Location as OriginalLocation } from 'mysterium-vpn-js'

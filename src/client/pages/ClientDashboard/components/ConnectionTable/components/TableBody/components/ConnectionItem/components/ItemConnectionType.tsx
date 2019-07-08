@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Proposal } from '../../../../../../../../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import trans from '../../../../../../../../../../trans'
 import ConnectionTypeIcon from '../../../../../../../../../../ui-kit/components/ConnectionTypeIcon'
 import injectSheet from 'react-jss'

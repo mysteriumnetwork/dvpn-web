@@ -4,7 +4,7 @@ import trans from '../../../../../trans'
 import { ProviderState } from '../../../../reducer'
 import NatStatus from '../../../../../ui-kit/components/NatStatus'
 import { NAT_FIX_URL } from '../../../../../constants'
-import { NatStatuses } from '../../../../../api/data/nat-status'
+import { NatStatus as NatStatuses } from 'mysterium-vpn-js'
 
 const styles = require('./BottomBar.module.scss')
 

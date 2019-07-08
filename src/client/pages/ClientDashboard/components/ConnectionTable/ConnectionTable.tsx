@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import TableHead from './components/TableHead/TableHead'
 import TableBody from './components/TableBody/TableBody'
-import { Proposal } from '../../../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import { qualityCalculator } from '../../../../../utils/quality-calculator'
 
 const styles = require('./ConnectionTable.module.scss')

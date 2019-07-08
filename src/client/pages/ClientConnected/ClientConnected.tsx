@@ -13,7 +13,7 @@ import { stopConnectionStory } from '../../stories'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
 import _ from 'lodash'
-import { Proposal } from '../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import { addFavoriteProposalsAction, removeFavoriteProposalsAction } from '../../actions';
 const styles = require('./ClientConnected.module.scss')
 

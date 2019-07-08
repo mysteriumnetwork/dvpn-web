@@ -12,7 +12,7 @@ import {
   stopConnectionAction
 } from './actions'
 import { ProposalsFilter } from './reducer'
-import { Proposal } from '../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import { ConnectionStatus, Identity } from 'mysterium-vpn-js'
 import { DispatchResult } from '../types'
 import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'

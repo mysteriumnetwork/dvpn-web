@@ -12,18 +12,7 @@ type Props = {
 }
 
 const sortByCountry = (a, b) => {
-  const valA = String(a.country).toUpperCase()
-  const valB = String(b.country).toUpperCase()
-
-  if (valA < valB) {
-    return -1
-  }
-
-  if (valA > valB) {
-    return 1
-  }
-
-  return 0
+  return String(a && a[0]).localeCompare(String(b && b[0]))
 }
 
 const MenuItemByCountry = (props: Props) => (

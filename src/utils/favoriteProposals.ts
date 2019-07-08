@@ -1,4 +1,4 @@
-import { Proposal } from '../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import compareProposals from './compareProposals'
 import { appStorage } from './storages'
 

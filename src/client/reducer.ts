@@ -11,9 +11,8 @@ import {
   SELECT_PROPOSAL
 } from './constants'
 import { Action, ActionMeta } from 'redux-actions'
-import { Proposal, SortProposals } from '../api/data/proposal'
 import { ProposalsCountsInterface } from '../utils/proposalsCounts'
-import { ConnectionIp, ConnectionStatus } from 'mysterium-vpn-js'
+import { ConnectionIp, ConnectionStatus, Proposal } from 'mysterium-vpn-js'
 import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
 import { ConnectionStatistics } from 'mysterium-vpn-js/lib/connection/statistics'
 
@@ -65,9 +64,9 @@ export default typeToReducer({
     })
   },
 
-  [ASK_PROPOSAL]: (state, action: Action<SortProposals>) => ({
+  [ASK_PROPOSAL]: (state, action: Action<boolean>) => ({
     ...state,
-    ...action.payload
+    isAskSortProposal: Boolean(action.payload)
   }),
 
   [SELECT_PROPOSAL]: (state, action: Action<Proposal>) => ({

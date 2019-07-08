@@ -1,6 +1,6 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
-import { Proposal } from '../../../../../../../../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 
 import classNames from 'classnames'
 import FlagIcon from '../../../../../../../../../../ui-kit/components/FlagIcon'

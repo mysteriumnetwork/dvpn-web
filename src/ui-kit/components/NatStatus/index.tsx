@@ -3,7 +3,7 @@ import injectSheet from 'react-jss'
 import CircularProgress from '../CircularProgress'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
 import ErrorOutline from '@material-ui/icons/ErrorOutline'
-import { NatStatuses } from '../../../api/data/nat-status'
+import { NatStatus as NatStatuses } from 'mysterium-vpn-js'
 
 const styles = (theme: any) => ({
   success: {
@@ -34,10 +34,11 @@ const NatStatus = (props: ErrorDialogProps) => {
       <ErrorOutline color='secondary'/>
     )
   }
-  if (status === NatStatuses.SUCCESSFUL)
+  if (status === NatStatuses.SUCCESSFUL) {
     return (
       <CheckCircleOutline color={'primary'} className={classes.success}/>
     )
+  }
   return null
 }
 

@@ -2,7 +2,7 @@ import * as React from 'react'
 import injectSheet from 'react-jss'
 import Quality from '../../../../../../../../../../ui-kit/components/QualityIcon/QualityIcon'
 import StartIcon from '../../../../../../../../../../ui-kit/components/StartIcon/StartIcon'
-import { Proposal } from '../../../../../../../../../../api/data/proposal'
+import { Proposal } from 'mysterium-vpn-js'
 import favoriteProposals from '../../../../../../../../../../utils/favoriteProposals'
 
 interface IStyles {
