@@ -1,12 +1,12 @@
 import { tequilapiClient } from '../api'
-import { Proposal } from 'mysterium-vpn-js'
-import { ConnectionIp, ConnectionRequest, ConnectionStatus, Identity, ProposalQuery } from 'mysterium-vpn-js'
+import { ConnectionIp, ConnectionRequest, ConnectionStatus, Identity, Proposal, ProposalQuery } from 'mysterium-vpn-js'
 import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
 import { ProposalsFilter } from './reducer'
 import { proposalsCounts, ProposalsCountsInterface } from '../utils/proposalsCounts'
 import _ from 'lodash'
 import { ConnectionStatistics } from 'mysterium-vpn-js/lib/connection/statistics'
 import favoriteProposals from '../utils/favoriteProposals'
+import unauthorized from '../utils/unauthorized'
 
 export const getProposalsWithConnectCounts = async (): Promise<ProposalsCountsInterface> => {
   try {
@@ -14,6 +14,7 @@ export const getProposalsWithConnectCounts = async (): Promise<ProposalsCountsIn
 
     return proposalsCounts(proposals)
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.log('getProposalsWithConnectCounts:', e)
     }
@@ -42,6 +43,7 @@ export const getProposalsByFilter = async (filter: ProposalsFilter): Promise<Pro
 
     return proposals
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.log('getProposalsByFilter:', e)
     }
@@ -63,6 +65,7 @@ export const startConnection = async (proposal: Proposal, identity: Identity): P
 
     return await tequilapiClient.connectionCreate(request)
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.log('getProposalsWithConnectCounts:', e)
     }
@@ -75,6 +78,7 @@ export const getConnection = async (): Promise<ConnectionStatusResponse> => {
   try {
     return await tequilapiClient.connectionStatus()
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.log('getProposalsWithConnectCounts:', e)
     }
@@ -87,6 +91,7 @@ export const stopConnection = async (): Promise<ConnectionStatusResponse> => {
   try {
     await tequilapiClient.connectionCancel()
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.log('getProposalsWithConnectCounts:', e)
     }
@@ -99,6 +104,7 @@ export const getConnectionStatistics = async (): Promise<ConnectionStatistics> =
   try {
     return await tequilapiClient.connectionStatistics()
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.log('getProposalsWithConnectCounts:', e)
     }
@@ -111,6 +117,7 @@ export const getConnectionIp = async (): Promise<ConnectionIp> => {
   try {
     return await tequilapiClient.connectionIp()
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.log('getProposalsWithConnectCounts:', e)
     }

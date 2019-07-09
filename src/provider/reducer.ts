@@ -6,7 +6,6 @@ import {
   IDENTITY_PAYOUT,
   NAT_STATUS,
   ORIGINAL_LOCATION,
-  PASSWORD_CHANGE,
   RESIDENTIAL_CONFIRM,
   SERVICE_SESSIONS,
   SET_PROVIDER_STATE,
@@ -155,12 +154,6 @@ export default typeToReducer({
     ...state,
     residentialConfirm: action.payload,
   }),
-
-  [PASSWORD_CHANGE]: {
-    PENDING: (state) => ({ ...state, changePasswordPending: true }),
-    REJECTED: (state, action: Action<any>) => ({ ...state, changePasswordPending: false }),
-    FULFILLED: (state, action: Action<any>) => ({ ...state, changePasswordPending: false }),
-  },
 
   [NAT_STATUS]: (state, action: Action<boolean>) => ({
     ...state,

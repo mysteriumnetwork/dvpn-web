@@ -16,7 +16,6 @@ interface IStyles {
 
 const styles = theme => ({
   formControl: {
-    marginBottom: 8,
     width: '100%',
   },
   bootstrapRoot: {

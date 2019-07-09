@@ -4,25 +4,25 @@ import { reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import immutableProps from '../../../hocs/immutableProps'
-import { setPasswordChangeAction } from '../../../provider/actions'
 import injectSheet from 'react-jss'
 import Button from '../../../ui-kit/components/Button/Button'
 import trans from '../../../trans'
 import TextField from '../../../app/components/ReduxForm/TextField'
 import ErrorIcon from '@material-ui/icons/ErrorOutline'
 import SuccessIcon from '@material-ui/icons/CheckCircleOutline'
+import { passwordChangeStory } from '../../stories'
 
 const styles = require('./Password.module.scss')
 
 type Props = InjectedFormProps & {
-  onPasswordChange?: Function
+  onPasswordChange?: (value: any) => Promise<void>
 }
 
 class Settings extends React.PureComponent<Props> {
   handleChange = (data: any) => {
-    const { onPasswordChange } = this.props
+    const { onPasswordChange, initialize } = this.props
 
-    return onPasswordChange && onPasswordChange(data.toJS())
+    return onPasswordChange && onPasswordChange(data.toJS()).then(() => initialize({}))
   }
 
   required = (value) => value ? undefined : trans('form.validate.required')
@@ -36,7 +36,7 @@ class Settings extends React.PureComponent<Props> {
           <h1>{trans('app.change.password.title')}</h1>
           <div className={styles.appContent}>
             <div className={styles.flexedRow}>
-              <p>{trans('app.change.password.username')}</p>
+              <p>{trans('app.auth.username')}</p>
               <div>
                 <TextField placeholder="username" name="username" disabled={submitting}
                            className={styles.editableTextField} validate={this.required}/>
@@ -64,7 +64,7 @@ class Settings extends React.PureComponent<Props> {
                   <span>{error}</span>
                 </div>
               )}
-              {(submitSucceeded) && (
+              {(submitSucceeded && pristine) && (
                 <div className={styles.successText}>
                   <SuccessIcon/>
                   <span>{'Password changed!'}</span>
@@ -86,7 +86,7 @@ class Settings extends React.PureComponent<Props> {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  onPasswordChange: (value) => dispatch(setPasswordChangeAction(value)),
+  onPasswordChange: (value) => passwordChangeStory(dispatch, value),
 })
 
 export default injectSheet({})(compose(
