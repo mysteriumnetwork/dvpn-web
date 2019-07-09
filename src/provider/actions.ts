@@ -51,7 +51,6 @@ export const startServiceAction = createAction(STARTED_SERVICES, startService, d
 
 export const stopServiceAction = createAction(STARTED_SERVICES, stopService, d => ({ ...d, pending: true }))
 
-///TODO: list of service
 export const getServicesAction = createAction(STARTED_SERVICES, getServiceList)
 
 export const setNatStatusAction = createAction(NAT_STATUS)
@@ -63,4 +62,3 @@ export const setTrafficOptionAction = createAction(TRAFFIC_OPTION)
 export const setResidentialConfirmAction = createAction(RESIDENTIAL_CONFIRM)
 
 export const setProviderStateAction = createAction(SET_PROVIDER_STATE)
-

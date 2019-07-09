@@ -2,6 +2,7 @@ import * as React from 'react'
 import injectSheet from 'react-jss'
 import { FormControl, FormHelperText, Input, InputLabel } from '@material-ui/core'
 import FormHelperTextSpace from '@material-ui/core/Typography'
+import { TextFieldProps } from '@material-ui/core/TextField'
 
 interface IStyles {
   formControl: string
@@ -15,7 +16,6 @@ interface IStyles {
 
 const styles = theme => ({
   formControl: {
-    marginBottom: 8,
     width: '100%',
   },
   bootstrapRoot: {
@@ -51,12 +51,12 @@ const styles = theme => ({
   errorStyle: {
     color: theme.colors.whiteColor,
     marginTop: 3,
-    fontSize:'0.75rem!important',
+    fontSize: '0.75rem!important',
     marginLeft: 12
   },
 })
 
-export interface IAppTextFieldProps {
+export type IAppTextFieldProps = TextFieldProps & {
   disabled?: any
   error?: any
   label?: string
@@ -66,13 +66,14 @@ export interface IAppTextFieldProps {
   shrink?: any
   className?: string
   onChange?: any
+  onKeyUp?: any
   name?: any
   classes: IStyles
   style?: React.CSSProperties
 }
 
 const AppTextField = (props: IAppTextFieldProps) => (
-  <FormControl className={`${props.classes.formControl} ${props.className||''}`}>
+  <FormControl className={`${props.classes.formControl} ${props.className || ''}`}>
     <InputLabel
       shrink={props.shrink}
       htmlFor={`id-${props.name}`}
@@ -83,6 +84,8 @@ const AppTextField = (props: IAppTextFieldProps) => (
       {props.label}
     </InputLabel>
     <Input
+      fullWidth={props.fullWidth}
+      type={props.type}
       id={`id-${props.name}`}
       placeholder={props.placeholder}
       value={props.value}
@@ -94,6 +97,7 @@ const AppTextField = (props: IAppTextFieldProps) => (
         focused: props.classes.focused,
       }}
       onChange={props.onChange}
+      onKeyUp={props.onKeyUp}
       disableUnderline
     />
     {props.error ? (
@@ -101,7 +105,7 @@ const AppTextField = (props: IAppTextFieldProps) => (
         {props.error}
       </FormHelperText>
     ) : (
-      <FormHelperTextSpace />
+      <FormHelperTextSpace/>
     )}
   </FormControl>
 )

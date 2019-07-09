@@ -47,8 +47,7 @@ class ProviderDashboard extends React.PureComponent<Props> {
             {sessions} {trans('app.node.running.attempted')}
           </p>
         </h4>
-        <Button disabled={provider.startedServicePending} onClick={this.handleDisconnect} variant="contained"
-                color="secondary">
+        <Button disabled={provider.startedServicePending} onClick={this.handleDisconnect} color="secondary">
           {trans('app.provider.disconnect.button')}
         </Button>
       </div>

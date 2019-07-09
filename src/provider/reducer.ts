@@ -39,7 +39,9 @@ export interface ProviderState {
   startedServices?: ServiceInfo[],
   startedServicePending?: boolean,
   sessions?: ServiceSession[],
-  natStatus?: NatStatus
+  natStatus?: NatStatus,
+
+  [key: string]: any
 }
 
 export enum TrafficOptions {

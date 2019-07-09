@@ -36,6 +36,7 @@
   "app.menu.privacy.policy": "Privacy Policy",
   "app.menu.send.feedback": "Send Feedback",
   "app.menu.follow.us": "Follow us",
+  "app.menu.settings.password": "Change password",
   "app.menu.about": "About the App",
   "app.node.running.sessions.connected": "Active sessions:",
   "app.node.running.successful.connections": "{count, plural, one {# successful connection} other {# successful connections}}",
@@ -85,6 +86,7 @@
   "app.warning.retry": "Retry",
   "app.client.button.ok": "OK",
   "close": "Close",
+  "submit": "Submit",
   "error.address.format": "Invalid wallet address format",
   "error.title": "Something went wrong",
   "app.client.node.disconnected": "The node has disconnected.",
@@ -92,5 +94,11 @@
   "connection.type.openvpn": "OpenVPN",
   "connection.type.wireguard": "WireGuard",
   "connection.type.noop": "noop",
+  "app.change.password.title": "Change password",
+  "app.auth.username": "Username",
+  "app.auth.password": "Password",
+  "app.change.password.password.old": "Old Password",
+  "app.change.password.password.new": "New Password",
+  "form.validate.required": "Required",
   "": ""
 }

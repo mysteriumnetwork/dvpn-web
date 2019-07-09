@@ -8,7 +8,13 @@ import { ProviderState } from '../../reducer'
 import { DefaultProps } from '../../../types'
 import { setProviderStateAction, setResidentialConfirmAction, setTrafficOptionAction } from '../../actions'
 import { withStyles } from '@material-ui/core'
-import { startVpnServerStory, updateIdentitiesStory, updateReferralStory } from '../../stories'
+import {
+  destroyProvidersStory,
+  initProviderStory,
+  startVpnServerStory,
+  updateIdentitiesStory,
+  updateReferralStory
+} from '../../stories'
 import { getFormValues } from 'redux-form/immutable'
 import { compose } from 'redux'
 import _ from 'lodash'
@@ -27,10 +33,23 @@ type Props = DefaultProps & {
   onSetState?: (data: Object) => void
   onChangeTrafficOption: (value: string) => void
   onChangeResidentialConfirm: (value: boolean) => void
-  onStartVpnServer: (provider: ProviderState) => void
+  onStartVpnServer: (provider: ProviderState) => void,
+  onInit?: Function
+  onDestroy?: Function
 }
 
 class ProviderSettings extends React.PureComponent<Props> {
+  constructor(props, context) {
+    super(props, context)
+
+    props.onInit && props.onInit()
+  }
+
+  componentWillUnmount() {
+    const { onDestroy } = this.props
+
+    return onDestroy && onDestroy()
+  }
 
   handleStartVpnServer = () => {
     const { provider, onStartVpnServer } = this.props
@@ -92,6 +111,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  onInit: () => initProviderStory(dispatch),
+  onDestroy: () => destroyProvidersStory(dispatch),
   onChangeTrafficOption: (value) => dispatch(setTrafficOptionAction(value)),
   onChangeResidentialConfirm: (value) => dispatch(setResidentialConfirmAction(value)),
   onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),

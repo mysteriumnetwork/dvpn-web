@@ -24,13 +24,8 @@ import _ from 'lodash'
 import { RootState } from '../rootState.type'
 import TequilapiError from 'mysterium-vpn-js/lib/tequilapi-error'
 
-export const initProviderStory = (store: Store<RootState>) => {
-  Promise.all([
-    fetchLocationStory(store.dispatch),
-    fetchIdentityStory(store.dispatch),
-    fetchServiceStory(store.dispatch),
-    startAccessPolicyFetchingStory(store.dispatch)
-  ]).catch((e) => {
+export const initAppStory = (store: Store<RootState>) => {
+  initAppFetchStory(store.dispatch).catch((e) => {
     if (process.env.NODE_ENV !== 'production') {
       console.error(e)
     }
@@ -61,6 +56,25 @@ export const initProviderStory = (store: Store<RootState>) => {
   )
 }
 
+export const initAppFetchStory = async (dispatch: Dispatch) => Promise.all([
+  fetchLocationStory(dispatch),
+  fetchIdentityStory(dispatch),
+  fetchServiceStory(dispatch),
+])
+
+export const initProviderStory = (dispatch: Dispatch) => {
+  startAccessPolicyFetchingStory(dispatch)
+  fetchServiceStory(dispatch).catch((e) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(e)
+    }
+  })
+}
+
+export const destroyProvidersStory = (dispatch: Dispatch) => {
+  stopAccessPolicyFetchingStory()
+}
+
 export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({
   generalError: e.message
 }))
@@ -89,7 +103,7 @@ export const fetchServiceStory = async (dispatch: Dispatch) => Promise.resolve(d
 
 let _accessPolicyInterval
 
-export const startAccessPolicyFetchingStory = async (dispatch: Dispatch) => {
+export const startAccessPolicyFetchingStory = (dispatch: Dispatch) => {
 
   let failedCount = 0
   const ALLOWED_FAILS = 10000
@@ -156,11 +170,7 @@ const onServiceStarted = async (dispatch: Dispatch) => Promise.all([
 ])
 
 const onServiceStopped = async (dispatch: Dispatch) => Promise.all([
-  startAccessPolicyFetchingStory(dispatch).catch((e) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(e)
-    }
-  })
+  startAccessPolicyFetchingStory(dispatch)
 ])
 
 export const stopVpnServerStory = async (dispatch: Dispatch, services: ServiceInfo[]) => {

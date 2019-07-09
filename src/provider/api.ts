@@ -9,6 +9,7 @@ import {
   ServiceInfo,
   ServiceRequest
 } from 'mysterium-vpn-js'
+import unauthorized from '../utils/unauthorized'
 
 export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => {
   try {
@@ -18,6 +19,7 @@ export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => 
       return accessPolicies[0]
     }
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching first access policy', e)
     }
@@ -30,6 +32,7 @@ export const getCurrentIdentity = async (passphrase: string = ''): Promise<Ident
   try {
     return await tequilapiClient.identityCurrent(passphrase)
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching first identity', e)
     }
@@ -42,6 +45,7 @@ export const getOriginalLocation = async (): Promise<ConsumerLocation | null> =>
   try {
     return await tequilapiClient.location()
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching location', e)
     }
@@ -54,6 +58,7 @@ export const getNatStatus = async (): Promise<NatStatusResponse | null> => {
   try {
     return await tequilapiClient.natStatus()
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching NatStatus', e)
     }
@@ -100,6 +105,7 @@ export const getServiceList = async (): Promise<ServiceInfo[] | null> => {
     return await tequilapiClient.serviceList()
 
   } catch (e) {
+    unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
       console.error('Failed fetching first access policy', e)
     }
@@ -129,4 +135,3 @@ export const unlocksIdentity = async (data: { id: string, passphrase: string }):
   const { id, passphrase = '' } = data
   await tequilapiClient.identityUnlock(id, passphrase)
 }
-

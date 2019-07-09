@@ -3,4 +3,6 @@ import { TequilapiClient, TequilapiClientFactory } from 'mysterium-vpn-js'
 
 const factory = new TequilapiClientFactory(getHttpApiUrl())
 
-export const tequilapiClient: TequilapiClient = factory.build(factory.buildAdapter())
+const httpAdapter = factory.buildAdapter()
+
+export const tequilapiClient: TequilapiClient = factory.build(httpAdapter)
