@@ -14,16 +14,18 @@ import ErrorIcon from '@material-ui/icons/ErrorOutline'
 import { Redirect } from 'react-router'
 import { NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
 import { loginStory } from '../../../settings/stories'
+import _ from 'lodash'
 
 type Props = DefaultProps & InjectedFormProps & {
   onSubmit?: Function
+  startedServices?: any
 }
 
 class Login extends React.PureComponent<Props> {
   handleChange = (data: any) => {
-    const { onSubmit } = this.props
+    const { onSubmit, startedServices } = this.props
 
-    return onSubmit && onSubmit(data.toJS())
+    return onSubmit && onSubmit(data.toJS(), startedServices)
   }
 
   required = (value) => value ? undefined : trans('form.validate.required')
@@ -83,12 +85,15 @@ class Login extends React.PureComponent<Props> {
   }
 }
 
+const mapStateToProps = (state) => ({
+  startedServices: _.get(state, 'provider.startedServices') || []
+})
 const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (value) => loginStory(dispatch, value),
+  onSubmit: (value, startedServices) => loginStory(dispatch, value, startedServices),
 })
 
 export default injectSheet({})(compose(
   reduxForm({ form: 'auth-login' }),
-  connect(undefined, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   immutableProps,
 )(Login))

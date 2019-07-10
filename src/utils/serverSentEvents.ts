@@ -36,9 +36,6 @@ export class ServerSentEvents extends EventEmitter {
   constructor(public readonly url, public readonly withCredentials: boolean = false) {
     super()
 
-    if (ServerSentEvents.SUPPORTED) {
-      this.connect()
-    }
   }
 
   static get SUPPORTED() {
@@ -60,14 +57,16 @@ export class ServerSentEvents extends EventEmitter {
     }
   }
 
-  protected connect() {
-    try {
-      this.evtSource = new EventSource(this.url, { withCredentials: this.withCredentials })
-      this.evtSource.onerror = this.onError
-      this.evtSource.onopen = this.onOpen
-      this.evtSource.onmessage = this.onMessage
-    } catch (e) {
-      this.onError(e)
+  connect() {
+    if (ServerSentEvents.SUPPORTED) {
+      try {
+        this.evtSource = new EventSource(this.url, { withCredentials: this.withCredentials })
+        this.evtSource.onerror = this.onError
+        this.evtSource.onopen = this.onOpen
+        this.evtSource.onmessage = this.onMessage
+      } catch (e) {
+        this.onError(e)
+      }
     }
   }
 
