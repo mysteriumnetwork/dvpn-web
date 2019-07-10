@@ -30,22 +30,26 @@ export const initAppStory = (store: Store<RootState>) => {
       console.error(e)
     }
   })
+  initServerEventsStory(store.dispatch, _.get(store.getState(), 'provider.startedServices'))
 
+}
+
+export const initServerEventsStory = (dispatch: Dispatch, services: any) => {
+  serverSentEvents.connect()
   serverSentEvents.subscribe(ServerSentEventTypes.STATE_CHANGE, (payload) => {
       const { serviceInfo = [] } = payload || null
-      const startedServices: ServiceInfo[] = _.get(store.getState(), 'provider.startedServices')
-
+      const startedServices: ServiceInfo[] = services
       const shouldFetch = !(startedServices && startedServices.length) && (serviceInfo && serviceInfo.length)
-
-      Promise.resolve(shouldFetch ? fetchServiceStory(store.dispatch) : serviceInfo)
+      console.log({ shouldFetch })
+      Promise.resolve(shouldFetch ? fetchServiceStory(dispatch) : serviceInfo)
         .then((serviceInfo) => {
           return (serviceInfo && serviceInfo.length)
-            ? onServiceStarted(store.dispatch).catch((e) => {
+            ? onServiceStarted(dispatch).catch((e) => {
               if (process.env.NODE_ENV !== 'production') {
                 console.error(e)
               }
             })
-            : onServiceStopped(store.dispatch).catch((e) => {
+            : onServiceStopped(dispatch).catch((e) => {
               if (process.env.NODE_ENV !== 'production') {
                 console.error(e)
               }
