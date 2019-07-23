@@ -6,7 +6,7 @@ import ResidentialIP from './components/ResidentialIP/ResidentialIP'
 import DataCenterIP from './components/DataCenterIP/DataCenterIP'
 import { ProviderState } from '../../../../reducer'
 import FlagIcon from '../../../../../ui-kit/components/FlagIcon'
-import { NODE_TYPE } from '../../../../../constants';
+import { isDataCenterProvider, isResidentialProvider } from '../../../../helpers'
 
 const styles = require('./ConnectionInformation.module.scss')
 
@@ -18,8 +18,6 @@ type Props = {
 const ConnectionInformation = (props: Props) => {
   const { provider, onChangeResidentialConfirm } = props
   const { originalLocation, residentialConfirm } = provider
-  const isResidential = originalLocation && originalLocation.node_type === NODE_TYPE.RESIDENTIAL
-  const isDataCenter = originalLocation && originalLocation.node_type === NODE_TYPE.DATA_CENTER
 
   return (
     <div>
@@ -29,7 +27,6 @@ const ConnectionInformation = (props: Props) => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={styles.expansionPanelDetails}>
           <div className={styles.connectionFlexedRow}>
-            {/*  TODO replace with dynamic country flag */}
             {originalLocation && (
               <FlagIcon code={String(originalLocation.country).toLowerCase()} className={styles.flag}/>
             )}
@@ -41,9 +38,9 @@ const ConnectionInformation = (props: Props) => {
               <button>{trans('app.provider.settings.connection.info.change')}</button>
             </div>
           </div>
-          {isResidential ? (
+          {isResidentialProvider(provider) ? (
             <ResidentialIP provider={provider} onChangeResidentialConfirm={onChangeResidentialConfirm}/>
-          ) : isDataCenter && (
+          ) : isDataCenterProvider(provider) && (
             <DataCenterIP/>
           )}
         </ExpansionPanelDetails>
