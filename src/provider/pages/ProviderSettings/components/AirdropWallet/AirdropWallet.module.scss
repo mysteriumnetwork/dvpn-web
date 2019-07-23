@@ -5,32 +5,30 @@
   align-items: flex-start;
   font-size: $buttonText;
   margin-bottom: 14px;
+
   p {
     min-width: 128px;
     font-size: 14px;
     color: $textLightGrey;
   }
+
   div {
     color: $textMain;
   }
+
   input {
     color: $textLightGrey;
     font-size: $tableHeadFont;
     padding: 4px 12px;
     border-radius: 4px;
   }
-  //svg {
-  //  height: 16px;
-  //  width: 16px;
-  //  path {
-  //    //opacity: 0;
-  //  }
-  //}
+
   .helperText {
     margin-top: 8px;
     font-size: $tableHeadFont;
     color: $textLightGrey;
   }
+
   .errorText {
     margin-top: 8px;
     font-size: $tableHeadFont;
@@ -38,11 +36,14 @@
     word-break: break-word;
   }
 }
+
 .radioForm {
   margin-bottom: 12px;
+
   p {
     margin-left: 26px;
   }
+
   label {
     color: $textMain;
     font-size: $buttonText;
@@ -50,41 +51,50 @@
     margin-left: 0;
   }
 }
+
 .savedWallet {
   display: flex;
   align-items: flex-start;
-  height:34px;
+  height: 34px;
+
   p {
     color: $textMain;
     font-family: 'mplus-1m', sans-serif;
   }
+
   button {
     display: block;
     color: $darkPurple;
     font-size: $tableHeadFont;
   }
 }
-.editableField{
+
+.editableField {
   position: relative;
   margin-top: -5px;
   margin-left: -12px;
   display: flex;
-  height:39px;
+  height: 39px;
   align-items: flex-start;
-  button {
-    margin-top: -4px;
-    padding: 6px!important;
-  }
 }
-.editableTextField{
-  min-width: 372px!important;
+
+.editableTextField {
+  min-width: 372px !important;
 }
-.flexCenter{
+
+.flexCenter {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.buttons{
+
+.buttons {
+  left: 100%;
   position: absolute;
-  margin-left: 376px;
+  display: flex;
+  margin-top: -2px;
+
+  button {
+    padding: 6px !important;
+  }
 }
