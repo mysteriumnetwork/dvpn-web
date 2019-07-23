@@ -13,7 +13,8 @@ export const { history } = selectedConfigureStore
 export const initState = (id: string = 'default') => {
   let initState = {
     provider: providerInitState,
-    client: clientInitState
+    client: clientInitState,
+    terms: {}
   }
   if (process.env.NODE_ENV !== 'production') {
     console.log('*initState', { ...initState })
@@ -42,7 +43,8 @@ export const saveState = (state: { provider: ProviderState }, id: string = 'defa
         originalLocation: _.get(state, 'provider.originalLocation'),
         trafficOption: _.get(state, 'provider.trafficOption')
       },
-      client: {}
+      client: {},
+      terms: _.get(state, 'terms')
     }
 
     localStorage.setItem(`myst-${id}`, JSON.stringify(initialState))

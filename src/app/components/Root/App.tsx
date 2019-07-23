@@ -12,6 +12,11 @@ import ConnectionHistory from '../ConnectionHistory/ConnectionHistory'
 import AppAbout from '../AppAbout/AppAbout'
 import AppWarningPopup from '../AppWarningPopup/AppWarningPopup'
 import Login from '../../pages/Login/Login'
+import { push } from 'connected-react-router'
+import { connect } from 'react-redux'
+import { DefaultProps } from '../../../types'
+import { TermsState } from '../../pages/Terms/reducer'
+import { version } from '@mysteriumnetwork/terms/package.json'
 
 const mainRoutes: RouteDef[] = [...clientRoutes, ...providerRoutes, ...settingsRoutes]
 
@@ -24,16 +29,44 @@ const Main = () => (
     {mainRoutes.map(route => (<Route exact key={route.path} path={route.path} component={route.component}/>))}
   </div>
 )
-const App = () => (
-  <div>
-    <Switch>
-      <Redirect exact path="/" to={NAV_WELCOME}/>
-      <Route exact key={NAV_WELCOME} path={NAV_WELCOME} component={Welcome}/>
-      <Route exact key={NAV_TERMS} path={NAV_TERMS} component={Terms}/>
-      <Route exact key={NAV_LOGIN} path={NAV_LOGIN} component={Login}/>
-      <Main/>
-    </Switch>
-  </div>
-)
 
-export default withRouter(App)
+type Props = DefaultProps & {
+  terms: TermsState
+  onRoutePush: Function
+}
+
+class App extends React.PureComponent<Props> {
+  constructor(props) {
+    super(props)
+
+    if (!(props && props.terms[version])) {
+      props.onRoutePush(NAV_TERMS)
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <Switch>
+          <Redirect exact path="/" to={NAV_WELCOME}/>
+          <Route exact key={NAV_WELCOME} path={NAV_WELCOME} component={Welcome}/>
+          <Route exact key={NAV_TERMS} path={NAV_TERMS} component={Terms}/>
+          <Route exact key={NAV_LOGIN} path={NAV_LOGIN} component={Login}/>
+          <Main/>
+        </Switch>
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = (state) => ({
+  terms: state.terms
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onRoutePush: (value) => dispatch(push(value))
+})
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)
+
+export default withConnect(withRouter(App))

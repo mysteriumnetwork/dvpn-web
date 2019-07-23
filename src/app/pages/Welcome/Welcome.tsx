@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
-import { NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
+import { NAV_TERMS } from '../../app.links'
 
 const styles = require('./Welcome.module.scss')
 
@@ -13,7 +13,7 @@ const Welcome = () => (
       <div className={styles.logo}/>
       <h1>{trans('app.onboarding.welcome')}</h1>
       <h4>{trans('app.onboarding.subtitle')}</h4>
-      <Link to={NAV_PROVIDER_SETTINGS}>
+      <Link to={NAV_TERMS}>
         <Button color="primary">{trans('app.onboarding.get.started.btn')}</Button>
       </Link>
     </div>
