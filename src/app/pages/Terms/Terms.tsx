@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
@@ -29,6 +29,11 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
     this.state = { accept: false }
   }
 
+  componentDidMount() {
+    const { terms } = this.props
+    this.setState({ accept: Boolean(terms[version]) })
+  }
+
   handleAcceptSubmit = () => {
     const { onAcceptTerms } = this.props
     onAcceptTerms(version)
@@ -39,14 +44,6 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
   }
 
   render() {
-    const { terms } = this.props
-
-    if (terms[version]) {
-      return (
-        <Redirect to={NAV_PROVIDER_DASHBOARD}/>
-      )
-    }
-
     return (
       <div className={styles.appTermsCover}>
         <div className={styles.appTermsListCover}>
