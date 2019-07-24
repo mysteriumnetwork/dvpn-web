@@ -77,9 +77,9 @@ const AppTextField = (props: IAppTextFieldProps) => (
     <InputLabel
       shrink={props.shrink}
       htmlFor={`id-${props.name}`}
-      FormLabelClasses={{
-        root: props.classes.bootstrapFormLabel,
-      }}
+      // FormLabelClasses={{
+      //       //   root: props.classes.bootstrapFormLabel,
+      //       // }}
     >
       {props.label}
     </InputLabel>

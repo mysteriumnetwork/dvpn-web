@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
+import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
 import { settingsRoutes } from '../../../settings/settings.routes'
 import { RouteDef } from '../../app.types'
 import { providerRoutes } from '../../../provider/provider.routes'
@@ -12,39 +12,50 @@ import ConnectionHistory from '../ConnectionHistory/ConnectionHistory'
 import AppAbout from '../AppAbout/AppAbout'
 import AppWarningPopup from '../AppWarningPopup/AppWarningPopup'
 import Login from '../../pages/Login/Login'
-import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
-import { DefaultProps } from '../../../types'
 import { TermsState } from '../../pages/Terms/reducer'
 import { version } from '@mysteriumnetwork/terms/package.json'
+import { NodeHealthcheck } from 'mysterium-vpn-js'
+import injectSheet from 'react-jss'
 
 const mainRoutes: RouteDef[] = [...clientRoutes, ...providerRoutes, ...settingsRoutes]
 
-const Main = () => (
+const Main = (props) => (
   <div>
     <AppHeader/>
-    <AppAbout/>
+    <AppAbout node={props.node}/>
     <ConnectionHistory/>
     <AppWarningPopup/>
     {mainRoutes.map(route => (<Route exact key={route.path} path={route.path} component={route.component}/>))}
   </div>
 )
 
-type Props = DefaultProps & {
-  terms: TermsState
-  onRoutePush: Function
+interface IStyles {
+  version: string
 }
 
-class App extends React.PureComponent<Props> {
-  constructor(props) {
-    super(props)
+type Props = RouteComponentProps & {
+  terms: TermsState
+  node: NodeHealthcheck
+  classes: IStyles
+}
 
-    if (!(props && props.terms[version])) {
-      props.onRoutePush(NAV_TERMS)
-    }
+const styles = () => ({
+  version: {
+    position: 'fixed',
+    zIndex: 10000,
+    right: 0,
+    bottom: 0,
+    padding: '1px 3px',
+    fontSize: '85%',
+    opacity: 0.5,
   }
+})
 
+class App extends React.PureComponent<Props> {
   render() {
+    const { terms, node, classes } = this.props
+
     return (
       <div>
         <Switch>
@@ -52,21 +63,22 @@ class App extends React.PureComponent<Props> {
           <Route exact key={NAV_WELCOME} path={NAV_WELCOME} component={Welcome}/>
           <Route exact key={NAV_TERMS} path={NAV_TERMS} component={Terms}/>
           <Route exact key={NAV_LOGIN} path={NAV_LOGIN} component={Login}/>
-          <Main/>
+          {
+            !terms[version] && (<Redirect to={NAV_TERMS} strict/>)
+          }
+          <Main node={node}/>
         </Switch>
+        {node && (<div className={classes.version}>{node.version}</div>)}
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  terms: state.terms
+  terms: state.terms,
+  node: state.app.node
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  onRoutePush: (value) => dispatch(push(value))
-})
+const withConnect = connect(mapStateToProps)
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps)
-
-export default withConnect(withRouter(App))
+export default injectSheet(styles)(withConnect(withRouter(App)))
