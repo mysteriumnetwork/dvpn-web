@@ -57,7 +57,10 @@ class AppMenu extends React.Component<Props> {
 
           <Divider/>
 
-          <Link to={NAV_TERMS} onClick={this.handleMenuClose}>
+          <Link to={{
+            pathname: NAV_TERMS,
+            state: { view: true }
+          }} onClick={this.handleMenuClose}>
             <MenuItem className={styles.menuItem}>{trans('app.menu.terms.conditions')}</MenuItem>
           </Link>
 

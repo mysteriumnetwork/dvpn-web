@@ -65,6 +65,7 @@ export interface IAppCheckboxProps {
   label: string
   value?: string
   checked?: any
+  disabled?:boolean
   onChange?: any
   classes: IStyles
   style?: React.CSSProperties
@@ -82,6 +83,7 @@ const AppCheckbox: React.SFC<IAppCheckboxProps> = (props: IAppCheckboxProps) => 
         id={props.id}
         checked={props.checked}
         onChange={props.onChange}
+        disabled={props.disabled}
         classes={{
           root: props.classes.rootStyled,
           checked: props.classes.checked,

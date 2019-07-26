@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, RouteComponentProps } from 'react-router-dom'
 import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
@@ -8,17 +8,17 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
 import { compose } from 'redux'
 import immutableProps from '../../../hocs/immutableProps'
-import ReactMarkdown from 'react-markdown'
 import { DefaultProps } from '../../../types'
-import { TermsMd } from '@mysteriumnetwork/terms'
+import { TermsMd, WarrantyMd } from '@mysteriumnetwork/terms'
 import { version } from '@mysteriumnetwork/terms/package.json'
 import { acceptTermsAction } from './actions'
 import { push } from 'connected-react-router'
 import { TermsState } from './reducer'
+import TermsItem from './components/TermsItem/TermsItem'
 
 const styles = require('./Terms.module.scss')
 
-type Props = DefaultProps & {
+type Props = DefaultProps & RouteComponentProps & {
   terms: TermsState
   onAcceptTerms: Function
 }
@@ -43,11 +43,22 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
     this.setState({ accept: !this.state.accept })
   }
 
+  get isView() {
+    const { state } = this.props.location
+    return Boolean(state && state.view)
+  }
+
   render() {
+    if (!this.isView && this.props.terms[version]) {
+      return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
+    }
+
     return (
       <div className={styles.appTermsCover}>
         <div className={styles.appTermsListCover}>
-          <ReactMarkdown escapeHtml={false} source={TermsMd}/>
+          <h2>{trans('app.onboarding.terms.title')}</h2>
+          <TermsItem title={trans('app.onboarding.terms.title.terms')} body={TermsMd} last={version} tall/>
+          <TermsItem title={trans('app.onboarding.terms.title.warranty')} body={WarrantyMd} last={version}/>
         </div>
         <div className={styles.bottomBar}>
           <div className={styles.barContent}>
@@ -55,13 +66,18 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
               <span className={styles.catMysterium}/>
               <p className={styles.termsAgreement}>
                 <Checkbox label={trans('app.onboarding.terms.agree.label')}
+                          disabled={this.isView}
                           checked={this.state.accept}
                           onChange={this.handleAcceptChange}/>
               </p>
               <Link to={NAV_PROVIDER_SETTINGS}>
-                <Button color="primary"
-                        disabled={!this.state.accept}
-                        onClick={this.handleAcceptSubmit}>{trans('app.onboarding.continue.btn')}</Button>
+                {this.isView ? (
+                  <Button color="primary">{trans('app.onboarding.continue.btn')}</Button>
+                ) : (
+                  <Button color="primary"
+                          disabled={!this.state.accept}
+                          onClick={this.handleAcceptSubmit}>{trans('app.onboarding.continue.btn')}</Button>
+                )}
               </Link>
             </div>
           </div>

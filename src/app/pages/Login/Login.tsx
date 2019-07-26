@@ -12,7 +12,7 @@ import TextField from '../../../app/components/ReduxForm/TextField'
 import Button from '../../../ui-kit/components/Button/Button'
 import ErrorIcon from '@material-ui/icons/ErrorOutline'
 import { Redirect } from 'react-router'
-import { loginStory } from '../../../settings/stories'
+import { loginStory } from '../../stories'
 import _ from 'lodash'
 import { NAV_TERMS } from '../../app.links'
 

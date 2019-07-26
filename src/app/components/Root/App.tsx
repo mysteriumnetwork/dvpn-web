@@ -81,4 +81,4 @@ const mapStateToProps = (state) => ({
 
 const withConnect = connect(mapStateToProps)
 
-export default injectSheet(styles)(withConnect(withRouter(App)))
+export default injectSheet(styles)(withRouter(withConnect(App)))
