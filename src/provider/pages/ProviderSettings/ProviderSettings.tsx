@@ -22,6 +22,7 @@ import immutableProps from '../../../hocs/immutableProps'
 import ErrorDialog from '../../../ui-kit/components/ErrorDialog'
 import { Redirect } from 'react-router'
 import { NAV_PROVIDER_DASHBOARD } from '../../provider.links'
+import { isDataCenterProvider, isResidentialProvider } from '../../helpers'
 
 const styles = require('./ProviderSettings.module.scss')
 
@@ -56,6 +57,7 @@ class ProviderSettings extends React.PureComponent<Props> {
 
     onStartVpnServer(provider)
   }
+
   handleCloseErrorDialog = () => {
     const { onSetState } = this.props
     onSetState({
@@ -70,6 +72,8 @@ class ProviderSettings extends React.PureComponent<Props> {
     }
 
     const id = (provider && provider.identity && provider.identity.id) || ''
+
+    const canStart = (isResidentialProvider(provider) && provider.residentialConfirm) || isDataCenterProvider(provider)
 
     return (<div className={styles.appProviderSettingsCover}>
       <div className={styles.scrollView}>
@@ -91,7 +95,7 @@ class ProviderSettings extends React.PureComponent<Props> {
       <div className={styles.bottomBar}>
         <Button onClick={this.handleStartVpnServer}
                 color="primary"
-                disabled={!id || provider.startedServicePending || !provider.residentialConfirm}>
+                disabled={!id || provider.startedServicePending || !canStart}>
           {trans('app.provider.settings.start.vpn')}
         </Button>
       </div>

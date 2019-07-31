@@ -1,8 +1,8 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
 import { DialogContent } from '@material-ui/core'
-import Button from '../../../../../ui-kit/components/Button/Button'
 import trans from '../../../../../trans'
+import { NodeHealthcheck } from 'mysterium-vpn-js'
 
 interface IStyles {
   rootStyled: string
@@ -38,15 +38,24 @@ export interface IDialogContentProps {
   onChange?: any
   classes: IStyles
   style?: React.CSSProperties
+  node: NodeHealthcheck
 }
 
-const AppDialogContent: React.SFC<IDialogContentProps> = (props: IDialogContentProps) => (
+const AppDialogContent: React.FunctionComponent<IDialogContentProps> = (props: IDialogContentProps) => (
   <DialogContent classes={{ root: props.classes.rootStyled }}>
-    <p className={props.classes.textStyled}>{trans('app.about.app.version')} 1.2</p>
-    <p className={props.classes.textStyled}>{trans('app.about.checked.for.updates')}</p>
-    <div className={props.classes.action}>
-      <Button onClick={() => {}}>{trans('app.about.check.for.updates')}</Button>
-    </div>
+    <p className={props.classes.textStyled}>
+      {trans('app.about.app.version')}: {props.node && props.node.version}
+    </p>
+    <p className={props.classes.textStyled}>
+      Node uptime: {props.node && props.node.uptime}
+    </p>
+    {/*<p className={props.classes.textStyled}>*/}
+    {/*  {trans('app.about.checked.for.updates')}*/}
+    {/*  {props.node && props.node.uptime}*/}
+    {/*</p>*/}
+    {/*<div className={props.classes.action}>*/}
+    {/*  <Button onClick={() => {}}>{trans('app.about.check.for.updates')}</Button>*/}
+    {/*</div>*/}
   </DialogContent>
 )
 

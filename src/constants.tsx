@@ -6,3 +6,7 @@ export const NODE_TYPE = {
   RESIDENTIAL: 'residential',
   DATA_CENTER: 'data_center'
 }
+
+export const APP_EVENTS = {
+  ABOUT_DIALOG_SHOW: 'ABOUT_DIALOG_SHOW'
+}

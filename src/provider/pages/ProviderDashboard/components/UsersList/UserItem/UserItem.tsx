@@ -24,7 +24,7 @@ const UserItem = (props: Props) => {
       </td>
       <td>
         <Timer>
-          {(value) => formatDuration((value - Date.parse(createdAt)) || 0, { leading: true })}
+          {(value) => formatDuration((value && (value - Date.parse(createdAt))) || 0, { leading: true })}
         </Timer>
       </td>
       <td>{formatBytes(parseInt(bytesIn, 10))}</td>

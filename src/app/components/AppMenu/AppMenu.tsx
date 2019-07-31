@@ -6,8 +6,13 @@ import trans from '../../../trans'
 import SocialLinks from './components/SocialLinks'
 
 import styles from './AppMenu.module.scss'
+import { NAV_TERMS } from '../../app.links'
+import withEvents, { EventsProps } from '../../../hocs/withEvents'
+import { APP_EVENTS } from '../../../constants'
 
-class AppMenu extends React.Component {
+type Props = EventsProps & {}
+
+class AppMenu extends React.Component<Props> {
   public state = {
     anchorEl: null,
   }
@@ -18,6 +23,11 @@ class AppMenu extends React.Component {
 
   private handleMenuClose = () => {
     this.setState({ anchorEl: null })
+  }
+
+  private handleAboutClick = () => {
+    this.props.events.emit(APP_EVENTS.ABOUT_DIALOG_SHOW)
+    return this.handleMenuClose()
   }
 
   render() {
@@ -40,23 +50,37 @@ class AppMenu extends React.Component {
           <MenuItem className={styles.groupItem} button={false}>Settings</MenuItem>
 
           <Link to={NAV_SETTINGS_PASSWORD} onClick={this.handleMenuClose}>
-            <MenuItem  className={styles.menuItem}>
+            <MenuItem className={styles.menuItem}>
               {trans('app.menu.settings.password')}
             </MenuItem>
           </Link>
 
           <Divider/>
 
-          <MenuItem className={styles.menuItem}>{trans('app.menu.terms.conditions')}</MenuItem>
-          <MenuItem className={styles.menuItem}>{trans('app.menu.privacy.policy')}</MenuItem>
-          <MenuItem className={styles.menuItem}>{trans('app.menu.send.feedback')}</MenuItem>
+          <Link to={{
+            pathname: NAV_TERMS,
+            state: { view: true }
+          }} onClick={this.handleMenuClose}>
+            <MenuItem className={styles.menuItem}>{trans('app.menu.terms.conditions')}</MenuItem>
+          </Link>
+
+          {/*<MenuItem className={styles.menuItem}>{trans('app.menu.privacy.policy')}</MenuItem>*/}
+
+          <a href="mailto:feedback@mysterium.network">
+            <MenuItem className={styles.menuItem}> {trans('app.menu.send.feedback')} </MenuItem>
+          </a>
+
           <SocialLinks/>
+
           <Divider/>
-          <MenuItem className={styles.menuItem}>{trans('app.menu.about')}</MenuItem>
+
+          <MenuItem className={styles.menuItem} onClick={this.handleAboutClick}>
+            {trans('app.menu.about')}
+          </MenuItem>
         </Menu>
       </div>
     )
   }
 }
 
-export default AppMenu
+export default withEvents(AppMenu)

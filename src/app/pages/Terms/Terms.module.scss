@@ -4,28 +4,66 @@
   min-height: 640px;
   height: 100vh;
   padding-top: 36px;
-  padding-bottom: 60px;
+  padding-bottom: 108px;
   position: relative;
   background: $whiteColor;
 }
+
 .appTermsListCover {
   max-width: 440px;
   margin: 0 auto;
   overflow-y: auto;
   max-height: 100%;
+
+  h2 {
+    text-align: center;
+    font-weight: 300;
+    margin-bottom: 46px;
+    font-size: $mainTitle;
+    color: $actionPurple;
+  }
+
+  p {
+    margin-bottom: 1em;
+
+    strong {
+      text-align: center;
+    }
+  }
+
+  ul {
+    padding-left: 2em;
+    margin-bottom: 1em;
+
+    li {
+      list-style: none;
+      margin-bottom: .5em;
+      position: relative;
+
+      &:before {
+        content: '-';
+        position: absolute;
+        left: -1em;
+      }
+    }
+  }
+
+  ol {
+    margin-bottom: 1em;
+    padding-left: 2em;
+
+    li {
+      list-style: outside decimal;
+    }
+  }
 }
-.appTermsListCover h2 {
-  text-align: center;
-  font-weight: 300;
-  margin-bottom: 46px;
-  font-size: $mainTitle;
-  color: $actionPurple;
-}
+
 .barContent a {
   top: 16px;
   right: -200px;
   position: absolute;
 }
+
 .bottomBar {
   position: absolute;
   bottom: 0;
@@ -33,12 +71,14 @@
   height: 72px;
   background: #f7f7f7;
   border-top: 1px solid rgba(191, 191, 191, 0.4);
+
   div {
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
   }
 }
+
 .barContent {
   width: 680px;
   height: 100%;
@@ -47,37 +87,44 @@
   display: flex;
   align-items: center;
 }
+
 .catMysterium {
   position: absolute;
   top: -150px;
-  left: -143px;
+  left: -200px;
   height: 200px;
   width: 128px;
   display: block;
   background: url('../../components/assets/images/Cat.png') no-repeat;
   background-size: contain;
 }
+
 @media only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .catMysterium {
     background: url('../../components/assets/images/Cat@2x.png') no-repeat;
     background-size: contain;
   }
 }
+
 .termsAgreement {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
   input {
     padding: 0;
     color: $textLightGrey;
   }
+
   svg {
     height: 16px;
     width: 16px;
+
     path {
       opacity: 0;
     }
   }
+
   label {
     color: $textMain;
     font-size: $buttonText;

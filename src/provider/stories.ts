@@ -1,4 +1,4 @@
-import { Dispatch, Store } from 'redux'
+import { Dispatch } from 'redux'
 import { getCurrentAccessPolicy } from './api'
 import {
   getIdentityPayoutAction,
@@ -20,19 +20,7 @@ import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { DispatchResult } from '../types'
 import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
-import _ from 'lodash'
-import { RootState } from '../rootState.type'
 import TequilapiError from 'mysterium-vpn-js/lib/tequilapi-error'
-
-export const initAppStory = (store: Store<RootState>) => {
-  initAppFetchStory(store.dispatch).catch((e) => {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(e)
-    }
-  })
-  initServerEventsStory(store.dispatch, _.get(store.getState(), 'provider.startedServices'))
-
-}
 
 export const initServerEventsStory = (dispatch: Dispatch, services: any) => {
   serverSentEvents.connect()

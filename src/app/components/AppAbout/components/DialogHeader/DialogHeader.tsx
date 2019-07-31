@@ -2,6 +2,11 @@ import * as React from 'react'
 import injectSheet from 'react-jss'
 import { IconButton, DialogTitle } from '@material-ui/core'
 
+import appPattern from "../../../assets/images/app-pattern.svg"
+import appIcon from "../../../assets/images/AppIcon.svg"
+import mysteriumNetworkLogo from "../../../assets/images/mysterium-network-logo.png"
+import mysteriumNetworkLogo2x from "../../../assets/images/mysterium-network-logo@2x.png"
+
 interface IStyles {
   titleRoot: string
   dialogHeader: string
@@ -19,7 +24,7 @@ const styles = (theme: any) => ({
     height: 240,
     width: '100%',
     position: 'absolute',
-    background: 'url("app/components/assets/images/app-pattern.svg") ',
+    background: `url(${appPattern})`,
     backgroundSize: 'cover',
     '&:after': {
       display: 'block',
@@ -47,29 +52,29 @@ const styles = (theme: any) => ({
       width: 184,
       top: -24,
       position: 'relative',
-      background: 'url("app/components/assets/images/AppIcon.svg") no-repeat',
+      background: `url(${appIcon}) no-repeat`,
     },
   },
   mysteriumLogo: {
     width: 184,
     height: 56,
     margin: '-20px 0  12px',
-    background: 'url("app/components/assets/images/mysterium-network-logo.png") no-repeat center',
+    background: `url(${mysteriumNetworkLogo}) no-repeat center`,
     backgroundSize: 'contain',
     '@media only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx)': {
-      background: 'url("app/components/assets/images/mysterium-network-logo@2x.png") no-repeat center',
+      background: `url(${mysteriumNetworkLogo2x}) no-repeat center`,
       backgroundSize: 'contain',
     },
   },
 })
 
 export interface IDialogHeaderProps {
-  onChange?: any
+  onCloseClick?: any
   classes: IStyles
   style?: React.CSSProperties
 }
 
-const DialogHeader: React.SFC<IDialogHeaderProps> = (props: IDialogHeaderProps) => (
+const DialogHeader: React.FunctionComponent<IDialogHeaderProps> = (props: IDialogHeaderProps) => (
   <DialogTitle
     classes={{
       root: props.classes.titleRoot,
@@ -79,7 +84,7 @@ const DialogHeader: React.SFC<IDialogHeaderProps> = (props: IDialogHeaderProps) 
     <div className={props.classes.dialogHeader}>
       <div />
       <p className={props.classes.mysteriumLogo} />
-      <IconButton>
+      <IconButton onClick={props.onCloseClick}>
         <div className="app-icons close-icon" />
       </IconButton>
     </div>

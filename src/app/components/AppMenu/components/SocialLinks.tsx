@@ -10,32 +10,32 @@ const SocialLinks = () => (
       <p>{trans('app.menu.follow.us')}</p>
       <ul>
         <li>
-          <a href="/">
+          <a href="https://t.me/mysterium_network" target="_blank" rel="noopener noreferrer">
             <div className="app-icons telegram" />
           </a>
         </li>
         <li>
-          <a href="/">
+          <a href="https://medium.com/mysterium-network" target="_blank" rel="noopener noreferrer">
             <div className="app-icons medium" />
           </a>
         </li>
         <li>
-          <a href="/">
+          <a href="https://twitter.com/MysteriumNet" target="_blank" rel="noopener noreferrer">
             <div className="app-icons tweeter" />
           </a>
         </li>
         <li>
-          <a href="/">
+          <a href="https://www.reddit.com/r/MysteriumNetwork/" target="_blank" rel="noopener noreferrer">
             <div className="app-icons reddit" />
           </a>
         </li>
         <li>
-          <a href="/">
+          <a href="https://www.facebook.com/MysteriumNet/" target="_blank" rel="noopener noreferrer">
             <div className="app-icons facebook" />
           </a>
         </li>
         <li>
-          <a href="/">
+          <a href="https://github.com/MysteriumNetwork" target="_blank" rel="noopener noreferrer">
             <div className="app-icons github" />
           </a>
         </li>

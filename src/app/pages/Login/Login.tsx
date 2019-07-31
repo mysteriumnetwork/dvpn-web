@@ -12,9 +12,9 @@ import TextField from '../../../app/components/ReduxForm/TextField'
 import Button from '../../../ui-kit/components/Button/Button'
 import ErrorIcon from '@material-ui/icons/ErrorOutline'
 import { Redirect } from 'react-router'
-import { NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
-import { loginStory } from '../../../settings/stories'
+import { loginStory } from '../../stories'
 import _ from 'lodash'
+import { NAV_TERMS } from '../../app.links'
 
 type Props = DefaultProps & InjectedFormProps & {
   onSubmit?: Function
@@ -34,7 +34,7 @@ class Login extends React.PureComponent<Props> {
     const { handleSubmit, submitting, pristine, invalid, error, submitSucceeded } = this.props
 
     if (submitSucceeded) {
-      return <Redirect to={NAV_PROVIDER_SETTINGS}/>
+      return <Redirect to={NAV_TERMS}/>
     }
 
     return (
