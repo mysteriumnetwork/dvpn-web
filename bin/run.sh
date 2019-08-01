@@ -13,5 +13,6 @@ sudo $CURRENT_DIR/myst --data-dir=$DATA_DIR \
        --config-dir=$CONFIG_DIR \
        --runtime-dir=$DATA_DIR \
        --tequilapi.port=4050 \
+       --log-level=debug \
        --openvpn.binary=$CURRENT_DIR/openvpn \
        daemon
