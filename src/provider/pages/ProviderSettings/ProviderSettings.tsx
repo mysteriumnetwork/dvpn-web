@@ -13,7 +13,8 @@ import {
   initProviderStory,
   startVpnServerStory,
   updateIdentitiesStory,
-  updateReferralStory
+  updateReferralStory,
+  updateEmailStory,
 } from '../../stories'
 import { getFormValues } from 'redux-form/immutable'
 import { compose } from 'redux'
@@ -122,6 +123,7 @@ const mapDispatchToProps = (dispatch) => ({
   onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),
   onSaveWalletAddress: (value) => updateIdentitiesStory(dispatch, value),
   onSaveReferralCode: (value) => updateReferralStory(dispatch, value),
+  onSaveEmail: (value) => updateEmailStory(dispatch, value),
   onSetState: (value) => dispatch(setProviderStateAction(value))
 })
 

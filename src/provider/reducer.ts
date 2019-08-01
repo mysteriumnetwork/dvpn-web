@@ -10,7 +10,7 @@ import {
   SERVICE_SESSIONS,
   SET_PROVIDER_STATE,
   STARTED_SERVICES,
-  TRAFFIC_OPTION,
+  TRAFFIC_OPTION, UPDATE_EMAIL,
   UPDATE_IDENTITY,
   UPDATE_REFERRAL_CODE,
 } from './constants'
@@ -103,6 +103,10 @@ export default typeToReducer({
       referral: {
         loading: false,
       },
+      email: {
+        loading: false,
+      },
+
     }),
   },
 
@@ -127,6 +131,33 @@ export default typeToReducer({
           referralCode: _.get(action, 'meta.referralCode'),
         },
         referral: {
+          loading: false,
+        },
+      }
+    },
+  },
+
+  [UPDATE_EMAIL]: {
+    PENDING: (state) => ({
+      ...state,
+      email: {
+        loading: true,
+      },
+    }),
+    REJECTED: (state, action: Action<any>) => ({
+      ...state,
+      email: {
+        loading: false,
+      },
+    }),
+    FULFILLED: (state, action: Action<IdentityPayout>) => {
+      return {
+        ...state,
+        payout: {
+          ...state.payout,
+          email: _.get(action, 'meta.email'),
+        },
+        email: {
           loading: false,
         },
       }

@@ -8,7 +8,7 @@ import {
   setLocationAction,
   setProviderStateAction,
   startServiceAction,
-  stopServiceAction,
+  stopServiceAction, updateEmailAction,
   updateIdentitiesAction,
   updateReferralAction,
 } from './actions'
@@ -197,11 +197,21 @@ export const updateIdentitiesStory = async (
 }
 
 export const updateReferralStory = async (
-  dispatch: Dispatch, data: { passphrase: string, id: string, referralCode: string }) => {
+  dispatch: Dispatch, data: { id: string, referralCode: string }) => {
   const { id, referralCode } = data
   try {
     await dispatch(updateReferralAction({ id, referralCode }))
     await dispatch(setProviderStateAction({ isReferralEditMode: false }))
+  } catch (e) {
+    apiSubmissionError('walletAddress')(e)
+  }
+}
+export const updateEmailStory = async (
+  dispatch: Dispatch, data: { id: string, email: string }) => {
+  const { id, email } = data
+  try {
+    await dispatch(updateEmailAction({ id, email }))
+    await dispatch(setProviderStateAction({ isEmailEditMode: false }))
   } catch (e) {
     apiSubmissionError('walletAddress')(e)
   }

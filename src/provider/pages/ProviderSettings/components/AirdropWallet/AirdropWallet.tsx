@@ -34,6 +34,21 @@ class AirdropWallet extends React.PureComponent<Props> {
     onChangeTrafficOption(event.target.value)
   }
 
+  handleToggleEmailEditMode = () => {
+    const { provider, onSetState, initialize, reset } = this.props
+    const isEmailEditMode = _.get(provider, 'state.isEmailEditMode')
+    onSetState({ isEmailEditMode: !isEmailEditMode })
+    reset()
+    if (!isEmailEditMode) {
+      initialize({
+        passphrase: '',
+        ethAddress: _.get(provider, 'payout.ethAddress', ''),
+        referralCode: _.get(provider, 'payout.referralCode', ''),
+        email: _.get(provider, 'payout.email', ''),
+      })
+    }
+  }
+
   handleToggleWalletEditMode = () => {
     const { provider, onSetState, initialize, reset } = this.props
     const isWalletEditMode = _.get(provider, 'state.isWalletEditMode')
@@ -82,6 +97,7 @@ class AirdropWallet extends React.PureComponent<Props> {
 
   render() {
     const { provider, error, submitting } = this.props
+    console.log(error)
     const isWalletEditMode = _.get(provider, 'state.isWalletEditMode') || !_.get(provider, 'payout.ethAddress')
     const isReferralEditMode = _.get(provider, 'state.isReferralEditMode') || !_.get(provider, 'payout.referralCode')
     const isEmailEditMode = _.get(provider, 'state.isEmailEditMode') || !_.get(provider, 'payout.email')
@@ -162,6 +178,9 @@ class AirdropWallet extends React.PureComponent<Props> {
                   <IconButton color="primary" onClick={this.handleEmailChange} disabled={submitting}>
                     <SaveIcon fontSize="small"/>
                   </IconButton>
+                  <IconButton color="secondary" onClick={this.handleToggleEmailEditMode} disabled={submitting}>
+                    <CancelIcon fontSize="small"/>
+                  </IconButton>
                 </div>
               </div>
             ) : (
@@ -171,10 +190,14 @@ class AirdropWallet extends React.PureComponent<Props> {
                     <RectangleLoading width='370px' height='16px'/>
                   </div>
                 ) : (
-                  <p>{_.get(provider, 'payout.email', '')}</p>
+                  <div className={styles.flexCenter}>
+                    <p>{_.get(provider, 'payout.email', '')}</p>
+                    <button onClick={this.handleToggleEmailEditMode}>{trans('app.provider.settings.change')}</button>
+                  </div>
                 )}
               </div>
             )}
+            <p className={styles.helperText}>{trans('app.provider.settings.email.helper.text')}</p>
           </div>
         </div>
         {this.showTrafficOptions && (
