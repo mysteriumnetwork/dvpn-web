@@ -126,6 +126,11 @@ export const updateIdentity = async (data: { id: string, ethAddress: string }): 
   await tequilapiClient.updateIdentityPayout(id, ethAddress)
 }
 
+export const updateEmail = async (data: { id: string, referralCode: string }): Promise<void> => {
+  const { id, referralCode } = data
+  await tequilapiClient.updateEmail(id, referralCode)
+}
+
 export const updateReferralCode = async (data: { id: string, referralCode: string }): Promise<void> => {
   const { id, referralCode } = data
   await tequilapiClient.updateReferralCode(id, referralCode)

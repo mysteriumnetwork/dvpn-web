@@ -16,6 +16,7 @@
   "app.provider.settings.my.id": "My ID",
   "app.provider.settings.wallet": "Airdrop Wallet",
   "app.provider.settings.referral.code": "Referral code",
+  "app.provider.settings.email": "Email address",
   "app.provider.settings.wallet.error": "Invalid wallet address",
   "app.provider.settings.wallet.helper.text": "Enter the address of an ERC-20 compatible wallet. Even though you cannot yet earn MYST directly, providers will be rewarded MYST via airdrops.",
   "app.provider.settings.traffic": "Traffic",

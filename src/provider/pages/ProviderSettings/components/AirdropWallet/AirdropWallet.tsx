@@ -24,6 +24,7 @@ type Props = InjectedFormProps & {
   formWalletAddressData?: Object
   onSaveWalletAddress?: (data: Object) => void
   onSaveReferralCode?: (data: Object) => void
+  onSaveEmail?: (data: Object) => void
   onSetState?: (data: Object) => void
 }
 
@@ -43,20 +44,7 @@ class AirdropWallet extends React.PureComponent<Props> {
         passphrase: '',
         ethAddress: _.get(provider, 'payout.ethAddress', ''),
         referralCode: _.get(provider, 'payout.referralCode', ''),
-      })
-    }
-  }
-
-  handleReferralEditMode = () => {
-    const { provider, onSetState, initialize, reset } = this.props
-    const isReferralEditMode = _.get(provider, 'state.isReferralEditMode')
-    onSetState({ isReferralEditMode: !isReferralEditMode })
-    reset()
-    if (!isReferralEditMode) {
-      initialize({
-        passphrase: '',
-        ethAddress: _.get(provider, 'payout.ethAddress', ''),
-        referralCode: _.get(provider, 'payout.referralCode', ''),
+        email: _.get(provider, 'payout.email', ''),
       })
     }
   }
@@ -64,6 +52,14 @@ class AirdropWallet extends React.PureComponent<Props> {
   handleWalletChange = () => {
     const { formWalletAddressData, provider, onSaveWalletAddress } = this.props
     submit(this.props, () => onSaveWalletAddress({
+      ...formWalletAddressData,
+      id: provider.identity.id,
+    }))
+  }
+
+  handleEmailChange = () => {
+    const { formWalletAddressData, provider, onSaveEmail } = this.props
+    submit(this.props, () => onSaveEmail({
       ...formWalletAddressData,
       id: provider.identity.id,
     }))
@@ -88,6 +84,7 @@ class AirdropWallet extends React.PureComponent<Props> {
     const { provider, error, submitting } = this.props
     const isWalletEditMode = _.get(provider, 'state.isWalletEditMode') || !_.get(provider, 'payout.ethAddress')
     const isReferralEditMode = _.get(provider, 'state.isReferralEditMode') || !_.get(provider, 'payout.referralCode')
+    const isEmailEditMode = _.get(provider, 'state.isEmailEditMode') || !_.get(provider, 'payout.email')
     return (
       <div>
         <div className={styles.flexedRow}>
@@ -149,6 +146,32 @@ class AirdropWallet extends React.PureComponent<Props> {
                   </div>
                 ) : (
                   <p>{_.get(provider, 'payout.referralCode', '')}</p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className={styles.flexedRow}>
+          <p>{trans('app.provider.settings.email')}</p>
+          <div>
+            {isEmailEditMode ? (
+              <div className={styles.editableField}>
+                <TextField placeholder="name@domain.com" name="email" disabled={submitting}
+                           className={styles.editableTextField}/>
+                <div className={styles.buttons}>
+                  <IconButton color="primary" onClick={this.handleEmailChange} disabled={submitting}>
+                    <SaveIcon fontSize="small"/>
+                  </IconButton>
+                </div>
+              </div>
+            ) : (
+              <div className={styles.savedWallet}>
+                {_.get(provider, 'referral.loading') !== false ? (
+                  <div className={styles.flexCenter}>
+                    <RectangleLoading width='370px' height='16px'/>
+                  </div>
+                ) : (
+                  <p>{_.get(provider, 'payout.email', '')}</p>
                 )}
               </div>
             )}

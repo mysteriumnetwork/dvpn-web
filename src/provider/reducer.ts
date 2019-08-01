@@ -97,6 +97,7 @@ export default typeToReducer({
       payout: {
         ethAddress: _.get(action, 'payload.ethAddress'),
         referralCode: _.get(action, 'payload.referralCode'),
+        email: _.get(action, 'payload.email'),
         loading: false,
       },
       referral: {
