@@ -144,7 +144,7 @@ class AirdropWallet extends React.PureComponent<Props> {
                 id="app.provider.settings.wallet.helper.text"
                 values={{
                   link: (
-                    <a target="_blank" href="https://metamask.io/">Get it here.</a>
+                    <a target="_blank" href="https://metamask.io/" rel="noopener noreferrer">Get it here.</a>
                   )
                 }}
               />
