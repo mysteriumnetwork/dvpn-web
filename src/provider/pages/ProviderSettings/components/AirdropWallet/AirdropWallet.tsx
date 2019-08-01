@@ -16,6 +16,7 @@ import { submit } from '../../../../../utils/reduxForm'
 import { InjectedFormProps } from 'redux-form'
 import validate from './validate'
 import styles from './AirdropWallet.module.scss'
+import { FormattedMessage } from 'react-intl';
 
 type Props = InjectedFormProps & {
   state: { isWalletEditMode: boolean }
@@ -138,7 +139,16 @@ class AirdropWallet extends React.PureComponent<Props> {
               <p className={styles.errorText}>{error}</p>
             )}
             {/*<p className={styles.errorText}>{trans('app.provider.settings.wallet.api-error.ts')}</p>*/}
-            <p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>
+            <p className={styles.helperText}>
+              <FormattedMessage
+                id="app.provider.settings.wallet.helper.text"
+                values={{
+                  link: (
+                    <a target="_blank" href="https://metamask.io/">Get it here.</a>
+                  )
+                }}
+              />
+            </p>
           </div>
         </div>
         <div className={styles.flexedRow}>

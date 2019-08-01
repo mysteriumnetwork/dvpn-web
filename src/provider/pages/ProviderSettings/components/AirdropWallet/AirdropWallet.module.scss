@@ -27,6 +27,10 @@
     margin-top: 8px;
     font-size: $tableHeadFont;
     color: $textLightGrey;
+
+    a {
+      color: $actionPurple;
+    }
   }
 
   .errorText {

@@ -1,7 +1,7 @@
 {
   "document.title": "Mysterium",
   "app.onboarding.welcome": "Welcome to Mysterium Network",
-  "app.onboarding.subtitle": "Connect to everything, everywhere via the World’s 1st decentralized VPN.",
+  "app.onboarding.subtitle": "Rent your bandwidth and earn. Together we are building the world’s largest peer to peer network to power the web.",
   "app.onboarding.get.started.btn": "Get Started",
   "app.onboarding.terms.title": "Terms and conditions",
   "app.onboarding.terms.title.terms": "Consumer Terms of Service",
@@ -18,7 +18,7 @@
   "app.provider.settings.referral.code": "Referral code",
   "app.provider.settings.email": "Email address",
   "app.provider.settings.wallet.error": "Invalid wallet address",
-  "app.provider.settings.wallet.helper.text": "Enter the address of an ERC-20 compatible wallet. Even though you cannot yet earn MYST directly, providers will be rewarded MYST via airdrops.",
+  "app.provider.settings.wallet.helper.text": "Enter the address of an ERC-20 compatible wallet. This is where you will get paid your ETH. Don’t have a wallet? { link }",
   "app.provider.settings.email.helper.text": "Please enter your e-mail if you want to participate in the bounty program, get monthly payouts and receive node performance updates.",
   "app.provider.settings.traffic": "Traffic",
   "app.provider.settings.verified.partner.traffic": "Mysterium verified partner traffic",
