@@ -31,6 +31,7 @@ const styles = (theme: any) => ({
     '& > button': {
       padding: 6,
     },
+    height: 43
   },
   tabContainer: {
     borderRadius: 5,
@@ -91,33 +92,43 @@ const clientLinkByConnectionStatus = (status: ConnectionStatus) => {
   }
 }
 
-const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderProps) => (
-  <div className={props.classes.appHeader}>
-    <div className={props.classes.tabContainer}>
-      {process.env.NODE_ENV !== 'production' ?
-      <Link to={clientLinkByConnectionStatus(props.connectionStatus)}>
-        <div
-          className={classNames(props.classes.tab, {
-            [props.classes.active]: String(props.routerLocation).startsWith('/client')
-          })}
-        >
-          {trans('app.header.connect.vpn')}
-        </div>
-      </Link>
-      : null}
-      <Link to={props.startedServices ? NAV_PROVIDER_DASHBOARD : NAV_PROVIDER_SETTINGS}>
-        <div
-          className={classNames(props.classes.tab, {
-            [props.classes.active]: String(props.routerLocation).startsWith('/provider')
-          })}
-        >
-          {trans('app.header.provide.vpn')}
-        </div>
-      </Link>
+const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderProps) => {
+  const isProvideSettingsRoute = props.routerLocation === NAV_PROVIDER_SETTINGS
+  return (
+    <div className={props.classes.appHeader}>
+      <div className={props.classes.tabContainer}>
+        {
+          process.env.NODE_ENV !== 'production' ?
+            <Link to={clientLinkByConnectionStatus(props.connectionStatus)}>
+              <div
+                className={classNames(props.classes.tab, {
+                  [props.classes.active]: String(props.routerLocation).startsWith('/client')
+                })}
+              >
+                {trans('app.header.connect.vpn')}
+              </div>
+            </Link>
+            : null
+        }
+        {
+          isProvideSettingsRoute && (
+            <Link to={NAV_PROVIDER_DASHBOARD}>
+              <div
+                className={classNames(props.classes.tab, {
+                  [props.classes.active]: true
+                })}
+              >{trans('app.header.backToDashboard')}</div>
+            </Link>
+          )
+        }
+      </div>
+      &nbsp;
+      {
+        props.routerLocation === NAV_PROVIDER_DASHBOARD && (<AppMenu/>)
+      }
     </div>
-    <AppMenu/>
-  </div>
-)
+  )
+}
 
 const mapStateToProps = (state: RootState): any => ({
   routerLocation: _.get(state, 'router.location.pathname'),

@@ -140,3 +140,8 @@ export const unlocksIdentity = async (data: { id: string, passphrase: string }):
   const { id, passphrase = '' } = data
   await tequilapiClient.identityUnlock(id, passphrase)
 }
+
+export const updateEmailApi = async (data: { id: string, email: string }): Promise<void> => {
+  const { id, email } = data
+  await tequilapiClient.updateEmail(id, email);
+}

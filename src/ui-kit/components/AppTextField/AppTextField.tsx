@@ -97,13 +97,12 @@ const AppTextField = (props: IAppTextFieldProps) => (
         focused: props.classes.focused,
       }}
       onChange={props.onChange}
+      onBlur={props.onBlur}
       onKeyUp={props.onKeyUp}
       disableUnderline
     />
     {props.error ? (
-      <FormHelperText error className={props.classes.errorStyle} id={`${props.name}-field`}>
-        {props.error}
-      </FormHelperText>
+      <FormHelperText error className={props.classes.errorStyle} id={`${props.name}-err-text`}>{props.error}</FormHelperText>
     ) : (
       <FormHelperTextSpace/>
     )}

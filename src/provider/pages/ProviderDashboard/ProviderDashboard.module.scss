@@ -28,9 +28,15 @@
     }
   }
 
-  button span {
-    min-width: 200px;
-    color: $warningRed;
-    font-weight: bold;
+  button {
+    span {
+      min-width: 200px;
+      color: $warningRed;
+      font-weight: bold;
+    }
+
+    &.stopped span{
+      color: $successGreen;
+    }
   }
 }

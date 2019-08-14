@@ -13,9 +13,9 @@ import {
   STARTED_SERVICES,
   TRAFFIC_OPTION,
   UNLOCK_IDENTITY,
-  UPDATE_EMAIL,
   UPDATE_IDENTITY,
   UPDATE_REFERRAL_CODE,
+  UPDATE_EMAIL,
 } from './constants'
 
 import {
@@ -28,7 +28,7 @@ import {
   unlocksIdentity,
   updateIdentity,
   updateReferralCode,
-  updateEmail
+  updateEmailApi
 } from './api'
 
 export const setLocationAction = createAction(ORIGINAL_LOCATION, getOriginalLocation)
@@ -39,7 +39,7 @@ export const updateIdentitiesAction = createAction(UPDATE_IDENTITY, updateIdenti
 
 export const updateReferralAction = createAction(UPDATE_REFERRAL_CODE, updateReferralCode, d => d)
 
-export const updateEmailAction = createAction(UPDATE_EMAIL, updateEmail, d => d)
+export const updateEmailAction = createAction(UPDATE_EMAIL, updateEmailApi, d => d);
 
 export const unlocksIdentityAction = createAction(UNLOCK_IDENTITY, unlocksIdentity, d => d)
 

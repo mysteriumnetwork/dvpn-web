@@ -4,7 +4,7 @@
   display: flex;
   align-items: flex-start;
   font-size: $buttonText;
-  margin-bottom: 14px;
+  margin-bottom: 28px;
 
   p {
     min-width: 128px;
@@ -27,16 +27,19 @@
     margin-top: 8px;
     font-size: $tableHeadFont;
     color: $textLightGrey;
-
-    a {
-      color: $actionPurple;
-    }
   }
 
   .errorText {
     margin-top: 8px;
     font-size: $tableHeadFont;
     color: $warningRed;
+    word-break: break-word;
+  }
+
+  .successText {
+    margin-top: 8px;
+    font-size: $tableHeadFont;
+    color: $successGreen;
     word-break: break-word;
   }
 }
@@ -75,10 +78,8 @@
 
 .editableField {
   position: relative;
-  margin-top: -5px;
   margin-left: -12px;
   display: flex;
-  height: 39px;
   align-items: flex-start;
 }
 

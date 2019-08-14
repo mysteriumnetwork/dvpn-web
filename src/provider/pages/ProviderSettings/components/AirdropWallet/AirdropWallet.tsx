@@ -7,47 +7,56 @@ import { ProviderState, TrafficOptions } from '../../../../reducer'
 import { reduxForm } from 'redux-form/immutable'
 import { compose } from 'redux'
 import immutableProps from '../../../../../hocs/immutableProps'
-import RectangleLoading from '../../../../../ui-kit/components/RectangleLoading'
+// import RectangleLoading from '../../../../../ui-kit/components/RectangleLoading'
 import injectSheet from 'react-jss'
-import SaveIcon from '@material-ui/icons/Save'
-import CancelIcon from '@material-ui/icons/Cancel'
-import IconButton from '@material-ui/core/IconButton'
 import { submit } from '../../../../../utils/reduxForm'
 import { InjectedFormProps } from 'redux-form'
 import validate from './validate'
 import styles from './AirdropWallet.module.scss'
-import { FormattedMessage } from 'react-intl';
+import { NODE_TYPE } from '../../../../../constants'
 
 type Props = InjectedFormProps & {
+  confirmLoading: boolean,
   state: { isWalletEditMode: boolean }
   provider: ProviderState
   onChangeTrafficOption?: (value: string) => void
   formWalletAddressData?: Object
   onSaveWalletAddress?: (data: Object) => void
   onSaveReferralCode?: (data: Object) => void
-  onSaveEmail?: (data: Object) => void
   onSetState?: (data: Object) => void
 }
 
 class AirdropWallet extends React.PureComponent<Props> {
+  state = {
+    initialized: false,
+    confirmed: false
+  }
+
+  componentDidUpdate() {
+    const {
+      initialize,
+      provider,
+    } = this.props
+    const {
+      initialized,
+    } = this.state
+    const payout: any = provider.payout ? { ...provider.payout } : {}
+
+    if (!initialized && payout && payout.loaded) {
+      delete payout.loading
+      delete payout.loaded
+
+      initialize(payout)
+
+      this.setState({
+        initialized: true,
+      })
+    }
+  }
+
   handleTrafficChange = event => {
     const { onChangeTrafficOption } = this.props
     onChangeTrafficOption(event.target.value)
-  }
-
-  handleToggleEmailEditMode = () => {
-    const { provider, onSetState, initialize, reset } = this.props
-    const isEmailEditMode = _.get(provider, 'state.isEmailEditMode')
-    onSetState({ isEmailEditMode: !isEmailEditMode })
-    reset()
-    if (!isEmailEditMode) {
-      initialize({
-        passphrase: '',
-        ethAddress: _.get(provider, 'payout.ethAddress', ''),
-        referralCode: _.get(provider, 'payout.referralCode', ''),
-        email: _.get(provider, 'payout.email', ''),
-      })
-    }
   }
 
   handleToggleWalletEditMode = () => {
@@ -60,7 +69,20 @@ class AirdropWallet extends React.PureComponent<Props> {
         passphrase: '',
         ethAddress: _.get(provider, 'payout.ethAddress', ''),
         referralCode: _.get(provider, 'payout.referralCode', ''),
-        email: _.get(provider, 'payout.email', ''),
+      })
+    }
+  }
+
+  handleReferralEditMode = () => {
+    const { provider, onSetState, initialize, reset } = this.props
+    const isReferralEditMode = _.get(provider, 'state.isReferralEditMode')
+    onSetState({ isReferralEditMode: !isReferralEditMode })
+    reset()
+    if (!isReferralEditMode) {
+      initialize({
+        passphrase: '',
+        ethAddress: _.get(provider, 'payout.ethAddress', ''),
+        referralCode: _.get(provider, 'payout.referralCode', ''),
       })
     }
   }
@@ -68,14 +90,6 @@ class AirdropWallet extends React.PureComponent<Props> {
   handleWalletChange = () => {
     const { formWalletAddressData, provider, onSaveWalletAddress } = this.props
     submit(this.props, () => onSaveWalletAddress({
-      ...formWalletAddressData,
-      id: provider.identity.id,
-    }))
-  }
-
-  handleEmailChange = () => {
-    const { formWalletAddressData, provider, onSaveEmail } = this.props
-    submit(this.props, () => onSaveEmail({
       ...formWalletAddressData,
       id: provider.identity.id,
     }))
@@ -93,121 +107,109 @@ class AirdropWallet extends React.PureComponent<Props> {
     const { provider } = this.props
     const type = provider.originalLocation && provider.originalLocation.node_type
 
-    return Boolean(provider.accessPolicy) && (type === 'residential')
+    return Boolean(provider.accessPolicy) && (type === NODE_TYPE.RESIDENTIAL)
+  }
+
+  handleResendConfirmation = () => {
+    ///TODO
+    this.setState({ confirmed: true, })
   }
 
   render() {
-    const { provider, error, submitting } = this.props
-    console.log(error)
-    const isWalletEditMode = _.get(provider, 'state.isWalletEditMode') || !_.get(provider, 'payout.ethAddress')
-    const isReferralEditMode = _.get(provider, 'state.isReferralEditMode') || !_.get(provider, 'payout.referralCode')
-    const isEmailEditMode = _.get(provider, 'state.isEmailEditMode') || !_.get(provider, 'payout.email')
+    const { provider, error, submitting, confirmLoading } = this.props
+    // const isWalletEditMode = _.get(provider, 'state.isWalletEditMode') || !_.get(provider, 'payout.ethAddress')
+    // const isReferralEditMode = _.get(provider, 'state.isReferralEditMode') || !_.get(provider, 'payout.referralCode')
+    const { confirmed } = this.state //TODO
+
     return (
       <div>
         <div className={styles.flexedRow}>
           <p>{trans('app.provider.settings.wallet')}</p>
 
           <div>
-            {isWalletEditMode ? (
-              <div className={styles.editableField}>
-                <TextField placeholder="0x..." name="ethAddress" disabled={submitting}
-                           className={styles.editableTextField}/>
-                <div className={styles.buttons}>
-                  <IconButton color="primary" onClick={this.handleWalletChange} disabled={submitting}>
-                    <SaveIcon fontSize="small"/>
-                  </IconButton>
-                  <IconButton color="secondary" onClick={this.handleToggleWalletEditMode} disabled={submitting}>
-                    <CancelIcon fontSize="small"/>
-                  </IconButton>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.savedWallet}>
-                {_.get(provider, 'payout.loading') !== false ? (
-                  <div className={styles.flexCenter}>
-                    <RectangleLoading width='370px' height='16px'/>
-                  </div>
-                ) : (
-                  <div className={styles.flexCenter}>
-                    <p>{_.get(provider, 'payout.ethAddress', '')}</p>
-                    <button onClick={this.handleToggleWalletEditMode}>{trans('app.provider.settings.change')}</button>
-                  </div>
-                )}
-              </div>
-            )}
+            {/*{isWalletEditMode ? (*/}
+            <div className={styles.editableField}>
+              <TextField placeholder="0x..." name="ethAddress" disabled={submitting}
+                         className={styles.editableTextField}/>
+
+              {/*<div className={styles.buttons}>*/}
+              {/*  <IconButton color="primary" onClick={this.handleWalletChange} disabled={submitting}>*/}
+              {/*    <SaveIcon fontSize="small"/>*/}
+              {/*  </IconButton>*/}
+              {/*  <IconButton color="secondary" onClick={this.handleToggleWalletEditMode} disabled={submitting}>*/}
+              {/*    <CancelIcon fontSize="small"/>*/}
+              {/*  </IconButton>*/}
+              {/*</div>*/}
+
+            </div>
+            {/*) : (*/}
+            {/*  <div className={styles.savedWallet}>*/}
+            {/*    {_.get(provider, 'payout.loading') !== false ? (*/}
+            {/*      <div className={styles.flexCenter}>*/}
+            {/*        <RectangleLoading width='370px' height='16px'/>*/}
+            {/*      </div>*/}
+            {/*    ) : (*/}
+            {/*      <div className={styles.flexCenter}>*/}
+            {/*        <p>{_.get(provider, 'payout.ethAddress', '')}</p>*/}
+            {/*        <button onClick={this.handleToggleWalletEditMode}>{trans('app.provider.settings.change')}</button>*/}
+            {/*      </div>*/}
+            {/*    )}*/}
+            {/*  </div>*/}
+            {/*)}*/}
             {error && (
               <p className={styles.errorText}>{error}</p>
             )}
             {/*<p className={styles.errorText}>{trans('app.provider.settings.wallet.api-error.ts')}</p>*/}
-            <p className={styles.helperText}>
-              <FormattedMessage
-                id="app.provider.settings.wallet.helper.text"
-                values={{
-                  link: (
-                    <a target="_blank" href="https://metamask.io/" rel="noopener noreferrer">Get it here.</a>
-                  )
-                }}
-              />
-            </p>
-          </div>
-        </div>
-        <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.referral.code')}</p>
-          <div>
-            {isReferralEditMode ? (
-              <div className={styles.editableField}>
-                <TextField placeholder="ABC123" name="referralCode" disabled={submitting}
-                           className={styles.editableTextField}/>
-                <div className={styles.buttons}>
-                  <IconButton color="primary" onClick={this.handleReferralChange} disabled={submitting}>
-                    <SaveIcon fontSize="small"/>
-                  </IconButton>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.savedWallet}>
-                {_.get(provider, 'referral.loading') !== false ? (
-                  <div className={styles.flexCenter}>
-                    <RectangleLoading width='370px' height='16px'/>
-                  </div>
-                ) : (
-                  <p>{_.get(provider, 'payout.referralCode', '')}</p>
-                )}
-              </div>
-            )}
+            <p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>
           </div>
         </div>
         <div className={styles.flexedRow}>
           <p>{trans('app.provider.settings.email')}</p>
           <div>
-            {isEmailEditMode ? (
-              <div className={styles.editableField}>
-                <TextField placeholder="name@domain.com" name="email" disabled={submitting}
-                           className={styles.editableTextField}/>
-                <div className={styles.buttons}>
-                  <IconButton color="primary" onClick={this.handleEmailChange} disabled={submitting}>
-                    <SaveIcon fontSize="small"/>
-                  </IconButton>
-                  <IconButton color="secondary" onClick={this.handleToggleEmailEditMode} disabled={submitting}>
-                    <CancelIcon fontSize="small"/>
-                  </IconButton>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.savedWallet}>
-                {_.get(provider, 'referral.loading') !== false ? (
-                  <div className={styles.flexCenter}>
-                    <RectangleLoading width='370px' height='16px'/>
-                  </div>
-                ) : (
-                  <div className={styles.flexCenter}>
-                    <p>{_.get(provider, 'payout.email', '')}</p>
-                    <button onClick={this.handleToggleEmailEditMode}>{trans('app.provider.settings.change')}</button>
-                  </div>
-                )}
-              </div>
-            )}
+            <div className={styles.editableField}>
+              <TextField
+                placeholder={trans('app.provider.settings.email')}
+                name="email"
+                disabled={submitting}
+                className={styles.editableTextField}
+              />
+            </div>
+            <p className={styles.helperText}>
+              <span className={confirmed ? styles.successText : styles.errorText}>
+                {confirmed ? trans('confirmed') : trans('unconfirmed')}
+              </span>. {!confirmed && !confirmLoading && (<span onClick={this.handleResendConfirmation}>
+                {trans('app.provider.settings.email.resend.confirmation.text')}
+              </span>)}
+            </p>
             <p className={styles.helperText}>{trans('app.provider.settings.email.helper.text')}</p>
+          </div>
+        </div>
+        <div className={styles.flexedRow}>
+          <p>{trans('app.provider.settings.referral.code')}</p>
+          <div>
+            {/*{isReferralEditMode ? (*/}
+            <div className={styles.editableField}>
+              <TextField placeholder="ABC123" name="referralCode" disabled={submitting}
+                         className={styles.editableTextField}/>
+
+              {/*<div className={styles.buttons}>*/}
+              {/*  <IconButton color="primary" onClick={this.handleReferralChange} disabled={submitting}>*/}
+              {/*    <SaveIcon fontSize="small"/>*/}
+              {/*  </IconButton>*/}
+              {/*</div>*/}
+
+            </div>
+            {/*) : (*/}
+            {/*  <div className={styles.savedWallet}>*/}
+            {/*    {_.get(provider, 'referral.loading') !== false ? (*/}
+            {/*      <div className={styles.flexCenter}>*/}
+            {/*        <RectangleLoading width='370px' height='16px'/>*/}
+            {/*      </div>*/}
+            {/*    ) : (*/}
+            {/*      <p>{_.get(provider, 'payout.referralCode', '')}</p>*/}
+            {/*    )}*/}
+            {/*  </div>*/}
+            {/*)}*/}
           </div>
         </div>
         {this.showTrafficOptions && (
