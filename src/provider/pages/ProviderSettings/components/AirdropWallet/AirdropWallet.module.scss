@@ -4,7 +4,7 @@
   display: flex;
   align-items: flex-start;
   font-size: $buttonText;
-  margin-bottom: 14px;
+  margin-bottom: 28px;
 
   p {
     min-width: 128px;
@@ -78,10 +78,8 @@
 
 .editableField {
   position: relative;
-  margin-top: -5px;
   margin-left: -12px;
   display: flex;
-  height: 39px;
   align-items: flex-start;
 }
 
