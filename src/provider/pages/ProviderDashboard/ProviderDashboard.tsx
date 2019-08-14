@@ -6,11 +6,9 @@ import ConnectionInfo from './components/ConnectionInfo/ConnectionInfo'
 import UsersList from './components/UsersList/UsersList'
 import { DefaultProps } from '../../../types'
 import { ProviderState } from '../../reducer'
-import { stopVpnServerStory } from '../../stories'
+import { startVpnServerStory, stopVpnServerStory } from '../../stories'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
-import { Redirect } from 'react-router'
-import { NAV_PROVIDER_SETTINGS } from '../../provider.links'
 import _ from 'lodash'
 import { ServiceInfo } from 'mysterium-vpn-js'
 
@@ -19,6 +17,7 @@ const styles = require('./ProviderDashboard.module.scss')
 type Props = DefaultProps & {
   provider: ProviderState,
   onStopVpnServer: (services: ServiceInfo[]) => Promise<void>
+  onStartVpnServer: Function,
 }
 
 class ProviderDashboard extends React.PureComponent<Props> {
@@ -30,12 +29,18 @@ class ProviderDashboard extends React.PureComponent<Props> {
     return onStopVpnServer(startedServices)
   }
 
+  handleStart = () => {
+    const { onStartVpnServer, provider } = this.props
+
+    return onStartVpnServer(provider)
+  }
+
   render() {
     const { provider } = this.props
+    const isActiveServices = !!provider.startedServices && provider.startedServices.length
+    const startStopFn = isActiveServices ? this.handleDisconnect : this.handleStart
+    // const startStopButtonClassName = isActiveServices ? 'danger' : 'success'
 
-    if (!(provider.startedServices && provider.startedServices.length)) {
-      return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
-    }
     const sessions = Number(provider.sessions && provider.sessions.length) || 0
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
@@ -47,8 +52,12 @@ class ProviderDashboard extends React.PureComponent<Props> {
             {sessions} {trans('app.node.running.attempted')}
           </p>
         </h4>
-        <Button disabled={provider.startedServicePending} onClick={this.handleDisconnect} color="secondary">
-          {trans('app.provider.disconnect.button')}
+        <Button disabled={provider.startedServicePending} onClick={startStopFn} color="secondary" className={isActiveServices ? 'started' : 'stopped'}>
+          {
+            isActiveServices
+              ? trans('app.provider.disconnect.button')
+              : trans('app.provider.settings.start.vpn')
+          }
         </Button>
       </div>
       <ConnectionInfo provider={provider}/>
@@ -63,7 +72,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onStopVpnServer: (services: ServiceInfo[]) => stopVpnServerStory(dispatch, services)
+  onStopVpnServer: (services: ServiceInfo[]) => stopVpnServerStory(dispatch, services),
+  onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

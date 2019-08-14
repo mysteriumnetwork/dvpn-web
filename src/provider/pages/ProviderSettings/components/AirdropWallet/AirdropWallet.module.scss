@@ -35,6 +35,13 @@
     color: $warningRed;
     word-break: break-word;
   }
+
+  .successText {
+    margin-top: 8px;
+    font-size: $tableHeadFont;
+    color: $successGreen;
+    word-break: break-word;
+  }
 }
 
 .radioForm {

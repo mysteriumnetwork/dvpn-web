@@ -9,6 +9,7 @@ import {
   setProviderStateAction,
   startServiceAction,
   stopServiceAction,
+  updateEmailAction,
   updateIdentitiesAction,
   updateReferralAction,
 } from './actions'
@@ -16,7 +17,7 @@ import { ProviderState, TrafficOptions } from './reducer'
 import { ServiceOptions, ServiceTypes } from '../api/data/service'
 import { ConsumerLocation, Identity, ServiceInfo } from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
-import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from './provider.links'
+import { NAV_PROVIDER_DASHBOARD } from './provider.links'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { DispatchResult } from '../types'
 import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
@@ -78,6 +79,7 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
   if (identity) {
     Promise.resolve(dispatch(getIdentityPayoutAction(identity)))
       .catch((e: TequilapiError) => {
+        console.log('error', e)
         if (!e.isNotFoundError) {
           setGeneralError(dispatch, e)
         }
@@ -148,7 +150,6 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
     })
 
   if (services && services.length) {
-    dispatch(push(NAV_PROVIDER_DASHBOARD))
     onServiceStarted(dispatch).catch((e) => {
       if (process.env.NODE_ENV !== 'production') {
         console.error(e)
@@ -177,7 +178,6 @@ export const stopVpnServerStory = async (dispatch: Dispatch, services: ServiceIn
       }
     })
 
-  dispatch(push(NAV_PROVIDER_SETTINGS))
   onServiceStopped(dispatch).catch((e) => {
     if (process.env.NODE_ENV !== 'production') {
       console.error(e)
@@ -202,6 +202,20 @@ export const updateReferralStory = async (
   try {
     await dispatch(updateReferralAction({ id, referralCode }))
     await dispatch(setProviderStateAction({ isReferralEditMode: false }))
+  } catch (e) {
+    apiSubmissionError('walletAddress')(e)
+  }
+}
+
+export const saveSettingsStory = async ({ dispatch, payload }) => {
+  const { id, referralCode, ethAddress, email } = payload
+
+  try {
+    await dispatch(updateReferralAction({ id, referralCode }))
+    await dispatch(updateIdentitiesAction({ id, ethAddress }))
+    await dispatch(updateEmailAction({ id, email }))
+
+    dispatch(push(NAV_PROVIDER_DASHBOARD))
   } catch (e) {
     apiSubmissionError('walletAddress')(e)
   }

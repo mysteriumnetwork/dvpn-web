@@ -11,6 +11,7 @@ import {
   SET_PROVIDER_STATE,
   STARTED_SERVICES,
   TRAFFIC_OPTION,
+  UPDATE_EMAIL,
   UPDATE_IDENTITY,
   UPDATE_REFERRAL_CODE,
 } from './constants'
@@ -55,16 +56,6 @@ export const providerInitState = {
 }
 
 export default typeToReducer({
-  [UPDATE_IDENTITY]: {
-    FULFILLED: (state, action: Action<Identity>) => ({
-      ...state,
-      payout: {
-        ...state.payout,
-        ethAddress: _.get(action, 'meta.ethAddress'),
-      },
-    }),
-  },
-
   [ORIGINAL_LOCATION]: {
     FULFILLED: (state, action: Action<ConsumerLocation>) => ({
       ...state,
@@ -90,14 +81,15 @@ export default typeToReducer({
       ...state,
       payout: {
         loading: false,
+        loaded: true,
       },
     }),
     FULFILLED: (state, action: Action<IdentityPayout>) => ({
       ...state,
       payout: {
-        ethAddress: _.get(action, 'payload.ethAddress'),
-        referralCode: _.get(action, 'payload.referralCode'),
+        ...action.payload,
         loading: false,
+        loaded: true,
       },
       referral: {
         loading: false,
@@ -105,29 +97,36 @@ export default typeToReducer({
     }),
   },
 
+  [UPDATE_IDENTITY]: {
+    FULFILLED: (state, action: Action<Identity>) => ({
+      ...state,
+      payout: {
+        ...state.payout,
+        ethAddress: _.get(action, 'meta.ethAddress'),
+      },
+    }),
+  },
+
   [UPDATE_REFERRAL_CODE]: {
-    PENDING: (state) => ({
-      ...state,
-      referral: {
-        loading: true,
-      },
-    }),
-    REJECTED: (state, action: Action<any>) => ({
-      ...state,
-      referral: {
-        loading: false,
-      },
-    }),
     FULFILLED: (state, action: Action<IdentityPayout>) => {
       return {
         ...state,
         payout: {
           ...state.payout,
           referralCode: _.get(action, 'meta.referralCode'),
-        },
-        referral: {
-          loading: false,
-        },
+        }
+      }
+    },
+  },
+
+  [UPDATE_EMAIL]: {
+    FULFILLED: (state, action: Action<IdentityPayout>) => {
+      return {
+        ...state,
+        payout: {
+          ...state.payout,
+          email: _.get(action, 'meta.email'),
+        }
       }
     },
   },

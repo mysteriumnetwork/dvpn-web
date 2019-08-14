@@ -21,7 +21,14 @@ export default class BrowserLocalStorage implements StorageInterface {
     window && window.localStorage.removeItem(key)
   }
 
-  set<T = any>(key: string, value: T): void {
+  set(key: string, _value: any): void {
+    let value = _value;
+
+    try {
+      value = JSON.parse(_value);
+    } catch (e) {}
+
+    window && window.localStorage.setItem(key, JSON.parse(value));
   }
 
 }

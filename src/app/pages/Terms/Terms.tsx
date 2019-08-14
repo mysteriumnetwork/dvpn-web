@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Link, Redirect, RouteComponentProps } from 'react-router-dom'
-import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
+import { NAV_PROVIDER_DASHBOARD } from '../../../provider/provider.links'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
 import Checkbox from '../../../ui-kit/components/Checkbox/Checkbox'
@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/core'
 import { compose } from 'redux'
 import immutableProps from '../../../hocs/immutableProps'
 import { DefaultProps } from '../../../types'
-import { TermsMd, WarrantyMd } from '@mysteriumnetwork/terms'
+import { TermsEndUser, Warranty } from '@mysteriumnetwork/terms'
 import { version } from '@mysteriumnetwork/terms/package.json'
 import { acceptTermsAction } from './actions'
 import { push } from 'connected-react-router'
@@ -50,15 +50,15 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
 
   render() {
     if (!this.isView && this.props.terms[version]) {
-      return (<Redirect to={NAV_PROVIDER_SETTINGS}/>)
+      return (<Redirect to={NAV_PROVIDER_DASHBOARD}/>)
     }
 
     return (
       <div className={styles.appTermsCover}>
         <div className={styles.appTermsListCover}>
           <h2>{trans('app.onboarding.terms.title')}</h2>
-          <TermsItem title={trans('app.onboarding.terms.title.terms')} body={TermsMd} last={version} tall/>
-          <TermsItem title={trans('app.onboarding.terms.title.warranty')} body={WarrantyMd} last={version}/>
+          <TermsItem title={trans('app.onboarding.terms.title.terms')} body={TermsEndUser} last={version} tall/>
+          <TermsItem title={trans('app.onboarding.terms.title.warranty')} body={Warranty} last={version}/>
         </div>
         <div className={styles.bottomBar}>
           <div className={styles.barContent}>
@@ -70,7 +70,7 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
                           checked={this.state.accept}
                           onChange={this.handleAcceptChange}/>
               </p>
-              <Link to={NAV_PROVIDER_SETTINGS}>
+              <Link to={NAV_PROVIDER_DASHBOARD}>
                 {this.isView ? (
                   <Button color="primary">{trans('app.onboarding.continue.btn')}</Button>
                 ) : (
