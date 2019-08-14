@@ -1,14 +1,14 @@
 import * as React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import injectSheet from 'react-jss'
-import {NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS} from '../../../provider/provider.links'
+import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
 import trans from '../../../trans'
-import {connect} from 'react-redux'
-import {NAV_CLIENT_CONNECTED, NAV_CLIENT_CONNECTING, NAV_CLIENT_DASHBOARD} from '../../../client/client.links'
+import { connect } from 'react-redux'
+import { NAV_CLIENT_CONNECTED, NAV_CLIENT_CONNECTING, NAV_CLIENT_DASHBOARD } from '../../../client/client.links'
 import AppMenu from '../AppMenu/AppMenu'
 import _ from 'lodash'
-import {ConnectionStatus} from 'mysterium-vpn-js'
-import {RootState} from '../../../rootState.type'
+import { ConnectionStatus } from 'mysterium-vpn-js'
+import { RootState } from '../../../rootState.type'
 
 const classNames = require('classnames')
 
@@ -31,6 +31,7 @@ const styles = (theme: any) => ({
     '& > button': {
       padding: 6,
     },
+    height: 43
   },
   tabContainer: {
     borderRadius: 5,
@@ -92,18 +93,7 @@ const clientLinkByConnectionStatus = (status: ConnectionStatus) => {
 }
 
 const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderProps) => {
-  const isLocationOnProviderDashboard = props.routerLocation === NAV_PROVIDER_DASHBOARD;
-  const isProvideSettingsRoute = props.routerLocation === NAV_PROVIDER_SETTINGS;
-  let provideButtonRoute = NAV_PROVIDER_SETTINGS;
-  let provideButtonText = trans('app.header.provide.vpn');
-
-  if (props.startedServices) {
-    provideButtonRoute = NAV_PROVIDER_DASHBOARD;
-  } else if (isProvideSettingsRoute) {
-    provideButtonRoute = NAV_PROVIDER_DASHBOARD;
-    provideButtonText = trans('app.header.backToDashboard');
-  }
-
+  const isProvideSettingsRoute = props.routerLocation === NAV_PROVIDER_SETTINGS
   return (
     <div className={props.classes.appHeader}>
       <div className={props.classes.tabContainer}>
@@ -121,17 +111,18 @@ const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderPr
             : null
         }
         {
-          !isLocationOnProviderDashboard && (
-            <Link to={provideButtonRoute}>
+          isProvideSettingsRoute && (
+            <Link to={NAV_PROVIDER_DASHBOARD}>
               <div
                 className={classNames(props.classes.tab, {
-                  [props.classes.active]: String(props.routerLocation).startsWith('/provider')
+                  [props.classes.active]: true
                 })}
-              >{provideButtonText}</div>
+              >{trans('app.header.backToDashboard')}</div>
             </Link>
           )
         }
       </div>
+      &nbsp;
       {
         props.routerLocation === NAV_PROVIDER_DASHBOARD && (<AppMenu/>)
       }
