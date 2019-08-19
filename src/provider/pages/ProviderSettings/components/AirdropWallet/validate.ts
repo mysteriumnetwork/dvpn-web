@@ -12,15 +12,16 @@ export default (d) => {
   if (data.ethAddress) {
     if (!isValidAddress(data.ethAddress)) {
       err.ethAddress = trans('error.address.format')
-    } else {
-      if (!data.email) {
-        err.email = trans('error.cannot.be.blank')
-      } else if (!isValidEmail(data.email)) {
-        err.email = trans('error.invalid.email')
-      }
+    } else if (!data.email) {
+      err.email = trans('error.cannot.be.blank')
+    }
+  }
+
+  if (data.email) {
+    if (!isValidEmail(data.email)) {
+      err.email = trans('error.invalid.email')
     }
   }
 
   return err
-
 }

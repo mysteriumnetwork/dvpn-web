@@ -1,5 +1,4 @@
 import * as React from 'react'
-import _ from 'lodash'
 import TextField from '../../../../../app/components/ReduxForm/TextField'
 import RadioButton from '../../../../../ui-kit/components/RadioButton/RadioButton'
 import trans from '../../../../../trans'
@@ -13,16 +12,14 @@ import { submit } from '../../../../../utils/reduxForm'
 import { InjectedFormProps } from 'redux-form'
 import validate from './validate'
 import styles from './AirdropWallet.module.scss'
-import { NODE_TYPE } from '../../../../../constants'
 
 type Props = InjectedFormProps & {
   confirmLoading: boolean,
   state: { isWalletEditMode: boolean }
   provider: ProviderState
-  onChangeTrafficOption?: (value: string) => void
-  formWalletAddressData?: Object
-  onSaveWalletAddress?: (data: Object) => void
-  onSaveReferralCode?: (data: Object) => void
+  onInitForm: (submitForm: () => void) => void
+  onSaveSettings: Function
+  formWalletAddressData?: any
   onSetState?: (data: Object) => void
 }
 
@@ -30,6 +27,11 @@ class AirdropWallet extends React.PureComponent<Props> {
   state = {
     initialized: false,
     confirmed: false
+  }
+
+  componentDidMount() {
+    const { onInitForm } = this.props
+    onInitForm(this.submitForm)
   }
 
   componentDidUpdate() {
@@ -46,7 +48,7 @@ class AirdropWallet extends React.PureComponent<Props> {
       delete payout.loading
       delete payout.loaded
 
-      initialize(payout)
+      initialize({ ...payout, trafficOption: provider.trafficOption })
 
       this.setState({
         initialized: true,
@@ -54,60 +56,18 @@ class AirdropWallet extends React.PureComponent<Props> {
     }
   }
 
-  handleTrafficChange = event => {
-    const { onChangeTrafficOption } = this.props
-    onChangeTrafficOption(event.target.value)
-  }
-
-  handleToggleWalletEditMode = () => {
-    const { provider, onSetState, initialize, reset } = this.props
-    const isWalletEditMode = _.get(provider, 'state.isWalletEditMode')
-    onSetState({ isWalletEditMode: !isWalletEditMode })
-    reset()
-    if (!isWalletEditMode) {
-      initialize({
-        passphrase: '',
-        ethAddress: _.get(provider, 'payout.ethAddress', ''),
-        referralCode: _.get(provider, 'payout.referralCode', ''),
-      })
-    }
-  }
-
-  handleReferralEditMode = () => {
-    const { provider, onSetState, initialize, reset } = this.props
-    const isReferralEditMode = _.get(provider, 'state.isReferralEditMode')
-    onSetState({ isReferralEditMode: !isReferralEditMode })
-    reset()
-    if (!isReferralEditMode) {
-      initialize({
-        passphrase: '',
-        ethAddress: _.get(provider, 'payout.ethAddress', ''),
-        referralCode: _.get(provider, 'payout.referralCode', ''),
-      })
-    }
-  }
-
-  handleWalletChange = () => {
-    const { formWalletAddressData, provider, onSaveWalletAddress } = this.props
-    submit(this.props, () => onSaveWalletAddress({
+  submitForm = () => {
+    const { onSaveSettings, formWalletAddressData, provider } = this.props
+    submit(this.props, () => onSaveSettings({
       ...formWalletAddressData,
       id: provider.identity.id,
+      payout: provider.payout
     }))
   }
 
-  handleReferralChange = () => {
-    const { formWalletAddressData, provider, onSaveReferralCode } = this.props
-    submit(this.props, () => onSaveReferralCode({
-      ...formWalletAddressData,
-      id: provider.identity.id,
-    }))
-  }
-
-  get showTrafficOptions() {
-    const { provider } = this.props
-    const type = provider.originalLocation && provider.originalLocation.node_type
-
-    return Boolean(provider.accessPolicy) && (type === NODE_TYPE.RESIDENTIAL)
+  handleTrafficChange = (event) => {
+    const { change } = this.props
+    change('trafficOption', event.target.value)
   }
 
   handleResendConfirmation = () => {
@@ -116,10 +76,9 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 
   render() {
-    const { provider, error, submitting, confirmLoading } = this.props
-    // const isWalletEditMode = _.get(provider, 'state.isWalletEditMode') || !_.get(provider, 'payout.ethAddress')
-    // const isReferralEditMode = _.get(provider, 'state.isReferralEditMode') || !_.get(provider, 'payout.referralCode')
+    const { submitting, confirmLoading, formWalletAddressData, provider } = this.props
     const { confirmed } = this.state //TODO
+    const trafficOptionValue = formWalletAddressData ? formWalletAddressData.trafficOption : provider.trafficOption
 
     return (
       <div>
@@ -127,39 +86,10 @@ class AirdropWallet extends React.PureComponent<Props> {
           <p>{trans('app.provider.settings.wallet')}</p>
 
           <div>
-            {/*{isWalletEditMode ? (*/}
             <div className={styles.editableField}>
               <TextField placeholder="0x..." name="ethAddress" disabled={submitting}
                          className={styles.editableTextField}/>
-
-              {/*<div className={styles.buttons}>*/}
-              {/*  <IconButton color="primary" onClick={this.handleWalletChange} disabled={submitting}>*/}
-              {/*    <SaveIcon fontSize="small"/>*/}
-              {/*  </IconButton>*/}
-              {/*  <IconButton color="secondary" onClick={this.handleToggleWalletEditMode} disabled={submitting}>*/}
-              {/*    <CancelIcon fontSize="small"/>*/}
-              {/*  </IconButton>*/}
-              {/*</div>*/}
-
             </div>
-            {/*) : (*/}
-            {/*  <div className={styles.savedWallet}>*/}
-            {/*    {_.get(provider, 'payout.loading') !== false ? (*/}
-            {/*      <div className={styles.flexCenter}>*/}
-            {/*        <RectangleLoading width='370px' height='16px'/>*/}
-            {/*      </div>*/}
-            {/*    ) : (*/}
-            {/*      <div className={styles.flexCenter}>*/}
-            {/*        <p>{_.get(provider, 'payout.ethAddress', '')}</p>*/}
-            {/*        <button onClick={this.handleToggleWalletEditMode}>{trans('app.provider.settings.change')}</button>*/}
-            {/*      </div>*/}
-            {/*    )}*/}
-            {/*  </div>*/}
-            {/*)}*/}
-            {error && (
-              <p className={styles.errorText}>{error}</p>
-            )}
-            {/*<p className={styles.errorText}>{trans('app.provider.settings.wallet.api-error.ts')}</p>*/}
             <p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>
           </div>
         </div>
@@ -187,51 +117,30 @@ class AirdropWallet extends React.PureComponent<Props> {
         <div className={styles.flexedRow}>
           <p>{trans('app.provider.settings.referral.code')}</p>
           <div>
-            {/*{isReferralEditMode ? (*/}
             <div className={styles.editableField}>
               <TextField placeholder="ABC123" name="referralCode" disabled={submitting}
                          className={styles.editableTextField}/>
-
-              {/*<div className={styles.buttons}>*/}
-              {/*  <IconButton color="primary" onClick={this.handleReferralChange} disabled={submitting}>*/}
-              {/*    <SaveIcon fontSize="small"/>*/}
-              {/*  </IconButton>*/}
-              {/*</div>*/}
-
             </div>
-            {/*) : (*/}
-            {/*  <div className={styles.savedWallet}>*/}
-            {/*    {_.get(provider, 'referral.loading') !== false ? (*/}
-            {/*      <div className={styles.flexCenter}>*/}
-            {/*        <RectangleLoading width='370px' height='16px'/>*/}
-            {/*      </div>*/}
-            {/*    ) : (*/}
-            {/*      <p>{_.get(provider, 'payout.referralCode', '')}</p>*/}
-            {/*    )}*/}
-            {/*  </div>*/}
-            {/*)}*/}
           </div>
         </div>
-        {this.showTrafficOptions && (
-          <div className={styles.flexedRow}>
-            <p>{trans('app.provider.settings.traffic')}</p>
-            <div>
-              <div className={styles.radioForm}>
-                <RadioButton label={trans('app.provider.settings.verified.partner.traffic')}
-                             value={TrafficOptions.SAFE}
-                             onChange={this.handleTrafficChange}
-                             checked={provider.trafficOption === TrafficOptions.SAFE}/>
-                <p className={styles.helperText}>{trans('app.provider.settings.safe.option')}</p>
-              </div>
-              <div className={styles.radioForm}>
-                <RadioButton label={trans('app.provider.settings.all.traffic')}
-                             value={TrafficOptions.ALL}
-                             onChange={this.handleTrafficChange}
-                             checked={provider.trafficOption === TrafficOptions.ALL}/>
-              </div>
+        <div className={styles.flexedRow}>
+          <p>{trans('app.provider.settings.traffic')}</p>
+          <div>
+            <div className={styles.radioForm}>
+              <RadioButton label={trans('app.provider.settings.verified.partner.traffic')}
+                           value={TrafficOptions.SAFE}
+                           onChange={this.handleTrafficChange}
+                           checked={trafficOptionValue === TrafficOptions.SAFE}/>
+              <p className={styles.helperText}>{trans('app.provider.settings.safe.option')}</p>
+            </div>
+            <div className={styles.radioForm}>
+              <RadioButton label={trans('app.provider.settings.all.traffic')}
+                           value={TrafficOptions.ALL}
+                           onChange={this.handleTrafficChange}
+                           checked={trafficOptionValue === TrafficOptions.ALL}/>
             </div>
           </div>
-        )}
+        </div>
       </div>
     )
   }

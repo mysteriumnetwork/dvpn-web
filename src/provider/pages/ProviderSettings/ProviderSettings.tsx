@@ -12,25 +12,23 @@ import { compose } from 'redux'
 import _ from 'lodash'
 import immutableProps from '../../../hocs/immutableProps'
 import ErrorDialog from '../../../ui-kit/components/ErrorDialog'
-import { setProviderStateAction, setTrafficOptionAction } from '../../actions'
+import { setProviderStateAction } from '../../actions'
 
 const styles = require('./ProviderSettings.module.scss')
 
 type Props = DefaultProps & {
   provider: ProviderState
   formWalletAddressData?: Object
-  // onSaveWalletAddress?: (data: Object) => void
-  // onSaveReferralCode?: (data: Object) => void
   onSetState?: (data: Object) => void
   onChangeTrafficOption: (value: string) => void
-  // onChangeResidentialConfirm: (value: boolean) => void
-  // onStartVpnServer: (provider: ProviderState) => void,
   onInit?: Function
   onDestroy?: Function
   onSaveSettings?: Function
 }
 
 class ProviderSettings extends React.PureComponent<Props> {
+  private submitForm: Function
+
   constructor(props, context) {
     super(props, context)
 
@@ -43,14 +41,12 @@ class ProviderSettings extends React.PureComponent<Props> {
     return onDestroy && onDestroy()
   }
 
-  handleStartVpnServer = () => {
-    const { formWalletAddressData, provider, onSaveSettings } = this.props
+  handleInitForm = (submit) => {
+    this.submitForm = submit
+  }
 
-    onSaveSettings({
-      ...formWalletAddressData,
-      id: provider.identity.id,
-      trafficOption: provider.trafficOption,
-    })
+  handleSaveSettings = () => {
+    this.submitForm && this.submitForm()
   }
 
   handleCloseErrorDialog = () => {
@@ -76,17 +72,13 @@ class ProviderSettings extends React.PureComponent<Props> {
               <div title={id}>{id.substr(2)}</div>
             </div>
             {/* render dynamic Airdrop Wallet */}
-            <AirdropWallet {...this.props} />
+            <AirdropWallet {...this.props} onInitForm={this.handleInitForm}/>
           </div>
-
-          {/* ExpansionPanel component with connection information
-          <ConnectionInformation provider={provider}
-                                 onChangeResidentialConfirm={onChangeResidentialConfirm}/>*/}
         </div>
       </div>
       <div className={styles.bottomBar}>
         <Button
-          onClick={this.handleStartVpnServer}
+          onClick={this.handleSaveSettings}
           color="primary"
         >
           {trans('app.provider.settings.save')}
@@ -110,13 +102,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onInit: () => initProviderStory(dispatch),
   onDestroy: () => destroyProvidersStory(dispatch),
-  onChangeTrafficOption: (value) => dispatch(setTrafficOptionAction(value)),
-  // onChangeResidentialConfirm: (value) => dispatch(setResidentialConfirmAction(value)),
-  // onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),
-  // onSaveWalletAddress: (value) => updateIdentitiesStory(dispatch, value),
-  // onSaveReferralCode: (value) => updateReferralStory(dispatch, value),
   onSetState: (value) => dispatch(setProviderStateAction(value)),
-  onSaveSettings: payload => saveSettingsStory({ payload, dispatch }),
+  onSaveSettings: (payload) => saveSettingsStory(dispatch, payload),
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)

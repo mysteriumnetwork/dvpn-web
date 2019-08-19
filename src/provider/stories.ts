@@ -7,6 +7,7 @@ import {
   setIdentityAction,
   setLocationAction,
   setProviderStateAction,
+  setTrafficOptionAction,
   startServiceAction,
   stopServiceAction,
   updateEmailAction,
@@ -207,16 +208,26 @@ export const updateReferralStory = async (
   }
 }
 
-export const saveSettingsStory = async ({ dispatch, payload }) => {
-  const { id, referralCode, ethAddress, email } = payload
+export const saveSettingsStory = async (dispatch: Dispatch, payload: any) => {
+  console.log('saveSettingsStory', payload)
+  const { payout, id, referralCode, ethAddress, email, trafficOption } = payload
 
   try {
-    await dispatch(updateReferralAction({ id, referralCode }))
-    await dispatch(updateIdentitiesAction({ id, ethAddress }))
-    await dispatch(updateEmailAction({ id, email }))
+    if (payout.ethAddress || ethAddress) {
+      await dispatch(updateIdentitiesAction({ id, ethAddress }))
+    }
+    if (payout.email || email) {
+      await dispatch(updateEmailAction({ id, email }))
+    }
+    if (payout.referralCode || referralCode) {
+      await dispatch(updateReferralAction({ id, referralCode }))
+    }
+
+    dispatch(setTrafficOptionAction(trafficOption))
 
     dispatch(push(NAV_PROVIDER_DASHBOARD))
   } catch (e) {
+    console.log('saveSettingsStory', {e})
     apiSubmissionError('walletAddress')(e)
   }
 }
