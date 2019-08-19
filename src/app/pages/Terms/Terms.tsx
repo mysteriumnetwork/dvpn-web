@@ -21,6 +21,7 @@ const styles = require('./Terms.module.scss')
 type Props = DefaultProps & RouteComponentProps & {
   terms: TermsState
   onAcceptTerms: Function
+  view?: boolean
 }
 
 class Terms extends React.PureComponent<Props, { accept: boolean }> {
@@ -43,9 +44,10 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
     this.setState({ accept: !this.state.accept })
   }
 
-  get isView() {
-    const { state } = this.props.location
-    return Boolean(state && state.view)
+  get isView(): boolean {
+    // const { state } = this.props.location
+    // return Boolean(state && state.view)
+    return this.props.view
   }
 
   render() {
@@ -54,7 +56,7 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
     }
 
     return (
-      <div className={styles.appTermsCover}>
+      <div className={this.isView ? styles.appTermsCoverView : styles.appTermsCover}>
         <div className={styles.appTermsListCover}>
           <h2>{trans('app.onboarding.terms.title')}</h2>
           <TermsItem title={trans('app.onboarding.terms.title.terms')} body={TermsEndUser} last={version} tall/>
@@ -64,21 +66,21 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
           <div className={styles.barContent}>
             <div>
               <span className={styles.catMysterium}/>
-              <p className={styles.termsAgreement}>
-                <Checkbox label={trans('app.onboarding.terms.agree.label')}
-                          disabled={this.isView}
-                          checked={this.state.accept}
-                          onChange={this.handleAcceptChange}/>
-              </p>
-              <Link to={NAV_PROVIDER_DASHBOARD}>
-                {this.isView ? (
-                  <Button color="primary">{trans('app.onboarding.continue.btn')}</Button>
-                ) : (
+              {!this.isView && (
+                <p className={styles.termsAgreement}>
+                  <Checkbox label={trans('app.onboarding.terms.agree.label')}
+                            disabled={this.isView}
+                            checked={this.state.accept}
+                            onChange={this.handleAcceptChange}/>
+                </p>
+              )}
+              {!this.isView && (
+                <Link to={NAV_PROVIDER_DASHBOARD}>
                   <Button color="primary"
                           disabled={!this.state.accept}
                           onClick={this.handleAcceptSubmit}>{trans('app.onboarding.continue.btn')}</Button>
-                )}
-              </Link>
+                </Link>
+              )}
             </div>
           </div>
         </div>
