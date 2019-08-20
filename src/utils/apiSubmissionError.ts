@@ -19,7 +19,5 @@ export default (formName) => (error: TequilapiError) => {
 
   errors._error = (data && data.message) || error.message
 
-  console.log('xxx', errors)
-
   throw new SubmissionError(errors)
 }

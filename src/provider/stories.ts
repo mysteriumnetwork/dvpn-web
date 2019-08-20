@@ -209,7 +209,6 @@ export const updateReferralStory = async (
 }
 
 export const saveSettingsStory = async (dispatch: Dispatch, payload: any) => {
-  console.log('saveSettingsStory', payload)
   const { payout, id, referralCode, ethAddress, email, trafficOption } = payload
 
   try {
@@ -227,7 +226,6 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: any) => {
 
     dispatch(push(NAV_PROVIDER_DASHBOARD))
   } catch (e) {
-    console.log('saveSettingsStory', {e})
     apiSubmissionError('walletAddress')(e)
   }
 }
