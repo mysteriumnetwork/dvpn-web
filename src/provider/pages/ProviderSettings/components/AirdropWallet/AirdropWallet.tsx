@@ -78,7 +78,7 @@ class AirdropWallet extends React.PureComponent<Props> {
   render() {
     const { submitting, confirmLoading, formWalletAddressData, provider } = this.props
     const { confirmed } = this.state //TODO
-    const trafficOptionValue = formWalletAddressData ? formWalletAddressData.trafficOption : provider.trafficOption
+    const trafficOptionValue = (formWalletAddressData && formWalletAddressData.trafficOption) ? formWalletAddressData.trafficOption : provider.trafficOption
 
     return (
       <div>
