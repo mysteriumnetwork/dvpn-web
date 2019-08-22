@@ -4,7 +4,7 @@ import { settingsRoutes } from '../../../settings/settings.routes'
 import { RouteDef } from '../../app.types'
 import { providerRoutes } from '../../../provider/provider.routes'
 import { clientRoutes } from '../../../client/client.routes'
-import { NAV_LOGIN, NAV_TERMS, NAV_WELCOME } from '../../app.links'
+import { NAV_LOGIN, NAV_TERMS, NAV_TERMS_VIEW, NAV_WELCOME } from '../../app.links'
 import AppHeader from '../AppHeader/AppHeader'
 import Terms from '../../pages/Terms/Terms'
 import Welcome from '../../pages/Welcome/Welcome'
@@ -27,6 +27,7 @@ const Main = (props) => (
     <ConnectionHistory/>
     <AppWarningPopup/>
     {mainRoutes.map(route => (<Route exact key={route.path} path={route.path} component={route.component}/>))}
+    <Route exact key={NAV_TERMS_VIEW} path={NAV_TERMS_VIEW} component={(props) => <Terms {...props} view/>} />
   </div>
 )
 

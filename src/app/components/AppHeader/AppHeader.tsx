@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import injectSheet from 'react-jss'
-import { NAV_PROVIDER_DASHBOARD, NAV_PROVIDER_SETTINGS } from '../../../provider/provider.links'
+import { NAV_PROVIDER_DASHBOARD } from '../../../provider/provider.links'
 import trans from '../../../trans'
 import { connect } from 'react-redux'
 import { NAV_CLIENT_CONNECTED, NAV_CLIENT_CONNECTING, NAV_CLIENT_DASHBOARD } from '../../../client/client.links'
@@ -93,7 +93,7 @@ const clientLinkByConnectionStatus = (status: ConnectionStatus) => {
 }
 
 const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderProps) => {
-  const isProvideSettingsRoute = props.routerLocation === NAV_PROVIDER_SETTINGS
+  const isProvideDashboardRoute = props.routerLocation === NAV_PROVIDER_DASHBOARD
   return (
     <div className={props.classes.appHeader}>
       <div className={props.classes.tabContainer}>
@@ -111,7 +111,7 @@ const AppHeader: React.FunctionComponent<IAppHeaderProps> = (props: IAppHeaderPr
             : null
         }
         {
-          isProvideSettingsRoute && (
+          !isProvideDashboardRoute && (
             <Link to={NAV_PROVIDER_DASHBOARD}>
               <div
                 className={classNames(props.classes.tab, {

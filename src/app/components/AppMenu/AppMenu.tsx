@@ -6,10 +6,10 @@ import trans from '../../../trans'
 import SocialLinks from './components/SocialLinks'
 
 import styles from './AppMenu.module.scss'
-import { NAV_TERMS } from '../../app.links'
+import { NAV_TERMS_VIEW } from '../../app.links'
 import withEvents, { EventsProps } from '../../../hocs/withEvents'
 import { APP_EVENTS } from '../../../constants'
-import { NAV_PROVIDER_SETTINGS } from 'provider/provider.links';
+import { NAV_PROVIDER_SETTINGS } from 'provider/provider.links'
 
 type Props = EventsProps & {}
 
@@ -64,15 +64,14 @@ class AppMenu extends React.Component<Props> {
           </Link>
 
           <Link to={{
-            pathname: NAV_TERMS,
-            state: { view: true }
+            pathname: NAV_TERMS_VIEW
           }} onClick={this.handleMenuClose}>
             <MenuItem className={styles.menuItem}>{trans('app.menu.terms.conditions')}</MenuItem>
           </Link>
 
           {/*<MenuItem className={styles.menuItem}>{trans('app.menu.privacy.policy')}</MenuItem>*/}
 
-          <a href="mailto:fbounty@mysterium.network">
+          <a href="mailto:bounty@mysterium.network">
             <MenuItem className={styles.menuItem}> {trans('app.menu.send.feedback')} </MenuItem>
           </a>
 

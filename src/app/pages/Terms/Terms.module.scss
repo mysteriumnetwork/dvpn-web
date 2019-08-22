@@ -9,6 +9,11 @@
   background: $whiteColor;
 }
 
+.appTermsCoverView {
+  @extend .appTermsCover;
+  height: calc(100vh - 40px);
+}
+
 .appTermsListCover {
   max-width: 440px;
   margin: 0 auto;
