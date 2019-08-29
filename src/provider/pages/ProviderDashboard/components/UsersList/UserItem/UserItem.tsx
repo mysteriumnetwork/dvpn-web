@@ -18,7 +18,7 @@ const UserItem = (props: Props) => {
       <td title={consumerId}>
         <div className={styles.ipItem}>
           {/*<div className="flag-icon"/>*/}
-          <a target={'_blank'}
+          <a target={'_blank'} className='underlined'
              href={`${process.env.REACT_APP_MYSTERIUM_NETWORK}/session/${id}`}>{id}</a>
         </div>
       </td>

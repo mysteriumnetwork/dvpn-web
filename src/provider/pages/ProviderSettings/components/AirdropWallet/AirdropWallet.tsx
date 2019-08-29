@@ -70,15 +70,17 @@ class AirdropWallet extends React.PureComponent<Props> {
     change('trafficOption', event.target.value)
   }
 
-  handleResendConfirmation = () => {
-    ///TODO
-    this.setState({ confirmed: true, })
-  }
+  // handleResendConfirmation = () => {
+  //   ///TODO
+  //   this.setState({ confirmed: true, })
+  // }
 
   render() {
-    const { submitting, confirmLoading, formWalletAddressData, provider } = this.props
-    const { confirmed } = this.state //TODO
-    const trafficOptionValue = (formWalletAddressData && formWalletAddressData.trafficOption) ? formWalletAddressData.trafficOption : provider.trafficOption
+    const { submitting, /*confirmLoading,*/ formWalletAddressData, provider } = this.props
+    // const { confirmed } = this.state //TODO
+    const trafficOptionValue = (formWalletAddressData && formWalletAddressData.trafficOption)
+      ? formWalletAddressData.trafficOption
+      : provider.trafficOption
 
     return (
       <div>
@@ -90,7 +92,12 @@ class AirdropWallet extends React.PureComponent<Props> {
               <TextField placeholder="0x..." name="ethAddress" disabled={submitting}
                          className={styles.editableTextField}/>
             </div>
-            <p className={styles.helperText}>{trans('app.provider.settings.wallet.helper.text')}</p>
+            <p className={styles.helperText}>
+              {trans('app.provider.settings.wallet.helper.text')} <a
+              href="http://metamask.io/" target="_blank" rel="noopener noreferrer" className="underlined purple">
+              {trans('app.provider.settings.wallet.helper.text.link')}
+            </a>
+            </p>
           </div>
         </div>
         <div className={styles.flexedRow}>
@@ -104,13 +111,13 @@ class AirdropWallet extends React.PureComponent<Props> {
                 className={styles.editableTextField}
               />
             </div>
-            <p className={styles.helperText}>
-              <span className={confirmed ? styles.successText : styles.errorText}>
-                {confirmed ? trans('confirmed') : trans('unconfirmed')}
-              </span>. {!confirmed && !confirmLoading && (<span onClick={this.handleResendConfirmation}>
-                {trans('app.provider.settings.email.resend.confirmation.text')}
-              </span>)}
-            </p>
+            {/*<p className={styles.helperText}>*/}
+            {/*  <span className={confirmed ? styles.successText : styles.errorText}>*/}
+            {/*    {confirmed ? trans('confirmed') : trans('unconfirmed')}*/}
+            {/*  </span>. {!confirmed && !confirmLoading && (<span onClick={this.handleResendConfirmation}>*/}
+            {/*    {trans('app.provider.settings.email.resend.confirmation.text')}*/}
+            {/*  </span>)}*/}
+            {/*</p>*/}
             <p className={styles.helperText}>{trans('app.provider.settings.email.helper.text')}</p>
           </div>
         </div>

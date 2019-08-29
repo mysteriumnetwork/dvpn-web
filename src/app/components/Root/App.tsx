@@ -27,7 +27,7 @@ const Main = (props) => (
     <ConnectionHistory/>
     <AppWarningPopup/>
     {mainRoutes.map(route => (<Route exact key={route.path} path={route.path} component={route.component}/>))}
-    <Route exact key={NAV_TERMS_VIEW} path={NAV_TERMS_VIEW} component={(props) => <Terms {...props} view/>} />
+    <Route exact key={NAV_TERMS_VIEW} path={NAV_TERMS_VIEW} component={(props) => <Terms {...props} view/>}/>
   </div>
 )
 
@@ -50,6 +50,7 @@ const styles = () => ({
     padding: '1px 3px',
     fontSize: '85%',
     opacity: 0.5,
+    background: '#f7f7f7'
   }
 })
 

@@ -64,9 +64,11 @@
 }
 
 .barContent a {
-  top: 16px;
-  right: -150px;
   position: absolute;
+  top: 16px;
+  left: 100%;
+  margin-left: 20px;
+  white-space: nowrap;
 }
 
 .bottomBar {

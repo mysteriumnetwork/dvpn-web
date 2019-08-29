@@ -3,6 +3,7 @@ import _ from 'lodash'
 import trans from '../../../../../trans'
 import { ProviderState } from '../../../../reducer'
 import FlagIcon from '../../../../../ui-kit/components/FlagIcon'
+import classNames from 'classnames'
 
 const styles = require('./ConnectionInfo.module.scss')
 
@@ -41,7 +42,7 @@ const ConnectionInfo = (props: Props) => {
             <td>
               <a target={'_blank'}
                  href={`${process.env.REACT_APP_MYSTERIUM_NETWORK}/node/${service.providerId}/${service.type || ''}`}
-                 className={styles.infoID}>{service.providerId}</a>
+                 className={classNames( styles.infoID, 'underlined')}>{service.providerId}</a>
             </td>
           </tr>)
         })

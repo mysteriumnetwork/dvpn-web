@@ -81,6 +81,14 @@ img {
 a {
   color: white;
   text-decoration: none;
+
+  &.underlined {
+    text-decoration: underline;
+  }
+
+  &.purple {
+    color: $actionPurple;
+  }
 }
 
 a:focus {
@@ -92,6 +100,10 @@ a:hover {
   opacity: 1;
   text-decoration: none;
   cursor: pointer;
+
+  &.underlined {
+    text-decoration: underline;
+  }
 }
 
 h1,
