@@ -77,7 +77,7 @@ class Login extends React.PureComponent<Props> {
           <Button type="submit"
                   color="primary"
                   disabled={pristine || invalid || submitting}>
-            {trans('submit')}
+            {trans('enter')}
           </Button>
         </div>
       </form>
