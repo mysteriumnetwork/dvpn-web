@@ -6,12 +6,11 @@ import { ProviderState, TrafficOptions } from '../../../../reducer'
 import { reduxForm } from 'redux-form/immutable'
 import { compose } from 'redux'
 import immutableProps from '../../../../../hocs/immutableProps'
-// import RectangleLoading from '../../../../../ui-kit/components/RectangleLoading'
-import injectSheet from 'react-jss'
 import { submit } from '../../../../../utils/reduxForm'
 import { InjectedFormProps } from 'redux-form'
 import validate from './validate'
 import styles from './AirdropWallet.module.scss'
+import { withStyles } from '@material-ui/core'
 
 type Props = InjectedFormProps & {
   confirmLoading: boolean,
@@ -39,9 +38,11 @@ class AirdropWallet extends React.PureComponent<Props> {
       initialize,
       provider,
     } = this.props
+
     const {
       initialized,
     } = this.state
+
     const payout: any = provider.payout ? { ...provider.payout } : {}
 
     if (!initialized && payout && payout.loaded) {
@@ -81,6 +82,8 @@ class AirdropWallet extends React.PureComponent<Props> {
     const trafficOptionValue = (formWalletAddressData && formWalletAddressData.trafficOption)
       ? formWalletAddressData.trafficOption
       : provider.trafficOption
+
+    console.log('**', {submitting, formWalletAddressData, provider})
 
     return (
       <div>
@@ -153,7 +156,7 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 }
 
-export default injectSheet({})(compose(
+export default withStyles({})(compose(
   reduxForm({
     form: 'walletAddress',
     validate,

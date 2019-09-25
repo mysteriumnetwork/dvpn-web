@@ -55,6 +55,8 @@ const styles = (theme: any) => ({
 
 export interface IButtonProps extends ButtonProps {
   classes?: IStyles
+  component?: any;
+  to?: any
 }
 
 const AppButton: React.FunctionComponent<IButtonProps> = (props: IButtonProps) => {

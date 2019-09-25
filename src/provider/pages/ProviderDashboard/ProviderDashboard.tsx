@@ -6,9 +6,6 @@ import ConnectionInfo from './components/ConnectionInfo/ConnectionInfo'
 import UsersList from './components/UsersList/UsersList'
 import { DefaultProps } from '../../../types'
 import { ProviderState } from '../../reducer'
-import { startVpnServerStory, stopVpnServerStory } from '../../stories'
-import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core'
 import _ from 'lodash'
 import { ServiceInfo } from 'mysterium-vpn-js'
 
@@ -20,7 +17,7 @@ type Props = DefaultProps & {
   onStartVpnServer: Function,
 }
 
-class ProviderDashboard extends React.PureComponent<Props> {
+export class ProviderDashboard extends React.PureComponent<Props> {
 
   handleDisconnect = () => {
     const { onStopVpnServer } = this.props
@@ -52,7 +49,8 @@ class ProviderDashboard extends React.PureComponent<Props> {
             {sessions} {trans('app.node.running.attempted')}
           </p>
         </h4>
-        <Button disabled={provider.startedServicePending} onClick={startStopFn} color="secondary" className={isActiveServices ? 'started' : 'stopped'}>
+        <Button disabled={provider.startedServicePending} onClick={startStopFn} color="secondary"
+                className={isActiveServices ? 'started' : 'stopped'}>
           {
             isActiveServices
               ? trans('app.provider.disconnect.button')
@@ -66,17 +64,3 @@ class ProviderDashboard extends React.PureComponent<Props> {
     </div>)
   }
 }
-
-const mapStateToProps = (state) => ({
-  provider: state.provider || {}
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  onStopVpnServer: (services: ServiceInfo[]) => stopVpnServerStory(dispatch, services),
-  onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),
-})
-
-const withConnect = connect(mapStateToProps, mapDispatchToProps)
-
-export default withStyles({})(withConnect(ProviderDashboard))
-

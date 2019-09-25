@@ -15,9 +15,9 @@ class TermsItem extends React.PureComponent<Props> {
     more: false
   }
 
-  handleMore = () => this.setState({ more: true })
-
-  handleLess = () => this.setState({ more: false })
+  // handleMore = () => this.setState({ more: true })
+  //
+  // handleLess = () => this.setState({ more: false })
 
   render() {
     const { title, body, last } = this.props

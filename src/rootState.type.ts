@@ -6,7 +6,7 @@ import { TermsState } from './app/pages/Terms/reducer'
 import { RouterState } from 'connected-react-router'
 
 export type RootState = {
-  timer: string,
+  timer: number,
   router: RouterState,
   form: FormStateMap,
   language: any,

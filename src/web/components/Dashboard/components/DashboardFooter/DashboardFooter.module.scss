@@ -1,0 +1,28 @@
+@import '../../../../../constatnts';
+
+.dashboardFooter {
+  padding-top: 24px;
+}
+
+.footerMenu {
+  display: inline-flex;
+  padding: 16px;
+
+  li + li {
+    margin-left: 2em;
+  }
+
+  .menuItem {
+    opacity: .8;
+    transition: opacity .2s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.version {
+  color: $textLightGrey;
+  text-align: center;
+}
