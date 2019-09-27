@@ -102,6 +102,7 @@
   "close": "Close",
   "submit": "Submit",
   "enter": "Enter",
+  "action.send": "Send",
   "error.address.format": "Invalid wallet address format",
   "error.cannot.be.blank": "Cannot be blank",
   "error.invalid.email": "Invalid email",
@@ -121,5 +122,14 @@
   "form.validate.required": "Required",
   "confirmed": "Confirmed",
   "unconfirmed": "Unconfirmed",
+  "app.dashboard.need.help": "Need Help?",
+  "report.issue.description.placeholder": "Describe what went wrong",
+  "report.issue.email.placeholder": "Your Email (optional)",
+  "report.issue.email.helper": "Can be used to contact regarding your feedback.",
+  "report.issue.info": "By submitting this form, I agree to send to Mysterium Network some account information like IP, country and system information which will be used to improve the services.",
+  "report.issue.succeed.title": "Thank you!",
+  "report.issue.succeed.info": "Your report was submitted. We will review it, and if you left your email, get back with the results.",
+  "report.issue.fail.title": "Oops!",
+  "report.issue.fail.info": "Could not send the error report.<br/> Drop an email to <a href=\"mailto:support@mysterium.network\">support@mysterium.network</a>.",
   "": ""
 }

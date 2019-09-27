@@ -16,8 +16,9 @@ interface IStyles {
 
 const styles = (theme: any) => ({
   disabled: {
-    color: '#fff !important',
-    background: '#cccccc !important',
+    opacity: 0.6,
+    // color: '#fff !important',
+    // background: '#cccccc !important',
     boxShadow: 'none !important',
   },
   rootStyled: {

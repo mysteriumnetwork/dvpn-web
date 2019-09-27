@@ -1,10 +1,11 @@
 import React, { FC } from 'react'
+import trans from '../../../../../trans'
 
 const styles = require('./DashboardHelp.module.scss')
 
 export const DashboardHelp: FC = () => (
   <div className={styles.dashboardHelp}>
-    <div className={styles.title}>Need Help?</div>
+    <div className={styles.title}>{trans('app.dashboard.need.help')}</div>
     <a className={styles.email} href="mailto:bounty@mysterium.network">
       bounty@mysterium.network
     </a>

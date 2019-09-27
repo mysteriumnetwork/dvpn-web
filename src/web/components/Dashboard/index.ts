@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
 import { Dashboard } from './Dashboard'
-import { withStyles } from '@material-ui/core'
 import { ServiceInfo } from 'mysterium-vpn-js'
 import { startVpnServerStory, stopVpnServerStory } from '../../../provider/stories'
+import withEvents from '../../../hocs/withEvents'
 
 const mapStateToProps = (state) => ({
   provider: state.provider || {},
@@ -16,4 +16,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)
 
-export default withStyles({})(withConnect(Dashboard))
+export default withEvents(withConnect(Dashboard))

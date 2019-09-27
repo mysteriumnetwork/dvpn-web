@@ -9,9 +9,11 @@
   a, button {
     margin-top: 12px;
     padding: .8em 2em !important;
+    min-height: 48px !important;
     color: $actionPurple;
     font-weight: bold;
     transition: all .3s ease;
+    background: $whiteColor !important;
 
     &:hover {
       color: $darkPurple;

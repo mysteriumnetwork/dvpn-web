@@ -12,7 +12,6 @@ export default (formName) => (error: TequilapiError) => {
 
   if (data && data.errors) {
     Object.keys(data.errors).forEach((key: string) => {
-      console.log('xxx', key, data.errors[key])
       errors[key] = Array.from(data.errors[key]).map((item: any) => item.message)
     })
   }

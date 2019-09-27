@@ -2,7 +2,7 @@ import { Dispatch, Store } from 'redux'
 import { RootState } from '../rootState.type'
 import _ from 'lodash'
 import { initAppFetchStory, initServerEventsStory } from '../provider/stories'
-import { authAuthLoginAction, healthCheckAction } from './actions'
+import { authAuthLoginAction, healthCheckAction, sendReportIssueAction } from './actions'
 
 export const initAppStory = (store: Store<RootState>) => {
   startAppStory(store.dispatch, _.get(store.getState(), 'provider.startedServices'))
@@ -25,3 +25,6 @@ const startAppStory = (dispatch: Dispatch, services: any) => Promise.all([
   initServerEventsStory(dispatch, services)
 ])
 
+export const sendReportIssueStory = async (dispatch: Dispatch, formData: any) => {
+  await dispatch(sendReportIssueAction(formData))
+}

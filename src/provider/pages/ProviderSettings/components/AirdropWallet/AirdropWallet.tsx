@@ -83,12 +83,10 @@ class AirdropWallet extends React.PureComponent<Props> {
       ? formWalletAddressData.trafficOption
       : provider.trafficOption
 
-    console.log('**', {submitting, formWalletAddressData, provider})
-
     return (
       <div>
         <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.wallet')}</p>
+          <p className={styles.label}>{trans('app.provider.settings.wallet')}</p>
 
           <div>
             <div className={styles.editableField}>
@@ -104,7 +102,7 @@ class AirdropWallet extends React.PureComponent<Props> {
           </div>
         </div>
         <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.email')}</p>
+          <p className={styles.label}>{trans('app.provider.settings.email')}</p>
           <div>
             <div className={styles.editableField}>
               <TextField
@@ -125,7 +123,7 @@ class AirdropWallet extends React.PureComponent<Props> {
           </div>
         </div>
         <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.referral.code')}</p>
+          <p className={styles.label}>{trans('app.provider.settings.referral.code')}</p>
           <div>
             <div className={styles.editableField}>
               <TextField placeholder="ABC123" name="referralCode" disabled={submitting}
@@ -134,7 +132,7 @@ class AirdropWallet extends React.PureComponent<Props> {
           </div>
         </div>
         <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.traffic')}</p>
+          <p className={styles.label}>{trans('app.provider.settings.traffic')}</p>
           <div>
             <div className={styles.radioForm}>
               <RadioButton label={trans('app.provider.settings.verified.partner.traffic')}

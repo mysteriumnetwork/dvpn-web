@@ -18,7 +18,6 @@ import { ProviderState, TrafficOptions } from './reducer'
 import { ServiceOptions, ServiceTypes } from '../api/data/service'
 import { ConsumerLocation, Identity, ServiceInfo } from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
-import { NAV_PROVIDER_DASHBOARD } from './provider.links'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { DispatchResult } from '../types'
 import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
@@ -30,7 +29,6 @@ export const initServerEventsStory = (dispatch: Dispatch, services: any) => {
       const { serviceInfo = [] } = payload || null
       const startedServices: ServiceInfo[] = services
       const shouldFetch = !(startedServices && startedServices.length) && (serviceInfo && serviceInfo.length)
-      console.log({ shouldFetch })
       Promise.resolve(shouldFetch ? fetchServiceStory(dispatch) : serviceInfo)
         .then((serviceInfo) => {
           return (serviceInfo && serviceInfo.length)
@@ -80,7 +78,6 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
   if (identity) {
     Promise.resolve(dispatch(getIdentityPayoutAction(identity)))
       .catch((e: TequilapiError) => {
-        console.log('error', e)
         if (!e.isNotFoundError) {
           setGeneralError(dispatch, e)
         }
@@ -208,7 +205,7 @@ export const updateReferralStory = async (
   }
 }
 
-export const saveSettingsStory = async (dispatch: Dispatch, payload: any) => {
+export const saveSettingsStory = async (dispatch: Dispatch, payload: any, to: any) => {
   const { payout, id, referralCode, ethAddress, email, trafficOption } = payload
 
   try {
@@ -224,7 +221,7 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: any) => {
 
     dispatch(setTrafficOptionAction(trafficOption))
 
-    dispatch(push(NAV_PROVIDER_DASHBOARD))
+    dispatch(push(to))
   } catch (e) {
     apiSubmissionError('walletAddress')(e)
   }

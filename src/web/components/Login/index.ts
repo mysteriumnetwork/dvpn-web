@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { compose } from 'redux'
-import { reduxForm } from 'redux-form'
+import { reduxForm } from 'redux-form/immutable'
 import { connect } from 'react-redux'
 import immutableProps from '../../../hocs/immutableProps'
 import { Login } from '../../../app/pages/Login/Login'

@@ -4,12 +4,13 @@ import trans from '../../../../../trans'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { NAV_SETTINGS, NAV_STATISTICS } from '../../../../web.links'
-import { ServiceProviderProps } from '../../types'
+import { DashboardProps } from '../../types'
 import _ from 'lodash'
+import { APP_EVENTS } from '../../../../../constants'
 
 const styles = require('./DashboardActions.module.scss')
 
-export class DashboardActions extends PureComponent<ServiceProviderProps> {
+export class DashboardActions extends PureComponent<DashboardProps> {
   handleDisconnect = () => {
     const { onStopVpnServer } = this.props
     const startedServices = _.get(this.props, 'provider.startedServices')
@@ -23,6 +24,11 @@ export class DashboardActions extends PureComponent<ServiceProviderProps> {
     return onStartVpnServer(provider)
   }
 
+  handleReportIssue = () => {
+    const { events } = this.props
+    events.emit(APP_EVENTS.REPORT_ISSUE_DIALOG_SHOW)
+  }
+
   render() {
     const { provider } = this.props
     const isActiveServices = Boolean(provider.startedServices && provider.startedServices.length)
@@ -32,7 +38,7 @@ export class DashboardActions extends PureComponent<ServiceProviderProps> {
         <Button color="secondary" component={Link} to={NAV_STATISTICS}>
           {trans('app.menu.statistics')}
         </Button>
-        <Button color="secondary">
+        <Button color="secondary" onClick={this.handleReportIssue}>
           {trans('app.menu.report.issue')}
         </Button>
         <Button color="secondary" component={Link} to={NAV_SETTINGS}>
@@ -46,11 +52,6 @@ export class DashboardActions extends PureComponent<ServiceProviderProps> {
             ? (<i className="tree-balls-loader purple"/>)
             : trans(isActiveServices ? 'app.provider.disconnect.button' : 'app.provider.settings.start.vpn')}
         </Button>
-        <div className={styles.activeConnections}>
-          &nbsp;
-          {isActiveServices && trans('app.node.running.active.connections', { count: 0 })}
-          &nbsp;
-        </div>
       </div>
     )
   }

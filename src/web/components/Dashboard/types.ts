@@ -1,5 +1,6 @@
 import { ProviderState } from '../../../provider/reducer'
 import { NodeHealthcheck, ServiceInfo } from 'mysterium-vpn-js'
+import { EventsProps } from '../../../hocs/withEvents'
 
 export type ServiceProviderProps = {
   node?: NodeHealthcheck,
@@ -7,4 +8,6 @@ export type ServiceProviderProps = {
   onStopVpnServer: (services: ServiceInfo[]) => Promise<void>
   onStartVpnServer: Function,
 }
+
+export type DashboardProps = ServiceProviderProps & EventsProps
 
