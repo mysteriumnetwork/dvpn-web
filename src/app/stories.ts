@@ -3,6 +3,7 @@ import { RootState } from '../rootState.type'
 import _ from 'lodash'
 import { initAppFetchStory, initServerEventsStory } from '../provider/stories'
 import { authAuthLoginAction, healthCheckAction, sendReportIssueAction } from './actions'
+import { getUserConfig } from './api'
 
 export const initAppStory = (store: Store<RootState>) => {
   startAppStory(store.dispatch, _.get(store.getState(), 'provider.startedServices'))
@@ -19,8 +20,14 @@ export const healthCheckStory = (dispatch: Dispatch) => {
     .catch((e) => (process.env.NODE_ENV !== 'production') && console.error(e))
 }
 
+export const userConfigStory = (dispatch: Dispatch) => {
+  return getUserConfig()
+    .catch((e) => (process.env.NODE_ENV !== 'production') && console.error(e))
+}
+
 const startAppStory = (dispatch: Dispatch, services: any) => Promise.all([
   healthCheckStory(dispatch),
+  userConfigStory(dispatch),
   initAppFetchStory(dispatch),
   initServerEventsStory(dispatch, services)
 ])
@@ -28,3 +35,4 @@ const startAppStory = (dispatch: Dispatch, services: any) => Promise.all([
 export const sendReportIssueStory = async (dispatch: Dispatch, formData: any) => {
   await dispatch(sendReportIssueAction(formData))
 }
+

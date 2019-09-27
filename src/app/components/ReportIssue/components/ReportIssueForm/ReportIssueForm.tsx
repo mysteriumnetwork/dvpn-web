@@ -22,7 +22,7 @@ export const ReportIssueForm: FC<ReportIssueFormProps> = ({ submitting, invalid,
       multiline
       fullWidth
       placeholder={trans('report.issue.description.placeholder')}
-      name="message"
+      name="description"
       disabled={submitting}
     />
     <TextField

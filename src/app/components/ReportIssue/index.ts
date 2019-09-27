@@ -22,7 +22,7 @@ const validate = (value) => {
   const data: Issue = (value && value.toJS && value.toJS()) || value
 
   return {
-    message: (data.message && data.message !== '') ? null : trans('error.cannot.be.blank'),
+    description: (data.description && data.description !== '') ? null : trans('error.cannot.be.blank'),
     email: (data.email && !isValidEmail(data.email) ? trans('error.invalid.email') : ''),
   }
 }
