@@ -29,13 +29,11 @@ export enum ServerSentEventTypes {
 }
 
 export class ServerSentEvents extends EventEmitter {
-
   protected evtSource: EventSource
   protected middlewareAPI: MiddlewareAPI
 
   constructor(public readonly url, public readonly withCredentials: boolean = false) {
     super()
-
   }
 
   static get SUPPORTED() {
