@@ -1,7 +1,12 @@
 import { connect } from 'react-redux'
 import { Dashboard } from './Dashboard'
 import { ServiceInfo } from 'mysterium-vpn-js'
-import { startVpnServerStory, stopVpnServerStory } from '../../../provider/stories'
+import {
+  destroyProvidersStory,
+  initProviderStory,
+  startVpnServerStory,
+  stopVpnServerStory
+} from '../../../provider/stories'
 import withEvents from '../../../hocs/withEvents'
 
 const mapStateToProps = (state) => ({
@@ -10,6 +15,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  onInit: () => initProviderStory(dispatch),
+  onDestroy: () => destroyProvidersStory(dispatch),
   onStopVpnServer: (services: ServiceInfo[]) => stopVpnServerStory(dispatch, services),
   onStartVpnServer: (provider) => startVpnServerStory(dispatch, provider),
 })

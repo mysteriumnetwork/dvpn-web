@@ -11,15 +11,17 @@ import { InjectedFormProps } from 'redux-form'
 import validate from './validate'
 import styles from './AirdropWallet.module.scss'
 import { withStyles } from '@material-ui/core'
+import { ConfigData } from '../../../../../types'
 
 type Props = InjectedFormProps & {
   confirmLoading: boolean,
   state: { isWalletEditMode: boolean }
   provider: ProviderState
+  configData: ConfigData
   onInitForm: (submitForm: () => void) => void
   onSaveSettings: Function
   formWalletAddressData?: any
-  onSetState?: (data: Object) => void
+  onSetState?: (data: Object) => void,
 }
 
 class AirdropWallet extends React.PureComponent<Props> {
@@ -58,11 +60,11 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 
   submitForm = () => {
-    const { onSaveSettings, formWalletAddressData, provider } = this.props
+    const { onSaveSettings, formWalletAddressData, provider, configData } = this.props
     submit(this.props, () => onSaveSettings({
       ...formWalletAddressData,
-      id: provider.identity.id,
-      payout: provider.payout
+      provider,
+      configData
     }))
   }
 

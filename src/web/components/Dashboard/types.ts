@@ -7,6 +7,8 @@ export type ServiceProviderProps = {
   provider: ProviderState,
   onStopVpnServer: (services: ServiceInfo[]) => Promise<void>
   onStartVpnServer: Function,
+  onInit: Function,
+  onDestroy: Function
 }
 
 export type DashboardProps = ServiceProviderProps & EventsProps

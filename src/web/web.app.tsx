@@ -16,14 +16,14 @@ import Welcome from './components/Welcome'
 import Terms from './components/Terms'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
-import AppHeader from './components/AppHeader'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import FAQ from './components/FAQ'
 import { version } from '@mysteriumnetwork/terms/package.json'
 import { TermsState } from '../app/pages/Terms/reducer'
 import { NodeHealthcheck } from 'mysterium-vpn-js'
 import Settings from './components/Settings'
-import Statistics from '../provider/pages/ProviderDashboard'
+import Statistics from './components/Statistics'
+import TermsView from './components/TermsView'
 import ReportIssue from '../app/components/ReportIssue'
 
 type AppProps = RouteComponentProps & {
@@ -46,14 +46,11 @@ class App extends React.PureComponent<AppProps> {
             !terms[version] && (<Redirect to={NAV_TERMS} strict/>)
           }
           <Route exact key={NAV_DASHBOARD} path={NAV_DASHBOARD} component={Dashboard}/>
-          <div>
-            <AppHeader/>
-            <Route exact key={NAV_SETTINGS} path={NAV_SETTINGS} component={Settings}/>
-            <Route exact key={NAV_STATISTICS} path={NAV_STATISTICS} component={Statistics}/>
-            <Route exact key={NAV_TERMS_VIEW} path={NAV_TERMS_VIEW} component={(props) => <Terms {...props} view/>}/>
-            <Route exact key={NAV_FAQ} path={NAV_FAQ} component={FAQ}/>
-            <Route exact key={NAV_PRIVACY_POLICY} path={NAV_PRIVACY_POLICY} component={PrivacyPolicy}/>
-          </div>
+          <Route exact key={NAV_SETTINGS} path={NAV_SETTINGS} component={Settings}/>
+          <Route exact key={NAV_STATISTICS} path={NAV_STATISTICS} component={Statistics}/>
+          <Route exact key={NAV_FAQ} path={NAV_FAQ} component={FAQ}/>
+          <Route exact key={NAV_PRIVACY_POLICY} path={NAV_PRIVACY_POLICY} component={PrivacyPolicy}/>
+          <Route exact key={NAV_TERMS_VIEW} path={NAV_TERMS_VIEW} component={TermsView}/>
         </Switch>
         <ReportIssue/>
       </div>

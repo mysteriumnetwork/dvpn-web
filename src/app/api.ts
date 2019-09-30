@@ -15,10 +15,7 @@ export const sendReportIssue = async (value): Promise<any> => {
 }
 
 export const getUserConfig = async (): Promise<Config> => {
-  const config = await tequilapiClient.userConfig()
-  console.log('sendReportIssue: ', config)
-
-  return config
+  return await tequilapiClient.userConfig()
 }
 
 export const updateUserConfig = async (data: any): Promise<void> => {

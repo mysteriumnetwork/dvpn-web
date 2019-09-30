@@ -13,3 +13,8 @@ export type DefaultProps = {
 export interface DispatchResult<T = any> extends BaseAction {
   value?: T
 }
+
+export interface ConfigData {
+  'access-policy'?: { 'list'?: string },
+  'openvpn'?: { 'port'?: number }
+}

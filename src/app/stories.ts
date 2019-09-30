@@ -2,8 +2,7 @@ import { Dispatch, Store } from 'redux'
 import { RootState } from '../rootState.type'
 import _ from 'lodash'
 import { initAppFetchStory, initServerEventsStory } from '../provider/stories'
-import { authAuthLoginAction, healthCheckAction, sendReportIssueAction } from './actions'
-import { getUserConfig } from './api'
+import { authAuthLoginAction, getUserConfigAction, healthCheckAction, sendReportIssueAction } from './actions'
 
 export const initAppStory = (store: Store<RootState>) => {
   startAppStory(store.dispatch, _.get(store.getState(), 'provider.startedServices'))
@@ -21,7 +20,7 @@ export const healthCheckStory = (dispatch: Dispatch) => {
 }
 
 export const userConfigStory = (dispatch: Dispatch) => {
-  return getUserConfig()
+  return Promise.resolve(dispatch(getUserConfigAction()))
     .catch((e) => (process.env.NODE_ENV !== 'production') && console.error(e))
 }
 
