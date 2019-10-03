@@ -1,0 +1,15 @@
+.containerStyled {
+  padding: 12px;
+}
+
+.paperStyled {
+  overflow-y: unset !important;
+  border-radius: 4px !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.7) !important;
+  max-width: 480px !important;
+  min-width: 480px !important;
+}
+
+.rootBackdrop {
+  background: rgba(0, 0, 0, 0.3) !important;
+}

@@ -6,6 +6,11 @@
   font-size: $buttonText;
   margin-bottom: 28px;
 
+  .label {
+    padding-top: 5px;
+    line-height: 140%;
+  }
+
   p {
     min-width: 128px;
     font-size: 14px;

@@ -1,0 +1,25 @@
+@import "../../../../../constatnts";
+
+.root {
+  min-width: 480px;
+  text-align: center;
+}
+
+.title {
+  padding-top: 24px;
+  font-weight: bold;
+}
+
+.info {
+  padding: 24px;
+
+  a {
+    color: $actionPurple;
+    text-decoration: underline !important;
+    transition: color .3s ease;
+
+    &:hover {
+      color: $darkPurple;
+    }
+  }
+}

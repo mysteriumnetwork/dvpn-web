@@ -4,13 +4,15 @@ import { ProviderState } from './provider/reducer'
 import { ClientState } from './client/reducer'
 import { TermsState } from './app/pages/Terms/reducer'
 import { RouterState } from 'connected-react-router'
+import { AppState } from './app/reducer'
 
 export type RootState = {
-  timer: string,
+  timer: number,
+  language: any,
   router: RouterState,
   form: FormStateMap,
-  language: any,
   provider: ProviderState,
   client: ClientState,
-  terms: TermsState
+  terms: TermsState,
+  app: AppState
 }

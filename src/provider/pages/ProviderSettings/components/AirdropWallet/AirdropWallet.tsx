@@ -6,21 +6,22 @@ import { ProviderState, TrafficOptions } from '../../../../reducer'
 import { reduxForm } from 'redux-form/immutable'
 import { compose } from 'redux'
 import immutableProps from '../../../../../hocs/immutableProps'
-// import RectangleLoading from '../../../../../ui-kit/components/RectangleLoading'
-import injectSheet from 'react-jss'
 import { submit } from '../../../../../utils/reduxForm'
 import { InjectedFormProps } from 'redux-form'
 import validate from './validate'
 import styles from './AirdropWallet.module.scss'
+import { withStyles } from '@material-ui/core'
+import { ConfigData } from '../../../../../types'
 
 type Props = InjectedFormProps & {
   confirmLoading: boolean,
   state: { isWalletEditMode: boolean }
   provider: ProviderState
+  configData: ConfigData
   onInitForm: (submitForm: () => void) => void
   onSaveSettings: Function
   formWalletAddressData?: any
-  onSetState?: (data: Object) => void
+  onSetState?: (data: Object) => void,
 }
 
 class AirdropWallet extends React.PureComponent<Props> {
@@ -39,9 +40,11 @@ class AirdropWallet extends React.PureComponent<Props> {
       initialize,
       provider,
     } = this.props
+
     const {
       initialized,
     } = this.state
+
     const payout: any = provider.payout ? { ...provider.payout } : {}
 
     if (!initialized && payout && payout.loaded) {
@@ -57,11 +60,11 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 
   submitForm = () => {
-    const { onSaveSettings, formWalletAddressData, provider } = this.props
+    const { onSaveSettings, formWalletAddressData, provider, configData } = this.props
     submit(this.props, () => onSaveSettings({
       ...formWalletAddressData,
-      id: provider.identity.id,
-      payout: provider.payout
+      provider,
+      configData
     }))
   }
 
@@ -85,7 +88,7 @@ class AirdropWallet extends React.PureComponent<Props> {
     return (
       <div>
         <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.wallet')}</p>
+          <p className={styles.label}>{trans('app.provider.settings.wallet')}</p>
 
           <div>
             <div className={styles.editableField}>
@@ -101,7 +104,7 @@ class AirdropWallet extends React.PureComponent<Props> {
           </div>
         </div>
         <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.email')}</p>
+          <p className={styles.label}>{trans('app.provider.settings.email')}</p>
           <div>
             <div className={styles.editableField}>
               <TextField
@@ -122,7 +125,7 @@ class AirdropWallet extends React.PureComponent<Props> {
           </div>
         </div>
         <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.referral.code')}</p>
+          <p className={styles.label}>{trans('app.provider.settings.referral.code')}</p>
           <div>
             <div className={styles.editableField}>
               <TextField placeholder="ABC123" name="referralCode" disabled={submitting}
@@ -131,7 +134,7 @@ class AirdropWallet extends React.PureComponent<Props> {
           </div>
         </div>
         <div className={styles.flexedRow}>
-          <p>{trans('app.provider.settings.traffic')}</p>
+          <p className={styles.label}>{trans('app.provider.settings.traffic')}</p>
           <div>
             <div className={styles.radioForm}>
               <RadioButton label={trans('app.provider.settings.verified.partner.traffic')}
@@ -153,7 +156,7 @@ class AirdropWallet extends React.PureComponent<Props> {
   }
 }
 
-export default injectSheet({})(compose(
+export default withStyles({})(compose(
   reduxForm({
     form: 'walletAddress',
     validate,

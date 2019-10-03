@@ -16,13 +16,13 @@ import {
 } from './actions'
 import { ProviderState, TrafficOptions } from './reducer'
 import { ServiceOptions, ServiceTypes } from '../api/data/service'
-import { ConsumerLocation, Identity, ServiceInfo } from 'mysterium-vpn-js'
+import { ConsumerLocation, Identity, IdentityPayout, ServiceInfo } from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
-import { NAV_PROVIDER_DASHBOARD } from './provider.links'
 import apiSubmissionError from '../utils/apiSubmissionError'
-import { DispatchResult } from '../types'
+import { ConfigData, DispatchResult } from '../types'
 import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
 import TequilapiError from 'mysterium-vpn-js/lib/tequilapi-error'
+import { updateUserConfigAction } from '../app/actions'
 
 export const initServerEventsStory = (dispatch: Dispatch, services: any) => {
   serverSentEvents.connect()
@@ -30,7 +30,6 @@ export const initServerEventsStory = (dispatch: Dispatch, services: any) => {
       const { serviceInfo = [] } = payload || null
       const startedServices: ServiceInfo[] = services
       const shouldFetch = !(startedServices && startedServices.length) && (serviceInfo && serviceInfo.length)
-      console.log({ shouldFetch })
       Promise.resolve(shouldFetch ? fetchServiceStory(dispatch) : serviceInfo)
         .then((serviceInfo) => {
           return (serviceInfo && serviceInfo.length)
@@ -80,7 +79,6 @@ export const fetchIdentityStory = async (dispatch: Dispatch) => {
   if (identity) {
     Promise.resolve(dispatch(getIdentityPayoutAction(identity)))
       .catch((e: TequilapiError) => {
-        console.log('error', e)
         if (!e.isNotFoundError) {
           setGeneralError(dispatch, e)
         }
@@ -208,23 +206,38 @@ export const updateReferralStory = async (
   }
 }
 
-export const saveSettingsStory = async (dispatch: Dispatch, payload: any) => {
-  const { payout, id, referralCode, ethAddress, email, trafficOption } = payload
+type SettingsPayload = IdentityPayout & {
+  trafficOption: TrafficOptions
+  configData: ConfigData
+  provider: ProviderState
+}
+
+export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPayload, to: any) => {
+  const { referralCode, ethAddress, email, trafficOption, provider, configData } = payload
 
   try {
-    if (payout.ethAddress || ethAddress) {
-      await dispatch(updateIdentitiesAction({ id, ethAddress }))
+    if ((provider.payout && provider.payout.ethAddress) || ethAddress) {
+      await dispatch(updateIdentitiesAction({ id: provider.identity.id, ethAddress }))
     }
-    if (payout.email || email) {
-      await dispatch(updateEmailAction({ id, email }))
+    if ((provider.payout && provider.payout.email) || email) {
+      await dispatch(updateEmailAction({ id: provider.identity.id, email }))
     }
-    if (payout.referralCode || referralCode) {
-      await dispatch(updateReferralAction({ id, referralCode }))
+    if ((provider.payout && provider.payout.referralCode) || referralCode) {
+      await dispatch(updateReferralAction({ id: provider.identity.id, referralCode }))
     }
 
     dispatch(setTrafficOptionAction(trafficOption))
 
-    dispatch(push(NAV_PROVIDER_DASHBOARD))
+    if (configData) {
+      const newData = Object.assign({}, configData, {
+        'access-policy': (TrafficOptions.SAFE && provider.accessPolicy) ? { list: provider.accessPolicy.id } : {}
+      })
+
+      console.log(newData)
+      dispatch(updateUserConfigAction(newData))
+    }
+
+    dispatch(push(to))
   } catch (e) {
     apiSubmissionError('walletAddress')(e)
   }

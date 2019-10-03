@@ -55,7 +55,7 @@ export const providerInitState = {
   residentialConfirm: false,
 }
 
-export default typeToReducer({
+export default typeToReducer<ProviderState>({
   [ORIGINAL_LOCATION]: {
     FULFILLED: (state, action: Action<ConsumerLocation>) => ({
       ...state,
@@ -73,16 +73,17 @@ export default typeToReducer({
   [IDENTITY_PAYOUT]: {
     PENDING: (state) => ({
       ...state,
-      payout: {
+      payout: ({
+        ...(state.payout || {}),
         loading: true,
-      },
+      }) as any,
     }),
     REJECTED: (state, action: Action<any>) => ({
       ...state,
       payout: {
         loading: false,
         loaded: true,
-      },
+      } as any,
     }),
     FULFILLED: (state, action: Action<IdentityPayout>) => ({
       ...state,
@@ -90,7 +91,7 @@ export default typeToReducer({
         ...action.payload,
         loading: false,
         loaded: true,
-      },
+      } as any,
       referral: {
         loading: false,
       },
@@ -101,9 +102,9 @@ export default typeToReducer({
     FULFILLED: (state, action: Action<Identity>) => ({
       ...state,
       payout: {
-        ...state.payout,
+        ...(state.payout || {}),
         ethAddress: _.get(action, 'meta.ethAddress'),
-      },
+      } as any,
     }),
   },
 
@@ -112,9 +113,9 @@ export default typeToReducer({
       return {
         ...state,
         payout: {
-          ...state.payout,
+          ...(state.payout || {}),
           referralCode: _.get(action, 'meta.referralCode'),
-        }
+        } as any
       }
     },
   },
@@ -154,7 +155,7 @@ export default typeToReducer({
     residentialConfirm: action.payload,
   }),
 
-  [NAT_STATUS]: (state, action: Action<boolean>) => ({
+  [NAT_STATUS]: (state, action: Action<NatStatus>) => ({
     ...state,
     natStatus: action.payload,
   }),

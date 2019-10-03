@@ -18,7 +18,14 @@
   height: 24px;
   min-width: 24px;
   background: url('app/components/assets/images/app-icons.svg') no-repeat;
-  background-size: 184px 232px;
+  background-size: 184px 262px;
+}
+.app-icons-alt {
+  opacity: .5;
+  transition: opacity .1s ease-in-out;
+  &:hover {
+    opacity: .9;
+  }
 }
 .residentialIPIcon {
   background-position: -112px -40px;
@@ -38,11 +45,17 @@
 .telegram:hover {
   background-position: -1px -208px;
 }
+.telegram-alt {
+  background-position: -1px -239px;
+}
 .medium {
   background-position: -33px -176px;
 }
 .medium:hover {
   background-position: -33px -208px;
+}
+.medium-alt {
+  background-position: -33px -239px;
 }
 .tweeter {
   background-position: -65px -176px;
@@ -50,11 +63,17 @@
 .tweeter:hover {
   background-position: -65px -208px;
 }
+.tweeter-alt {
+  background-position: -65px -239px;
+}
 .reddit {
   background-position: -97px -176px;
 }
 .reddit:hover {
   background-position: -97px -208px;
+}
+.reddit-alt {
+  background-position: -97px -239px;
 }
 .facebook {
   background-position: -129px -176px;
@@ -62,11 +81,17 @@
 .facebook:hover {
   background-position: -129px -208px;
 }
+.facebook-alt {
+  background-position: -129px -239px;
+}
 .github {
   background-position: -161px -176px;
 }
 .github:hover {
-  background-position: -161px -176px;
+  background-position: -161px -208px;
+}
+.github-alt {
+  background-position: -161px -239px;
 }
 .quality-1 {
   background-position: 1px -140px;

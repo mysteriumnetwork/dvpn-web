@@ -2,26 +2,19 @@ import * as React from 'react'
 import trans from '../../../trans'
 import styles from './Login.module.scss'
 import { DefaultProps } from '../../../types'
-import injectSheet from 'react-jss'
-import { compose } from 'redux'
 import { InjectedFormProps } from 'redux-form'
-import { reduxForm } from 'redux-form/immutable'
-import { connect } from 'react-redux'
-import immutableProps from '../../../hocs/immutableProps'
 import TextField from '../../../app/components/ReduxForm/TextField'
 import Button from '../../../ui-kit/components/Button/Button'
 import ErrorIcon from '@material-ui/icons/ErrorOutline'
 import { Redirect } from 'react-router'
-import { loginStory } from '../../stories'
-import _ from 'lodash'
-import { NAV_TERMS } from '../../app.links'
 
 type Props = DefaultProps & InjectedFormProps & {
+  redirectTo: any
   onSubmit?: Function
   startedServices?: any
 }
 
-class Login extends React.PureComponent<Props> {
+export class Login extends React.PureComponent<Props> {
   handleChange = (data: any) => {
     const { onSubmit, startedServices } = this.props
 
@@ -34,7 +27,7 @@ class Login extends React.PureComponent<Props> {
     const { handleSubmit, submitting, pristine, invalid, error, submitSucceeded } = this.props
 
     if (submitSucceeded) {
-      return <Redirect to={NAV_TERMS}/>
+      return <Redirect to={this.props.redirectTo}/>
     }
 
     return (
@@ -85,15 +78,3 @@ class Login extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  startedServices: _.get(state, 'provider.startedServices') || []
-})
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (value, startedServices) => loginStory(dispatch, value, startedServices),
-})
-
-export default injectSheet({})(compose(
-  reduxForm({ form: 'auth-login' }),
-  connect(mapStateToProps, mapDispatchToProps),
-  immutableProps,
-)(Login))

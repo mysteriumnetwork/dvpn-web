@@ -22,16 +22,12 @@ export interface ProposalsFilter {
   favorite?: boolean
 }
 
-export interface ClientState {
+export interface ClientState extends ProposalsCountsInterface {
   isAskSortProposal: boolean,
   filter?: ProposalsFilter
   proposals?: Proposal[],
   proposalsPending?: boolean,
   proposalSelected?: Proposal,
-  proposalsCount?: number,
-  proposalsFavoritesCount?: number,
-  proposalsByCountryCounts?: Map<string, number>,
-  proposalsByTypeCounts?: Map<string, number>,
   connectionFailed?: any
   connectionStatus?: ConnectionStatus
   connectionSessionId?: string
@@ -45,7 +41,7 @@ export const clientInitState = {
   isAskSortProposal: true
 }
 
-export default typeToReducer({
+export default typeToReducer<ClientState>({
 
   [PROPOSALS]: {
     PENDING: (state) => ({ ...state, proposalsPending: true }),

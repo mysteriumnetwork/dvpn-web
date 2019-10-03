@@ -1,18 +1,11 @@
 import * as React from 'react'
 import { Link, Redirect, RouteComponentProps } from 'react-router-dom'
-import { NAV_PROVIDER_DASHBOARD } from '../../../provider/provider.links'
 import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
 import Checkbox from '../../../ui-kit/components/Checkbox/Checkbox'
-import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core'
-import { compose } from 'redux'
-import immutableProps from '../../../hocs/immutableProps'
 import { DefaultProps } from '../../../types'
 import { TermsEndUser, Warranty } from '@mysteriumnetwork/terms'
 import { version } from '@mysteriumnetwork/terms/package.json'
-import { acceptTermsAction } from './actions'
-import { push } from 'connected-react-router'
 import { TermsState } from './reducer'
 import TermsItem from './components/TermsItem/TermsItem'
 
@@ -20,11 +13,12 @@ const styles = require('./Terms.module.scss')
 
 type Props = DefaultProps & RouteComponentProps & {
   terms: TermsState
+  redirectTo: any
   onAcceptTerms: Function
   view?: boolean
 }
 
-class Terms extends React.PureComponent<Props, { accept: boolean }> {
+export class Terms extends React.PureComponent<Props, { accept: boolean }> {
   constructor(props) {
     super(props)
     this.state = { accept: false }
@@ -52,14 +46,14 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
 
   render() {
     if (!this.isView && this.props.terms[version]) {
-      return (<Redirect to={NAV_PROVIDER_DASHBOARD}/>)
+      return (<Redirect to={this.props.redirectTo}/>)
     }
 
     return (
       <div className={this.isView ? styles.appTermsCoverView : styles.appTermsCover}>
         <div className={styles.appTermsListCover}>
           <h2>{trans('app.onboarding.terms.title')}</h2>
-          <TermsItem title={trans('app.onboarding.terms.title.terms')} body={TermsEndUser} last={version} tall/>
+          <TermsItem title={trans('app.onboarding.terms.title.terms')} body={TermsEndUser} last={version}/>
           <TermsItem title={trans('app.onboarding.terms.title.warranty')} body={Warranty} last={version}/>
         </div>
         <div className={styles.bottomBar}>
@@ -75,7 +69,7 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
                 </p>
               )}
               {!this.isView && (
-                <Link to={NAV_PROVIDER_DASHBOARD}>
+                <Link to={this.props.redirectTo}>
                   <Button color="primary"
                           disabled={!this.state.accept}
                           onClick={this.handleAcceptSubmit}>{trans('app.onboarding.continue.btn')}</Button>
@@ -88,18 +82,3 @@ class Terms extends React.PureComponent<Props, { accept: boolean }> {
     )
   }
 }
-
-const mapStateToProps = (state) => ({
-  terms: state.terms
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  onAcceptTerms: (value) => {
-    dispatch(acceptTermsAction(value))
-    dispatch(push(NAV_PROVIDER_DASHBOARD))
-  }
-})
-
-const withConnect = connect(mapStateToProps, mapDispatchToProps)
-
-export default withStyles({})(compose(withConnect, immutableProps)(Terms))
