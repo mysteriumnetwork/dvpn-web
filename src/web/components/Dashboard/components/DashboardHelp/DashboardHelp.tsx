@@ -6,9 +6,9 @@ const styles = require('./DashboardHelp.module.scss')
 export const DashboardHelp: FC = () => (
   <div className={styles.dashboardHelp}>
     <div className={styles.title}>{trans('app.dashboard.need.help')}</div>
-    <a className={styles.email} href="mailto:bounty@mysterium.network">
-      bounty@mysterium.network
-    </a>
+    {/*<a className={styles.email} href="mailto:bounty@mysterium.network">*/}
+    {/*  bounty@mysterium.network*/}
+    {/*</a>*/}
     <ul className={styles.followList}>
       <li>
         <a href="https://t.me/mysterium_network" target="_blank" rel="noopener noreferrer">
