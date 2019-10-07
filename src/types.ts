@@ -15,6 +15,7 @@ export interface DispatchResult<T = any> extends BaseAction {
 }
 
 export interface ConfigData {
-  'access-policy'?: { 'list'?: string },
-  'openvpn'?: { 'port'?: number }
+  'access-policy'?: { 'list'?: string }
+  openvpn?: { 'port'?: number }
+  shaper?: { enabled?: boolean }
 }

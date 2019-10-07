@@ -61,6 +61,7 @@ export interface IRadioButtonProps {
   label?: string
   value?: string | number | boolean
   checked?: any
+  disabled?: boolean
   onChange?: any
   classes: IStyles
   style?: React.CSSProperties
@@ -85,6 +86,7 @@ const RadioButton: React.SFC<IRadioButtonProps> = (props: IRadioButtonProps) => 
         }}
         icon={<span className={props.classes.customIcon} />}
         checkedIcon={<span className={props.classes.customIconChecked} />}
+        disabled={props.disabled}
       />
     }
     label={props.label}

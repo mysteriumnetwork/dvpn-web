@@ -9,7 +9,6 @@ export const healthCheck = async (): Promise<NodeHealthcheck> => {
 
 export const sendReportIssue = async (value): Promise<any> => {
   const data: Issue = (value && value.toJS && value.toJS()) || value
-  // console.log('sendReportIssue: ', data)
 
   return tequilapiClient.reportIssue(data)
 }
@@ -19,6 +18,5 @@ export const getUserConfig = async (): Promise<Config> => {
 }
 
 export const updateUserConfig = async (data: any): Promise<void> => {
-  console.log('setUserConfig: ', data)
   return await tequilapiClient.updateUserConfig({ data })
 }

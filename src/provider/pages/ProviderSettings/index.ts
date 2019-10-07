@@ -1,4 +1,4 @@
-import { getFormValues } from 'redux-form/immutable'
+import { getFormValues, reduxForm } from 'redux-form/immutable'
 import { destroyProvidersStory, initProviderStory, saveSettingsStory } from '../../stories'
 import { setProviderStateAction } from '../../actions'
 import { connect } from 'react-redux'
@@ -7,6 +7,7 @@ import { compose } from 'redux'
 import immutableProps from '../../../hocs/immutableProps'
 import { ProviderSettings } from './ProviderSettings'
 import { NAV_PROVIDER_DASHBOARD } from '../../provider.links'
+import validate from './components/AirdropWallet/validate'
 
 const mapStateToProps = (state) => ({
   provider: state.provider || {},
@@ -21,6 +22,10 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)
+const withReduxForm = reduxForm({
+  form: 'walletAddress',
+  validate,
+})
 
-export default withStyles({})(compose(withConnect, immutableProps)(ProviderSettings))
+export default withStyles({})(compose(withConnect, withReduxForm, immutableProps)(ProviderSettings))
 

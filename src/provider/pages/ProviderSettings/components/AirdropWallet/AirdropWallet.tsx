@@ -1,89 +1,34 @@
 import * as React from 'react'
 import TextField from '../../../../../app/components/ReduxForm/TextField'
 import RadioButton from '../../../../../ui-kit/components/RadioButton/RadioButton'
+import Checkbox from '../../../../../ui-kit/components/Checkbox/Checkbox'
 import trans from '../../../../../trans'
-import { ProviderState, TrafficOptions } from '../../../../reducer'
-import { reduxForm } from 'redux-form/immutable'
-import { compose } from 'redux'
-import immutableProps from '../../../../../hocs/immutableProps'
-import { submit } from '../../../../../utils/reduxForm'
-import { InjectedFormProps } from 'redux-form'
-import validate from './validate'
+import { TrafficOptions } from '../../../../reducer'
 import styles from './AirdropWallet.module.scss'
-import { withStyles } from '@material-ui/core'
-import { ConfigData } from '../../../../../types'
 
-type Props = InjectedFormProps & {
-  confirmLoading: boolean,
-  state: { isWalletEditMode: boolean }
-  provider: ProviderState
-  configData: ConfigData
-  onInitForm: (submitForm: () => void) => void
-  onSaveSettings: Function
-  formWalletAddressData?: any
-  onSetState?: (data: Object) => void,
+type Props = {
+  formWalletAddressData: any
+  change: (field: string, value: any) => void;
+  submitting: boolean
 }
 
-class AirdropWallet extends React.PureComponent<Props> {
-  state = {
-    initialized: false,
-    confirmed: false
-  }
-
-  componentDidMount() {
-    const { onInitForm } = this.props
-    onInitForm(this.submitForm)
-  }
-
-  componentDidUpdate() {
-    const {
-      initialize,
-      provider,
-    } = this.props
-
-    const {
-      initialized,
-    } = this.state
-
-    const payout: any = provider.payout ? { ...provider.payout } : {}
-
-    if (!initialized && payout && payout.loaded) {
-      delete payout.loading
-      delete payout.loaded
-
-      initialize({ ...payout, trafficOption: provider.trafficOption })
-
-      this.setState({
-        initialized: true,
-      })
-    }
-  }
-
-  submitForm = () => {
-    const { onSaveSettings, formWalletAddressData, provider, configData } = this.props
-    submit(this.props, () => onSaveSettings({
-      ...formWalletAddressData,
-      provider,
-      configData
-    }))
-  }
-
+export default class AirdropWallet extends React.PureComponent<Props> {
   handleTrafficChange = (event) => {
     const { change } = this.props
     change('trafficOption', event.target.value)
   }
 
-  // handleResendConfirmation = () => {
-  //   ///TODO
-  //   this.setState({ confirmed: true, })
-  // }
+  handleShaperChange = (event) => {
+    const { change } = this.props
+    change('shaperEnabled', event.target.checked)
+  }
 
   render() {
-    const { submitting, /*confirmLoading,*/ formWalletAddressData, provider } = this.props
-    // const { confirmed } = this.state //TODO
+    const { submitting, formWalletAddressData } = this.props
+
+    console.log(formWalletAddressData)
     const trafficOptionValue = (formWalletAddressData && formWalletAddressData.trafficOption)
-      ? formWalletAddressData.trafficOption
-      : provider.trafficOption
+    const shaperEnabledValue = Boolean(formWalletAddressData && formWalletAddressData.shaperEnabled)
 
     return (
       <div>
@@ -140,14 +85,28 @@ class AirdropWallet extends React.PureComponent<Props> {
               <RadioButton label={trans('app.provider.settings.verified.partner.traffic')}
                            value={TrafficOptions.SAFE}
                            onChange={this.handleTrafficChange}
-                           checked={trafficOptionValue === TrafficOptions.SAFE}/>
+                           checked={trafficOptionValue === TrafficOptions.SAFE}
+                           disabled={submitting}/>
               <p className={styles.helperText}>{trans('app.provider.settings.safe.option')}</p>
             </div>
             <div className={styles.radioForm}>
               <RadioButton label={trans('app.provider.settings.all.traffic')}
                            value={TrafficOptions.ALL}
                            onChange={this.handleTrafficChange}
-                           checked={trafficOptionValue === TrafficOptions.ALL}/>
+                           checked={trafficOptionValue === TrafficOptions.ALL}
+                           disabled={submitting}/>
+            </div>
+          </div>
+        </div>
+        <div className={styles.flexedRow}>
+          <p className={styles.label}>{trans('app.provider.settings.limits')}</p>
+
+          <div>
+            <div className={styles.radioForm}>
+              <Checkbox label={trans('app.provider.settings.shaper.enabled', { limit: '5Mbps' })}
+                        checked={shaperEnabledValue}
+                        onChange={this.handleShaperChange}
+                        disabled={submitting}/>
             </div>
           </div>
         </div>
@@ -155,11 +114,3 @@ class AirdropWallet extends React.PureComponent<Props> {
     )
   }
 }
-
-export default withStyles({})(compose(
-  reduxForm({
-    form: 'walletAddress',
-    validate,
-  }),
-  immutableProps,
-)(AirdropWallet))

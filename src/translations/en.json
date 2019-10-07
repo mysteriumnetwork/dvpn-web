@@ -38,6 +38,8 @@
   "app.provider.settings.connection.info.data.center.ip": "Data Center IP",
   "app.provider.settings.connection.info.helper.text.data.center": "It looks like you are sharing a connection from a data center.",
   "app.provider.settings.wallet.api-error.ts": "Some err",
+  "app.provider.settings.limits": "Limits",
+  "app.provider.settings.shaper.enabled": "Limit bandwidth to {limit}",
   "app.menu.connection.history": "Connection History",
   "app.menu.settings": "Settings",
   "app.menu.statistics": "Statistics",

@@ -1,1 +1,5 @@
 [access-policy]
+  list = "mysterium"
+
+[shaper]
+  enabled = true
