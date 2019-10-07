@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core'
 import { compose } from 'redux'
 import immutableProps from '../../../hocs/immutableProps'
 import { NAV_DASHBOARD } from '../../web.links'
-import { saveSettingsStory } from '../../../provider/stories'
+import { initSettingsStory, saveSettingsStory } from '../../../provider/stories'
 import { setProviderStateAction } from '../../../provider/actions'
 import { RootState } from '../../../rootState.type'
 import React from 'react'
@@ -19,6 +19,7 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  onInit: () => initSettingsStory(dispatch),
   onSetState: (value) => dispatch(setProviderStateAction(value)),
   onSaveSettings: (payload) => saveSettingsStory(dispatch, payload, NAV_DASHBOARD),
 })

@@ -250,3 +250,9 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPay
     apiSubmissionError('walletAddress')(e)
   }
 }
+
+export const initSettingsStory = (dispatch) => {
+  getCurrentAccessPolicy()
+    .then(accessPolicy => dispatch(setAccessPolicyAction(accessPolicy)))
+    .catch((e) => (process.env.NODE_ENV !== 'production') && console.error(e))
+}
