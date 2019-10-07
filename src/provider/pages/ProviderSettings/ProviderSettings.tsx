@@ -84,7 +84,7 @@ export class ProviderSettings extends React.PureComponent<Props> {
             </div>
             <AirdropWallet formWalletAddressData={formWalletAddressData}
                            change={change}
-                           submitting={!initialized && submitting}/>
+                           submitting={!initialized || submitting}/>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@ export class ProviderSettings extends React.PureComponent<Props> {
         <Button
           onClick={this.handleSaveSettings}
           color="primary"
-          disabled={!initialized && submitting}
+          disabled={!initialized || submitting}
         >
           {trans('app.provider.settings.save')}
         </Button>
