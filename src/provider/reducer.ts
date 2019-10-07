@@ -31,6 +31,7 @@ export interface ProviderState {
   identity?: Identity,
   payout?: IdentityPayout & {
     loading?: boolean
+    loaded?: boolean
   },
   originalLocation?: ConsumerLocation,
   accessPolicy?: AccessPolicy,

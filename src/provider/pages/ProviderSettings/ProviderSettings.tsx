@@ -3,14 +3,17 @@ import trans from '../../../trans'
 import Button from '../../../ui-kit/components/Button/Button'
 import AirdropWallet from './components/AirdropWallet/AirdropWallet'
 import { ProviderState } from '../../reducer'
-import { DefaultProps } from '../../../types'
+import { ConfigData, DefaultProps } from '../../../types'
 import _ from 'lodash'
 import ErrorDialog from '../../../ui-kit/components/ErrorDialog'
+import { InjectedFormProps } from 'redux-form'
+import { submit } from '../../../utils/reduxForm'
 
 const styles = require('./ProviderSettings.module.scss')
 
-type Props = DefaultProps & {
+type Props = DefaultProps & InjectedFormProps & {
   provider: ProviderState
+  configData: ConfigData
   formWalletAddressData?: Object
   onSetState?: (data: Object) => void
   onInit?: Function
@@ -19,7 +22,7 @@ type Props = DefaultProps & {
 }
 
 export class ProviderSettings extends React.PureComponent<Props> {
-  private submitForm: Function
+  state = {}
 
   constructor(props, context) {
     super(props, context)
@@ -33,12 +36,28 @@ export class ProviderSettings extends React.PureComponent<Props> {
     return onDestroy && onDestroy()
   }
 
-  handleInitForm = (submit) => {
-    this.submitForm = submit
+  static getDerivedStateFromProps(props: Props, state) {
+    const { initialize, initialized, provider, configData } = props
+
+    if (!initialized && provider.payout && provider.payout.loaded && configData) {
+      const { email, ethAddress, referralCode } = provider.payout
+      const { trafficOption } = provider
+      const shaperEnabled = Boolean(configData.shaper && configData.shaper.enabled)
+
+      initialize({ email, ethAddress, referralCode, trafficOption, shaperEnabled })
+    }
+
+    return { ...state }
   }
 
   handleSaveSettings = () => {
-    this.submitForm && this.submitForm()
+    const { onSaveSettings, provider, configData } = this.props
+
+    submit(this.props, (formData: any) => onSaveSettings({
+      ...formData.toJS(),
+      provider,
+      configData
+    }))
   }
 
   handleCloseErrorDialog = () => {
@@ -50,7 +69,7 @@ export class ProviderSettings extends React.PureComponent<Props> {
   }
 
   render() {
-    const { provider } = this.props
+    const { provider, formWalletAddressData, change, submitting, initialized } = this.props
 
     const id = (provider && provider.identity && provider.identity.id) || ''
 
@@ -63,8 +82,9 @@ export class ProviderSettings extends React.PureComponent<Props> {
               <p>{trans('app.provider.settings.my.id')}</p>
               <div title={id}>{id.substr(2)}</div>
             </div>
-            {/* render dynamic Airdrop Wallet */}
-            <AirdropWallet {...this.props} onInitForm={this.handleInitForm}/>
+            <AirdropWallet formWalletAddressData={formWalletAddressData}
+                           change={change}
+                           submitting={!initialized && submitting}/>
           </div>
         </div>
       </div>
@@ -72,6 +92,7 @@ export class ProviderSettings extends React.PureComponent<Props> {
         <Button
           onClick={this.handleSaveSettings}
           color="primary"
+          disabled={!initialized && submitting}
         >
           {trans('app.provider.settings.save')}
         </Button>

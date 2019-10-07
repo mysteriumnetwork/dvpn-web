@@ -208,12 +208,14 @@ export const updateReferralStory = async (
 
 type SettingsPayload = IdentityPayout & {
   trafficOption: TrafficOptions
+  shaperEnabled: boolean
   configData: ConfigData
   provider: ProviderState
 }
 
 export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPayload, to: any) => {
-  const { referralCode, ethAddress, email, trafficOption, provider, configData } = payload
+  console.log('*** saveSettingsStory:', payload)
+  const { referralCode, ethAddress, email, trafficOption, provider, configData, shaperEnabled } = payload
 
   try {
     if ((provider.payout && provider.payout.ethAddress) || ethAddress) {
@@ -229,11 +231,17 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPay
     dispatch(setTrafficOptionAction(trafficOption))
 
     if (configData) {
-      const newData = Object.assign({}, configData, {
-        'access-policy': (TrafficOptions.SAFE && provider.accessPolicy) ? { list: provider.accessPolicy.id } : {}
-      })
+      const accessPolicy = (trafficOption === TrafficOptions.SAFE && provider.accessPolicy)
+        ? { list: provider.accessPolicy.id }
+        : null
+      const newData: ConfigData = {
+        ...configData,
+        'access-policy': accessPolicy,
+        shaper: {
+          enabled: Boolean(shaperEnabled)
+        }
+      }
 
-      console.log(newData)
       dispatch(updateUserConfigAction(newData))
     }
 
