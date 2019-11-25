@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import { NAV_SETTINGS_PASSWORD } from 'settings/settings.links'
 import Button from '../../../../../ui-kit/components/Button/Button'
 import trans from '../../../../../trans'
 import classNames from 'classnames'
@@ -43,6 +44,9 @@ export class DashboardActions extends PureComponent<DashboardProps> {
         </Button>
         <Button color="secondary" component={Link} to={NAV_SETTINGS}>
           {trans('app.menu.settings')}
+        </Button>
+        <Button color="secondary" component={Link} to={NAV_SETTINGS_PASSWORD}>
+          {trans('app.menu.change_password')}
         </Button>
         <Button color="secondary"
                 onClick={isActiveServices ? this.handleDisconnect : this.handleStart}

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { NAV_SETTINGS_PASSWORD } from 'settings/settings.links'
 import {
   NAV_DASHBOARD,
   NAV_FAQ,
@@ -16,6 +17,7 @@ import Welcome from './components/Welcome'
 import Terms from './components/Terms'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
+import SettingsPassword from './components/SettingsPassword'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import FAQ from './components/FAQ'
 import { version } from '@mysteriumnetwork/terms/package.json'
@@ -42,6 +44,7 @@ class App extends React.PureComponent<AppProps> {
           <Route exact key={NAV_WELCOME} path={NAV_WELCOME} component={Welcome}/>
           <Route exact key={NAV_TERMS} path={NAV_TERMS} component={Terms}/>
           <Route exact key={NAV_LOGIN} path={NAV_LOGIN} component={Login}/>
+          <Route exact key={NAV_SETTINGS_PASSWORD} path={NAV_SETTINGS_PASSWORD} component={SettingsPassword}/>
           {
             !terms[version] && (<Redirect to={NAV_TERMS} strict/>)
           }

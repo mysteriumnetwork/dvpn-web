@@ -139,7 +139,7 @@
     "lint-styles": "stylelint --ignore-path .eslintignore '**/*.*(css|scss)' --syntax scss",
     "lint-styles-fix": "yarn --silent lint-styles --fix; exit 0"
   },
-  "proxy": "http://localhost:4449",
+  "proxy": "http://127.0.0.1:4449/",
   "eslintConfig": {
     "extends": "react-app"
   },

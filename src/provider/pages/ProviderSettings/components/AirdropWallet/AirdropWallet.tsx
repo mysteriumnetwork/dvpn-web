@@ -25,8 +25,6 @@ export default class AirdropWallet extends React.PureComponent<Props> {
 
   render() {
     const { submitting, formWalletAddressData } = this.props
-
-    console.log(formWalletAddressData)
     const trafficOptionValue = (formWalletAddressData && formWalletAddressData.trafficOption)
     const shaperEnabledValue = Boolean(formWalletAddressData && formWalletAddressData.shaperEnabled)
 

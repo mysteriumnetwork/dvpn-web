@@ -61,7 +61,7 @@ class Settings extends React.PureComponent<Props> {
               {(error) && (
                 <div className={styles.errorText}>
                   <ErrorIcon/>
-                  <span>{error}</span>
+                  <span>{error === 'Authorization failed!' ? 'Old password is invalid.' : error}</span>
                 </div>
               )}
               {(submitSucceeded && pristine) && (
