@@ -5,12 +5,15 @@
   padding-bottom: 73px;
   position: relative;
   background: $whiteColor;
-  h1 {
+  h1, h2 {
     text-align: center;
     font-weight: 300;
     margin-bottom: 46px;
     font-size: $mainTitle;
     color: $actionPurple;
+  }
+  h2 {
+    font-size: $subTitle;
   }
 }
 .scrollView {

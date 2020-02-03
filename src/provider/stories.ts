@@ -209,13 +209,23 @@ export const updateReferralStory = async (
 type SettingsPayload = IdentityPayout & {
   trafficOption: TrafficOptions
   shaperEnabled: boolean
+  openVpnPort?: number
   configData: ConfigData
   provider: ProviderState
 }
 
 export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPayload, to: any) => {
   console.log('*** saveSettingsStory:', payload)
-  const { referralCode, ethAddress, email, trafficOption, provider, configData, shaperEnabled } = payload
+  const {
+    referralCode,
+    ethAddress,
+    email,
+    trafficOption,
+    provider,
+    configData,
+    shaperEnabled,
+    openVpnPort,
+  } = payload
 
   try {
     if ((provider.payout && provider.payout.ethAddress) || ethAddress) {
@@ -237,6 +247,9 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPay
       const newData: ConfigData = {
         ...configData,
         'access-policy': accessPolicy,
+        openvpn: {
+          port: openVpnPort ? Number(openVpnPort) : undefined,
+        },
         shaper: {
           enabled: Boolean(shaperEnabled)
         }

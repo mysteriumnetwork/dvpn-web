@@ -108,6 +108,19 @@ export default class AirdropWallet extends React.PureComponent<Props> {
             </div>
           </div>
         </div>
+        <h2>{trans('app.provider.settings.advanced')}</h2>
+        <div className={styles.flexedRow}>
+          <p className={styles.label}>{trans('app.provider.settings.openvpn.port')}</p>
+          <div>
+            <div className={styles.editableField}>
+              <div>
+                <TextField placeholder="0" name="openVpnPort" disabled={submitting}
+                           className={styles.editableTextField}/>
+              </div>
+            </div>
+            <p className={styles.helperText}>{trans('app.provider.settings.openvpn.port.help')}</p>
+          </div>
+        </div>
       </div>
     )
   }

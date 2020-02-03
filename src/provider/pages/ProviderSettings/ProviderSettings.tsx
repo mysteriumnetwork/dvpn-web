@@ -43,8 +43,9 @@ export class ProviderSettings extends React.PureComponent<Props> {
       const { email, ethAddress, referralCode } = provider.payout
       const { trafficOption } = provider
       const shaperEnabled = Boolean(configData.shaper && configData.shaper.enabled)
+      const openVpnPort = configData.openvpn ? configData.openvpn.port : 0
 
-      initialize({ email, ethAddress, referralCode, trafficOption, shaperEnabled })
+      initialize({ email, ethAddress, referralCode, trafficOption, shaperEnabled, openVpnPort })
     }
 
     return { ...state }
