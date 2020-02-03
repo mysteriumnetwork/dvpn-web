@@ -114,7 +114,8 @@ export default class AirdropWallet extends React.PureComponent<Props> {
           <div>
             <div className={styles.editableField}>
               <div>
-                <TextField placeholder="0" name="openVpnPort" disabled={submitting}
+                <TextField type="number" inputProps={{min: "0", max: "65535"}}
+                           placeholder="0" name="openVpnPort" disabled={submitting}
                            className={styles.editableTextField}/>
               </div>
             </div>

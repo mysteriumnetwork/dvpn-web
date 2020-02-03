@@ -87,6 +87,7 @@ const AppTextField = (props: IAppTextFieldProps) => (
       {props.label}
     </InputLabel>)}
     <Input
+      inputProps={props.inputProps}
       fullWidth={props.fullWidth}
       type={props.type}
       id={`id-${props.name}`}
