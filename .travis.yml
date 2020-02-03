@@ -7,14 +7,7 @@ cache: yarn
 install:
   - yarn
 
-before_install:
-  - if [ -z "$TRAVIS_TAG" ]; then
-    export TRAVIS_TAG=0.0.0-dev;
-    fi
-
 stages:
-  - name: deploy-dev
-    if: type != pull_request AND branch = master AND tag IS blank
   - name: deploy
     if: tag IS present
   - name: trigger-go-dvpn-web
@@ -22,19 +15,6 @@ stages:
 
 jobs:
   include:
-    #    - stage: test
-    #      name: "Test"
-    #      script:
-    #        - yarn test
-
-    - stage: deploy-dev
-      name: "Deploy 0.0.0-dev"
-      script:
-        - git tag -f $TRAVIS_TAG
-        - git remote add gh https://${TRAVIS_REPO_SLUG%/*}:${GITHUB_API_KEY}@github.com/${TRAVIS_REPO_SLUG}.git
-        - git push gh :refs/tags/$TRAVIS_TAG
-        - git push -f gh $TRAVIS_TAG
-
     - stage: deploy
       name: "Deploy"
       script: skip
