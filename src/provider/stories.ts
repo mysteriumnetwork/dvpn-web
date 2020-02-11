@@ -21,7 +21,7 @@ import { push } from 'connected-react-router'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { ConfigData, DispatchResult } from '../types'
 import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
-import TequilapiError from 'mysterium-vpn-js/lib/tequilapi-error'
+import { TequilapiError } from 'mysterium-vpn-js/lib/tequilapi-error'
 import { updateUserConfigAction } from '../app/actions'
 
 export const initServerEventsStory = (dispatch: Dispatch, services: any) => {

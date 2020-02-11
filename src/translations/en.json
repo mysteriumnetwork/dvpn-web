@@ -62,6 +62,7 @@
   "app.node.running.uptime": "Uptime",
   "app.node.running.downloaded": "Downloaded",
   "app.node.running.uploaded": "Uploaded",
+  "app.node.running.tokensEarned": "Earned",
   "app.node.running.quality": "Quality",
   "app.node.running.external.ip": "External IP",
   "app.node.running.public.ip": "Public IP",

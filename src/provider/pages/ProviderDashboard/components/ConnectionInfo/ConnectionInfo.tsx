@@ -27,7 +27,7 @@ const ConnectionInfo = (props: Props) => {
         startedServices.map(service => {
           const nodeType = _.get(service, 'proposal.serviceDefinition.locationOriginate.node_type') || ''
 
-          return (<tr>
+          return (<tr key={service.type}>
             <td>
               <div className={styles.ipItem}>
                 {location && location.country && (<FlagIcon code={String(location.country).toLowerCase()}/>)}
