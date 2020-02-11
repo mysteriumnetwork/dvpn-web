@@ -40,7 +40,8 @@ const ConnectionInfo = (props: Props) => {
               </div>
             </td>
             <td>
-              <a target={'_blank'}
+              <a target="_blank"
+                 rel="noopener noreferrer"
                  href={`${process.env.REACT_APP_MYSTERIUM_NETWORK}/node/${service.providerId}/${service.type || ''}`}
                  className={classNames( styles.infoID, 'underlined')}>{service.providerId}</a>
             </td>
