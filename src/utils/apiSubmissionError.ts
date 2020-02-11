@@ -1,5 +1,5 @@
 import { SubmissionError } from 'redux-form/immutable'
-import TequilapiError from 'mysterium-vpn-js/lib/tequilapi-error'
+import { TequilapiError } from 'mysterium-vpn-js/lib/tequilapi-error'
 import _ from 'lodash'
 
 export default (formName) => (error: TequilapiError) => {

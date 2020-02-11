@@ -1,4 +1,4 @@
-import TequilapiError from 'mysterium-vpn-js/lib/tequilapi-error'
+import { TequilapiError } from 'mysterium-vpn-js/lib/tequilapi-error'
 import { Store } from 'redux'
 import { RootState } from '../rootState.type'
 import { push } from 'connected-react-router'

@@ -31,6 +31,7 @@ const UsersList = (props: Props) => {
           <th>{trans('app.node.running.duration')}</th>
           <th>{trans('app.node.running.downloaded')}</th>
           <th>{trans('app.node.running.uploaded')}</th>
+          <th>{trans('app.node.running.tokensEarned')}</th>
         </tr>
         </thead>
         <tbody>
