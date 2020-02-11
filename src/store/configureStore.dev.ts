@@ -6,6 +6,7 @@ import { createLogger } from 'redux-logger'
 import promiseMiddleware from 'redux-promise-middleware'
 import createRootReducer from '../rootReducer'
 import serverSentEvents from '../utils/serverSentEvents'
+import {TIMER_UPDATE} from "../ui-kit/components/Timer";
 
 const history = createHashHistory()
 
@@ -25,10 +26,13 @@ const configureStore = (initialState?: any) => {
   // ServerSentEvents Middleware
   middleware.push(serverSentEvents.middleware)
 
+  const loggerIgnoreActions = [TIMER_UPDATE]
+
   // Logging Middleware
   const logger = createLogger({
     level: 'info',
     collapsed: true,
+    predicate: (getState, action) => !loggerIgnoreActions.includes(action.type),
   })
 
   // Skip redux logs in console during the tests
