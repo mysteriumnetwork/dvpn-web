@@ -16,7 +16,7 @@ import {
 } from './actions'
 import { ProviderState, TrafficOptions } from './reducer'
 import { ServiceOptions, ServiceTypes } from '../api/data/service'
-import { ConsumerLocation, Identity, IdentityPayout, ServiceInfo } from 'mysterium-vpn-js'
+import {ConsumerLocation, IdentityPayout, IdentityRef, ServiceInfo} from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { ConfigData, DispatchResult } from '../types'
@@ -73,8 +73,8 @@ export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction(
 }))
 
 export const fetchIdentityStory = async (dispatch: Dispatch) => {
-  const result: DispatchResult<Identity> = await dispatch(setIdentityAction())
-  const identity: Identity = result.value
+  const result: DispatchResult<IdentityRef> = await dispatch(setIdentityAction())
+  const identity: IdentityRef = result.value
 
   if (identity) {
     Promise.resolve(dispatch(getIdentityPayoutAction(identity)))

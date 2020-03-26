@@ -1,14 +1,14 @@
 import * as React from 'react'
 import InfoBlock from './components/InfoBlock/InfoBlock'
 import ConnectionBlock from './components/ConnectionBlock/ConnectionBlock'
-import { Identity, ConsumerLocation, Proposal } from 'mysterium-vpn-js'
+import { ConsumerLocation, Proposal, IdentityRef } from 'mysterium-vpn-js'
 
 const styles = require('./BottomBar.module.scss')
 
 type Props = {
   location?: ConsumerLocation
   proposal?: Proposal
-  identity: Identity
+  identity: IdentityRef
   onConnect?: Function
   disabled?: boolean
 }

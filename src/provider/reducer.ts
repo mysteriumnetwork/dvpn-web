@@ -20,8 +20,8 @@ import {
   AccessPolicy,
   ConsumerLocation,
   Identity,
+  IdentityRef,
   IdentityPayout,
-  IdentityStatus,
   NatStatus,
   ServiceInfo,
   ServiceSession
@@ -29,8 +29,8 @@ import {
 import { ServerSentEventTypes, ServerSentPayload } from '../utils/serverSentEvents'
 
 export interface ProviderState {
-  identity?: Identity,
-  identityStatus?: IdentityStatus
+  identity?: IdentityRef,
+  identityStatus?: Identity
   payout?: IdentityPayout & {
     loading?: boolean
     loaded?: boolean
@@ -67,7 +67,7 @@ export default typeToReducer<ProviderState>({
   },
 
   [IDENTITY]: {
-    FULFILLED: (state, action: Action<Identity>) => ({
+    FULFILLED: (state, action: Action<IdentityRef>) => ({
       ...state,
       identity: action.payload,
     }),
@@ -102,7 +102,7 @@ export default typeToReducer<ProviderState>({
   },
 
   [UPDATE_IDENTITY]: {
-    FULFILLED: (state, action: Action<Identity>) => ({
+    FULFILLED: (state, action: Action<IdentityRef>) => ({
       ...state,
       payout: {
         ...(state.payout || {}),
