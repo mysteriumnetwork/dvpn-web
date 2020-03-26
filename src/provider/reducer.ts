@@ -21,6 +21,7 @@ import {
   ConsumerLocation,
   Identity,
   IdentityPayout,
+  IdentityStatus,
   NatStatus,
   ServiceInfo,
   ServiceSession
@@ -29,6 +30,7 @@ import { ServerSentEventTypes, ServerSentPayload } from '../utils/serverSentEven
 
 export interface ProviderState {
   identity?: Identity,
+  identityStatus?: IdentityStatus
   payout?: IdentityPayout & {
     loading?: boolean
     loaded?: boolean

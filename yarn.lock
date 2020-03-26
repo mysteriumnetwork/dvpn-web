@@ -2312,7 +2312,7 @@ axios@^0.18.0:
     follow-redirects "1.5.10"
     is-buffer "^2.0.2"
 
-axios@^0.19.0:
+axios@^0.19.2:
   version "0.19.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
   integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
@@ -8282,12 +8282,12 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-mysterium-vpn-js@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-1.0.12.tgz#9ba5b6aab14c9f80747b76df62552ccb83594765"
-  integrity sha512-wwb1vEGQ+q32X961plt95vMEwb0AZWHwc0JDwqHndFlsR6CTq0g5VSmN8Yq87Hr40aIIBt1Y/3djsuuXY4H4NQ==
+mysterium-vpn-js@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-1.2.0.tgz#a3295fee337f2d4d738d103559c3f2be20492254"
+  integrity sha512-UfcSyWC/bGgbA59BIe/+R+WwXdchU/ZSDUVwsJsUOvl7/kG80f+utVQJlywhgBd4LGGBx29yOifvM6PSpz3kfA==
   dependencies:
-    axios "^0.19.0"
+    axios "^0.19.2"
     filesize "^5.0.0"
 
 nan@^2.12.1, nan@^2.13.2:

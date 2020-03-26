@@ -8,6 +8,7 @@ import { DefaultProps } from '../../../types'
 import { ProviderState } from '../../reducer'
 import _ from 'lodash'
 import { ServiceInfo } from 'mysterium-vpn-js'
+import formatCurrency from "../../../utils/formatCurrency";
 
 const styles = require('./ProviderDashboard.module.scss')
 
@@ -37,16 +38,18 @@ export class ProviderDashboard extends React.PureComponent<Props> {
     const isActiveServices = !!provider.startedServices && provider.startedServices.length
     const startStopFn = isActiveServices ? this.handleDisconnect : this.handleStart
     // const startStopButtonClassName = isActiveServices ? 'danger' : 'success'
-
     const sessions = Number(provider.sessions && provider.sessions.length) || 0
+    const earnings = Number(provider.identityStatus && provider.identityStatus.earnings) || 0
+    const earningsTotal = Number(provider.identityStatus && provider.identityStatus.earningsTotal) || 0
+
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>
         <h4>
-          <p>{trans('app.node.running.sessions.connected')} {sessions}</p>
+          <p>{trans('app.node.running.earnings.total', { tokens: formatCurrency(earningsTotal) })}</p>
           <p>
-            {trans('app.node.running.successful.connections', { count: sessions })}
+            {trans('app.node.running.sessions.successful', { sessions: sessions })}
             <span> / </span>
-            {sessions} {trans('app.node.running.attempted')}
+            {trans('app.node.running.earnings.new', { tokens: formatCurrency(earnings) })}
           </p>
         </h4>
         <Button disabled={provider.startedServicePending} onClick={startStopFn} color="secondary"

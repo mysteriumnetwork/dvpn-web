@@ -27,11 +27,11 @@ const UsersList = (props: Props) => {
       <table>
         <thead>
         <tr>
-          <th>{trans('app.node.running.session')}</th>
-          <th>{trans('app.node.running.duration')}</th>
-          <th>{trans('app.node.running.downloaded')}</th>
-          <th>{trans('app.node.running.uploaded')}</th>
-          <th>{trans('app.node.running.tokensEarned')}</th>
+          <th>{trans('app.node.running.sessions.session')}</th>
+          <th>{trans('app.node.running.sessions.duration')}</th>
+          <th>{trans('app.node.running.sessions.downloaded')}</th>
+          <th>{trans('app.node.running.sessions.uploaded')}</th>
+          <th>{trans('app.node.running.sessions.tokensEarned')}</th>
         </tr>
         </thead>
         <tbody>
