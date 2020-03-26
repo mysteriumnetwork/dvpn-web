@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { IdentityRef, Proposal, ConnectionStatus, Location as OriginalLocation } from 'mysterium-vpn-js'
 
 import SideBar from './components/SideBar/SideBar'
 import BottomBar from './components/BottomBar/BottomBar'
@@ -13,10 +14,8 @@ import {
   startConnectionStory
 } from '../../stories'
 import { ClientState } from '../../reducer'
-import { Proposal } from 'mysterium-vpn-js'
 import { DefaultProps } from '../../../types'
 import _ from 'lodash'
-import { ConnectionStatus, Identity, Location as OriginalLocation } from 'mysterium-vpn-js'
 import { NAV_CLIENT_CONNECTED, NAV_CLIENT_CONNECTING } from '../../client.links'
 import { Redirect } from 'react-router'
 
@@ -29,7 +28,7 @@ type Props = ClientState & DefaultProps & {
   onSelectFilter?: Function,
   onStartConnection?: Function,
   location: OriginalLocation
-  identity: Identity
+  identity: IdentityRef
 }
 
 class ClientDashboard extends React.PureComponent<Props> {

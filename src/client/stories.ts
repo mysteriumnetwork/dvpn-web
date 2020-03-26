@@ -12,10 +12,8 @@ import {
   stopConnectionAction
 } from './actions'
 import { ProposalsFilter } from './reducer'
-import { Proposal } from 'mysterium-vpn-js'
-import { ConnectionStatus, Identity } from 'mysterium-vpn-js'
+import { IdentityRef, Proposal, ConnectionStatus, ConnectionStatusResponse } from 'mysterium-vpn-js'
 import { DispatchResult } from '../types'
-import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
 import favoriteProposals from '../utils/favoriteProposals'
 
 export const initClientDashboardStory = (dispatch: Dispatch, filter?: ProposalsFilter): void => {
@@ -86,7 +84,7 @@ export const applyFilterStory = (dispatch: Dispatch, filter: ProposalsFilter) =>
 
 export const selectProposalStory = (dispatch: Dispatch, proposal: Proposal) => dispatch(selectProposalAction(proposal))
 
-export const startConnectionStory = async (dispatch: Dispatch, proposal: Proposal, identity: Identity) => {
+export const startConnectionStory = async (dispatch: Dispatch, proposal: Proposal, identity: IdentityRef) => {
   await dispatch(startConnectionAction(proposal, identity))
   stopFetchingProposals()
   onStartConnectionStory(dispatch).catch((e) => {

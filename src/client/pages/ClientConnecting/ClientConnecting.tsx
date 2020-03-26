@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Redirect } from 'react-router-dom'
+import { ConnectionStatus, IdentityRef, Location as OriginalLocation } from 'mysterium-vpn-js'
 import { NAV_CLIENT_CONNECTED, NAV_CLIENT_DASHBOARD } from '../../client.links'
 import trans from '../../../trans'
 import Loader from '../../../ui-kit/components/Loader/Loader'
@@ -7,7 +8,6 @@ import ConnectionImgBlock from './components/ConnectionImgBlock/ConnectionImgBlo
 import ConnectionInfoBlock from './components/ConnectionInfoBlock/ConnectionInfoBlock'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
-import { ConnectionStatus, Identity, Location as OriginalLocation } from 'mysterium-vpn-js'
 import { ClientState } from '../../reducer'
 import { DefaultProps } from '../../../types'
 import _ from 'lodash'
@@ -16,7 +16,7 @@ const styles = require('./ClientConnecting.module.scss')
 
 type Props = ClientState & DefaultProps & {
   location: OriginalLocation
-  identity: Identity
+  identity: IdentityRef
 }
 
 class ClientConnecting extends React.PureComponent<Props> {

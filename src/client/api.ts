@@ -1,12 +1,21 @@
 import { tequilapiClient } from '../api'
-import { ConnectionIp, ConnectionRequest, ConnectionStatus, Identity, Proposal, ProposalQuery } from 'mysterium-vpn-js'
-import { ConnectionStatusResponse } from 'mysterium-vpn-js/lib/connection/status'
+import {
+  ConnectionIp,
+  ConnectionRequest,
+  ConnectionStatus,
+  ConnectionStatusResponse,
+  ConnectionStatistics,
+  IdentityRef,
+  Proposal,
+  ProposalQuery
+} from 'mysterium-vpn-js'
 import { ProposalsFilter } from './reducer'
 import { proposalsCounts, ProposalsCountsInterface } from '../utils/proposalsCounts'
 import _ from 'lodash'
-import { ConnectionStatistics } from 'mysterium-vpn-js/lib/connection/statistics'
 import favoriteProposals from '../utils/favoriteProposals'
 import unauthorized from '../utils/unauthorized'
+
+const accountantId = "0x0214281cf15c1a66b51990e2e65e1f7b7c363318"
 
 export const getProposalsWithConnectCounts = async (): Promise<ProposalsCountsInterface> => {
   try {
@@ -52,7 +61,7 @@ export const getProposalsByFilter = async (filter: ProposalsFilter): Promise<Pro
   return []
 }
 
-export const startConnection = async (proposal: Proposal, identity: Identity): Promise<ConnectionStatusResponse> => {
+export const startConnection = async (proposal: Proposal, identity: IdentityRef): Promise<ConnectionStatusResponse> => {
   if (process.env.NODE_ENV !== 'production') {
     console.log('startConnection', { proposal, identity })
   }
@@ -60,6 +69,7 @@ export const startConnection = async (proposal: Proposal, identity: Identity): P
     const request: ConnectionRequest = {
       consumerId: identity.id,
       providerId: proposal.providerId,
+      accountantId,
       serviceType: proposal.serviceType
     }
 

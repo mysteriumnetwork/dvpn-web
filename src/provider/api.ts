@@ -3,7 +3,7 @@ import { ServiceOptions } from '../api/data/service'
 import {
   AccessPolicy,
   ConsumerLocation,
-  Identity,
+  IdentityRef,
   IdentityPayout,
   NatStatusResponse,
   ServiceInfo,
@@ -28,7 +28,7 @@ export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => 
   return null
 }
 
-export const getCurrentIdentity = async (passphrase: string = ''): Promise<Identity | null> => {
+export const getCurrentIdentity = async (passphrase: string = ''): Promise<IdentityRef | null> => {
   try {
     return await tequilapiClient.identityCurrent(passphrase)
   } catch (e) {
@@ -114,7 +114,7 @@ export const getServiceList = async (): Promise<ServiceInfo[] | null> => {
   return null
 }
 
-export const getIdentityPayout = async (identity: Identity): Promise<IdentityPayout> => {
+export const getIdentityPayout = async (identity: IdentityRef): Promise<IdentityPayout> => {
   if (!(identity && identity.id)) {
     return
   }
