@@ -4,6 +4,7 @@ import {
   ACCESS_POLICY,
   IDENTITIES,
   IDENTITY,
+  IDENTITY_DETAILS,
   IDENTITY_PAYOUT,
   NAT_STATUS,
   ORIGINAL_LOCATION,
@@ -28,7 +29,8 @@ import {
   unlocksIdentity,
   updateIdentity,
   updateReferralCode,
-  updateEmailApi
+  updateEmailApi,
+  getIdentityDetails,
 } from './api'
 
 export const setLocationAction = createAction(ORIGINAL_LOCATION, getOriginalLocation)
@@ -44,6 +46,8 @@ export const updateEmailAction = createAction(UPDATE_EMAIL, updateEmailApi, d =>
 export const unlocksIdentityAction = createAction(UNLOCK_IDENTITY, unlocksIdentity, d => d)
 
 export const setIdentityAction = createAction(IDENTITY, getCurrentIdentity)
+
+export const getIdentityDetailsAction = createAction(IDENTITY_DETAILS, getIdentityDetails)
 
 export const getIdentityPayoutAction = createAction(IDENTITY_PAYOUT, getIdentityPayout)
 

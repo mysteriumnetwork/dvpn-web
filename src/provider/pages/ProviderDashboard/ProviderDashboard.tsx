@@ -39,8 +39,8 @@ export class ProviderDashboard extends React.PureComponent<Props> {
     const startStopFn = isActiveServices ? this.handleDisconnect : this.handleStart
     // const startStopButtonClassName = isActiveServices ? 'danger' : 'success'
     const sessions = Number(provider.sessions && provider.sessions.length) || 0
-    const earnings = Number(provider.identityStatus && provider.identityStatus.earnings) || 0
-    const earningsTotal = Number(provider.identityStatus && provider.identityStatus.earningsTotal) || 0
+    const earnings = Number(provider.identityDetails && provider.identityDetails.earnings) || 0
+    const earningsTotal = Number(provider.identityDetails && provider.identityDetails.earningsTotal) || 0
 
     return (<div className={styles.dashboardCover}>
       <div className={styles.dashboardHeader}>

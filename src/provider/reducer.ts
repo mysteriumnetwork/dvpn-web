@@ -4,6 +4,7 @@ import {
   ACCESS_POLICY,
   IDENTITY,
   IDENTITY_PAYOUT,
+  IDENTITY_DETAILS,
   NAT_STATUS,
   ORIGINAL_LOCATION,
   RESIDENTIAL_CONFIRM,
@@ -31,7 +32,7 @@ import {
 
 export interface ProviderState {
   identity?: IdentityRef,
-  identityStatus?: Identity
+  identityDetails?: Identity
   payout?: IdentityPayout & {
     loading?: boolean
     loaded?: boolean
@@ -72,6 +73,13 @@ export default typeToReducer<ProviderState>({
       ...state,
       identity: action.payload,
     }),
+  },
+
+  [IDENTITY_DETAILS]: {
+    FULFILLED: (state, action: Action<Identity>) => ({
+      ...state,
+      identityDetails: action.payload,
+    })
   },
 
   [IDENTITY_PAYOUT]: {
@@ -186,10 +194,11 @@ export default typeToReducer<ProviderState>({
   },
 
   [`sse/${SSEEventType.AppStateChange}`]: (state, action: Action<AppState>) => {
-    const { natStatus = null, services = null, sessions = null } = action.payload || {}
+    const { identities = [], natStatus = null, services = null, sessions = null } = action.payload || {}
 
     return {
       ...state,
+      identityDetails: state.identity.id ? _.find(identities, {'id':   state.identity.id}) : null,
       natStatus: natStatus ? _.assign(state.natStatus, natStatus) : state.natStatus,
       startedServices: services,
       sessions: sessions,
