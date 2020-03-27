@@ -16,17 +16,17 @@ import {
 } from './actions'
 import { ProviderState, TrafficOptions } from './reducer'
 import { ServiceOptions, ServiceTypes } from '../api/data/service'
-import {ConsumerLocation, IdentityPayout, IdentityRef, ServiceInfo} from 'mysterium-vpn-js'
+import {ConsumerLocation, IdentityPayout, IdentityRef, ServiceInfo, SSEEventType} from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { ConfigData, DispatchResult } from '../types'
-import serverSentEvents, { ServerSentEventTypes } from '../utils/serverSentEvents'
+import serverSentEvents from "../utils/serverSentEvents";
 import { TequilapiError } from 'mysterium-vpn-js/lib/tequilapi-error'
 import { updateUserConfigAction } from '../app/actions'
 
 export const initServerEventsStory = (dispatch: Dispatch, services: any) => {
   serverSentEvents.connect()
-  serverSentEvents.subscribe(ServerSentEventTypes.STATE_CHANGE, (payload) => {
+  serverSentEvents.subscribe(SSEEventType.AppStateChange, (payload) => {
       const { serviceInfo = [] } = payload || null
       const startedServices: ServiceInfo[] = services
       const shouldFetch = !(startedServices && startedServices.length) && (serviceInfo && serviceInfo.length)
