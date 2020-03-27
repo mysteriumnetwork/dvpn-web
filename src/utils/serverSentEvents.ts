@@ -2,7 +2,7 @@ import { EventEmitter } from 'events'
 import { getHttpApiUrl } from '../constants'
 import { Middleware, MiddlewareAPI } from 'redux'
 import { createAction } from 'redux-actions'
-import { NatStatus, ServiceInfo, ServiceSession } from 'mysterium-vpn-js'
+import { parseSSEResponse, SSEEventType } from 'mysterium-vpn-js'
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill'
 
 const EventSource = NativeEventSource || EventSourcePolyfill
@@ -11,21 +11,6 @@ export enum ServerSentState {
   CONNECTING = 0,
   OPEN = 1,
   CLOSED = 2
-}
-
-export interface ServerSentPayload {
-  natStatus?: NatStatus
-  serviceInfo?: ServiceInfo[]
-  sessions?: ServiceSession[]
-}
-
-export interface ServerSentResponse {
-  payload: ServerSentPayload,
-  type: string
-}
-
-export enum ServerSentEventTypes {
-  STATE_CHANGE = 'state-change'
 }
 
 export class ServerSentEvents extends EventEmitter {
@@ -44,7 +29,7 @@ export class ServerSentEvents extends EventEmitter {
     return this.evtSource ? this.evtSource.readyState as ServerSentState : ServerSentState.CLOSED
   }
 
-  subscribe(type: ServerSentEventTypes, cb: (payload: ServerSentPayload) => void) {
+  subscribe(type: SSEEventType, cb: (...args: any[]) => void) {
     this.on(type, cb)
   }
 
@@ -84,9 +69,7 @@ export class ServerSentEvents extends EventEmitter {
 
   protected onMessage = (event) => {
     try {
-      const { payload, type }: ServerSentResponse = (typeof event.data === 'string')
-        ? JSON.parse(event.data)
-        : event.data
+      const { payload, type } = parseSSEResponse(event.data)
       if (process.env.NODE_ENV !== 'production') {
         console.log('[ServerSentEvents] message!', type, payload)
       }

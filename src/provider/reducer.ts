@@ -24,9 +24,10 @@ import {
   IdentityPayout,
   NatStatus,
   ServiceInfo,
-  ServiceSession
+  ServiceSession,
+  AppState,
+  SSEEventType,
 } from 'mysterium-vpn-js'
-import { ServerSentEventTypes, ServerSentPayload } from '../utils/serverSentEvents'
 
 export interface ProviderState {
   identity?: IdentityRef,
@@ -184,13 +185,13 @@ export default typeToReducer<ProviderState>({
     }),
   },
 
-  [`sse/${ServerSentEventTypes.STATE_CHANGE}`]: (state, action: Action<ServerSentPayload>) => {
-    const { natStatus = null, serviceInfo = null, sessions = null } = action.payload || {}
+  [`sse/${SSEEventType.AppStateChange}`]: (state, action: Action<AppState>) => {
+    const { natStatus = null, services = null, sessions = null } = action.payload || {}
 
     return {
       ...state,
       natStatus: natStatus ? _.assign(state.natStatus, natStatus) : state.natStatus,
-      startedServices: serviceInfo,
+      startedServices: services,
       sessions: sessions,
     }
   },
