@@ -1,7 +1,6 @@
 import { Dispatch } from 'redux'
 import { getCurrentAccessPolicy } from './api'
 import {
-  getIdentityDetailsAction,
   getIdentityPayoutAction,
   getServicesAction,
   setAccessPolicyAction,
