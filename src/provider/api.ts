@@ -4,6 +4,7 @@ import {
   AccessPolicy,
   ConsumerLocation,
   IdentityRef,
+  Identity,
   IdentityPayout,
   NatStatusResponse,
   ServiceInfo,
@@ -112,6 +113,13 @@ export const getServiceList = async (): Promise<ServiceInfo[] | null> => {
   }
 
   return null
+}
+
+export const getIdentityDetails = async (identity: IdentityRef): Promise<Identity> => {
+  if (!(identity && identity.id)) {
+    return
+  }
+  return await tequilapiClient.identity(identity.id)
 }
 
 export const getIdentityPayout = async (identity: IdentityRef): Promise<IdentityPayout> => {

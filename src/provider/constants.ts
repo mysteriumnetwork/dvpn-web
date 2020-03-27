@@ -4,6 +4,8 @@ export const IDENTITIES = 'provider/IDENTITIES'
 
 export const IDENTITY = 'provider/IDENTITY'
 
+export const IDENTITY_DETAILS = 'provider/IDENTITY_DETAILS'
+
 export const IDENTITY_PAYOUT = 'provider/IDENTITY_PAYOUT'
 
 export const UPDATE_IDENTITY = 'provider/UPDATE_IDENTITY'
