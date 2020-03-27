@@ -25,7 +25,7 @@ const ConnectionInfo = (props: Props) => {
       <tbody>
       {
         startedServices.map(service => {
-          const nodeType = _.get(service, 'proposal.serviceDefinition.locationOriginate.node_type') || ''
+          const nodeType = _.get(service, 'proposal.serviceDefinition.locationOriginate.nodeType') || ''
 
           return (<tr key={service.type}>
             <td>

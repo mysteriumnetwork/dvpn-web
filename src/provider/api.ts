@@ -30,7 +30,7 @@ export const getCurrentAccessPolicy = async (): Promise<AccessPolicy | null> => 
 
 export const getCurrentIdentity = async (passphrase: string = ''): Promise<IdentityRef | null> => {
   try {
-    return await tequilapiClient.identityCurrent(passphrase)
+    return await tequilapiClient.identityCurrent({passphrase: passphrase})
   } catch (e) {
     unauthorized.onError(e)
     if (process.env.NODE_ENV !== 'production') {
