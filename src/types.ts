@@ -16,6 +16,14 @@ export interface DispatchResult<T = any> extends BaseAction {
 
 export interface ConfigData {
   'access-policy'?: { 'list'?: string }
-  openvpn?: { 'port'?: number }
+  openvpn?: {
+    'port'?: number
+    'price-gb'?: number
+    'price-minute'?: number
+  }
   shaper?: { enabled?: boolean }
+  wireguard?: {
+    'price-gb'?: number
+    'price-minute'?: number
+  }
 }
