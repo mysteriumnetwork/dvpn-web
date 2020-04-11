@@ -127,13 +127,13 @@ export default class AirdropWallet extends React.PureComponent<Props> {
           <div>
             <div className={styles.editableField}>
               <div>
-                <TextField type="number" inputProps={{min: "0", max: "50000000"}}
+                <TextField type="number" inputProps={{min: "0", max: "0.5"}}
                            placeholder="0" name="providerPriceGiB" disabled={submitting}
                            className={styles.editableTextFieldHalf}/>
                 <p className={styles.helperText}>{trans('app.provider.service.price.gb')}</p>
                 </div>
                 <div>
-                <TextField type="number" inputProps={{min: "0", max: "100000"}}
+                <TextField type="number" inputProps={{min: "0", max: "0.001"}}
                            placeholder="0" name="providerPriceMinute" disabled={submitting}
                            className={styles.editableTextFieldHalf}/>
                 <p className={styles.helperText}>{trans('app.provider.service.price.minute')}</p>
