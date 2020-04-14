@@ -41,7 +41,7 @@ export default class AirdropWallet extends React.PureComponent<Props> {
     change('shaperEnabled', event.target.checked)
   }
 
-  normalize = (val: any, priceRange: PriceRange)  => {
+  normalize = (val: any, priceRange: PriceRange) => {
     if (val < priceRange.min) {
       return priceRange.min
     }
@@ -138,24 +138,22 @@ export default class AirdropWallet extends React.PureComponent<Props> {
         </div>
         <div className={styles.flexedRow}>
           <p className={styles.label}>{trans('app.provider.service.price')}</p>
-          <div>
-            <div className={styles.editableField}>
-              <div>
-                <TextField type="number"
-                           inputProps={{min: perGiB.min, max: perGiB.max, step: perGiB.step}}
-                           normalize={val => this.normalize(val, perGiB)}
-                           placeholder="0" name="providerPriceGiB" disabled={submitting}
-                           className={styles.editableTextFieldHalf}/>
-                <p className={styles.helperText}>{trans('app.provider.service.price.gb')}</p>
-              </div>
-              <div>
-                <TextField type="number"
-                           inputProps={{min: perMin.min, max: perMin.max, step: perMin.step}}
-                           normalize={val => this.normalize(val, perMin)}
-                           placeholder="0" name="providerPriceMinute" disabled={submitting}
-                           className={styles.editableTextFieldHalf}/>
-                <p className={styles.helperText}>{trans('app.provider.service.price.minute')}</p>
-              </div>
+          <div className={styles.editableField}>
+            <div style={{ marginRight: 6 }}>
+              <TextField type="number"
+                         inputProps={{ min: perGiB.min, max: perGiB.max, step: perGiB.step }}
+                         normalize={val => this.normalize(val, perGiB)}
+                         placeholder="0" name="providerPriceGiB" disabled={submitting}
+                         className={styles.editableTextFieldHalf}/>
+              <p className={styles.helperText}>{trans('app.provider.service.price.gb')}</p>
+            </div>
+            <div>
+              <TextField type="number"
+                         inputProps={{ min: perMin.min, max: perMin.max, step: perMin.step }}
+                         normalize={val => this.normalize(val, perMin)}
+                         placeholder="0" name="providerPriceMinute" disabled={submitting}
+                         className={styles.editableTextFieldHalf}/>
+              <p className={styles.helperText}>{trans('app.provider.service.price.minute')}</p>
             </div>
           </div>
         </div>
