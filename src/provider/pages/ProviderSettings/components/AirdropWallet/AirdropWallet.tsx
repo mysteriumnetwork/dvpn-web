@@ -12,6 +12,24 @@ type Props = {
   submitting: boolean
 }
 
+interface PriceRange {
+  min: number,
+  max: number,
+  step: number,
+}
+
+const perGiB: PriceRange = {
+  min: 0,
+  max: 0.5,
+  step: 0.01,
+}
+
+const perMin: PriceRange = {
+  min: 0,
+  max: 0.001,
+  step: 0.0001,
+}
+
 export default class AirdropWallet extends React.PureComponent<Props> {
   handleTrafficChange = (event) => {
     const { change } = this.props
@@ -21,6 +39,16 @@ export default class AirdropWallet extends React.PureComponent<Props> {
   handleShaperChange = (event) => {
     const { change } = this.props
     change('shaperEnabled', event.target.checked)
+  }
+
+  normalize = (val: any, priceRange: PriceRange)  => {
+    if (val < priceRange.min) {
+      return priceRange.min
+    }
+    if (val > priceRange.max) {
+      return priceRange.max
+    }
+    return val
   }
 
   render() {
@@ -127,13 +155,17 @@ export default class AirdropWallet extends React.PureComponent<Props> {
           <div>
             <div className={styles.editableField}>
               <div>
-                <TextField type="number" inputProps={{min: "0", max: "0.5"}}
+                <TextField type="number"
+                           inputProps={{min: perGiB.min, max: perGiB.max, step: perGiB.step}}
+                           normalize={val => this.normalize(val, perGiB)}
                            placeholder="0" name="providerPriceGiB" disabled={submitting}
                            className={styles.editableTextFieldHalf}/>
                 <p className={styles.helperText}>{trans('app.provider.service.price.gb')}</p>
                 </div>
                 <div>
-                <TextField type="number" inputProps={{min: "0", max: "0.001"}}
+                <TextField type="number"
+                           inputProps={{min: perMin.min, max: perMin.max, step: perMin.step}}
+                           normalize={val => this.normalize(val, perMin)}
                            placeholder="0" name="providerPriceMinute" disabled={submitting}
                            className={styles.editableTextFieldHalf}/>
                 <p className={styles.helperText}>{trans('app.provider.service.price.minute')}</p>
