@@ -17,6 +17,6 @@ export const getUserConfig = async (): Promise<Config> => {
   return await tequilapiClient.userConfig()
 }
 
-export const updateUserConfig = async (data: any): Promise<void> => {
+export const updateUserConfig = async (data: any): Promise<Config> => {
   return await tequilapiClient.updateUserConfig({ data })
 }

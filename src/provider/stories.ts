@@ -212,6 +212,8 @@ type SettingsPayload = IdentityPayout & {
   openVpnPort?: number
   configData: ConfigData
   provider: ProviderState
+  providerPriceMinute: number
+  providerPriceGiB: number
 }
 
 export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPayload, to: any) => {
@@ -225,6 +227,8 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPay
     configData,
     shaperEnabled,
     openVpnPort,
+    providerPriceGiB,
+    providerPriceMinute,
   } = payload
 
   try {
@@ -249,9 +253,15 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPay
         'access-policy': accessPolicy,
         openvpn: {
           port: openVpnPort ? Number(openVpnPort) : undefined,
+          'price-gb': providerPriceGiB ? Number(providerPriceGiB) : undefined,
+          'price-minute': providerPriceMinute ? Number(providerPriceMinute) : undefined,
         },
         shaper: {
           enabled: Boolean(shaperEnabled)
+        },
+        wireguard: {
+          'price-gb': providerPriceGiB ? Number(providerPriceGiB) : undefined,
+          'price-minute': providerPriceMinute ? Number(providerPriceMinute) : undefined,
         }
       }
 
