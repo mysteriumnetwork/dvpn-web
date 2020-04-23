@@ -16,11 +16,11 @@ import {
 } from './actions'
 import { ProviderState, TrafficOptions } from './reducer'
 import { ServiceOptions, ServiceTypes } from '../api/data/service'
-import {ConsumerLocation, IdentityPayout, IdentityRef, ServiceInfo, SSEEventType} from 'mysterium-vpn-js'
+import { ConsumerLocation, IdentityPayout, IdentityRef, ServiceInfo, SSEEventType } from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
 import apiSubmissionError from '../utils/apiSubmissionError'
 import { ConfigData, DispatchResult } from '../types'
-import serverSentEvents from "../utils/serverSentEvents";
+import serverSentEvents from '../utils/serverSentEvents'
 import { TequilapiError } from 'mysterium-vpn-js/lib/tequilapi-error'
 import { updateUserConfigAction } from '../app/actions'
 
@@ -45,7 +45,7 @@ export const initServerEventsStory = (dispatch: Dispatch, services: any) => {
             })
         })
         .catch(() => undefined)
-    }
+    },
   )
 }
 
@@ -69,7 +69,7 @@ export const destroyProvidersStory = (dispatch: Dispatch) => {
 }
 
 export const setGeneralError = (dispatch, e) => dispatch(setProviderStateAction({
-  generalError: e.message
+  generalError: e.message,
 }))
 
 export const fetchIdentityStory = async (dispatch: Dispatch) => {
@@ -134,19 +134,28 @@ export const stopAccessPolicyFetchingStory = () => {
 
 export const startVpnServerStory = async (dispatch: Dispatch, provider: ProviderState) => {
   const providerId = provider.identity && provider.identity.id
-  const type = ServiceTypes.OPENVPN ///TODO: tmp
   const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE && provider.accessPolicy)
     ? provider.accessPolicy.id
     : undefined
   const options: ServiceOptions = undefined
 
-  const services: ServiceInfo[] = await Promise
-    .resolve(dispatch(startServiceAction({ providerId, type, accessPolicyId, options })))
+  const services: ServiceInfo[] = []
+
+  services.push(await Promise
+    .resolve(dispatch(startServiceAction({ providerId, type: ServiceTypes.OPENVPN, accessPolicyId, options })))
     .then((result: DispatchResult<ServiceInfo[]>) => result && result.value)
     .catch(error => {
       setGeneralError(dispatch, error)
       return null
-    })
+    }))
+
+  services.push(await Promise
+    .resolve(dispatch(startServiceAction({ providerId, type: ServiceTypes.WIREGUARD, accessPolicyId, options })))
+    .then((result: DispatchResult<ServiceInfo[]>) => result && result.value)
+    .catch(error => {
+      setGeneralError(dispatch, error)
+      return null
+    }))
 
   if (services && services.length) {
     onServiceStarted(dispatch).catch((e) => {
@@ -158,11 +167,11 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
 }
 
 const onServiceStarted = async (dispatch: Dispatch) => Promise.all([
-  stopAccessPolicyFetchingStory()
+  stopAccessPolicyFetchingStory(),
 ])
 
 const onServiceStopped = async (dispatch: Dispatch) => Promise.all([
-  startAccessPolicyFetchingStory(dispatch)
+  startAccessPolicyFetchingStory(dispatch),
 ])
 
 export const stopVpnServerStory = async (dispatch: Dispatch, services: ServiceInfo[]) => {
@@ -257,12 +266,12 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPay
           'price-minute': providerPriceMinute ? Number(providerPriceMinute) : undefined,
         },
         shaper: {
-          enabled: Boolean(shaperEnabled)
+          enabled: Boolean(shaperEnabled),
         },
         wireguard: {
           'price-gb': providerPriceGiB ? Number(providerPriceGiB) : undefined,
           'price-minute': providerPriceMinute ? Number(providerPriceMinute) : undefined,
-        }
+        },
       }
 
       dispatch(updateUserConfigAction(newData))
