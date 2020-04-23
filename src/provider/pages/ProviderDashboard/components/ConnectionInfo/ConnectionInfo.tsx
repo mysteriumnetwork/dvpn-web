@@ -11,6 +11,11 @@ type Props = {
   provider: ProviderState,
 }
 
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
 const ConnectionInfo = (props: Props) => {
   const { originalLocation: location, startedServices = [] } = props.provider
 
@@ -18,6 +23,7 @@ const ConnectionInfo = (props: Props) => {
     <table>
       <thead>
       <tr>
+        <th>{trans('app.node.running.service_type')}</th>
         <th>{trans('app.node.running.public.ip')}</th>
         <th>{trans('app.node.running.server.id')}</th>
       </tr>
@@ -28,6 +34,7 @@ const ConnectionInfo = (props: Props) => {
           const nodeType = _.get(service, 'proposal.serviceDefinition.locationOriginate.nodeType') || ''
 
           return (<tr key={service.type}>
+            <td>{capitalize(service.type)}</td>
             <td>
               <div className={styles.ipItem}>
                 {location && location.country && (<FlagIcon code={String(location.country).toLowerCase()}/>)}
@@ -43,7 +50,7 @@ const ConnectionInfo = (props: Props) => {
               <a target="_blank"
                  rel="noopener noreferrer"
                  href={`${process.env.REACT_APP_MYSTERIUM_NETWORK}/node/${service.providerId}/${service.type || ''}`}
-                 className={classNames( styles.infoID, 'underlined')}>{service.providerId}</a>
+                 className={classNames(styles.infoID, 'underlined')}>{service.providerId}</a>
             </td>
           </tr>)
         })
