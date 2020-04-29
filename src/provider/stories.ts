@@ -134,15 +134,11 @@ export const stopAccessPolicyFetchingStory = () => {
 
 export const startVpnServerStory = async (dispatch: Dispatch, provider: ProviderState) => {
   const providerId = provider.identity && provider.identity.id
-  const accessPolicyId = (provider.trafficOption === TrafficOptions.SAFE && provider.accessPolicy)
-    ? provider.accessPolicy.id
-    : undefined
-  const options: ServiceOptions = undefined
 
+  // Starts services with persisted defaults in order to get same results as device restarts
   const services: ServiceInfo[] = []
-
   services.push(await Promise
-    .resolve(dispatch(startServiceAction({ providerId, type: ServiceTypes.OPENVPN, accessPolicyId, options })))
+    .resolve(dispatch(startServiceAction({ providerId, type: ServiceTypes.OPENVPN })))
     .then((result: DispatchResult<ServiceInfo[]>) => result && result.value)
     .catch(error => {
       setGeneralError(dispatch, error)
@@ -150,7 +146,7 @@ export const startVpnServerStory = async (dispatch: Dispatch, provider: Provider
     }))
 
   services.push(await Promise
-    .resolve(dispatch(startServiceAction({ providerId, type: ServiceTypes.WIREGUARD, accessPolicyId, options })))
+    .resolve(dispatch(startServiceAction({ providerId, type: ServiceTypes.WIREGUARD })))
     .then((result: DispatchResult<ServiceInfo[]>) => result && result.value)
     .catch(error => {
       setGeneralError(dispatch, error)
@@ -259,18 +255,16 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPay
         : null
       const newData: ConfigData = {
         ...configData,
+        payment: {
+          'price-gb': providerPriceGiB ? Number(providerPriceGiB) : undefined,
+          'price-minute': providerPriceMinute ? Number(providerPriceMinute) : undefined,
+        },
         'access-policy': accessPolicy,
         openvpn: {
           port: openVpnPort ? Number(openVpnPort) : undefined,
-          'price-gb': providerPriceGiB ? Number(providerPriceGiB) : undefined,
-          'price-minute': providerPriceMinute ? Number(providerPriceMinute) : undefined,
         },
         shaper: {
           enabled: Boolean(shaperEnabled),
-        },
-        wireguard: {
-          'price-gb': providerPriceGiB ? Number(providerPriceGiB) : undefined,
-          'price-minute': providerPriceMinute ? Number(providerPriceMinute) : undefined,
         },
       }
 

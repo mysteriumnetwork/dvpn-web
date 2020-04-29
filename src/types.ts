@@ -15,15 +15,13 @@ export interface DispatchResult<T = any> extends BaseAction {
 }
 
 export interface ConfigData {
+  payment?: {
+    'price-gb'?: number
+    'price-minute'?: number
+  },
   'access-policy'?: { 'list'?: string }
   openvpn?: {
     'port'?: number
-    'price-gb'?: number
-    'price-minute'?: number
   }
   shaper?: { enabled?: boolean }
-  wireguard?: {
-    'price-gb'?: number
-    'price-minute'?: number
-  }
 }
