@@ -15,7 +15,7 @@ import {
   updateReferralAction,
 } from './actions'
 import { ProviderState, TrafficOptions } from './reducer'
-import { ServiceOptions, ServiceTypes } from '../api/data/service'
+import { ServiceTypes } from '../api/data/service'
 import { ConsumerLocation, IdentityPayout, IdentityRef, ServiceInfo, SSEEventType } from 'mysterium-vpn-js'
 import { push } from 'connected-react-router'
 import apiSubmissionError from '../utils/apiSubmissionError'
