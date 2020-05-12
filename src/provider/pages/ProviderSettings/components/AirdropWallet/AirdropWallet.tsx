@@ -5,6 +5,8 @@ import Checkbox from '../../../../../ui-kit/components/Checkbox/Checkbox'
 import trans from '../../../../../trans'
 import { TrafficOptions } from '../../../../reducer'
 import styles from './AirdropWallet.module.scss'
+import { IconButton, InputAdornment } from "@material-ui/core";
+import { Backspace } from "@material-ui/icons";
 
 type Props = {
   formWalletAddressPrefill: any
@@ -33,14 +35,16 @@ const perMin: PriceRange = {
 
 export default class AirdropWallet extends React.PureComponent<Props> {
   handleTrafficChange = (event) => {
-    const { change } = this.props
-    change('trafficOption', event.target.value)
+    this.props.change('trafficOption', event.target.value)
   }
 
   handleShaperChange = (event) => {
-    const { change } = this.props
-    change('shaperEnabled', event.target.checked)
+    this.props.change('shaperEnabled', event.target.checked)
   }
+
+  handleReset = (prop) => (event) => {
+    this.props.change(prop, null)
+  };
 
   normalize = (val: any, priceRange: PriceRange) => {
     if (val < priceRange.min) {
@@ -146,6 +150,13 @@ export default class AirdropWallet extends React.PureComponent<Props> {
                          placeholder={formWalletAddressPrefill.providerPriceGiB}
                          name="providerPriceGiB"
                          disabled={submitting}
+                         endAdornment={
+                           <InputAdornment position="end">
+                             <IconButton aria-label="Reset to default" onClick={this.handleReset('providerPriceGiB')}>
+                               <Backspace fontSize="small" />
+                             </IconButton>
+                           </InputAdornment>
+                         }
                          className={styles.editableTextFieldHalf}/>
               <p className={styles.helperText}>{trans('app.provider.service.price.gb')}</p>
             </div>
@@ -156,6 +167,13 @@ export default class AirdropWallet extends React.PureComponent<Props> {
                          name="providerPriceMinute"
                          disabled={submitting}
                          placeholder={formWalletAddressPrefill.providerPriceMinute}
+                         endAdornment={
+                           <InputAdornment position="end">
+                             <IconButton aria-label="Reset to default" onClick={this.handleReset('providerPriceMinute')}>
+                               <Backspace fontSize="small" />
+                             </IconButton>
+                           </InputAdornment>
+                         }
                          className={styles.editableTextFieldHalf}/>
               <p className={styles.helperText}>{trans('app.provider.service.price.minute')}</p>
             </div>
@@ -171,6 +189,13 @@ export default class AirdropWallet extends React.PureComponent<Props> {
                            name="openVpnPort"
                            disabled={submitting}
                            placeholder={formWalletAddressPrefill.openVpnPort}
+                           endAdornment={
+                             <InputAdornment position="end">
+                               <IconButton aria-label="Reset to default" onClick={this.handleReset('openVpnPort')}>
+                                 <Backspace fontSize="small" />
+                               </IconButton>
+                             </InputAdornment>
+                           }
                            className={styles.editableTextField}/>
               </div>
             </div>
