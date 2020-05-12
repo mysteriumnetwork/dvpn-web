@@ -1,5 +1,5 @@
 import typeToReducer from 'type-to-reducer'
-import { CONFIG_DATA, HEALTH_CHECK, REPORT_ISSUE } from './constants'
+import { CONFIG_DEFAULT, CONFIG_DATA, HEALTH_CHECK, REPORT_ISSUE } from './constants'
 import { Action } from 'redux-actions'
 import { NodeHealthcheck } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
@@ -8,6 +8,7 @@ export const appInitState: AppState = {}
 
 export interface AppState {
   node?: NodeHealthcheck
+  configDefaults?: any
   configData?: any
 
   [key: string]: any
@@ -42,6 +43,21 @@ export default typeToReducer({
     FULFILLED: (state, action: Action<NodeHealthcheck>) => ({
       ...state,
       reportIssuePending: false,
+    }),
+  },
+
+  [CONFIG_DEFAULT]: {
+    PENDING: (state) => ({
+      ...state,
+      configDefaults: { pending: true }
+    }),
+    REJECTED: (state, action: Action<any>) => ({
+      ...state,
+      configDefaults: {}
+    }),
+    FULFILLED: (state, action: Action<Config>) => ({
+      ...state,
+      configDefaults: (action.payload && action.payload.data) || {},
     }),
   },
 
