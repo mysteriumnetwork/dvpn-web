@@ -7,8 +7,9 @@ import { TrafficOptions } from '../../../../reducer'
 import styles from './AirdropWallet.module.scss'
 
 type Props = {
+  formWalletAddressPrefill: any
   formWalletAddressData: any
-  change: (field: string, value: any) => void;
+  change: (field: string, value: any) => void
   submitting: boolean
 }
 
@@ -52,10 +53,9 @@ export default class AirdropWallet extends React.PureComponent<Props> {
   }
 
   render() {
-    const { submitting, formWalletAddressData } = this.props
+    const { submitting, formWalletAddressPrefill, formWalletAddressData } = this.props
     const trafficOptionValue = (formWalletAddressData && formWalletAddressData.trafficOption)
     const shaperEnabledValue = Boolean(formWalletAddressData && formWalletAddressData.shaperEnabled)
-
     return (
       <div>
         <div className={styles.flexedRow}>
@@ -143,7 +143,9 @@ export default class AirdropWallet extends React.PureComponent<Props> {
               <TextField type="number"
                          inputProps={{ min: perGiB.min, max: perGiB.max, step: perGiB.step }}
                          normalize={val => this.normalize(val, perGiB)}
-                         placeholder="0" name="providerPriceGiB" disabled={submitting}
+                         placeholder={formWalletAddressPrefill.providerPriceGiB}
+                         name="providerPriceGiB"
+                         disabled={submitting}
                          className={styles.editableTextFieldHalf}/>
               <p className={styles.helperText}>{trans('app.provider.service.price.gb')}</p>
             </div>
@@ -151,7 +153,9 @@ export default class AirdropWallet extends React.PureComponent<Props> {
               <TextField type="number"
                          inputProps={{ min: perMin.min, max: perMin.max, step: perMin.step }}
                          normalize={val => this.normalize(val, perMin)}
-                         placeholder="0" name="providerPriceMinute" disabled={submitting}
+                         name="providerPriceMinute"
+                         disabled={submitting}
+                         placeholder={formWalletAddressPrefill.providerPriceMinute}
                          className={styles.editableTextFieldHalf}/>
               <p className={styles.helperText}>{trans('app.provider.service.price.minute')}</p>
             </div>
@@ -164,7 +168,9 @@ export default class AirdropWallet extends React.PureComponent<Props> {
             <div className={styles.editableField}>
               <div>
                 <TextField type="number" inputProps={{min: "0", max: "65535"}}
-                           placeholder="0" name="openVpnPort" disabled={submitting}
+                           name="openVpnPort"
+                           disabled={submitting}
+                           placeholder={formWalletAddressPrefill.openVpnPort}
                            className={styles.editableTextField}/>
               </div>
             </div>

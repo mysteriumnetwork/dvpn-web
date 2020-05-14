@@ -13,6 +13,7 @@ const styles = require('./ProviderSettings.module.scss')
 
 type Props = DefaultProps & InjectedFormProps & {
   provider: ProviderState
+  configDefaults: ConfigData
   configData: ConfigData
   formWalletAddressData?: Object
   onSetState?: (data: Object) => void
@@ -71,7 +72,7 @@ export class ProviderSettings extends React.PureComponent<Props> {
   }
 
   render() {
-    const { provider, formWalletAddressData, change, submitting, initialized } = this.props
+    const { provider, configDefaults, formWalletAddressData, change, submitting, initialized } = this.props
 
     const id = (provider && provider.identity && provider.identity.id) || ''
 
@@ -82,11 +83,18 @@ export class ProviderSettings extends React.PureComponent<Props> {
           <div>
             <div className={styles.flexedRow}>
               <p>{trans('app.provider.settings.my.id')}</p>
-              <div title={id}>{id.substr(2)}</div>
+              <div title={id}>{id}</div>
             </div>
-            <AirdropWallet formWalletAddressData={formWalletAddressData}
-                           change={change}
-                           submitting={!initialized || submitting}/>
+            <AirdropWallet
+              formWalletAddressPrefill={{
+                "openVpnPort": configDefaults.openvpn ? configDefaults.openvpn.port : 0,
+                "providerPriceGiB": configDefaults.payment ? configDefaults.payment["priceGb"] : 0,
+                "providerPriceMinute": configDefaults.payment ? configDefaults.payment["priceMinute"] : 0,
+              }}
+              formWalletAddressData={formWalletAddressData}
+              change={change}
+              submitting={!initialized || submitting}
+            />
           </div>
         </div>
       </div>
