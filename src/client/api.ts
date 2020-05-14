@@ -19,7 +19,7 @@ const accountantId = "0x0214281cf15c1a66b51990e2e65e1f7b7c363318"
 
 export const getProposalsWithConnectCounts = async (): Promise<ProposalsCountsInterface> => {
   try {
-    const proposals = await tequilapiClient.findProposals({ fetchConnectCounts: true })
+    const proposals = await tequilapiClient.findProposals({ fetchMetrics: true })
 
     return proposalsCounts(proposals)
   } catch (e) {
@@ -34,7 +34,7 @@ export const getProposalsWithConnectCounts = async (): Promise<ProposalsCountsIn
 
 export const getProposalsByFilter = async (filter: ProposalsFilter): Promise<Proposal[]> => {
   try {
-    const options: ProposalQuery = { fetchConnectCounts: true }
+    const options: ProposalQuery = { fetchMetrics: true }
 
     if (filter && filter.type) {
       options.serviceType = filter.type

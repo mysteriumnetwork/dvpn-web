@@ -76,6 +76,8 @@ export type IAppTextFieldProps = TextFieldProps & {
   onKeyUp?: any
   classes: IStyles
   style?: React.CSSProperties
+  endAdornment?: React.ReactNode
+  startAdornment?: React.ReactNode
 }
 
 const AppTextField = (props: IAppTextFieldProps) => (
@@ -109,6 +111,8 @@ const AppTextField = (props: IAppTextFieldProps) => (
       rows={props.rows}
       rowsMax={props.rowsMax}
       disableUnderline
+      startAdornment={props.startAdornment}
+      endAdornment={props.endAdornment}
     />
     {props.helperText && (
       <FormHelperText id={`${props.name}-text`} className={props.classes.helperText}>{props.helperText}</FormHelperText>

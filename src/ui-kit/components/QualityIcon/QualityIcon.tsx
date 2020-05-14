@@ -1,7 +1,7 @@
 import * as React from 'react'
 import injectSheet from 'react-jss'
 import icons from '../../../app/components/assets/images/app-icons.svg'
-import { Metrics, QualityLevel } from 'mysterium-vpn-js'
+import { ProposalMetrics, QualityLevel } from 'mysterium-vpn-js'
 import { qualityCalculator } from '../../../utils/quality-calculator'
 
 const classNames = require('classnames')
@@ -52,7 +52,7 @@ const styles = theme => ({
 export interface IQualityProps {
   classes: IStyles
   style?: React.CSSProperties,
-  metrics?: Metrics,
+  metrics?: ProposalMetrics,
   active?: boolean
 }
 

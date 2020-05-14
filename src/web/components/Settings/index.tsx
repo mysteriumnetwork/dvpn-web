@@ -15,6 +15,7 @@ import validate from '../../../provider/pages/ProviderSettings/components/Airdro
 const mapStateToProps = (state: RootState) => ({
   provider: state.provider || {},
   formWalletAddressData: getFormValues('walletAddress')(state),
+  configDefaults: state.app.configDefaults || {},
   configData: state.app.configData || {},
 })
 

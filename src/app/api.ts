@@ -13,6 +13,10 @@ export const sendReportIssue = async (value): Promise<any> => {
   return tequilapiClient.reportIssue(data)
 }
 
+export const getDefaultConfig = async (): Promise<Config> => {
+  return await tequilapiClient.defaultConfig()
+}
+
 export const getUserConfig = async (): Promise<Config> => {
   return await tequilapiClient.userConfig()
 }
