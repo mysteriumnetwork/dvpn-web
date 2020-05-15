@@ -22,6 +22,12 @@ export interface ConfigData {
   'access-policy'?: { 'list'?: string }
   openvpn?: {
     'port'?: number
+    'price-gb'?: number
+    'price-minute'?: number
+  },
+  wireguard?: {
+    'price-gb'?: number
+    'price-minute'?: number
   }
   shaper?: { enabled?: boolean }
 }

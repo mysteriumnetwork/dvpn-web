@@ -259,12 +259,18 @@ export const saveSettingsStory = async (dispatch: Dispatch, payload: SettingsPay
           'price-gb': providerPriceGiB ? Number(providerPriceGiB) : undefined,
           'price-minute': providerPriceMinute ? Number(providerPriceMinute) : undefined,
         },
+        shaper: {
+          enabled: Boolean(shaperEnabled),
+        },
         'access-policy': accessPolicy,
         openvpn: {
           port: openVpnPort ? Number(openVpnPort) : undefined,
+          'price-gb': null,
+          'price-minute': null,
         },
-        shaper: {
-          enabled: Boolean(shaperEnabled),
+        wireguard: {
+          'price-gb': null,
+          'price-minute': null,
         },
       }
 
