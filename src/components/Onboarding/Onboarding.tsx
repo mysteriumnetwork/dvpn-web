@@ -1,9 +1,10 @@
 import React from "react";
-import '../../styles/onboarding/main.scss'
-import Welcome from "./steps/Welcome";
-import TermsAndConditions from './steps/TemsAndConditions'
+import '../../assets/styles/onboarding/main.scss'
+import Welcome from "./Steps/Welcome";
+import TermsAndConditions from "./Steps/TemsAndConditions";
 import {Route, Switch} from "react-router-dom";
 import { Grid } from "@material-ui/core";
+import sideImage from '../../assets/images/onboarding/SideImage.png';
 
 const Onboarding = () => {
   return (
@@ -27,6 +28,7 @@ const Onboarding = () => {
         alignItems="center"
         className="side-box"
       >
+        <img className="side-box-img" src={sideImage}/>
       </Grid>
     </div>
   )
