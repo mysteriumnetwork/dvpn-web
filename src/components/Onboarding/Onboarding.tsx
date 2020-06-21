@@ -1,5 +1,5 @@
 import React from "react";
-import '../../assets/styles/onboarding/main.scss'
+import '../../assets/styles/components/onboarding/main.scss'
 import Welcome from "./Steps/Welcome";
 import TermsAndConditions from "./Steps/TemsAndConditions";
 import {Route, Switch} from "react-router-dom";
