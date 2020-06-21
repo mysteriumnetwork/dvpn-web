@@ -1,0 +1,21 @@
+.onboarding-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .content-box{
+    width: 55%;
+    margin-right: -5%;
+    background: #ffffff;
+    position: relative;
+    height: 100%;
+    border-radius: 0 16px 16px 0;
+  }
+  .side-box{
+    background: linear-gradient(214.77deg, #262262 0%, #9E1F63 100.08%);
+    padding: 265px 100px 271px 5%;
+    width: 50%;
+    height: 100%;
+  }
+}
