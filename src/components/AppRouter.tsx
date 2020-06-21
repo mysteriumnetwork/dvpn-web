@@ -20,6 +20,6 @@ const AppRouter = () => {
       <Route path="/onboarding" component={Onboarding} />
     </Switch>
   );
-}
+};
 
 export default AppRouter;
