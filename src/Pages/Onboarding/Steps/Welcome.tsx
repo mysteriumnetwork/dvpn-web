@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {StepCounter} from "../StepCounter";
-import "../../../assets/styles/pages/onboarding/welcome.scss"
+import "../../../assets/styles/pages/onboarding/steps/welcome.scss"
 
 const Welcome = () => {
   return (
