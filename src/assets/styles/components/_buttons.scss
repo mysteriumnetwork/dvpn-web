@@ -6,6 +6,8 @@
   padding-bottom: 16px;
   border-radius: 8px;
   border: none;
+  cursor: pointer;
+  text-decoration: none;
 
   &-empty {
     @include box-border-gradient(#262262, #9E1F63, 1px);

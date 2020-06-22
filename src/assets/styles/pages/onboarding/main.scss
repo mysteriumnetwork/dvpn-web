@@ -31,6 +31,27 @@
     .heading-paragraph {
       color: $secondary-text-color;
       font-weight: $lighter-weight;
+      margin-top: 3px;
+    }
+
+    .step-counter-wrapper{
+      position: absolute;
+      display: flex;
+      text-align: center;
+      bottom: 40px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      .circle{
+        width: 15px;
+        height: 15px;
+        background: rgba(156, 32, 100, 0.2);
+        margin-right: 18px;
+        border-radius: 10px;
+      }
+      .circle.active{
+        background: #9C2064;
+      }
     }
   }
   .side-wrapper{

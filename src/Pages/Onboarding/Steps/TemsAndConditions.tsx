@@ -1,8 +1,11 @@
 import React from "react";
+import {StepCounter} from "../StepCounter";
 
 const TermsAndConditions = () => {
   return (
-    <div>Terms and conditions</div>
+    <div>scsdf
+      <StepCounter step={2}/>
+    </div>
   );
 };
 
