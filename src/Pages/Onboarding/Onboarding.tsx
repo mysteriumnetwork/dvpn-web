@@ -9,27 +9,15 @@ import sideImage from '../../assets/images/onboarding/SideImage.png';
 const Onboarding = () => {
   return (
     <div className="onboarding-wrapper">
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        className="content-wrapper"
-      >
+      <div className="content-wrapper">
         <Switch>
           <Route exact={true}  path={`/onboarding`} component={Welcome}/>
           <Route exact={true}  path={`/onboarding/terms-and-conditions`} component={TermsAndConditions}/>
         </Switch>
-      </Grid>
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        className="side"
-      >
+      </div>
+      <div className="side-wrapper">
         <img src={sideImage}/>
-      </Grid>
+      </div>
     </div>
   )
 };

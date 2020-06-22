@@ -14,6 +14,13 @@
     position: relative;
     height: 100%;
     border-radius: 0 16px 16px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .block{
+      text-align: center;
+    }
 
     .heading {
       color: $main-text-color;
@@ -27,10 +34,13 @@
       font-weight: $lighter-weight;
     }
   }
-  .side{
+  .side-wrapper{
     background: linear-gradient(214.77deg, #262262 0%, #9E1F63 100.08%);
     width: 50%;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     img{
       max-width: 100%;
