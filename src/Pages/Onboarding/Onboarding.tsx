@@ -14,7 +14,7 @@ const Onboarding = () => {
         direction="row"
         justify="center"
         alignItems="center"
-        className="content"
+        className="content-wrapper"
       >
         <Switch>
           <Route exact={true}  path={`/onboarding`} component={Welcome}/>
