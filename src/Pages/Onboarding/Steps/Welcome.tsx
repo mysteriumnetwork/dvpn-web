@@ -5,10 +5,10 @@ import "../../../assets/styles/pages/onboarding/steps/welcome.scss"
 
 const Welcome = () => {
   return (
-       <div className="block welcome">
-           <h1 className="heading">Welcome node runner!</h1>
-           <p className="heading-paragraph">Lets get you up and running. </p>
-           <div className="content welcome">
+       <div className="step-block">
+           <h1 className="step-block--heading">Welcome node runner!</h1>
+           <p className="step-block--heading-paragraph">Lets get you up and running. </p>
+           <div className="step-block--content">
              <Link to="/onboarding/terms-and-conditions" className="btn btn-filled start"><span className="btn-text">Start node setup</span></Link>
            </div>
          <StepCounter step={1}/>

@@ -1,12 +1,12 @@
 @import '../../base/variables';
 
-.onboarding-wrapper {
+.onboarding.wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 
-  .content-wrapper{
+  .steps{
     width: 55%;
     margin-right: -5%;
     background: #ffffff;
@@ -17,24 +17,23 @@
     justify-content: center;
     align-items: center;
 
-    .block{
+    .step-block{
       text-align: center;
+
+      &--heading{
+        color: $main-text-color;
+        font-weight: $lighter-weight;
+        font-size: 32px;
+        line-height: 42px;
+      }
+      &--heading-paragraph {
+        color: $secondary-text-color;
+        font-weight: $lighter-weight;
+        margin-top: 3px;
+      }
     }
 
-    .heading {
-      color: $main-text-color;
-      font-weight: $lighter-weight;
-      font-size: 32px;
-      line-height: 42px;
-    }
-
-    .heading-paragraph {
-      color: $secondary-text-color;
-      font-weight: $lighter-weight;
-      margin-top: 3px;
-    }
-
-    .step-counter-wrapper{
+    .steps-counter{
       position: absolute;
       display: flex;
       text-align: center;
@@ -42,19 +41,19 @@
       left: 50%;
       transform: translate(-50%, -50%);
 
-      .circle{
+      &--circle{
         width: 15px;
         height: 15px;
         background: rgba(156, 32, 100, 0.2);
         margin-right: 18px;
         border-radius: 10px;
       }
-      .circle.active{
+      &--circle.active{
         background: #9C2064;
       }
     }
   }
-  .side-wrapper{
+  .side{
     background: linear-gradient(214.77deg, #262262 0%, #9E1F63 100.08%);
     width: 50%;
     height: 100%;

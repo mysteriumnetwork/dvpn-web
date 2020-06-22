@@ -1,9 +1,12 @@
 @import '../../../base/variables';
 
-.content.welcome{
-  margin-top: 130px;
+.step-block{
+  &--content{
+    margin-top: 130px;
+  }
+  .btn.start{
+    width: 178px;
+    margin: 0 auto;
+  }
 }
-.btn.start{
-  width: 178px;
-  margin: 0 auto;
-}
+

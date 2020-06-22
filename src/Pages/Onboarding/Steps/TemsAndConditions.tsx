@@ -5,10 +5,10 @@ import "../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss"
 
 const TermsAndConditions = () => {
   return (
-    <div className="block terms-and-conditions">
-      <h1 className="heading">Terms & Conditions</h1>
-      <div className="content terms-and-conditions">
-        <div className="terms-and-conditions-wrapper">
+    <div className="step-block">
+      <h1 className="step-block--heading">Terms & Conditions</h1>
+      <div className="step-block--content">
+        <div className="terms-and-conditions">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac diam ac eros sollicitudin laoreet ac et
             orci. Nulla velit lacus, scelerisque eu purus eu, pharetra luctus nibh. Duis euismod vitae risus luctus

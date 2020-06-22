@@ -1,25 +1,26 @@
 @import '../../../base/variables';
 
-.block.terms-and-conditions{
+.step-block{
   width: 60%;
-}
-.content.terms-and-conditions{
-  margin-top: 48px;
-}
-.btn.accept{
-  width: 178px;
-  margin: 0 auto;
-}
-.terms-and-conditions-wrapper{
-  max-height: 57vh;
-  overflow: auto;
-  margin-bottom: 50px;
 
-  p{
-    font-weight: $normal-weight;
-    font-size: 12px;
-    line-height: 25px;
-    text-align: left;
-    color: $main-text-color;
+  &--content{
+    margin-top: 48px;
+  }
+  .btn.accept {
+    width: 178px;
+    margin: 0 auto;
+  }
+  .terms-and-conditions{
+    max-height: 57vh;
+    overflow: auto;
+    margin-bottom: 50px;
+
+    p{
+      font-weight: $normal-weight;
+      font-size: 12px;
+      line-height: 25px;
+      text-align: left;
+      color: $main-text-color;
+    }
   }
 }

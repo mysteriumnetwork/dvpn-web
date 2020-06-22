@@ -8,15 +8,15 @@ import sideImage from '../../assets/images/onboarding/SideImage.png';
 
 const Onboarding = () => {
   return (
-    <div className="onboarding-wrapper">
-      <div className="content-wrapper">
+    <div className="onboarding wrapper">
+      <div className="steps">
         <Switch>
           <Route exact={true}  path={`/onboarding`} component={Welcome}/>
           <Route exact={true}  path={`/onboarding/terms-and-conditions`} component={TermsAndConditions}/>
           <Route exact={true}  path={`/onboarding/backup`} component={Backup}/>
         </Switch>
       </div>
-      <div className="side-wrapper">
+      <div className="side">
         <img src={sideImage}/>
       </div>
     </div>
