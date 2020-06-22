@@ -1,9 +1,9 @@
 @import '../../../base/variables';
 
-.step-block{
+.step-block.term-and-conditions{
   width: 60%;
 
-  &--content{
+  .step-block-content{
     margin-top: 48px;
   }
   .btn.accept {

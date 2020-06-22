@@ -12,6 +12,7 @@
 
   &-empty {
     @include box-border-gradient(#262262, #9E1F63, 1px);
+    color: #000000;
   }
 
   &-filled {
