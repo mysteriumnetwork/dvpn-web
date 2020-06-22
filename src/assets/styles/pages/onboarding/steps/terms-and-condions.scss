@@ -10,3 +10,16 @@
   width: 178px;
   margin: 0 auto;
 }
+.terms-and-conditions-wrapper{
+  max-height: 57vh;
+  overflow: auto;
+  margin-bottom: 50px;
+
+  p{
+    font-weight: $normal-weight;
+    font-size: 12px;
+    line-height: 25px;
+    text-align: left;
+    color: $main-text-color;
+  }
+}
