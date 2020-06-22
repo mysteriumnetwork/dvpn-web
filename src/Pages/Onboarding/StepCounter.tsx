@@ -3,8 +3,9 @@ import React, {ReactElement} from "react";
 interface StepCounterProps {
   step: number,
 }
-const setUpCounter = (step: number) : any[]  => {
-  let steps: any[] = [];
+
+const setUpCounter = (step: number) : ReactElement[]  => {
+  let steps: ReactElement[] = [];
   for(let i : number = 0; i < 6; i++){
     steps.push(<div className={"circle " + (step -1 >= i ? 'active' : '')}></div>);
   }

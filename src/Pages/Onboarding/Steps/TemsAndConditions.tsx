@@ -3,7 +3,7 @@ import {StepCounter} from "../StepCounter";
 
 const TermsAndConditions = () => {
   return (
-    <div>scsdf
+    <div>
       <StepCounter step={2}/>
     </div>
   );
