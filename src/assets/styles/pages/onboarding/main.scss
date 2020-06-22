@@ -1,40 +1,40 @@
 @import '../../base/variables';
-@import "../../base/fonts";
+@import "welcome";
 
 .onboarding-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
-.content-box{
-  width: 55%;
-  margin-right: -5%;
-  background: #ffffff;
-  position: relative;
-  height: 100%;
-  border-radius: 0 16px 16px 0;
-    .heading{
+
+  .content-box {
+    width: 55%;
+    margin-right: -5%;
+    background: #ffffff;
+    position: relative;
+    height: 100%;
+    border-radius: 0 16px 16px 0;
+
+    .heading {
       color: $main-text-color;
       font-weight: $lighter-weight;
       font-size: 32px;
       line-height: 42px;
     }
-    .heading-extra-p{
+
+    .heading-extra-p {
       color: $secondary-text-color;
       font-weight: $lighter-weight;
     }
-  .content.welcome{
-    margin-top: 130px;
   }
-}
-
-.side-box{
-  background: linear-gradient(214.77deg, #262262 0%, #9E1F63 100.08%);
-  width: 50%;
-  height: 100%;
+  .side-box{
+    background: linear-gradient(214.77deg, #262262 0%, #9E1F63 100.08%);
+    width: 50%;
+    height: 100%;
 
     .side-box-img{
       max-width: 100%;
     }
+  }
 }
+

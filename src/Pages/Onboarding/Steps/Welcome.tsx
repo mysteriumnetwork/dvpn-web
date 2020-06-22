@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, Box } from "@material-ui/core";
+import "../../../assets/styles/pages/onboarding/_welcome.scss"
+import { Grid, Box, Button } from "@material-ui/core";
 
 const Welcome = () => {
   return (
@@ -8,7 +9,8 @@ const Welcome = () => {
         <h1 className="heading">Welcome node runner!</h1>
         <p className="heading-extra-p">Lets get you up and running. </p>
         <div className="content welcome">
-          asdasd
+          <Button className="empty-btn">asdasd </Button>
+          <Button className="filled-btn">asdasd </Button>
         </div>
       </Box>
     </Grid>
