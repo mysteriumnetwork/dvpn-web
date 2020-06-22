@@ -1,17 +1,17 @@
-import React from "react";
+import React, {ReactElement} from "react";
 
 interface StepCounterProps {
   step: number,
 }
-const setUpCounter = (step: number)  => {
-  let elements = [];
+const setUpCounter = (step: number) : any[]  => {
+  let steps: any[] = [];
   for(let i : number = 0; i < 6; i++){
-    elements.push(<div className={"circle " + (step -1 >= i ? 'active' : '')}></div>);
+    steps.push(<div className={"circle " + (step -1 >= i ? 'active' : '')}></div>);
   }
-  return elements;
+  return steps;
 };
 
-export const StepCounter: React.FC<StepCounterProps> = (props) => {
+export const StepCounter: React.FC<StepCounterProps> = (props): ReactElement => {
   return (
     <div className="step-counter-wrapper">
       {setUpCounter(props.step)}
