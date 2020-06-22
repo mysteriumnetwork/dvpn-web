@@ -1,19 +1,26 @@
-.filled-btn{
-  background: linear-gradient(270deg, #262262 0%, #9E1F63 100%);
-  border-radius: 8px !important;
-  font-style: normal !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
-  line-height: 16px !important;
-  color: #ffffff !important;
+@import '../base/variables';
+@import '../base/mixins/linear-border';
+
+.btn {
+  padding-top: 14px;
+  padding-bottom: 16px;
+  border-radius: 8px;
+  border: none;
+
+  &-empty {
+    @include box-border-gradient(#262262, #9E1F63, 1px);
+  }
+
+  &-filled {
+    background: linear-gradient(270deg, #262262 0%, #9E1F63 100%);
+    color: #ffffff;
+  }
+
+  &-text {
+    font-weight: $medium-weight;
+    font-style: normal;
+    font-size: 14px;
+    border-radius: 8px;
+  }
 }
-.empty-btn{
-  background: #FFFFFF !important;
-  border-radius: 8px !important;
-  color: #000000 !important;
-  font-style: $normal-weight !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
-  line-height: 16px !important;
-  border: 2px solid red !important;
-}
+

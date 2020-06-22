@@ -1,0 +1,20 @@
+@import '../../base/variables';
+
+.block.welcome{
+  width: 60%;
+}
+
+.content.welcome{
+  margin-top: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn.skip{
+  width: 213px;
+  margin-right: 8px;
+}
+.btn.download{
+  width: 178px;
+}

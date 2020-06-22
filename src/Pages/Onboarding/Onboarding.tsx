@@ -3,7 +3,6 @@ import "../../assets/styles/pages/onboarding/main.scss"
 import Welcome from "./Steps/Welcome";
 import TermsAndConditions from "./Steps/TemsAndConditions";
 import {Route, Switch} from "react-router-dom";
-import { Grid } from "@material-ui/core";
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 
 const Onboarding = () => {
