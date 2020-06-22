@@ -14,7 +14,7 @@ const Onboarding = () => {
         direction="row"
         justify="center"
         alignItems="center"
-        className="content-box"
+        className="content"
       >
         <Switch>
           <Route exact={true}  path={`/onboarding`} component={Welcome}/>
@@ -26,9 +26,9 @@ const Onboarding = () => {
         direction="row"
         justify="center"
         alignItems="center"
-        className="side-box"
+        className="side"
       >
-        <img className="side-box-img" src={sideImage}/>
+        <img src={sideImage}/>
       </Grid>
     </div>
   )

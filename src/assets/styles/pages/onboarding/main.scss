@@ -7,7 +7,7 @@
   align-items: center;
   height: 100vh;
 
-  .content-box {
+  .content{
     width: 55%;
     margin-right: -5%;
     background: #ffffff;
@@ -22,17 +22,17 @@
       line-height: 42px;
     }
 
-    .heading-extra-p {
+    .heading-paragraph {
       color: $secondary-text-color;
       font-weight: $lighter-weight;
     }
   }
-  .side-box{
+  .side{
     background: linear-gradient(214.77deg, #262262 0%, #9E1F63 100.08%);
     width: 50%;
     height: 100%;
 
-    .side-box-img{
+    img{
       max-width: 100%;
     }
   }
