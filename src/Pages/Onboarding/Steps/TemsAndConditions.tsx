@@ -54,7 +54,7 @@ const TermsAndConditions = () => {
             Morbi sed quam vel arcu varius venenatis id auctor orci. Class aptent taciti sociosqu ad litora torquent per
             conubia</p>
         </div>
-        <Link to="/onboarding/backup" className="btn btn-filled accept"><span className="btn-text">I accept</span></Link>
+        <Link to="/onboarding/service-settings" className="btn btn-filled accept"><span className="btn-text">I accept</span></Link>
       </div>
       <StepCounter step={2}/>
     </div>
