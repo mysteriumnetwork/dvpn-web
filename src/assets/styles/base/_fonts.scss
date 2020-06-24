@@ -1,5 +1,6 @@
 @import 'variables';
 
+// UBUNTU FONTS
 @font-face {
   font-family: 'Ubuntu';
   src: url("../../fonts/Ubuntu/Ubuntu-Italic.ttf") format("truetype");
@@ -48,3 +49,20 @@
   font-weight: $medium-weight;
   font-style: italic;
 }
+
+// LATO FONTS
+
+@font-face {
+  font-family: 'Lato';
+  src: url("../../fonts/Lato/Lato-Regular.ttf") format("truetype");
+  font-weight: $normal-weight;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url("../../fonts/Lato/Lato-Bold.ttf") format("truetype");
+  font-weight: $bold-weight;
+  font-style: normal;
+}
+

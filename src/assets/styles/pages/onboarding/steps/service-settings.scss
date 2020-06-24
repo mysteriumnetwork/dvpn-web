@@ -4,6 +4,33 @@
   width: 40%;
   .step-block-content{
     margin-top: 60px;
+    text-align: left;
+    .slider-block{
+      p{
+        font-weight: $bold-weight;
+        color: $inputs-labels-text-color;
+        font-size: 12px;
+        line-height: 14px;
+        font-family: Lato;
+      }
+    }
+    .checkbox-block{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 55px;
+      margin-bottom: 50px;
+      p{
+        font-weight: $medium-weight;
+        font-size: 14px;
+        font-style: normal;
+        color: $secondary-text-color;
+        margin-left: 12px;
+      }
+    }
+    .slider-block.per-gb{
+      margin-top: 60px;
+    }
   }
   .btn.next{
     width: 178px;

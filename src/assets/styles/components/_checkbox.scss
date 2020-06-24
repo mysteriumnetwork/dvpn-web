@@ -1,0 +1,18 @@
+.default-checkbox.MuiButtonBase-root{
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  .unchecked-icon{
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background: #F0F0F3;
+  }
+}
+.default-checkbox.Mui-checked {
+  .MuiSvgIcon-root {
+    fill: #5E81F4;
+    width: 26px;
+    height: 26px;
+  }
+}

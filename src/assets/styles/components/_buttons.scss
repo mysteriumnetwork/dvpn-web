@@ -9,6 +9,7 @@
   cursor: pointer;
   text-decoration: none;
   display: block;
+  text-align: center;
 
   &-empty {
     @include box-border-gradient(#262262, #9E1F63, 1px);
