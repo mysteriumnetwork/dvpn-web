@@ -1,0 +1,42 @@
+@import '../base/variables';
+
+.default-slider.MuiSlider-root{
+  color:#1B51E5  ;
+  .MuiSlider-thumb::after{
+    display: none;
+    content: none;
+  }
+  .PrivateValueLabel-circle-4{
+    background: #eeeeee;
+    width: 56px;
+    height: 36px;
+    transform: none;
+    border-radius: 2px;
+  }
+  .PrivateValueLabel-label-5{
+    transform: none;
+    color: #252631;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 14px;
+    font-family: Lato;
+    font-weight: $bold-weight;
+  }
+  .MuiSlider-thumb.MuiSlider-active{
+    box-shadow: none;
+  }
+  .MuiSlider-thumb{
+    background-color: #ffffff;
+    height: 14px;
+    width: 14px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+  }
+  .MuiSlider-rail{
+    height: 6px;
+    background-color: #eeeeee;
+    opacity: initial;
+  }
+  .MuiSlider-track{
+    height: 6px;
+  }
+}
