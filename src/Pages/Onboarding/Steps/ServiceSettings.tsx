@@ -33,10 +33,7 @@ const ServiceSettings = () => {
           <p>Price per GB</p>
           <DefaultSlider value={PricePerGb} handleChange={() => handlePricePerGbChanged} step={0.001} min={0} max={0.01}/>
         </div>
-        <div className="checkbox-block">
-          <DefaultCheckbox checked={checked} handleCheckboxChange={() => handleCheckboxChange} />
-          <p>Use default pricing</p>
-        </div>
+        <DefaultCheckbox checked={checked} handleCheckboxChange={() => handleCheckboxChange} label="Use default pricing" />
         <Link to="/onboarding/backup" className="btn btn-filled next"><span className="btn-text">Skip</span></Link>
       </div>
       <StepCounter step={3}/>

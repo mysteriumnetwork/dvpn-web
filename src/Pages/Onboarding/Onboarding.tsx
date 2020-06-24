@@ -4,6 +4,7 @@ import Welcome from "./Steps/Welcome";
 import TermsAndConditions from "./Steps/TemsAndConditions";
 import Backup from "./Steps/Backup";
 import ServiceSettings from "./Steps/ServiceSettings";
+import NodeSettings from "./Steps/NodeSettings";
 import {Route, Switch} from "react-router-dom";
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 
@@ -16,6 +17,7 @@ const Onboarding = () => {
           <Route exact={true}  path={`/onboarding/terms-and-conditions`} component={TermsAndConditions}/>
           <Route exact={true}  path={`/onboarding/service-settings`} component={ServiceSettings}/>
           <Route exact={true}  path={`/onboarding/backup`} component={Backup}/>
+          <Route exact={true}  path={`/onboarding/node-settings`} component={NodeSettings}/>
         </Switch>
       </div>
       <div className="side">

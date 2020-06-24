@@ -10,7 +10,7 @@ const Backup = () => {
       <p className="step-block--heading-paragraph">To make sure you don’t lose your earnings, you should store your
         identity’s private key file somewhere safe. Read more about backup</p>
       <div className="step-block-content">
-        <Link to="/onboarding/" className="btn btn-empty skip"><span className="btn-text">Skip</span></Link>
+        <Link to="/onboarding/node-settings" className="btn btn-empty skip"><span className="btn-text">Skip</span></Link>
         <Link to="/onboarding/" className="btn btn-filled download"><span className="btn-text">Download private key</span></Link>
       </div>
       <StepCounter step={4}/>
