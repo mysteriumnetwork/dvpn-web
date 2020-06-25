@@ -54,7 +54,7 @@ const NodeSettings = () => {
           <DefaultCheckbox checked={checked} handleCheckboxChange={() => handleCheckboxChange} label="Claim this node in my.mysterium.network" />
         </div>
         <div className="api-token-block">
-          <p className="text-field-label">API Token (get it <span>here</span>)</p>
+          <p className="text-field-label">API Token (get it <a href="#">here</a>)</p>
           <DefaultTextField
             handleChange={handleTextFieldsChange}
             value={values.apiToken}
