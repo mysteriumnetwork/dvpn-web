@@ -6,14 +6,15 @@
     display: none;
     content: none;
   }
-  .PrivateValueLabel-circle-4{
+  .MuiSlider-valueLabel{
     background: #eeeeee;
     width: 56px;
     height: 36px;
-    transform: none;
+    transform: none !important;
     border-radius: 2px;
+    top: -50px !important;
   }
-  .PrivateValueLabel-label-5{
+  .MuiSlider-valueLabel span{
     transform: none;
     color: #252631;
     font-style: normal;
@@ -21,6 +22,9 @@
     line-height: 14px;
     font-family: Lato;
     font-weight: $bold-weight;
+    background-color: unset !important;
+    width: 100%;
+    text-align: center;
   }
   .MuiSlider-thumb.MuiSlider-active{
     box-shadow: none;
