@@ -1,0 +1,71 @@
+{
+  "name": "dvpn-web",
+  "productName": "MysteriumVPN",
+  "version": "0.1.0",
+  "description": "Mysterium VPN is a web application for accessing Mysterium Network - decentralized VPN built on blockchain.",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mysteriumnetwork/dvpn-web.git"
+  },
+  "author": {
+    "name": "Mysterium Network",
+    "email": "mysterium-dev@mysterium.network",
+    "url": "https://mysterium.network/"
+  },
+  "homepage": "/",
+  "bugs": {
+    "url": "https://github.com/mysteriumnetwork/dvpn-web/issues"
+  },
+  "keywords": [
+    "mysterium",
+    "vpn",
+    "dvpn",
+    "distributed-vpn",
+    "electron"
+  ],
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.10.2",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/node-sass": "^4.11.1",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.5",
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "node-sass": "^4.14.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "typescript": "~3.7.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "server": "./bin/run.sh",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://127.0.0.1:4449/",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
