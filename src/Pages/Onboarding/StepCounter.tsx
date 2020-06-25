@@ -7,7 +7,7 @@ interface StepCounterProps {
 const setUpCounter = (step: number) : ReactElement[]  => {
   let steps: ReactElement[] = [];
   for(let i : number = 0; i < 6; i++){
-    steps.push(<div className={"steps-counter--circle " + (step -1 >= i ? 'active' : '')}></div>);
+    steps.push(<div key={i} className={"steps-counter--circle " + (step -1 >= i ? 'active' : '')}></div>);
   }
   return steps;
 };
