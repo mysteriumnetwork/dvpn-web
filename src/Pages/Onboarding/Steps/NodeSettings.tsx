@@ -61,7 +61,7 @@ const NodeSettings = () => {
             stateName="apiToken"
           />
         </div>
-        <Link to="/onboarding/backup" className="btn btn-filled next"><span className="btn-text">Next</span></Link>
+        <Link to="/onboarding/payout-settings" className="btn btn-filled btn-center next"><span className="btn-text">Next</span></Link>
       </div>
       <StepCounter step={5}/>
     </div>
