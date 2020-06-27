@@ -1,5 +1,4 @@
 import { tequilapiClient } from './TequilApiClient'
-import tequilapi from 'mysterium-vpn-js'
 import { TequilapiError } from 'mysterium-vpn-js/lib/tequilapi-error'
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<any> => {

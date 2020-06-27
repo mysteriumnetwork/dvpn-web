@@ -1,7 +1,6 @@
 import {authLogin, getidentityList} from '../api/Login'
 export const initialRoute = () : string => {
+  authLogin({username: "myst", password: "mystberry"});
 
-  console.log(authLogin({username: "asd", password: "mystberry"}));
-  console.log(getidentityList());
-  return "onboarding"
+  return ""
 };
