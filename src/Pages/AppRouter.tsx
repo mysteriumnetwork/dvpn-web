@@ -6,6 +6,7 @@ import Onboarding from "./Onboarding/Onboarding";
 import {initialRoute} from '../Services/InitialRoute'
 
 const AppRouter = () => {
+  let route = initialRoute();
   return (
     <Switch>
       <Route
@@ -13,7 +14,7 @@ const AppRouter = () => {
         path="/"
         render={() => {
           return (
-            <Redirect to= {"/" + initialRoute()} />
+            <Redirect to= {"/" + route} />
           )
         }}
       />
