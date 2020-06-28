@@ -1,6 +1,6 @@
-import {authLogin} from '../api/Login'
+import {authLogin} from '../api/User'
 
-export const initialRoute = () : string => {
+export const getInitialRoute = () : string => {
   let initialRoute = "login";
 
   try {
