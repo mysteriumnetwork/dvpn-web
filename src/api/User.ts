@@ -1,5 +1,5 @@
 import { tequilapiClient } from './TequilApiClient'
-import { TequilapiError } from 'mysterium-vpn-js/lib/tequilapi-error'
+import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<any> => {
   const { newPassword, oldPassword, username } = data
@@ -18,6 +18,25 @@ export const authLogin = async (data: { username: string, password: string }): P
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
   }
 };
+
+export const  acceptWithTermsAndConditions = async (): Promise<void> => {
+  try {
+    const config = await tequilapiClient.userConfig();
+    const configData = config.data;
+    const agrrementObject =   {
+      termsAgreed:{
+        version: termsPackageJson.version,
+        at: new Date().toISOString(),
+      }
+    };
+    configData.mysteriumWebUi = agrrementObject;
+    const data = { configData };
+    await tequilapiClient.updateUserConfig({ data });
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+
 
 export  const getidentityList = () =>{
   tequilapiClient.identityList().then((identities) => {
