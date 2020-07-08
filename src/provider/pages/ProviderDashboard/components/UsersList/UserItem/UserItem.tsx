@@ -2,17 +2,17 @@ import * as React from 'react'
 import formatBytes from 'utils/formatBytes'
 import Timer from '../../../../../../ui-kit/components/Timer'
 import formatDuration from 'format-duration'
-import { ServiceSession } from 'mysterium-vpn-js'
+import { Session } from 'mysterium-vpn-js'
 import formatCurrency from "../../../../../../utils/formatCurrency";
 
 const styles = require('./UserItem.module.scss')
 
 type Props = {
-  session: ServiceSession
+  session: Session
 }
 
 const UserItem = (props: Props) => {
-  const { consumerId, id, createdAt, bytesIn, bytesOut, tokensEarned } = props.session
+  const { consumerId, id, createdAt, bytesReceived, bytesSent, tokens } = props.session
 
   return (
     <tr>
@@ -28,9 +28,9 @@ const UserItem = (props: Props) => {
           {(value) => formatDuration((value && (value - Date.parse(createdAt))) || 0, { leading: true })}
         </Timer>
       </td>
-      <td>{formatBytes(parseInt(bytesIn as any, 10))}</td>
-      <td>{formatBytes(parseInt(bytesOut as any, 10))}</td>
-      <td>{formatCurrency(tokensEarned)}</td>
+      <td>{formatBytes(parseInt(bytesReceived as any, 10))}</td>
+      <td>{formatBytes(parseInt(bytesSent as any, 10))}</td>
+      <td>{formatCurrency(tokens)}</td>
     </tr>
   )
 }
