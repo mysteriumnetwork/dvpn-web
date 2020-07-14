@@ -5,6 +5,8 @@ import {acceptWithTermsAndConditions} from "../../../api/User";
 import {TermsEndUser} from '@mysteriumnetwork/terms'
 import "../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss"
 import {withRouter} from "react-router-dom";
+import ReactHtmlParser, { processNodes, convertNodeToElement,  } from 'react-html-parser';
+import showdown from "showdown"
 
 const TermsAndConditions = (props: any) => {
   const handleAgree = () => {
@@ -14,12 +16,14 @@ const TermsAndConditions = (props: any) => {
       }
     });
   };
+  const md = new showdown.Converter();
+  const termsHtml = md.makeHtml(TermsEndUser);
   return (
     <div className="step-block term-and-conditions">
       <h1 className="step-block--heading">Terms & Conditions</h1>
       <div className="step-block-content">
         <div className="terms-and-conditions">
-          <p>{TermsEndUser}</p>
+          <p>{ReactHtmlParser(termsHtml)}</p>
         </div>
         <div onClick={handleAgree} className="btn btn-filled btn-center accept"><span
           className="btn-text">I accept</span></div>
