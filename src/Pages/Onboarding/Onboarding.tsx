@@ -13,20 +13,24 @@ interface State {
   sideImage: string;
 }
 
+const setSideImage = (): string => {
+  switch (window.location.pathname) {
+    case '/onboarding':
+      return  sideImageOnboarding;
+    default:
+      return sideImageOnboarding;
+  }
+};
+
 const Onboarding = (props: any) => {
     const [values, setValues] = React.useState<State>({
-      sideImage: sideImageOnboarding
+      sideImage: setSideImage()
     });
 
   props.history.listen((location: any, action:  any) => {
-    switch (window.location.pathname) {
-      case '/onboarding':
-        return  setValues({
-          sideImage: sideImageOnboarding
-        });
-      default:
-        return sideImageOnboarding;
-    }
+    setValues({
+      sideImage: setSideImage()
+    })
   });
 
   return (
