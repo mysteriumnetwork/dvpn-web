@@ -7,9 +7,28 @@ import ServiceSettings from "./Steps/ServiceSettings";
 import NodeSettings from "./Steps/NodeSettings";
 import PayoutSettings from "./Steps/Payout-settings";
 import {Route, Switch} from "react-router-dom";
-import sideImage from '../../assets/images/onboarding/SideImage.png';
+import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 
-const Onboarding = () => {
+interface State {
+  sideImage: string;
+}
+
+const Onboarding = (props: any) => {
+    const [values, setValues] = React.useState<State>({
+      sideImage: sideImageOnboarding
+    });
+
+  props.history.listen((location: any, action:  any) => {
+    switch (window.location.pathname) {
+      case '/onboarding':
+        return  setValues({
+          sideImage: sideImageOnboarding
+        });
+      default:
+        return sideImageOnboarding;
+    }
+  });
+
   return (
     <div className="onboarding wrapper">
       <div className="steps">
@@ -23,7 +42,7 @@ const Onboarding = () => {
         </Switch>
       </div>
       <div className="side">
-        <img alt="onboarding" src={sideImage}/>
+        <img alt="onboarding" src={values.sideImage}/>
       </div>
     </div>
   )
