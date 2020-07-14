@@ -5,8 +5,10 @@ import {acceptWithTermsAndConditions} from "../../../api/User";
 import {TermsEndUser} from '@mysteriumnetwork/terms'
 import "../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss"
 import {withRouter} from "react-router-dom";
-import ReactHtmlParser, { processNodes, convertNodeToElement,  } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 import showdown from "showdown"
+
+const md = new showdown.Converter();
 
 const TermsAndConditions = (props: any) => {
   const handleAgree = () => {
@@ -16,7 +18,6 @@ const TermsAndConditions = (props: any) => {
       }
     });
   };
-  const md = new showdown.Converter();
   const termsHtml = md.makeHtml(TermsEndUser);
   return (
     <div className="step-block term-and-conditions">
