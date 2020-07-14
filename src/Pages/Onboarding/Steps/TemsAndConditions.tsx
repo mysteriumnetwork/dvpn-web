@@ -6,13 +6,14 @@ import {TermsEndUser} from '@mysteriumnetwork/terms'
 import "../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss"
 import {withRouter} from "react-router-dom";
 
-
 const TermsAndConditions = (props: any) => {
   const handleAgree = () => {
-    acceptWithTermsAndConditions();
-    props.history.push("/onboarding/service-settings");
+    acceptWithTermsAndConditions().then(response => {
+      if (response) {
+        props.history.push("/onboarding/service-settings");
+      }
+    });
   };
-
   return (
     <div className="step-block term-and-conditions">
       <h1 className="step-block--heading">Terms & Conditions</h1>
