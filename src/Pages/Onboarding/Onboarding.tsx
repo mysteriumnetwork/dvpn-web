@@ -23,7 +23,7 @@ const Onboarding = () => {
         </Switch>
       </div>
       <div className="side">
-        <img src={sideImage}/>
+        <img alt="onboarding" src={sideImage}/>
       </div>
     </div>
   )
