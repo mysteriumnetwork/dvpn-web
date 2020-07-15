@@ -24,7 +24,7 @@ const TermsAndConditions = (props: any) => {
       <h1 className="step-block--heading">Terms & Conditions</h1>
       <div className="step-block-content">
         <div className="terms-and-conditions">
-          <p>{ReactHtmlParser(termsHtml)}</p>
+          {ReactHtmlParser(termsHtml)}
         </div>
         <div onClick={handleAgree} className="btn btn-filled btn-center accept"><span
           className="btn-text">I accept</span></div>

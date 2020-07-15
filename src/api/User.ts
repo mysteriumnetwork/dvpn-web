@@ -44,10 +44,24 @@ export const setServicePrice = async (pricePerMinute: number | null, pricePerGb:
       pricePerGb = null;
     }
     const config = await tequilapiClient.userConfig();
-    config.data.openvpn['price-minute'] = pricePerMinute;
-    config.data.openvpn['price-gb'] = pricePerGb;
-    config.data.wireguard['price-minute'] = pricePerMinute;
-    config.data.wireguard['price-gb'] = pricePerGb;
+    if(config.data.openvpn){
+      config.data.openvpn['price-minute'] = pricePerMinute;
+      config.data.openvpn['price-gb'] = pricePerGb;
+    } else {
+      config.data.openvpn = {
+        'price-minute': pricePerMinute,
+        'price-gb': pricePerGb
+      }
+    }
+    if(config.data.wireguard){
+      config.data.wireguard['price-minute'] = pricePerMinute;
+      config.data.wireguard['price-gb'] = pricePerGb;
+    } else {
+      config.data.wireguard = {
+        'price-minute': pricePerMinute,
+        'price-gb': pricePerGb
+      }
+    }
     await tequilapiClient.updateUserConfig(config);
 
     return true;
