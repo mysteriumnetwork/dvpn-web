@@ -4,29 +4,34 @@ import {Link} from "react-router-dom";
 import { DefaultTextField } from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/node-settings.scss"
 import {DefaultCheckbox} from "../../../Components/Checkbox/DefaultCheckbox";
-
+import {authChangePassword} from "../../../api/User";
 interface State {
   passwordRepeat: string;
   password: string;
   apiToken: string;
 }
-
 const NodeSettings = () => {
   const [values, setValues] = React.useState<State>({
     passwordRepeat: '',
     password: '',
     apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34l'
   });
-
+  const [checked, setChecked] = React.useState(false);
   const handleTextFieldsChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [prop]: event.target.value });
   };
-  const [checked, setChecked] = React.useState(false);
-
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
-
+  const handleChangePassword = () => {
+    //to="/onboarding/payout-settings"
+    if (values.password == values.passwordRepeat){
+        authChangePassword({username: "myst", oldPassword: "mystberry", newPassword: "labaslabas"})
+    } else {
+      alert("passwords are not same")
+      // TODO ADD TOASTS OR SOMETHING
+    }
+  };
   return (
     <div className="step-block node-settings">
       <h1 className="step-block--heading">Node settings</h1>
@@ -61,11 +66,10 @@ const NodeSettings = () => {
             stateName="apiToken"
           />
         </div>
-        <Link to="/onboarding/payout-settings" className="btn btn-filled btn-center next"><span className="btn-text">Next</span></Link>
+        <div onClick={handleChangePassword} className="btn btn-filled btn-center next"><span className="btn-text">Next</span></div>
       </div>
       <StepCounter step={5}/>
     </div>
   );
 };
-
 export default NodeSettings;
