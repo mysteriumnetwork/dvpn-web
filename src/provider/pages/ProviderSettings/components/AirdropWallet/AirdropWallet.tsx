@@ -23,13 +23,13 @@ interface PriceRange {
 
 const perGiB: PriceRange = {
   min: 0,
-  max: 0.1,
+  max: 0.5,
   step: 0.01,
 }
 
 const perMin: PriceRange = {
   min: 0,
-  max: 0.0001,
+  max: 0.001,
   step: 0.00001,
 }
 
