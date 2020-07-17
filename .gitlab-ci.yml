@@ -1,0 +1,24 @@
+image: node:10-alpine
+
+stages:
+  - deploy
+  - trigger-go-dvpn-web
+
+build:
+  stage: deploy
+  script:
+    - apk add jq curl
+    - yarn
+    - yarn run build
+    - tar -zcvf dist.tar.gz build/
+    - RELEASE_ID=$(curl -s -H "Authorization:token $GITHUB_API_TOKEN" https://api.github.com/repos/mysteriumnetwork/dvpn-web/releases/tags/$BUILD_TAG | jq -r .id)
+    - curl --data-binary @dist.tar.gz -H "Authorization:token $GITHUB_API_TOKEN" -H "Content-Type:application/octet-stream" https://uploads.github.com/repos/mysteriumnetwork/dvpn-web/releases/$RELEASE_ID/assets?name=dist.tar.gz
+  only:
+    - tags
+
+trigger-go-dvpn-web:
+  stage: trigger-go-dvpn-web
+  script:
+    - "curl -X POST -F token=$GO_DVPN_WEB_TRIGGER_TOKEN -F ref=master -F variables[GIT_TAG_VERSION]=$BUILD_TAG https://gitlab.com/api/v4/projects/20001631/trigger/pipeline"
+  only:
+    - tags
