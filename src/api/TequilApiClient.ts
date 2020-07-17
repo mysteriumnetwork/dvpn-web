@@ -1,9 +1,4 @@
-import { getHttpApiUrl } from '../constants'
 import { TequilapiClient, TequilapiClientFactory } from 'mysterium-vpn-js'
-import axios from "axios";
 
-const factory = new TequilapiClientFactory(getHttpApiUrl());
-const httpAdapter = factory.buildAdapter(axios.create({baseURL: getHttpApiUrl(), withCredentials: true}));
-
-export const tequilapiClient: TequilapiClient = factory.build(httpAdapter);
-
+const factory = new TequilapiClientFactory(`${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`);
+export const tequilapiClient: TequilapiClient = factory.build();
