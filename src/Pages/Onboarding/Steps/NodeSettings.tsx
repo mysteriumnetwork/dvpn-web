@@ -1,35 +1,43 @@
 import React from "react";
 import {StepCounter} from "../StepCounter";
 import {Link} from "react-router-dom";
-import { DefaultTextField } from '../../../Components/DefaultTextField'
+import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/node-settings.scss"
 import {DefaultCheckbox} from "../../../Components/Checkbox/DefaultCheckbox";
 import {authChangePassword} from "../../../api/User";
-interface State {
+import {validatePassword} from '../../../Services/Onboarding/ValidatePassword'
+
+interface NodeSettingsStateInterface {
   passwordRepeat: string;
   password: string;
   apiToken: string;
+  checked: boolean
 }
-const NodeSettings = () => {
-  const [values, setValues] = React.useState<State>({
+
+const NodeSettings = (props: any) => {
+  const [values, setValues] = React.useState<NodeSettingsStateInterface>({
     passwordRepeat: '',
     password: '',
-    apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34l'
+    apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34l',
+    checked: false
   });
-  const [checked, setChecked] = React.useState(false);
-  const handleTextFieldsChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleTextFieldsChange = (prop: keyof NodeSettingsStateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({...values, [prop]: event.target.value});
   };
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
+    setValues({...values, checked: event.target.checked});
   };
-  const handleChangePassword = () => {
-    //to="/onboarding/payout-settings"
-    if (values.password == values.passwordRepeat){
-        authChangePassword({username: "myst", oldPassword: "mystberry", newPassword: "labaslabas"})
+
+  const handleSubmitPassword = () => {
+    let validatedPasssword = validatePassword(values.password, values.passwordRepeat);
+    if (validatedPasssword.success) {
+      authChangePassword({username: "myst", oldPassword: "mystberry", newPassword: "mystberry"});
+      if(values.checked){
+        // TODO CLAIM NODE
+      }
+      props.history.push("/onboarding/payout-settings");
     } else {
-      alert("passwords are not same")
-      // TODO ADD TOASTS OR SOMETHING
+      alert(validatedPasssword.errorMessage);
     }
   };
   return (
@@ -56,7 +64,8 @@ const NodeSettings = () => {
           />
         </div>
         <div className="claim-node-block">
-          <DefaultCheckbox checked={checked} handleCheckboxChange={() => handleCheckboxChange} label="Claim this node in my.mysterium.network" />
+          <DefaultCheckbox checked={values.checked} handleCheckboxChange={() => handleCheckboxChange}
+                           label="Claim this node in my.mysterium.network"/>
         </div>
         <div className="api-token-block">
           <p className="text-field-label">API Token (get it <a href="#">here</a>)</p>
@@ -66,7 +75,8 @@ const NodeSettings = () => {
             stateName="apiToken"
           />
         </div>
-        <div onClick={handleChangePassword} className="btn btn-filled btn-center next"><span className="btn-text">Next</span></div>
+        <div onClick={handleSubmitPassword} className="btn btn-filled btn-center next"><span
+          className="btn-text">Next</span></div>
       </div>
       <StepCounter step={5}/>
     </div>
