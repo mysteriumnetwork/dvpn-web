@@ -14,7 +14,7 @@
     border-radius: 2px;
     top: -50px !important;
   }
-  .MuiSlider-valueLabel span{
+  .MuiSlider-valueLabel span, .MuiSlider-valueLabel span div {
     transform: none;
     color: #252631;
     font-style: normal;
@@ -42,5 +42,11 @@
   }
   .MuiSlider-track{
     height: 6px;
+  }
+}
+.default-slider.MuiSlider-root.myst-slider {
+  .MuiSlider-valueLabel{
+    width: 86px;
+    left: -35px;
   }
 }

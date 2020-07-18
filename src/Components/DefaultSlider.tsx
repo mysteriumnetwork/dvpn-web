@@ -8,6 +8,7 @@ interface PropsInterface {
   min: number;
   max: number;
   disabled?: boolean;
+  mystSlider?: boolean;
 }
 
 export const DefaultSlider: React.FC<PropsInterface> = (_props: PropsInterface) => {
@@ -20,8 +21,9 @@ export const DefaultSlider: React.FC<PropsInterface> = (_props: PropsInterface) 
       max={props.max}
       onChange={props.handleChange()}
       value={props.value}
-      className="default-slider"
+      className={props.mystSlider ? "default-slider myst-slider" : "default-slider "}
       disabled={props.disabled}
+      valueLabelFormat={props.mystSlider ? value => <div>{value} MYSTT</div> : value => value }
     />
   )
 };

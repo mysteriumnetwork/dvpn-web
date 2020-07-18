@@ -1,43 +1,53 @@
 import React from "react";
 import {StepCounter} from "../StepCounter";
 import {Link} from "react-router-dom";
-import { DefaultTextField } from '../../../Components/DefaultTextField'
+import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
+import {DefaultSlider} from "../../../Components/DefaultSlider";
 
-interface State {
+interface PayoutSettingsInterface {
   walletAddress: string;
-  walletAddressRepeat: string;
+  stake: number
 }
 
 const PayoutSettings = () => {
-  const [values, setValues] = React.useState<State>({
+  const [values, setValues] = React.useState<PayoutSettingsInterface>({
     walletAddress: '0x...',
-    walletAddressRepeat: '0x...',
+    stake: 20
   });
-  const handleTextFieldsChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
+
+  const handleTextFieldsChange = (prop: keyof PayoutSettingsInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({...values, [prop]: event.target.value});
   };
+  const handlePricePerGbChanged = (event: any, newValue: number) => {
+    setValues({...values, stake: newValue});
+  };
+
   return (
     <div className="step-block payout-settings">
       <h1 className="step-block--heading">Payout settings</h1>
       <p className="step-block--heading-paragraph">Fill in the following information to receive payments.</p>
       <div className="step-block-content">
         <div className="wallet-input-block">
-          <p className="text-field-label">Wallet address</p>
+          <p className="text-field-label wallet-input-label">Wallet address</p>
           <DefaultTextField
             handleChange={handleTextFieldsChange}
             value={values.walletAddress}
-            stateName="password"
+            stateName="walletAddress"
           />
-          <p className="text-field-label">Fill in the following information to receive payments.</p>
+          <p className="text-field-label bottom">Fill in the following information to receive payments.</p>
         </div>
-        <div className="wallet-repeat-input-block">
-          <p className="text-field-label">Wallet address</p>
-          <DefaultTextField
-            handleChange={handleTextFieldsChange}
-            value={values.walletAddressRepeat}
-            stateName="passwordRepeat"
-          />
+        <div className="wallet-stake-block">
+          <p className="wallet-stack-info-p top">Set your stake amount, MYSTT</p>
+          <div className="slider-block">
+            <p>Stake amount</p>
+            <DefaultSlider value={values.stake} handleChange={() => handlePricePerGbChanged} step={1} min={0}
+                           max={50} mystSlider={true}/>
+          </div>
+          <p className="wallet-stack-info-p bottom">In terms to start providing services and ensure smoth and secure payouts (settlements)
+            in Mysterium Network, node runners should stake small amounts of tokens. If you choose
+            default option, initial stake will be 0 and will be increased until minimal amount of 10MYST
+            by taking 10% during each promise settlement (payout). </p>
         </div>
         <div className='buttons-block'>
           <Link to="/onboarding/" className="btn btn-empty skip"><span className="btn-text">Setup later</span></Link>

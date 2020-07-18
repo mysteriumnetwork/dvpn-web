@@ -8,12 +8,41 @@
     .wallet-repeat-input-block{
       margin-top: 80px;
     }
+    .wallet-stake-block{
+      margin-top: 40px;
+      .wallet-stack-info-p{
+        font-family: Ubuntu;
+        font-weight: $lighter-weight;
+        font-size: 14px;
+        line-height: 21px;
+        color: #898989;
+      }
+      .wallet-stack-info-p.top{
+        margin-bottom: 36px;
+      }
+      .wallet-stack-info-p.bottom{
+        margin-top: 5px;
+      }
+      .slider-block{
+        p{
+          font-weight: $bold-weight;
+          color: $inputs-labels-text-color;
+          font-size: 12px;
+          line-height: 14px;
+          font-family: Lato;
+        }
+      }
+    }
     .buttons-block{
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 200px;
     }
+  }
+  .text-field-label.bottom{
+    font-family: Ubuntu;
+    font-weight: $lighter-weight;
   }
   .btn.done{
     width: 147px;
