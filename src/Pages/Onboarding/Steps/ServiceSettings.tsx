@@ -49,7 +49,6 @@ const ServiceSettings = (props: any) => {
         <div onClick={handleSettingSetup} className="btn btn-filled btn-center next"><span
           className="btn-text">Next</span></div>
       </div>
-      <StepCounter step={3}/>
     </div>
   );
 };

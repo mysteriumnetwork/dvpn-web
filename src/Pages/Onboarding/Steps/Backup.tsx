@@ -13,7 +13,6 @@ const Backup = () => {
         <Link to="/onboarding/node-settings" className="btn btn-empty skip"><span className="btn-text">Skip</span></Link>
         <Link to="/onboarding/" className="btn btn-filled download"><span className="btn-text">Download private key</span></Link>
       </div>
-      <StepCounter step={4}/>
     </div>
 
   );

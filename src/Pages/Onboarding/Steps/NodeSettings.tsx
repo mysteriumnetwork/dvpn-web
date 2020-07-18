@@ -78,7 +78,6 @@ const NodeSettings = (props: any) => {
         <div onClick={handleSubmitPassword} className="btn btn-filled btn-center next"><span
           className="btn-text">Next</span></div>
       </div>
-      <StepCounter step={5}/>
     </div>
   );
 };

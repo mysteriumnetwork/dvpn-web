@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {StepCounter} from "../StepCounter";
 import "../../../assets/styles/pages/onboarding/steps/welcome.scss"
 
 const Welcome = () => {
@@ -11,7 +10,6 @@ const Welcome = () => {
            <div className="step-block-content">
              <Link to="/onboarding/terms-and-conditions" className="btn btn-filled btn-center start"><span className="btn-text">Start node setup</span></Link>
            </div>
-         <StepCounter step={1}/>
        </div>
   );
 };

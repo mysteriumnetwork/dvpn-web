@@ -54,7 +54,6 @@ const PayoutSettings = () => {
           <Link to="/onboarding/" className="btn btn-filled done"><span className="btn-text">Done</span></Link>
         </div>
       </div>
-      <StepCounter step={6}/>
     </div>
   );
 };

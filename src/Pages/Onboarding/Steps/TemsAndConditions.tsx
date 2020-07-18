@@ -16,7 +16,7 @@ const TermsAndConditions = (props: any) => {
     acceptWithTermsAndConditions().then(response => {
       if (response) {
         creteNewIdentity();
-        //props.history.push("/onboarding/service-settings");
+        props.history.push("/onboarding/service-settings");
       }
     });
   };
@@ -31,7 +31,6 @@ const TermsAndConditions = (props: any) => {
         <div onClick={handleAgree} className="btn btn-filled btn-center accept"><span
           className="btn-text">I accept</span></div>
       </div>
-      <StepCounter step={2}/>
     </div>
   );
 };

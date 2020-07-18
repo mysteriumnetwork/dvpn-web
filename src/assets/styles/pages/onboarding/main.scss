@@ -2,24 +2,33 @@
 
 .onboarding.wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-
+  min-height: 100vh;
   .steps{
     width: 55%;
     margin-right: -5%;
     background: #ffffff;
     position: relative;
-    height: 100%;
     border-radius: 0 16px 16px 0;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    .steps-content{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      padding-top: 50px;
+    }
+
     .step-block{
       text-align: center;
-
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
       &--heading{
         color: $main-text-color;
         font-weight: $lighter-weight;
@@ -32,14 +41,13 @@
         margin-top: 3px;
       }
     }
-
     .steps-counter{
-      position: absolute;
       display: flex;
       text-align: center;
-      bottom: 40px;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      justify-content: center;
+      align-items: center;
+      margin-top: 50px;
+      padding-bottom: 25px;
 
       &--circle{
         width: 15px;
@@ -53,10 +61,10 @@
       }
     }
   }
+
   .side{
     background: linear-gradient(214.77deg, #262262 0%, #9E1F63 100.08%);
     width: 50%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
