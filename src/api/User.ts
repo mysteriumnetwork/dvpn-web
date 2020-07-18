@@ -1,3 +1,4 @@
+import {DEFAULT_IDENTITY_PASSPHRASE} from '../constants'
 import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
 
@@ -74,4 +75,12 @@ export const getidentityList = () => {
   tequilapiClient.identityList().then((identities) => {
     console.log(identities);
   });
+};
+
+export const creteNewIdentity = async (): Promise<any> => {
+  try {
+    await tequilapiClient.identityCreate(DEFAULT_IDENTITY_PASSPHRASE);
+  } catch (e) {
+    console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
+  }
 };
