@@ -11,11 +11,13 @@ export const authChangePassword = async (data: { username: string, oldPassword: 
   }
 };
 
-export const authLogin = async (data: { username: string, password: string }): Promise<any> => {
+export const authLogin = async (data: { username: string, password: string }): Promise<boolean> => {
   const {password, username} = data;
   try {
     await tequilapiClient.authLogin(username, password);
+    return true;
   } catch (e) {
+    return false;
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
   }
 };

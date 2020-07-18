@@ -5,8 +5,23 @@ import Login from "./Login/Login";
 import Onboarding from "./Onboarding/Onboarding";
 import {getInitialRoute} from '../Services/GetInitialRoute'
 
+interface AppRouterStateInterface {
+  route: string;
+  loading: boolean;
+}
+
 const AppRouter = () => {
-  let route = getInitialRoute();
+  const [values, setValues] = React.useState<AppRouterStateInterface>({
+    route: '',
+    loading: true,
+  });
+
+  if (values.loading) {
+    getInitialRoute().then(response => {
+      setValues({...values, loading: false, route: response ? "onboarding" : "login"})
+    });
+  }
+
   return (
     <Switch>
       <Route
@@ -14,12 +29,15 @@ const AppRouter = () => {
         path="/"
         render={() => {
           return (
-            <Redirect to= {"/" + route} />
+            values.loading ?
+              <Redirect to={"/"}/>
+              :
+              <Redirect to={"/" + values.route}/>
           )
         }}
       />
       <Route path="/login" component={Login}/>
-      <Route path="/onboarding" component={Onboarding} />
+      <Route path="/onboarding" component={Onboarding}/>
     </Switch>
   );
 };
