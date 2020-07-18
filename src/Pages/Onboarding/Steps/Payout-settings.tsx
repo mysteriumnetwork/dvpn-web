@@ -29,7 +29,7 @@ const PayoutSettings = () => {
       <p className="step-block--heading-paragraph">Fill in the following information to receive payments.</p>
       <div className="step-block-content">
         <div className="wallet-input-block">
-          <p className="text-field-label wallet-input-label">Wallet address</p>
+          <p className="text-field-label top">Ethereum wallet address</p>
           <DefaultTextField
             handleChange={handleTextFieldsChange}
             value={values.walletAddress}
