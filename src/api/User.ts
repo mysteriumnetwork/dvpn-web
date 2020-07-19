@@ -1,6 +1,7 @@
 import {DEFAULT_IDENTITY_PASSPHRASE} from '../Services/constants'
 import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
+import {IdentityRef} from "mysterium-vpn-js";
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<any> => {
   const {newPassword, oldPassword, username} = data;
@@ -87,4 +88,16 @@ export const creteNewIdentity = async (): Promise<any> => {
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
   }
+};
+
+export const registerIdentity = async (id: string, beneficiary: string, stake: number): Promise<any> => {
+  try {
+    await tequilapiClient.identityRegister(id, {beneficiary: beneficiary, stake: stake});
+  } catch (e) {
+    console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
+  }
+};
+
+export const getCurrentIdentity = async (): Promise<IdentityRef> => {
+  return await tequilapiClient.identityCurrent({passphrase: DEFAULT_IDENTITY_PASSPHRASE});
 };

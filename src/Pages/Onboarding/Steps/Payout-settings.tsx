@@ -4,6 +4,7 @@ import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
 import {DEFAULT_STAKE_AMOUNT} from "../../../Services/constants"
+import {getCurrentIdentity, registerIdentity} from '../../../api/User'
 
 interface StateInterface {
   walletAddress: string;
@@ -22,6 +23,13 @@ const PayoutSettings = () => {
 
   const handlePricePerGbChanged = (event: any, newValue: number) => {
     setValues({...values, stake: newValue});
+  };
+  const handleDone = () => {
+     getCurrentIdentity().then(response =>{
+       if (response.id){
+         registerIdentity(response.id, values.walletAddress, values.stake);
+       }
+     });
   };
 
   return (
@@ -53,7 +61,7 @@ const PayoutSettings = () => {
         </div>
         <div className='buttons-block'>
           <Link to="/login" className="btn btn-empty skip"><span className="btn-text">Setup later</span></Link>
-          <Link to="/login" className="btn btn-filled done"><span className="btn-text">Done</span></Link>
+          <div onClick={handleDone} className="btn btn-filled done"><span className="btn-text">Done</span></div>
         </div>
       </div>
     </div>
