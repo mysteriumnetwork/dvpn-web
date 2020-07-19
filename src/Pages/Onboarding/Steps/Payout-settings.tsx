@@ -52,8 +52,8 @@ const PayoutSettings = () => {
             by taking 10% during each promise settlement (payout). </p>
         </div>
         <div className='buttons-block'>
-          <Link to="/onboarding/" className="btn btn-empty skip"><span className="btn-text">Setup later</span></Link>
-          <Link to="/onboarding/" className="btn btn-filled done"><span className="btn-text">Done</span></Link>
+          <Link to="/login" className="btn btn-empty skip"><span className="btn-text">Setup later</span></Link>
+          <Link to="/login" className="btn btn-filled done"><span className="btn-text">Done</span></Link>
         </div>
       </div>
     </div>
