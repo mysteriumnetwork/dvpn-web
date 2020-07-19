@@ -9,12 +9,20 @@ export interface AuthResponseInterface {
   isRequestFail: boolean
 }
 
-export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<any> => {
+export interface AuthChangePasswordResponseInterface {
+  success: boolean,
+  isAuthoriseError: boolean,
+  isRequestFail: boolean
+}
+
+export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<AuthChangePasswordResponseInterface> => {
   const {newPassword, oldPassword, username} = data;
   try {
-    await tequilapiClient.authChangePassword(username, oldPassword, newPassword)
+    await tequilapiClient.authChangePassword(username, oldPassword, newPassword);
+    return {success: true, isAuthoriseError: false, isRequestFail: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
+    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
   }
 };
 
@@ -23,7 +31,7 @@ export const authLogin = async (data: { username: string, password: string }): P
   try {
     await tequilapiClient.authLogin(username, password);
 
-    return { success: true, isRequestFail: false, isAuthoriseError: false}
+    return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
     return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
@@ -55,7 +63,7 @@ export const setServicePrice = async (pricePerMinute: number | null, pricePerGb:
       pricePerGb = null;
     }
     const config = await tequilapiClient.userConfig();
-    if(config.data.openvpn){
+    if (config.data.openvpn) {
       config.data.openvpn['price-minute'] = pricePerMinute;
       config.data.openvpn['price-gb'] = pricePerGb;
     } else {
@@ -64,7 +72,7 @@ export const setServicePrice = async (pricePerMinute: number | null, pricePerGb:
         'price-gb': pricePerGb
       }
     }
-    if(config.data.wireguard){
+    if (config.data.wireguard) {
       config.data.wireguard['price-minute'] = pricePerMinute;
       config.data.wireguard['price-gb'] = pricePerGb;
     } else {
