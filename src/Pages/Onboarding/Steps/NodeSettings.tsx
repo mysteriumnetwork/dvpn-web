@@ -21,9 +21,11 @@ const NodeSettings = (props: any) => {
     apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34l',
     checked: false
   });
+
   const handleTextFieldsChange = (prop: keyof NodeSettingsStateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({...values, [prop]: event.target.value});
   };
+
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({...values, checked: event.target.checked});
   };
