@@ -3,6 +3,12 @@ import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
 import {IdentityRef} from "mysterium-vpn-js";
 
+export interface AuthResponseInterface {
+  success: boolean,
+  isAuthoriseError: boolean,
+  isRequestFail: boolean
+}
+
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<any> => {
   const {newPassword, oldPassword, username} = data;
   try {
@@ -12,16 +18,15 @@ export const authChangePassword = async (data: { username: string, oldPassword: 
   }
 };
 
-export const authLogin = async (data: { username: string, password: string }): Promise<boolean> => {
+export const authLogin = async (data: { username: string, password: string }): Promise<AuthResponseInterface> => {
   const {password, username} = data;
   try {
     await tequilapiClient.authLogin(username, password);
 
-    return true;
+    return { success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
-
-    return false;
+    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
   }
 };
 
