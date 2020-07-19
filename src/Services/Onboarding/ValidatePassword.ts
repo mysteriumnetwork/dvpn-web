@@ -1,4 +1,4 @@
-interface ValidateResult{
+interface ValidateResultInterface{
   success: boolean,
   passwordBlank: boolean,
   passwordNotSame: boolean,
@@ -6,7 +6,7 @@ interface ValidateResult{
   errorMessage: string
 }
 
-export const validatePassword = (password: string, passwordRepeat: string): ValidateResult => {
+export const validatePassword = (password: string, passwordRepeat: string): ValidateResultInterface => {
   let response = {
     success: true,
     passwordBlank: false,
