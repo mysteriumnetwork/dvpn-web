@@ -13,9 +13,12 @@ const md = new showdown.Converter();
 const TermsAndConditions = (props: any) => {
   const handleAgree = () => {
     acceptWithTermsAndConditions().then(response => {
-      if (response) {
-        creteNewIdentity();
-        props.history.push("/onboarding/service-settings");
+      if (response.success) {
+        creteNewIdentity().then(response => {
+          if(response.success){
+            props.history.push("/onboarding/service-settings");
+          }
+        });
       }
     });
   };

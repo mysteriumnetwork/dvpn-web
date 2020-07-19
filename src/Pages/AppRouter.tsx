@@ -18,7 +18,13 @@ const AppRouter = () => {
 
   if (values.loading) {
     getInitialRoute().then(response => {
-      setValues({...values, loading: false, route: response ? "onboarding" : "login"})
+      if (response.success) {
+        setValues({...values, loading: false, route: "onboarding"})
+      } else {
+        if (response.isAuthoriseError) {
+          setValues({...values, loading: false, route: "login"})
+        }
+      }
     });
   }
 

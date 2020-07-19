@@ -43,7 +43,7 @@ const ServiceSettings = (props: any) => {
 
   const handleSettingSetup = () => {
     setServicePrice(values.pricePerMinute, values.pricePerGb).then(response => {
-      if (response) {
+      if (response.success) {
         props.history.push("/onboarding/backup");
       }
     });
