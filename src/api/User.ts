@@ -3,19 +3,14 @@ import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
 import {IdentityRef} from "mysterium-vpn-js";
 
-export interface AuthResponseInterface {
+export interface BasicResponseInterface {
   success: boolean,
   isAuthoriseError: boolean,
   isRequestFail: boolean
 }
 
-export interface AuthChangePasswordResponseInterface {
-  success: boolean,
-  isAuthoriseError: boolean,
-  isRequestFail: boolean
-}
 
-export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<AuthChangePasswordResponseInterface> => {
+export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<BasicResponseInterface> => {
   const {newPassword, oldPassword, username} = data;
   try {
     await tequilapiClient.authChangePassword(username, oldPassword, newPassword);
@@ -26,7 +21,7 @@ export const authChangePassword = async (data: { username: string, oldPassword: 
   }
 };
 
-export const authLogin = async (data: { username: string, password: string }): Promise<AuthResponseInterface> => {
+export const authLogin = async (data: { username: string, password: string }): Promise<BasicResponseInterface> => {
   const {password, username} = data;
   try {
     await tequilapiClient.authLogin(username, password);
@@ -38,7 +33,7 @@ export const authLogin = async (data: { username: string, password: string }): P
   }
 };
 
-export const acceptWithTermsAndConditions = async (): Promise<boolean> => {
+export const acceptWithTermsAndConditions = async (): Promise<BasicResponseInterface> => {
   try {
     const config = await tequilapiClient.userConfig();
     const agrrementObject = {
@@ -50,9 +45,9 @@ export const acceptWithTermsAndConditions = async (): Promise<boolean> => {
     config.data.mysteriumWebUi = agrrementObject;
     await tequilapiClient.updateUserConfig(config);
 
-    return true;
+    return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
-    return false;
+    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
   }
 };
 
@@ -95,11 +90,13 @@ export const getidentityList = () => {
   });
 };
 
-export const creteNewIdentity = async (): Promise<any> => {
+export const creteNewIdentity = async (): Promise<BasicResponseInterface> => {
   try {
     await tequilapiClient.identityCreate(DEFAULT_IDENTITY_PASSPHRASE);
+    return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
+    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
   }
 };
 
