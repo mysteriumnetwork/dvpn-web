@@ -4,15 +4,19 @@ import "../../assets/styles/pages/login/main.scss"
 import {DefaultTextField} from "../../Components/DefaultTextField";
 import {authLogin} from '../../api/User'
 import {DEFAULT_USERNAME} from '../../Services/constants'
+import Collapse from "@material-ui/core/Collapse";
+import {Alert, AlertTitle} from "@material-ui/lab";
 
 
 interface StateInterface {
   password: string;
+  error: boolean
 }
 
 const Login = () => {
   const [values, setValues] = React.useState<StateInterface>({
     password: '',
+    error: false
   });
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +24,16 @@ const Login = () => {
   };
 
   const handleLogin = () => {
-      authLogin({username: DEFAULT_USERNAME, password: values.password});
+    setValues({...values, error: false});
+    authLogin({username: DEFAULT_USERNAME, password: values.password}).then(response => {
+      if (response.success) {
+        // TODO REDIRECT TO DASHBOARD
+      } else {
+        if (response.isAuthoriseError) {
+          setValues({...values, error: true});
+        }
+      }
+    });
   };
 
   return (
@@ -30,6 +43,12 @@ const Login = () => {
           <h1 className="login-content-block--heading">Welcome node runner!</h1>
           <p className="login-content-block--heading-paragraph">Lets get you up and running. </p>
           <div className="login-content-block--password-block">
+            <Collapse in={values.error}>
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                Bad credentials
+              </Alert>
+            </Collapse>
             <div className="password-input-block">
               <p className="text-field-label">Web UI password</p>
               <DefaultTextField
