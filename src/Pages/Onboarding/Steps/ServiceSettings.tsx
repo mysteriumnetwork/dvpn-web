@@ -1,9 +1,9 @@
 import React from "react";
-import {StepCounter} from "../StepCounter";
 import {DefaultCheckbox} from '../../../Components/Checkbox/DefaultCheckbox'
 import {DefaultSlider} from '../../../Components/DefaultSlider'
 import "../../../assets/styles/pages/onboarding/steps/service-settings.scss"
 import {setServicePrice} from "../../../api/User";
+import {withRouter} from "react-router-dom";
 import {DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB} from '../../../Services/constants'
 
 const ServiceSettings = (props: any) => {
@@ -54,4 +54,4 @@ const ServiceSettings = (props: any) => {
   );
 };
 
-export default ServiceSettings;
+export default withRouter(ServiceSettings);

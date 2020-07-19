@@ -1,5 +1,4 @@
 import React from "react";
-import {StepCounter} from "../StepCounter";
 import {acceptWithTermsAndConditions} from "../../../api/User";
 // @ts-ignore
 import {TermsEndUser} from '@mysteriumnetwork/terms'

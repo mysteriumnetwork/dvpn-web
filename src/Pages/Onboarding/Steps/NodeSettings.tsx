@@ -5,6 +5,7 @@ import {DefaultCheckbox} from "../../../Components/Checkbox/DefaultCheckbox";
 import {authChangePassword} from "../../../api/User";
 import {validatePassword} from '../../../Services/Onboarding/ValidatePassword'
 import {DEFAULT_USERNAME, DEFAULT_PASSWORD} from '../../../Services/constants'
+import {withRouter} from "react-router-dom";
 
 interface NodeSettingsStateInterface {
   passwordRepeat: string;
@@ -80,4 +81,4 @@ const NodeSettings = (props: any) => {
     </div>
   );
 };
-export default NodeSettings;
+export default withRouter(NodeSettings);
