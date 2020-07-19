@@ -9,8 +9,13 @@ export interface BasicResponseInterface {
   isRequestFail: boolean
 }
 
+export interface CurrentIdentityResponseInterface extends BasicResponseInterface {
+  identityRef: IdentityRef
+}
 
-export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }): Promise<BasicResponseInterface> => {
+
+export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }):
+  Promise<BasicResponseInterface> => {
   const {newPassword, oldPassword, username} = data;
   try {
     await tequilapiClient.authChangePassword(username, oldPassword, newPassword);
@@ -51,7 +56,8 @@ export const acceptWithTermsAndConditions = async (): Promise<BasicResponseInter
   }
 };
 
-export const setServicePrice = async (pricePerMinute: number | null, pricePerGb: number | null): Promise<BasicResponseInterface> => {
+export const setServicePrice = async (pricePerMinute: number | null, pricePerGb: number | null):
+  Promise<BasicResponseInterface> => {
   try {
     if (pricePerMinute === 0.005 && pricePerGb === 0.005) {
       pricePerMinute = null;
@@ -95,14 +101,34 @@ export const creteNewIdentity = async (): Promise<BasicResponseInterface> => {
   }
 };
 
-export const registerIdentity = async (id: string, beneficiary: string, stake: number): Promise<any> => {
+export const registerIdentity = async (id: string, beneficiary: string, stake: number): Promise<BasicResponseInterface> => {
   try {
     await tequilapiClient.identityRegister(id, {beneficiary: beneficiary, stake: stake});
+
+    return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
+    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
   }
 };
 
-export const getCurrentIdentity = async (): Promise<IdentityRef> => {
-  return await tequilapiClient.identityCurrent({passphrase: DEFAULT_IDENTITY_PASSPHRASE});
+export const getCurrentIdentity = async (): Promise<CurrentIdentityResponseInterface> => {
+
+  try {
+    return {
+      success: true,
+      isAuthoriseError: false,
+      isRequestFail: false,
+      identityRef: await tequilapiClient.identityCurrent({passphrase: DEFAULT_IDENTITY_PASSPHRASE})
+    };
+
+  } catch (e) {
+
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      identityRef: {id: ""}
+    }
+  }
 };

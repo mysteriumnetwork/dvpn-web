@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
@@ -11,7 +11,7 @@ interface StateInterface {
   stake: number
 }
 
-const PayoutSettings = () => {
+const PayoutSettings = (props: any) => {
   const [values, setValues] = React.useState<StateInterface>({
     walletAddress: '0x...',
     stake: DEFAULT_STAKE_AMOUNT
@@ -26,8 +26,13 @@ const PayoutSettings = () => {
   };
   const handleDone = () => {
      getCurrentIdentity().then(response =>{
-       if (response.id){
-         registerIdentity(response.id, values.walletAddress, values.stake);
+       if (response.success){
+         const id = response.identityRef.id
+         registerIdentity(id, values.walletAddress, values.stake).then(response => {
+           if(response.success){
+             props.history.push("/");
+           }
+         });
        }
      });
   };
@@ -68,4 +73,4 @@ const PayoutSettings = () => {
   );
 };
 
-export default PayoutSettings;
+export default withRouter(PayoutSettings);
