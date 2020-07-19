@@ -1,4 +1,4 @@
-interface ValidateResultInterface{
+interface ValidateResultInterface {
   success: boolean,
   passwordBlank: boolean,
   passwordNotSame: boolean,

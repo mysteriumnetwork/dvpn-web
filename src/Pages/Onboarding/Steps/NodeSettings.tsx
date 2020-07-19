@@ -34,7 +34,7 @@ const NodeSettings = (props: any) => {
     let validatedPasssword = validatePassword(values.password, values.passwordRepeat);
     if (validatedPasssword.success) {
       authChangePassword({username: DEFAULT_USERNAME, oldPassword: DEFAULT_PASSWORD, newPassword: "mystberry"});
-      if(values.checked){
+      if (values.checked) {
         // TODO CLAIM NODE
       }
       props.history.push("/onboarding/payout-settings");

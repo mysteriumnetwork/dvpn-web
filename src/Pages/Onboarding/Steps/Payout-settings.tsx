@@ -45,7 +45,8 @@ const PayoutSettings = () => {
             <DefaultSlider value={values.stake} handleChange={() => handlePricePerGbChanged} step={1} min={0}
                            max={50} mystSlider={true}/>
           </div>
-          <p className="wallet-stack-info-p bottom">In terms to start providing services and ensure smoth and secure payouts (settlements)
+          <p className="wallet-stack-info-p bottom">In terms to start providing services and ensure smoth and secure
+            payouts (settlements)
             in Mysterium Network, node runners should stake small amounts of tokens. If you choose
             default option, initial stake will be 0 and will be increased until minimal amount of 10MYST
             by taking 10% during each promise settlement (payout). </p>

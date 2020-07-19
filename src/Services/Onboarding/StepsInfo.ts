@@ -20,7 +20,7 @@ export const setStepsInfo = (): stepsInfoReturnInterface => {
     case '/onboarding/payout-settings':
       return {step: 6, image: sideImageOnboarding};
     case '/onboarding/terms-and-conditions':
-      return {step: 7 , image: sideImageOnboarding};
+      return {step: 7, image: sideImageOnboarding};
     default:
       return {step: 1, image: sideImageOnboarding};
   }
