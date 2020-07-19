@@ -8,47 +8,22 @@ import PayoutSettings from "./Steps/Payout-settings";
 import {Route, Switch} from "react-router-dom";
 import {StepCounter} from "./StepCounter";
 import TermsAndConditions from "./Steps/TemsAndConditions";
-import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
+import {setStepsInfo} from '../../Services/Onboarding/StepsInfo'
 
 interface StateInterface {
   sideImage: string;
   step: number
 }
 
-interface stepInterface {
-  step: number,
-  image: string
-}
-
-const setSideImage = (): stepInterface => {
-  switch (window.location.pathname) {
-    case '/onboarding':
-      return {step: 1, image: sideImageOnboarding};
-    case '/onboarding/terms-and-conditions':
-      return {step: 2, image: sideImageOnboarding};
-    case '/onboarding/service-settings':
-      return {step: 3, image: sideImageOnboarding};
-    case '/onboarding/backup':
-      return {step: 4, image: sideImageOnboarding};
-    case '/onboarding/node-settings':
-      return {step: 5, image: sideImageOnboarding};
-    case '/onboarding/payout-settings':
-      return {step: 6, image: sideImageOnboarding};
-    case '/onboarding/terms-and-conditions':
-      return {step: 7 , image: sideImageOnboarding};
-    default:
-      return {step: 1, image: sideImageOnboarding};
-  }
-};
-
 const Onboarding = (props: any) => {
-  let stepInfo = setSideImage();
+  let stepInfo = setStepsInfo();
   const [values, setValues] = React.useState<StateInterface>({
     sideImage: stepInfo.image,
     step: stepInfo.step
   });
 
   props.history.listen((location: any, action: any) => {
+    stepInfo = setStepsInfo();
     setValues({
       ...values,
       sideImage: stepInfo.image,
