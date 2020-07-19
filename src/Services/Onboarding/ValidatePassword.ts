@@ -1,3 +1,5 @@
+import {NEW_PASSWORD_ERROR_TO_SHORT, NEW_PASSWORD_ERROR_BLANK, NEW_PASSWORD_ERROR_NOT_SAME} from "../constants"
+
 interface ValidateResultInterface {
   success: boolean,
   passwordBlank: boolean,
@@ -19,7 +21,7 @@ export const validatePassword = (password: string, passwordRepeat: string): Vali
   if (isPasswordsNotBlank(password, passwordRepeat)) {
     response.success = false;
     response.passwordBlank = true;
-    response.errorMessage = "password blank";
+    response.errorMessage = NEW_PASSWORD_ERROR_BLANK;
 
     return response;
   }
@@ -27,7 +29,7 @@ export const validatePassword = (password: string, passwordRepeat: string): Vali
   if (isPasswordsSame(password, passwordRepeat)) {
     response.success = false;
     response.passwordNotSame = true;
-    response.errorMessage = "password not the same";
+    response.errorMessage = NEW_PASSWORD_ERROR_NOT_SAME;
 
     return response;
   }
@@ -36,7 +38,7 @@ export const validatePassword = (password: string, passwordRepeat: string): Vali
   if (isPasswordValid(password)) {
     response.success = false;
     response.passwordShort = true;
-    response.errorMessage = "password are short";
+    response.errorMessage = NEW_PASSWORD_ERROR_TO_SHORT;
 
     return response;
   }

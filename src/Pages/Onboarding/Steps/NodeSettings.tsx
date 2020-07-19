@@ -6,12 +6,16 @@ import {authChangePassword} from "../../../api/User";
 import {validatePassword} from '../../../Services/Onboarding/ValidatePassword'
 import {DEFAULT_USERNAME, DEFAULT_PASSWORD} from '../../../Services/constants'
 import {withRouter} from "react-router-dom";
+import {Alert, AlertTitle} from "@material-ui/lab";
+import Collapse from '@material-ui/core/Collapse';
 
 interface StateInterface {
   passwordRepeat: string;
   password: string;
   apiToken: string;
-  checked: boolean
+  checked: boolean,
+  error: boolean,
+  errorMessage: string
 }
 
 const NodeSettings = (props: any) => {
@@ -19,7 +23,9 @@ const NodeSettings = (props: any) => {
     passwordRepeat: '',
     password: '',
     apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34l',
-    checked: false
+    checked: false,
+    error: false,
+    errorMessage: ""
   });
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +37,7 @@ const NodeSettings = (props: any) => {
   };
 
   const handleSubmitPassword = () => {
+    setValues({...values, error: false});
     let validatedPasssword = validatePassword(values.password, values.passwordRepeat);
     if (validatedPasssword.success) {
       authChangePassword({username: DEFAULT_USERNAME, oldPassword: DEFAULT_PASSWORD, newPassword: "mystberry"});
@@ -39,7 +46,7 @@ const NodeSettings = (props: any) => {
       }
       props.history.push("/onboarding/payout-settings");
     } else {
-      alert(validatedPasssword.errorMessage);
+      setValues({...values, error: true, errorMessage: validatedPasssword.errorMessage})
     }
   };
   return (
@@ -47,6 +54,12 @@ const NodeSettings = (props: any) => {
       <h1 className="step-block--heading">Node settings</h1>
       <p className="step-block--heading-paragraph">Fill in the following information to setup your node.</p>
       <div className="step-block-content">
+        <Collapse in={values.error}>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            {values.errorMessage}
+          </Alert>
+        </Collapse>
         <div className="password-input-block">
           <p className="text-field-label">Web UI password</p>
           <DefaultTextField
