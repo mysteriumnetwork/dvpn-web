@@ -7,7 +7,7 @@ import {validatePassword} from '../../../Services/Onboarding/ValidatePassword'
 import {DEFAULT_USERNAME, DEFAULT_PASSWORD} from '../../../Services/constants'
 import {withRouter} from "react-router-dom";
 
-interface NodeSettingsStateInterface {
+interface StateInterface {
   passwordRepeat: string;
   password: string;
   apiToken: string;
@@ -15,14 +15,14 @@ interface NodeSettingsStateInterface {
 }
 
 const NodeSettings = (props: any) => {
-  const [values, setValues] = React.useState<NodeSettingsStateInterface>({
+  const [values, setValues] = React.useState<StateInterface>({
     passwordRepeat: '',
     password: '',
     apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34l',
     checked: false
   });
 
-  const handleTextFieldsChange = (prop: keyof NodeSettingsStateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({...values, [prop]: event.target.value});
   };
 

@@ -5,20 +5,21 @@ import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
 import {DEFAULT_STAKE_AMOUNT} from "../../../Services/constants"
 
-interface PayoutSettingsInterface {
+interface StateInterface {
   walletAddress: string;
   stake: number
 }
 
 const PayoutSettings = () => {
-  const [values, setValues] = React.useState<PayoutSettingsInterface>({
+  const [values, setValues] = React.useState<StateInterface>({
     walletAddress: '0x...',
     stake: DEFAULT_STAKE_AMOUNT
   });
 
-  const handleTextFieldsChange = (prop: keyof PayoutSettingsInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({...values, [prop]: event.target.value});
   };
+
   const handlePricePerGbChanged = (event: any, newValue: number) => {
     setValues({...values, stake: newValue});
   };

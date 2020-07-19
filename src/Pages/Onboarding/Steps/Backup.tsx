@@ -1,5 +1,4 @@
 import React from "react";
-import {StepCounter} from "../StepCounter";
 import {Link} from "react-router-dom";
 import "../../../assets/styles/pages/onboarding/steps/backup.scss"
 
