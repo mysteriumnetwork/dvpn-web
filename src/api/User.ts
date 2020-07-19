@@ -1,4 +1,4 @@
-import {DEFAULT_IDENTITY_PASSPHRASE} from '../constants'
+import {DEFAULT_IDENTITY_PASSPHRASE} from '../Services/constants'
 import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
 

@@ -4,16 +4,17 @@ import {DefaultCheckbox} from '../../../Components/Checkbox/DefaultCheckbox'
 import {DefaultSlider} from '../../../Components/DefaultSlider'
 import "../../../assets/styles/pages/onboarding/steps/service-settings.scss"
 import {setServicePrice} from "../../../api/User";
+import {DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB} from '../../../Services/constants'
 
 const ServiceSettings = (props: any) => {
   const [checked, setChecked] = React.useState(false);
-  const [pricePerMinute, setChangePricePerMinute] = React.useState<number>(0.005);
-  const [PricePerGb, setChangePricePerGb] = React.useState<number>(0.005);
+  const [pricePerMinute, setChangePricePerMinute] = React.useState<number>(DEFAULT_PRICE_PER_MINUTE_PRICE);
+  const [PricePerGb, setChangePricePerGb] = React.useState<number>(DEFAULT_PRICE_PER_GB);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
-    setChangePricePerMinute(0.005);
-    setChangePricePerGb(0.005);
+    setChangePricePerMinute(DEFAULT_PRICE_PER_MINUTE_PRICE);
+    setChangePricePerGb(DEFAULT_PRICE_PER_GB);
   };
   const handlePricePerMinuteChanged = (event: any, newValue: number) => {
     setChangePricePerMinute(newValue);

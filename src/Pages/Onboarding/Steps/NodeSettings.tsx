@@ -1,11 +1,10 @@
 import React from "react";
-import {StepCounter} from "../StepCounter";
-import {Link} from "react-router-dom";
 import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/node-settings.scss"
 import {DefaultCheckbox} from "../../../Components/Checkbox/DefaultCheckbox";
 import {authChangePassword} from "../../../api/User";
 import {validatePassword} from '../../../Services/Onboarding/ValidatePassword'
+import {DEFAULT_USERNAME, DEFAULT_PASSWORD} from '../../../Services/constants'
 
 interface NodeSettingsStateInterface {
   passwordRepeat: string;
@@ -31,7 +30,7 @@ const NodeSettings = (props: any) => {
   const handleSubmitPassword = () => {
     let validatedPasssword = validatePassword(values.password, values.passwordRepeat);
     if (validatedPasssword.success) {
-      authChangePassword({username: "myst", oldPassword: "mystberry", newPassword: "mystberry"});
+      authChangePassword({username: DEFAULT_USERNAME, oldPassword: DEFAULT_PASSWORD, newPassword: "mystberry"});
       if(values.checked){
         // TODO CLAIM NODE
       }

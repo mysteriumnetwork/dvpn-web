@@ -1,9 +1,9 @@
 import React from "react";
-import {StepCounter} from "../StepCounter";
 import {Link} from "react-router-dom";
 import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
+import {DEFAULT_STAKE_AMOUNT} from "../../../Services/constants"
 
 interface PayoutSettingsInterface {
   walletAddress: string;
@@ -13,7 +13,7 @@ interface PayoutSettingsInterface {
 const PayoutSettings = () => {
   const [values, setValues] = React.useState<PayoutSettingsInterface>({
     walletAddress: '0x...',
-    stake: 20
+    stake: DEFAULT_STAKE_AMOUNT
   });
 
   const handleTextFieldsChange = (prop: keyof PayoutSettingsInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {

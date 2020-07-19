@@ -1,1 +1,0 @@
-export const DEFAULT_IDENTITY_PASSPHRASE:string = "";
