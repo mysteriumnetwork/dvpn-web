@@ -1,8 +1,9 @@
 import React from "react";
 import sideImageOnboarding from "../../assets/images/onboarding/SideImage.png";
 import "../../assets/styles/pages/login/main.scss"
-import {Link} from "react-router-dom";
 import {DefaultTextField} from "../../Components/DefaultTextField";
+import {authLogin} from '../../api/User'
+import {DEFAULT_USERNAME} from '../../Services/constants'
 
 
 interface StateInterface {
@@ -16,6 +17,10 @@ const Login = () => {
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({...values, [prop]: event.target.value});
+  };
+
+  const handleLogin = () => {
+      authLogin({username: DEFAULT_USERNAME, password: values.password});
   };
 
   return (
@@ -36,7 +41,7 @@ const Login = () => {
             </div>
             <div className="password-actions-block">
               <a href="#">Forgot password?</a>
-              <div className="btn btn-filled login"><span
+              <div onClick={handleLogin} className="btn btn-filled login"><span
                 className="btn-text">Sing In</span></div>
             </div>
           </div>
