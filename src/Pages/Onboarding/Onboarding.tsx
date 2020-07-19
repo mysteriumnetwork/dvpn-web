@@ -1,16 +1,16 @@
 import React from "react";
 import "../../assets/styles/pages/onboarding/main.scss"
 import Welcome from "./Steps/Welcome";
-import TermsAndConditions from "./Steps/TemsAndConditions";
 import Backup from "./Steps/Backup";
 import ServiceSettings from "./Steps/ServiceSettings";
 import NodeSettings from "./Steps/NodeSettings";
 import PayoutSettings from "./Steps/Payout-settings";
 import {Route, Switch} from "react-router-dom";
-import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import {StepCounter} from "./StepCounter";
+import TermsAndConditions from "./Steps/TemsAndConditions";
+import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 
-interface State {
+interface StateInterface {
   sideImage: string;
   step: number
 }
@@ -43,7 +43,7 @@ const setSideImage = (): stepInterface => {
 
 const Onboarding = (props: any) => {
   let stepInfo = setSideImage();
-  const [values, setValues] = React.useState<State>({
+  const [values, setValues] = React.useState<StateInterface>({
     sideImage: stepInfo.image,
     step: stepInfo.step
   });
