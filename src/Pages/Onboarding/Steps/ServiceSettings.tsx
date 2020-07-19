@@ -6,25 +6,43 @@ import {setServicePrice} from "../../../api/User";
 import {withRouter} from "react-router-dom";
 import {DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB} from '../../../Services/constants'
 
+interface StateInterface {
+  checked: boolean;
+  pricePerMinute: number,
+  pricePerGb: number
+}
+
 const ServiceSettings = (props: any) => {
-  const [checked, setChecked] = React.useState(false);
-  const [pricePerMinute, setChangePricePerMinute] = React.useState<number>(DEFAULT_PRICE_PER_MINUTE_PRICE);
-  const [PricePerGb, setChangePricePerGb] = React.useState<number>(DEFAULT_PRICE_PER_GB);
+  const [values, setValues] = React.useState<StateInterface>({
+    checked: false,
+    pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
+    pricePerGb: DEFAULT_PRICE_PER_GB
+  });
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-    setChangePricePerMinute(DEFAULT_PRICE_PER_MINUTE_PRICE);
-    setChangePricePerGb(DEFAULT_PRICE_PER_GB);
+    setValues({
+      checked: event.target.checked,
+      pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
+      pricePerGb: DEFAULT_PRICE_PER_GB
+    });
   };
+
   const handlePricePerMinuteChanged = (event: any, newValue: number) => {
-    setChangePricePerMinute(newValue);
+    setValues({
+      ...values,
+      pricePerMinute: newValue,
+    });
   };
+
   const handlePricePerGbChanged = (event: any, newValue: number) => {
-    setChangePricePerGb(newValue);
+    setValues({
+      ...values,
+      pricePerGb: newValue,
+    });
   };
 
   const handleSettingSetup = () => {
-    setServicePrice(pricePerMinute, PricePerGb).then(response => {
+    setServicePrice(values.pricePerMinute, values.pricePerGb).then(response => {
       if (response) {
         props.history.push("/onboarding/backup");
       }
@@ -37,15 +55,16 @@ const ServiceSettings = (props: any) => {
       <div className="step-block-content">
         <div className="slider-block per-minute">
           <p>Price per minute</p>
-          <DefaultSlider value={pricePerMinute} handleChange={() => handlePricePerMinuteChanged} step={0.001} min={0}
-                         max={0.01} disabled={checked}/>
+          <DefaultSlider value={values.pricePerMinute} handleChange={() => handlePricePerMinuteChanged} step={0.001}
+                         min={0}
+                         max={0.01} disabled={values.checked}/>
         </div>
         <div className="slider-block per-gb">
           <p>Price per GB</p>
-          <DefaultSlider value={PricePerGb} handleChange={() => handlePricePerGbChanged} step={0.001} min={0}
-                         max={0.01} disabled={checked}/>
+          <DefaultSlider value={values.pricePerGb} handleChange={() => handlePricePerGbChanged} step={0.001} min={0}
+                         max={0.01} disabled={values.checked}/>
         </div>
-        <DefaultCheckbox checked={checked} handleCheckboxChange={() => handleCheckboxChange}
+        <DefaultCheckbox checked={values.checked} handleCheckboxChange={() => handleCheckboxChange}
                          label="Use default pricing"/>
         <div onClick={handleSettingSetup} className="btn btn-filled btn-center next"><span
           className="btn-text">Next</span></div>
