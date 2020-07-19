@@ -51,7 +51,7 @@ export const acceptWithTermsAndConditions = async (): Promise<BasicResponseInter
   }
 };
 
-export const setServicePrice = async (pricePerMinute: number | null, pricePerGb: number | null): Promise<boolean> => {
+export const setServicePrice = async (pricePerMinute: number | null, pricePerGb: number | null): Promise<BasicResponseInterface> => {
   try {
     if (pricePerMinute === 0.005 && pricePerGb === 0.005) {
       pricePerMinute = null;
@@ -78,16 +78,11 @@ export const setServicePrice = async (pricePerMinute: number | null, pricePerGb:
     }
     await tequilapiClient.updateUserConfig(config);
 
-    return true;
+    return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
-    return false;
-  }
-};
 
-export const getidentityList = () => {
-  tequilapiClient.identityList().then((identities) => {
-    console.log(identities);
-  });
+    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+  }
 };
 
 export const creteNewIdentity = async (): Promise<BasicResponseInterface> => {
