@@ -41,13 +41,13 @@ export const authLogin = async (data: { username: string, password: string }): P
 export const acceptWithTermsAndConditions = async (): Promise<BasicResponseInterface> => {
   try {
     const config = await tequilapiClient.userConfig();
-    const agrrementObject = {
+    const agreementObject = {
       termsAgreed: {
         version: termsPackageJson.version,
         at: new Date().toISOString(),
       }
     };
-    config.data.mysteriumWebUi = agrrementObject;
+    config.data.mysteriumWebUi = agreementObject;
     await tequilapiClient.updateUserConfig(config);
 
     return {success: true, isRequestFail: false, isAuthoriseError: false}
