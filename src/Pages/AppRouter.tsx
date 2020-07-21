@@ -3,6 +3,7 @@ import {Route, Redirect, Switch} from "react-router-dom";
 import '../assets/styles/App.scss';
 import Login from "./Login/Login";
 import Onboarding from "./Onboarding/Onboarding";
+import RestartNode from "./Error/RestartNode";
 import {getInitialRoute} from '../Services/GetInitialRoute'
 
 interface AppRouterStateInterface {
@@ -44,6 +45,7 @@ const AppRouter = () => {
       />
       <Route path="/login" component={Login}/>
       <Route path="/onboarding" component={Onboarding}/>
+      <Route path="/restart-node" component={RestartNode}/>
     </Switch>
   );
 };
