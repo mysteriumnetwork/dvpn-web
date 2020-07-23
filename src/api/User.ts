@@ -1,7 +1,7 @@
 import {DEFAULT_IDENTITY_PASSPHRASE} from '../Services/constants'
 import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
-import {IdentityRef} from "mysterium-vpn-js";
+import {IdentityRef, TransactorFeesResponse} from "mysterium-vpn-js";
 
 export interface BasicResponseInterface {
   success: boolean,
@@ -13,14 +13,17 @@ export interface CurrentIdentityResponseInterface extends BasicResponseInterface
   identityRef: IdentityRef
 }
 
-export interface CreateNewIdentityInterface extends BasicResponseInterface {
+export interface CreateNewIdentityResponseInterface extends BasicResponseInterface {
   identityRef: IdentityRef
 }
 
-export interface IdentityListInterface extends BasicResponseInterface {
+export interface IdentityListResponseInterface extends BasicResponseInterface {
   identityRef: IdentityRef[]
 }
 
+export interface TransactionsFeesResponseInterface extends BasicResponseInterface {
+  transactorFeesResponse: TransactorFeesResponse
+}
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }):
   Promise<BasicResponseInterface> => {
@@ -99,7 +102,7 @@ export const setServicePrice = async (pricePerMinute: number | null, pricePerGb:
   }
 };
 
-export const creteNewIdentity = async (): Promise<CreateNewIdentityInterface> => {
+export const creteNewIdentity = async (): Promise<CreateNewIdentityResponseInterface> => {
   try {
     return {
       success: true,
@@ -118,9 +121,9 @@ export const creteNewIdentity = async (): Promise<CreateNewIdentityInterface> =>
   }
 };
 
-export const registerIdentity = async (id: string, beneficiary: string, stake: number): Promise<BasicResponseInterface> => {
+export const registerIdentity = async (id: string, beneficiary: string, stake: number, fee: number): Promise<BasicResponseInterface> => {
   try {
-    await tequilapiClient.identityRegister(id, {beneficiary: beneficiary, stake: stake});
+    await tequilapiClient.identityRegister(id, {beneficiary: beneficiary, stake: stake, fee: fee});
 
     return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
@@ -140,7 +143,7 @@ export const unlockIdentity = async (id: string): Promise<BasicResponseInterface
   }
 };
 
-export const getIdentityList = async (): Promise<IdentityListInterface> => {
+export const getIdentityList = async (): Promise<IdentityListResponseInterface> => {
   try {
     return {
       success: true,
@@ -189,3 +192,25 @@ export const claimNodeMMNNode = async (apiKey: string): Promise<BasicResponseInt
     return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500),}
   }
 };
+
+export const getTransactionsFees = async (): Promise<TransactionsFeesResponseInterface> => {
+  try {
+    return {
+      success: true,
+      isAuthoriseError: false,
+      isRequestFail: false,
+      transactorFeesResponse: await tequilapiClient.transactorFees()
+    };
+
+  } catch (e) {
+
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      transactorFeesResponse: {registration: 0, settlement: 0}
+    }
+  }
+};
+
+

@@ -4,7 +4,7 @@ import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
 import {DEFAULT_STAKE_AMOUNT} from "../../../Services/constants"
-import {getCurrentIdentity, registerIdentity} from '../../../api/User'
+import {getCurrentIdentity, registerIdentity, getTransactionsFees} from '../../../api/User'
 
 interface StateInterface {
   walletAddress: string;
@@ -25,16 +25,20 @@ const PayoutSettings = (props: any) => {
     setValues({...values, stake: newValue});
   };
   const handleDone = () => {
-     getCurrentIdentity().then(response =>{
-       if (response.success){
-         const id = response.identityRef.id
-         registerIdentity(id, values.walletAddress, values.stake).then(response => {
-           if(response.success){
-             props.history.push("/");
-           }
-         });
-       }
-     });
+    getCurrentIdentity().then(response => {
+      if (response.success) {
+        const id = response.identityRef.id
+        getTransactionsFees().then(response => {
+          if (response.success) {
+            registerIdentity(id, values.walletAddress, values.stake, response.transactorFeesResponse.registration).then(response => {
+              if (response.success) {
+                props.history.push("/");
+              }
+            });
+          }
+        })
+      }
+    });
   };
 
   return (
