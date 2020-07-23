@@ -6,14 +6,18 @@ import {authLogin} from '../../api/User'
 import {DEFAULT_USERNAME} from '../../Services/constants'
 import Collapse from "@material-ui/core/Collapse";
 import {Alert, AlertTitle} from "@material-ui/lab";
+import {Redirect} from "react-router-dom";
 
 
 interface StateInterface {
   password: string;
   error: boolean
 }
+interface PropsInterface {
+  onboardingPassed: boolean
+}
 
-const Login = () => {
+const Login = (props: PropsInterface) => {
   const [values, setValues] = React.useState<StateInterface>({
     password: '',
     error: false
@@ -37,6 +41,7 @@ const Login = () => {
   };
 
   return (
+    props.onboardingPassed ?
     <div className="login wrapper">
       <div className="login-content">
         <div className="login-content-block">
@@ -70,6 +75,8 @@ const Login = () => {
         <img alt="onboarding" src={sideImageOnboarding}/>
       </div>
     </div>
+      :
+      <Redirect to={"/"} />
   )
 };
 
