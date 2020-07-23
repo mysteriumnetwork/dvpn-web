@@ -1,7 +1,9 @@
 import {DEFAULT_IDENTITY_PASSPHRASE} from '../Services/constants'
 import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
-import {IdentityRef, TransactorFeesResponse} from "mysterium-vpn-js";
+import {Identity, IdentityRef, TransactorFeesResponse} from "mysterium-vpn-js";
+import {Config} from "mysterium-vpn-js/lib/config/config";
+import {IdentityRegistrationStatus} from "mysterium-vpn-js/lib/identity/identity";
 
 export interface BasicResponseInterface {
   success: boolean,
@@ -23,6 +25,14 @@ export interface IdentityListResponseInterface extends BasicResponseInterface {
 
 export interface TransactionsFeesResponseInterface extends BasicResponseInterface {
   transactorFeesResponse: TransactorFeesResponse
+}
+
+export interface UserConfigResponseInterface extends BasicResponseInterface {
+  userConfig: Config
+}
+
+export interface IdentityResponseInterface extends BasicResponseInterface{
+  identity: Identity
 }
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }):
@@ -212,5 +222,47 @@ export const getTransactionsFees = async (): Promise<TransactionsFeesResponseInt
     }
   }
 };
+
+export const getUserConfig = async (): Promise<UserConfigResponseInterface> => {
+  try {
+    return {
+      success: true,
+      isAuthoriseError: false,
+      isRequestFail: false,
+      userConfig: await tequilapiClient.userConfig()
+    };
+
+  } catch (e) {
+
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      userConfig: {data: ""}
+    }
+  }
+};
+
+
+export const getIdentity = async (id: string): Promise<IdentityResponseInterface> => {
+  try {
+    return {
+      success: true,
+      isAuthoriseError: false,
+      isRequestFail: false,
+      identity: await tequilapiClient.identity(id)
+    };
+
+  } catch (e) {
+    console.log(e.message)
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      identity: {id: "asd", earnings: 0, balance: 0, channelAddress: "", earningsTotal:0, registrationStatus: IdentityRegistrationStatus.InProgress}
+    }
+  }
+};
+
 
 
