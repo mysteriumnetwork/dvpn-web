@@ -52,7 +52,7 @@ const AppRouter = () => {
     if (userConfigResponse.userConfig.data.mysteriumwebui) {
       handleUSerConfigSuccessResponse();
     } else {
-      setValues({...values, loading: false, route: "onboarding/service-settings"})
+      setValues({...values, loading: false, route: "onboarding"})
     }
   };
 
@@ -75,7 +75,7 @@ const AppRouter = () => {
   const handleGetIdentityResponse = (identityResponse: IdentityResponseInterface) => {
     if (
       identityResponse.success && (
-        identityResponse.identity.registrationStatus.toString() !== "Unregistered" ||
+        identityResponse.identity.registrationStatus.toString() !== "Unregistered" &&
         identityResponse.identity.registrationStatus.toString() !== "RegistrationError"
       )
     ) {
