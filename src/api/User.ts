@@ -13,6 +13,14 @@ export interface CurrentIdentityResponseInterface extends BasicResponseInterface
   identityRef: IdentityRef
 }
 
+export interface CreateNewIdentityInterface extends BasicResponseInterface {
+  identityRef: IdentityRef
+}
+
+export interface IdentityListInterface extends BasicResponseInterface {
+  identityRef: IdentityRef[]
+}
+
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }):
   Promise<BasicResponseInterface> => {
@@ -91,13 +99,22 @@ export const setServicePrice = async (pricePerMinute: number | null, pricePerGb:
   }
 };
 
-export const creteNewIdentity = async (): Promise<BasicResponseInterface> => {
+export const creteNewIdentity = async (): Promise<CreateNewIdentityInterface> => {
   try {
-    await tequilapiClient.identityCreate(DEFAULT_IDENTITY_PASSPHRASE);
-    return {success: true, isRequestFail: false, isAuthoriseError: false}
+    return {
+      success: true,
+      isRequestFail: false,
+      isAuthoriseError: false,
+      identityRef: await tequilapiClient.identityCreate(DEFAULT_IDENTITY_PASSPHRASE)
+    }
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
-    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      identityRef: {id: ''}
+    }
   }
 };
 
@@ -112,8 +129,37 @@ export const registerIdentity = async (id: string, beneficiary: string, stake: n
   }
 };
 
-export const getCurrentIdentity = async (): Promise<CurrentIdentityResponseInterface> => {
+export const unlockIdentity = async (id: string): Promise<BasicResponseInterface> => {
+  try {
+    await tequilapiClient.identityUnlock(id, DEFAULT_IDENTITY_PASSPHRASE);
 
+    return {success: true, isRequestFail: false, isAuthoriseError: false}
+  } catch (e) {
+    console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
+    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+  }
+};
+
+export const getIdentityList = async (): Promise<IdentityListInterface> => {
+  try {
+    return {
+      success: true,
+      isRequestFail: false,
+      isAuthoriseError: false,
+      identityRef: await tequilapiClient.identityList()
+    }
+  } catch (e) {
+    console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      identityRef: [{id: ""}]
+    }
+  }
+};
+
+export const getCurrentIdentity = async (): Promise<CurrentIdentityResponseInterface> => {
   try {
     return {
       success: true,
@@ -130,5 +176,16 @@ export const getCurrentIdentity = async (): Promise<CurrentIdentityResponseInter
       isRequestFail: e._hasHttpStatus(500),
       identityRef: {id: ""}
     }
+  }
+};
+
+export const claimNodeMMNNode = async (apiKey: string): Promise<BasicResponseInterface> => {
+  try {
+    await tequilapiClient.setMMNApiKey(apiKey);
+    return {success: true, isAuthoriseError: false, isRequestFail: false};
+
+  } catch (e) {
+
+    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500),}
   }
 };
