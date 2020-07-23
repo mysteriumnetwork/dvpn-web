@@ -16,12 +16,14 @@ import {
 interface AppRouterStateInterface {
   route: string;
   loading: boolean;
+  onboardingPassed: boolean
 }
 
 const AppRouter = () => {
   const [values, setValues] = React.useState<AppRouterStateInterface>({
     route: '',
     loading: true,
+    onboardingPassed: false
   });
 
   if (values.loading) {
@@ -34,7 +36,7 @@ const AppRouter = () => {
       handleInitialRouteSuccessResponse()
     } else {
       if (initialRouteResponse.isAuthoriseError) {
-        setValues({...values, loading: false, route: "login"})
+        setValues({...values, loading: false, route: "login", onboardingPassed: true})
       }
     }
   };
@@ -77,7 +79,7 @@ const AppRouter = () => {
         identityResponse.identity.registrationStatus.toString() !== "RegistrationError"
       )
     ) {
-      setValues({...values, loading: false, route: "login"})
+      setValues({...values, loading: false, route: "login", onboardingPassed: true})
 
     } else {
       setValues({...values, loading: false, route: "onboarding/service-settings"})
