@@ -2,7 +2,7 @@ import React from "react";
 import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/node-settings.scss"
 import {DefaultCheckbox} from "../../../Components/Checkbox/DefaultCheckbox";
-import {authChangePassword} from "../../../api/User";
+import {authChangePassword, claimNodeMMNNode} from "../../../api/User";
 import {validatePassword} from '../../../Services/Onboarding/ValidatePassword'
 import {DEFAULT_USERNAME, DEFAULT_PASSWORD} from '../../../Services/constants'
 import {withRouter} from "react-router-dom";
@@ -22,7 +22,7 @@ const NodeSettings = (props: any) => {
   const [values, setValues] = React.useState<StateInterface>({
     passwordRepeat: '',
     password: '',
-    apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34l',
+    apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34lR3NNV0XeQJB4BnA',
     checked: false,
     error: false,
     errorMessage: ""
@@ -44,7 +44,11 @@ const NodeSettings = (props: any) => {
         resonse => {
           if (resonse.success) {
             if (values.checked) {
-              // TODO CLAIM NODE
+              claimNodeMMNNode(values.apiToken).then(resonse => {
+                if(resonse.success){
+                  props.history.push("/onboarding/payout-settings");
+                }
+              })
             }
             props.history.push("/onboarding/payout-settings");
           }
