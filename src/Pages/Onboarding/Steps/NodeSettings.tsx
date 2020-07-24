@@ -2,7 +2,7 @@ import React from "react";
 import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/node-settings.scss"
 import {DefaultCheckbox} from "../../../Components/Checkbox/DefaultCheckbox";
-import {authChangePassword, claimNodeMMNNode} from "../../../api/User";
+import {authChangePassword, claimNodeMMNNode} from "../../../api/TequilaApiCalls";
 import {validatePassword} from '../../../Services/Onboarding/ValidatePassword'
 import {DEFAULT_USERNAME, DEFAULT_PASSWORD} from '../../../Services/constants'
 import {withRouter} from "react-router-dom";

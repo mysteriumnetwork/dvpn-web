@@ -1,7 +1,7 @@
 import React from "react";
 // @ts-ignore
 import {TermsEndUser} from '@mysteriumnetwork/terms'
-import {acceptWithTermsAndConditions, getCurrentIdentity} from "../../../api/User";
+import {acceptWithTermsAndConditions, getCurrentIdentity} from "../../../api/TequilaApiCalls";
 import "../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss"
 import {withRouter} from "react-router-dom";
 import ReactHtmlParser from 'react-html-parser';

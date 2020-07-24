@@ -2,7 +2,7 @@ import React from "react";
 import {DefaultCheckbox} from '../../../Components/Checkbox/DefaultCheckbox'
 import {DefaultSlider} from '../../../Components/DefaultSlider'
 import "../../../assets/styles/pages/onboarding/steps/service-settings.scss"
-import {setServicePrice} from "../../../api/User";
+import {setServicePrice} from "../../../api/TequilaApiCalls";
 import {withRouter} from "react-router-dom";
 import {DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB} from '../../../Services/constants'
 

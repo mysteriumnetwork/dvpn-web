@@ -4,7 +4,7 @@ import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
 import {DEFAULT_STAKE_AMOUNT} from "../../../Services/constants"
-import {getCurrentIdentity, registerIdentity, getTransactionsFees} from '../../../api/User'
+import {getCurrentIdentity, registerIdentity, getTransactionsFees} from '../../../api/TequilaApiCalls'
 
 interface StateInterface {
   walletAddress: string;

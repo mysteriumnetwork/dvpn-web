@@ -1,39 +1,16 @@
 import {DEFAULT_IDENTITY_PASSPHRASE} from '../Services/constants'
 import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
-import {Identity, IdentityRef, TransactorFeesResponse} from "mysterium-vpn-js";
-import {Config} from "mysterium-vpn-js/lib/config/config";
 import {IdentityRegistrationStatus} from "mysterium-vpn-js/lib/identity/identity";
-
-export interface BasicResponseInterface {
-  success: boolean,
-  isAuthoriseError: boolean,
-  isRequestFail: boolean
-}
-
-export interface CurrentIdentityResponseInterface extends BasicResponseInterface {
-  identityRef: IdentityRef
-}
-
-export interface CreateNewIdentityResponseInterface extends BasicResponseInterface {
-  identityRef: IdentityRef
-}
-
-export interface IdentityListResponseInterface extends BasicResponseInterface {
-  identityRef: IdentityRef[]
-}
-
-export interface TransactionsFeesResponseInterface extends BasicResponseInterface {
-  transactorFeesResponse: TransactorFeesResponse
-}
-
-export interface UserConfigResponseInterface extends BasicResponseInterface {
-  userConfig: Config
-}
-
-export interface IdentityResponseInterface extends BasicResponseInterface{
-  identity: Identity
-}
+import {
+  BasicResponseInterface,
+  CreateNewIdentityResponseInterface,
+  IdentityResponseInterface,
+  IdentityListResponseInterface,
+  UserConfigResponseInterface,
+  TransactionsFeesResponseInterface,
+  CurrentIdentityResponseInterface
+} from './TequilApiResponseInterfaces'
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }):
   Promise<BasicResponseInterface> => {

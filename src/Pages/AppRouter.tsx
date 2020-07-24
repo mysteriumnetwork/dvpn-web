@@ -9,9 +9,11 @@ import {
   getIdentityList,
   getUserConfig,
   getIdentity,
+} from '../api/TequilaApiCalls'
+import {
   BasicResponseInterface,
   UserConfigResponseInterface, IdentityListResponseInterface, IdentityResponseInterface
-} from '../api/User'
+} from '../api/TequilApiResponseInterfaces'
 
 interface AppRouterStateInterface {
   route: string;
