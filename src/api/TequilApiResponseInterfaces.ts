@@ -5,6 +5,7 @@ export interface BasicResponseInterface {
   success: boolean,
   isAuthoriseError: boolean,
   isRequestFail: boolean
+  errorMessage?: string
 }
 
 export interface CurrentIdentityResponseInterface extends BasicResponseInterface {

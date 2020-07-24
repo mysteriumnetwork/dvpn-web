@@ -5,6 +5,8 @@ import "../../../assets/styles/pages/onboarding/steps/service-settings.scss"
 import {setServicePrice} from "../../../api/TequilaApiCalls";
 import {withRouter} from "react-router-dom";
 import {DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB} from '../../../Services/constants'
+import {BasicResponseInterface} from "../../../api/TequilApiResponseInterfaces";
+import {tequilApiResponseHandler} from '../../../Services/TequilApi/OnboardingResponseHandler'
 
 interface StateInterface {
   checked: boolean;
@@ -43,11 +45,16 @@ const ServiceSettings = (props: any) => {
 
   const handleSettingSetup = () => {
     setServicePrice(values.pricePerMinute, values.pricePerGb).then(response => {
-      if (response.success) {
-        props.history.push("/onboarding/backup");
-      }
+      handleSetServicePriceResponse(response);
     });
   };
+
+  const handleSetServicePriceResponse = (setServicePriceResponse: BasicResponseInterface): void => {
+    if(tequilApiResponseHandler(props.history, setServicePriceResponse)){
+      props.history.push("/onboarding/backup");
+    }
+  };
+
   return (
     <div className="step-block service-settings">
       <h1 className="step-block--heading">Service price settings</h1>

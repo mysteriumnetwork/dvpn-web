@@ -5,6 +5,12 @@ import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
 import {DEFAULT_STAKE_AMOUNT} from "../../../Services/constants"
 import {getCurrentIdentity, registerIdentity, getTransactionsFees} from '../../../api/TequilaApiCalls'
+import {
+  BasicResponseInterface,
+  CurrentIdentityResponseInterface,
+  TransactionsFeesResponseInterface
+} from "../../../api/TequilApiResponseInterfaces";
+import {tequilApiResponseHandler} from '../../../Services/TequilApi/OnboardingResponseHandler'
 
 interface StateInterface {
   walletAddress: string;
@@ -26,19 +32,30 @@ const PayoutSettings = (props: any) => {
   };
   const handleDone = () => {
     getCurrentIdentity().then(response => {
-      if (response.success) {
-        const id = response.identityRef.id
-        getTransactionsFees().then(response => {
-          if (response.success) {
-            registerIdentity(id, values.walletAddress, values.stake, response.transactorFeesResponse.registration).then(response => {
-              if (response.success) {
-                props.history.push("/");
-              }
-            });
-          }
-        })
-      }
+      handleGetCurrentIdentityResponse(response);
     });
+  };
+
+  const handleGetCurrentIdentityResponse = (getCurrentIdentityResponse: CurrentIdentityResponseInterface):void => {
+    if(tequilApiResponseHandler(props.history, getCurrentIdentityResponse)){
+      const id = getCurrentIdentityResponse.identityRef.id;
+      getTransactionsFees().then(response => {
+        handleGetTransactionFeesResponse(response, id);
+      })
+    }
+  };
+
+  const handleGetTransactionFeesResponse = (getTransactionsFeesResponse: TransactionsFeesResponseInterface, id: string): void => {
+    if(tequilApiResponseHandler(props.history, getTransactionsFeesResponse)){
+      registerIdentity(id, values.walletAddress, values.stake, getTransactionsFeesResponse.transactorFeesResponse.registration).then(response => {
+        handleRegisterIdentityResponse(response);
+      });
+    }
+  };
+
+  const handleRegisterIdentityResponse = (registerIdentityResponse: BasicResponseInterface ): void => {
+    if(tequilApiResponseHandler(props.history, registerIdentityResponse)){
+    }  props.history.push("/");
   };
 
   return (
