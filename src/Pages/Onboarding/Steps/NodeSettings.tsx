@@ -10,6 +10,7 @@ import {Alert, AlertTitle} from "@material-ui/lab";
 import Collapse from '@material-ui/core/Collapse';
 import {BasicResponseInterface} from "../../../api/TequilApiResponseInterfaces";
 import {tequilApiResponseHandler} from '../../../Services/TequilApi/OnboardingResponseHandler'
+import {useHistory} from 'react-router'
 
 interface StateInterface {
   passwordRepeat: string;
@@ -20,7 +21,8 @@ interface StateInterface {
   errorMessage: string
 }
 
-const NodeSettings = (props: any) => {
+const NodeSettings = () => {
+  const history = useHistory();
   const [values, setValues] = React.useState<StateInterface>({
     passwordRepeat: '',
     password: '',
@@ -53,7 +55,7 @@ const NodeSettings = (props: any) => {
   };
 
   const handleAuthChangePasswordResponse = (authChangePasswordResponse: BasicResponseInterface): void => {
-    if (tequilApiResponseHandler(props.history, authChangePasswordResponse)) {
+    if (tequilApiResponseHandler(history, authChangePasswordResponse)) {
       checkNodeClaim();
     }
   };
@@ -64,13 +66,13 @@ const NodeSettings = (props: any) => {
         handleClaimMMNNodeResponse(resonse);
       })
     } else {
-      props.history.push("/onboarding/payout-settings");
+      history.push("/onboarding/payout-settings");
     }
   };
 
   const handleClaimMMNNodeResponse = (claimMMNNodeResponse: BasicResponseInterface): void => {
-    if (tequilApiResponseHandler(props.history, claimMMNNodeResponse)) {
-      props.history.push("/onboarding/payout-settings");
+    if (tequilApiResponseHandler(history, claimMMNNodeResponse)) {
+      history.push("/onboarding/payout-settings");
     }
   };
 

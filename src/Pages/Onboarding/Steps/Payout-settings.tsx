@@ -11,13 +11,15 @@ import {
   TransactionsFeesResponseInterface
 } from "../../../api/TequilApiResponseInterfaces";
 import {tequilApiResponseHandler} from '../../../Services/TequilApi/OnboardingResponseHandler'
+import {useHistory} from 'react-router'
 
 interface StateInterface {
   walletAddress: string;
   stake: number
 }
 
-const PayoutSettings = (props: any) => {
+const PayoutSettings = () => {
+  const history = useHistory();
   const [values, setValues] = React.useState<StateInterface>({
     walletAddress: '0x...',
     stake: DEFAULT_STAKE_AMOUNT
@@ -36,8 +38,8 @@ const PayoutSettings = (props: any) => {
     });
   };
 
-  const handleGetCurrentIdentityResponse = (getCurrentIdentityResponse: CurrentIdentityResponseInterface):void => {
-    if(tequilApiResponseHandler(props.history, getCurrentIdentityResponse)){
+  const handleGetCurrentIdentityResponse = (getCurrentIdentityResponse: CurrentIdentityResponseInterface): void => {
+    if (tequilApiResponseHandler(history, getCurrentIdentityResponse)) {
       const id = getCurrentIdentityResponse.identityRef.id;
       getTransactionsFees().then(response => {
         handleGetTransactionFeesResponse(response, id);
@@ -46,16 +48,17 @@ const PayoutSettings = (props: any) => {
   };
 
   const handleGetTransactionFeesResponse = (getTransactionsFeesResponse: TransactionsFeesResponseInterface, id: string): void => {
-    if(tequilApiResponseHandler(props.history, getTransactionsFeesResponse)){
+    if (tequilApiResponseHandler(history, getTransactionsFeesResponse)) {
       registerIdentity(id, values.walletAddress, values.stake, getTransactionsFeesResponse.transactorFeesResponse.registration).then(response => {
         handleRegisterIdentityResponse(response);
       });
     }
   };
 
-  const handleRegisterIdentityResponse = (registerIdentityResponse: BasicResponseInterface ): void => {
-    if(tequilApiResponseHandler(props.history, registerIdentityResponse)){
-    }  props.history.push("/");
+  const handleRegisterIdentityResponse = (registerIdentityResponse: BasicResponseInterface): void => {
+    if (tequilApiResponseHandler(history, registerIdentityResponse)) {
+    }
+    history.push("/");
   };
 
   return (

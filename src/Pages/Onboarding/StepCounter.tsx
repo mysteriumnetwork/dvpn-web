@@ -1,6 +1,6 @@
 import React, {ReactElement} from "react";
 
-interface StepCounterProps {
+interface PropsInterface {
   step: number,
 }
 
@@ -12,7 +12,7 @@ const setUpCounter = (step: number): ReactElement[] => {
   return steps;
 };
 
-export const StepCounter: React.FC<StepCounterProps> = (props): ReactElement => {
+export const StepCounter: React.FC<PropsInterface> = (props): ReactElement => {
   return (
     <div className="steps-counter">
       {setUpCounter(props.step)}

@@ -8,10 +8,12 @@ import ReactHtmlParser from 'react-html-parser';
 import showdown from "showdown"
 import {tequilApiResponseHandler} from '../../../Services/TequilApi/OnboardingResponseHandler'
 import {BasicResponseInterface, CurrentIdentityResponseInterface} from "../../../api/TequilApiResponseInterfaces";
+import {useHistory} from 'react-router'
 
 const md = new showdown.Converter();
 
-const TermsAndConditions = (props: any) => {
+const TermsAndConditions = () => {
+  const history = useHistory();
   const handleAgree = () => {
     acceptWithTermsAndConditions().then(response => {
       handleAcceptWitTermAndConditionsResponse(response)
@@ -19,18 +21,18 @@ const TermsAndConditions = (props: any) => {
   };
 
   const handleAcceptWitTermAndConditionsResponse = (acceptWithTermAndConditionsResponse: BasicResponseInterface): void => {
-      if(tequilApiResponseHandler(props.history, acceptWithTermAndConditionsResponse)){
-        getCurrentIdentity().then(response => {
-           handleGetCurrentIdentityResponse(response);
-          }
-        )
-      }
+    if (tequilApiResponseHandler(history, acceptWithTermAndConditionsResponse)) {
+      getCurrentIdentity().then(response => {
+          handleGetCurrentIdentityResponse(response);
+        }
+      )
+    }
   };
 
-  const handleGetCurrentIdentityResponse = (currentIdentityResponse: CurrentIdentityResponseInterface ): void => {
-    if(tequilApiResponseHandler(props.history, currentIdentityResponse)){
-      if(tequilApiResponseHandler(props.history, currentIdentityResponse)){
-        props.history.push("/onboarding/service-settings");
+  const handleGetCurrentIdentityResponse = (currentIdentityResponse: CurrentIdentityResponseInterface): void => {
+    if (tequilApiResponseHandler(history, currentIdentityResponse)) {
+      if (tequilApiResponseHandler(history, currentIdentityResponse)) {
+        history.push("/onboarding/service-settings");
       }
     }
   }
