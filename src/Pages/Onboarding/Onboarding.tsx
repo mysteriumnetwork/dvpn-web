@@ -39,7 +39,7 @@ const Onboarding: React.FC<PropsInterface> = (props: PropsInterface) => {
 
   return (
     props.onboardingPassed ?
-      <Redirect to={"login"}/>
+      <Redirect to={"/login"}/>
       :
       <div className="onboarding wrapper">
         <div className="steps">
