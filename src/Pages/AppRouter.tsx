@@ -14,21 +14,22 @@ import {
   BasicResponseInterface,
   UserConfigResponseInterface, IdentityListResponseInterface, IdentityResponseInterface
 } from '../api/TequilApiResponseInterfaces'
+import {useHistory} from 'react-router'
 
 interface StateInterface {
   route: string;
   loading: boolean;
   onboardingPassed: boolean
 }
-
 const AppRouter = (props: any) => {
+  const history = useHistory();
   const [values, setValues] = React.useState<StateInterface>({
     route: '',
     loading: true,
     onboardingPassed: false
   });
 
-  if (values.loading) {
+  if (values.loading && !values.onboardingPassed) {
     getInitialRoute().then(response => {
       handleInitialRouteResponse(response);
     });
@@ -39,6 +40,9 @@ const AppRouter = (props: any) => {
     } else {
       if (initialRouteResponse.isAuthoriseError) {
         setValues({...values, loading: false, route: "login", onboardingPassed: true})
+      }
+      if(initialRouteResponse.isRequestFail){
+        history.push("/error");
       }
     }
   };
@@ -54,7 +58,11 @@ const AppRouter = (props: any) => {
     if (userConfigResponse.userConfig.data.mysteriumwebui) {
       handleUSerConfigSuccessResponse();
     } else {
-      setValues({...values, loading: false, route: "onboarding"})
+      if(userConfigResponse.isRequestFail){
+        history.push("/error");
+      } else {
+        setValues({...values, loading: false, route: "onboarding"})
+      }
     }
   };
 
@@ -70,7 +78,11 @@ const AppRouter = (props: any) => {
         handleGetIdentityResponse(response);
       })
     } else {
-      setValues({...values, loading: false, route: "onboarding"})
+      if(identityListResponse.isRequestFail){
+        history.push("/error");
+      } else {
+        setValues({...values, loading: false, route: "onboarding"})
+      }
     }
   };
 
@@ -82,9 +94,12 @@ const AppRouter = (props: any) => {
       )
     ) {
       setValues({...values, loading: false, route: "login", onboardingPassed: true})
-
     } else {
-      setValues({...values, loading: false, route: "onboarding/service-settings"})
+      if(identityResponse.isRequestFail){
+        history.push("/error");
+      } else {
+        setValues({...values, loading: false, route: "onboarding/service-settings"})
+      }
     }
   };
 
