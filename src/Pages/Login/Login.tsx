@@ -2,7 +2,7 @@ import React from "react";
 import sideImageOnboarding from "../../assets/images/onboarding/SideImage.png";
 import "../../assets/styles/pages/login/main.scss"
 import {DefaultTextField} from "../../Components/DefaultTextField";
-import {authLogin} from '../../api/User'
+import {authLogin} from '../../api/TequilaApiCalls'
 import {DEFAULT_USERNAME} from '../../Services/constants'
 import Collapse from "@material-ui/core/Collapse";
 import {Alert, AlertTitle} from "@material-ui/lab";
