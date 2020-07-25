@@ -2,9 +2,12 @@ import React from "react";
 import {DefaultCheckbox} from '../../../Components/Checkbox/DefaultCheckbox'
 import {DefaultSlider} from '../../../Components/DefaultSlider'
 import "../../../assets/styles/pages/onboarding/steps/service-settings.scss"
-import {setServicePrice} from "../../../api/User";
+import {setServicePrice} from "../../../api/TequilaApiCalls";
 import {withRouter} from "react-router-dom";
 import {DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB} from '../../../Services/constants'
+import {BasicResponseInterface} from "../../../api/TequilApiResponseInterfaces";
+import {tequilApiResponseHandler} from '../../../Services/TequilApi/OnboardingResponseHandler'
+import {useHistory} from 'react-router'
 
 interface StateInterface {
   checked: boolean;
@@ -12,7 +15,8 @@ interface StateInterface {
   pricePerGb: number
 }
 
-const ServiceSettings = (props: any) => {
+const ServiceSettings = () => {
+  const history = useHistory();
   const [values, setValues] = React.useState<StateInterface>({
     checked: false,
     pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
@@ -43,11 +47,16 @@ const ServiceSettings = (props: any) => {
 
   const handleSettingSetup = () => {
     setServicePrice(values.pricePerMinute, values.pricePerGb).then(response => {
-      if (response.success) {
-        props.history.push("/onboarding/backup");
-      }
+      handleSetServicePriceResponse(response);
     });
   };
+
+  const handleSetServicePriceResponse = (setServicePriceResponse: BasicResponseInterface): void => {
+    if (tequilApiResponseHandler(history, setServicePriceResponse)) {
+      history.push("/onboarding/backup");
+    }
+  };
+
   return (
     <div className="step-block service-settings">
       <h1 className="step-block--heading">Service price settings</h1>

@@ -4,14 +4,22 @@ import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
 import {DEFAULT_STAKE_AMOUNT} from "../../../Services/constants"
-import {getCurrentIdentity, registerIdentity, getTransactionsFees} from '../../../api/User'
+import {getCurrentIdentity, registerIdentity, getTransactionsFees} from '../../../api/TequilaApiCalls'
+import {
+  BasicResponseInterface,
+  CurrentIdentityResponseInterface,
+  TransactionsFeesResponseInterface
+} from "../../../api/TequilApiResponseInterfaces";
+import {tequilApiResponseHandler} from '../../../Services/TequilApi/OnboardingResponseHandler'
+import {useHistory} from 'react-router'
 
 interface StateInterface {
   walletAddress: string;
   stake: number
 }
 
-const PayoutSettings = (props: any) => {
+const PayoutSettings = () => {
+  const history = useHistory();
   const [values, setValues] = React.useState<StateInterface>({
     walletAddress: '0x...',
     stake: DEFAULT_STAKE_AMOUNT
@@ -26,19 +34,31 @@ const PayoutSettings = (props: any) => {
   };
   const handleDone = () => {
     getCurrentIdentity().then(response => {
-      if (response.success) {
-        const id = response.identityRef.id
-        getTransactionsFees().then(response => {
-          if (response.success) {
-            registerIdentity(id, values.walletAddress, values.stake, response.transactorFeesResponse.registration).then(response => {
-              if (response.success) {
-                props.history.push("/");
-              }
-            });
-          }
-        })
-      }
+      handleGetCurrentIdentityResponse(response);
     });
+  };
+
+  const handleGetCurrentIdentityResponse = (getCurrentIdentityResponse: CurrentIdentityResponseInterface): void => {
+    if (tequilApiResponseHandler(history, getCurrentIdentityResponse)) {
+      const id = getCurrentIdentityResponse.identityRef.id;
+      getTransactionsFees().then(response => {
+        handleGetTransactionFeesResponse(response, id);
+      })
+    }
+  };
+
+  const handleGetTransactionFeesResponse = (getTransactionsFeesResponse: TransactionsFeesResponseInterface, id: string): void => {
+    if (tequilApiResponseHandler(history, getTransactionsFeesResponse)) {
+      registerIdentity(id, values.walletAddress, values.stake, getTransactionsFeesResponse.transactorFeesResponse.registration).then(response => {
+        handleRegisterIdentityResponse(response);
+      });
+    }
+  };
+
+  const handleRegisterIdentityResponse = (registerIdentityResponse: BasicResponseInterface): void => {
+    if (tequilApiResponseHandler(history, registerIdentityResponse)) {
+    }
+    history.push("/");
   };
 
   return (

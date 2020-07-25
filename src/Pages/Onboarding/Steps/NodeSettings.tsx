@@ -2,12 +2,15 @@ import React from "react";
 import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/node-settings.scss"
 import {DefaultCheckbox} from "../../../Components/Checkbox/DefaultCheckbox";
-import {authChangePassword, claimNodeMMNNode} from "../../../api/User";
+import {authChangePassword, claimMMNNode} from "../../../api/TequilaApiCalls";
 import {validatePassword} from '../../../Services/Onboarding/ValidatePassword'
 import {DEFAULT_USERNAME, DEFAULT_PASSWORD} from '../../../Services/constants'
 import {withRouter} from "react-router-dom";
 import {Alert, AlertTitle} from "@material-ui/lab";
 import Collapse from '@material-ui/core/Collapse';
+import {BasicResponseInterface} from "../../../api/TequilApiResponseInterfaces";
+import {tequilApiResponseHandler} from '../../../Services/TequilApi/OnboardingResponseHandler'
+import {useHistory} from 'react-router'
 
 interface StateInterface {
   passwordRepeat: string;
@@ -18,7 +21,8 @@ interface StateInterface {
   errorMessage: string
 }
 
-const NodeSettings = (props: any) => {
+const NodeSettings = () => {
+  const history = useHistory();
   const [values, setValues] = React.useState<StateInterface>({
     passwordRepeat: '',
     password: '',
@@ -41,23 +45,37 @@ const NodeSettings = (props: any) => {
     let validatedPasssword = validatePassword(values.password, values.passwordRepeat);
     if (validatedPasssword.success) {
       authChangePassword({username: DEFAULT_USERNAME, oldPassword: DEFAULT_PASSWORD, newPassword: "mystberry"}).then(
-        resonse => {
-          if (resonse.success) {
-            if (values.checked) {
-              claimNodeMMNNode(values.apiToken).then(resonse => {
-                if(resonse.success){
-                  props.history.push("/onboarding/payout-settings");
-                }
-              })
-            }
-            props.history.push("/onboarding/payout-settings");
-          }
+        response => {
+          handleAuthChangePasswordResponse(response);
         }
       );
     } else {
       setValues({...values, error: true, errorMessage: validatedPasssword.errorMessage})
     }
   };
+
+  const handleAuthChangePasswordResponse = (authChangePasswordResponse: BasicResponseInterface): void => {
+    if (tequilApiResponseHandler(history, authChangePasswordResponse)) {
+      checkNodeClaim();
+    }
+  };
+
+  const checkNodeClaim = (): void => {
+    if (values.checked) {
+      claimMMNNode(values.apiToken).then(resonse => {
+        handleClaimMMNNodeResponse(resonse);
+      })
+    } else {
+      history.push("/onboarding/payout-settings");
+    }
+  };
+
+  const handleClaimMMNNodeResponse = (claimMMNNodeResponse: BasicResponseInterface): void => {
+    if (tequilApiResponseHandler(history, claimMMNNodeResponse)) {
+      history.push("/onboarding/payout-settings");
+    }
+  };
+
   return (
     <div className="step-block node-settings">
       <h1 className="step-block--heading">Node settings</h1>

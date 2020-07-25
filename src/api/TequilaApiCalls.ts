@@ -1,39 +1,16 @@
 import {DEFAULT_IDENTITY_PASSPHRASE} from '../Services/constants'
 import {tequilapiClient} from './TequilApiClient'
 import * as termsPackageJson from "@mysteriumnetwork/terms/package.json"
-import {Identity, IdentityRef, TransactorFeesResponse} from "mysterium-vpn-js";
-import {Config} from "mysterium-vpn-js/lib/config/config";
 import {IdentityRegistrationStatus} from "mysterium-vpn-js/lib/identity/identity";
-
-export interface BasicResponseInterface {
-  success: boolean,
-  isAuthoriseError: boolean,
-  isRequestFail: boolean
-}
-
-export interface CurrentIdentityResponseInterface extends BasicResponseInterface {
-  identityRef: IdentityRef
-}
-
-export interface CreateNewIdentityResponseInterface extends BasicResponseInterface {
-  identityRef: IdentityRef
-}
-
-export interface IdentityListResponseInterface extends BasicResponseInterface {
-  identityRef: IdentityRef[]
-}
-
-export interface TransactionsFeesResponseInterface extends BasicResponseInterface {
-  transactorFeesResponse: TransactorFeesResponse
-}
-
-export interface UserConfigResponseInterface extends BasicResponseInterface {
-  userConfig: Config
-}
-
-export interface IdentityResponseInterface extends BasicResponseInterface{
-  identity: Identity
-}
+import {
+  BasicResponseInterface,
+  CreateNewIdentityResponseInterface,
+  IdentityResponseInterface,
+  IdentityListResponseInterface,
+  UserConfigResponseInterface,
+  TransactionsFeesResponseInterface,
+  CurrentIdentityResponseInterface
+} from './TequilApiResponseInterfaces'
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }):
   Promise<BasicResponseInterface> => {
@@ -43,7 +20,12 @@ export const authChangePassword = async (data: { username: string, oldPassword: 
     return {success: true, isAuthoriseError: false, isRequestFail: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
-    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      errorMessage: e.message
+    }
   }
 };
 
@@ -55,7 +37,12 @@ export const authLogin = async (data: { username: string, password: string }): P
     return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
-    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      errorMessage: e.message
+    }
   }
 };
 
@@ -73,7 +60,12 @@ export const acceptWithTermsAndConditions = async (): Promise<BasicResponseInter
 
     return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
-    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      errorMessage: e.message
+    }
   }
 };
 
@@ -108,7 +100,12 @@ export const setServicePrice = async (pricePerMinute: number | null, pricePerGb:
     return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
 
-    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      errorMessage: e.message
+    }
   }
 };
 
@@ -138,7 +135,12 @@ export const registerIdentity = async (id: string, beneficiary: string, stake: n
     return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
-    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      errorMessage: e.message
+    }
   }
 };
 
@@ -149,7 +151,12 @@ export const unlockIdentity = async (id: string): Promise<BasicResponseInterface
     return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);
-    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500)}
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      errorMessage: e.message
+    }
   }
 };
 
@@ -167,7 +174,8 @@ export const getIdentityList = async (): Promise<IdentityListResponseInterface> 
       success: false,
       isAuthoriseError: e.isUnauthorizedError,
       isRequestFail: e._hasHttpStatus(500),
-      identityRef: [{id: ""}]
+      identityRef: [{id: ""}],
+      errorMessage: e.message
     }
   }
 };
@@ -187,19 +195,25 @@ export const getCurrentIdentity = async (): Promise<CurrentIdentityResponseInter
       success: false,
       isAuthoriseError: e.isUnauthorizedError,
       isRequestFail: e._hasHttpStatus(500),
-      identityRef: {id: ""}
+      identityRef: {id: ""},
+      errorMessage: e.message
     }
   }
 };
 
-export const claimNodeMMNNode = async (apiKey: string): Promise<BasicResponseInterface> => {
+export const claimMMNNode = async (apiKey: string): Promise<BasicResponseInterface> => {
   try {
     await tequilapiClient.setMMNApiKey(apiKey);
     return {success: true, isAuthoriseError: false, isRequestFail: false};
 
   } catch (e) {
 
-    return {success: false, isAuthoriseError: e.isUnauthorizedError, isRequestFail: e._hasHttpStatus(500),}
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      errorMessage: e.message
+    }
   }
 };
 
@@ -218,7 +232,8 @@ export const getTransactionsFees = async (): Promise<TransactionsFeesResponseInt
       success: false,
       isAuthoriseError: e.isUnauthorizedError,
       isRequestFail: e._hasHttpStatus(500),
-      transactorFeesResponse: {registration: 0, settlement: 0}
+      transactorFeesResponse: {registration: 0, settlement: 0},
+      errorMessage: e.message
     }
   }
 };
@@ -238,7 +253,8 @@ export const getUserConfig = async (): Promise<UserConfigResponseInterface> => {
       success: false,
       isAuthoriseError: e.isUnauthorizedError,
       isRequestFail: e._hasHttpStatus(500),
-      userConfig: {data: ""}
+      userConfig: {data: ""},
+      errorMessage: e.message
     }
   }
 };
@@ -259,7 +275,15 @@ export const getIdentity = async (id: string): Promise<IdentityResponseInterface
       success: false,
       isAuthoriseError: e.isUnauthorizedError,
       isRequestFail: e._hasHttpStatus(500),
-      identity: {id: "asd", earnings: 0, balance: 0, channelAddress: "", earningsTotal:0, registrationStatus: IdentityRegistrationStatus.InProgress}
+      errorMessage: e.message,
+      identity: {
+        id: "asd",
+        earnings: 0,
+        balance: 0,
+        channelAddress: "",
+        earningsTotal: 0,
+        registrationStatus: IdentityRegistrationStatus.InProgress,
+      }
     }
   }
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Redirect, Switch} from "react-router-dom";
+import {Route, Redirect, Switch, RouteComponentProps} from "react-router-dom";
 import '../assets/styles/App.scss';
 import Login from "./Login/Login";
 import Onboarding from "./Onboarding/Onboarding";
@@ -9,18 +9,20 @@ import {
   getIdentityList,
   getUserConfig,
   getIdentity,
+} from '../api/TequilaApiCalls'
+import {
   BasicResponseInterface,
   UserConfigResponseInterface, IdentityListResponseInterface, IdentityResponseInterface
-} from '../api/User'
+} from '../api/TequilApiResponseInterfaces'
 
-interface AppRouterStateInterface {
+interface StateInterface {
   route: string;
   loading: boolean;
   onboardingPassed: boolean
 }
 
-const AppRouter = () => {
-  const [values, setValues] = React.useState<AppRouterStateInterface>({
+const AppRouter = (props: any) => {
+  const [values, setValues] = React.useState<StateInterface>({
     route: '',
     loading: true,
     onboardingPassed: false
@@ -103,7 +105,9 @@ const AppRouter = () => {
       <Route path="/login">
         <Login onboardingPassed={values.onboardingPassed} />
       </Route>
-      <Route path="/onboarding" component={Onboarding}/>
+      <Route path="/onboarding">
+        <Onboarding onboardingPassed={values.onboardingPassed}/>
+      </Route>
       <Route path="/restart-node" component={RestartNode}/>
     </Switch>
   );
