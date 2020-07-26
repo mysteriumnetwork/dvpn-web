@@ -7,17 +7,25 @@ import {DEFAULT_USERNAME} from '../../Services/constants'
 import Collapse from "@material-ui/core/Collapse";
 import {Alert, AlertTitle} from "@material-ui/lab";
 import {Redirect} from "react-router-dom";
+import {useHistory} from 'react-router'
+import { RootState } from '../../redux';
+import { onboard } from '../../redux/modules/onboarding';
+import { login } from '../../redux/modules/user';
+import { connect } from 'react-redux';
 
+const mapStateToProps = (state: RootState) => ({
+  onboarded: state.onboarding.onboarded,
+});
+
+const mapDispatchToProps = { onboard,login };
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 interface StateInterface {
   password: string;
   error: boolean
 }
-interface PropsInterface {
-  onboardingPassed: boolean
-}
 
-const Login = (props: PropsInterface) => {
+const Login: React.FC<Props> = props => {
   const [values, setValues] = React.useState<StateInterface>({
     password: '',
     error: false
@@ -39,9 +47,9 @@ const Login = (props: PropsInterface) => {
       }
     });
   };
-
+  console.log(props.onboarded)
   return (
-    props.onboardingPassed ?
+    props.onboarded ?
     <div className="login wrapper">
       <div className="login-content">
         <div className="login-content-block">
@@ -80,4 +88,7 @@ const Login = (props: PropsInterface) => {
   )
 };
 
-export default Login;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login)

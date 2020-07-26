@@ -10,17 +10,24 @@ import {StepCounter} from "./StepCounter";
 import TermsAndConditions from "./Steps/TemsAndConditions";
 import {setStepsInfo} from '../../Services/Onboarding/StepsInfo'
 import {useHistory} from 'react-router'
+import {RootState} from "../../redux";
+import {onboard} from "../../redux/modules/onboarding";
+import {login} from "../../redux/modules/user";
+import {connect} from "react-redux";
 
 interface StateInterface {
   sideImage: string;
   step: number
 }
 
-interface PropsInterface {
-  onboardingPassed: boolean
-}
+const mapStateToProps = (state: RootState) => ({
+  onboarded: state.onboarding.onboarded,
+});
 
-const Onboarding: React.FC<PropsInterface> = (props: PropsInterface) => {
+const mapDispatchToProps = { onboard,login };
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
+
+const Onboarding: React.FC<Props> = props => {
   const history = useHistory();
   let stepInfo = setStepsInfo();
   const [values, setValues] = React.useState<StateInterface>({
@@ -37,9 +44,10 @@ const Onboarding: React.FC<PropsInterface> = (props: PropsInterface) => {
     });
   });
 
+
   return (
-    props.onboardingPassed ?
-      <Redirect to={"/login"}/>
+    props.onboarded ?
+      <Redirect to={"/"}/>
       :
       <div className="onboarding wrapper">
         <div className="steps">
@@ -62,4 +70,7 @@ const Onboarding: React.FC<PropsInterface> = (props: PropsInterface) => {
   )
 };
 
-export default Onboarding;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Onboarding)
