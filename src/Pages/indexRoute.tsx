@@ -13,6 +13,7 @@ import {RootState} from '../redux/store';
 import {onboard} from "../redux/actions/onboarding/onboard";
 import {connect} from 'react-redux';
 import {getInitialRoute} from "../Services/GetInitialRoute";
+import {CircularProgress} from "@material-ui/core";
 
 
 const mapStateToProps = (state: RootState) => ({
@@ -113,7 +114,7 @@ const IndexRoute: React.FC<Props> = props => {
 
   return (
     values.loading ?
-      <div>loading</div>
+      <div className="index-route-spinner"><CircularProgress /></div>
       :
       <Redirect to={"/" + values.route}/>
   );

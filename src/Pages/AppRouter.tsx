@@ -10,13 +10,9 @@ const AppRouter = () => {
   return (
     <Switch>
       <Route exact path="/" component={IndexRoute}/>
-      <Route path="/login">
-        <Login/>
-      </Route>
-      <Route path="/onboarding">
-        <Onboarding/>
-      </Route>
-      <Route path="/restart-node" component={RestartNode}/>
+      <Route exact path="/login" component={Login} />
+      <Route path="/onboarding" component={Onboarding} />
+      <Route exact path="/error" component={RestartNode}/>
     </Switch>
   );
 };
