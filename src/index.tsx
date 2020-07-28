@@ -3,19 +3,19 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter} from "react-router-dom";
 import AppRouter from './Pages/AppRouter';
 import {Provider} from "react-redux";
-import { createStore, applyMiddleware } from 'redux';
-import { rootReducer } from './redux';
-import thunk from 'redux-thunk';
+import { PersistGate } from 'redux-persist/integration/react'
+import {store, persistor} from "./redux/store";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
 
 require('dotenv').config();
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
       <AppRouter/>
     </BrowserRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );

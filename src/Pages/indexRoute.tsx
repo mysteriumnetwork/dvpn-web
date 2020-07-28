@@ -8,34 +8,33 @@ import {
   BasicResponseInterface,
   UserConfigResponseInterface, IdentityListResponseInterface, IdentityResponseInterface
 } from '../api/TequilApiResponseInterfaces'
-import {Redirect, useHistory} from 'react-router'
-import { RootState } from '../redux';
-import { onboard } from '../redux/modules/onboarding';
-import { login } from '../redux/modules/user';
-import { connect } from 'react-redux';
+import {Redirect, useHistory} from 'react-router';
+import {RootState} from '../redux/store';
+import {onboard} from "../redux/actions/onboarding/onboard";
+import {connect} from 'react-redux';
 import {getInitialRoute} from "../Services/GetInitialRoute";
 
+
 const mapStateToProps = (state: RootState) => ({
-  onboarded: state.onboarding.onboarded,
-  isAuthenticated: state.user.isAuthenticated
+  onboarded: state.onboarding.onboarded
 });
 
-const mapDispatchToProps = { onboard,login };
+const mapDispatchToProps = {onboard};
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 interface StateInterface {
   route: string;
   loading: boolean;
 }
-const IndexRoute: React.FC<Props> = props => {
 
+const IndexRoute: React.FC<Props> = props => {
   const history = useHistory();
   const [values, setValues] = React.useState<StateInterface>({
     route: '',
     loading: true,
   });
 
-  if (values.loading && !props.onboarded) {
+  if (values.loading || !props.onboarded) {
     getInitialRoute().then(response => {
       handleInitialRouteResponse(response);
     });
@@ -49,7 +48,7 @@ const IndexRoute: React.FC<Props> = props => {
         props.onboard();
         setValues({...values, loading: false, route: "login"})
       }
-      if(initialRouteResponse.isRequestFail){
+      if (initialRouteResponse.isRequestFail) {
         history.push("/error");
       }
     }
@@ -66,7 +65,7 @@ const IndexRoute: React.FC<Props> = props => {
     if (userConfigResponse.userConfig.data.mysteriumwebui) {
       handleUSerConfigSuccessResponse();
     } else {
-      if(userConfigResponse.isRequestFail){
+      if (userConfigResponse.isRequestFail) {
         history.push("/error");
       } else {
         setValues({...values, loading: false, route: "onboarding"})
@@ -86,7 +85,7 @@ const IndexRoute: React.FC<Props> = props => {
         handleGetIdentityResponse(response);
       })
     } else {
-      if(identityListResponse.isRequestFail){
+      if (identityListResponse.isRequestFail) {
         history.push("/error");
       } else {
         setValues({...values, loading: false, route: "onboarding"})
@@ -104,7 +103,7 @@ const IndexRoute: React.FC<Props> = props => {
       props.onboard();
       setValues({...values, loading: false, route: "login"})
     } else {
-      if(identityResponse.isRequestFail){
+      if (identityResponse.isRequestFail) {
         history.push("/error");
       } else {
         setValues({...values, loading: false, route: "onboarding/service-settings"})

@@ -10,9 +10,8 @@ import {StepCounter} from "./StepCounter";
 import TermsAndConditions from "./Steps/TemsAndConditions";
 import {setStepsInfo} from '../../Services/Onboarding/StepsInfo'
 import {useHistory} from 'react-router'
-import {RootState} from "../../redux";
-import {onboard} from "../../redux/modules/onboarding";
-import {login} from "../../redux/modules/user";
+import {RootState} from "../../redux/store";
+import {onboard} from "../../redux/actions/onboarding/onboard";
 import {connect} from "react-redux";
 
 interface StateInterface {
@@ -24,7 +23,7 @@ const mapStateToProps = (state: RootState) => ({
   onboarded: state.onboarding.onboarded,
 });
 
-const mapDispatchToProps = { onboard,login };
+const mapDispatchToProps = {onboard};
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 const Onboarding: React.FC<Props> = props => {
@@ -43,7 +42,6 @@ const Onboarding: React.FC<Props> = props => {
       step: stepInfo.step
     });
   });
-
 
   return (
     props.onboarded ?
