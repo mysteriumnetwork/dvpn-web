@@ -10,13 +10,14 @@ import {Redirect} from "react-router-dom";
 import {useHistory} from 'react-router'
 import {RootState} from '../../redux/store';
 import {onboard} from '../../redux/actions/onboarding/onboard';
+import {autentificate} from '../../redux/actions/user/autentificate';
 import {connect} from 'react-redux';
 
 const mapStateToProps = (state: RootState) => ({
   onboarded: state.onboarding.onboarded,
 });
 
-const mapDispatchToProps = {onboard};
+const mapDispatchToProps = {onboard, autentificate};
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 interface StateInterface {
@@ -29,6 +30,7 @@ const Login: React.FC<Props> = props => {
     password: '',
     error: false
   });
+  const history = useHistory();
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({...values, [prop]: event.target.value});
@@ -38,7 +40,8 @@ const Login: React.FC<Props> = props => {
     setValues({...values, error: false});
     authLogin({username: DEFAULT_USERNAME, password: values.password}).then(response => {
       if (response.success) {
-        // TODO REDIRECT TO DASHBOARD
+        props.autentificate();
+        history.push('/dashboard');
       } else {
         if (response.isAuthoriseError) {
           setValues({...values, error: true});

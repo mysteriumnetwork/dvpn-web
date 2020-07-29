@@ -17,7 +17,8 @@ import {CircularProgress} from "@material-ui/core";
 
 
 const mapStateToProps = (state: RootState) => ({
-  onboarded: state.onboarding.onboarded
+  onboarded: state.onboarding.onboarded,
+  autentificated: state.user.autentificated
 });
 
 const mapDispatchToProps = {onboard};
@@ -35,10 +36,18 @@ const IndexRoute: React.FC<Props> = props => {
     loading: true,
   });
 
-  if (values.loading || !props.onboarded) {
+  if (values.loading && !props.onboarded) {
     getInitialRoute().then(response => {
       handleInitialRouteResponse(response);
     });
+  }
+
+  if(values.loading && props.onboarded ) {
+      if(props.autentificated){
+        setValues({...values, loading: false, route: "dashboard"})
+      } else {
+        setValues({...values, loading: false, route: "login"})
+      }
   }
 
   const handleInitialRouteResponse = (initialRouteResponse: BasicResponseInterface): void => {
