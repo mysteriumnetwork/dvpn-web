@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 
 const mapStateToProps = (state: RootState) => ({
   onboarded: state.onboarding.onboarded,
+  autentificated: state.user.autentificated
 });
 
 const mapDispatchToProps = {onboard, autentificate};
@@ -50,7 +51,7 @@ const Login: React.FC<Props> = props => {
     });
   };
   return (
-    props.onboarded ?
+    props.onboarded && !props.autentificated?
       <div className="login wrapper">
         <div className="login-content">
           <div className="login-content-block">
