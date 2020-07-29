@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import '../assets/styles/App.scss';
 import Login from "./Login/Login";
 import Onboarding from "./Onboarding/Onboarding";
@@ -14,7 +14,8 @@ const AppRouter = () => {
       <Route exact path="/login" component={Login} />
       <Route path="/onboarding" component={Onboarding} />
       <Route exact path="/error" component={RestartNode}/>
-      <Route path='*' exact={true} component={PageNotFound} />
+      <Route path='/page-not-found' component={PageNotFound} />
+      <Redirect from='*' to='/page-not-found' />
     </Switch>
   );
 };

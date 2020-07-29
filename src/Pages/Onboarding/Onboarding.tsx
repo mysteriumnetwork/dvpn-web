@@ -5,6 +5,7 @@ import Backup from "./Steps/Backup";
 import ServiceSettings from "./Steps/ServiceSettings";
 import NodeSettings from "./Steps/NodeSettings";
 import PayoutSettings from "./Steps/Payout-settings";
+import PageNotFound from "../Error/PageNotFound";
 import {Route, Redirect, Switch} from "react-router-dom";
 import {StepCounter} from "./StepCounter";
 import TermsAndConditions from "./Steps/TemsAndConditions";
@@ -57,6 +58,9 @@ const Onboarding: React.FC<Props> = props => {
               <Route exact={true} path={`/onboarding/backup`} component={Backup}/>
               <Route exact={true} path={`/onboarding/node-settings`} component={NodeSettings}/>
               <Route exact={true} path={`/onboarding/payout-settings`} component={PayoutSettings}/>
+              <Route path='*'>
+                <Redirect to="/page-not-found"/>
+              </Route>
             </Switch>
             <StepCounter step={values.step}/>
           </div>
