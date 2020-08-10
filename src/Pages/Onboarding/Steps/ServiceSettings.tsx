@@ -1,4 +1,5 @@
 import React from "react";
+import { ONBOARDING_IDENTITY_BACKUP } from '../../../constants/routes'
 import {DefaultCheckbox} from '../../../Components/Checkbox/DefaultCheckbox'
 import {DefaultSlider} from '../../../Components/DefaultSlider'
 import "../../../assets/styles/pages/onboarding/steps/service-settings.scss"
@@ -53,7 +54,7 @@ const ServiceSettings = () => {
 
   const handleSetServicePriceResponse = (setServicePriceResponse: BasicResponseInterface): void => {
     if (tequilApiResponseHandler(history, setServicePriceResponse)) {
-      history.push("/onboarding/backup");
+      history.push(ONBOARDING_IDENTITY_BACKUP);
     }
   };
 

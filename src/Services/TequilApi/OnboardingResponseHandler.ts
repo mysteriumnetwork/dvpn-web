@@ -1,3 +1,4 @@
+import { ERROR, HOME } from '../../constants/routes'
 import {
   BasicResponseInterface,
   CreateNewIdentityResponseInterface,
@@ -17,12 +18,12 @@ export const tequilApiResponseHandler =
     TransactionsFeesResponseInterface |
     CurrentIdentityResponseInterface): boolean => {
     if (response.isAuthoriseError) {
-      history.push("/");
+      history.push(HOME);
       return false;
     }
 
     if (response.isRequestFail) {
-      history.push("/error");
+      history.push(ERROR);
       return false
     }
 

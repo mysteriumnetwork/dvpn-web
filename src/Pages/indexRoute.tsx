@@ -1,5 +1,13 @@
 import React from 'react';
 import {
+  DASHBOARD,
+  ERROR,
+  LOGIN,
+  ONBOARDING_HOME,
+  ONBOARDING_SERVICE_SETTINGS
+} from '../constants/routes'
+
+import {
   getIdentityList,
   getUserConfig,
   getIdentity,
@@ -14,7 +22,6 @@ import {onboard} from "../redux/actions/onboarding/onboard";
 import {connect} from 'react-redux';
 import {getInitialRoute} from "../Services/GetInitialRoute";
 import {CircularProgress} from "@material-ui/core";
-
 
 const mapStateToProps = (state: RootState) => ({
   onboarded: state.onboarding.onboarded,
@@ -44,9 +51,9 @@ const IndexRoute: React.FC<Props> = props => {
 
   if(values.loading && props.onboarded ) {
       if(props.autentificated){
-        setValues({...values, loading: false, route: "dashboard"})
+        setValues({...values, loading: false, route: DASHBOARD})
       } else {
-        setValues({...values, loading: false, route: "login"})
+        setValues({...values, loading: false, route: LOGIN})
       }
   }
 
@@ -56,10 +63,10 @@ const IndexRoute: React.FC<Props> = props => {
     } else {
       if (initialRouteResponse.isAuthoriseError) {
         props.onboard();
-        setValues({...values, loading: false, route: "login"})
+        setValues({...values, loading: false, route: LOGIN})
       }
       if (initialRouteResponse.isRequestFail) {
-        history.push("/error");
+        history.push(ERROR);
       }
     }
   };
@@ -76,9 +83,9 @@ const IndexRoute: React.FC<Props> = props => {
       handleUSerConfigSuccessResponse();
     } else {
       if (userConfigResponse.isRequestFail) {
-        history.push("/error");
+        history.push(ERROR);
       } else {
-        setValues({...values, loading: false, route: "onboarding"})
+        setValues({...values, loading: false, route: ONBOARDING_HOME})
       }
     }
   };
@@ -96,9 +103,9 @@ const IndexRoute: React.FC<Props> = props => {
       })
     } else {
       if (identityListResponse.isRequestFail) {
-        history.push("/error");
+        history.push(ERROR);
       } else {
-        setValues({...values, loading: false, route: "onboarding"})
+        setValues({...values, loading: false, route: ONBOARDING_HOME})
       }
     }
   };
@@ -111,12 +118,12 @@ const IndexRoute: React.FC<Props> = props => {
       )
     ) {
       props.onboard();
-      setValues({...values, loading: false, route: "login"})
+      setValues({...values, loading: false, route: LOGIN})
     } else {
       if (identityResponse.isRequestFail) {
-        history.push("/error");
+        history.push(ERROR);
       } else {
-        setValues({...values, loading: false, route: "onboarding/service-settings"})
+        setValues({...values, loading: false, route: ONBOARDING_SERVICE_SETTINGS})
       }
     }
   };
@@ -125,7 +132,7 @@ const IndexRoute: React.FC<Props> = props => {
     values.loading ?
       <div className="index-route-spinner"><CircularProgress /></div>
       :
-      <Redirect to={"/" + values.route}/>
+      <Redirect to={values.route}/>
   );
 };
 
