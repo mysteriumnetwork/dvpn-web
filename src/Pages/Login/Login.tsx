@@ -1,4 +1,5 @@
 import React from "react";
+import { DASHBOARD, HOME } from '../../constants/routes'
 import sideImageOnboarding from "../../assets/images/onboarding/SideImage.png";
 import "../../assets/styles/pages/login/main.scss"
 import {DefaultTextField} from "../../Components/DefaultTextField";
@@ -42,7 +43,7 @@ const Login: React.FC<Props> = props => {
     authLogin({username: DEFAULT_USERNAME, password: values.password}).then(response => {
       if (response.success) {
         props.autentificate();
-        history.push('/dashboard');
+        history.push(DASHBOARD);
       } else {
         if (response.isAuthoriseError) {
           setValues({...values, error: true});
@@ -86,7 +87,7 @@ const Login: React.FC<Props> = props => {
         </div>
       </div>
       :
-      <Redirect to={"/"}/>
+      <Redirect to={HOME}/>
   )
 };
 

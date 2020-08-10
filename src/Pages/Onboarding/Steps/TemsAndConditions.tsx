@@ -1,6 +1,7 @@
 import React from "react";
 // @ts-ignore
 import {TermsEndUser} from '@mysteriumnetwork/terms'
+import { ONBOARDING_SERVICE_SETTINGS } from '../../../constants/routes'
 import {acceptWithTermsAndConditions, getCurrentIdentity} from "../../../api/TequilaApiCalls";
 import "../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss"
 import {withRouter} from "react-router-dom";
@@ -32,7 +33,7 @@ const TermsAndConditions = () => {
   const handleGetCurrentIdentityResponse = (currentIdentityResponse: CurrentIdentityResponseInterface): void => {
     if (tequilApiResponseHandler(history, currentIdentityResponse)) {
       if (tequilApiResponseHandler(history, currentIdentityResponse)) {
-        history.push("/onboarding/service-settings");
+        history.push(ONBOARDING_SERVICE_SETTINGS);
       }
     }
   }

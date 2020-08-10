@@ -1,4 +1,5 @@
 import React from "react";
+import { ONBOARDING_PAYOUT_SETTINGS } from '../../../constants/routes'
 import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/node-settings.scss"
 import {DefaultCheckbox} from "../../../Components/Checkbox/DefaultCheckbox";
@@ -66,13 +67,13 @@ const NodeSettings = () => {
         handleClaimMMNNodeResponse(resonse);
       })
     } else {
-      history.push("/onboarding/payout-settings");
+      history.push(ONBOARDING_PAYOUT_SETTINGS);
     }
   };
 
   const handleClaimMMNNodeResponse = (claimMMNNodeResponse: BasicResponseInterface): void => {
     if (tequilApiResponseHandler(history, claimMMNNodeResponse)) {
-      history.push("/onboarding/payout-settings");
+      history.push(ONBOARDING_PAYOUT_SETTINGS);
     }
   };
 

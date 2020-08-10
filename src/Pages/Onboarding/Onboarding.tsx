@@ -1,5 +1,15 @@
 import React from "react";
 import "../../assets/styles/pages/onboarding/main.scss"
+import {
+  HOME,
+  NOT_FOUND,
+  ONBOARDING_HOME,
+  ONBOARDING_IDENTITY_BACKUP,
+  ONBOARDING_NODE_SETTINGS,
+  ONBOARDING_PAYOUT_SETTINGS,
+  ONBOARDING_SERVICE_SETTINGS,
+  ONBOARDING_TERMS,
+} from '../../constants/routes'
 import Welcome from "./Steps/Welcome";
 import Backup from "./Steps/Backup";
 import ServiceSettings from "./Steps/ServiceSettings";
@@ -46,20 +56,20 @@ const Onboarding: React.FC<Props> = props => {
 
   return (
     props.onboarded ?
-      <Redirect to={"/"}/>
+      <Redirect to={HOME}/>
       :
       <div className="onboarding wrapper">
         <div className="steps">
           <div className="steps-content">
             <Switch>
-              <Route exact={true} path={`/onboarding`} component={Welcome}/>
-              <Route exact={true} path={`/onboarding/terms-and-conditions`} component={TermsAndConditions}/>
-              <Route exact={true} path={`/onboarding/service-settings`} component={ServiceSettings}/>
-              <Route exact={true} path={`/onboarding/backup`} component={Backup}/>
-              <Route exact={true} path={`/onboarding/node-settings`} component={NodeSettings}/>
-              <Route exact={true} path={`/onboarding/payout-settings`} component={PayoutSettings}/>
+              <Route exact={true} path={ONBOARDING_HOME} component={Welcome}/>
+              <Route exact={true} path={ONBOARDING_TERMS} component={TermsAndConditions}/>
+              <Route exact={true} path={ONBOARDING_SERVICE_SETTINGS} component={ServiceSettings}/>
+              <Route exact={true} path={ONBOARDING_IDENTITY_BACKUP} component={Backup}/>
+              <Route exact={true} path={ONBOARDING_NODE_SETTINGS} component={NodeSettings}/>
+              <Route exact={true} path={ONBOARDING_PAYOUT_SETTINGS} component={PayoutSettings}/>
               <Route path='*'>
-                <Redirect to="/page-not-found"/>
+                <Redirect to={NOT_FOUND}/>
               </Route>
             </Switch>
             <StepCounter step={values.step}/>

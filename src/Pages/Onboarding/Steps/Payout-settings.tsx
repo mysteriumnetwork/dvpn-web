@@ -1,5 +1,6 @@
 import React from "react";
 import {Link, withRouter} from "react-router-dom";
+import { HOME, LOGIN } from '../../../constants/routes'
 import {DefaultTextField} from '../../../Components/DefaultTextField'
 import "../../../assets/styles/pages/onboarding/steps/payout-settings.scss"
 import {DefaultSlider} from "../../../Components/DefaultSlider";
@@ -58,7 +59,7 @@ const PayoutSettings = () => {
   const handleRegisterIdentityResponse = (registerIdentityResponse: BasicResponseInterface): void => {
     if (tequilApiResponseHandler(history, registerIdentityResponse)) {
     }
-    history.push("/");
+    history.push(HOME);
   };
 
   return (
@@ -89,7 +90,7 @@ const PayoutSettings = () => {
             by taking 10% during each promise settlement (payout). </p>
         </div>
         <div className='buttons-block'>
-          <Link to="/login" className="btn btn-empty skip"><span className="btn-text">Setup later</span></Link>
+          <Link to={LOGIN} className="btn btn-empty skip"><span className="btn-text">Setup later</span></Link>
           <div onClick={handleDone} className="btn btn-filled done"><span className="btn-text">Done</span></div>
         </div>
       </div>
