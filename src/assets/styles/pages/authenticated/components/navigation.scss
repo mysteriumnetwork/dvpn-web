@@ -2,17 +2,19 @@
 
 .navigation{
   background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
-  padding: 20px;
+  padding: 15px;
   position: relative;
   &--logo{
-    background: #FFFFFF;
-    transform: matrix(1, 0, 0, -1, 0, 0);
     margin-bottom: 50px;
+    display: block;
   }
   &--item{
     width: 48px;
     height: 48px;
-    margin-bottom: 32px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   &--item.active{
     background: #FFFFFF;
@@ -20,11 +22,18 @@
   }
   &--chat{
     position: absolute;
-    width: 48px;
-    height: 48px;
+    width: 58px;
+    height: 58px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 50%;
     background: #6C3AAB;
     bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

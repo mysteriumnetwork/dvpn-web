@@ -17,7 +17,7 @@ import Dashboard from "./Pages/Dashboard";
 import Sessions from "./Pages/Sessions";
 import Settings from "./Pages/Settings";
 import Wallet from "./Pages/Wallet";
-import Navigation from "./Components/navigation";
+import Navigation from "./Components/Navigation";
 
 
 const mapStateToProps = (state: RootState) => ({
