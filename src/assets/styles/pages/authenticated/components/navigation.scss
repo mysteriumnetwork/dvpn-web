@@ -1,14 +1,16 @@
 @import '../../../base/variables';
 
-.navigation{
+.navigation {
   background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
   padding: 15px;
   position: relative;
-  &--logo{
+
+  &--logo {
     margin-bottom: 50px;
     display: block;
   }
-  &--item{
+
+  &--item {
     width: 48px;
     height: 48px;
     margin-bottom: 10px;
@@ -16,11 +18,13 @@
     justify-content: center;
     align-items: center;
   }
-  &--item.active{
+
+  &--item.active {
     background: #FFFFFF;
     border-radius: 4px;
   }
-  &--chat{
+
+  &--chat {
     position: absolute;
     width: 58px;
     height: 58px;

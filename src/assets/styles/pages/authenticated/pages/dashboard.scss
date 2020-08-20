@@ -1,8 +1,51 @@
-.dashboard{
-  &--content{
+@import '../../../base/variables';
+
+.dashboard {
+  &--content {
     width: 70%;
   }
-  &--side{
+
+  &--top-stats {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &--top-stat {
+    padding: 22px 0 25px 28px;
+    background: #ffffff;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 25px;
+    width: 200px;
+    border-radius: 10px;
+
+    .stat {
+      font-family: Ubuntu;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 32px;
+      font-weight: $medium-weight;
+      color: $main-text-color;
+    }
+
+    .name {
+      font-family: Ubuntu;
+      font-style: normal;
+      font-size: 14px;
+      line-height: 21px;
+      font-weight: $lighter-weight;
+      color: $names-text-color;
+    }
+  }
+
+  &--top-stat:last-child {
+    margin-right: 0px;
+  }
+
+  &--side {
     width: 30%;
     background: #FFFFFF;
   }
