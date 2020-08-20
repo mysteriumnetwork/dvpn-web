@@ -13,7 +13,7 @@ import {
   SETTINGS,
   WALLET
 } from '../../constants/routes'
-import Dashboard from "./Pages/Dachboard/Dashboard";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 import Sessions from "./Pages/Sessions";
 import Settings from "./Pages/Settings";
 import Wallet from "./Pages/Wallet";
