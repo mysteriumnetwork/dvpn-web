@@ -14,9 +14,9 @@ import {
   WALLET
 } from '../../constants/routes'
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import Sessions from "./Pages/Sessions";
-import Settings from "./Pages/Settings";
-import Wallet from "./Pages/Wallet";
+import Sessions from "./Pages/Sessions/Sessions";
+import Settings from "./Pages/Settings/Settings";
+import Wallet from "./Pages/Wallet/Wallet";
 import Navigation from "./Components/Navigation";
 
 
