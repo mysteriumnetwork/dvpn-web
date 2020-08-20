@@ -15,7 +15,6 @@ const Header: React.FC<PropsInterface> = (_props: PropsInterface) => {
       <div className="name">{props.name}</div>
     </div>
   );
-
 };
 
 export default Header;
