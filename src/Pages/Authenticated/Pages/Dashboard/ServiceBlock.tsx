@@ -8,7 +8,8 @@ interface PropsInterface {
   pricePerMinute: string,
   pricePerGb: string,
   whiteListed: boolean,
-  turnedOn: boolean
+  turnedOn: boolean,
+  openModal: Function
 }
 
 const ServicesBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
@@ -55,7 +56,7 @@ const ServicesBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
       </div>
       <div className="control-row">
         <div className="button">Session history</div>
-        <div className="button">Settings</div>
+        <div onClick={() => props.openModal(props.name)} className="button">Settings</div>
       </div>
     </div>
   );
