@@ -6,6 +6,7 @@ import DashboardTopStatsBlock from "./TopStatBlock";
 import EarningStatisticBlock from './EarningStatiscticBlock'
 import EarningGraphBlock from './EarningGraphBlock'
 import ServicesBlock from './ServiceBlock'
+import SideBlock from '../components/SideBlock'
 
 const Dashboard = () => {
   return (
@@ -60,6 +61,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="dashboard--side">
+            <SideBlock/>
         </div>
       </div>
   );
