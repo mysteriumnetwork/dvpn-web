@@ -1,4 +1,6 @@
 import React from "react";
+import {DefaultSwitch} from '../../../../Components/DefaultSwitch'
+import {DEFAULT_PRICE_PER_GB, DEFAULT_PRICE_PER_MINUTE_PRICE} from "../../../../Services/constants";
 
 interface PropsInterface {
   name: string,
@@ -12,9 +14,16 @@ interface PropsInterface {
 const ServicesBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
   const props: PropsInterface = {..._props};
   const [values, setValues] = React.useState({
-    Whitelisted: props.whiteListed,
+    whitelisted: props.whiteListed,
     turnedOn: props.turnedOn,
   });
+  const handleTurnedOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({...values, turnedOn: event.target.checked})
+  }
+  const handleWhitelistedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({...values, whitelisted: event.target.checked})
+  }
+
   return (
     <div className="services-blocks-row--block">
       <div className="header-row">
@@ -37,9 +46,11 @@ const ServicesBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
         </div>
         <div className="service-stat switch">
           <div className="title">Whitelisted</div>
+          <DefaultSwitch tunedOn={values.whitelisted} handleChange={() => handleWhitelistedChange} type="normal"/>
         </div>
         <div className="service-stat switch">
           <div className="title">Turned on</div>
+          <DefaultSwitch tunedOn={values.turnedOn} handleChange={() => handleTurnedOnChange} type="normal"/>
         </div>
       </div>
       <div className="control-row">

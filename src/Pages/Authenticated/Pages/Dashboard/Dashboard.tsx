@@ -49,7 +49,7 @@ const Dashboard = () => {
                 turnedOn={true}
                 />
               <ServicesBlock
-                name="WireGuard"
+                name="OpenVPN"
                 type="VPN"
                 pricePerMinute="0.005"
                 pricePerGb="0.15"
