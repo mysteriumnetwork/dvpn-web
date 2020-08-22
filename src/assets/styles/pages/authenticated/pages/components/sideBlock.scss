@@ -1,9 +1,10 @@
 @import '../../../../base/variables';
 
-.side-block{
+.side-block {
   padding: 20px 0 0 0;
   height: 100%;
-  .heading{
+
+  .heading {
     font-style: normal;
     font-weight: $medium-weight;
     font-size: 16px;
@@ -11,25 +12,30 @@
     color: $main-text-color;
     padding-left: 25px;
   }
-  &--content{
+
+  &--content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: calc(100% - 25px);
-    .sessions-wrapper{
+
+    .sessions-wrapper {
       padding: 20px 25px;
-      .session-block{
+
+      .session-block {
         background: #FCFCFC;
         border: 1px solid #ECECF2;
         box-sizing: border-box;
         border-radius: 12px;
         padding: 4px 12px;
         margin-bottom: 20px;
-        .heading-row{
+
+        .heading-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          .title{
+
+          .title {
             font-style: normal;
             font-weight: $normal-weight;
             font-size: 14px;
@@ -37,32 +43,38 @@
             color: $main-text-color;
             padding-left: 0;
           }
-          .status{
+
+          .status {
             font-style: normal;
             font-weight: $bold-weight;
             font-size: 12px;
             line-height: 21px;
           }
-          .status.success{
+
+          .status.success {
             color: #58A079;
           }
-          .status.failed{
+
+          .status.failed {
             color: #CB0D0D;
           }
         }
-        .id{
+
+        .id {
           font-style: normal;
           font-weight: $normal-weight;
           font-size: 12px;
           line-height: 18px;
           color: #A0A0A0;
         }
-        .stats-row{
+
+        .stats-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
           padding-top: 15px;
-          .stat{
+
+          .stat {
             font-style: normal;
             font-weight: $medium-weight;
             font-size: 14px;
@@ -71,17 +83,21 @@
           }
         }
       }
-      .button-block{
+
+      .button-block {
         margin-top: 50px;
-        .btn.all{
+
+        .btn.all {
           width: 60%;
         }
       }
     }
-    .sum-wrapper{
+
+    .sum-wrapper {
       display: flex;
       border-top: 1px solid #EEEEEE;;
-      .sum-block{
+
+      .sum-block {
         width: 50%;
         text-align: center;
         display: flex;
@@ -89,13 +105,15 @@
         align-items: center;
         justify-content: center;
         padding: 15px 0;
-        .name{
+
+        .name {
           font-weight: $medium-weight;
           font-size: 16px;
           line-height: 24px;
           color: $main-text-color;
         }
-        .explanation{
+
+        .explanation {
           font-style: normal;
           font-weight: $normal-weight;
           font-size: 14px;
@@ -103,7 +121,8 @@
           color: $names-text-color;
         }
       }
-      .sum-block:first-child{
+
+      .sum-block:first-child {
         border-right: 1px solid #EEEEEE;;
       }
     }
