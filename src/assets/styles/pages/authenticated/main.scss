@@ -10,12 +10,13 @@
   }
 
   &--content {
-    padding: 25px 0 25px 25px;
     background-color: #F8F8FB;
     height: 100%;
+    padding-left: 25px;
   }
 
   &--page-header {
+    padding-top: 25px;
     display: flex;
     justify-content: flex-start;
     align-items: center;

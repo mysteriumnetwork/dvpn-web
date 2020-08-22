@@ -1,14 +1,20 @@
 @import '../../../base/variables';
 
 .dashboard {
+  display: flex;
+  height: 100%;
+
   &--content {
     width: 70%;
+    padding-right: 25px;
   }
 
-  &--top-stats {
+  //top stats block
+  &--top-stats-block {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    margin-bottom: 25px;
   }
 
   &--top-stat {
@@ -19,12 +25,12 @@
     flex-direction: column;
     justify-content: center;
     margin-right: 25px;
-    width: 200px;
+    width: calc(20% - 20px);
+    min-width: 180px;
     border-radius: 10px;
     margin-bottom: 25px;
 
     .stat {
-      font-family: Ubuntu;
       font-style: normal;
       font-size: 20px;
       line-height: 32px;
@@ -33,7 +39,6 @@
     }
 
     .name {
-      font-family: Ubuntu;
       font-style: normal;
       font-size: 14px;
       line-height: 21px;
@@ -46,6 +51,105 @@
     margin-right: 0px;
   }
 
+  //eanings block
+  &--earnings-row {
+    display: flex;
+    align-items: center;
+  }
+
+  &--earnings-block {
+    width: 40%;
+    background-color: #ffffff;
+    border-radius: 12px;
+    position: relative;
+    padding: 25px 0 50px 0;
+
+    .heading {
+      font-style: normal;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: $medium-weight;
+      color: $main-text-color;
+      padding-bottom: 20px;
+      margin-left: 25px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid #E2E2E2;
+      margin-top: 20px;
+      padding: 0 25px 25px 25px;
+
+      .statement {
+        color: $main-text-color;
+        font-weight: $medium-weight;
+        font-style: normal;
+        font-size: 18px;
+        line-height: 27px;
+
+        p {
+          margin-left: 25px;
+        }
+
+        span {
+          display: block;
+          font-style: normal;
+          font-weight: $bold-weight;
+          font-size: 12px;
+          line-height: 21px;
+          color: #58A079;
+        }
+      }
+
+      .statement-info {
+        color: $names-text-color;
+        font-weight: $medium-weight;
+        font-style: normal;
+        font-size: 18px;
+        line-height: 32px;
+
+        p {
+          margin-right: 25px;
+        }
+      }
+    }
+
+    .more-button {
+      background: #FFFFFF;
+      border: 1px solid #ECECF2;
+      box-sizing: border-box;
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+
+      &--dot {
+        border: 1px solid #ECECF2;
+        border-radius: 50%;
+        width: 2px;
+        height: 2px;
+        margin-right: 5px;
+      }
+
+      &--dot:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &--earnings-graph {
+    width: calc(60% - 25px);
+    margin-left: 25px;
+  }
+
+  //side block
   &--side {
     width: 30%;
     background: #FFFFFF;
