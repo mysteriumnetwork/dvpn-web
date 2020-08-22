@@ -3,7 +3,9 @@ import "../../../../assets/styles/pages/authenticated/pages/dashboard.scss"
 import {ReactComponent as Logo} from '../../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import Header from "../../Components/Header";
 import DashboardTopStatsBlock from "./TopStatBlock";
-import EarningStatisticBlock from './YearningStatiscticBlock'
+import EarningStatisticBlock from './EarningStatiscticBlock'
+import EarningGraphBlock from './EarningGraphBlock'
+import ServicesBlock from './ServiceBlock'
 
 const Dashboard = () => {
   return (
@@ -27,6 +29,34 @@ const Dashboard = () => {
                 countryPosition="1"
                 countryPositionOf="8"
                 />
+                <EarningGraphBlock month="May"/>
+          </div>
+          <div className="dashboard--services-row">
+            <div className="heading-row">
+              <p className="heading">Services</p>
+              <div className="status-circle failed"></div>
+              <p className="heading info">NAT status</p>
+              <p className="status failed">Failed</p>
+              <a href="#" className="link">How to fix this?</a>
+            </div>
+            <div className="services-blocks-row">
+              <ServicesBlock
+                name="WireGuard"
+                type="VPN"
+                pricePerMinute="0.005"
+                pricePerGb="0.15"
+                whiteListed={true}
+                turnedOn={true}
+                />
+              <ServicesBlock
+                name="WireGuard"
+                type="VPN"
+                pricePerMinute="0.005"
+                pricePerGb="0.15"
+                whiteListed={false}
+                turnedOn={false}
+              />
+            </div>
           </div>
         </div>
         <div className="dashboard--side">

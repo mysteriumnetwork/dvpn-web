@@ -51,13 +51,13 @@
     margin-right: 0px;
   }
 
-  //eanings block
+  //earnings block
   &--earnings-row {
     display: flex;
     align-items: center;
   }
 
-  &--earnings-block {
+  &--earnings-info{
     width: 40%;
     background-color: #ffffff;
     border-radius: 12px;
@@ -147,6 +147,186 @@
   &--earnings-graph {
     width: calc(60% - 25px);
     margin-left: 25px;
+    background: #FFFFFF;
+    border: 1px solid #ECECF2;
+    border-radius: 12px;
+    padding-top: 14px;
+  }
+
+  // services row
+  &--services-row{
+    margin-top: 50px;
+    .heading-row{
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      .heading{
+        font-style: normal;
+        font-weight: $medium-weight;
+        font-size: 18px;
+        line-height: 32px;
+        color: $main-text-color;
+        margin-right: 20px;
+      }
+      .heading.info{
+        color: #000000;
+        margin-right: 10px;
+      }
+      .status-circle{
+        width: 18px;
+        height: 18px;
+        background: #FFFFFF;
+        box-sizing: border-box;
+        margin-right: 6px;
+        border-radius: 50%;
+      }
+      .status-circle.failed{
+        border: 5px solid #CB0D0D;
+      }
+      .status-circle.success{
+        border: 5px solid #6DD230;
+      }
+
+      .status{
+        font-style: normal;
+        font-weight: $medium-weight;
+        font-size: 14px;
+        margin-right: 10px;
+      }
+      .status.failed{
+        color: #CB0D0D;
+      }
+      .status.success{
+        color: #6DD230;
+      }
+
+      .link{
+        font-weight: $medium-weight;
+        font-size: 14px;
+        text-align: right;
+        text-decoration-line: underline;
+        color: #5E81F4;
+      }
+    }
+    .services-blocks-row{
+      display: flex;
+      justify-content: space-between;
+      &--block{
+        background: #FFFFFF;
+        border: 1px solid #ECECF2;
+        box-sizing: border-box;
+        border-radius: 12px;
+        padding-top: 25px;
+        width: calc(50% - 11px);
+
+        .header-row{
+          display: flex;
+          align-items: center;
+          margin-bottom: 14px;
+          padding: 0 20px;
+          .logo-block{
+            width: 64px;
+            height: 64px;
+            position: relative;
+            background: red;
+            margin-right: 20px;
+            border-radius: 8px;
+            img{
+              max-width: 100%;
+            }
+            .status-dot{
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              border: 3px solid #FFFFFF;
+              width: 12px;
+              height: 12px;
+              border-radius: 50%;
+            }
+            .status-dot.on{
+              background: #6DD230;
+            }
+            .status-dot.off{
+              background: #CB0D0D;
+            }
+          }
+          .name-block{
+            .name{
+              font-style: normal;
+              font-weight: $medium-weight;
+              font-size: 16px;
+              line-height: 24px;
+              color: $main-text-color;
+            }
+            .type{
+              font-style: normal;
+              font-weight: $normal-weight;
+              font-size: 14px;
+              line-height: 21px;
+              color: $names-text-color
+            }
+          }
+        }
+
+        .stats-row{
+          display: flex;
+          justify-content: space-between;
+          padding-bottom: 20px;
+          border-bottom: 1px solid #EEEEEE;
+          .service-stat{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .title{
+              font-weight: $medium-weight;
+              font-size: 14px;
+              line-height: 32px;
+              color: $names-text-color;
+            }
+            .text{
+              font-weight: $medium-weight;
+              font-size: 14px;
+              line-height: 32px;
+              color: $main-text-color;
+            }
+          }
+          .service-stat.text{
+            text-align: left;
+          }
+          .service-stat.switch{
+            text-align: right;
+          }
+          .service-stat:first-child{
+            margin-left: 20px;
+          }
+          .service-stat:last-child{
+            margin-right: 20px;
+          }
+        }
+
+        .control-row{
+          padding: 10px 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .button{
+            width: 126px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #F5F5FA;
+            border-radius: 8px;
+            font-style: normal;
+            font-weight: $medium-weight;
+            font-size: 14px;
+            line-height: 21px;
+            color: rgba(101, 101, 101, 0.5);
+            cursor: pointer;
+            padding: 10px 0;
+          }
+        }
+      }
+    }
   }
 
   //side block

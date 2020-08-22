@@ -13,7 +13,7 @@ interface PropsInterface {
 const EarningStatisticBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
   const props: PropsInterface = {..._props};
   return (
-    <div className="dashboard--earnings-block">
+    <div className="dashboard--earnings-info">
       <p className="heading">Bounty pilot ({props.month})</p>
       <div className="info-row">
         <p className="statement">{props.mystValue}</p>
