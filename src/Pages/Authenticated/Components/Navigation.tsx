@@ -26,7 +26,7 @@ interface NavigationInterface {
 
 const Navigation = () => {
   const [values, setValues] = React.useState<NavigationInterface>({
-    active: DASHBOARD
+    active: window.location.pathname
   });
 
   return (

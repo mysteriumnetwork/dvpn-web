@@ -54,7 +54,6 @@
   //earnings block
   &--earnings-row {
     display: flex;
-    align-items: center;
   }
 
   &--earnings-info {
@@ -144,6 +143,7 @@
     }
   }
 
+  // graph block
   &--earnings-graph {
     width: calc(60% - 25px);
     margin-left: 25px;
@@ -151,6 +151,44 @@
     border: 1px solid #ECECF2;
     border-radius: 12px;
     padding-top: 14px;
+
+    .control-row{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-right: 15px;
+      padding-bottom: 10px;
+
+      .control-btn{
+        margin-left: 20px;
+        font-family: Lato;
+        font-style: normal;
+        font-weight: $normal-weight;
+        font-size: 14px;
+        line-height: 17px;
+        color: $names-text-color;
+        padding: 10px 8px;
+        color: #9A9A9A;
+        cursor: pointer;
+      }
+      .control-btn.active{
+        border: 1px solid #ECECF2;
+        box-sizing: border-box;
+        border-radius: 8px;
+        color: $main-text-color;
+      }
+    }
+    .more-btn{
+      margin-left: 30px;
+      background: #FFFFFF;
+      border: 1px solid #ECECF2;
+      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   // services row
