@@ -152,14 +152,14 @@
     border-radius: 12px;
     padding-top: 14px;
 
-    .control-row{
+    .control-row {
       display: flex;
       justify-content: flex-end;
       align-items: center;
       margin-right: 15px;
       padding-bottom: 10px;
 
-      .control-btn{
+      .control-btn {
         margin-left: 20px;
         font-family: Lato;
         font-style: normal;
@@ -171,14 +171,16 @@
         color: #9A9A9A;
         cursor: pointer;
       }
-      .control-btn.active{
+
+      .control-btn.active {
         border: 1px solid #ECECF2;
         box-sizing: border-box;
         border-radius: 8px;
         color: $main-text-color;
       }
     }
-    .more-btn{
+
+    .more-btn {
       margin-left: 30px;
       background: #FFFFFF;
       border: 1px solid #ECECF2;
@@ -188,6 +190,64 @@
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    .graph-block {
+
+      .recharts-cartesian-axis-line {
+        display: none;
+      }
+
+      .recharts-cartesian-grid-horizontal {
+        display: none;
+      }
+
+      .recharts-curve.recharts-line-curve {
+        stroke-width: 3px;
+        stroke: #9E1F63;
+      }
+
+      .recharts-layer.recharts-line-dots {
+        display: none;
+      }
+
+      .recharts-cartesian-axis-tick-line {
+        display: none;
+      }
+
+      .recharts-text.recharts-cartesian-axis-tick-value {
+        font-family: Lato;
+        font-style: normal;
+        font-weight: $bold-weight;
+        font-size: 14px;
+        line-height: 21px;
+        fill: $names-text-color;
+      }
+
+      .recharts-default-tooltip {
+        background: #FFFFFF;
+        box-shadow: 0px 8px 15px rgba(152, 169, 188, 0.267182);
+        border-radius: 2px;
+        border: none !important;
+      }
+
+      .recharts-tooltip-label {
+        font-family: Lato;
+        font-style: normal;
+        font-weight: $normal-weight;
+        font-size: 14px;
+        line-height: 21px;
+        color: $names-text-color;
+      }
+
+      .recharts-tooltip-item-list li {
+        font-family: Lato !important;
+        font-style: normal;
+        font-weight: $bold-weight !important;
+        font-size: 14px !important;
+        line-height: 21px !important;
+        color: $main-text-color !important;
+      }
     }
   }
 
