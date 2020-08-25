@@ -1,4 +1,4 @@
-import {Identity, IdentityRef, TransactorFeesResponse} from "mysterium-vpn-js";
+import {Identity, IdentityRef, Session, TransactorFeesResponse} from "mysterium-vpn-js";
 import {Config} from "mysterium-vpn-js/lib/config/config";
 
 export interface BasicResponseInterface {
@@ -30,4 +30,8 @@ export interface UserConfigResponseInterface extends BasicResponseInterface {
 
 export interface IdentityResponseInterface extends BasicResponseInterface{
   identity: Identity
+}
+
+export interface SessionsInterface extends BasicResponseInterface {
+  sessions: Session[]
 }

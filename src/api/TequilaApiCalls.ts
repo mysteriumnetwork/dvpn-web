@@ -9,7 +9,7 @@ import {
   IdentityListResponseInterface,
   UserConfigResponseInterface,
   TransactionsFeesResponseInterface,
-  CurrentIdentityResponseInterface
+  CurrentIdentityResponseInterface, SessionsInterface
 } from './TequilApiResponseInterfaces'
 
 export const authChangePassword = async (data: { username: string, oldPassword: string, newPassword: string }):
@@ -284,6 +284,26 @@ export const getIdentity = async (id: string): Promise<IdentityResponseInterface
         earningsTotal: 0,
         registrationStatus: IdentityRegistrationStatus.InProgress,
       }
+    }
+  }
+};
+
+export const getSessions = async (): Promise<SessionsInterface> => {
+  try {
+    return {
+      success: true,
+      isAuthoriseError: false,
+      isRequestFail: false,
+      sessions: await tequilapiClient.sessions()
+    }
+  } catch (e) {
+    console.log(e.message)
+    return {
+      success: false,
+      isAuthoriseError: e.isUnauthorizedError,
+      isRequestFail: e._hasHttpStatus(500),
+      errorMessage: e.message,
+      sessions: []
     }
   }
 };

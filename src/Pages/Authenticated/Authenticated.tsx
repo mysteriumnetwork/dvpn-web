@@ -1,7 +1,6 @@
 import React from "react";
 import "../../assets/styles/pages/authenticated/main.scss"
 import {Route, Redirect, Switch} from "react-router-dom";
-import {useHistory} from 'react-router'
 import {RootState} from "../../redux/store";
 import {onboard} from "../../redux/actions/onboarding/onboard";
 import {connect} from "react-redux";
@@ -18,7 +17,6 @@ import Sessions from "./Pages/Sessions/Sessions";
 import Settings from "./Pages/Settings/Settings";
 import Wallet from "./Pages/Wallet/Wallet";
 import Navigation from "./Components/Navigation";
-
 
 const mapStateToProps = (state: RootState) => ({
   onboarded: state.onboarding.onboarded,

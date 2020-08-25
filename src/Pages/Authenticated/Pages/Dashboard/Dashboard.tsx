@@ -6,13 +6,29 @@ import DashboardTopStatsBlock from "./TopStatBlock";
 import EarningStatisticBlock from './EarningStatiscticBlock'
 import EarningGraphBlock from './EarningGraphBlock'
 import ServicesBlock from './ServiceBlock'
-import SideBlock from '../components/SideBlock'
+import SessionsSideList, {SessionsSideListPropsInterface} from '../components/SessionsSideList'
 import {Fade, Modal} from "@material-ui/core";
 import {DefaultSlider} from "../../../../Components/DefaultSlider";
 import {DEFAULT_PRICE_PER_GB, DEFAULT_PRICE_PER_MINUTE_PRICE} from "../../../../Services/constants";
 import {DefaultSwitch} from "../../../../Components/DefaultSwitch";
+import {RootState} from "../../../../redux/store";
+import {connect} from "react-redux";
+import {fetchSessions} from "../../../../redux/actions/dashboard/dashboard";
 
-const Dashboard = () => {
+interface PropsInterface {
+  sessions: SessionsSideListPropsInterface
+  fetchSessions: Function
+}
+
+const mapStateToProps = (state: RootState) => ({
+  sessions: state.dashboard.sessions,
+});
+
+const mapDispatchToProps = {
+  fetchSessions: fetchSessions
+}
+
+const Dashboard = (props: PropsInterface) => {
   const [values, setValues] = React.useState({
     open: false,
     modalServiceName: "name",
@@ -21,6 +37,8 @@ const Dashboard = () => {
     partnersOn: true,
     limitOn: false
   });
+
+  React.useEffect(() => { props.fetchSessions() }, [])
 
   const handleOpen = (modalServiceName: string) => {
     setValues({...values, open: true, modalServiceName: modalServiceName})
@@ -106,7 +124,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="dashboard--side">
-        <SideBlock/>
+        <SessionsSideList {...props.sessions}/>
       </div>
       <Modal
         className="settings-modal"
@@ -180,4 +198,7 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Dashboard);
