@@ -43,15 +43,15 @@ const NodeSettings = () => {
 
   const handleSubmitPassword = () => {
     setValues({...values, error: false});
-    let validatedPasssword = validatePassword(values.password, values.passwordRepeat);
-    if (validatedPasssword.success) {
-      authChangePassword({username: DEFAULT_USERNAME, oldPassword: DEFAULT_PASSWORD, newPassword: "mystberry"}).then(
+    const isPasswordValid = validatePassword(values.password, values.passwordRepeat);
+    if (isPasswordValid.success) {
+      authChangePassword({username: DEFAULT_USERNAME, oldPassword: DEFAULT_PASSWORD, newPassword: values.password}).then(
         response => {
           handleAuthChangePasswordResponse(response);
         }
       );
     } else {
-      setValues({...values, error: true, errorMessage: validatedPasssword.errorMessage})
+      setValues({...values, error: true, errorMessage: isPasswordValid.errorMessage})
     }
   };
 
