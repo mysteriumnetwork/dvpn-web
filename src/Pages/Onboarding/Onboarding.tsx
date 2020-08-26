@@ -1,7 +1,6 @@
-import React from "react";
-import "../../assets/styles/pages/onboarding/main.scss"
+import React from 'react';
+import '../../assets/styles/pages/onboarding/main.scss'
 import {
-  HOME,
   NOT_FOUND,
   ONBOARDING_HOME,
   ONBOARDING_IDENTITY_BACKUP,
@@ -10,20 +9,19 @@ import {
   ONBOARDING_SERVICE_SETTINGS,
   ONBOARDING_TERMS,
 } from '../../constants/routes'
-import Welcome from "./Steps/Welcome";
-import Backup from "./Steps/Backup";
-import ServiceSettings from "./Steps/ServiceSettings";
-import NodeSettings from "./Steps/NodeSettings";
-import PayoutSettings from "./Steps/Payout-settings";
-import PageNotFound from "../Error/PageNotFound";
-import {Route, Redirect, Switch} from "react-router-dom";
-import {StepCounter} from "./StepCounter";
-import TermsAndConditions from "./Steps/TemsAndConditions";
+import Welcome from './Steps/Welcome';
+import Backup from './Steps/Backup';
+import ServiceSettings from './Steps/ServiceSettings';
+import NodeSettings from './Steps/NodeSettings';
+import PayoutSettings from './Steps/Payout-settings';
+import {Redirect, Route, Switch} from 'react-router-dom';
+import {StepCounter} from './StepCounter';
+import TermsAndConditions from './Steps/TemsAndConditions';
 import {setStepsInfo} from '../../Services/Onboarding/StepsInfo'
 import {useHistory} from 'react-router'
-import {RootState} from "../../redux/store";
-import {onboard} from "../../redux/actions/onboarding/onboard";
-import {connect} from "react-redux";
+import {RootState} from '../../redux/store';
+import {onboard} from '../../redux/actions/onboarding/onboard';
+import {connect} from 'react-redux';
 
 interface StateInterface {
   sideImage: string;
@@ -31,11 +29,12 @@ interface StateInterface {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  onboarded: state.onboarding.onboarded,
+  onboarding: state.onboarding,
 });
 
 const mapDispatchToProps = {onboard};
-type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
+type Props = ReturnType<typeof mapStateToProps>;
+// type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 const Onboarding: React.FC<Props> = props => {
   const history = useHistory();
@@ -55,9 +54,6 @@ const Onboarding: React.FC<Props> = props => {
   });
 
   return (
-    props.onboarded ?
-      <Redirect to={HOME}/>
-      :
       <div className="onboarding wrapper">
         <div className="steps">
           <div className="steps-content">

@@ -3,7 +3,8 @@ export interface OnboardingData {
 }
 
 export interface OnboardingState {
-  onboarded: boolean;
+  isDefaultCredentials: boolean;
+  isLoading: boolean;
 }
 
 export interface OnboardingAction<T> extends Action {

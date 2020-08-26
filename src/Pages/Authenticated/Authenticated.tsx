@@ -1,17 +1,10 @@
 import React from "react";
 import "../../assets/styles/pages/authenticated/main.scss"
-import {Route, Redirect, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {RootState} from "../../redux/store";
 import {onboard} from "../../redux/actions/onboarding/onboard";
 import {connect} from "react-redux";
-import {
-  HOME,
-  NOT_FOUND,
-  DASHBOARD,
-  SESSIONS,
-  SETTINGS,
-  WALLET
-} from '../../constants/routes'
+import {DASHBOARD, NOT_FOUND, SESSIONS, SETTINGS, WALLET} from '../../constants/routes'
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Sessions from "./Pages/Sessions/Sessions";
 import Settings from "./Pages/Settings/Settings";
@@ -19,7 +12,7 @@ import Wallet from "./Pages/Wallet/Wallet";
 import Navigation from "./Components/Navigation";
 
 const mapStateToProps = (state: RootState) => ({
-  onboarded: state.onboarding.onboarded,
+  onboarded: state.onboarding.isDefaultCredentials,
 });
 
 const mapDispatchToProps = {onboard};

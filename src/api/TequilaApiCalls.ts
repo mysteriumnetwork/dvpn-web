@@ -33,7 +33,6 @@ export const authLogin = async (data: { username: string, password: string }): P
   const {password, username} = data;
   try {
     await tequilapiClient.authLogin(username, password);
-
     return {success: true, isRequestFail: false, isAuthoriseError: false}
   } catch (e) {
     console.log(e.isUnauthorizedError ? 'Authorization failed!' : e.message);

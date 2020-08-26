@@ -1,6 +1,5 @@
 import React from "react";
 import {Link, withRouter} from "react-router-dom";
-import {useHistory} from "react-router";
 import "../../../assets/styles/pages/authenticated/components/navigation.scss"
 import {ReactComponent as Logo} from '../../../assets/images/authenticated/components/navigation/Logo.svg'
 import {ReactComponent as Dashboard} from '../../../assets/images/authenticated/components/navigation/Dashboard.svg'

@@ -1,5 +1,5 @@
 import React from "react";
-import { DASHBOARD, HOME } from '../../constants/routes'
+import { DASHBOARD } from '../../constants/routes'
 import sideImageOnboarding from "../../assets/images/onboarding/SideImage.png";
 import "../../assets/styles/pages/login/main.scss"
 import {DefaultTextField} from "../../Components/DefaultTextField";
@@ -7,7 +7,6 @@ import {authLogin} from '../../api/TequilaApiCalls'
 import {DEFAULT_USERNAME} from '../../Services/constants'
 import Collapse from "@material-ui/core/Collapse";
 import {Alert, AlertTitle} from "@material-ui/lab";
-import {Redirect} from "react-router-dom";
 import {useHistory} from 'react-router'
 import {RootState} from '../../redux/store';
 import {onboard} from '../../redux/actions/onboarding/onboard';
@@ -15,7 +14,7 @@ import {autentificate} from '../../redux/actions/user/autentificate';
 import {connect} from 'react-redux';
 
 const mapStateToProps = (state: RootState) => ({
-  onboarded: state.onboarding.onboarded,
+  onboarded: state.onboarding.isDefaultCredentials,
   autentificated: state.user.autentificated
 });
 
@@ -52,7 +51,6 @@ const Login: React.FC<Props> = props => {
     });
   };
   return (
-    props.onboarded && !props.autentificated?
       <div className="login wrapper">
         <div className="login-content">
           <div className="login-content-block">
@@ -86,8 +84,6 @@ const Login: React.FC<Props> = props => {
           <img alt="onboarding" src={sideImageOnboarding}/>
         </div>
       </div>
-      :
-      <Redirect to={HOME}/>
   )
 };
 

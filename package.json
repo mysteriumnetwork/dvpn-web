@@ -38,7 +38,6 @@
     "@types/react-redux": "^7.1.9",
     "@types/recharts": "^1.8.14",
     "@types/redux": "^3.6.0",
-    "@types/redux-persist": "^4.3.1",
     "@types/redux-thunk": "^2.1.0",
     "@types/showdown": "^1.9.3",
     "dotenv": "^8.2.0",
@@ -52,7 +51,6 @@
     "react-scripts": "3.4.1",
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
-    "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "showdown": "^1.9.1",
     "typescript": "~3.7.2"
@@ -64,7 +62,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://192.168.2.93:4449/",
+  "proxy": "http://127.0.0.1:4449/",
   "eslintConfig": {
     "extends": "react-app"
   },

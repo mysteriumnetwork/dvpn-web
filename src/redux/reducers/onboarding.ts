@@ -2,7 +2,8 @@ import {ONBOARD} from '../actionTypes/OnbordingTypes';
 import {OnboardingState, OnboardingTypes} from '../actions/onboarding/onboard.d';
 
 const INITIAL_STATE: OnboardingState = {
-  onboarded: false
+  isDefaultCredentials: false,
+  isLoading: true
 };
 
 function onboardingReducer(state = INITIAL_STATE, action: OnboardingTypes): OnboardingState {
@@ -10,7 +11,8 @@ function onboardingReducer(state = INITIAL_STATE, action: OnboardingTypes): Onbo
     case ONBOARD: {
       return {
         ...state,
-        onboarded: action.payload,
+        isDefaultCredentials: action.payload,
+        isLoading: false,
       };
     }
     default:
