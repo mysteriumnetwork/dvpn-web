@@ -1,8 +1,8 @@
 export interface DashboardState {
     sessions: {
-        loading: boolean
-        sessions: Session[]
-    }
+        loading: boolean;
+        sessions: Session[];
+    };
 }
 
 export interface DashboardAction<T> extends Action {
@@ -10,4 +10,4 @@ export interface DashboardAction<T> extends Action {
     payload: T;
 }
 
-export type DashboardTypes = DashboardAction
+export type DashboardTypes = DashboardAction;

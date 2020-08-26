@@ -4,9 +4,9 @@ import authReducer from './auth.reducer';
 import dashboardReducer from './dashboard.reducer';
 
 const rootReducer = combineReducers({
-  user: authReducer,
-  onboarding: onboardingReducer,
-  dashboard: dashboardReducer,
+    user: authReducer,
+    onboarding: onboardingReducer,
+    dashboard: dashboardReducer,
 });
 
 export default rootReducer;

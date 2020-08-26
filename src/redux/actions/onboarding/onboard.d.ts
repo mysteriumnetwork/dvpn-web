@@ -1,15 +1,15 @@
 export interface OnboardingData {
-  onboarded: boolean;
+    onboarded: boolean;
 }
 
 export interface OnboardingState {
-  isDefaultCredentials: boolean;
-  isLoading: boolean;
+    isDefaultCredentials: boolean;
+    isLoading: boolean;
 }
 
 export interface OnboardingAction<T> extends Action {
-  type: string;
-  payload: T;
+    type: string;
+    payload: T;
 }
 
 export type OnboardingTypes = OnboardingAction;

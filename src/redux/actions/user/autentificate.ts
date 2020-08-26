@@ -1,6 +1,6 @@
-import {AUTENTIFICATE} from '../../actionTypes/UserTypes';
+import { AUTENTIFICATE } from '../../actionTypes/UserTypes';
 
 export const autentificate = () => ({
-  payload: true,
-  type: AUTENTIFICATE,
+    payload: true,
+    type: AUTENTIFICATE,
 });
