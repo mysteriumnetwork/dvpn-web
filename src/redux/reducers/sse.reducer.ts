@@ -4,12 +4,12 @@ interface SSEState {
     appState?: AppState;
 }
 
-function sseReducer(state: SSEState = {}, action: SSEResponse) {
+function sseReducer(state: SSEState = {}, action: SSEResponse): SSEState {
     switch (action.type) {
         case SSEEventType.AppStateChange:
             return {
                 ...state,
-                sse: action.payload,
+                appState: action.payload,
             };
         default:
             return state;
