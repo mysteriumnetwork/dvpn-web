@@ -20,17 +20,17 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = { shouldOnBoard };
 
-interface PropsInterface {
+interface Props {
     onboarding: OnboardingState;
-    shouldOnBoard: Function;
+    shouldOnBoard: () => void;
 }
 
-const IndexRoute = (props: PropsInterface) => {
+const IndexRoute: React.FC<Props> = ({ onboarding, shouldOnBoard }) => {
     useEffect(() => {
-        props.shouldOnBoard();
+        shouldOnBoard();
     });
 
-    const { isDefaultCredentials, isLoading } = props.onboarding;
+    const { isDefaultCredentials, isLoading } = onboarding;
     if (isLoading) {
         return (
             <div className="index-route-spinner">

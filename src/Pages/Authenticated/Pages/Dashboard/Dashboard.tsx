@@ -25,7 +25,7 @@ import DashboardTopStatsBlock from './TopStatBlock';
 
 interface PropsInterface {
     sessions: SessionsSideListPropsInterface;
-    fetchSessions: Function;
+    fetchSessions: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -36,7 +36,7 @@ const mapDispatchToProps = {
     fetchSessions: fetchSessions,
 };
 
-const Dashboard = (props: PropsInterface) => {
+const Dashboard: React.FC<PropsInterface> = (props: PropsInterface) => {
     const [values, setValues] = React.useState({
         open: false,
         modalServiceName: 'name',
