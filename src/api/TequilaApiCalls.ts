@@ -1,7 +1,15 @@
-import { DEFAULT_IDENTITY_PASSPHRASE } from '../Services/constants';
-import { tequilapiClient } from './TequilApiClient';
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json';
 import { IdentityRegistrationStatus } from 'mysterium-vpn-js/lib/identity/identity';
+
+import { DEFAULT_IDENTITY_PASSPHRASE } from '../Services/constants';
+
+import { tequilapiClient } from './TequilApiClient';
 import {
     BasicResponseInterface,
     CreateNewIdentityResponseInterface,

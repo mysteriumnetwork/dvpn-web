@@ -1,5 +1,12 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+
 import '../assets/styles/App.scss';
 import {
     ERROR,
@@ -12,6 +19,7 @@ import {
     WALLET,
     SETTINGS,
 } from '../constants/routes';
+
 import Login from './Login/Login';
 import Onboarding from './Onboarding/Onboarding';
 import RestartNode from './Error/RestartNode';

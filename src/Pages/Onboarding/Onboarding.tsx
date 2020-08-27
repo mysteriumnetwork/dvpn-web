@@ -1,5 +1,15 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
 import '../../assets/styles/pages/onboarding/main.scss';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { useHistory } from 'react-router';
+import { connect } from 'react-redux';
+
 import {
     NOT_FOUND,
     ONBOARDING_HOME,
@@ -9,18 +19,16 @@ import {
     ONBOARDING_SERVICE_SETTINGS,
     ONBOARDING_TERMS,
 } from '../../constants/routes';
+import { setStepsInfo } from '../../Services/Onboarding/StepsInfo';
+import { RootState } from '../../redux/store';
+
 import Welcome from './Steps/Welcome';
 import Backup from './Steps/Backup';
 import ServiceSettings from './Steps/ServiceSettings';
 import NodeSettings from './Steps/NodeSettings';
 import PayoutSettings from './Steps/Payout-settings';
-import { Redirect, Route, Switch } from 'react-router-dom';
 import { StepCounter } from './StepCounter';
 import TermsAndConditions from './Steps/TemsAndConditions';
-import { setStepsInfo } from '../../Services/Onboarding/StepsInfo';
-import { useHistory } from 'react-router';
-import { RootState } from '../../redux/store';
-import { connect } from 'react-redux';
 
 interface StateInterface {
     sideImage: string;

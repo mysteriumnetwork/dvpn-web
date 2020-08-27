@@ -1,4 +1,10 @@
-// https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 export default (a: number, b = 2): string => {
     if (0 === a) return '0 Bytes';
     const c = 0 > b ? 0 : b,

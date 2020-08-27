@@ -1,11 +1,20 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
+
 import '../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
-import SessionBlock from './SessionBlock';
 import { Session, SessionDirection, SessionStatus } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
+
 import formatCurrency from '../../../../commons/formatCurrency';
 import formatBytes from '../../../../commons/formatBytes';
 import secondsToISOTime from '../../../../commons/secondsToISOTime';
+
+import SessionBlock from './SessionBlock';
 
 export interface SessionsSideListPropsInterface {
     sessions: Session[];

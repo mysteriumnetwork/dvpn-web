@@ -1,10 +1,18 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
+
 import { DASHBOARD } from '../../constants/routes';
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/login/main.scss';
 import { DefaultTextField } from '../../Components/DefaultTextField';
 import { authLogin } from '../../api/TequilaApiCalls';
 import { DEFAULT_USERNAME } from '../../Services/constants';
+
 import Collapse from '@material-ui/core/Collapse';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useHistory } from 'react-router';

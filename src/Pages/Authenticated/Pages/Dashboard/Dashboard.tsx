@@ -1,19 +1,27 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
 import '../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
+import { Fade, Modal } from '@material-ui/core';
+import { connect } from 'react-redux';
+
 import { ReactComponent as Logo } from '../../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../Components/Header';
-import DashboardTopStatsBlock from './TopStatBlock';
-import EarningStatisticBlock from './EarningStatiscticBlock';
-import EarningGraphBlock from './EarningGraphBlock';
-import ServicesBlock from './ServiceBlock';
 import SessionsSideList, { SessionsSideListPropsInterface } from '../components/SessionsSideList';
-import { Fade, Modal } from '@material-ui/core';
 import { DefaultSlider } from '../../../../Components/DefaultSlider';
 import { DEFAULT_PRICE_PER_GB, DEFAULT_PRICE_PER_MINUTE_PRICE } from '../../../../Services/constants';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { RootState } from '../../../../redux/store';
-import { connect } from 'react-redux';
 import { fetchSessions } from '../../../../redux/actions/dashboard/dashboard';
+
+import ServicesBlock from './ServiceBlock';
+import EarningGraphBlock from './EarningGraphBlock';
+import EarningStatisticBlock from './EarningStatiscticBlock';
+import DashboardTopStatsBlock from './TopStatBlock';
 
 interface PropsInterface {
     sessions: SessionsSideListPropsInterface;

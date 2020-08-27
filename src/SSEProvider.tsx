@@ -1,6 +1,13 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React, { ReactComponentElement, useEffect } from 'react';
 import { AppState, SSEEventType, SSEResponse } from 'mysterium-vpn-js';
 import { connect } from 'react-redux';
+
 import { sseConnect, eventBus } from './tequila-see';
 import { sseAppStateStateChanged } from './redux/actions/sse/sse';
 

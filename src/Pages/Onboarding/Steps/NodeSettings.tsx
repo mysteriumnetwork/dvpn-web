@@ -1,4 +1,15 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
+import { useHistory } from 'react-router';
+import { withRouter } from 'react-router-dom';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import Collapse from '@material-ui/core/Collapse';
+
 import { HOME } from '../../../constants/routes';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/node-settings.scss';
@@ -6,12 +17,8 @@ import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import { authChangePassword, claimMMNNode } from '../../../api/TequilaApiCalls';
 import { validatePassword } from '../../../Services/Onboarding/ValidatePassword';
 import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../Services/constants';
-import { withRouter } from 'react-router-dom';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import Collapse from '@material-ui/core/Collapse';
 import { BasicResponseInterface } from '../../../api/TequilApiResponseInterfaces';
 import { tequilApiResponseHandler } from '../../../Services/TequilApi/OnboardingResponseHandler';
-import { useHistory } from 'react-router';
 
 interface StateInterface {
     passwordRepeat: string;

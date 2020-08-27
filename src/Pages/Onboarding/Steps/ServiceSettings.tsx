@@ -1,13 +1,23 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
+
 import { ONBOARDING_IDENTITY_BACKUP } from '../../../constants/routes';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import { DefaultSlider } from '../../../Components/DefaultSlider';
 import '../../../assets/styles/pages/onboarding/steps/service-settings.scss';
 import { setServicePrice } from '../../../api/TequilaApiCalls';
+
 import { withRouter } from 'react-router-dom';
+
 import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../Services/constants';
 import { BasicResponseInterface } from '../../../api/TequilApiResponseInterfaces';
 import { tequilApiResponseHandler } from '../../../Services/TequilApi/OnboardingResponseHandler';
+
 import { useHistory } from 'react-router';
 
 interface StateInterface {

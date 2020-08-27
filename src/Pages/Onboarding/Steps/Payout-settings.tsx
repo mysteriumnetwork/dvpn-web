@@ -1,5 +1,13 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router';
+
 import { ONBOARDING_NODE_SETTINGS } from '../../../constants/routes';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/payout-settings.scss';
@@ -12,7 +20,6 @@ import {
     TransactionsFeesResponseInterface,
 } from '../../../api/TequilApiResponseInterfaces';
 import { tequilApiResponseHandler } from '../../../Services/TequilApi/OnboardingResponseHandler';
-import { useHistory } from 'react-router';
 
 interface StateInterface {
     walletAddress: string;

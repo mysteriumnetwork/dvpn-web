@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import { Identity, IdentityRef, Session, TransactorFeesResponse } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 

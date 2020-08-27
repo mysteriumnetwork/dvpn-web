@@ -1,15 +1,22 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
 // @ts-ignore
 import { TermsEndUser } from '@mysteriumnetwork/terms';
-import { ONBOARDING_SERVICE_SETTINGS } from '../../../constants/routes';
-import { acceptWithTermsAndConditions, getCurrentIdentity } from '../../../api/TequilaApiCalls';
-import '../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss';
+import { useHistory } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
 import showdown from 'showdown';
+
+import { ONBOARDING_SERVICE_SETTINGS } from '../../../constants/routes';
+import { acceptWithTermsAndConditions, getCurrentIdentity } from '../../../api/TequilaApiCalls';
+import '../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss';
 import { tequilApiResponseHandler } from '../../../Services/TequilApi/OnboardingResponseHandler';
 import { BasicResponseInterface, CurrentIdentityResponseInterface } from '../../../api/TequilApiResponseInterfaces';
-import { useHistory } from 'react-router';
 
 const md = new showdown.Converter();
 
