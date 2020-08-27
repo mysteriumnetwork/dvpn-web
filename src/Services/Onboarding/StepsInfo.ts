@@ -24,12 +24,10 @@ export const setStepsInfo = (): stepsInfoReturnInterface => {
             return { step: 3, image: sideImageOnboarding };
         case ONBOARDING_IDENTITY_BACKUP:
             return { step: 4, image: sideImageOnboarding };
-        case ONBOARDING_NODE_SETTINGS:
-            return { step: 5, image: sideImageOnboarding };
         case ONBOARDING_PAYOUT_SETTINGS:
+            return { step: 5, image: sideImageOnboarding };
+        case ONBOARDING_NODE_SETTINGS:
             return { step: 6, image: sideImageOnboarding };
-        case ONBOARDING_TERMS:
-            return { step: 7, image: sideImageOnboarding };
         default:
             return { step: 1, image: sideImageOnboarding };
     }

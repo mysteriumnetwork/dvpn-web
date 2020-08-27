@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../../assets/styles/pages/onboarding/steps/backup.scss';
-import { ONBOARDING_HOME, ONBOARDING_NODE_SETTINGS } from '../../../constants/routes';
+import { ONBOARDING_HOME, ONBOARDING_PAYOUT_SETTINGS } from '../../../constants/routes';
 
 const Backup = () => {
     return (
@@ -12,7 +12,7 @@ const Backup = () => {
                 safe. Read more about backup
             </p>
             <div className="step-block-content">
-                <Link to={ONBOARDING_NODE_SETTINGS} className="btn btn-empty skip">
+                <Link to={ONBOARDING_PAYOUT_SETTINGS} className="btn btn-empty skip">
                     <span className="btn-text">Skip</span>
                 </Link>
                 <Link to={ONBOARDING_HOME} className="btn btn-filled download">

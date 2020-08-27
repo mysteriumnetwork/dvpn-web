@@ -62,8 +62,8 @@ const Onboarding: React.FC<Props> = (props) => {
                         <Route exact={true} path={ONBOARDING_TERMS} component={TermsAndConditions} />
                         <Route exact={true} path={ONBOARDING_SERVICE_SETTINGS} component={ServiceSettings} />
                         <Route exact={true} path={ONBOARDING_IDENTITY_BACKUP} component={Backup} />
-                        <Route exact={true} path={ONBOARDING_NODE_SETTINGS} component={NodeSettings} />
                         <Route exact={true} path={ONBOARDING_PAYOUT_SETTINGS} component={PayoutSettings} />
+                        <Route exact={true} path={ONBOARDING_NODE_SETTINGS} component={NodeSettings} />
                         <Route path="*">
                             <Redirect to={NOT_FOUND} />
                         </Route>

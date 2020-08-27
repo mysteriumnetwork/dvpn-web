@@ -1,5 +1,5 @@
 import React from 'react';
-import { ONBOARDING_PAYOUT_SETTINGS } from '../../../constants/routes';
+import { HOME } from '../../../constants/routes';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/node-settings.scss';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
@@ -69,13 +69,13 @@ const NodeSettings = () => {
                 handleClaimMMNNodeResponse(resonse);
             });
         } else {
-            history.push(ONBOARDING_PAYOUT_SETTINGS);
+            history.push(HOME);
         }
     };
 
     const handleClaimMMNNodeResponse = (claimMMNNodeResponse: BasicResponseInterface): void => {
         if (tequilApiResponseHandler(history, claimMMNNodeResponse)) {
-            history.push(ONBOARDING_PAYOUT_SETTINGS);
+            history.push(HOME);
         }
     };
 
@@ -126,7 +126,7 @@ const NodeSettings = () => {
                     />
                 </div>
                 <div onClick={handleSubmitPassword} className="btn btn-filled btn-center next">
-                    <span className="btn-text">Next</span>
+                    <span className="btn-text">Done</span>
                 </div>
             </div>
         </div>

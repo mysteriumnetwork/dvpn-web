@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { HOME, LOGIN } from '../../../constants/routes';
+import { ONBOARDING_NODE_SETTINGS } from '../../../constants/routes';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/payout-settings.scss';
 import { DefaultSlider } from '../../../Components/DefaultSlider';
@@ -67,7 +67,7 @@ const PayoutSettings = () => {
     const handleRegisterIdentityResponse = (registerIdentityResponse: BasicResponseInterface): void => {
         if (tequilApiResponseHandler(history, registerIdentityResponse)) {
         }
-        history.push(HOME);
+        history.push(ONBOARDING_NODE_SETTINGS);
     };
 
     return (
@@ -105,11 +105,11 @@ const PayoutSettings = () => {
                     </p>
                 </div>
                 <div className="buttons-block">
-                    <Link to={LOGIN} className="btn btn-empty skip">
+                    <Link to={ONBOARDING_NODE_SETTINGS} className="btn btn-empty skip">
                         <span className="btn-text">Setup later</span>
                     </Link>
                     <div onClick={handleDone} className="btn btn-filled done">
-                        <span className="btn-text">Done</span>
+                        <span className="btn-text">Next</span>
                     </div>
                 </div>
             </div>
