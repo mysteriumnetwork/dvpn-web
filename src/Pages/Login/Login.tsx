@@ -8,25 +8,13 @@ import { DEFAULT_USERNAME } from '../../Services/constants';
 import Collapse from '@material-ui/core/Collapse';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useHistory } from 'react-router';
-import { RootState } from '../../redux/store';
-import { onboard } from '../../redux/actions/onboarding/onboard';
-import { autentificate } from '../../redux/actions/user/autentificate';
-import { connect } from 'react-redux';
-
-const mapStateToProps = (state: RootState) => ({
-    onboarded: state.onboarding.isDefaultCredentials,
-    autentificated: state.user.autentificated,
-});
-
-const mapDispatchToProps = { onboard, autentificate };
-type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 interface StateInterface {
     password: string;
     error: boolean;
 }
 
-const Login: React.FC<Props> = (props) => {
+const Login = () => {
     const [values, setValues] = React.useState<StateInterface>({
         password: '',
         error: false,
@@ -41,7 +29,6 @@ const Login: React.FC<Props> = (props) => {
         setValues({ ...values, error: false });
         authLogin({ username: DEFAULT_USERNAME, password: values.password }).then((response) => {
             if (response.success) {
-                props.autentificate();
                 history.push(DASHBOARD);
             } else {
                 if (response.isAuthoriseError) {
@@ -88,4 +75,4 @@ const Login: React.FC<Props> = (props) => {
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

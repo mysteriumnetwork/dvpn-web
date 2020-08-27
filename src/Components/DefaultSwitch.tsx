@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slider, Switch } from '@material-ui/core';
+import { Switch } from '@material-ui/core';
 
 interface PropsInterface {
     tunedOn: boolean;
@@ -7,8 +7,7 @@ interface PropsInterface {
     type: string;
 }
 
-export const DefaultSwitch: React.FC<PropsInterface> = (_props: PropsInterface) => {
-    const props: PropsInterface = { ..._props };
+export const DefaultSwitch: React.FC<PropsInterface> = (props: PropsInterface) => {
     return (
         <Switch checked={props.tunedOn} onChange={props.handleChange()} className={'default-switch ' + props.type} />
     );

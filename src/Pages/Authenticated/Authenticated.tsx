@@ -1,9 +1,6 @@
 import React from 'react';
 import '../../assets/styles/pages/authenticated/main.scss';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { RootState } from '../../redux/store';
-import { onboard } from '../../redux/actions/onboarding/onboard';
-import { connect } from 'react-redux';
 import { DASHBOARD, NOT_FOUND, SESSIONS, SETTINGS, WALLET } from '../../constants/routes';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import Sessions from './Pages/Sessions/Sessions';
@@ -11,14 +8,7 @@ import Settings from './Pages/Settings/Settings';
 import Wallet from './Pages/Wallet/Wallet';
 import Navigation from './Components/Navigation';
 
-const mapStateToProps = (state: RootState) => ({
-    onboarded: state.onboarding.isDefaultCredentials,
-});
-
-const mapDispatchToProps = { onboard };
-type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
-
-const Authenticated: React.FC<Props> = (props) => {
+const Authenticated = () => {
     return (
         <div className="authenticated wrapper">
             <Navigation />
@@ -53,4 +43,4 @@ const Authenticated: React.FC<Props> = (props) => {
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Authenticated);
+export default Authenticated;

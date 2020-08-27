@@ -1,6 +1,5 @@
 import React from 'react';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
-import { DEFAULT_PRICE_PER_GB, DEFAULT_PRICE_PER_MINUTE_PRICE } from '../../../../Services/constants';
 
 interface PropsInterface {
     name: string;

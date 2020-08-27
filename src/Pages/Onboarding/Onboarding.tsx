@@ -20,7 +20,6 @@ import TermsAndConditions from './Steps/TemsAndConditions';
 import { setStepsInfo } from '../../Services/Onboarding/StepsInfo';
 import { useHistory } from 'react-router';
 import { RootState } from '../../redux/store';
-import { onboard } from '../../redux/actions/onboarding/onboard';
 import { connect } from 'react-redux';
 
 interface StateInterface {
@@ -32,9 +31,7 @@ const mapStateToProps = (state: RootState) => ({
     onboarding: state.onboarding,
 });
 
-const mapDispatchToProps = { onboard };
 type Props = ReturnType<typeof mapStateToProps>;
-// type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 const Onboarding: React.FC<Props> = (props) => {
     const history = useHistory();
@@ -78,4 +75,4 @@ const Onboarding: React.FC<Props> = (props) => {
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);
+export default connect(mapStateToProps)(Onboarding);

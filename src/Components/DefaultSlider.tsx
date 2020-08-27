@@ -11,8 +11,7 @@ interface PropsInterface {
     mystSlider?: boolean;
 }
 
-export const DefaultSlider: React.FC<PropsInterface> = (_props: PropsInterface) => {
-    const props: PropsInterface = { ..._props };
+export const DefaultSlider: React.FC<PropsInterface> = (props: PropsInterface) => {
     return (
         <Slider
             valueLabelDisplay="auto"
