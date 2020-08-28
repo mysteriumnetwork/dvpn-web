@@ -37,6 +37,7 @@
     "react-scripts": "3.4.1",
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "showdown": "^1.9.1",
     "typescript": "~3.7.2"
