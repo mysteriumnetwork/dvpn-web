@@ -24,7 +24,7 @@ import Login from './Login/Login';
 import Onboarding from './Onboarding/Onboarding';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
-import IndexRoute from './indexRoute';
+import IndexRoute from './IndexRoute';
 import Authenticated from './Authenticated/Authenticated';
 
 const AppRouter = () => {
