@@ -11,15 +11,16 @@ import { CircularProgress } from '@material-ui/core';
 
 import { LOGIN, ONBOARDING_HOME } from '../constants/routes';
 import { RootState } from '../redux/store';
-import { shouldOnBoard } from '../redux/actions/onboarding/onboard';
+import { checkCredentialsAndTerms } from '../redux/actions/onboarding/onboard';
 import { OnboardingState } from '../redux/actions/onboarding/onboard.d';
 import isTermsAgreed from '../commons/isTermsAgreed';
+import {eventBus} from "../tequila-see";
 
 const mapStateToProps = (state: RootState) => ({
     onboarding: state.onboarding,
 });
 
-const mapDispatchToProps = { shouldOnBoard };
+const mapDispatchToProps = { shouldOnBoard: checkCredentialsAndTerms };
 
 interface Props {
     onboarding: OnboardingState;

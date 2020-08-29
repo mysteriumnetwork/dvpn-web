@@ -4,11 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { AppState, SSEEventType, SSEResponse } from 'mysterium-vpn-js';
+import { SSEEventType, SSEResponse } from 'mysterium-vpn-js';
 
-interface SSEState {
-    appState?: AppState;
-}
+import { SSEState } from '../../redux/actions/sse/sse.d';
 
 function sseReducer(state: SSEState = {}, action: SSEResponse): SSEState {
     switch (action.type) {

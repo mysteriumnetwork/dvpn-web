@@ -5,17 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import { useHistory } from 'react-router';
-import { withRouter } from 'react-router-dom';
 
-import { ONBOARDING_IDENTITY_BACKUP } from '../../../constants/routes';
-import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
-import { DefaultSlider } from '../../../Components/DefaultSlider';
-import '../../../assets/styles/pages/onboarding/steps/service-settings.scss';
-import { setServicePrice } from '../../../api/TequilaApiCalls';
-import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../Services/constants';
-import { BasicResponseInterface } from '../../../api/TequilApiResponseInterfaces';
-import { tequilApiResponseHandler } from '../../../Services/TequilApi/OnboardingResponseHandler';
+import { DefaultCheckbox } from '../../Components/Checkbox/DefaultCheckbox';
+import { DefaultSlider } from '../../Components/DefaultSlider';
+import '../../assets/styles/pages/onboarding/steps/service-settings.scss';
+import { setServicePrice } from '../../api/TequilaApiCalls';
+import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../Services/constants';
 
 interface StateInterface {
     checked: boolean;
@@ -23,8 +18,7 @@ interface StateInterface {
     pricePerGb: number;
 }
 
-const ServiceSettings = () => {
-    const history = useHistory();
+const PriceSettings = (props: OnboardingChildProps) => {
     const [values, setValues] = React.useState<StateInterface>({
         checked: false,
         pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
@@ -54,15 +48,7 @@ const ServiceSettings = () => {
     };
 
     const handleSettingSetup = () => {
-        setServicePrice(values.pricePerMinute, values.pricePerGb).then((response) => {
-            handleSetServicePriceResponse(response);
-        });
-    };
-
-    const handleSetServicePriceResponse = (setServicePriceResponse: BasicResponseInterface): void => {
-        if (tequilApiResponseHandler(history, setServicePriceResponse)) {
-            history.push(ONBOARDING_IDENTITY_BACKUP);
-        }
+        setServicePrice(values.pricePerMinute, values.pricePerGb).then(() => props.nextCallback());
     };
 
     return (
@@ -107,4 +93,4 @@ const ServiceSettings = () => {
     );
 };
 
-export default withRouter(ServiceSettings);
+export default PriceSettings;

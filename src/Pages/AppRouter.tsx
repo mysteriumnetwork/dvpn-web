@@ -22,6 +22,7 @@ import {
 
 import Login from './Login/Login';
 import Onboarding from './Onboarding/Onboarding';
+import Onboarding2 from './Onboarding2/Onboarding';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
 import IndexRoute from './IndexRoute';
@@ -39,6 +40,8 @@ const AppRouter = () => {
             <Route path={SESSIONS} component={Authenticated} />
             <Route path={SETTINGS} component={Authenticated} />
             <Route path={WALLET} component={Authenticated} />
+            {/*WIP implement when done*/}
+            <Route path={'/onboarding2'} component={Onboarding2} />
             <Redirect from="*" to={NOT_FOUND} />
         </Switch>
     );

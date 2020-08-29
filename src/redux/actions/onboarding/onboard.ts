@@ -20,7 +20,7 @@ const resolveTermsAgreement = (configData?: any): Agreement => {
     return configData?.mysteriumwebui?.termsAgreed || {};
 };
 
-export const shouldOnBoard = (): ((dispatch: Dispatch) => void) => {
+export const checkCredentialsAndTerms = (): ((dispatch: Dispatch) => void) => {
     return async (dispatch: Dispatch) => {
         const authResponse = await authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD });
         const userConfig = await tequilapiClient.userConfig();

@@ -5,6 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
+import Collapse from '@material-ui/core/Collapse';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import { useHistory } from 'react-router';
 
 import { DASHBOARD } from '../../constants/routes';
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
@@ -12,10 +15,6 @@ import '../../assets/styles/pages/login/main.scss';
 import { DefaultTextField } from '../../Components/DefaultTextField';
 import { authLogin } from '../../api/TequilaApiCalls';
 import { DEFAULT_USERNAME } from '../../Services/constants';
-
-import Collapse from '@material-ui/core/Collapse';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import { useHistory } from 'react-router';
 
 interface StateInterface {
     password: string;
