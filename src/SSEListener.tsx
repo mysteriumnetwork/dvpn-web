@@ -20,7 +20,7 @@ const mapDispatchToProps = {
     sseAppStateStateChanged,
 };
 
-const SSEProvider: React.FC<Props> = (props: Props) => {
+const SSEListener: React.FC<Props> = (props: Props) => {
     useEffect(() => {
         sseConnect();
         eventBus.on(SSEEventType.AppStateChange, (state: AppState) => props.sseAppStateStateChanged(state));
@@ -28,4 +28,4 @@ const SSEProvider: React.FC<Props> = (props: Props) => {
     return <div>{props.children}</div>;
 };
 
-export default connect(() => ({}), mapDispatchToProps)(SSEProvider);
+export default connect(() => ({}), mapDispatchToProps)(SSEListener);
