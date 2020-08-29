@@ -8,12 +8,12 @@ import React, { useEffect } from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
-import * as termsPackageJson from '@mysteriumnetwork/terms/package.json';
 
 import { LOGIN, ONBOARDING_HOME } from '../constants/routes';
 import { RootState } from '../redux/store';
 import { shouldOnBoard } from '../redux/actions/onboarding/onboard';
 import { OnboardingState } from '../redux/actions/onboarding/onboard.d';
+import isTermsAgreed from '../commons/isTermsAgreed';
 
 const mapStateToProps = (state: RootState) => ({
     onboarding: state.onboarding,
@@ -31,14 +31,8 @@ const isOnboardingChecksPending = (state: OnboardingState): boolean => {
     return !(isDefaultCredentialsChecked && isTermsAgreementChecked);
 };
 
-const isTermsAgreed = (state: OnboardingState): boolean => {
-    const { termsAgreedAt, termsAgreedVersion } = state;
-    return !!termsAgreedVersion && !!termsAgreedAt && termsAgreedVersion == termsPackageJson.version
-};
-
 const isNeedsOnboarding = (state: OnboardingState): boolean => {
-    const { isDefaultCredentials } = state;
-    return isDefaultCredentials || !isTermsAgreed(state);
+    return state.isDefaultCredentials || !isTermsAgreed(state.termsAgreedAt, state.termsAgreedVersion);
 };
 
 const IndexRoute: React.FC<Props> = ({ onboarding, shouldOnBoard }) => {

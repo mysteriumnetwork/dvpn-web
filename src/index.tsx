@@ -11,17 +11,17 @@ import { Provider } from 'react-redux';
 
 import AppRouter from './Pages/AppRouter';
 import { store } from './redux/store';
-import SSEProvider from './SSEProvider';
+import SSEListener from './SSEListener';
 
 require('dotenv').config();
 
 ReactDOM.render(
     <Provider store={store}>
-        <SSEProvider>
+        <SSEListener>
             <BrowserRouter>
                 <AppRouter />
             </BrowserRouter>
-        </SSEProvider>
+        </SSEListener>
     </Provider>,
     document.getElementById('root'),
 );

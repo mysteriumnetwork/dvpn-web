@@ -4,18 +4,29 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-export interface OnboardingData {
-    onboarded: boolean;
-}
+import { Action } from 'redux';
 
 export interface OnboardingState {
     isDefaultCredentials: boolean;
+    isDefaultCredentialsChecked: boolean;
+
+    isTermsAgreementChecked: boolean;
+    termsAgreedAt?: string;
+    termsAgreedVersion?: string;
+
+    isDefaultIdentityChecked: boolean;
+    defaultRegisteredIdentity?: string;
     isLoading: boolean;
 }
 
-export interface OnboardingAction<T> extends Action {
-    type: string;
+export interface OnboardingAction<T> extends Action<string> {
     payload: T;
 }
 
-export type OnboardingTypes = OnboardingAction;
+export interface CredentialsAndTermsChecks {
+    isDefaultCredentials: boolean;
+    isDefaultCredentialsChecked: boolean;
+    isTermsAgreementChecked: boolean;
+    termsAgreedAt?: string;
+    termsAgreedVersion?: string;
+}

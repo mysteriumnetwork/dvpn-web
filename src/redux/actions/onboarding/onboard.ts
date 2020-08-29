@@ -6,16 +6,34 @@
  */
 import { Dispatch } from 'redux';
 
-import { ONBOARD } from '../../actionTypes/OnbordingTypes';
+import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../../actionTypes/OnbordingTypes';
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../Services/constants';
 import { authLogin } from '../../../api/TequilaApiCalls';
+import { tequilapiClient } from '../../../api/TequilApiClient';
+
+interface Agreement {
+    at?: string;
+    version?: string;
+}
+
+const resolveTermsAgreement = (configData?: any): Agreement => {
+    return configData?.mysteriumwebui?.termsAgreed || {};
+};
 
 export const shouldOnBoard = (): ((dispatch: Dispatch) => void) => {
     return async (dispatch: Dispatch) => {
-        const response = await authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD });
+        const authResponse = await authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD });
+        const userConfig = await tequilapiClient.userConfig();
+        const { at, version } = resolveTermsAgreement(userConfig.data);
         dispatch({
-            payload: response.success, // if login fails with default credentials, user is considered boarded
-            type: ONBOARD,
+            payload: {
+                isDefaultCredentials: true,
+                isDefaultCredentialsChecked: authResponse.success,
+                isTermsAgreementChecked: true,
+                termsAgreedAt: at,
+                termsAgreedVersion: version,
+            }, // if login fails with default credentials, user is considered boarded
+            type: ONBOARDING_CREDENTIAL_AND_TERMS_CHECK,
         });
     };
 };
