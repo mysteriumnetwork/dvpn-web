@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { FC } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 
@@ -24,7 +24,7 @@ interface StateInterface {
     errorMessage: string;
 }
 
-const PasswordChange = (props: OnboardingChildProps) => {
+const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
     const [values, setValues] = React.useState<StateInterface>({
         passwordRepeat: '',
         password: '',
@@ -49,7 +49,7 @@ const PasswordChange = (props: OnboardingChildProps) => {
             tequilapiClient
                 .authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password)
                 .then(() => tequilapiClient.setMMNApiKey(values.apiToken))
-                .then(() => props.nextCallback());
+                .then(() => callbacks.nextStep());
         } else {
             setValues({ ...values, error: true, errorMessage: isPasswordValid.errorMessage });
         }

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { FC } from 'react';
 import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
 import { TransactorFeesResponse } from 'mysterium-vpn-js/lib/payment/fees';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -21,18 +21,18 @@ import { tequilapiClient } from '../../../api/TequilApiClient';
 interface StateInterface {
     walletAddress: string;
     stake: number;
-    errors: string[];
+    formErrors: string[];
 }
 
 interface Data {
     identity?: Identity;
 }
 
-const PayoutSettings = (props: OnboardingChildProps) => {
+const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
     const [thisState, setValues] = React.useState<StateInterface>({
         walletAddress: '0x...',
         stake: DEFAULT_STAKE_AMOUNT,
-        errors: [],
+        formErrors: [],
     });
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,10 +43,20 @@ const PayoutSettings = (props: OnboardingChildProps) => {
         setValues({ ...thisState, stake: newValue });
     };
 
-    const handleDone = () => {
-        setValues({ ...thisState, errors: [] });
+    const validateForm = (): void => {
+        setValues({ ...thisState, formErrors: [] });
         if (!validateWalletAddress(thisState.walletAddress)) {
-            setValues({ ...thisState, errors: ['Invalid Etherium wallet address'] });
+            setValues({ ...thisState, formErrors: ['Invalid Etherium wallet address'] });
+        }
+    };
+
+    const handleDone = () => {
+        callbacks.showSpinner();
+
+        validateForm();
+
+        if (thisState.formErrors.length > 0) {
+            callbacks.hideSpinner();
             return;
         }
         const data: Data = {};
@@ -58,9 +68,13 @@ const PayoutSettings = (props: OnboardingChildProps) => {
                 return tequilapiClient.transactorFees();
             })
             .then((txFeeResp) => registerIdentityInTransactor(txFeeResp, data.identity))
-            .then(() => props.nextCallback())
+            .then(() => {
+                callbacks.nextStep();
+                callbacks.hideSpinner();
+            })
             .catch((error) => {
                 console.error(error);
+                callbacks.hideSpinner();
             });
     };
 
@@ -88,10 +102,10 @@ const PayoutSettings = (props: OnboardingChildProps) => {
             <h1 className="step-block--heading">Payout settings</h1>
             <p className="step-block--heading-paragraph">Fill in the following information to receive payments.</p>
             <div className="step-block-content">
-                <Collapse in={thisState.errors.length > 0}>
+                <Collapse in={thisState.formErrors.length > 0}>
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>
-                        {thisState.errors.map((err, idx) => (
+                        {thisState.formErrors.map((err, idx) => (
                             <div key={idx}>{err}</div>
                         ))}
                     </Alert>
@@ -126,7 +140,7 @@ const PayoutSettings = (props: OnboardingChildProps) => {
                     </p>
                 </div>
                 <div className="buttons-block">
-                    <div onClick={props.nextCallback} className="btn btn-empty skip">
+                    <div onClick={callbacks.nextStep} className="btn btn-empty skip">
                         <span className="btn-text">Setup later</span>
                     </div>
                     <div onClick={handleDone} className="btn btn-filled done">

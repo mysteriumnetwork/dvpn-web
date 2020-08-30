@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { FC } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import showdown from 'showdown';
 // @ts-ignore
@@ -15,9 +15,9 @@ import '../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss';
 
 const md = new showdown.Converter();
 
-const TermsAndConditions = (props: OnboardingChildProps) => {
+const TermsAndConditions: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
     const agree = () => {
-        acceptWithTermsAndConditions().then(() => props.nextCallback());
+        acceptWithTermsAndConditions().then(() => callbacks.nextStep());
     };
 
     const termsHtml = md.makeHtml(TermsEndUser);

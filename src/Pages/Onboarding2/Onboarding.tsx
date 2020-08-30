@@ -7,51 +7,66 @@
 
 import React, { FC } from 'react';
 import { useHistory } from 'react-router';
+import { CircularProgress, LinearProgress } from '@material-ui/core';
 
 import { LOGIN } from '../../constants/routes';
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/onboarding/main.scss';
 
+import PasswordChange from './steps/PasswordSettings';
 import Welcome from './steps/Welcome';
 import StepCounter from './StepCounter';
 import TemsAndConditions from './steps/TemsAndConditions';
 import PriceSettings from './steps/PriceSettings';
 import PayoutSettings from './steps/PayoutSettings';
-import PasswordChange from './steps/PasswordSettings';
 
 const Onboarding: FC<any> = () => {
-    const [thisState, setThisState] = React.useState({
-        currentStep: 0,
-    });
+    const [currentStep, setCurrentStep] = React.useState(0);
+    const [isSpinnerShown, setShowSpinner] = React.useState(false);
 
-    const nextCallback = () => {
-        setThisState({ ...thisState, currentStep: thisState.currentStep + 1 });
+    const nextStep = () => {
+        setCurrentStep(currentStep + 1);
+    };
+
+    const showSpinner = () => {
+        setShowSpinner(true);
+    };
+
+    const hideSpinner = () => {
+        setShowSpinner(false);
     };
 
     const history = useHistory();
 
+    const callbacks: OnboardingChildProps = {
+        nextStep: nextStep,
+        showSpinner: showSpinner,
+        hideSpinner: hideSpinner,
+    };
+
     const steps = [
-        <Welcome key="welcome" nextCallback={nextCallback} />,
-        <TemsAndConditions key="terms" nextCallback={nextCallback} />,
-        <PriceSettings key="price" nextCallback={nextCallback} />,
+        <Welcome key="welcome" callbacks={callbacks} />,
+        <TemsAndConditions key="terms" callbacks={callbacks} />,
+        <PriceSettings key="price" callbacks={callbacks} />,
         // Backup is disabled for initial release
-        // <Backup key="backup" nextCallback={nextCallback} />,
-        <PayoutSettings key="payout" nextCallback={nextCallback} />,
-        <PasswordChange key="password" nextCallback={nextCallback} />,
+        // <Backup key="backup" callbacks={callbacks} />,
+        <PayoutSettings key="payout" callbacks={callbacks} />,
+        <PasswordChange key="password" callbacks={callbacks} />,
     ];
     const totalStepCount = steps.length;
 
-    if (steps.length - 1 < thisState.currentStep) {
+    if (steps.length - 1 < currentStep) {
         history.push(LOGIN);
     }
-    const nextStepComponent = steps[thisState.currentStep];
+    const nextStepComponent = steps[currentStep];
 
     return (
         <div className="onboarding wrapper">
+            {isSpinnerShown && <CircularProgress size="4rem" className="spinner" />}
             <div className="steps">
                 <div className="steps-content">
                     {nextStepComponent}
-                    <StepCounter currentStep={thisState.currentStep} totalStepCount={totalStepCount} />
+                    <StepCounter currentStep={currentStep} totalStepCount={totalStepCount} />
                 </div>
             </div>
             <div className="side">

@@ -6,5 +6,7 @@
  */
 
 interface OnboardingChildProps {
-    nextCallback: () => void;
+    nextStep: () => void;
+    showSpinner: () => void;
+    hideSpinner: () => void;
 }
