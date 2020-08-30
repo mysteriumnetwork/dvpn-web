@@ -6,7 +6,7 @@
  */
 import React from 'react';
 
-import '../../assets/styles/pages/onboarding/steps/welcome.scss';
+import '../../../assets/styles/pages/onboarding/steps/welcome.scss';
 
 const Welcome = (props: OnboardingChildProps) => {
     return (

@@ -8,5 +8,5 @@
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json';
 
 export default (agreedAt?: string, version?: string): boolean => {
-    return !!version && !!agreedAt && version == termsPackageJson.version;
+    return !!version && !!agreedAt && version === termsPackageJson.version;
 };

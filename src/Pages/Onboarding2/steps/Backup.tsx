@@ -6,7 +6,7 @@
  */
 import React from 'react';
 
-import '../../assets/styles/pages/onboarding/steps/backup.scss';
+import '../../../assets/styles/pages/onboarding/steps/backup.scss';
 
 const Backup = (props: OnboardingChildProps) => {
     return (

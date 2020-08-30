@@ -21,8 +21,7 @@ import {
 } from '../constants/routes';
 
 import Login from './Login/Login';
-import Onboarding from './Onboarding/Onboarding';
-import Onboarding2 from './Onboarding2/Onboarding';
+import Onboarding from './Onboarding2/Onboarding';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
 import IndexRoute from './IndexRoute';
@@ -33,15 +32,13 @@ const AppRouter = () => {
         <Switch>
             <Route exact path={HOME} component={IndexRoute} />
             <Route exact path={LOGIN} component={Login} />
-            <Route path={ONBOARDING_HOME} component={Onboarding} />
             <Route exact path={ERROR} component={RestartNode} />
+            <Route path={ONBOARDING_HOME} component={Onboarding} />
             <Route path={NOT_FOUND} component={PageNotFound} />
             <Route path={DASHBOARD} component={Authenticated} />
             <Route path={SESSIONS} component={Authenticated} />
             <Route path={SETTINGS} component={Authenticated} />
             <Route path={WALLET} component={Authenticated} />
-            {/*WIP implement when done*/}
-            <Route path={'/onboarding2'} component={Onboarding2} />
             <Redirect from="*" to={NOT_FOUND} />
         </Switch>
     );

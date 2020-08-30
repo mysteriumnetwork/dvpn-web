@@ -8,11 +8,11 @@ import React from 'react';
 import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
 import { TransactorFeesResponse } from 'mysterium-vpn-js/lib/payment/fees';
 
-import { DefaultTextField } from '../../Components/DefaultTextField';
-import '../../assets/styles/pages/onboarding/steps/payout-settings.scss';
-import { DefaultSlider } from '../../Components/DefaultSlider';
-import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_STAKE_AMOUNT } from '../../Services/constants';
-import { tequilapiClient } from '../../api/TequilApiClient';
+import { DefaultTextField } from '../../../Components/DefaultTextField';
+import '../../../assets/styles/pages/onboarding/steps/payout-settings.scss';
+import { DefaultSlider } from '../../../Components/DefaultSlider';
+import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_STAKE_AMOUNT } from '../../../Services/constants';
+import { tequilapiClient } from '../../../api/TequilApiClient';
 
 interface StateInterface {
     walletAddress: string;

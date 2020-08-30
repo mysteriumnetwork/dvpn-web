@@ -10,13 +10,14 @@ import { useHistory } from 'react-router';
 
 import { LOGIN } from '../../constants/routes';
 import sideImage from '../../assets/images/onboarding/SideImage.png';
+import '../../assets/styles/pages/onboarding/main.scss';
 
-import Welcome from './Welcome';
+import Welcome from './steps/Welcome';
 import StepCounter from './StepCounter';
-import TemsAndConditions from './TemsAndConditions';
-import PriceSettings from './PriceSettings';
-import PayoutSettings from './PayoutSettings';
-import PasswordChange from './PasswordSettings';
+import TemsAndConditions from './steps/TemsAndConditions';
+import PriceSettings from './steps/PriceSettings';
+import PayoutSettings from './steps/PayoutSettings';
+import PasswordChange from './steps/PasswordSettings';
 
 const Onboarding: FC<any> = () => {
     const [thisState, setThisState] = React.useState({

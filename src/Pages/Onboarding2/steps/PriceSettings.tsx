@@ -6,11 +6,11 @@
  */
 import React from 'react';
 
-import { DefaultCheckbox } from '../../Components/Checkbox/DefaultCheckbox';
-import { DefaultSlider } from '../../Components/DefaultSlider';
-import '../../assets/styles/pages/onboarding/steps/service-settings.scss';
-import { setServicePrice } from '../../api/TequilaApiCalls';
-import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../Services/constants';
+import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
+import { DefaultSlider } from '../../../Components/DefaultSlider';
+import '../../../assets/styles/pages/onboarding/steps/service-settings.scss';
+import { setServicePrice } from '../../../api/TequilaApiCalls';
+import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../Services/constants';
 
 interface StateInterface {
     checked: boolean;

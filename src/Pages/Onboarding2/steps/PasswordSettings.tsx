@@ -8,12 +8,12 @@ import React from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 
-import { DefaultTextField } from '../../Components/DefaultTextField';
-import '../../assets/styles/pages/onboarding/steps/node-settings.scss';
-import { DefaultCheckbox } from '../../Components/Checkbox/DefaultCheckbox';
-import { validatePassword } from '../../Services/Onboarding/ValidatePassword';
-import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../Services/constants';
-import { tequilapiClient } from '../../api/TequilApiClient';
+import { DefaultTextField } from '../../../Components/DefaultTextField';
+import '../../../assets/styles/pages/onboarding/steps/node-settings.scss';
+import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
+import { validatePassword } from '../../../Services/Onboarding/ValidatePassword';
+import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../Services/constants';
+import { tequilapiClient } from '../../../api/TequilApiClient';
 
 interface StateInterface {
     passwordRepeat: string;
