@@ -21,7 +21,7 @@ const mapDispatchToProps = {
 };
 
 const SSEListener: React.FC<Props> = (props: Props) => {
-    useEffect(() => {
+    useEffect((): void => {
         sseConnect();
         eventBus.on(SSEEventType.AppStateChange, (state: AppState) => props.sseAppStateStateChanged(state));
     }, []);

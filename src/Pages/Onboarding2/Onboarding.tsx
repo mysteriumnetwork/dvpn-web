@@ -7,7 +7,7 @@
 
 import React, { FC } from 'react';
 import { useHistory } from 'react-router';
-import { CircularProgress, LinearProgress } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 
 import { LOGIN } from '../../constants/routes';
 import sideImage from '../../assets/images/onboarding/SideImage.png';
@@ -24,24 +24,19 @@ const Onboarding: FC<any> = () => {
     const [currentStep, setCurrentStep] = React.useState(0);
     const [isSpinnerShown, setShowSpinner] = React.useState(false);
 
-    const nextStep = () => {
-        setCurrentStep(currentStep + 1);
-    };
-
-    const showSpinner = () => {
-        setShowSpinner(true);
-    };
-
-    const hideSpinner = () => {
-        setShowSpinner(false);
-    };
-
     const history = useHistory();
 
     const callbacks: OnboardingChildProps = {
-        nextStep: nextStep,
-        showSpinner: showSpinner,
-        hideSpinner: hideSpinner,
+        nextStep: (): void => {
+            setCurrentStep(currentStep + 1);
+            setShowSpinner(false);
+        },
+        showSpinner: (): void => {
+            setShowSpinner(true);
+        },
+        hideSpinner: (): void => {
+            setShowSpinner(false);
+        },
     };
 
     const steps = [

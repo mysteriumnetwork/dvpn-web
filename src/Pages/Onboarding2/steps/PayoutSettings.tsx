@@ -24,10 +24,6 @@ interface StateInterface {
     formErrors: string[];
 }
 
-interface Data {
-    identity?: Identity;
-}
-
 const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
     const [thisState, setValues] = React.useState<StateInterface>({
         walletAddress: '0x...',
@@ -43,35 +39,26 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
         setValues({ ...thisState, stake: newValue });
     };
 
-    const validateForm = (): void => {
+    const validateForm = (): boolean => {
         setValues({ ...thisState, formErrors: [] });
         if (!validateWalletAddress(thisState.walletAddress)) {
             setValues({ ...thisState, formErrors: ['Invalid Etherium wallet address'] });
         }
+        return thisState.formErrors.length > 0;
     };
 
     const handleDone = () => {
-        callbacks.showSpinner();
-
-        validateForm();
-
-        if (thisState.formErrors.length > 0) {
-            callbacks.hideSpinner();
+        if (!validateForm()) {
             return;
         }
-        const data: Data = {};
+
+        callbacks.showSpinner();
         tequilapiClient
             .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
             .then((identityRef) => tequilapiClient.identity(identityRef.id))
-            .then((identity) => {
-                data.identity = identity;
-                return tequilapiClient.transactorFees();
-            })
-            .then((txFeeResp) => registerIdentityInTransactor(txFeeResp, data.identity))
-            .then(() => {
-                callbacks.nextStep();
-                callbacks.hideSpinner();
-            })
+            .then((identity) => Promise.all([tequilapiClient.transactorFees(), identity]))
+            .then((args) => registerIdentityInTransactor(args[0], args[1]))
+            .then(() => callbacks.nextStep())
             .catch((error) => {
                 console.error(error);
                 callbacks.hideSpinner();
@@ -80,9 +67,9 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
 
     const registerIdentityInTransactor = (txFeeResp: TransactorFeesResponse, identity?: Identity): Promise<void> => {
         if (identity === undefined) {
-            throw 'Identity is missing!';
+            throw new Error('Identity is missing!');
         }
-        if (identity.registrationStatus == IdentityRegistrationStatus.Unregistered) {
+        if (identity.registrationStatus === IdentityRegistrationStatus.Unregistered) {
             return tequilapiClient.identityRegister(identity.id, {
                 beneficiary: thisState.walletAddress,
                 stake: thisState.stake,
