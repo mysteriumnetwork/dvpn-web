@@ -40,7 +40,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "showdown": "^1.9.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "wallet-address-validator": "^0.2.4"
   },
   "scripts": {
     "start": "react-scripts start",

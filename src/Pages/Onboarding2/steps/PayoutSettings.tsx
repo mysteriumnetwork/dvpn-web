@@ -7,6 +7,10 @@
 import React from 'react';
 import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
 import { TransactorFeesResponse } from 'mysterium-vpn-js/lib/payment/fees';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import Collapse from '@material-ui/core/Collapse';
+// @ts-ignore
+import WAValidator from 'wallet-address-validator';
 
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/payout-settings.scss';
@@ -17,6 +21,7 @@ import { tequilapiClient } from '../../../api/TequilApiClient';
 interface StateInterface {
     walletAddress: string;
     stake: number;
+    errors: string[];
 }
 
 interface Data {
@@ -27,6 +32,7 @@ const PayoutSettings = (props: OnboardingChildProps) => {
     const [thisState, setValues] = React.useState<StateInterface>({
         walletAddress: '0x...',
         stake: DEFAULT_STAKE_AMOUNT,
+        errors: [],
     });
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +44,11 @@ const PayoutSettings = (props: OnboardingChildProps) => {
     };
 
     const handleDone = () => {
+        setValues({ ...thisState, errors: [] });
+        if (!validateWalletAddress(thisState.walletAddress)) {
+            setValues({ ...thisState, errors: ['Invalid Etherium wallet address'] });
+            return;
+        }
         const data: Data = {};
         tequilapiClient
             .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
@@ -68,11 +79,23 @@ const PayoutSettings = (props: OnboardingChildProps) => {
         }
     };
 
+    const validateWalletAddress = (walletAddress: string): boolean => {
+        return WAValidator.validate(walletAddress, 'eth');
+    };
+
     return (
         <div className="step-block payout-settings">
             <h1 className="step-block--heading">Payout settings</h1>
             <p className="step-block--heading-paragraph">Fill in the following information to receive payments.</p>
             <div className="step-block-content">
+                <Collapse in={thisState.errors.length > 0}>
+                    <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        {thisState.errors.map((err, idx) => (
+                            <div key={idx}>{err}</div>
+                        ))}
+                    </Alert>
+                </Collapse>
                 <div className="wallet-input-block">
                     <p className="text-field-label top">Ethereum wallet address</p>
                     <DefaultTextField
