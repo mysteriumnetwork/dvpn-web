@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { FC } from 'react';
 import { useHistory } from 'react-router';
 
 import { LOGIN } from '../../constants/routes';
@@ -15,11 +15,10 @@ import Welcome from './Welcome';
 import StepCounter from './StepCounter';
 import TemsAndConditions from './TemsAndConditions';
 import PriceSettings from './PriceSettings';
-import Backup from './Backup';
 import PayoutSettings from './PayoutSettings';
 import PasswordChange from './PasswordSettings';
 
-export default () => {
+const Onboarding: FC<any> = () => {
     const [thisState, setThisState] = React.useState({
         currentStep: 0,
     });
@@ -34,7 +33,8 @@ export default () => {
         <Welcome key="welcome" nextCallback={nextCallback} />,
         <TemsAndConditions key="terms" nextCallback={nextCallback} />,
         <PriceSettings key="price" nextCallback={nextCallback} />,
-        <Backup key="backup" nextCallback={nextCallback} />,
+        // Backup is disabled for initial release
+        // <Backup key="backup" nextCallback={nextCallback} />,
         <PayoutSettings key="payout" nextCallback={nextCallback} />,
         <PasswordChange key="password" nextCallback={nextCallback} />,
     ];
@@ -59,3 +59,5 @@ export default () => {
         </div>
     );
 };
+
+export default Onboarding;

@@ -13,10 +13,6 @@ export interface OnboardingState {
     isTermsAgreementChecked: boolean;
     termsAgreedAt?: string;
     termsAgreedVersion?: string;
-
-    isDefaultIdentityChecked: boolean;
-    defaultRegisteredIdentity?: string;
-    isLoading: boolean;
 }
 
 export interface OnboardingAction<T> extends Action<string> {

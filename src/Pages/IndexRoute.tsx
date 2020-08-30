@@ -14,17 +14,16 @@ import { RootState } from '../redux/store';
 import { checkCredentialsAndTerms } from '../redux/actions/onboarding/onboard';
 import { OnboardingState } from '../redux/actions/onboarding/onboard.d';
 import isTermsAgreed from '../commons/isTermsAgreed';
-import {eventBus} from "../tequila-see";
 
 const mapStateToProps = (state: RootState) => ({
     onboarding: state.onboarding,
 });
 
-const mapDispatchToProps = { shouldOnBoard: checkCredentialsAndTerms };
+const mapDispatchToProps = { checkCredentialsAndTerms };
 
 interface Props {
     onboarding: OnboardingState;
-    shouldOnBoard: () => void;
+    checkCredentialsAndTerms: () => void;
 }
 
 const isOnboardingChecksPending = (state: OnboardingState): boolean => {
@@ -36,10 +35,10 @@ const isNeedsOnboarding = (state: OnboardingState): boolean => {
     return state.isDefaultCredentials || !isTermsAgreed(state.termsAgreedAt, state.termsAgreedVersion);
 };
 
-const IndexRoute: React.FC<Props> = ({ onboarding, shouldOnBoard }) => {
+const IndexRoute: React.FC<Props> = ({ onboarding, checkCredentialsAndTerms }) => {
     useEffect(() => {
-        shouldOnBoard();
-    });
+        checkCredentialsAndTerms();
+    }, []);
 
     if (isOnboardingChecksPending(onboarding)) {
         return (

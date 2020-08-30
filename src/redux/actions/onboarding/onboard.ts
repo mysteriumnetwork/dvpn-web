@@ -27,8 +27,9 @@ export const checkCredentialsAndTerms = (): ((dispatch: Dispatch) => void) => {
         const { at, version } = resolveTermsAgreement(userConfig.data);
         dispatch({
             payload: {
-                isDefaultCredentials: true,
-                isDefaultCredentialsChecked: authResponse.success,
+                isDefaultCredentialsChecked: true,
+                isDefaultCredentials: authResponse.success,
+
                 isTermsAgreementChecked: true,
                 termsAgreedAt: at,
                 termsAgreedVersion: version,

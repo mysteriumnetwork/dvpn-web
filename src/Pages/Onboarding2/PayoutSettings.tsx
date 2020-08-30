@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import { Identity } from 'mysterium-vpn-js';
+import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
 import { TransactorFeesResponse } from 'mysterium-vpn-js/lib/payment/fees';
 
 import { DefaultTextField } from '../../Components/DefaultTextField';
@@ -19,40 +19,53 @@ interface StateInterface {
     stake: number;
 }
 
-interface PayoutSettingsProps extends OnboardingChildProps {
-    identity?: Identity[];
+interface Data {
+    identity?: Identity;
 }
 
-const PayoutSettings = (props: PayoutSettingsProps) => {
-    const [values, setValues] = React.useState<StateInterface>({
+const PayoutSettings = (props: OnboardingChildProps) => {
+    const [thisState, setValues] = React.useState<StateInterface>({
         walletAddress: '0x...',
         stake: DEFAULT_STAKE_AMOUNT,
     });
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setValues({ ...thisState, [prop]: event.target.value });
     };
 
     const handlePricePerGbChanged = (event: any, newValue: number) => {
-        setValues({ ...values, stake: newValue });
+        setValues({ ...thisState, stake: newValue });
     };
+
     const handleDone = () => {
+        const data: Data = {};
         tequilapiClient
             .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
-            .then(() => tequilapiClient.transactorFees())
-            .then((txFeeResp) => handleGetTransactionFeesResponse(txFeeResp, 'TODO pass unregisered identity'))
+            .then((identityRef) => tequilapiClient.identity(identityRef.id))
+            .then((identity) => {
+                data.identity = identity;
+                return tequilapiClient.transactorFees();
+            })
+            .then((txFeeResp) => registerIdentityInTransactor(txFeeResp, data.identity))
             .then(() => props.nextCallback())
             .catch((error) => {
                 console.error(error);
             });
     };
 
-    const handleGetTransactionFeesResponse = (txFeeResp: TransactorFeesResponse, id: string): Promise<void> => {
-        return tequilapiClient.identityRegister(id, {
-            beneficiary: values.walletAddress,
-            stake: values.stake,
-            fee: txFeeResp.registration,
-        });
+    const registerIdentityInTransactor = (txFeeResp: TransactorFeesResponse, identity?: Identity): Promise<void> => {
+        if (identity === undefined) {
+            throw 'Identity is missing!';
+        }
+        if (identity.registrationStatus == IdentityRegistrationStatus.Unregistered) {
+            return tequilapiClient.identityRegister(identity.id, {
+                beneficiary: thisState.walletAddress,
+                stake: thisState.stake,
+                fee: txFeeResp.registration,
+            });
+        } else {
+            return tequilapiClient.updateIdentityPayout(identity.id, thisState.walletAddress);
+        }
     };
 
     return (
@@ -64,7 +77,7 @@ const PayoutSettings = (props: PayoutSettingsProps) => {
                     <p className="text-field-label top">Ethereum wallet address</p>
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
-                        value={values.walletAddress}
+                        value={thisState.walletAddress}
                         stateName="walletAddress"
                     />
                     <p className="text-field-label bottom">Fill in the following information to receive payments.</p>
@@ -74,7 +87,7 @@ const PayoutSettings = (props: PayoutSettingsProps) => {
                     <div className="slider-block">
                         <p>Stake amount</p>
                         <DefaultSlider
-                            value={values.stake}
+                            value={thisState.stake}
                             handleChange={() => handlePricePerGbChanged}
                             step={1}
                             min={0}
