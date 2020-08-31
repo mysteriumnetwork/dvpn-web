@@ -7,6 +7,7 @@
 import React, { FC } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
+import { TequilapiError } from 'mysterium-vpn-js';
 
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/node-settings.scss';
@@ -47,9 +48,16 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
         const isPasswordValid = validatePassword(values.password, values.passwordRepeat);
         if (isPasswordValid.success) {
             tequilapiClient
-                .authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password)
-                .then(() => tequilapiClient.setMMNApiKey(values.apiToken))
-                .then(() => callbacks.nextStep());
+                .setMMNApiKey(values.apiToken)
+                .then(() => tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password))
+                .then(() => callbacks.nextStep())
+                .catch((error) => {
+                    console.log(error);
+                    if (error instanceof TequilapiError) {
+                        const apiError = error as TequilapiError;
+                        setValues({ ...values, error: true, errorMessage: apiError.message });
+                    }
+                });
         } else {
             setValues({ ...values, error: true, errorMessage: isPasswordValid.errorMessage });
         }

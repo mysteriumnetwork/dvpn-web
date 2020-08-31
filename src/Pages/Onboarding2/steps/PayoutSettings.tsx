@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { FC } from 'react';
-import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
+import { Identity, IdentityRegistrationStatusV3 } from 'mysterium-vpn-js';
 import { TransactorFeesResponse } from 'mysterium-vpn-js/lib/payment/fees';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
@@ -21,15 +21,19 @@ import { tequilapiClient } from '../../../api/TequilApiClient';
 interface StateInterface {
     walletAddress: string;
     stake: number;
-    formErrors: string[];
+    errors: string[];
 }
 
 const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
     const [thisState, setValues] = React.useState<StateInterface>({
         walletAddress: '0x...',
         stake: DEFAULT_STAKE_AMOUNT,
-        formErrors: [],
+        errors: [],
     });
+
+    const errors = (...messages: string[]): void => {
+        setValues({ ...thisState, errors: messages });
+    };
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...thisState, [prop]: event.target.value });
@@ -39,16 +43,9 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
         setValues({ ...thisState, stake: newValue });
     };
 
-    const validateForm = (): boolean => {
-        setValues({ ...thisState, formErrors: [] });
-        if (!validateWalletAddress(thisState.walletAddress)) {
-            setValues({ ...thisState, formErrors: ['Invalid Etherium wallet address'] });
-        }
-        return thisState.formErrors.length > 0;
-    };
-
     const handleDone = () => {
-        if (!validateForm()) {
+        if (!validateWalletAddress(thisState.walletAddress)) {
+            errors('Invalid Ethereum wallet address');
             return;
         }
 
@@ -60,7 +57,8 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
             .then((args) => registerIdentityInTransactor(args[0], args[1]))
             .then(() => callbacks.nextStep())
             .catch((error) => {
-                console.error(error);
+                errors('API call failed!');
+                console.log(error);
                 callbacks.hideSpinner();
             });
     };
@@ -69,14 +67,21 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
         if (identity === undefined) {
             throw new Error('Identity is missing!');
         }
-        if (identity.registrationStatus === IdentityRegistrationStatus.Unregistered) {
-            return tequilapiClient.identityRegister(identity.id, {
-                beneficiary: thisState.walletAddress,
-                stake: thisState.stake,
-                fee: txFeeResp.registration,
-            });
-        } else {
-            return tequilapiClient.updateIdentityPayout(identity.id, thisState.walletAddress);
+
+        // TODO InProgress and RegistrationError
+        switch (identity.registrationStatus) {
+            case IdentityRegistrationStatusV3.Unregistered: {
+                return tequilapiClient.identityRegister(identity.id, {
+                    beneficiary: thisState.walletAddress,
+                    stake: thisState.stake,
+                    fee: txFeeResp.registration,
+                });
+            }
+            case IdentityRegistrationStatusV3.Registered: {
+                return tequilapiClient.updateIdentityPayout(identity.id, thisState.walletAddress);
+            }
+            default:
+                return Promise.resolve();
         }
     };
 
@@ -89,10 +94,10 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
             <h1 className="step-block--heading">Payout settings</h1>
             <p className="step-block--heading-paragraph">Fill in the following information to receive payments.</p>
             <div className="step-block-content">
-                <Collapse in={thisState.formErrors.length > 0}>
+                <Collapse in={thisState.errors.length > 0}>
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>
-                        {thisState.formErrors.map((err, idx) => (
+                        {thisState.errors.map((err, idx) => (
                             <div key={idx}>{err}</div>
                         ))}
                     </Alert>
