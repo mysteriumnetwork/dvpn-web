@@ -34,6 +34,7 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
         error: false,
         errorMessage: '',
     });
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [prop]: event.target.value });

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Identity, IdentityRegistrationStatusV3 } from 'mysterium-vpn-js';
 import { TransactorFeesResponse } from 'mysterium-vpn-js/lib/payment/fees';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -17,6 +17,7 @@ import '../../../assets/styles/pages/onboarding/steps/payout-settings.scss';
 import { DefaultSlider } from '../../../Components/DefaultSlider';
 import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_STAKE_AMOUNT } from '../../../Services/constants';
 import { tequilapiClient } from '../../../api/TequilApiClient';
+import LoadingButton from '../../../Components/Buttons/LoadingButton';
 
 interface StateInterface {
     walletAddress: string;
@@ -25,11 +26,12 @@ interface StateInterface {
 }
 
 const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
-    const [thisState, setValues] = React.useState<StateInterface>({
+    const [thisState, setValues] = useState<StateInterface>({
         walletAddress: '0x...',
         stake: DEFAULT_STAKE_AMOUNT,
         errors: [],
     });
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const errors = (...messages: string[]): void => {
         setValues({ ...thisState, errors: messages });
@@ -49,7 +51,7 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
             return;
         }
 
-        callbacks.showSpinner();
+        setIsLoading(true);
         tequilapiClient
             .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
             .then((identityRef) => tequilapiClient.identity(identityRef.id))
@@ -59,7 +61,7 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
             .catch((error) => {
                 errors('API call failed!');
                 console.log(error);
-                callbacks.hideSpinner();
+                setIsLoading(false);
             });
     };
 
@@ -132,12 +134,12 @@ const PayoutSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
                     </p>
                 </div>
                 <div className="buttons-block">
-                    <div onClick={callbacks.nextStep} className="btn btn-empty skip">
-                        <span className="btn-text">Setup later</span>
-                    </div>
-                    <div onClick={handleDone} className="btn btn-filled done">
-                        <span className="btn-text">Next</span>
-                    </div>
+                    <LoadingButton onClick={callbacks.nextStep} className="btn btn-empty skip">
+                        <div className="btn-text">Setup Later</div>
+                    </LoadingButton>
+                    <LoadingButton onClick={handleDone} className="btn btn-filled done" isLoading={isLoading}>
+                        <div className="btn-text">Next</div>
+                    </LoadingButton>
                 </div>
             </div>
         </div>

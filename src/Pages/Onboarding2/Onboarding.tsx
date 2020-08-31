@@ -7,41 +7,32 @@
 
 import React, { FC } from 'react';
 import { useHistory } from 'react-router';
-import { CircularProgress } from '@material-ui/core';
 
 import { LOGIN } from '../../constants/routes';
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/onboarding/main.scss';
 
-import PasswordChange from './steps/PasswordSettings';
+import PasswordChange from './steps/PasswordChange';
 import Welcome from './steps/Welcome';
 import StepCounter from './StepCounter';
-import TemsAndConditions from './steps/TemsAndConditions';
+import TermsAndConditions from './steps/TermsAndConditions';
 import PriceSettings from './steps/PriceSettings';
 import PayoutSettings from './steps/PayoutSettings';
 
 const Onboarding: FC<any> = () => {
     const [currentStep, setCurrentStep] = React.useState(0);
-    const [isSpinnerShown, setShowSpinner] = React.useState(false);
 
     const history = useHistory();
 
     const callbacks: OnboardingChildProps = {
         nextStep: (): void => {
             setCurrentStep(currentStep + 1);
-            setShowSpinner(false);
-        },
-        showSpinner: (): void => {
-            setShowSpinner(true);
-        },
-        hideSpinner: (): void => {
-            setShowSpinner(false);
         },
     };
 
     const steps = [
         <Welcome key="welcome" callbacks={callbacks} />,
-        <TemsAndConditions key="terms" callbacks={callbacks} />,
+        <TermsAndConditions key="terms" callbacks={callbacks} />,
         <PriceSettings key="price" callbacks={callbacks} />,
         // Backup is disabled for initial release
         // <Backup key="backup" callbacks={callbacks} />,
@@ -57,7 +48,6 @@ const Onboarding: FC<any> = () => {
 
     return (
         <div className="onboarding wrapper">
-            {isSpinnerShown && <CircularProgress size="4rem" className="spinner" />}
             <div className="steps">
                 <div className="steps-content">
                     {nextStepComponent}

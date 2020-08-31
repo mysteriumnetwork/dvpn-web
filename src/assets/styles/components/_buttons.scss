@@ -10,6 +10,7 @@
   text-decoration: none;
   display: block;
   text-align: center;
+  height: 3em;
 
   &-empty {
     @include box-border-gradient(#262262, #9E1F63, 1px);
