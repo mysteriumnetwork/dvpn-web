@@ -1,20 +1,22 @@
 @import '../../../base/variables';
 
-.step-block.term-and-conditions{
+.step-block.term-and-conditions {
   width: 60%;
 
-  .step-block-content{
+  .step-block-content {
     margin-top: 48px;
   }
+
   .btn.accept {
     width: 178px;
   }
-  .terms-and-conditions{
+
+  .terms-and-conditions {
     max-height: 57vh;
     overflow: auto;
     margin-bottom: 50px;
 
-    p{
+    p {
       font-weight: $normal-weight;
       font-size: 12px;
       line-height: 25px;

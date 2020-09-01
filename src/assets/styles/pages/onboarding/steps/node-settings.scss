@@ -1,23 +1,28 @@
 @import '../../../base/variables';
 
-.step-block.node-settings{
+.step-block.node-settings {
   width: 50%;
-  .step-block-content{
+
+  .step-block-content {
     margin-top: 118px;
     text-align: left;
-    .claim-node-block{
+
+    .claim-node-block {
       margin-top: 68px;
       margin-bottom: 11px;
     }
-    .api-token-block{
+
+    .api-token-block {
       margin-bottom: 50px;
-      a{
+
+      a {
         text-decoration: none;
         color: #9E1F63;
       }
     }
   }
-  .btn.next{
+
+  .btn.next {
     width: 178px;
   }
 }

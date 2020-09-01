@@ -1,6 +1,6 @@
 @import '../base/variables';
 
-.text-field-label{
+.text-field-label {
   font-family: Lato;
   font-style: normal;
   font-weight: $normal-weight;
@@ -10,9 +10,11 @@
   margin-bottom: 6px;
   margin-top: 20px;
 }
-.default-text-field.MuiFormControl-root{
+
+.default-text-field.MuiFormControl-root {
   width: 100%;
-  .MuiInputBase-input{
+
+  .MuiInputBase-input {
     padding-bottom: 17px;
     color: $main-text-color;
     font-family: Lato;
@@ -21,7 +23,8 @@
     font-size: 14px;
     line-height: 17px;
   }
-  .MuiInput-underline:after{
+
+  .MuiInput-underline:after {
     border: 1px solid #F0F0F3;
     transform: none;
     transition: none;

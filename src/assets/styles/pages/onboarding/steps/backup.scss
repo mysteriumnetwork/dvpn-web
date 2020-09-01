@@ -1,18 +1,21 @@
 @import '../../../base/variables';
 
-.step-block.backup{
+.step-block.backup {
   width: 40%;
-  .step-block-content{
+
+  .step-block-content {
     margin: 83px auto 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .btn.skip{
+
+  .btn.skip {
     width: 107px;
     margin-right: 8px;
   }
-  .btn.download{
+
+  .btn.download {
     width: 178px;
   }
 }

@@ -1,27 +1,31 @@
-.checkbox-block{
+.checkbox-block {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-top: 55px;
   margin-bottom: 50px;
-  p{
+
+  p {
     font-weight: $medium-weight;
     font-size: 14px;
     font-style: normal;
     color: $secondary-text-color;
     margin-left: 12px;
   }
-  .default-checkbox.MuiButtonBase-root{
+
+  .default-checkbox.MuiButtonBase-root {
     padding: 0;
     width: 24px;
     height: 24px;
-    .unchecked-icon{
+
+    .unchecked-icon {
       width: 20px;
       height: 20px;
       border-radius: 4px;
       background: #F0F0F3;
     }
   }
+
   .default-checkbox.Mui-checked {
     .MuiSvgIcon-root {
       fill: #5E81F4;

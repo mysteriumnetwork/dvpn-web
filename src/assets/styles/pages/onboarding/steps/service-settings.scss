@@ -1,12 +1,14 @@
 @import '../../../base/variables';
 
-.step-block.service-settings{
+.step-block.service-settings {
   width: 40%;
-  .step-block-content{
+
+  .step-block-content {
     margin-top: 60px;
     text-align: left;
-    .slider-block{
-      p{
+
+    .slider-block {
+      p {
         font-weight: $bold-weight;
         color: $inputs-labels-text-color;
         font-size: 12px;
@@ -14,11 +16,13 @@
         font-family: Lato;
       }
     }
-    .slider-block.per-gb{
+
+    .slider-block.per-gb {
       margin-top: 60px;
     }
   }
-  .btn.next{
+
+  .btn.next {
     width: 178px;
   }
 }
