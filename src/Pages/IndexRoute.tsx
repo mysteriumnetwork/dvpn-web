@@ -11,7 +11,6 @@ import { CircularProgress } from '@material-ui/core';
 
 import { LOGIN, ONBOARDING_HOME } from '../constants/routes';
 import { RootState } from '../redux/store';
-import { checkCredentialsAndTerms } from '../redux/actions/onboarding/onboard';
 import { OnboardingState } from '../redux/actions/onboarding/onboard.d';
 import isTermsAgreed from '../commons/isTermsAgreed';
 
@@ -19,16 +18,13 @@ const mapStateToProps = (state: RootState) => ({
     onboarding: state.onboarding,
 });
 
-const mapDispatchToProps = { checkCredentialsAndTerms };
-
 interface Props {
     onboarding: OnboardingState;
-    checkCredentialsAndTerms: () => void;
 }
 
 const isOnboardingChecksPending = (state: OnboardingState): boolean => {
     const { isDefaultCredentialsChecked, isDefaultCredentials, isTermsAgreementChecked } = state;
-    if (!isDefaultCredentials) {
+    if (isDefaultCredentialsChecked && !isDefaultCredentials) {
         return false;
     }
     return !(isDefaultCredentialsChecked && isTermsAgreementChecked);
@@ -38,14 +34,10 @@ const isNeedsOnboarding = (state: OnboardingState): boolean => {
     if (!state.isDefaultCredentials) {
         return false;
     }
-    return !isTermsAgreed(state.termsAgreedAt, state.termsAgreedVersion);
+    return state.isDefaultCredentials || !isTermsAgreed(state.termsAgreedAt, state.termsAgreedVersion);
 };
 
-const IndexRoute: React.FC<Props> = ({ onboarding, checkCredentialsAndTerms }) => {
-    useEffect(() => {
-        checkCredentialsAndTerms();
-    }, []);
-
+const IndexRoute: React.FC<Props> = ({ onboarding }) => {
     if (isOnboardingChecksPending(onboarding)) {
         return (
             <div className="index-route-spinner">
@@ -57,4 +49,4 @@ const IndexRoute: React.FC<Props> = ({ onboarding, checkCredentialsAndTerms }) =
     return isNeedsOnboarding(onboarding) ? <Redirect to={ONBOARDING_HOME} /> : <Redirect to={LOGIN} />;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(IndexRoute);
+export default connect(mapStateToProps)(IndexRoute);
