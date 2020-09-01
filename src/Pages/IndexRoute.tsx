@@ -27,12 +27,18 @@ interface Props {
 }
 
 const isOnboardingChecksPending = (state: OnboardingState): boolean => {
-    const { isDefaultCredentialsChecked, isTermsAgreementChecked } = state;
+    const { isDefaultCredentialsChecked, isDefaultCredentials, isTermsAgreementChecked } = state;
+    if (!isDefaultCredentials) {
+        return false;
+    }
     return !(isDefaultCredentialsChecked && isTermsAgreementChecked);
 };
 
 const isNeedsOnboarding = (state: OnboardingState): boolean => {
-    return state.isDefaultCredentials || !isTermsAgreed(state.termsAgreedAt, state.termsAgreedVersion);
+    if (!state.isDefaultCredentials) {
+        return false;
+    }
+    return !isTermsAgreed(state.termsAgreedAt, state.termsAgreedVersion);
 };
 
 const IndexRoute: React.FC<Props> = ({ onboarding, checkCredentialsAndTerms }) => {

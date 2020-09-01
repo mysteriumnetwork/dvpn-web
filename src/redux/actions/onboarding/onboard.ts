@@ -8,8 +8,9 @@ import { Dispatch } from 'redux';
 
 import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../../actionTypes/OnbordingTypes';
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../Services/constants';
-import { authLogin } from '../../../api/TequilaApiCalls';
 import { tequilapiClient } from '../../../api/TequilApiClient';
+
+import { OnboardingState } from './onboard.d';
 
 interface Agreement {
     at?: string;
@@ -22,18 +23,35 @@ const resolveTermsAgreement = (configData?: any): Agreement => {
 
 export const checkCredentialsAndTerms = (): ((dispatch: Dispatch) => void) => {
     return async (dispatch: Dispatch) => {
-        const authResponse = await authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD });
-        const userConfig = await tequilapiClient.userConfig();
-        const { at, version } = resolveTermsAgreement(userConfig.data);
-        dispatch({
-            payload: {
-                isDefaultCredentialsChecked: true,
-                isDefaultCredentials: authResponse.success,
+        const payload: OnboardingState = {
+            isDefaultCredentials: false,
+            isDefaultCredentialsChecked: false,
 
-                isTermsAgreementChecked: true,
-                termsAgreedAt: at,
-                termsAgreedVersion: version,
-            }, // if login fails with default credentials, user is considered boarded
+            isTermsAgreementChecked: false,
+            termsAgreedAt: undefined,
+            termsAgreedVersion: undefined,
+        };
+
+        await tequilapiClient
+            .authLogin(DEFAULT_USERNAME, DEFAULT_PASSWORD)
+            .then(() => {
+                payload.isDefaultCredentialsChecked = true;
+                payload.isDefaultCredentials = true;
+            })
+            .catch(() => {
+                payload.isDefaultCredentialsChecked = true;
+            });
+
+        if (payload.isDefaultCredentials) {
+            const userConfig = await tequilapiClient.userConfig();
+            const { at, version } = resolveTermsAgreement(userConfig.data);
+            payload.isTermsAgreementChecked = true;
+            payload.termsAgreedAt = at;
+            payload.termsAgreedVersion = version;
+        }
+
+        dispatch({
+            payload: payload, // if login fails with default credentials, user is considered boarded
             type: ONBOARDING_CREDENTIAL_AND_TERMS_CHECK,
         });
     };
