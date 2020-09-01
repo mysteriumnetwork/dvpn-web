@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, MouseEventHandler, ReactComponentElement } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -21,7 +21,7 @@ interface Props {
 const LoadingButton: FC<Props> = ({ isLoading, className, children, onClick }) => {
     if (isLoading) {
         return (
-            <Button className={className || ''}>
+            <Button className={className || ''} disabled>
                 <CircularProgress className="btn-spinner" />
             </Button>
         );
