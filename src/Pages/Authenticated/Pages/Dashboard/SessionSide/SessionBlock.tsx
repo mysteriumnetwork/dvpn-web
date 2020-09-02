@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import '../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
+import '../../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
 
 interface PropsInterface {
     country: string;

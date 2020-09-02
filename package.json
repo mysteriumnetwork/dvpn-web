@@ -30,7 +30,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@mysteriumnetwork/terms": "0.0.27",
     "dotenv": "^8.2.0",
-    "mysterium-vpn-js": "^4.3.0",
+    "mysterium-vpn-js": "^5.0.2",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

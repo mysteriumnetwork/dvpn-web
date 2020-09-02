@@ -286,8 +286,16 @@
         border: 5px solid #CB0D0D;
       }
 
+      .status-circle.warning {
+        border: 5px solid #ffd34a;
+      }
+
       .status-circle.success {
         border: 5px solid #6DD230;
+      }
+
+      .inlined {
+        display: inline-block
       }
 
       .status {

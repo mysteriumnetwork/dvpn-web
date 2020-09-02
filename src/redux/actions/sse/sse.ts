@@ -4,13 +4,31 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { AppState, SSEEventType, SSEResponse } from 'mysterium-vpn-js';
+import { AppState, SSEEventType } from 'mysterium-vpn-js';
 
-export interface SSEState {
-    appState?: AppState;
+export interface SessionsStats {
+    count: number;
+    countConsumers: number;
+    sumBytesReceived: number;
+    sumBytesSent: number;
+    sumDuration: number;
+    sumTokens: number;
 }
 
-export const sseAppStateStateChanged = (state: AppState): SSEResponse => {
+export interface AppStateV2 extends AppState {
+    sessionsStats?: SessionsStats;
+}
+
+export interface SSEState {
+    appState?: AppStateV2;
+}
+
+export interface SSEAction {
+    type: SSEEventType;
+    payload: AppStateV2;
+}
+
+export const sseAppStateStateChanged = (state: AppStateV2): SSEAction => {
     return {
         type: SSEEventType.AppStateChange,
         payload: state,

@@ -11,32 +11,39 @@ import { connect } from 'react-redux';
 
 import { ReactComponent as Logo } from '../../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../Components/Header';
-import SessionsSideList, { SessionsSideListPropsInterface } from '../components/SessionsSideList';
 import { DefaultSlider } from '../../../../Components/DefaultSlider';
 import { DEFAULT_PRICE_PER_GB, DEFAULT_PRICE_PER_MINUTE_PRICE } from '../../../../Services/constants';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { RootState } from '../../../../redux/store';
 import { fetchSessions } from '../../../../redux/actions/dashboard/dashboard';
+import { SSEState } from '../../../../redux/actions/sse/sse';
+import formatCurrency from '../../../../commons/formatCurrency';
+import secondsToISOTime from '../../../../commons/secondsToISOTime';
+import formatBytes from '../../../../commons/formatBytes';
 
+import SessionsSideList, { SessionsSideListPropsInterface } from './SessionSide/SessionsSideList';
 import ServicesBlock from './ServiceBlock';
 import EarningGraphBlock from './EarningGraphBlock';
 import EarningStatisticBlock from './EarningStatiscticBlock';
 import DashboardTopStatsBlock from './TopStatBlock';
+import NatStatus from './NatStatus/NatStatus';
 
 interface PropsInterface {
     sessions: SessionsSideListPropsInterface;
+    sse: SSEState;
     fetchSessions: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
     sessions: state.dashboard.sessions,
+    sse: state.sse,
 });
 
 const mapDispatchToProps = {
     fetchSessions: fetchSessions,
 };
 
-const Dashboard: React.FC<PropsInterface> = (props: PropsInterface) => {
+const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, sessions, sse }) => {
     const [values, setValues] = useState({
         open: false,
         modalServiceName: 'name',
@@ -47,7 +54,7 @@ const Dashboard: React.FC<PropsInterface> = (props: PropsInterface) => {
     });
 
     useEffect(() => {
-        props.fetchSessions();
+        fetchSessions();
     }, []);
 
     const handleOpen = (modalServiceName: string) => {
@@ -80,16 +87,19 @@ const Dashboard: React.FC<PropsInterface> = (props: PropsInterface) => {
         setValues({ ...values, limitOn: event.target.checked });
     };
 
+    const { status, error } = { ...sse.appState?.natStatus };
+    const { sumTokens, sumDuration, sumBytesSent, count, countConsumers } = { ...sse.appState?.sessionsStats };
+
     return (
         <div className="dashboard wrapper">
             <div className="dashboard--content">
                 <Header logo={Logo} name="Dashboard" />
                 <div className="dashboard--top-stats-block">
-                    <DashboardTopStatsBlock stat="35.34 MYST" name="Unsettled earnings" />
-                    <DashboardTopStatsBlock stat="4d 2h" name="Sessions time" />
-                    <DashboardTopStatsBlock stat="164.3 GB" name="Transferred" />
-                    <DashboardTopStatsBlock stat="54" name="Sessions" />
-                    <DashboardTopStatsBlock stat="28" name="Unique clients" />
+                    <DashboardTopStatsBlock stat={formatCurrency(sumTokens || 0)} name="Unsettled earnings" />
+                    <DashboardTopStatsBlock stat={secondsToISOTime(sumDuration || 0)} name="Sessions time" />
+                    <DashboardTopStatsBlock stat={formatBytes(sumBytesSent || 0)} name="Transferred" />
+                    <DashboardTopStatsBlock stat={'' + count} name="Sessions" />
+                    <DashboardTopStatsBlock stat={'' + countConsumers} name="Unique clients" />
                 </div>
                 <div className="dashboard--earnings-row">
                     <EarningStatisticBlock
@@ -106,12 +116,7 @@ const Dashboard: React.FC<PropsInterface> = (props: PropsInterface) => {
                 <div className="dashboard--services-row">
                     <div className="heading-row">
                         <p className="heading">Services</p>
-                        <div className="status-circle failed"></div>
-                        <p className="heading info">NAT status</p>
-                        <p className="status failed">Failed</p>
-                        <a href="#" className="link">
-                            How to fix this?
-                        </a>
+                        <NatStatus status={status} />
                     </div>
                     <div className="services-blocks-row">
                         <ServicesBlock
@@ -136,7 +141,7 @@ const Dashboard: React.FC<PropsInterface> = (props: PropsInterface) => {
                 </div>
             </div>
             <div className="dashboard--side">
-                <SessionsSideList {...props.sessions} />
+                <SessionsSideList {...sessions} />
             </div>
             <Modal
                 className="settings-modal"

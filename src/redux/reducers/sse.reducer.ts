@@ -4,11 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { SSEEventType, SSEResponse } from 'mysterium-vpn-js';
+import { SSEEventType } from 'mysterium-vpn-js';
 
-import { SSEState } from '../actions/sse/sse';
+import { SSEAction, SSEState } from '../actions/sse/sse';
 
-function sseReducer(state: SSEState = {}, action: SSEResponse): SSEState {
+function sseReducer(state: SSEState = {}, action: SSEAction): SSEState {
     switch (action.type) {
         case SSEEventType.AppStateChange:
             return {

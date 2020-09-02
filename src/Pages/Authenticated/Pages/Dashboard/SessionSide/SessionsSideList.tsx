@@ -5,14 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-
-import '../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
 import { Session, SessionDirection, SessionStatus } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 
-import formatCurrency from '../../../../commons/formatCurrency';
-import formatBytes from '../../../../commons/formatBytes';
-import secondsToISOTime from '../../../../commons/secondsToISOTime';
+import formatCurrency from '../../../../../commons/formatCurrency';
+import formatBytes from '../../../../../commons/formatBytes';
+import secondsToISOTime from '../../../../../commons/secondsToISOTime';
+import '../../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
 
 import SessionBlock from './SessionBlock';
 
