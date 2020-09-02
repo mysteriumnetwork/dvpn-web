@@ -6,7 +6,9 @@
  */
 const currency = 'MYST';
 
+export const MYST_DENOMINATOR = 100_000_000;
+
 export default function formatCurrency(amount: number): string {
-    const val = (amount / 100_000_000).toFixed(3);
+    const val = (amount / MYST_DENOMINATOR).toFixed(3);
     return `${val} ${currency}`;
 }

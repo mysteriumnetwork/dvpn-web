@@ -17,7 +17,7 @@ import SessionBlock from './SessionBlock';
 
 export interface SessionsSideListPropsInterface {
     sessions: Session[];
-    loading: boolean;
+    isLoading: boolean;
 }
 
 const sumArrayNumbers = (numbers: Array<number>): number => {
@@ -45,7 +45,7 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = (_props: Sess
         <div className="side-block">
             <p className="heading">Last sessions</p>
             <div className="side-block--content">
-                {props.loading ? (
+                {props.isLoading ? (
                     <div className="index-route-spinner">
                         <CircularProgress />
                     </div>

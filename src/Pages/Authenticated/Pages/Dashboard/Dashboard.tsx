@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import '../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
 import { Fade, Modal } from '@material-ui/core';
 import { connect } from 'react-redux';
+import { Identity, SessionResponse } from 'mysterium-vpn-js';
 
 import { ReactComponent as Logo } from '../../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../Components/Header';
@@ -15,13 +16,13 @@ import { DefaultSlider } from '../../../../Components/DefaultSlider';
 import { DEFAULT_PRICE_PER_GB, DEFAULT_PRICE_PER_MINUTE_PRICE } from '../../../../Services/constants';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { RootState } from '../../../../redux/store';
-import { fetchSessions } from '../../../../redux/actions/dashboard/dashboard';
+import { fetchSessions, fetchIdentity } from '../../../../redux/actions/dashboard/dashboard';
 import { SSEState } from '../../../../redux/actions/sse/sse';
 import formatCurrency from '../../../../commons/formatCurrency';
 import secondsToISOTime from '../../../../commons/secondsToISOTime';
 import formatBytes from '../../../../commons/formatBytes';
 
-import SessionsSideList, { SessionsSideListPropsInterface } from './SessionSide/SessionsSideList';
+import SessionsSideList from './SessionSide/SessionsSideList';
 import ServicesBlock from './ServiceBlock';
 import EarningGraphBlock from './EarningGraphBlock';
 import EarningStatisticBlock from './EarningStatiscticBlock';
@@ -29,21 +30,28 @@ import DashboardTopStatsBlock from './TopStatBlock';
 import NatStatus from './NatStatus/NatStatus';
 
 interface PropsInterface {
-    sessions: SessionsSideListPropsInterface;
+    sessions: {
+        isLoading: boolean;
+        sessionResponse?: SessionResponse;
+    };
+    currentIdentity?: Identity;
     sse: SSEState;
     fetchSessions: () => void;
+    fetchIdentity: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
     sessions: state.dashboard.sessions,
+    currentIdentity: state.dashboard.currentIdentity,
     sse: state.sse,
 });
 
 const mapDispatchToProps = {
-    fetchSessions: fetchSessions,
+    fetchSessions,
+    fetchIdentity,
 };
 
-const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, sessions, sse }) => {
+const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, currentIdentity, sessions, sse }) => {
     const [values, setValues] = useState({
         open: false,
         modalServiceName: 'name',
@@ -55,6 +63,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, sessions, sse }) =
 
     useEffect(() => {
         fetchSessions();
+        fetchIdentity();
     }, []);
 
     const handleOpen = (modalServiceName: string) => {
@@ -111,7 +120,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, sessions, sse }) =
                         countryPosition="1"
                         countryPositionOf="8"
                     />
-                    <EarningGraphBlock month="May" />
+                    <EarningGraphBlock statsDaily={sessions?.sessionResponse?.statsDaily || {}} month="May" />
                 </div>
                 <div className="dashboard--services-row">
                     <div className="heading-row">
@@ -141,7 +150,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, sessions, sse }) =
                 </div>
             </div>
             <div className="dashboard--side">
-                <SessionsSideList {...sessions} />
+                <SessionsSideList sessions={sessions?.sessionResponse?.sessions || []} isLoading={sessions.isLoading} />
             </div>
             <Modal
                 className="settings-modal"

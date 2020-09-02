@@ -4,18 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Dispatch } from 'redux';
-import { Session } from 'mysterium-vpn-js';
-import { Action } from 'redux';
+import { Dispatch, Action } from 'redux';
+import { Identity } from 'mysterium-vpn-js';
+import { SessionResponse } from 'mysterium-vpn-js/lib/session/session';
 
-import { SESSION_FETCH_FULFILLED } from '../../actionTypes/DashboardTypes';
+import { DashboardActionType } from '../../actionTypes/DashboardTypes';
 import { tequilapiClient } from '../../../api/TequilApiClient';
+import { DEFAULT_IDENTITY_PASSPHRASE } from '../../../Services/constants';
 
 export interface DashboardState {
     sessions: {
-        loading: boolean;
-        sessions: Session[];
+        isLoading: boolean;
+        sessionResponse?: SessionResponse;
     };
+    currentIdentity?: Identity;
 }
 
 export interface DashboardAction<T> extends Action {
@@ -23,14 +25,26 @@ export interface DashboardAction<T> extends Action {
     payload: T;
 }
 
-export type DashboardTypes = DashboardAction<DashboardState> | DashboardAction<Session[]>;
+export type DashboardTypes = DashboardAction<DashboardState> | DashboardAction<SessionResponse> | DashboardAction<Identity>;
 
 export const fetchSessions = (): ((dispatch: Dispatch) => void) => {
     return async (dispatch: Dispatch) => {
-        const sessions = await tequilapiClient.sessions();
+        const sessionResponse = await tequilapiClient.sessions();
         dispatch({
-            type: SESSION_FETCH_FULFILLED,
-            payload: sessions,
+            type: DashboardActionType.SESSION_FETCH_FULFILLED.valueOf(),
+            payload: sessionResponse,
+        });
+    };
+};
+
+export const fetchIdentity = (): ((dispatch: Dispatch) => void) => {
+    return async (dispatch: Dispatch) => {
+        const identity = await tequilapiClient
+            .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
+            .then((identityRef) => tequilapiClient.identity(identityRef.id));
+        dispatch({
+            type: DashboardActionType.IDENTITY_FETCH_FULFILLED.valueOf(),
+            payload: identity,
         });
     };
 };

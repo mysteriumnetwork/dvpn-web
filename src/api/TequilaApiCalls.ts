@@ -301,7 +301,7 @@ export const getSessions = async (): Promise<SessionsInterface> => {
             success: true,
             isAuthoriseError: false,
             isRequestFail: false,
-            sessions: await tequilapiClient.sessions(),
+            sessions: (await tequilapiClient.sessions()).sessions,
         };
     } catch (e) {
         console.log(e.message);

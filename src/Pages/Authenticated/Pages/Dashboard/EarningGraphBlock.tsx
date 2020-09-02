@@ -5,65 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
+import { Stats } from 'mysterium-vpn-js';
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 import { ReactComponent as Icon } from '../../../../assets/images/authenticated/pages/dashboard/graph-icon.svg';
 
+import { sessionDailyStatsToGraphData } from './graph.utils';
+
 interface PropsInterface {
     month: string;
+    statsDaily: {
+        [name: string]: Stats;
+    };
 }
 
-const EarningGraphBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
-    // const props: PropsInterface = {..._props};
+const EarningGraphBlock: React.FC<PropsInterface> = ({ statsDaily }) => {
     const [values, setValues] = React.useState({
         active: 'earnings',
     });
-    const data = [
-        {
-            name: '01',
-            MYST: 4000,
-        },
-        {
-            name: '02',
-            MYST: 3000,
-        },
-        {
-            name: '04',
-            MYST: 2000,
-        },
-        {
-            name: '05',
-            MYST: 2780,
-        },
-        {
-            name: '06',
-            MYST: 1890,
-        },
-        {
-            name: '07',
-            MYST: 2390,
-        },
-        {
-            name: '08',
-            MYST: 5490,
-        },
-        {
-            name: '09',
-            MYST: 1490,
-        },
-        {
-            name: '10',
-            MYST: 6490,
-        },
-        {
-            name: '11',
-            MYST: 7490,
-        },
-        {
-            name: '11',
-            MYST: 7490,
-        },
-    ];
     return (
         <div className="dashboard--earnings-graph">
             <div className="control-row">
@@ -94,7 +53,7 @@ const EarningGraphBlock: React.FC<PropsInterface> = (_props: PropsInterface) => 
                     <LineChart
                         width={500}
                         height={300}
-                        data={data}
+                        data={sessionDailyStatsToGraphData(statsDaily)}
                         margin={{
                             top: 5,
                             right: 30,
@@ -103,11 +62,11 @@ const EarningGraphBlock: React.FC<PropsInterface> = (_props: PropsInterface) => 
                         }}
                     >
                         <CartesianGrid strokeDasharray="4 4" />
-                        <XAxis dataKey="name" />
+                        <XAxis dataKey="x" />
                         <Tooltip />
                         <Line
                             type="monotone"
-                            dataKey="MYST"
+                            dataKey="y"
                             stroke="#8884d8"
                             activeDot={{ stroke: '#C986AB', fill: '#9E1F63', strokeWidth: 5, r: 8 }}
                         />
