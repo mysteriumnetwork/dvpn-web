@@ -6,7 +6,7 @@
  */
 import { SSEEventType, SSEResponse } from 'mysterium-vpn-js';
 
-import { SSEState } from '../../redux/actions/sse/sse.d';
+import { SSEState } from '../actions/sse/sse';
 
 function sseReducer(state: SSEState = {}, action: SSEResponse): SSEState {
     switch (action.type) {

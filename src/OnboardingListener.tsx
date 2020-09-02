@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { FC, ReactComponentElement, useEffect } from 'react';
+import { FC, ReactComponentElement, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 
 import './assets/styles/pages/onboarding/main.scss';
@@ -19,11 +19,11 @@ interface Props {
 }
 
 const OnboardingListener: FC<Props> = ({ checkCredentialsAndTerms, children }) => {
-    useEffect(() => {
+    useLayoutEffect(() => {
         checkCredentialsAndTerms();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return children;
 };
 
-export default connect(() => {}, mapDispatchToProps)(OnboardingListener);
+export default connect(null, mapDispatchToProps)(OnboardingListener);

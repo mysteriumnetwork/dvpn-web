@@ -6,6 +6,10 @@
  */
 import { AppState, SSEEventType, SSEResponse } from 'mysterium-vpn-js';
 
+export interface SSEState {
+    appState?: AppState;
+}
+
 export const sseAppStateStateChanged = (state: AppState): SSEResponse => {
     return {
         type: SSEEventType.AppStateChange,

@@ -100,7 +100,7 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
                 </div>
                 <div className="api-token-block">
                     <p className="text-field-label">
-                        API Token (get it <a href="#">here</a>)
+                        API Token (get it <a href="https://my.mysterium.network/login">here</a>)
                     </p>
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}

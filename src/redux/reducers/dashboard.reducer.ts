@@ -4,7 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { DashboardState, DashboardTypes } from '../actions/dashboard/dashboard.d';
+import { Session } from 'mysterium-vpn-js';
+
+import { DashboardState, DashboardTypes } from '../actions/dashboard/dashboard';
 import { SESSION_FETCH_FULFILLED } from '../actionTypes/DashboardTypes';
 
 const INITIAL_STATE: DashboardState = {
@@ -21,7 +23,7 @@ function dashboardReducer(state: DashboardState = INITIAL_STATE, action: Dashboa
                 ...state,
                 sessions: {
                     loading: false,
-                    sessions: action.payload,
+                    sessions: action.payload as Session[],
                 },
             };
         }

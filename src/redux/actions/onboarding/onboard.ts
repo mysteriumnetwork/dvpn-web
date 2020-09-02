@@ -4,13 +4,32 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Dispatch } from 'redux';
+import { Dispatch, Action } from 'redux';
 
 import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../../actionTypes/OnbordingTypes';
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../Services/constants';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 
-import { OnboardingState } from './onboard.d';
+export interface OnboardingState {
+    isDefaultCredentials: boolean;
+    isDefaultCredentialsChecked: boolean;
+
+    isTermsAgreementChecked: boolean;
+    termsAgreedAt?: string;
+    termsAgreedVersion?: string;
+}
+
+export interface OnboardingAction<T> extends Action<string> {
+    payload: T;
+}
+
+export interface CredentialsAndTermsChecks {
+    isDefaultCredentials: boolean;
+    isDefaultCredentialsChecked: boolean;
+    isTermsAgreementChecked: boolean;
+    termsAgreedAt?: string;
+    termsAgreedVersion?: string;
+}
 
 interface Agreement {
     at?: string;

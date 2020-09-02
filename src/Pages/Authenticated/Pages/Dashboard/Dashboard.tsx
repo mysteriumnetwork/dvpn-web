@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
 import { Fade, Modal } from '@material-ui/core';
 import { connect } from 'react-redux';
@@ -37,7 +37,7 @@ const mapDispatchToProps = {
 };
 
 const Dashboard: React.FC<PropsInterface> = (props: PropsInterface) => {
-    const [values, setValues] = React.useState({
+    const [values, setValues] = useState({
         open: false,
         modalServiceName: 'name',
         pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
@@ -46,7 +46,7 @@ const Dashboard: React.FC<PropsInterface> = (props: PropsInterface) => {
         limitOn: false,
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         props.fetchSessions();
     }, []);
 

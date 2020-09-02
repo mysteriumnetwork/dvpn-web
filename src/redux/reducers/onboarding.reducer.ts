@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../actionTypes/OnbordingTypes';
-import { CredentialsAndTermsChecks, OnboardingAction, OnboardingState } from '../actions/onboarding/onboard.d';
+import { CredentialsAndTermsChecks, OnboardingAction, OnboardingState } from '../actions/onboarding/onboard';
 
 const INITIAL_STATE: OnboardingState = {
     isDefaultCredentials: false,

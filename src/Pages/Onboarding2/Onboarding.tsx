@@ -15,7 +15,7 @@ import { LOGIN } from '../../constants/routes';
 import { RootState } from '../../redux/store';
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/onboarding/main.scss';
-import { OnboardingState } from '../../redux/actions/onboarding/onboard.d';
+import { OnboardingState } from '../../redux/actions/onboarding/onboard';
 import isTermsAgreed from '../../commons/isTermsAgreed';
 import { tequilapiClient } from '../../api/TequilApiClient';
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../../Services/constants';
@@ -38,7 +38,7 @@ interface Props {
 }
 
 const isIdentityRegistered = (identity?: Identity): boolean => {
-    return !!identity && (identity.registrationStatus == Registered || identity.registrationStatus == InProgress);
+    return !!identity && (identity.registrationStatus === Registered || identity.registrationStatus === InProgress);
 };
 
 const Onboarding: FC<Props> = ({ onboarding }) => {
