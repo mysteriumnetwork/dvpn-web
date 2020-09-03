@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { AppState, SSEEventType } from 'mysterium-vpn-js';
+import { ServiceInfo } from 'mysterium-vpn-js/lib/provider/service-info';
 
 export interface SessionsStats {
     count: number;

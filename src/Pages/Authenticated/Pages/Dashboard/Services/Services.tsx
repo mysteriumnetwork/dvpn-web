@@ -8,9 +8,11 @@ import React, { FC } from 'react';
 import { ServiceInfo } from 'mysterium-vpn-js/src/provider/service-info';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { Switch } from '@material-ui/core';
+import { ServiceStatus } from 'mysterium-vpn-js';
 
-import { ServiceType } from '../../../../../commons/node.d';
+import { ServiceType } from '../../../../../commons';
 import { DefaultSwitch } from '../../../../../Components/DefaultSwitch';
+import displayMyst from '../../../../../commons/displayMyst';
 
 interface Props {
     identityRef: string;
@@ -39,18 +41,24 @@ const Services: FC<Props> = ({ identityRef, servicesInfos }) => {
         });
     };
 
+    const stopService = (serviceId: string) => {
+        tequilapi.serviceStop(serviceId);
+    };
+
     return (
         <>
             {availableServices.map((serviceType) => {
                 const serviceInfo = findServiceInfo(serviceType.toLowerCase(), servicesInfos);
-
-                const { price } = { ...serviceInfo?.proposal.paymentMethod };
-
+                const status = serviceInfo?.status || ServiceStatus.NOT_RUNNING;
+                const { amount } = { ...serviceInfo?.proposal?.paymentMethod?.price };
+                const { id } = { ...serviceInfo };
                 return (
                     <div key={serviceType} className="services-blocks-row--block">
                         <div className="header-row">
                             <div className="logo-block">
-                                <div className={serviceInfo ? 'status-dot on' : 'status-dot off'}></div>
+                                <div
+                                    className={status === ServiceStatus.RUNNING ? 'status-dot on' : 'status-dot off'}
+                                />
                             </div>
                             <div className="name-block">
                                 <p className="name">{serviceType}</p>
@@ -60,11 +68,11 @@ const Services: FC<Props> = ({ identityRef, servicesInfos }) => {
                         <div className="stats-row">
                             <div className="service-stat text">
                                 <div className="title">Price per minute</div>
-                                <div className="text">{price ? price.amount : 0}</div>
+                                <div className="text">{displayMyst(amount)}</div>
                             </div>
                             <div className="service-stat text">
                                 <div className="title">Price per GB</div>
-                                <div className="text">{price ? price.amount : 0}</div>
+                                <div className="text">{displayMyst(amount)}</div>
                             </div>
                             <div className="service-stat switch">
                                 <div className="title">Whitelisted</div>
@@ -75,7 +83,11 @@ const Services: FC<Props> = ({ identityRef, servicesInfos }) => {
                                 <Switch
                                     checked={serviceInfo !== null}
                                     onChange={() => {
-                                        startService(serviceType.toLowerCase());
+                                        if (!id) {
+                                            startService(serviceType.toLowerCase());
+                                        } else {
+                                            stopService(id);
+                                        }
                                     }}
                                     className={'default-switch '}
                                 />
@@ -83,31 +95,13 @@ const Services: FC<Props> = ({ identityRef, servicesInfos }) => {
                         </div>
                         <div className="control-row">
                             <div className="button">Session history</div>
-                            {/*<div onClick={() => props.openModal(props.name)} className="button">
-                            Settings
-                        </div>*/}
+                            <div onClick={() => {}} className="button">
+                                Settings
+                            </div>
                         </div>
                     </div>
                 );
             })}
-            {/* <ServicesBlock
-                name="WireGuard"
-                type="VPN"
-                pricePerMinute="0.005"
-                pricePerGb="0.15"
-                whiteListed={true}
-                turnedOn={true}
-                openModal={() => {}}
-            />
-            <ServicesBlock
-                name="OpenVPN"
-                type="VPN"
-                pricePerMinute="0.005"
-                pricePerGb="0.15"
-                whiteListed={false}
-                turnedOn={false}
-                openModal={() => {}}
-            />*/}
         </>
     );
 };

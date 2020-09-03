@@ -20,7 +20,7 @@ const NatStatus: FC<Props> = ({ status }) => {
             <div className={'status-circle inlined ' + color} />
             <p className="heading inlined info">NAT status</p>
             <p className={'status inlined failed ' + color}>{natStatus(status)}</p>
-            {status !== 'success' && (
+            {status !== 'successful' && (
                 <a href="#" className="link">
                     How to fix this?
                 </a>

@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export default (a: number, b = 2): string => {
-    if (0 === a) return '0 Bytes';
+export default (a?: number, b = 2): string => {
+    if (!a || 0 === a) return '0 Bytes';
     const c = 0 > b ? 0 : b,
         d = Math.floor(Math.log(a) / Math.log(1024));
     return (

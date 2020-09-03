@@ -16,8 +16,7 @@ interface PropsInterface {
     value: string;
 }
 
-const SessionBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
-    const props: PropsInterface = { ..._props };
+const SessionCard: React.FC<PropsInterface> = (props) => {
     return (
         <div className="session-block">
             <div className="heading-row">
@@ -34,4 +33,4 @@ const SessionBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
     );
 };
 
-export default SessionBlock;
+export default SessionCard;

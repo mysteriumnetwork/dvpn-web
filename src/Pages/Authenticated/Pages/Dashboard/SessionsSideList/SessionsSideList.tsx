@@ -5,30 +5,30 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import { Session, SessionDirection, SessionStatus } from 'mysterium-vpn-js';
+import { Session, SessionStatus, Stats } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 
 import formatCurrency from '../../../../../commons/formatCurrency';
 import formatBytes from '../../../../../commons/formatBytes';
 import secondsToISOTime from '../../../../../commons/secondsToISOTime';
+import displayMyst from '../../../../../commons/displayMyst';
 import '../../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
 
-import SessionBlock from './SessionBlock';
+import SessionCard from './SessionCard';
 
 export interface SessionsSideListPropsInterface {
-    sessions: Session[];
-    isLoading: boolean;
+    liveSessions?: Session[];
+    liveSessionStats?: Stats;
 }
 
-const sumArrayNumbers = (numbers: Array<number>): number => {
-    return numbers.concat(0).reduce((a, b) => a + b);
+const sumBytes = (sessionStats?: Stats) => {
+    return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0);
 };
-const SessionsSideList: React.FC<SessionsSideListPropsInterface> = (_props: SessionsSideListPropsInterface) => {
-    const props: SessionsSideListPropsInterface = { ..._props };
 
-    const sessionsOfInterest = props.sessions.filter((s) => s.direction === SessionDirection.PROVIDED);
-    const mappedSessionCards = sessionsOfInterest.map((s) => (
-        <SessionBlock
+const SessionsSideList: React.FC<SessionsSideListPropsInterface> = ({ liveSessions, liveSessionStats }) => {
+    const mappedSessionCards = (liveSessions || []).map((s) => (
+        <SessionCard
+            key={s.id}
             country={s.providerCountry}
             status={s.status === SessionStatus.NEW}
             id={s.id}
@@ -38,14 +38,11 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = (_props: Sess
         />
     ));
 
-    const totalTokens = sumArrayNumbers(sessionsOfInterest.map((s) => s.tokens));
-    const totalSizeBytes = sumArrayNumbers(sessionsOfInterest.map((s) => s.bytesSent));
-
     return (
         <div className="side-block">
-            <p className="heading">Last sessions</p>
+            <p className="heading">Live Sessions</p>
             <div className="side-block--content">
-                {props.isLoading ? (
+                {liveSessions === undefined ? (
                     <div className="index-route-spinner">
                         <CircularProgress />
                     </div>
@@ -61,12 +58,12 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = (_props: Sess
                 )}
                 <div className="sum-wrapper">
                     <div className="sum-block">
-                        <div className="name">{formatCurrency(totalTokens)}</div>
+                        <div className="name">{displayMyst(liveSessionStats?.sumTokens)}</div>
                         <div className="explanation">Live earnings</div>
                     </div>
                     <div className="sum-block">
-                        <div className="name">{formatBytes(totalSizeBytes)}</div>
-                        <div className="explanation">{formatBytes(totalSizeBytes)}</div>
+                        <div className="name">{formatBytes(sumBytes(liveSessionStats))}</div>
+                        <div className="explanation">Live data</div>
                     </div>
                 </div>
             </div>

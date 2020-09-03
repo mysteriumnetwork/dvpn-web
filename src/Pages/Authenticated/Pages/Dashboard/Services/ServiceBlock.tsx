@@ -6,7 +6,7 @@
  */
 import React from 'react';
 
-import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
+import { DefaultSwitch } from '../../../../../Components/DefaultSwitch';
 
 interface PropsInterface {
     name: string;

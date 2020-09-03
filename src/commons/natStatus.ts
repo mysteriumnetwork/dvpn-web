@@ -9,7 +9,7 @@ export const natStatus = (natStatus?: string): string => {
     switch (natStatus || '') {
         case 'not_finished':
             return 'Not Finished';
-        case 'success':
+        case 'successful':
             return 'Success';
         case 'failed':
             return 'Failed';
@@ -22,7 +22,7 @@ export const natStatusColor = (natStatus?: string): string => {
     switch (natStatus || '') {
         case 'not_finished':
             return 'warning';
-        case 'success':
+        case 'successful':
             return 'success';
         case 'failed':
             return 'failed';

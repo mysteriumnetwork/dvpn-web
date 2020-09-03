@@ -6,19 +6,18 @@
  */
 import React from 'react';
 
-interface PropsInterface {
+interface Props {
     stat: string;
     name: string;
 }
 
-const DashboardTopStatsBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
-    const props: PropsInterface = { ..._props };
+const StatCard: React.FC<Props> = ({ stat, name }) => {
     return (
         <div className="dashboard--top-stat">
-            <p className="stat">{props.stat}</p>
-            <p className="name">{props.name}</p>
+            <p className="stat">{stat}</p>
+            <p className="name">{name}</p>
         </div>
     );
 };
 
-export default DashboardTopStatsBlock;
+export default StatCard;

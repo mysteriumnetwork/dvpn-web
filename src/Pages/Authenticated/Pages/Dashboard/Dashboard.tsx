@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import '../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
-import {CircularProgress, Fade, Modal} from '@material-ui/core';
+import { CircularProgress, Fade, Modal } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Identity, SessionResponse } from 'mysterium-vpn-js';
 
@@ -18,16 +18,13 @@ import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { RootState } from '../../../../redux/store';
 import { fetchSessions, fetchIdentity } from '../../../../redux/actions/dashboard/dashboard';
 import { SSEState } from '../../../../redux/actions/sse/sse';
-import formatCurrency from '../../../../commons/formatCurrency';
-import secondsToISOTime from '../../../../commons/secondsToISOTime';
-import formatBytes from '../../../../commons/formatBytes';
 
-import SessionsSideList from './SessionSide/SessionsSideList';
-import EarningGraphBlock from './EarningGraphBlock';
+import SessionsSideList from './SessionsSideList/SessionsSideList';
+import GraphBlock from './GraphBlock';
 import EarningStatisticBlock from './EarningStatiscticBlock';
-import DashboardTopStatsBlock from './TopStatBlock';
 import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
+import Statistics from './Statistics/Statistics';
 
 interface PropsInterface {
     sessions: {
@@ -66,10 +63,6 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
         fetchIdentity();
     }, []);
 
-    const handleOpen = (modalServiceName: string) => {
-        setValues({ ...values, open: true, modalServiceName: modalServiceName });
-    };
-
     const handleClose = () => {
         setValues({ ...values, open: false });
     };
@@ -96,8 +89,11 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
         setValues({ ...values, limitOn: event.target.checked });
     };
 
-    const { status, error } = { ...sse.appState?.natStatus };
-    const { sumTokens, sumDuration, sumBytesSent, count, countConsumers } = { ...sse.appState?.sessionsStats };
+    const stats = sessions?.sessionResponse?.stats;
+    const serviceInfo = sse.appState?.serviceInfo;
+    const liveSessions = sse.appState?.sessions;
+    const liveSessionsStats = sse.appState?.sessionsStats;
+    const { status } = { ...sse.appState?.natStatus };
 
     if (!currentIdentity) {
         return <CircularProgress />;
@@ -108,11 +104,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
             <div className="dashboard--content">
                 <Header logo={Logo} name="Dashboard" />
                 <div className="dashboard--top-stats-block">
-                    <DashboardTopStatsBlock stat={formatCurrency(sumTokens || 0)} name="Unsettled earnings" />
-                    <DashboardTopStatsBlock stat={secondsToISOTime(sumDuration || 0)} name="Sessions time" />
-                    <DashboardTopStatsBlock stat={formatBytes(sumBytesSent || 0)} name="Transferred" />
-                    <DashboardTopStatsBlock stat={'' + count} name="Sessions" />
-                    <DashboardTopStatsBlock stat={'' + countConsumers} name="Unique clients" />
+                    <Statistics stats={stats} />
                 </div>
                 <div className="dashboard--earnings-row">
                     <EarningStatisticBlock
@@ -124,7 +116,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
                         countryPosition="1"
                         countryPositionOf="8"
                     />
-                    <EarningGraphBlock statsDaily={sessions?.sessionResponse?.statsDaily || {}} month="May" />
+                    <GraphBlock statsDaily={sessions?.sessionResponse?.statsDaily || {}} month="May" />
                 </div>
                 <div className="dashboard--services-row">
                     <div className="heading-row">
@@ -132,12 +124,12 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
                         <NatStatus status={status} />
                     </div>
                     <div className="services-blocks-row">
-                        <Services identityRef={currentIdentity?.id} />
+                        <Services identityRef={currentIdentity?.id} servicesInfos={serviceInfo} />
                     </div>
                 </div>
             </div>
             <div className="dashboard--side">
-                <SessionsSideList sessions={sessions?.sessionResponse?.sessions || []} isLoading={sessions.isLoading} />
+                <SessionsSideList liveSessions={liveSessions} liveSessionStats={liveSessionsStats} />
             </div>
             <Modal
                 className="settings-modal"
