@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import '../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
-import { Fade, Modal } from '@material-ui/core';
+import {CircularProgress, Fade, Modal} from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Identity, SessionResponse } from 'mysterium-vpn-js';
 
@@ -23,11 +23,11 @@ import secondsToISOTime from '../../../../commons/secondsToISOTime';
 import formatBytes from '../../../../commons/formatBytes';
 
 import SessionsSideList from './SessionSide/SessionsSideList';
-import ServicesBlock from './ServiceBlock';
 import EarningGraphBlock from './EarningGraphBlock';
 import EarningStatisticBlock from './EarningStatiscticBlock';
 import DashboardTopStatsBlock from './TopStatBlock';
 import NatStatus from './NatStatus/NatStatus';
+import Services from './Services/Services';
 
 interface PropsInterface {
     sessions: {
@@ -99,6 +99,10 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
     const { status, error } = { ...sse.appState?.natStatus };
     const { sumTokens, sumDuration, sumBytesSent, count, countConsumers } = { ...sse.appState?.sessionsStats };
 
+    if (!currentIdentity) {
+        return <CircularProgress />;
+    }
+
     return (
         <div className="dashboard wrapper">
             <div className="dashboard--content">
@@ -128,24 +132,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
                         <NatStatus status={status} />
                     </div>
                     <div className="services-blocks-row">
-                        <ServicesBlock
-                            name="WireGuard"
-                            type="VPN"
-                            pricePerMinute="0.005"
-                            pricePerGb="0.15"
-                            whiteListed={true}
-                            turnedOn={true}
-                            openModal={handleOpen}
-                        />
-                        <ServicesBlock
-                            name="OpenVPN"
-                            type="VPN"
-                            pricePerMinute="0.005"
-                            pricePerGb="0.15"
-                            whiteListed={false}
-                            turnedOn={false}
-                            openModal={handleOpen}
-                        />
+                        <Services identityRef={currentIdentity?.id} />
                     </div>
                 </div>
             </div>

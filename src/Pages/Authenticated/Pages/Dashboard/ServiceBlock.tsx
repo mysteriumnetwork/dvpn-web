@@ -15,11 +15,10 @@ interface PropsInterface {
     pricePerGb: string;
     whiteListed: boolean;
     turnedOn: boolean;
-    openModal: Function;
+    openModal: (serviceType: string) => void;
 }
 
-const ServicesBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
-    const props: PropsInterface = { ..._props };
+const ServicesBlock: React.FC<PropsInterface> = (props) => {
     const [values, setValues] = React.useState({
         whitelisted: props.whiteListed,
         turnedOn: props.turnedOn,
