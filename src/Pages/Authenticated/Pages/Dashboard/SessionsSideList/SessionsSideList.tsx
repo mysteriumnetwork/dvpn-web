@@ -43,7 +43,7 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = ({ liveSessio
             <p className="heading">Live Sessions</p>
             <div className="side-block--content">
                 {liveSessions === undefined ? (
-                    <div className="index-route-spinner">
+                    <div className="spinner">
                         <CircularProgress />
                     </div>
                 ) : (

@@ -20,7 +20,7 @@ import { fetchSessions, fetchIdentity } from '../../../../redux/actions/dashboar
 import { SSEState } from '../../../../redux/actions/sse/sse';
 
 import SessionsSideList from './SessionsSideList/SessionsSideList';
-import GraphBlock from './GraphBlock';
+import GraphCard from './GraphCard';
 import EarningStatisticBlock from './EarningStatiscticBlock';
 import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
@@ -96,7 +96,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
     const { status } = { ...sse.appState?.natStatus };
 
     if (!currentIdentity) {
-        return <CircularProgress />;
+        return <CircularProgress className="spinner" />;
     }
 
     return (
@@ -116,7 +116,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
                         countryPosition="1"
                         countryPositionOf="8"
                     />
-                    <GraphBlock statsDaily={sessions?.sessionResponse?.statsDaily || {}} month="May" />
+                    <GraphCard statsDaily={sessions?.sessionResponse?.statsDaily || {}} month="May" />
                 </div>
                 <div className="dashboard--services-row">
                     <div className="heading-row">

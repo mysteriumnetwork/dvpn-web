@@ -39,11 +39,7 @@ const isNeedsOnboarding = (state: OnboardingState): boolean => {
 
 const IndexRoute: React.FC<Props> = ({ onboarding }) => {
     if (isOnboardingChecksPending(onboarding)) {
-        return (
-            <div className="index-route-spinner">
-                <CircularProgress />
-            </div>
-        );
+        return <CircularProgress className="spinner" />;
     }
 
     return isNeedsOnboarding(onboarding) ? <Redirect to={ONBOARDING_HOME} /> : <Redirect to={LOGIN} />;

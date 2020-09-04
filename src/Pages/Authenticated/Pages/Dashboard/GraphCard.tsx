@@ -29,7 +29,7 @@ interface StateProps {
     data: (arg: { [p: string]: Stats }) => Pair[];
 }
 
-const GraphBlock: React.FC<Props> = ({ statsDaily }) => {
+const GraphCard: React.FC<Props> = ({ statsDaily }) => {
     const [values, setValues] = React.useState<StateProps>({
         active: 'earnings',
         data: sessionDailyStatsToEarningGraph,
@@ -88,4 +88,4 @@ const GraphBlock: React.FC<Props> = ({ statsDaily }) => {
     );
 };
 
-export default GraphBlock;
+export default GraphCard;
