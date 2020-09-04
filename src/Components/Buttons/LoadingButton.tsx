@@ -16,19 +16,20 @@ interface Props {
     className?: string;
     children?: any;
     onClick?: MouseEventHandler;
+    type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
-const LoadingButton: FC<Props> = ({ isLoading, className, children, onClick }) => {
+const LoadingButton: FC<Props> = ({ isLoading, className, children, onClick, type }) => {
     if (isLoading) {
         return (
-            <Button className={className || ''} disabled>
+            <Button className={className} disabled>
                 <CircularProgress className="btn-spinner" />
             </Button>
         );
     }
 
     return (
-        <Button onClick={onClick} className={className || ''}>
+        <Button type={type} onClick={onClick} className={className}>
             {children}
         </Button>
     );
