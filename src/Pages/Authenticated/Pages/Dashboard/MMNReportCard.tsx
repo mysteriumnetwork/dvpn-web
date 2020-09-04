@@ -5,8 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
+import { MMNReportResponse } from 'mysterium-vpn-js';
 
-interface PropsInterface {
+import displayMyst from '../../../../commons/displayMyst';
+import { displayUsd } from '../../../../commons/money.utils';
+
+interface Props {
+    mmn: {
+        isLoading: boolean;
+        reportResponse?: MMNReportResponse;
+    };
     month: string;
     mystValue: string;
     earnings: string;
@@ -16,24 +24,27 @@ interface PropsInterface {
     countryPositionOf: string;
 }
 
-const EarningStatisticBlock: React.FC<PropsInterface> = (_props: PropsInterface) => {
-    const props: PropsInterface = { ..._props };
+const MMNReportCard: React.FC<Props> = (props) => {
+    const { reportResponse } = props.mmn;
+    const earningTokens = reportResponse?.report?.earningTokens;
+    const earningUsd = reportResponse?.report?.earningUsd;
+    const { position, positionPerCountry } = { ...props.mmn.reportResponse?.report };
     return (
         <div className="dashboard--earnings-info">
             <p className="heading">Bounty pilot ({props.month})</p>
             <div className="info-row">
-                <p className="statement">{props.mystValue}</p>
-                <p className="statement-info">{props.earnings}</p>
+                <p className="statement">{displayMyst(earningTokens)}</p>
+                <p className="statement-info">{displayUsd(earningUsd)}</p>
             </div>
             <div className="info-row">
                 <p className="statement">
-                    Residential position: {props.residentialPosition} <span>Eligible</span>
+                    Residential position: {position} <span>Eligible</span>
                 </p>
                 <p className="statement-info">out of {props.residentialPositionOf}</p>
             </div>
             <div className="info-row">
                 <p className="statement">
-                    Country position: {props.countryPosition} <span>Eligible</span>
+                    Country position: {positionPerCountry} <span>Eligible</span>
                 </p>
                 <p className="statement-info">out of {props.countryPositionOf}</p>
             </div>
@@ -46,4 +57,4 @@ const EarningStatisticBlock: React.FC<PropsInterface> = (_props: PropsInterface)
     );
 };
 
-export default EarningStatisticBlock;
+export default MMNReportCard;

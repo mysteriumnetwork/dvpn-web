@@ -14,7 +14,7 @@ import {
     Pair,
     sessionDailyStatsToData,
     sessionDailyStatsToEarningGraph,
-    sessionDailyStatsToSessionsGraph
+    sessionDailyStatsToSessionsGraph,
 } from './graph.utils';
 
 interface Props {

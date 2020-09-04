@@ -34,7 +34,7 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = ({ liveSessio
             id={s.id}
             time={secondsToISOTime(s.duration)}
             data={formatBytes(s.bytesSent)}
-            value={formatCurrency(s.tokens)}
+            value={displayMyst(s.tokens)}
         />
     ));
 

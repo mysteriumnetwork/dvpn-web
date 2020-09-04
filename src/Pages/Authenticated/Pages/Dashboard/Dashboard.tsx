@@ -16,39 +16,41 @@ import { DefaultSlider } from '../../../../Components/DefaultSlider';
 import { DEFAULT_PRICE_PER_GB, DEFAULT_PRICE_PER_MINUTE_PRICE } from '../../../../Services/constants';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { RootState } from '../../../../redux/store';
-import { fetchSessions, fetchIdentity } from '../../../../redux/actions/dashboard/dashboard';
+import {
+    fetchSessions,
+    fetchIdentity,
+    fetchMMNReport,
+    DashboardState,
+} from '../../../../redux/actions/dashboard/dashboard';
 import { SSEState } from '../../../../redux/actions/sse/sse';
 
 import SessionsSideList from './SessionsSideList/SessionsSideList';
 import GraphCard from './GraphCard';
-import EarningStatisticBlock from './EarningStatiscticBlock';
+import MMNReportCard from './MMNReportCard';
 import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
 import Statistics from './Statistics/Statistics';
 
-interface PropsInterface {
-    sessions: {
-        isLoading: boolean;
-        sessionResponse?: SessionResponse;
-    };
-    currentIdentity?: Identity;
+interface Props {
+    dashboard: DashboardState;
     sse: SSEState;
     fetchSessions: () => void;
     fetchIdentity: () => void;
+    fetchMMNReport: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
-    sessions: state.dashboard.sessions,
-    currentIdentity: state.dashboard.currentIdentity,
+    dashboard: state.dashboard,
     sse: state.sse,
 });
 
 const mapDispatchToProps = {
     fetchSessions,
     fetchIdentity,
+    fetchMMNReport,
 };
 
-const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, currentIdentity, sessions, sse }) => {
+const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, fetchMMNReport, dashboard, sse }) => {
     const [values, setValues] = useState({
         open: false,
         modalServiceName: 'name',
@@ -61,6 +63,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
     useEffect(() => {
         fetchSessions();
         fetchIdentity();
+        fetchMMNReport();
     }, []);
 
     const handleClose = () => {
@@ -89,6 +92,7 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
         setValues({ ...values, limitOn: event.target.checked });
     };
 
+    const { currentIdentity, sessions, mmn } = dashboard;
     const stats = sessions?.sessionResponse?.stats;
     const serviceInfo = sse.appState?.serviceInfo;
     const liveSessions = sse.appState?.sessions;
@@ -107,7 +111,8 @@ const Dashboard: React.FC<PropsInterface> = ({ fetchSessions, fetchIdentity, cur
                     <Statistics stats={stats} />
                 </div>
                 <div className="dashboard--earnings-row">
-                    <EarningStatisticBlock
+                    <MMNReportCard
+                        mmn={mmn}
                         month="May"
                         mystValue="48.2223 MYST"
                         earnings="$48.22"
