@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import { Stats } from 'mysterium-vpn-js';
-import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer, YAxis } from 'recharts';
 
 import { ReactComponent as Icon } from '../../../../assets/images/authenticated/pages/dashboard/graph-icon.svg';
 
@@ -18,40 +18,74 @@ import {
 } from './graph.utils';
 
 interface Props {
-    month: string;
     statsDaily: {
         [name: string]: Stats;
     };
 }
 
+type ChartType = 'earnings' | 'sessions' | 'data';
+
 interface StateProps {
-    active: string;
+    active: ChartType;
     data: (arg: { [p: string]: Stats }) => Pair[];
+    dataName: string;
 }
+
+interface Config {
+    dataFunction: (arg: { [p: string]: Stats }) => Pair[];
+    dataName: string;
+}
+
+const configByType = (type: ChartType): Config => {
+    switch (type) {
+        case 'earnings':
+            return {
+                dataFunction: sessionDailyStatsToEarningGraph,
+                dataName: 'MYST',
+            };
+        case 'sessions':
+            return {
+                dataFunction: sessionDailyStatsToSessionsGraph,
+                dataName: 'Count',
+            };
+        case 'data':
+            return {
+                dataFunction: sessionDailyStatsToData,
+                dataName: 'Gb',
+            };
+    }
+};
 
 const GraphCard: React.FC<Props> = ({ statsDaily }) => {
     const [values, setValues] = React.useState<StateProps>({
         active: 'earnings',
-        data: sessionDailyStatsToEarningGraph,
+        data: configByType('earnings').dataFunction,
+        dataName: configByType('earnings').dataName,
     });
+
+    const changeGraph = (active: ChartType) => {
+        const config = configByType(active);
+        setValues({ ...values, active: active, data: config.dataFunction, dataName: config.dataName });
+    };
+
     return (
         <div className="dashboard--earnings-graph">
             <div className="control-row">
                 <div
                     className={values.active === 'earnings' ? 'control-btn active' : 'control-btn'}
-                    onClick={() => setValues({ ...values, active: 'earnings', data: sessionDailyStatsToEarningGraph })}
+                    onClick={() => changeGraph('earnings')}
                 >
                     Earnings
                 </div>
                 <div
                     className={values.active === 'sessions' ? 'control-btn active' : 'control-btn'}
-                    onClick={() => setValues({ ...values, active: 'sessions', data: sessionDailyStatsToSessionsGraph })}
+                    onClick={() => changeGraph('sessions')}
                 >
                     Sessions
                 </div>
                 <div
                     className={values.active === 'data' ? 'control-btn active' : 'control-btn'}
-                    onClick={() => setValues({ ...values, active: 'data', data: sessionDailyStatsToData })}
+                    onClick={() => changeGraph('data')}
                 >
                     Data
                 </div>
@@ -72,12 +106,14 @@ const GraphCard: React.FC<Props> = ({ statsDaily }) => {
                             bottom: 5,
                         }}
                     >
-                        <CartesianGrid strokeDasharray="4 4" />
+                        <CartesianGrid strokeDasharray="4 4" stroke="#eee" />
                         <XAxis dataKey="x" />
+                        <YAxis dataKey="y" unit={values.dataName} />
                         <Tooltip />
                         <Line
                             type="monotone"
                             dataKey="y"
+                            name={values.dataName}
                             stroke="#8884d8"
                             activeDot={{ stroke: '#C986AB', fill: '#9E1F63', strokeWidth: 5, r: 8 }}
                         />

@@ -63,7 +63,7 @@ const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, dashboard, s
                     <Statistics stats={stats} />
                 </div>
                 <div className="dashboard--earnings-row">
-                    <GraphCard statsDaily={sessions?.sessionResponse?.statsDaily || {}} month="May" />
+                    <GraphCard statsDaily={sessions?.sessionResponse?.statsDaily || {}} />
                 </div>
                 <div className="dashboard--services-row">
                     <div className="heading-row">
