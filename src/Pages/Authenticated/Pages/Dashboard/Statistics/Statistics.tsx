@@ -8,8 +8,8 @@ import React, { FC } from 'react';
 import { Stats } from 'mysterium-vpn-js';
 
 import secondsToISOTime from '../../../../../commons/secondsToISOTime';
-import formatBytes from '../../../../../commons/formatBytes';
-import displayMyst from '../../../../../commons/displayMyst';
+import formatBytes, { add } from '../../../../../commons/formatBytes';
+import { displayMyst } from '../../../../../commons/money.utils';
 
 import StatCard from './TopStatBlock';
 
@@ -22,7 +22,7 @@ const Statistics: FC<Props> = ({ stats }) => {
         <>
             <StatCard stat={displayMyst(stats?.sumTokens)} name="Unsettled earnings" />
             <StatCard stat={secondsToISOTime(stats?.sumDuration || 0)} name="Sessions time" />
-            <StatCard stat={formatBytes(stats?.sumBytesSent || 0)} name="Transferred" />
+            <StatCard stat={formatBytes(add(stats?.sumBytesSent, stats?.sumBytesReceived))} name="Transferred" />
             <StatCard stat={'' + stats?.count} name="Sessions" />
             <StatCard stat={'' + stats?.countConsumers} name="Unique clients" />
         </>

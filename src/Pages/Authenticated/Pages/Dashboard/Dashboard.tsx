@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react';
 import '../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
 import { CircularProgress, Fade, Modal } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { Identity, SessionResponse } from 'mysterium-vpn-js';
 
 import { ReactComponent as Logo } from '../../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../Components/Header';

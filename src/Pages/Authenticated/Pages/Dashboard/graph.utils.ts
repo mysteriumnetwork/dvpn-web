@@ -4,17 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Stats } from 'mysterium-vpn-js';
+import { DECIMAL_PART_V3, Stats } from 'mysterium-vpn-js';
+
+import { displayMyst } from '../../../../commons/money.utils';
+import { add } from '../../../../commons/formatBytes';
 
 export interface Pair {
     x: string;
-    y: number;
+    y: number | string;
 }
 
 export const sessionDailyStatsToEarningGraph = (statsDaily: { [name: string]: Stats }): Pair[] => {
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
-        y: statsDaily[dateKey].sumTokens,
+        y: displayMyst(statsDaily[dateKey].sumTokens, { decimalPart: DECIMAL_PART_V3 }),
     }));
 };
 
@@ -28,7 +31,9 @@ export const sessionDailyStatsToSessionsGraph = (statsDaily: { [name: string]: S
 export const sessionDailyStatsToData = (statsDaily: { [name: string]: Stats }): Pair[] => {
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
-        y: statsDaily[dateKey].sumBytesReceived + statsDaily[dateKey].sumBytesSent,
+        y: (add(statsDaily[dateKey].sumBytesReceived, statsDaily[dateKey].sumBytesSent) / (1024 * 1024 * 1024)).toFixed(
+            2,
+        ),
     }));
 };
 

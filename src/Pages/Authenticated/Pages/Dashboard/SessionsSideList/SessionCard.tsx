@@ -7,7 +7,7 @@
 import React from 'react';
 import '../../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
 
-interface PropsInterface {
+interface Props {
     country: string;
     status: boolean;
     id: string;
@@ -16,7 +16,7 @@ interface PropsInterface {
     value: string;
 }
 
-const SessionCard: React.FC<PropsInterface> = (props) => {
+const SessionCard: React.FC<Props> = (props) => {
     return (
         <div className="session-block">
             <div className="heading-row">

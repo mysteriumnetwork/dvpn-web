@@ -12,7 +12,7 @@ export enum ServiceType {
     OPENVPN = 'OpenVPN',
 }
 
-export const MONEY_DISPLAY_OPTIONS: DisplayMoneyOptions = {
+export const DEFAULT_MONEY_DISPLAY_OPTIONS: DisplayMoneyOptions = {
     showCurrency: true,
     fractionDigits: 3,
     decimalPart: DECIMAL_PART_V3,

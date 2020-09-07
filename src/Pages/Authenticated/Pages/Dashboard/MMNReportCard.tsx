@@ -7,8 +7,7 @@
 import React from 'react';
 import { MMNReportResponse } from 'mysterium-vpn-js';
 
-import displayMyst from '../../../../commons/displayMyst';
-import { displayUsd } from '../../../../commons/money.utils';
+import { displayMyst, displayUsd } from '../../../../commons/money.utils';
 
 interface Props {
     mmn: {

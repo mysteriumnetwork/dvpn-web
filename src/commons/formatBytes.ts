@@ -15,3 +15,7 @@ export default (a?: number, b = 2): string => {
         ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][d]
     );
 };
+
+export const add = (a?: number, b?: number): number => {
+    return (a || 0) + (b || 0);
+};

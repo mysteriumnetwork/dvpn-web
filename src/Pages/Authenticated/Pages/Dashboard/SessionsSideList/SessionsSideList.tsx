@@ -8,11 +8,10 @@ import React from 'react';
 import { Session, SessionStatus, Stats } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 
-import formatCurrency from '../../../../../commons/formatCurrency';
-import formatBytes from '../../../../../commons/formatBytes';
+import formatBytes, { add } from '../../../../../commons/formatBytes';
 import secondsToISOTime from '../../../../../commons/secondsToISOTime';
-import displayMyst from '../../../../../commons/displayMyst';
 import '../../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
+import { displayMyst } from '../../../../../commons/money.utils';
 
 import SessionCard from './SessionCard';
 
@@ -33,7 +32,7 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = ({ liveSessio
             status={s.status === SessionStatus.NEW}
             id={s.id}
             time={secondsToISOTime(s.duration)}
-            data={formatBytes(s.bytesSent)}
+            data={formatBytes(add(s.bytesSent, s.bytesReceived))}
             value={displayMyst(s.tokens)}
         />
     ));
