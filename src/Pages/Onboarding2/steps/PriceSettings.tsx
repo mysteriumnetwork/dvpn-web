@@ -9,8 +9,9 @@ import React, { FC } from 'react';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import { DefaultSlider } from '../../../Components/DefaultSlider';
 import '../../../assets/styles/pages/onboarding/steps/service-settings.scss';
-import { setServicePrice } from '../../../api/TequilaApiCalls';
+import { setAllServicePrice } from '../../../api/TequilaApiCalls';
 import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../Services/constants';
+import LoadingButton from '../../../Components/Buttons/LoadingButton';
 
 interface StateInterface {
     checked: boolean;
@@ -48,7 +49,7 @@ const PriceSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) =
     };
 
     const handleSettingSetup = () => {
-        setServicePrice(values.pricePerMinute, values.pricePerGb).then(() => callbacks.nextStep());
+        setAllServicePrice(values.pricePerMinute, values.pricePerGb).then(() => callbacks.nextStep());
     };
 
     return (
@@ -62,7 +63,7 @@ const PriceSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) =
                     <p>Price per minute</p>
                     <DefaultSlider
                         value={values.pricePerMinute}
-                        handleChange={() => handlePricePerMinuteChanged}
+                        handleChange={handlePricePerMinuteChanged}
                         step={0.001}
                         min={0}
                         max={0.01}
@@ -73,7 +74,7 @@ const PriceSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) =
                     <p>Price per GB</p>
                     <DefaultSlider
                         value={values.pricePerGb}
-                        handleChange={() => handlePricePerGbChanged}
+                        handleChange={handlePricePerGbChanged}
                         step={0.001}
                         min={0}
                         max={0.01}
@@ -85,9 +86,9 @@ const PriceSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) =
                     handleCheckboxChange={() => handleCheckboxChange}
                     label="Use default pricing"
                 />
-                <div onClick={handleSettingSetup} className="btn btn-filled btn-center next">
-                    <span className="btn-text">Next</span>
-                </div>
+                <LoadingButton onClick={handleSettingSetup} className="btn btn-filled btn-center next">
+                    <span className="btn-text-white">Next</span>
+                </LoadingButton>
             </div>
         </div>
     );

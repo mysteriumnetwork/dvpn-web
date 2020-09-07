@@ -4,21 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { FC } from 'react';
 import { Switch } from '@material-ui/core';
 
-interface PropsInterface {
-    tunedOn: boolean;
+interface Props {
+    turnedOn: boolean;
     handleChange: () => void;
     type: string;
 }
 
-export const DefaultSwitch: React.FC<PropsInterface> = (props: PropsInterface) => {
-    return (
-        <Switch
-            checked={props.tunedOn}
-            onChange={() => props.handleChange}
-            className={'default-switch ' + props.type}
-        />
-    );
+export const DefaultSwitch: FC<Props> = ({ turnedOn, handleChange, type }) => {
+    return <Switch checked={turnedOn} onChange={() => handleChange} className={'default-switch ' + type} />;
 };

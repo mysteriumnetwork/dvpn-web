@@ -53,14 +53,14 @@ const ServicesBlock: React.FC<PropsInterface> = (props) => {
                 <div className="service-stat switch">
                     <div className="title">Whitelisted</div>
                     <DefaultSwitch
-                        tunedOn={values.whitelisted}
+                        turnedOn={values.whitelisted}
                         handleChange={() => handleWhitelistedChange}
                         type="normal"
                     />
                 </div>
                 <div className="service-stat switch">
                     <div className="title">Turned on</div>
-                    <DefaultSwitch tunedOn={values.turnedOn} handleChange={() => handleTurnedOnChange} type="normal" />
+                    <DefaultSwitch turnedOn={values.turnedOn} handleChange={() => handleTurnedOnChange} type="normal" />
                 </div>
             </div>
             <div className="control-row">

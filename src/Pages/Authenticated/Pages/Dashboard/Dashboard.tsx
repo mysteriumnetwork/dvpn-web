@@ -183,7 +183,7 @@ const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, fetchMMNRepo
                         <div className="partners-block">
                             <div className="switch-row">
                                 <DefaultSwitch
-                                    tunedOn={values.partnersOn}
+                                    turnedOn={values.partnersOn}
                                     handleChange={() => handlePartnersOnChange}
                                     type="myst"
                                 />
@@ -196,7 +196,7 @@ const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, fetchMMNRepo
                         </div>
                         <div className="limits-block">
                             <DefaultSwitch
-                                tunedOn={values.limitOn}
+                                turnedOn={values.limitOn}
                                 handleChange={() => handleLimitOnChange}
                                 type="myst"
                             />

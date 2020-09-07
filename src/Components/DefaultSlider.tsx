@@ -7,9 +7,9 @@
 import React from 'react';
 import { Slider } from '@material-ui/core';
 
-interface PropsInterface {
+interface Props {
     value: number;
-    handleChange: Function;
+    handleChange: (event: React.ChangeEvent<any>, value: number) => void;
     step: number;
     min: number;
     max: number;
@@ -17,18 +17,22 @@ interface PropsInterface {
     mystSlider?: boolean;
 }
 
-export const DefaultSlider: React.FC<PropsInterface> = (props: PropsInterface) => {
+export const DefaultSlider: React.FC<Props> = ({ value, handleChange, step, min, max, disabled, mystSlider }) => {
     return (
         <Slider
             valueLabelDisplay="auto"
-            step={props.step}
-            min={props.min}
-            max={props.max}
-            onChange={props.handleChange()}
-            value={props.value}
-            className={props.mystSlider ? 'default-slider myst-slider' : 'default-slider '}
-            disabled={props.disabled}
-            valueLabelFormat={props.mystSlider ? (value) => <div>{value} MYSTT</div> : (value) => value}
+            step={step}
+            min={min}
+            max={max}
+            onChange={(e, v) => {
+                if (typeof v === 'number') {
+                    handleChange(e, v);
+                }
+            }}
+            value={value}
+            className={mystSlider ? 'default-slider myst-slider' : 'default-slider '}
+            disabled={disabled}
+            valueLabelFormat={mystSlider ? (value) => <div>{value} MYST</div> : (value) => value}
         />
     );
 };

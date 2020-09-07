@@ -75,7 +75,7 @@ const Onboarding: FC<Props> = ({ onboarding }) => {
         !isIdentityRegistered(identity) ? <PriceSettings key="price" callbacks={callbacks} /> : undefined,
         // Backup is disabled for initial release
         // <Backup key="backup" callbacks={callbacks} />,
-        <PayoutSettings key="payout" callbacks={callbacks} />,
+        !isIdentityRegistered(identity) ? <PayoutSettings key="payout" callbacks={callbacks} /> : undefined,
         <PasswordChange key="password" callbacks={callbacks} />,
     ].filter((step) => step !== undefined);
     const totalStepCount = steps.length;

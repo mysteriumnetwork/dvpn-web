@@ -7,6 +7,7 @@
 import React, { FC } from 'react';
 
 import '../../../assets/styles/pages/onboarding/steps/welcome.scss';
+import LoadingButton from '../../../Components/Buttons/LoadingButton';
 
 const Welcome: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
     return (
@@ -14,9 +15,9 @@ const Welcome: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
             <h1 className="step-block--heading">Welcome node runner!</h1>
             <p className="step-block--heading-paragraph">Lets get you up and running. </p>
             <div className="step-block-content">
-                <div onClick={callbacks.nextStep} className="btn btn-filled btn-center start">
-                    <span className="btn-text">Start node setup</span>
-                </div>
+                <LoadingButton onClick={callbacks.nextStep} className="btn btn-filled btn-center start">
+                    <span className="btn-text-white">Start node setup</span>
+                </LoadingButton>
             </div>
         </div>
     );

@@ -13,7 +13,7 @@ import {
     ServiceInfo,
     ServiceStatus,
 } from 'mysterium-vpn-js';
-import { CircularProgress, Switch } from '@material-ui/core';
+import { CircularProgress, Fade, Modal, Switch } from '@material-ui/core';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 
 import { ServiceType } from '../../../../../commons';
@@ -21,6 +21,9 @@ import { displayMoneyMyst, displayMyst } from '../../../../../commons/money.util
 import { DefaultSwitch } from '../../../../../Components/DefaultSwitch';
 import { ReactComponent as WireGuardIcon } from '../../../../../assets/images/wg-icon.svg';
 import { ReactComponent as OpenVpnIcon } from '../../../../../assets/images/ovpn-icon.svg';
+import LoadingButton from '../../../../../Components/Buttons/LoadingButton';
+
+import ServiceSettingsModel from './ServiceSettingsModel';
 
 const { RUNNING } = ServiceStatus;
 
@@ -51,8 +54,13 @@ const toMystGb = (pm?: PaymentMethod): string => {
         : displayMyst(0, { decimalPart: DECIMAL_PART_V3 });
 };
 
+interface ModalProps {
+    isOpen: boolean;
+}
+
 const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef }) => {
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
+    const [modalState, setModalState] = useState<ModalProps>({ isOpen: false });
     const { status, proposal, id } = { ...serviceInfo };
 
     const startService = (serviceType: string) => {
@@ -68,6 +76,14 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef }) => {
     const stopService = (serviceId: string) => {
         setTurnOnWorking(true);
         tequilapi.serviceStop(serviceId).finally(() => setTurnOnWorking(false));
+    };
+
+    const openSettings = () => {
+        setModalState({ ...modalState, isOpen: true });
+    };
+
+    const closeSettings = () => {
+        setModalState({ ...modalState, isOpen: false });
     };
 
     return (
@@ -93,7 +109,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef }) => {
                 </div>
                 <div className="service-stat switch">
                     <div className="title">Whitelisted</div>
-                    <DefaultSwitch tunedOn={false} handleChange={() => {}} type="normal" />
+                    <DefaultSwitch turnedOn={false} handleChange={() => {}} type="normal" />
                 </div>
                 <div className="service-stat switch">
                     <div className="title">Turned on</div>
@@ -114,6 +130,21 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef }) => {
                     )}
                 </div>
             </div>
+            <div className="control-row">
+                <div className="button">Session history</div>
+                <LoadingButton onClick={openSettings} className="button">
+                    Settings
+                </LoadingButton>
+            </div>
+            <ServiceSettingsModel
+                isOpen={modalState.isOpen}
+                onClose={closeSettings}
+                serviceType={serviceType}
+                currentPricePerGb={pricePerGiB(proposal?.paymentMethod)}
+                currentPricePerMinute={pricePerMinute(proposal?.paymentMethod)}
+                identityRef={identityRef}
+                serviceInfo={serviceInfo}
+            />
         </div>
     );
 };

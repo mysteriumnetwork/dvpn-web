@@ -28,7 +28,7 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = ({ liveSessio
     const mappedSessionCards = (liveSessions || []).map((s) => (
         <SessionCard
             key={s.id}
-            country={s.providerCountry}
+            country={s.consumerCountry}
             status={s.status === SessionStatus.NEW}
             id={s.id}
             time={secondsToISOTime(s.duration)}
