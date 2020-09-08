@@ -39,7 +39,7 @@ const myst2HumanReadable = (amount?: number): number => {
     return parseFloat(humanReadable.toFixed(3));
 };
 
-const ServiceSettingsModel: FC<Props> = ({
+const ServiceSettingsModal: FC<Props> = ({
     onClose,
     isOpen,
     serviceType,
@@ -171,4 +171,4 @@ const ServiceSettingsModel: FC<Props> = ({
     );
 };
 
-export default ServiceSettingsModel;
+export default ServiceSettingsModal;

@@ -25,7 +25,7 @@ import { ReactComponent as WireGuardIcon } from '../../../../../assets/images/wg
 import { ReactComponent as OpenVpnIcon } from '../../../../../assets/images/ovpn-icon.svg';
 import LoadingButton from '../../../../../Components/Buttons/LoadingButton';
 
-import ServiceSettingsModel from './ServiceSettingsModel';
+import ServiceSettingsModal from './ServiceSettingsModal';
 
 const { RUNNING } = ServiceStatus;
 
@@ -144,7 +144,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                     Settings
                 </LoadingButton>
             </div>
-            <ServiceSettingsModel
+            <ServiceSettingsModal
                 isOpen={modalState.isOpen}
                 onClose={closeSettings}
                 serviceType={serviceType}
