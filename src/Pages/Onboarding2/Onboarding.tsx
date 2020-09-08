@@ -11,14 +11,13 @@ import { connect } from 'react-redux';
 import { Identity, IdentityRegistrationStatusV3 } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 
-import { LOGIN } from '../../constants/routes';
 import { RootState } from '../../redux/store';
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/onboarding/main.scss';
 import { OnboardingState } from '../../redux/actions/onboard';
 import isTermsAgreed from '../../commons/isTermsAgreed';
 import { tequilapiClient } from '../../api/TequilApiClient';
-import { DEFAULT_IDENTITY_PASSPHRASE } from '../../Services/constants';
+import { DEFAULT_IDENTITY_PASSPHRASE } from '../../constants/defaults';
 
 import PasswordChange from './steps/PasswordChange';
 import Welcome from './steps/Welcome';

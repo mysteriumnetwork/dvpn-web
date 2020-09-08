@@ -8,9 +8,10 @@ import { Dispatch, Action } from 'redux';
 import { Identity } from 'mysterium-vpn-js';
 import { SessionResponse } from 'mysterium-vpn-js/lib/session/session';
 
-import { IDENTITY_FETCH_FULFILLED, SESSION_FETCH_FULFILLED } from './dashboard.actions';
 import { tequilapiClient } from '../../api/TequilApiClient';
-import { DEFAULT_IDENTITY_PASSPHRASE } from '../../Services/constants';
+import { DEFAULT_IDENTITY_PASSPHRASE } from '../../constants/defaults';
+
+import { IDENTITY_FETCH_FULFILLED, SESSION_FETCH_FULFILLED } from './dashboard.actions';
 
 export interface DashboardState {
     sessions: {

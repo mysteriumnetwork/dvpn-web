@@ -6,7 +6,7 @@
  */
 import { Dispatch, Action } from 'redux';
 
-import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../Services/constants';
+import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../constants/defaults';
 import { tequilapiClient } from '../../api/TequilApiClient';
 
 import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from './onboarding.actions';

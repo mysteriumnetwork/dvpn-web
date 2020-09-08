@@ -10,7 +10,7 @@ import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import { DefaultSlider } from '../../../Components/DefaultSlider';
 import '../../../assets/styles/pages/onboarding/steps/service-settings.scss';
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper';
-import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../Services/constants';
+import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../constants/defaults';
 import LoadingButton from '../../../Components/Buttons/LoadingButton';
 
 interface StateInterface {

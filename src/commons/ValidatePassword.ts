@@ -4,7 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { NEW_PASSWORD_ERROR_TO_SHORT, NEW_PASSWORD_ERROR_BLANK, NEW_PASSWORD_ERROR_NOT_SAME } from '../constants';
+import {
+    NEW_PASSWORD_ERROR_TO_SHORT,
+    NEW_PASSWORD_ERROR_BLANK,
+    NEW_PASSWORD_ERROR_NOT_SAME,
+} from '../constants/defaults';
 
 interface ValidateResultInterface {
     success: boolean;

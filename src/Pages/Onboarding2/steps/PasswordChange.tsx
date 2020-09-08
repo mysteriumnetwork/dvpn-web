@@ -12,8 +12,8 @@ import { TequilapiError } from 'mysterium-vpn-js';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/node-settings.scss';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
-import { validatePassword } from '../../../Services/Onboarding/ValidatePassword';
-import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../Services/constants';
+import { validatePassword } from '../../../commons/ValidatePassword';
+import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import LoadingButton from '../../../Components/Buttons/LoadingButton';
 

@@ -13,7 +13,7 @@ import { DASHBOARD } from '../../constants/routes';
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/login/main.scss';
 import { DefaultTextField } from '../../Components/DefaultTextField';
-import { DEFAULT_USERNAME } from '../../Services/constants';
+import { DEFAULT_USERNAME } from '../../constants/defaults';
 import LoadingButton from '../../Components/Buttons/LoadingButton';
 import { tequilapiClient } from '../../api/TequilApiClient';
 
