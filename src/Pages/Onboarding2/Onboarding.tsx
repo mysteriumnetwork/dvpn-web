@@ -10,6 +10,7 @@ import { useHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { Identity, IdentityRegistrationStatusV3 } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
+import { LOGIN } from '../../constants/routes'
 
 import { RootState } from '../../redux/store';
 import sideImage from '../../assets/images/onboarding/SideImage.png';

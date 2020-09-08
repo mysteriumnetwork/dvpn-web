@@ -1,8 +1,8 @@
 @import '../base/variables';
 
 .default-switch.MuiSwitch-root {
-  border-radius: 12px;
-  padding: 10px;
+  //border-radius: 12px;
+  padding: 8px;
 
   .MuiSwitch-colorSecondary.Mui-checked {
     color: #6DD230;
@@ -14,14 +14,21 @@
     width: 16px;
     height: 16px;
     margin-top: 2px;
+    margin-left: 3px;
+  }
+  .Mui-checked .MuiSwitch-thumb {
+    margin-left: 1px;
   }
 
   .MuiTouchRipple-root {
     display: none;
+    height: 30px;
   }
 
   .MuiSwitch-track {
     opacity: 0.5;
+    border-radius: 12px;
+    box-sizing: border-box;
   }
 
   .MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track {

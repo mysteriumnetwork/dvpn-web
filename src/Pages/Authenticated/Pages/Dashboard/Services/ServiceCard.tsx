@@ -37,23 +37,23 @@ interface Props {
 }
 
 const icons = {
-    [ServiceType.OPENVPN]: <OpenVpnIcon />,
-    [ServiceType.WIREGUARD]: <WireGuardIcon />,
+    [ServiceType.OPENVPN]: <OpenVpnIcon/>,
+    [ServiceType.WIREGUARD]: <WireGuardIcon/>,
 };
 
 const toMystMinute = (pm?: PaymentMethod): string => {
     return pm
         ? displayMoneyMyst(pricePerMinute(pm), {
-              decimalPart: DECIMAL_PART_V3,
-          })
+            decimalPart: DECIMAL_PART_V3,
+        })
         : displayMyst(0, { decimalPart: DECIMAL_PART_V3 });
 };
 
 const toMystGb = (pm?: PaymentMethod): string => {
     return pm
         ? displayMoneyMyst(pricePerGiB(pm), {
-              decimalPart: DECIMAL_PART_V3,
-          })
+            decimalPart: DECIMAL_PART_V3,
+        })
         : displayMyst(0, { decimalPart: DECIMAL_PART_V3 });
 };
 
@@ -103,7 +103,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
             <div className="header-row">
                 <div className="logo-block">
                     {icons[serviceType]}
-                    <div className={status === RUNNING ? 'status-dot on' : 'status-dot off'} />
+                    <div className={status === RUNNING ? 'status-dot on' : 'status-dot off'}/>
                 </div>
                 <div className="name-block">
                     <p className="name">{serviceType}</p>
@@ -121,25 +121,22 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                 </div>
                 <div className="service-stat switch">
                     <div className="title">Whitelisted</div>
-                    <DefaultSwitch turnedOn={false} handleChange={() => {}} type="normal" />
+                    <DefaultSwitch disabled={false} turnedOn={false} handleChange={() => {
+                    }}/>
                 </div>
                 <div className="service-stat switch">
                     <div className="title">Turned on</div>
-                    {isTurnOnWorking ? (
-                        <CircularProgress />
-                    ) : (
-                        <Switch
-                            checked={!!serviceInfo}
-                            onChange={() => {
-                                if (!id) {
-                                    startService(serviceType.toLowerCase());
-                                } else {
-                                    stopService(id);
-                                }
-                            }}
-                            className={'default-switch '}
-                        />
-                    )}
+                    <DefaultSwitch
+                        disabled={isTurnOnWorking}
+                        turnedOn={!!serviceInfo}
+                        handleChange={() => {
+                            if (!id) {
+                                startService(serviceType.toLowerCase());
+                            } else {
+                                stopService(id);
+                            }
+                        }}
+                    />
                 </div>
             </div>
             <div className="control-row">
