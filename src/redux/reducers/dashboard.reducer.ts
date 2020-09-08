@@ -5,9 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Identity, SessionResponse } from 'mysterium-vpn-js';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { DashboardState, DashboardTypes } from '../actions/dashboard';
-import { IDENTITY_FETCH_FULFILLED, SESSION_FETCH_FULFILLED } from '../actions/dashboard.actions';
+import {
+    IDENTITY_FETCH_FULFILLED,
+    SESSION_FETCH_FULFILLED,
+    USER_CONFIG_FETCH_FULFILLED,
+} from '../actions/dashboard.actions';
 
 const INITIAL_STATE: DashboardState = {
     sessions: {
@@ -15,6 +20,10 @@ const INITIAL_STATE: DashboardState = {
         sessionResponse: undefined,
     },
     currentIdentity: undefined,
+    config: {
+        isLoading: true,
+        userConfig: { data: undefined },
+    },
 };
 
 function dashboardReducer(state: DashboardState = INITIAL_STATE, action: DashboardTypes): DashboardState {
@@ -32,6 +41,15 @@ function dashboardReducer(state: DashboardState = INITIAL_STATE, action: Dashboa
             return {
                 ...state,
                 currentIdentity: action.payload as Identity,
+            };
+        }
+        case USER_CONFIG_FETCH_FULFILLED: {
+            return {
+                ...state,
+                config: {
+                    isLoading: false,
+                    userConfig: action.payload as Config,
+                },
             };
         }
         default:

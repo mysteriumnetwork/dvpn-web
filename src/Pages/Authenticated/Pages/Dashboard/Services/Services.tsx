@@ -6,6 +6,7 @@
  */
 import React, { FC } from 'react';
 import { ServiceInfo } from 'mysterium-vpn-js/src/provider/service-info';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { ServiceType } from '../../../../../commons';
 
@@ -14,6 +15,7 @@ import ServiceCard from './ServiceCard';
 interface Props {
     identityRef: string;
     servicesInfos?: ServiceInfo[];
+    userConfig: Config;
 }
 
 const availableServices = [ServiceType.OPENVPN, ServiceType.WIREGUARD];

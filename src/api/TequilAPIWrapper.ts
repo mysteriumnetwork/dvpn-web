@@ -22,7 +22,7 @@ export const acceptWithTermsAndConditions = async (): Promise<Config> => {
     return await tequilapiClient.updateUserConfig(config);
 };
 
-export const setAccessPolicy = async (policyName?: string): Promise<Config> => {
+export const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
     const config = await tequilapiClient.userConfig();
 
     if (config?.data['access-policy']) {
@@ -33,6 +33,18 @@ export const setAccessPolicy = async (policyName?: string): Promise<Config> => {
         };
     }
 
+    return await tequilapiClient.updateUserConfig(config);
+};
+
+export const setTrafficShaping = async (enabled: boolean): Promise<Config> => {
+    const config = await tequilapiClient.userConfig();
+    if (config.data?.shaper) {
+        config.data.shaper['enabled'] = enabled;
+    } else {
+        config.data['shaper'] = {
+            enabled: enabled,
+        };
+    }
     return await tequilapiClient.updateUserConfig(config);
 };
 

@@ -14,5 +14,5 @@ interface Props {
 }
 
 export const DefaultSwitch: FC<Props> = ({ turnedOn, handleChange, type }) => {
-    return <Switch checked={turnedOn} onChange={() => handleChange} className={'default-switch ' + type} />;
+    return <Switch checked={turnedOn} onChange={handleChange} className={'default-switch ' + type} />;
 };

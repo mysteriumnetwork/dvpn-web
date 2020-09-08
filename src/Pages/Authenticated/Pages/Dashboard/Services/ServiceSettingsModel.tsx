@@ -13,7 +13,7 @@ import { DefaultSlider } from '../../../../../Components/DefaultSlider';
 import { DefaultSwitch } from '../../../../../Components/DefaultSwitch';
 import { ServiceType } from '../../../../../commons';
 import LoadingButton from '../../../../../Components/Buttons/LoadingButton';
-import { setServicePrice } from '../../../../../api/TequilAPIWrapper';
+import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../../api/TequilAPIWrapper';
 
 interface Props {
     isOpen: boolean;
@@ -28,6 +28,8 @@ interface Props {
 interface StateProps {
     pricePerGbChosen: number;
     pricePerMinuteChosen: number;
+    isVerifiedTrafficEnabled: boolean;
+    isTrafficShapingEnabled: boolean;
 }
 
 const myst2HumanReadable = (amount?: number): number => {
@@ -48,6 +50,8 @@ const ServiceSettingsModel: FC<Props> = ({
     const [state, setState] = useState<StateProps>({
         pricePerMinuteChosen: myst2HumanReadable(currentPricePerMinute.amount),
         pricePerGbChosen: myst2HumanReadable(currentPricePerGb.amount),
+        isVerifiedTrafficEnabled: false,
+        isTrafficShapingEnabled: false,
     });
 
     return (
@@ -102,7 +106,13 @@ const ServiceSettingsModel: FC<Props> = ({
                     </div>
                     <div className="partners-block">
                         <div className="switch-row">
-                            <DefaultSwitch turnedOn={true} handleChange={() => {}} type="myst" />
+                            <DefaultSwitch
+                                turnedOn={state.isVerifiedTrafficEnabled}
+                                handleChange={() => {
+                                    setState({ ...state, isVerifiedTrafficEnabled: !state.isVerifiedTrafficEnabled });
+                                }}
+                                type="myst"
+                            />
                             <p className="text">Only Mysterium verified partner traffic</p>
                         </div>
                         <p className="under-text">
@@ -111,7 +121,13 @@ const ServiceSettingsModel: FC<Props> = ({
                         </p>
                     </div>
                     <div className="limits-block">
-                        <DefaultSwitch turnedOn={false} handleChange={() => {}} type="myst" />
+                        <DefaultSwitch
+                            turnedOn={state.isTrafficShapingEnabled}
+                            handleChange={() => {
+                                setState({ ...state, isTrafficShapingEnabled: !state.isTrafficShapingEnabled });
+                            }}
+                            type="myst"
+                        />
                         <p className="text">Limit bandwidth to 5Mb/s</p>
                     </div>
                     <div className="buttons-block">
@@ -123,6 +139,8 @@ const ServiceSettingsModel: FC<Props> = ({
                             onClick={() => {
                                 setIsLoading(true);
                                 setServicePrice(state.pricePerMinuteChosen, state.pricePerGbChosen, serviceType)
+                                    .then(() => setAccessPolicy(state.isVerifiedTrafficEnabled ? 'mysterium' : null))
+                                    .then(() => setTrafficShaping(state.isTrafficShapingEnabled))
                                     .then(() =>
                                         serviceInfo?.id ? tequilapi.serviceStop(serviceInfo.id) : Promise.resolve()
                                     )

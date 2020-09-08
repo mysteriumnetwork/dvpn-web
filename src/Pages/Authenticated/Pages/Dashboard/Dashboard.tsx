@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { ReactComponent as Logo } from '../../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../Components/Header';
 import { RootState } from '../../../../redux/store';
-import { fetchSessions, fetchIdentity, DashboardState } from '../../../../redux/actions/dashboard';
+import { fetchSessions, fetchIdentity, fetchUserConfig, DashboardState } from '../../../../redux/actions/dashboard';
 import { SSEState } from '../../../../redux/actions/sse';
 
 import SessionsSideList from './SessionsSideList/SessionsSideList';
@@ -26,6 +26,7 @@ interface Props {
     sse: SSEState;
     fetchSessions: () => void;
     fetchIdentity: () => void;
+    fetchUserConfig: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -36,15 +37,17 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = {
     fetchSessions,
     fetchIdentity,
+    fetchUserConfig,
 };
 
 const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, dashboard, sse }) => {
     useEffect(() => {
         fetchSessions();
         fetchIdentity();
+        fetchUserConfig();
     }, []);
 
-    const { currentIdentity, sessions } = dashboard;
+    const { currentIdentity, sessions, config } = dashboard;
     const stats = sessions?.sessionResponse?.stats;
     const serviceInfo = sse.appState?.serviceInfo;
     const liveSessions = sse.appState?.sessions;
@@ -71,7 +74,11 @@ const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, dashboard, s
                         <NatStatus status={status} />
                     </div>
                     <div className="services-blocks-row">
-                        <Services identityRef={currentIdentity?.id} servicesInfos={serviceInfo} />
+                        <Services
+                            identityRef={currentIdentity?.id}
+                            servicesInfos={serviceInfo}
+                            userConfig={config.userConfig}
+                        />
                     </div>
                 </div>
             </div>
