@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
 import React, { FC, useState } from 'react';
 import {
     DECIMAL_PART_V3,
@@ -13,7 +14,7 @@ import {
     ServiceInfo,
     ServiceStatus,
 } from 'mysterium-vpn-js';
-import { CircularProgress, Fade, Modal, Switch } from '@material-ui/core';
+import { CircularProgress, Switch } from '@material-ui/core';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 
 import { ServiceType } from '../../../../../commons';

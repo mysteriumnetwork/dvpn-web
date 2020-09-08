@@ -124,13 +124,13 @@ const ServiceSettingsModel: FC<Props> = ({
                                 setIsLoading(true);
                                 setServicePrice(state.pricePerMinuteChosen, state.pricePerGbChosen, serviceType)
                                     .then(() =>
-                                        serviceInfo?.id ? tequilapi.serviceStop(serviceInfo.id) : Promise.resolve(),
+                                        serviceInfo?.id ? tequilapi.serviceStop(serviceInfo.id) : Promise.resolve()
                                     )
                                     .then(() =>
                                         tequilapi.serviceStart({
                                             providerId: identityRef,
                                             type: serviceType.toLowerCase(),
-                                        }),
+                                        })
                                     )
                                     .then(() => onClose())
                                     .finally(() => {

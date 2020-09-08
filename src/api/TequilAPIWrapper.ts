@@ -10,35 +10,36 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { ServiceType } from '../commons';
 
 import { tequilapiClient } from './TequilApiClient';
-import { BasicResponseInterface } from './TequilApiResponseInterfaces';
 
-export const acceptWithTermsAndConditions = async (): Promise<BasicResponseInterface> => {
-    try {
-        const config = await tequilapiClient.userConfig();
-        const agreementObject = {
-            termsAgreed: {
-                version: termsPackageJson.version,
-                at: new Date().toISOString(),
-            },
-        };
-        config.data.mysteriumWebUi = agreementObject;
-        await tequilapiClient.updateUserConfig(config);
+export const acceptWithTermsAndConditions = async (): Promise<Config> => {
+    const config = await tequilapiClient.userConfig();
+    config.data.mysteriumWebUi = {
+        termsAgreed: {
+            version: termsPackageJson.version,
+            at: new Date().toISOString(),
+        },
+    };
+    return await tequilapiClient.updateUserConfig(config);
+};
 
-        return { success: true, isRequestFail: false, isAuthoriseError: false };
-    } catch (e) {
-        return {
-            success: false,
-            isAuthoriseError: e.isUnauthorizedError,
-            isRequestFail: e._hasHttpStatus(500),
-            errorMessage: e.message,
+export const setAccessPolicy = async (policyName?: string): Promise<Config> => {
+    const config = await tequilapiClient.userConfig();
+
+    if (config?.data['access-policy']) {
+        config.data['access-policy'].list = policyName;
+    } else {
+        config.data['access-policy'] = {
+            list: policyName,
         };
     }
+
+    return await tequilapiClient.updateUserConfig(config);
 };
 
 export const setServicePrice = async (
     pricePerMinute: number,
     pricePerGb: number,
-    service: ServiceType,
+    service: ServiceType
 ): Promise<Config> => {
     const configServiceName = service === ServiceType.OPENVPN ? 'openvpn' : 'wireguard';
     const config = await tequilapiClient.userConfig();
