@@ -40,7 +40,7 @@ const mapDispatchToProps = {
     fetchUserConfig,
 };
 
-const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, dashboard, sse }) => {
+const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, fetchUserConfig, dashboard, sse }) => {
     useEffect(() => {
         fetchSessions();
         fetchIdentity();

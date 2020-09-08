@@ -32,7 +32,7 @@ const findServiceInfo = (type: string, servicesInfos?: ServiceInfo[]): ServiceIn
     return results[0];
 };
 
-const Services: FC<Props> = ({ identityRef, servicesInfos }) => {
+const Services: FC<Props> = ({ identityRef, servicesInfos, userConfig }) => {
     return (
         <>
             {availableServices.map((serviceType) => {
@@ -43,6 +43,7 @@ const Services: FC<Props> = ({ identityRef, servicesInfos }) => {
                         identityRef={identityRef}
                         serviceInfo={serviceInfo}
                         serviceType={serviceType}
+                        userConfig={userConfig}
                     />
                 );
             })}

@@ -16,6 +16,7 @@ import {
 } from 'mysterium-vpn-js';
 import { CircularProgress, Switch } from '@material-ui/core';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { ServiceType } from '../../../../../commons';
 import { displayMoneyMyst, displayMyst } from '../../../../../commons/money.utils';
@@ -32,6 +33,7 @@ interface Props {
     identityRef: string;
     serviceType: ServiceType;
     serviceInfo?: ServiceInfo;
+    userConfig: Config;
 }
 
 const icons = {
@@ -59,7 +61,16 @@ interface ModalProps {
     isOpen: boolean;
 }
 
-const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef }) => {
+const isTrafficShapingEnabled = (config: Config): boolean => {
+    return config?.data?.shaper?.enabled;
+};
+
+const isAccessPolicyEnabled = (config: Config): boolean => {
+    console.log('isAccessPolicyEnabled', config);
+    return config?.data && config?.data['access-policy'] && config?.data['access-policy']?.list;
+};
+
+const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userConfig }) => {
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
     const [modalState, setModalState] = useState<ModalProps>({ isOpen: false });
     const { status, proposal, id } = { ...serviceInfo };
@@ -145,6 +156,8 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef }) => {
                 currentPricePerMinute={pricePerMinute(proposal?.paymentMethod)}
                 identityRef={identityRef}
                 serviceInfo={serviceInfo}
+                isCurrentTrafficShapingEnabled={isTrafficShapingEnabled(userConfig)}
+                isCurrentAccessPolicyEnabled={isAccessPolicyEnabled(userConfig)}
             />
         </div>
     );

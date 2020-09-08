@@ -23,6 +23,8 @@ interface Props {
     currentPricePerMinute: Money;
     identityRef: string;
     serviceInfo?: ServiceInfo;
+    isCurrentAccessPolicyEnabled: boolean;
+    isCurrentTrafficShapingEnabled: boolean;
 }
 
 interface StateProps {
@@ -43,6 +45,8 @@ const ServiceSettingsModel: FC<Props> = ({
     serviceType,
     currentPricePerGb,
     currentPricePerMinute,
+    isCurrentAccessPolicyEnabled,
+    isCurrentTrafficShapingEnabled,
     serviceInfo,
     identityRef,
 }) => {
@@ -50,8 +54,8 @@ const ServiceSettingsModel: FC<Props> = ({
     const [state, setState] = useState<StateProps>({
         pricePerMinuteChosen: myst2HumanReadable(currentPricePerMinute.amount),
         pricePerGbChosen: myst2HumanReadable(currentPricePerGb.amount),
-        isVerifiedTrafficEnabled: false,
-        isTrafficShapingEnabled: false,
+        isVerifiedTrafficEnabled: isCurrentAccessPolicyEnabled,
+        isTrafficShapingEnabled: isCurrentTrafficShapingEnabled,
     });
 
     return (
@@ -151,6 +155,7 @@ const ServiceSettingsModel: FC<Props> = ({
                                         })
                                     )
                                     .then(() => onClose())
+                                    .catch(() => {})
                                     .finally(() => {
                                         setIsLoading(false);
                                     });
