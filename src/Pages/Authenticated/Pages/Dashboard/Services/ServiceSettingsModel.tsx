@@ -111,10 +111,10 @@ const ServiceSettingsModel: FC<Props> = ({
                     <div className="partners-block">
                         <div className="switch-row">
                             <DefaultSwitch
-                              disabled={false}
+                                disabled={false}
                                 turnedOn={state.isVerifiedTrafficEnabled}
-                                handleChange={() => {
-                                    setState({ ...state, isVerifiedTrafficEnabled: !state.isVerifiedTrafficEnabled });
+                                handleChange={(e, checked) => {
+                                    setState({ ...state, isVerifiedTrafficEnabled: checked });
                                 }}
                             />
                             <p className="text">Only Mysterium verified partner traffic</p>
@@ -126,10 +126,10 @@ const ServiceSettingsModel: FC<Props> = ({
                     </div>
                     <div className="limits-block">
                         <DefaultSwitch
-                          disabled={false}
+                            disabled={false}
                             turnedOn={state.isTrafficShapingEnabled}
-                            handleChange={() => {
-                                setState({ ...state, isTrafficShapingEnabled: !state.isTrafficShapingEnabled });
+                            handleChange={(e, checked) => {
+                                setState({ ...state, isTrafficShapingEnabled: checked });
                             }}
                         />
                         <p className="text">Limit bandwidth to 5Mb/s</p>

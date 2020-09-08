@@ -10,7 +10,7 @@ import { FormControlLabel, Switch } from '@material-ui/core'
 interface Props {
   disabled: boolean;
   turnedOn: boolean;
-  handleChange: () => void;
+  handleChange: (event: React.ChangeEvent<any>, checked: boolean) => void
 }
 
 export const DefaultSwitch: FC<Props> = ({ disabled, turnedOn, handleChange }) => {

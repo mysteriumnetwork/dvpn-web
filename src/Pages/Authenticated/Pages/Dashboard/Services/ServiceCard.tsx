@@ -66,7 +66,6 @@ const isTrafficShapingEnabled = (config: Config): boolean => {
 };
 
 const isAccessPolicyEnabled = (config: Config): boolean => {
-    console.log('isAccessPolicyEnabled', config);
     return config?.data && config?.data['access-policy'] && config?.data['access-policy']?.list;
 };
 
