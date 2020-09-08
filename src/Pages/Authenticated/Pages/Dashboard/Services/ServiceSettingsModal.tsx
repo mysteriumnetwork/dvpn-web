@@ -155,7 +155,7 @@ const ServiceSettingsModal: FC<Props> = ({
                                         })
                                     )
                                     .then(() => onClose())
-                                    .catch(() => {})
+                                    .catch(() => { })
                                     .finally(() => {
                                         setIsLoading(false);
                                     });

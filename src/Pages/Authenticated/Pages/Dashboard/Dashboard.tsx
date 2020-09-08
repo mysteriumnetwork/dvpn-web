@@ -83,7 +83,11 @@ const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, fetchUserCon
                 </div>
             </div>
             <div className="dashboard--side">
-                <SessionsSideList liveSessions={liveSessions} liveSessionStats={liveSessionsStats} />
+                <SessionsSideList
+                    liveSessions={liveSessions}
+                    liveSessionStats={liveSessionsStats}
+                    historySessions={sessions.sessionResponse?.sessions}
+                />
             </div>
         </div>
     );

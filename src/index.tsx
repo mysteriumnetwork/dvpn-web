@@ -8,6 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { ToastProvider } from 'react-toast-notifications';
 
 import AppRouter from './Pages/AppRouter';
 import { store } from './redux/store';
@@ -18,13 +19,15 @@ require('dotenv').config();
 
 ReactDOM.render(
     <Provider store={store}>
-        <SSEListener>
-            <OnboardingListener>
-                <BrowserRouter>
-                    <AppRouter />
-                </BrowserRouter>
-            </OnboardingListener>
-        </SSEListener>
+        <ToastProvider placement="top-right">
+            <SSEListener>
+                <OnboardingListener>
+                    <BrowserRouter>
+                        <AppRouter />
+                    </BrowserRouter>
+                </OnboardingListener>
+            </SSEListener>
+        </ToastProvider>
     </Provider>,
-    document.getElementById('root'),
+    document.getElementById('root')
 );

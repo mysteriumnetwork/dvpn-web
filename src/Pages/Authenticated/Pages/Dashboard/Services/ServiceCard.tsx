@@ -14,9 +14,9 @@ import {
     ServiceInfo,
     ServiceStatus,
 } from 'mysterium-vpn-js';
-import { CircularProgress, Switch } from '@material-ui/core';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
+import { useToasts } from 'react-toast-notifications';
 
 import { ServiceType } from '../../../../../commons';
 import { displayMoneyMyst, displayMyst } from '../../../../../commons/money.utils';
@@ -37,23 +37,23 @@ interface Props {
 }
 
 const icons = {
-    [ServiceType.OPENVPN]: <OpenVpnIcon/>,
-    [ServiceType.WIREGUARD]: <WireGuardIcon/>,
+    [ServiceType.OPENVPN]: <OpenVpnIcon />,
+    [ServiceType.WIREGUARD]: <WireGuardIcon />,
 };
 
 const toMystMinute = (pm?: PaymentMethod): string => {
     return pm
         ? displayMoneyMyst(pricePerMinute(pm), {
-            decimalPart: DECIMAL_PART_V3,
-        })
+              decimalPart: DECIMAL_PART_V3,
+          })
         : displayMyst(0, { decimalPart: DECIMAL_PART_V3 });
 };
 
 const toMystGb = (pm?: PaymentMethod): string => {
     return pm
         ? displayMoneyMyst(pricePerGiB(pm), {
-            decimalPart: DECIMAL_PART_V3,
-        })
+              decimalPart: DECIMAL_PART_V3,
+          })
         : displayMyst(0, { decimalPart: DECIMAL_PART_V3 });
 };
 
@@ -73,6 +73,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
     const [modalState, setModalState] = useState<ModalProps>({ isOpen: false });
     const { status, proposal, id } = { ...serviceInfo };
+    const { addToast } = useToasts();
 
     const startService = (serviceType: string) => {
         setTurnOnWorking(true);
@@ -81,12 +82,20 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                 providerId: identityRef,
                 type: serviceType,
             })
+            .catch(() =>
+                addToast(`Service "${serviceType}" could not be started`, { appearance: 'error', autoDismiss: true })
+            )
             .finally(() => setTurnOnWorking(false));
     };
 
     const stopService = (serviceId: string) => {
         setTurnOnWorking(true);
-        tequilapi.serviceStop(serviceId).finally(() => setTurnOnWorking(false));
+        tequilapi
+            .serviceStop(serviceId)
+            .catch(() =>
+                addToast(`Service "${serviceType}" could not be stopped`, { appearance: 'error', autoDismiss: true })
+            )
+            .finally(() => setTurnOnWorking(false));
     };
 
     const openSettings = () => {
@@ -102,7 +111,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
             <div className="header-row">
                 <div className="logo-block">
                     {icons[serviceType]}
-                    <div className={status === RUNNING ? 'status-dot on' : 'status-dot off'}/>
+                    <div className={status === RUNNING ? 'status-dot on' : 'status-dot off'} />
                 </div>
                 <div className="name-block">
                     <p className="name">{serviceType}</p>
@@ -120,8 +129,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                 </div>
                 <div className="service-stat switch">
                     <div className="title">Whitelisted</div>
-                    <DefaultSwitch disabled={false} turnedOn={false} handleChange={() => {
-                    }}/>
+                    <DefaultSwitch disabled={false} turnedOn={false} handleChange={() => {}} />
                 </div>
                 <div className="service-stat switch">
                     <div className="title">Turned on</div>
