@@ -9,7 +9,7 @@ import { FC, ReactComponentElement, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 
 import './assets/styles/pages/onboarding/main.scss';
-import { checkCredentialsAndTerms } from './redux/actions/onboarding/onboard';
+import { checkCredentialsAndTerms } from './redux/actions/onboard';
 
 const mapDispatchToProps = { checkCredentialsAndTerms };
 

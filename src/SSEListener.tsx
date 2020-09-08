@@ -9,7 +9,7 @@ import { AppState, SSEEventType, SSEResponse } from 'mysterium-vpn-js';
 import { connect } from 'react-redux';
 
 import { sseConnect, eventBus } from './tequila-see';
-import { sseAppStateStateChanged } from './redux/actions/sse/sse';
+import { sseAppStateStateChanged } from './redux/actions/sse';
 
 interface Props {
     children: ReactComponentElement<any>;

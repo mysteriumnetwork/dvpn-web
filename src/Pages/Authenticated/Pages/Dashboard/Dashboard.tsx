@@ -12,8 +12,8 @@ import { connect } from 'react-redux';
 import { ReactComponent as Logo } from '../../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../Components/Header';
 import { RootState } from '../../../../redux/store';
-import { fetchSessions, fetchIdentity, DashboardState } from '../../../../redux/actions/dashboard/dashboard';
-import { SSEState } from '../../../../redux/actions/sse/sse';
+import { fetchSessions, fetchIdentity, DashboardState } from '../../../../redux/actions/dashboard';
+import { SSEState } from '../../../../redux/actions/sse';
 
 import SessionsSideList from './SessionsSideList/SessionsSideList';
 import GraphCard from './GraphCard';

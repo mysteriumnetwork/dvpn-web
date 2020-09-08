@@ -11,7 +11,7 @@ import { CircularProgress } from '@material-ui/core';
 
 import { LOGIN, ONBOARDING_HOME } from '../constants/routes';
 import { RootState } from '../redux/store';
-import { OnboardingState } from '../redux/actions/onboarding/onboard';
+import { OnboardingState } from '../redux/actions/onboard';
 import isTermsAgreed from '../commons/isTermsAgreed';
 
 const mapStateToProps = (state: RootState) => ({

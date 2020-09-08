@@ -10,7 +10,7 @@ import showdown from 'showdown';
 // @ts-ignore
 import { TermsEndUser } from '@mysteriumnetwork/terms';
 
-import { acceptWithTermsAndConditions } from '../../../api/TequilaApiCalls';
+import { acceptWithTermsAndConditions } from '../../../api/TequilAPIWrapper';
 import '../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss';
 import LoadingButton from '../../../Components/Buttons/LoadingButton';
 

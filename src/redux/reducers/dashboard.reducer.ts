@@ -6,8 +6,8 @@
  */
 import { Identity, SessionResponse } from 'mysterium-vpn-js';
 
-import { DashboardState, DashboardTypes } from '../actions/dashboard/dashboard';
-import { IDENTITY_FETCH_FULFILLED, SESSION_FETCH_FULFILLED } from '../actionTypes/DashboardTypes';
+import { DashboardState, DashboardTypes } from '../actions/dashboard';
+import { IDENTITY_FETCH_FULFILLED, SESSION_FETCH_FULFILLED } from '../actions/dashboard.actions';
 
 const INITIAL_STATE: DashboardState = {
     sessions: {

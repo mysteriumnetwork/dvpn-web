@@ -13,7 +13,7 @@ import { DefaultSlider } from '../../../../../Components/DefaultSlider';
 import { DefaultSwitch } from '../../../../../Components/DefaultSwitch';
 import { ServiceType } from '../../../../../commons';
 import LoadingButton from '../../../../../Components/Buttons/LoadingButton';
-import { setServicePrice } from '../../../../../api/TequilaApiCalls';
+import { setServicePrice } from '../../../../../api/TequilAPIWrapper';
 
 interface Props {
     isOpen: boolean;

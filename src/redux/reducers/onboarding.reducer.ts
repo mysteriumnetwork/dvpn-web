@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../actionTypes/OnbordingTypes';
-import { CredentialsAndTermsChecks, OnboardingAction, OnboardingState } from '../actions/onboarding/onboard';
+import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../actions/onboarding.actions';
+import { CredentialsAndTermsChecks, OnboardingAction, OnboardingState } from '../actions/onboard';
 
 const INITIAL_STATE: OnboardingState = {
     isDefaultCredentials: false,
