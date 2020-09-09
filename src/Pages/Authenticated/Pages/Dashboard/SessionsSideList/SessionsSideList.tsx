@@ -58,13 +58,13 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = ({
     const historySessionCount = historySessionsDefined.length >= 10 ? 10 : historySessionsDefined.length;
 
     const historyCards = historySessionsDefined.slice(0, historySessionCount - 1).map((hs) => toSessionCard(hs));
-    const liveCards = (liveSessions || []).map((ls) => toSessionCard(ls)).concat(historyCards);
+    const latestSessionCards = (liveSessions || []).map((ls) => toSessionCard(ls)).concat(historyCards);
 
     const history = useHistory();
 
     return (
         <div className="side-block">
-            <p className="heading">Live Sessions</p>
+            <p className="heading">Latest Sessions</p>
             <div className="side-block--content">
                 {liveSessions === undefined ? (
                     <div className="spinner">
@@ -72,7 +72,7 @@ const SessionsSideList: React.FC<SessionsSideListPropsInterface> = ({
                     </div>
                 ) : (
                     <div className="sessions-wrapper">
-                        {liveCards || <div>No session history</div>}
+                        {latestSessionCards || <div>No session history</div>}
                         <div className="button-block">
                             <div
                                 onClick={() => {
