@@ -10,9 +10,9 @@ import { CircularProgress } from '@material-ui/core';
 
 import Header from '../../Components/Header';
 import { ReactComponent as Logo } from '../../../../assets/images/authenticated/pages/sessions/logo.svg';
-import { RootState } from '../../../../redux/store';
-import { fetchSessions } from '../../../../redux/actions/dashboard';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
+import '../../../../assets/styles/pages/sessionsList.scss';
+import SessionsSideList from '../SessionSideList/SessionsSideList';
 
 import SessionList from './SessionList';
 
@@ -50,9 +50,9 @@ const Sessions: FC = () => {
     return (
         <div className="sessions wrapper">
             <div className="sessions--content">
-                <Header logo={Logo} name="Sessions" />
-            </div>
-            <div>
+                <div>
+                    <Header logo={Logo} name="Sessions" />
+                </div>
                 {state.isLoading ? (
                     <CircularProgress className="spinner" />
                 ) : (
@@ -67,6 +67,9 @@ const Sessions: FC = () => {
                         }}
                     />
                 )}
+            </div>
+            <div className="sessions--side">
+                <SessionsSideList />
             </div>
         </div>
     );

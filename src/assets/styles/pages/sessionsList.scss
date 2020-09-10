@@ -1,3 +1,19 @@
 .table {
   max-height: available;
 }
+
+.sessions {
+  display: flex;
+  height: 100%;
+
+  &--content {
+    width: 70%;
+    padding: 0 25px 100px 0;
+  }
+
+  //side block
+  &--side {
+    width: 30%;
+    background: #FFFFFF;
+  }
+}

@@ -18,7 +18,7 @@ import { displayMyst } from '../../../../commons/money.utils';
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons';
 import formatBytes from '../../../../commons/formatBytes';
 import secondsToISOTime from '../../../../commons/secondsToISOTime';
-import '../../../../assets/styles/pages/sessionsList.scss'
+import '../../../../assets/styles/pages/sessionsList.scss';
 
 interface Props {
     sessions: Session[];
