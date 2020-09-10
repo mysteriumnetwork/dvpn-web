@@ -6,7 +6,7 @@
  */
 import { Dispatch, Action } from 'redux';
 import { Identity } from 'mysterium-vpn-js';
-import { SessionResponse } from 'mysterium-vpn-js/lib/session/session';
+import { SessionResponse, SessionQuery } from 'mysterium-vpn-js/lib/session/session';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { tequilapiClient } from '../../api/TequilApiClient';
@@ -37,9 +37,9 @@ export type DashboardTypes =
     | DashboardAction<Identity>
     | DashboardAction<Config>;
 
-export const fetchSessions = (): ((dispatch: Dispatch) => void) => {
+export const fetchSessions = (query?: SessionQuery): ((dispatch: Dispatch) => void) => {
     return async (dispatch) => {
-        const sessionResponse = await tequilapiClient.sessions();
+        const sessionResponse = await tequilapiClient.sessions(query);
         dispatch({
             type: SESSION_FETCH_FULFILLED,
             payload: sessionResponse,
