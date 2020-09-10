@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { AppState, SSEEventType } from 'mysterium-vpn-js';
-import { ServiceInfo } from 'mysterium-vpn-js/lib/provider/service-info';
 
 export interface SessionsStats {
     count: number;
@@ -16,20 +15,16 @@ export interface SessionsStats {
     sumTokens: number;
 }
 
-export interface AppStateV2 extends AppState {
-    sessionsStats?: SessionsStats;
-}
-
 export interface SSEState {
-    appState?: AppStateV2;
+    appState?: AppState;
 }
 
 export interface SSEAction {
     type: SSEEventType;
-    payload: AppStateV2;
+    payload: AppState;
 }
 
-export const sseAppStateStateChanged = (state: AppStateV2): SSEAction => {
+export const sseAppStateStateChanged = (state: AppState): SSEAction => {
     return {
         type: SSEEventType.AppStateChange,
         payload: state,

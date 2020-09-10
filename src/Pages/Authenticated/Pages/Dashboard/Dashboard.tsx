@@ -50,8 +50,6 @@ const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, fetchUserCon
     const { currentIdentity, sessions, config } = dashboard;
     const stats = sessions?.sessionResponse?.stats;
     const serviceInfo = sse.appState?.serviceInfo;
-    const liveSessions = sse.appState?.sessions;
-    const liveSessionsStats = sse.appState?.sessionsStats;
     const { status } = { ...sse.appState?.natStatus };
 
     if (!currentIdentity) {
