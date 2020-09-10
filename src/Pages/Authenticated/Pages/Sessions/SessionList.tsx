@@ -18,6 +18,7 @@ import { displayMyst } from '../../../../commons/money.utils';
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons';
 import formatBytes from '../../../../commons/formatBytes';
 import secondsToISOTime from '../../../../commons/secondsToISOTime';
+
 import '../../../../assets/styles/pages/sessionsList.scss';
 
 interface Props {
@@ -77,10 +78,11 @@ const tableRow = (info: SessionInfo): ReactElement => (
 
 const SessionList: FC<Props> = ({ sessions, pagination }) => {
     const infos = sessions.map((s) => sessionInfo(s));
+
     return (
         <>
-            <TableContainer className="table">
-                <Table className="table">
+            <TableContainer className="table-container">
+                <Table stickyHeader>
                     <TableHead>
                         <TableRow>
                             {columns.map((c) => (
@@ -95,7 +97,7 @@ const SessionList: FC<Props> = ({ sessions, pagination }) => {
                 rowsPerPageOptions={[10, 25, 50, 100]}
                 colSpan={3}
                 rowsPerPage={pagination.rowsPerPage}
-                page={pagination.page}
+                page={pagination.page - 1}
                 count={pagination.count}
                 onChangePage={pagination.onChangePage}
                 onChangeRowsPerPage={pagination.onChangeRowsPerPage}

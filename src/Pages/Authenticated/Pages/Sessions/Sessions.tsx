@@ -43,7 +43,7 @@ const Sessions: FC = () => {
     };
 
     const onChangePage = (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => {
-        setState({ ...state, currentPage: newPage });
+        setState({ ...state, currentPage: newPage + 1 });
     };
     const allSessions = state.sessions;
 
