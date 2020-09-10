@@ -20,25 +20,25 @@ import {
     SETTINGS,
 } from '../constants/routes';
 
-import Login from './Login/Login';
-import Onboarding from './Onboarding/Onboarding';
+import LoginPage from './Login/LoginPage';
+import OnboardingPage from './Onboarding/OnboardingPage';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
 import IndexRoute from './IndexRoute';
-import Authenticated from './Authenticated/Authenticated';
+import AuthenticatedPage from './Authenticated/AuthenticatedPage';
 
 const AppRouter = () => {
     return (
         <Switch>
             <Route exact path={HOME} component={IndexRoute} />
-            <Route exact path={LOGIN} component={Login} />
+            <Route exact path={LOGIN} component={LoginPage} />
             <Route exact path={ERROR} component={RestartNode} />
-            <Route path={ONBOARDING_HOME} component={Onboarding} />
+            <Route path={ONBOARDING_HOME} component={OnboardingPage} />
             <Route path={NOT_FOUND} component={PageNotFound} />
-            <Route path={DASHBOARD} component={Authenticated} />
-            <Route path={SESSIONS} component={Authenticated} />
-            <Route path={SETTINGS} component={Authenticated} />
-            <Route path={WALLET} component={Authenticated} />
+            <Route path={DASHBOARD} component={AuthenticatedPage} />
+            <Route path={SESSIONS} component={AuthenticatedPage} />
+            <Route path={SETTINGS} component={AuthenticatedPage} />
+            <Route path={WALLET} component={AuthenticatedPage} />
             <Redirect from="*" to={NOT_FOUND} />
         </Switch>
     );

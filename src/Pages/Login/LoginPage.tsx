@@ -23,7 +23,7 @@ interface StateInterface {
     isLoading: boolean;
 }
 
-const Login = () => {
+const LoginPage = () => {
     const [thisState, setThisState] = React.useState<StateInterface>({
         password: '',
         error: false,
@@ -90,4 +90,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;

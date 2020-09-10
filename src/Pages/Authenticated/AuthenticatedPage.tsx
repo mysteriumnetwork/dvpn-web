@@ -16,7 +16,7 @@ import Settings from './Pages/Settings/Settings';
 import Wallet from './Pages/Wallet/Wallet';
 import Navigation from './Components/Navigation';
 
-const Authenticated: FC = () => {
+const AuthenticatedPage: FC = () => {
     return (
         <div className="authenticated wrapper">
             <Navigation />
@@ -51,4 +51,4 @@ const Authenticated: FC = () => {
     );
 };
 
-export default Authenticated;
+export default AuthenticatedPage;

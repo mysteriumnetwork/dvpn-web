@@ -10,8 +10,8 @@ import { useHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { Identity, IdentityRegistrationStatusV3 } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
-import { LOGIN } from '../../constants/routes'
 
+import { LOGIN } from '../../constants/routes';
 import { RootState } from '../../redux/store';
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/onboarding/main.scss';
@@ -41,7 +41,7 @@ const isIdentityRegistered = (identity?: Identity): boolean => {
     return !!identity && (identity.registrationStatus === Registered || identity.registrationStatus === InProgress);
 };
 
-const Onboarding: FC<Props> = ({ onboarding }) => {
+const OnboardingPage: FC<Props> = ({ onboarding }) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [identity, setIdentity] = useState<Identity>();
     const { isDefaultCredentials, termsAgreedAt, termsAgreedVersion } = onboarding;
@@ -104,4 +104,4 @@ const Onboarding: FC<Props> = ({ onboarding }) => {
     );
 };
 
-export default connect(mapStateToProps)(Onboarding);
+export default connect(mapStateToProps)(OnboardingPage);
