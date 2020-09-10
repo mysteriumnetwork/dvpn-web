@@ -24,7 +24,7 @@ import SessionCard from './SessionCard';
 export interface SessionsSideListPropsInterface {
     liveSessions?: Session[];
     liveSessionStats?: Stats;
-    isNavigationDisplayed?: boolean;
+    displayNavigation?: boolean;
 }
 
 const mapStateToProps = ({ sse }: RootState) => ({
@@ -65,7 +65,7 @@ interface StateProps {
 const SessionsSideList: FC<SessionsSideListPropsInterface> = ({
     liveSessions,
     liveSessionStats,
-    isNavigationDisplayed,
+    displayNavigation,
 }) => {
     const [state, setState] = useState<StateProps>({});
     useEffect(() => {
@@ -93,7 +93,7 @@ const SessionsSideList: FC<SessionsSideListPropsInterface> = ({
                 ) : (
                     <div className="sessions-wrapper">
                         {latestSessionCards || <div>No session history</div>}
-                        {isNavigationDisplayed && (
+                        {displayNavigation && (
                             <div className="button-block">
                                 <Link to={SESSIONS} className="btn btn-empty btn-center all">
                                     <span className="btn-text">View all sessions</span>

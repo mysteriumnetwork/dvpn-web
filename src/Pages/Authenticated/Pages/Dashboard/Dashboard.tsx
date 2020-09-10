@@ -14,8 +14,8 @@ import Header from '../../Components/Header';
 import { RootState } from '../../../../redux/store';
 import { fetchSessions, fetchIdentity, fetchUserConfig, DashboardState } from '../../../../redux/actions/dashboard';
 import { SSEState } from '../../../../redux/actions/sse';
+import SessionsSideList from '../SessionSideList/SessionsSideList';
 
-import SessionsSideList from './SessionsSideList/SessionsSideList';
 import GraphCard from './GraphCard';
 import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
@@ -83,11 +83,7 @@ const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, fetchUserCon
                 </div>
             </div>
             <div className="dashboard--side">
-                <SessionsSideList
-                    liveSessions={liveSessions}
-                    liveSessionStats={liveSessionsStats}
-                    historySessions={sessions.sessionResponse?.sessions}
-                />
+                <SessionsSideList displayNavigation />
             </div>
         </div>
     );

@@ -127,10 +127,10 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                     <div className="title">Price per GB</div>
                     <div className="text">{toMystGb(proposal?.paymentMethod)}</div>
                 </div>
-                <div className="service-stat switch">
+{/*                <div className="service-stat switch">
                     <div className="title">Whitelisted</div>
                     <DefaultSwitch disabled={false} turnedOn={false} handleChange={() => {}} />
-                </div>
+                </div>*/}
                 <div className="service-stat switch">
                     <div className="title">Turned on</div>
                     <DefaultSwitch
@@ -147,7 +147,6 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                 </div>
             </div>
             <div className="control-row">
-                <div className="button">Session history</div>
                 <LoadingButton onClick={openSettings} className="button">
                     Settings
                 </LoadingButton>
