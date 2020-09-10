@@ -66,7 +66,7 @@ const columns: Column[] = [
 ];
 
 const tableRow = (info: SessionInfo): ReactElement => (
-    <TableRow>
+    <TableRow key={info.id}>
         <TableCell>{info.consumerCountry}</TableCell>
         <TableCell>{info.myst}</TableCell>
         <TableCell>{info.data}</TableCell>
@@ -82,9 +82,11 @@ const SessionList: FC<Props> = ({ sessions, pagination }) => {
             <TableContainer className="table">
                 <Table className="table">
                     <TableHead>
-                        {columns.map((c) => (
-                            <TableCell key={c.id}>{c.label}</TableCell>
-                        ))}
+                        <TableRow>
+                            {columns.map((c) => (
+                                <TableCell key={c.id}>{c.label}</TableCell>
+                            ))}
+                        </TableRow>
                     </TableHead>
                     <TableBody>{infos.map((info) => tableRow(info))}</TableBody>
                 </Table>
