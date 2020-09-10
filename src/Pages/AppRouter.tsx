@@ -21,7 +21,7 @@ import {
 } from '../constants/routes';
 
 import Login from './Login/Login';
-import Onboarding from './Onboarding2/Onboarding';
+import Onboarding from './Onboarding/Onboarding';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
 import IndexRoute from './IndexRoute';
