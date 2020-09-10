@@ -18,12 +18,12 @@ import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { useToasts } from 'react-toast-notifications';
 
-import { ServiceType } from '../../../../../commons';
-import { displayMoneyMyst, displayMyst } from '../../../../../commons/money.utils';
-import { DefaultSwitch } from '../../../../../Components/DefaultSwitch';
-import { ReactComponent as WireGuardIcon } from '../../../../../assets/images/wg-icon.svg';
-import { ReactComponent as OpenVpnIcon } from '../../../../../assets/images/ovpn-icon.svg';
-import LoadingButton from '../../../../../Components/Buttons/LoadingButton';
+import { ServiceType } from '../../../../commons';
+import { displayMoneyMyst, displayMyst } from '../../../../commons/money.utils';
+import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
+import { ReactComponent as WireGuardIcon } from '../../../../assets/images/wg-icon.svg';
+import { ReactComponent as OpenVpnIcon } from '../../../../assets/images/ovpn-icon.svg';
+import LoadingButton from '../../../../Components/Buttons/LoadingButton';
 
 import ServiceSettingsModal from './ServiceSettingsModal';
 

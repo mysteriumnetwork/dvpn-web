@@ -6,8 +6,8 @@
  */
 import React, { FC } from 'react';
 
-import { natStatus, natStatusColor } from '../../../../../commons/natStatus';
-import '../../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
+import { natStatus, natStatusColor } from '../../../../commons/natStatus';
+import '../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
 
 interface Props {
     status?: string;

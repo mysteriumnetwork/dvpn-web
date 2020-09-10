@@ -8,7 +8,7 @@ import React from 'react';
 import { Stats } from 'mysterium-vpn-js';
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer, YAxis } from 'recharts';
 
-import { ReactComponent as Icon } from '../../../../assets/images/authenticated/pages/dashboard/graph-icon.svg';
+import { ReactComponent as Icon } from '../../../assets/images/authenticated/pages/dashboard/graph-icon.svg';
 
 import {
     Pair,

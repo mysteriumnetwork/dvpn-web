@@ -8,10 +8,10 @@ import React, { FC, useEffect, useState } from 'react';
 import { Pagination, Session, SessionResponse } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 
-import Header from '../../Components/Header';
-import { ReactComponent as Logo } from '../../../../assets/images/authenticated/pages/sessions/logo.svg';
-import { tequilapiClient } from '../../../../api/TequilApiClient';
-import '../../../../assets/styles/pages/sessionsList.scss';
+import Header from '../Components/Header';
+import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg';
+import { tequilapiClient } from '../../../api/TequilApiClient';
+import '../../../assets/styles/pages/sessionsList.scss';
 import SessionsSideList from '../SessionSideList/SessionsSideList';
 
 import SessionList from './SessionList';

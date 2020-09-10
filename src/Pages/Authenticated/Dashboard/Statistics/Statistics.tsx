@@ -7,9 +7,9 @@
 import React, { FC } from 'react';
 import { Stats } from 'mysterium-vpn-js';
 
-import secondsToISOTime from '../../../../../commons/secondsToISOTime';
-import formatBytes, { add } from '../../../../../commons/formatBytes';
-import { displayMyst } from '../../../../../commons/money.utils';
+import secondsToISOTime from '../../../../commons/secondsToISOTime';
+import formatBytes, { add } from '../../../../commons/formatBytes';
+import { displayMyst } from '../../../../commons/money.utils';
 
 import StatCard from './TopStatBlock';
 

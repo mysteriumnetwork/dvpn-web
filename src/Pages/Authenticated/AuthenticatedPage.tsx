@@ -10,10 +10,10 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { DASHBOARD, NOT_FOUND, SESSIONS, SETTINGS, WALLET } from '../../constants/routes';
 
-import Dashboard from './Pages/Dashboard/Dashboard';
-import Sessions from './Pages/Sessions/Sessions';
-import Settings from './Pages/Settings/Settings';
-import Wallet from './Pages/Wallet/Wallet';
+import Dashboard from './Dashboard/Dashboard';
+import Sessions from './Sessions/Sessions';
+import Settings from './Settings/Settings';
+import Wallet from './Wallet/Wallet';
 import Navigation from './Components/Navigation';
 
 const AuthenticatedPage: FC = () => {

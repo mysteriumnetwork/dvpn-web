@@ -9,11 +9,11 @@ import { Fade, Modal } from '@material-ui/core';
 import { DECIMAL_PART_V3, Money, ServiceInfo } from 'mysterium-vpn-js';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 
-import { DefaultSlider } from '../../../../../Components/DefaultSlider';
-import { DefaultSwitch } from '../../../../../Components/DefaultSwitch';
-import { ServiceType } from '../../../../../commons';
-import LoadingButton from '../../../../../Components/Buttons/LoadingButton';
-import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../../api/TequilAPIWrapper';
+import { DefaultSlider } from '../../../../Components/DefaultSlider';
+import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
+import { ServiceType } from '../../../../commons';
+import LoadingButton from '../../../../Components/Buttons/LoadingButton';
+import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../api/TequilAPIWrapper';
 
 interface Props {
     isOpen: boolean;

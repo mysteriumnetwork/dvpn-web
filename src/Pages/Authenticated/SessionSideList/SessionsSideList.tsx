@@ -11,13 +11,13 @@ import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import formatBytes, { add } from '../../../../commons/formatBytes';
-import secondsToISOTime from '../../../../commons/secondsToISOTime';
-import '../../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
-import { displayMyst } from '../../../../commons/money.utils';
-import { SESSIONS } from '../../../../constants/routes';
-import { RootState } from '../../../../redux/store';
-import { tequilapiClient } from '../../../../api/TequilApiClient';
+import formatBytes, { add } from '../../../commons/formatBytes';
+import secondsToISOTime from '../../../commons/secondsToISOTime';
+import '../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
+import { displayMyst } from '../../../commons/money.utils';
+import { SESSIONS } from '../../../constants/routes';
+import { RootState } from '../../../redux/store';
+import { tequilapiClient } from '../../../api/TequilApiClient';
 
 import SessionCard from './SessionCard';
 
