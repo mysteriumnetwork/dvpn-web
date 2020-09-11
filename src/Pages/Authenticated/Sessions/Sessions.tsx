@@ -5,16 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { FC, useEffect, useState } from 'react';
-import { Pagination, Session, SessionResponse } from 'mysterium-vpn-js';
-import { CircularProgress } from '@material-ui/core';
+import { Pagination, Session } from 'mysterium-vpn-js';
 
 import Header from '../Components/Header';
+import '../../../assets/styles/pages/authenticated/pages/sessions.scss';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import '../../../assets/styles/pages/sessionsList.scss';
 import SessionsSideList from '../SessionSideList/SessionsSideList';
 
-import SessionList from './SessionList';
+import SessionList from './SessionsList';
 
 interface StateProps {
     isLoading: boolean;
@@ -38,35 +38,33 @@ const Sessions: FC = () => {
             .catch((err) => {});
     }, [state.pageSize, state.currentPage]);
 
-    const onChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setState({ ...state, pageSize: parseInt(event.target.value, 10) });
+    const handlePrevPageButtonClick = () => {
+        setState({ ...state, currentPage: state.currentPage - 1 });
     };
 
-    const onChangePage = (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => {
-        setState({ ...state, currentPage: newPage + 1 });
+    const handleNextPageButtonClick = () => {
+        setState({
+            ...state,
+            currentPage: state.currentPage + 1,
+        });
     };
-    const allSessions = state.sessions;
+
+    const onPageClicked = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
+        setState({ ...state, currentPage: pageNumber });
+    };
 
     return (
         <div className="sessions wrapper">
             <div className="sessions--content">
-                <div>
-                    <Header logo={Logo} name="Sessions" />
-                </div>
-                {state.isLoading ? (
-                    <CircularProgress className="spinner" />
-                ) : (
-                    <SessionList
-                        sessions={allSessions}
-                        pagination={{
-                            count: state.paging?.totalItems || 0,
-                            page: state.paging?.currentPage || 1,
-                            rowsPerPage: state.pageSize,
-                            onChangePage: onChangePage,
-                            onChangeRowsPerPage: onChangeRowsPerPage,
-                        }}
-                    />
-                )}
+                <Header logo={Logo} name="Sessions" />
+                <SessionList
+                    sessions={state.sessions}
+                    currentPage={state.currentPage}
+                    lastPage={state?.paging?.totalPages || 0}
+                    onPageClick={onPageClicked}
+                    handlePrevPageButtonClick={handlePrevPageButtonClick}
+                    handleNextPageButtonClick={handleNextPageButtonClick}
+                />
             </div>
             <div className="sessions--side">
                 <SessionsSideList />

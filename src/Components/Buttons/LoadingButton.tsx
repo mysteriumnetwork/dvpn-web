@@ -16,10 +16,11 @@ interface Props {
     className?: string;
     children?: any;
     onClick?: MouseEventHandler;
+    disabled?: boolean;
     type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
-const LoadingButton: FC<Props> = ({ isLoading, className, children, onClick, type }) => {
+const LoadingButton: FC<Props> = ({ isLoading, className, children, onClick, type, disabled }) => {
     if (isLoading) {
         return (
             <Button className={className} disabled>
@@ -29,7 +30,7 @@ const LoadingButton: FC<Props> = ({ isLoading, className, children, onClick, typ
     }
 
     return (
-        <Button type={type} onClick={onClick} className={className}>
+        <Button disabled={disabled} type={type} onClick={onClick} className={className}>
             {children}
         </Button>
     );
