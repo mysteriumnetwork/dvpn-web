@@ -12,40 +12,36 @@ import { ServiceType } from '../commons';
 import { tequilapiClient } from './TequilApiClient';
 
 export const acceptWithTermsAndConditions = async (): Promise<Config> => {
-    const config = await tequilapiClient.userConfig();
-    config.data.mysteriumWebUi = {
-        termsAgreed: {
-            version: termsPackageJson.version,
-            at: new Date().toISOString(),
+    return await tequilapiClient.updateUserConfig({
+        data: {
+            mysteriumWebUi: {
+                termsAgreed: {
+                    version: termsPackageJson.version,
+                    at: new Date().toISOString(),
+                },
+            },
         },
-    };
-    return await tequilapiClient.updateUserConfig(config);
+    });
 };
 
 export const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
-    const config = await tequilapiClient.userConfig();
-
-    if (config?.data['access-policy']) {
-        config.data['access-policy'].list = policyName;
-    } else {
-        config.data['access-policy'] = {
-            list: policyName,
-        };
-    }
-
-    return await tequilapiClient.updateUserConfig(config);
+    return await tequilapiClient.updateUserConfig({
+        data: {
+            'access-policy': {
+                list: policyName,
+            },
+        },
+    });
 };
 
 export const setTrafficShaping = async (enabled: boolean): Promise<Config> => {
-    const config = await tequilapiClient.userConfig();
-    if (config.data?.shaper) {
-        config.data.shaper['enabled'] = enabled;
-    } else {
-        config.data['shaper'] = {
-            enabled: enabled,
-        };
-    }
-    return await tequilapiClient.updateUserConfig(config);
+    return await tequilapiClient.updateUserConfig({
+        data: {
+            shaper: {
+                enabled: enabled,
+            },
+        },
+    });
 };
 
 export const setServicePrice = async (
@@ -54,45 +50,27 @@ export const setServicePrice = async (
     service: ServiceType
 ): Promise<Config> => {
     const configServiceName = service === ServiceType.OPENVPN ? 'openvpn' : 'wireguard';
-    const config = await tequilapiClient.userConfig();
-
-    if (config.data[configServiceName]) {
-        config.data[configServiceName]['price-minute'] = pricePerMinute;
-        config.data[configServiceName]['price-gb'] = pricePerGb;
-    } else {
-        config.data[configServiceName] = {
-            'price-minute': pricePerMinute,
-            'price-gb': pricePerGb,
-        };
-    }
-
-    return await tequilapiClient.updateUserConfig(config);
+    return await tequilapiClient.updateUserConfig({
+        data: {
+            [configServiceName]: {
+                'price-minute': pricePerMinute,
+                'price-gb': pricePerGb,
+            },
+        },
+    });
 };
 
 export const setAllServicePrice = async (pricePerMinute: number | null, pricePerGb: number | null): Promise<Config> => {
-    if (pricePerMinute === 0.005 && pricePerGb === 0.005) {
-        pricePerMinute = null;
-        pricePerGb = null;
-    }
-    const config = await tequilapiClient.userConfig();
-    if (config.data.openvpn) {
-        config.data.openvpn['price-minute'] = pricePerMinute;
-        config.data.openvpn['price-gb'] = pricePerGb;
-    } else {
-        config.data.openvpn = {
-            'price-minute': pricePerMinute,
-            'price-gb': pricePerGb,
-        };
-    }
-    if (config.data.wireguard) {
-        config.data.wireguard['price-minute'] = pricePerMinute;
-        config.data.wireguard['price-gb'] = pricePerGb;
-    } else {
-        config.data.wireguard = {
-            'price-minute': pricePerMinute,
-            'price-gb': pricePerGb,
-        };
-    }
-
-    return await tequilapiClient.updateUserConfig(config);
+    return await tequilapiClient.updateUserConfig({
+        data: {
+            openvpn: {
+                'price-minute': pricePerMinute,
+                'price-gb': pricePerGb,
+            },
+            wireguard: {
+                'price-minute': pricePerMinute,
+                'price-gb': pricePerGb,
+            },
+        },
+    });
 };
