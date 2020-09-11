@@ -25,7 +25,7 @@ const SSEListener: React.FC<Props> = ({ sseAppStateStateChanged, children }) => 
         sseConnect();
         eventBus.on(SSEEventType.AppStateChange, (state: AppState) => sseAppStateStateChanged(state));
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-    return <div>{children}</div>;
+    return children;
 };
 
 export default connect(() => ({}), mapDispatchToProps)(SSEListener);
