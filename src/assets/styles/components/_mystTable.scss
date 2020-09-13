@@ -1,26 +1,46 @@
 @import '../base/variables';
 
 .myst-table {
-  .header-row {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    height: 7%;
     width: 100%;
     display: flex;
+    justify-content: flex-start;
     align-items: center;
     padding: 0 40px 16px 40px;
+  }
 
-    &--title {
-      width: 25%;
+  &__header-cell {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-      p {
-        margin-left: 40px;
-      }
+    p {
+      font-style: normal;
+      font-weight: $medium-weight;
+      font-size: 12px;
+      line-height: 18px;
+      color: #AAAAAA;
     }
   }
 
-  .content {
+  &__content {
+    height: 86%;
+    width: 100%;
     padding: 20px 25px 25px 25px;
     background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow-x: scroll;
 
-    &--row {
+    &__row {
+      flex: 1;
       width: 100%;
       background: #FFFFFF;
       border: 1px solid #ECECF2;
@@ -32,29 +52,33 @@
       justify-content: flex-start;
       margin-bottom: 15px;
 
-      .value {
-        width: 25%;
-        display: flex;
-        align-items: center;
+      p {
+        font-style: normal;
+        font-weight: $medium-weight;
+        font-size: 16px;
+        line-height: 24px;
+        color: $main-text-color;
+      }
 
-        p {
-          font-style: normal;
-          font-weight: $medium-weight;
-          font-size: 16px;
-          line-height: 24px;
-          color: $main-text-color;
-        }
+      &__row-value {
+        width: 100%;
       }
     }
   }
 
-  .pagination-row {
+  &__footer {
+    height: 7%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: #FFFFFF;
+    padding: 20px;
 
-    .pagination-button {
-      background: rgba(129, 129, 165, 0.1);
+    &__pagination {
+    }
+
+    &__button {
+      background: rgba(129, 129, 165, 0.1) !important;
       border-radius: 6px;
       cursor: pointer;
 
@@ -69,36 +93,35 @@
       }
     }
 
-    .pagination-button.next {
+    &__button.next {
       padding: 11px 35px 11px 15px;
       text-align: right;
     }
 
-    .pagination-button.prev {
+    &__button.prev {
       padding: 11px 15px 11px 35px;
       text-align: left;
     }
-
-    .MuiPaginationItem-root.MuiPaginationItem-ellipsis {
-      display: none;
-    }
-
-    .MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page.MuiPaginationItem-outlined.MuiPaginationItem-rounded {
-      border: none;
-      background: #F5F5FA;
-      border-radius: 6px;
-      width: 36px;
-      height: 36px;
-      color: $inputs-labels-text-color;
-    }
-
-    .MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page.MuiPaginationItem-outlined.MuiPaginationItem-rounded.Mui-selected {
-      background: linear-gradient(0deg, rgba(38, 34, 98, 0.4), rgba(38, 34, 98, 0.4)), #FFFFFF;
-      color: #FFFFFF;
-      position: relative;
-    }
   }
+
+  .MuiPaginationItem-root.MuiPaginationItem-ellipsis {
+    display: none;
+  }
+
+  .MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page.MuiPaginationItem-outlined.MuiPaginationItem-rounded {
+    border: none;
+    background: #F5F5FA;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    color: $inputs-labels-text-color;
+  }
+
+  .MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page.MuiPaginationItem-outlined.MuiPaginationItem-rounded.Mui-selected {
+    background: linear-gradient(0deg, rgba(38, 34, 98, 0.4), rgba(38, 34, 98, 0.4)), #FFFFFF;
+    color: #FFFFFF;
+    position: relative;
+  }
+
 }
-
-
 

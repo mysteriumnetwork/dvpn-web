@@ -26,7 +26,7 @@ interface Props {
 }
 
 const header = (h: TableHeader) => (
-    <div className={'header-row--title ' + h.className}>
+    <div className={'myst-table__header-cell'}>
         <p>{h.name}</p>
     </div>
 );
@@ -42,17 +42,17 @@ const MystTable: FC<Props> = ({
 }) => {
     return (
         <div className="myst-table">
-            <div className="header-row">{headers.map(header)}</div>
-            <div className="content">{rows}</div>
-            <div className="pagination-row">
+            <div className="myst-table__header">{headers.map(header)}</div>
+            <div className="myst-table__content">{rows}</div>
+            <div className="myst-table__footer">
                 <LoadingButton
                     disabled={currentPage === 1}
-                    className="prev pagination-button"
+                    className="prev myst-table__footer__button prev pagination-button"
                     onClick={handlePrevPageButtonClick}
                 >
                     <p>Prev</p>
                 </LoadingButton>
-                <div className="pagination">
+                <div className="myst-table__footer__pagination">
                     <PaginationMaterial
                         page={currentPage}
                         hideNextButton={true}
@@ -65,7 +65,7 @@ const MystTable: FC<Props> = ({
                 </div>
                 <LoadingButton
                     disabled={currentPage === lastPage}
-                    className="next pagination-button"
+                    className="next myst-table__footer__button"
                     onClick={handleNextPageButtonClick}
                 >
                     <p>Next</p>

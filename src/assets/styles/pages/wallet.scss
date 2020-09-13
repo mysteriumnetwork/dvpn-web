@@ -1,0 +1,10 @@
+.wallet {
+  display: flex;
+
+  &--content {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: 80vh;
+  }
+}
