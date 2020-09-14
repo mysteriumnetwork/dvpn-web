@@ -24,7 +24,7 @@ interface StateInterface {
 }
 
 const LoginPage = () => {
-    const [thisState, setThisState] = React.useState<StateInterface>({
+    const [state, setState] = React.useState<StateInterface>({
         password: '',
         error: false,
         isLoading: false,
@@ -32,17 +32,17 @@ const LoginPage = () => {
     const history = useHistory();
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setThisState({ ...thisState, [prop]: event.target.value });
+        setState({ ...state, [prop]: event.target.value });
     };
 
     const handleLogin = (e: FormEvent<any>) => {
         e.preventDefault();
-        setThisState({ ...thisState, error: false, isLoading: true });
+        setState({ ...state, error: false, isLoading: true });
         tequilapiClient
-            .authLogin(DEFAULT_USERNAME, thisState.password)
+            .authLogin(DEFAULT_USERNAME, state.password)
             .then(() => history.push(DASHBOARD))
             .catch(() => {
-                setThisState({ ...thisState, error: true, isLoading: false });
+                setState({ ...state, error: true, isLoading: false });
             });
     };
     return (
@@ -52,7 +52,7 @@ const LoginPage = () => {
                     <h1 className="login-content-block--heading">Welcome node runner!</h1>
                     <p className="login-content-block--heading-paragraph">Lets get you up and running. </p>
                     <div className="login-content-block--password-block">
-                        <Collapse in={thisState.error}>
+                        <Collapse in={state.error}>
                             <Alert severity="error">
                                 <AlertTitle>Error</AlertTitle>
                                 Bad credentials
@@ -64,7 +64,7 @@ const LoginPage = () => {
                                 <DefaultTextField
                                     handleChange={handleTextFieldsChange}
                                     password={true}
-                                    value={thisState.password}
+                                    value={state.password}
                                     stateName="password"
                                 />
                             </div>
@@ -73,7 +73,7 @@ const LoginPage = () => {
                                 <a href="#">Forgot password?</a>
                                 <LoadingButton
                                     type="submit"
-                                    isLoading={thisState.isLoading}
+                                    isLoading={state.isLoading}
                                     className="btn btn-filled login"
                                 >
                                     <span className="btn-text-white">Sing In</span>

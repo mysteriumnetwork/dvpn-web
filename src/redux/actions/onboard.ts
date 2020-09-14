@@ -9,7 +9,7 @@ import { Dispatch, Action } from 'redux';
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../constants/defaults';
 import { tequilapiClient } from '../../api/TequilApiClient';
 
-import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from './onboarding.actions';
+export const ONBOARDING_CREDENTIAL_AND_TERMS_CHECK = 'CREDENTIAL_AND_TERMS_CHECK';
 
 export interface OnboardingState {
     isDefaultCredentials: boolean;

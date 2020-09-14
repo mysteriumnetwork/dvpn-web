@@ -22,11 +22,7 @@ const generateSteps = (currentStep: number, totalStepCount: number): ReactElemen
 };
 
 const StepCounter: FC<PropsInterface> = ({ currentStep, totalStepCount }) => {
-    return (
-        <div className="steps-counter">
-            {generateSteps(currentStep, totalStepCount)}
-        </div>
-    );
+    return <div className="steps-counter">{generateSteps(currentStep, totalStepCount)}</div>;
 };
 
 export default StepCounter;

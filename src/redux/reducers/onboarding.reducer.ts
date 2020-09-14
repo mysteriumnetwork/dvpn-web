@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../actions/onboarding.actions';
+import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../actions/onboard';
 import { CredentialsAndTermsChecks, OnboardingAction, OnboardingState } from '../actions/onboard';
 
 const INITIAL_STATE: OnboardingState = {
@@ -18,7 +18,7 @@ const INITIAL_STATE: OnboardingState = {
 
 function onboardingReducer(
     state = INITIAL_STATE,
-    action: OnboardingAction<CredentialsAndTermsChecks>,
+    action: OnboardingAction<CredentialsAndTermsChecks>
 ): OnboardingState {
     switch (action.type) {
         case ONBOARDING_CREDENTIAL_AND_TERMS_CHECK: {

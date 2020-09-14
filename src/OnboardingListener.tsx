@@ -21,7 +21,7 @@ interface Props {
 const OnboardingListener: FC<Props> = ({ checkCredentialsAndTerms, children }) => {
     useLayoutEffect(() => {
         checkCredentialsAndTerms();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     return children;
 };
