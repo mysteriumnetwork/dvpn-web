@@ -4,12 +4,19 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { AppState } from 'mysterium-vpn-js';
 
 import Header from '../Components/Header';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg';
 import MystTable from '../../../Components/MystTable/MystTable';
 import '../../../assets/styles/pages/wallet.scss';
+import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import { tequilapiClient } from '../../../api/TequilApiClient';
+import { displayMyst } from '../../../commons/money.utils';
+import { RootState } from '../../../redux/store';
+import { DEFAULT_IDENTITY_PASSPHRASE } from '../../../constants/defaults';
 
 const row = () => (
     <div className="myst-table__content__row">
@@ -31,11 +38,51 @@ const row = () => (
     </div>
 );
 
-const Wallet: FC = ({}) => {
+interface StateProps {
+    unsettledEarnings: number;
+    identityRef?: string;
+}
+
+interface Props {
+    appState?: AppState;
+}
+
+const mapStateToProps = (state: RootState) => ({
+    appState: state.sse.appState,
+});
+
+const earnings = (appState?: AppState, identityRef?: string): number => {
+    if (!identityRef || !appState?.identities) {
+        return 0;
+    }
+
+    return appState.identities.filter((i) => i?.id == identityRef)[0].earnings;
+};
+
+const Wallet: FC<Props> = ({ appState }) => {
+    const [state, setState] = useState<StateProps>({
+        unsettledEarnings: 0,
+    });
+    useEffect(() => {
+        tequilapiClient
+            .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
+            .then((resp) => setState({ ...state, identityRef: resp.id }))
+            .catch((err) => console.log(err));
+    }, []);
+
     return (
         <div className="wallet">
-            <div className="wallet--content">
+            <div className="wallet__content">
                 <Header logo={Logo} name="Wallet" />
+                <div className="wallet__earnings">
+                    <div className="wallet__earnings__myst">
+                        <p className="stat">{displayMyst(earnings(appState, state.identityRef))}</p>
+                        <p className="name">Unsettled Earnings</p>
+                    </div>
+                    <LoadingButton className="btn btn-filled">
+                        <span className="btn-text-white">Settle Now</span>
+                    </LoadingButton>
+                </div>
                 <MystTable
                     headers={[
                         { name: 'Date' },
@@ -56,4 +103,4 @@ const Wallet: FC = ({}) => {
     );
 };
 
-export default Wallet;
+export default connect(mapStateToProps)(Wallet);
