@@ -84,33 +84,31 @@ const SessionsSideList: FC<SessionsSideListPropsInterface> = ({
 
     return (
         <div className="side-block">
-            <p className="heading">Latest Sessions</p>
-            <div className="side-block--content">
+            <p className="side-block__heading">Latest Sessions</p>
+            <div className="side-block__content">
                 {!liveSessions ? (
                     <div className="spinner">
                         <CircularProgress />
                     </div>
                 ) : (
-                    <div className="sessions-wrapper">
-                        {latestSessionCards || <div>No session history</div>}
-                        {displayNavigation && (
-                            <div className="button-block">
-                                <Link to={SESSIONS} className="btn btn-empty btn-center all">
-                                    <span className="btn-text">View all sessions</span>
-                                </Link>
-                            </div>
-                        )}
-                    </div>
+                    <div className="sessions-wrapper">{latestSessionCards || <div>No session history</div>}</div>
                 )}
-                <div className="sum-wrapper">
-                    <div className="sum-block">
-                        <div className="name">{displayMyst(liveSessionStats?.sumTokens)}</div>
-                        <div className="explanation">Live earnings</div>
-                    </div>
-                    <div className="sum-block">
-                        <div className="name">{formatBytes(sumBytes(liveSessionStats))}</div>
-                        <div className="explanation">Live data</div>
-                    </div>
+            </div>
+            {displayNavigation && (
+                <div className="side-block__button-block">
+                    <Link to={SESSIONS} className="btn btn-empty btn-center all">
+                        <span className="btn-text">View all sessions</span>
+                    </Link>
+                </div>
+            )}
+            <div className="side-block__footer">
+                <div className="side-block__footer__sum-block">
+                    <div className="name">{displayMyst(liveSessionStats?.sumTokens)}</div>
+                    <div className="explanation">Live earnings</div>
+                </div>
+                <div className="side-block__footer__sum-block">
+                    <div className="name">{formatBytes(sumBytes(liveSessionStats))}</div>
+                    <div className="explanation">Live data</div>
                 </div>
             </div>
         </div>

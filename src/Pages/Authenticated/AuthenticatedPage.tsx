@@ -18,29 +18,23 @@ import Navigation from './Components/Navigation';
 
 const AuthenticatedPage: FC = () => {
     return (
-        <div className="authenticated wrapper">
-            <Navigation />
-            <div className="authenticated--content-wrapper">
+        <div className="authenticated">
+            <div className="authenticated--menu">
+                <Navigation />
+            </div>
+            <div className="authenticated--content">
                 <Switch>
                     <Route exact={true} path={DASHBOARD}>
-                        <div className="authenticated--content">
-                            <Dashboard />
-                        </div>
+                        <Dashboard />
                     </Route>
                     <Route exact={true} path={SESSIONS}>
-                        <div className="authenticated--content">
-                            <Sessions />
-                        </div>
+                        <Sessions />
                     </Route>
                     <Route exact={true} path={SETTINGS}>
-                        <div className="authenticated--content">
-                            <Settings />
-                        </div>
+                        <Settings />
                     </Route>
                     <Route exact={true} path={WALLET}>
-                        <div className="authenticated--content">
-                            <Wallet />
-                        </div>
+                        <Wallet />
                     </Route>
                     <Route path="*">
                         <Redirect to={NOT_FOUND} />

@@ -3,8 +3,10 @@
 .side-block {
   padding: 20px 0 0 0;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
-  .heading {
+  &__heading {
     font-style: normal;
     font-weight: $medium-weight;
     font-size: 16px;
@@ -13,9 +15,10 @@
     padding-left: 25px;
   }
 
-  &--content {
+  &__content {
     display: flex;
     flex-direction: column;
+    overflow-x: scroll;
     justify-content: space-between;
     height: calc(100% - 25px);
 
@@ -83,14 +86,6 @@
           }
         }
       }
-
-      .button-block {
-        margin-top: 50px;
-
-        .btn.all {
-          width: 60%;
-        }
-      }
     }
 
     .sum-wrapper {
@@ -125,6 +120,48 @@
       .sum-block:first-child {
         border-right: 1px solid #EEEEEE;;
       }
+    }
+  }
+
+  &__footer {
+    display: flex;
+    border-top: 1px solid #EEEEEE;;
+
+    &__sum-block {
+      width: 50%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 0;
+
+      .name {
+        font-weight: $medium-weight;
+        font-size: 16px;
+        line-height: 24px;
+        color: $main-text-color;
+      }
+
+      .explanation {
+        font-style: normal;
+        font-weight: $normal-weight;
+        font-size: 14px;
+        line-height: 21px;
+        color: $names-text-color;
+      }
+    }
+
+    &__sum-block:first-child {
+      border-right: 1px solid #EEEEEE;;
+    }
+  }
+
+  &__button-block {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    .btn.all {
+      width: 60%;
     }
   }
 }

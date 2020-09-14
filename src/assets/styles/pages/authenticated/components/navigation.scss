@@ -4,6 +4,9 @@
   background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
   padding: 15px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   &--logo {
     margin-bottom: 50px;
@@ -25,7 +28,7 @@
   }
 
   &--chat {
-    position: absolute;
+    //position: absolute;
     width: 58px;
     height: 58px;
     left: 0;
@@ -38,6 +41,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &--flex-gow {
+    flex-grow: 1;
   }
 }
 

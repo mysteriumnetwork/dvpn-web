@@ -69,7 +69,7 @@ const Navigation: FC = () => {
             >
                 {values.active === WALLET ? <WalletActive /> : <Wallet />}
             </Link>
-
+            <div className="navigation--flex-gow"></div>
             <div className="navigation--chat">
                 <Chat />
             </div>

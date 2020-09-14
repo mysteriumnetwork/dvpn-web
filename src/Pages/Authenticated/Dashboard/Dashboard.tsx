@@ -57,7 +57,7 @@ const Dashboard: React.FC<Props> = ({ fetchSessions, fetchIdentity, fetchUserCon
     }
 
     return (
-        <div className="dashboard wrapper">
+        <div className="dashboard">
             <div className="dashboard--content">
                 <Header logo={Logo} name="Dashboard" />
                 <div className="dashboard--top-stats-block">
