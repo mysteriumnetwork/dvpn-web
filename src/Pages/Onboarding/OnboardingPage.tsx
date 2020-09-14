@@ -25,7 +25,7 @@ import Welcome from './steps/Welcome';
 import StepCounter from './StepCounter';
 import TermsAndConditions from './steps/TermsAndConditions';
 import PriceSettings from './steps/PriceSettings';
-import PayoutSettings from './steps/PayoutSettings';
+import SettlementSettings from './steps/SettlementSettings';
 
 const { Registered, InProgress } = IdentityRegistrationStatusV3;
 
@@ -75,7 +75,7 @@ const OnboardingPage: FC<Props> = ({ onboarding }) => {
         !isIdentityRegistered(identity) ? <PriceSettings key="price" callbacks={callbacks} /> : undefined,
         // Backup is disabled for initial release
         // <Backup key="backup" callbacks={callbacks} />,
-        !isIdentityRegistered(identity) ? <PayoutSettings key="payout" callbacks={callbacks} /> : undefined,
+        !isIdentityRegistered(identity) ? <SettlementSettings key="payout" callbacks={callbacks} /> : undefined,
         <PasswordChange key="password" callbacks={callbacks} />,
     ].filter((step) => step !== undefined);
     const totalStepCount = steps.length;
