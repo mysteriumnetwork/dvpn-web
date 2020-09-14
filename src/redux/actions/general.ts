@@ -12,16 +12,16 @@ import { DEFAULT_IDENTITY_PASSPHRASE } from '../../constants/defaults';
 
 export const IDENTITY_FETCH_FULFILLED = 'dashboard/IDENTITY_FETCH_FULFILLED';
 
-export interface DashboardState {
+export interface GeneralState {
     currentIdentity?: Identity;
 }
 
-export interface DashboardAction<T> extends Action {
+export interface GeneralAction<T> extends Action {
     type: string;
     payload: T;
 }
 
-export type DashboardTypes = DashboardAction<DashboardState> | DashboardAction<Identity>;
+export type GeneralTypes = GeneralAction<GeneralState> | GeneralAction<Identity>;
 
 export const fetchIdentity = (): ((dispatch: Dispatch) => void) => {
     return async (dispatch) => {

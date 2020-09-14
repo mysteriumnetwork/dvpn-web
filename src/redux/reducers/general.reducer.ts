@@ -6,14 +6,14 @@
  */
 import { Identity } from 'mysterium-vpn-js';
 
-import { DashboardState, DashboardTypes } from '../actions/dashboard';
-import { IDENTITY_FETCH_FULFILLED } from '../actions/dashboard';
+import { GeneralState, GeneralTypes } from '../actions/general';
+import { IDENTITY_FETCH_FULFILLED } from '../actions/general';
 
-const INITIAL_STATE: DashboardState = {
+const INITIAL_STATE: GeneralState = {
     currentIdentity: undefined,
 };
 
-function dashboardReducer(state: DashboardState = INITIAL_STATE, action: DashboardTypes): DashboardState {
+function generalReducer(state: GeneralState = INITIAL_STATE, action: GeneralTypes): GeneralState {
     switch (action.type) {
         case IDENTITY_FETCH_FULFILLED: {
             return {
@@ -26,4 +26,4 @@ function dashboardReducer(state: DashboardState = INITIAL_STATE, action: Dashboa
     }
 }
 
-export default dashboardReducer;
+export default generalReducer;

@@ -7,12 +7,12 @@
 import { combineReducers } from 'redux';
 
 import onboardingReducer from './onboarding.reducer';
-import dashboardReducer from './dashboard.reducer';
+import generalReducer from './general.reducer';
 import sseReducer from './sse.reducer';
 
 const rootReducer = combineReducers({
     onboarding: onboardingReducer,
-    dashboard: dashboardReducer,
+    general: generalReducer,
     sse: sseReducer,
 });
 

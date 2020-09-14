@@ -14,7 +14,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../Components/Header';
 import { RootState } from '../../../redux/store';
-import { fetchIdentity, DashboardState } from '../../../redux/actions/dashboard';
+import { fetchIdentity, GeneralState } from '../../../redux/actions/general';
 import { SSEState } from '../../../redux/actions/sse';
 import SessionsSideList from '../SessionSideList/SessionsSideList';
 import { tequilapiClient } from '../../../api/TequilApiClient';
@@ -25,13 +25,13 @@ import Services from './Services/Services';
 import Statistics from './Statistics/Statistics';
 
 interface Props {
-    dashboard: DashboardState;
+    general: GeneralState;
     sse: SSEState;
     fetchIdentity: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
-    dashboard: state.dashboard,
+    general: state.general,
     sse: state.sse,
 });
 
@@ -47,7 +47,7 @@ interface StateProps {
     userConfig: Config;
 }
 
-const Dashboard: React.FC<Props> = ({ fetchIdentity, dashboard, sse }) => {
+const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
     const [state, setState] = useState<StateProps>({
         sessionStats: {
             count: 0,
@@ -76,7 +76,7 @@ const Dashboard: React.FC<Props> = ({ fetchIdentity, dashboard, sse }) => {
             .catch((err) => console.log(err));
     }, []);
 
-    const { currentIdentity } = dashboard;
+    const { currentIdentity } = general;
     const serviceInfo = sse.appState?.serviceInfo;
     const { status } = { ...sse.appState?.natStatus };
 

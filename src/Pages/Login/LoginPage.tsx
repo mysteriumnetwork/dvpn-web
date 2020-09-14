@@ -16,6 +16,7 @@ import { DefaultTextField } from '../../Components/DefaultTextField';
 import { DEFAULT_USERNAME } from '../../constants/defaults';
 import LoadingButton from '../../Components/Buttons/LoadingButton';
 import { tequilapiClient } from '../../api/TequilApiClient';
+import {loginAndStoreCurrentIdentity} from "../../api/TequilAPIWrapper";
 
 interface StateInterface {
     password: string;
@@ -38,12 +39,9 @@ const LoginPage = () => {
     const handleLogin = (e: FormEvent<any>) => {
         e.preventDefault();
         setState({ ...state, error: false, isLoading: true });
-        tequilapiClient
-            .authLogin(DEFAULT_USERNAME, state.password)
+        loginAndStoreCurrentIdentity(DEFAULT_USERNAME, state.password)
             .then(() => history.push(DASHBOARD))
-            .catch(() => {
-                setState({ ...state, error: true, isLoading: false });
-            });
+            .catch(() => setState({ ...state, error: true, isLoading: false }));
     };
     return (
         <div className="login wrapper">

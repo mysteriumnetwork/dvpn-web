@@ -8,8 +8,22 @@ import * as termsPackageJson from '@mysteriumnetwork/terms/package.json';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { ServiceType } from '../commons';
+import { store } from '../redux/store';
+import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults';
+import { IDENTITY_FETCH_FULFILLED } from '../redux/actions/general';
 
 import { tequilapiClient } from './TequilApiClient';
+
+export const loginAndStoreCurrentIdentity = async (username: string, password: string): Promise<void> => {
+    return await tequilapiClient
+        .authLogin(username, password)
+        .then(() => tequilapiClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE }))
+        .then((identityRef) => tequilapiClient.identity(identityRef.id))
+        .then((identity) => {
+            store.dispatch({ type: IDENTITY_FETCH_FULFILLED, payload: identity });
+            return Promise.resolve();
+        });
+};
 
 export const acceptWithTermsAndConditions = async (): Promise<Config> => {
     return await tequilapiClient.updateUserConfig({
