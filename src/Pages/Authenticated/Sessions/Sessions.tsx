@@ -13,8 +13,10 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import '../../../assets/styles/pages/sessionsList.scss';
 import SessionsSideList from '../SessionSideList/SessionsSideList';
-
-import SessionList from './SessionsList';
+import MystTable from '../../../Components/MystTable/MystTable';
+import secondsToISOTime from '../../../commons/secondsToISOTime';
+import { displayMyst } from '../../../commons/money.utils';
+import formatBytes from '../../../commons/formatBytes';
 
 interface StateProps {
     isLoading: boolean;
@@ -23,6 +25,27 @@ interface StateProps {
     paging?: Pagination;
     currentPage: number;
 }
+
+const row = (s: Session) => (
+    <div className="list-block--item">
+        <div className="value country">
+            <div className="country-placeholder"></div>
+            <p>{s.consumerCountry}</p>
+        </div>
+        <div className="value duration">
+            <p>{secondsToISOTime(s.duration)}</p>
+        </div>
+        <div className="value earnings">
+            <p>{displayMyst(s.tokens)}</p>
+        </div>
+        <div className="value transferred">
+            <p>{formatBytes(s.bytesReceived + s.bytesSent)}</p>
+        </div>
+        <div className="value id">
+            <p>{s.id.split('-')[0]}</p>
+        </div>
+    </div>
+);
 
 const Sessions: FC = () => {
     const [state, setState] = useState<StateProps>({
@@ -54,16 +77,23 @@ const Sessions: FC = () => {
     };
 
     return (
-        <div className="sessions wrapper">
+        <div className="sessions">
             <div className="sessions--content">
                 <Header logo={Logo} name="Sessions" />
-                <SessionList
-                    sessions={state.sessions}
+                <MystTable
+                    headers={[
+                        { name: 'Country' },
+                        { name: 'Duration' },
+                        { name: 'Earnings' },
+                        { name: 'Transferred' },
+                        { name: 'Session ID' },
+                    ]}
+                    rows={state.sessions.map(row)}
                     currentPage={state.currentPage}
                     lastPage={state?.paging?.totalPages || 0}
-                    onPageClick={onPageClicked}
                     handlePrevPageButtonClick={handlePrevPageButtonClick}
                     handleNextPageButtonClick={handleNextPageButtonClick}
+                    onPageClick={onPageClicked}
                 />
             </div>
             <div className="sessions--side">
