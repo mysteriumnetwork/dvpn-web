@@ -30,7 +30,7 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
     const [values, setValues] = React.useState<StateInterface>({
         passwordRepeat: '',
         password: '',
-        apiKey: 'l3Q45qGFwKKBWJRKAVJN9J34lR3NNV0XeQJB4BnA',
+        apiKey: '',
         checked: false,
         error: false,
         errorMessage: '',
