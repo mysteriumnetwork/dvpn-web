@@ -6,14 +6,25 @@
  */
 import { ONBOARDING_CREDENTIAL_AND_TERMS_CHECK } from '../actions/onboard';
 import { CredentialsAndTermsChecks, OnboardingAction, OnboardingState } from '../actions/onboard';
+import isTermsAgreed from '../../commons/isTermsAgreed';
 
 const INITIAL_STATE: OnboardingState = {
+    isCheckPending: true,
+    isNeedsOnboarding: false,
+
     isDefaultCredentials: false,
     isDefaultCredentialsChecked: false,
 
     isTermsAgreementChecked: false,
     termsAgreedAt: undefined,
     termsAgreedVersion: undefined,
+};
+
+const isNeedsOnboarding = (state: CredentialsAndTermsChecks): boolean => {
+    if (!state.isDefaultCredentials) {
+        return false;
+    }
+    return state.isDefaultCredentials || !isTermsAgreed(state.termsAgreedAt, state.termsAgreedVersion);
 };
 
 function onboardingReducer(
@@ -31,6 +42,8 @@ function onboardingReducer(
             } = action.payload;
             return {
                 ...state,
+                isCheckPending: false,
+                isNeedsOnboarding: isNeedsOnboarding(action.payload),
                 isDefaultCredentialsChecked: isDefaultCredentialsChecked,
                 isDefaultCredentials: isDefaultCredentials,
                 isTermsAgreementChecked: isTermsAgreementChecked,

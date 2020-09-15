@@ -12,13 +12,9 @@ import { loginAndStoreCurrentIdentity } from '../../api/TequilAPIWrapper';
 
 export const ONBOARDING_CREDENTIAL_AND_TERMS_CHECK = 'CREDENTIAL_AND_TERMS_CHECK';
 
-export interface OnboardingState {
-    isDefaultCredentials: boolean;
-    isDefaultCredentialsChecked: boolean;
-
-    isTermsAgreementChecked: boolean;
-    termsAgreedAt?: string;
-    termsAgreedVersion?: string;
+export interface OnboardingState extends CredentialsAndTermsChecks {
+    isCheckPending: boolean;
+    isNeedsOnboarding: boolean;
 }
 
 export interface OnboardingAction<T> extends Action<string> {
@@ -44,7 +40,7 @@ const resolveTermsAgreement = (configData?: any): Agreement => {
 
 export const checkCredentialsAndTerms = (): ((dispatch: Dispatch) => void) => {
     return async (dispatch: Dispatch) => {
-        const payload: OnboardingState = {
+        const payload: CredentialsAndTermsChecks = {
             isDefaultCredentials: false,
             isDefaultCredentialsChecked: false,
 
