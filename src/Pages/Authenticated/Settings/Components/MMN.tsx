@@ -59,7 +59,7 @@ const MMN: React.FC<Props> = (props) => {
         <a rel="noopener noreferrer"
            href="https://betanet.mysterium.network/user/profile"
            target={'_blank'}>here</a>
-    )
+    );
     return (
         <div>
             <Errors error={values.error} errorMessage={values.errorMessage} />
@@ -71,6 +71,7 @@ const MMN: React.FC<Props> = (props) => {
                 handleChange={handleTextFieldsChange}
                 value={values.apiKey}
             />
+
             <button onClick={handleSubmitToken}
                     className="btn btn-filled btn-center identity">Save
             </button>
