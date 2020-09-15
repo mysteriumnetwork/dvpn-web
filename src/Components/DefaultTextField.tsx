@@ -12,14 +12,17 @@ interface PropsInterface {
     handleChange: Function;
     value: string;
     stateName: string;
+    disabled?: boolean;
+    id?: string;
 }
 
 export const DefaultTextField: React.FC<PropsInterface> = (props: PropsInterface) => {
-    const { password, handleChange, value } = props;
+    const { id, password, handleChange, value, disabled } = props;
     return (
         <TextField
-            id="standard-basic"
+            id={id || ('field-' + props.stateName)}
             type={password ? 'password' : 'text'}
+            disabled={disabled}
             onChange={handleChange(props.stateName)}
             value={value}
             className="default-text-field"

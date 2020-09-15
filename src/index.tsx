@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -20,14 +21,19 @@ require('dotenv').config();
 ReactDOM.render(
     <Provider store={store}>
         <ToastProvider placement="top-right">
-            <SSEListener>
-                <OnboardingListener>
-                    <BrowserRouter>
-                        <AppRouter />
-                    </BrowserRouter>
-                </OnboardingListener>
-            </SSEListener>
+            <SnackbarProvider maxSnack={3} anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}>
+                <SSEListener>
+                    <OnboardingListener>
+                        <BrowserRouter>
+                            <AppRouter/>
+                        </BrowserRouter>
+                    </OnboardingListener>
+                </SSEListener>
+            </SnackbarProvider>
         </ToastProvider>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById('root'),
 );

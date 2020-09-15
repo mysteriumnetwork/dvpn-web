@@ -20,7 +20,7 @@ import LoadingButton from '../../../Components/Buttons/LoadingButton';
 interface StateInterface {
     passwordRepeat: string;
     password: string;
-    apiToken: string;
+    apiKey: string;
     checked: boolean;
     error: boolean;
     errorMessage: string;
@@ -30,7 +30,7 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
     const [values, setValues] = React.useState<StateInterface>({
         passwordRepeat: '',
         password: '',
-        apiToken: 'l3Q45qGFwKKBWJRKAVJN9J34lR3NNV0XeQJB4BnA',
+        apiKey: 'l3Q45qGFwKKBWJRKAVJN9J34lR3NNV0XeQJB4BnA',
         checked: false,
         error: false,
         errorMessage: '',
@@ -48,7 +48,7 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
         const isPasswordValid = validatePassword(values.password, values.passwordRepeat);
         if (isPasswordValid.success) {
             tequilapiClient
-                .setMMNApiKey(values.apiToken)
+                .setMMNApiKey(values.apiKey)
                 .then(() => tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password))
                 .then(() => callbacks.nextStep())
                 .catch((error) => {
@@ -105,7 +105,7 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
                     </p>
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
-                        value={values.apiToken}
+                        value={values.apiKey}
                         stateName="apiToken"
                     />
                 </div>
