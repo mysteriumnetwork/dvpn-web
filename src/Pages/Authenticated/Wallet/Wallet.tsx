@@ -4,19 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'mysterium-vpn-js';
+import { AppState, Identity } from 'mysterium-vpn-js';
 
 import Header from '../Components/Header';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg';
 import MystTable from '../../../Components/MystTable/MystTable';
 import '../../../assets/styles/pages/wallet.scss';
 import LoadingButton from '../../../Components/Buttons/LoadingButton';
-import { tequilapiClient } from '../../../api/TequilApiClient';
 import { displayMyst } from '../../../commons/money.utils';
 import { RootState } from '../../../redux/store';
-import { DEFAULT_IDENTITY_PASSPHRASE } from '../../../constants/defaults';
+
+import SettingsCard from './SettingsCard';
+import WalletModal from './WalletModal';
 
 const row = () => (
     <div className="myst-table__content__row">
@@ -40,15 +41,17 @@ const row = () => (
 
 interface StateProps {
     unsettledEarnings: number;
-    identityRef?: string;
+    isModalOpen: boolean;
 }
 
 interface Props {
     appState?: AppState;
+    identity?: Identity;
 }
 
 const mapStateToProps = (state: RootState) => ({
     appState: state.sse.appState,
+    identity: state.general.currentIdentity,
 });
 
 const earnings = (appState?: AppState, identityRef?: string): number => {
@@ -59,24 +62,20 @@ const earnings = (appState?: AppState, identityRef?: string): number => {
     return appState.identities.filter((i) => i?.id == identityRef)[0].earnings;
 };
 
-const Wallet: FC<Props> = ({ appState }) => {
+const Wallet: FC<Props> = ({ appState, identity }) => {
     const [state, setState] = useState<StateProps>({
         unsettledEarnings: 0,
+        isModalOpen: false,
     });
-    useEffect(() => {
-        tequilapiClient
-            .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
-            .then((resp) => setState({ ...state, identityRef: resp.id }))
-            .catch((err) => console.log(err));
-    }, []);
 
+    const openModel = () => setState({ ...state, isModalOpen: true });
     return (
         <div className="wallet">
             <div className="wallet__content">
                 <Header logo={Logo} name="Wallet" />
                 <div className="wallet__earnings">
                     <div className="wallet__earnings__myst">
-                        <p className="stat">{displayMyst(earnings(appState, state.identityRef))}</p>
+                        <p className="stat">{displayMyst(earnings(appState, identity?.id))}</p>
                         <p className="name">Unsettled Earnings</p>
                     </div>
                     <LoadingButton className="btn btn-filled">
@@ -99,6 +98,27 @@ const Wallet: FC<Props> = ({ appState }) => {
                     onPageClick={() => {}}
                 />
             </div>
+            <div className="wallet__side-panel">
+                <SettingsCard
+                    onEdit={openModel}
+                    header="Payout Beneficiary address"
+                    contentHeader="TODO find wallet address"
+                    content={
+                        <>
+                            <div>This is where you will get paid your ETH. Don't have a wallet?</div>
+                            <p>
+                                <a href="#">Click here.</a>
+                            </p>
+                        </>
+                    }
+                />
+            </div>
+            <WalletModal
+                isOpen={state.isModalOpen}
+                onClose={() => {
+                    setState({ ...state, isModalOpen: false });
+                }}
+            />
         </div>
     );
 };

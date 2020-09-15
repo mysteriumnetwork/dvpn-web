@@ -1,0 +1,46 @@
+@import "src/assets/styles/base/variables";
+
+.settings-card {
+  display: block;
+  height: 100px;
+  margin: 30px 0 20px 0;
+  &__header {
+    margin-bottom: 4px;
+    color: $main-text-color;
+    font-style: normal;
+    font-weight: $medium-weight;
+    font-size: 18px;
+    line-height: 21px;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ECECF2;
+    border-radius: 12px;
+
+    padding: 10px;
+
+    &__header {
+      margin-bottom: 4px;
+      color: $main-text-color;
+      font-style: normal;
+      font-weight: $medium-weight;
+      font-size: 18px;
+      line-height: 21px;
+    }
+
+    &__subtext {
+      color: $secondary-text-color;
+      font-style: normal;
+      font-weight: $lighter-weight;
+      font-size: 14px;
+      line-height: 18px;
+    }
+
+    &__footer {
+
+    }
+  }
+
+}
