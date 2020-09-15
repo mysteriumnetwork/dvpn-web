@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { TequilapiError } from 'mysterium-vpn-js';
 import Errors from '../../../../Components/Validation/Errors';
@@ -7,8 +6,6 @@ import Errors from '../../../../Components/Validation/Errors';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
 import { validatePassword } from '../../../../commons/ValidatePassword';
 import { DEFAULT_USERNAME } from '../../../../constants/defaults';
-import { GeneralState } from '../../../../redux/actions/general';
-import { RootState } from '../../../../redux/store';
 import '../../../../assets/styles/pages/authenticated/pages/setings.scss';
 
 import { DefaultTextField } from '../../../../Components/DefaultTextField';
@@ -21,14 +18,6 @@ interface StateInterface {
     errorMessage: string,
 }
 
-interface Props {
-    general: GeneralState
-}
-
-const mapStateToProps = (state: RootState) => ({
-    general: state.general,
-});
-
 const defaultState = {
     newPasswordConfirmation: '',
     newPassword: '',
@@ -37,9 +26,7 @@ const defaultState = {
     errorMessage: '',
 };
 
-const mapDispatchToProps = {};
-
-const PasswordChange: React.FC<Props> = ({ general }) => {
+const PasswordChange: React.FC = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     const [values, setValues] = React.useState<StateInterface>(defaultState);
@@ -74,7 +61,7 @@ const PasswordChange: React.FC<Props> = ({ general }) => {
 
     return (
         <div>
-            <Errors error={values.error} errorMessage={values.errorMessage}/>
+            <Errors error={values.error} errorMessage={values.errorMessage} />
 
             <div className="password-input-block">
                 <p className="text-field-label">Current password</p>
@@ -110,4 +97,4 @@ const PasswordChange: React.FC<Props> = ({ general }) => {
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PasswordChange);
+export default PasswordChange;

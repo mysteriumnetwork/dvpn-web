@@ -50,12 +50,13 @@ const Settings: React.FC<Props> = ({ general }) => {
                 <Header logo={Logo} name="Settings"/>
                 <div className="settings--blocks">
 
-                    <div className="settings--block identity">
-                        <p className="heading">Identity</p>
-                        <div className="content">
-                            <IdentityBackup identity={currentIdentity?.id || ''} />
-                        </div>
-                    </div>
+                    {/* TODO remove this if it won't be needed */}
+                    {/*<div className="settings--block identity">*/}
+                    {/*    <p className="heading">Identity</p>*/}
+                    {/*    <div className="content">*/}
+                    {/*        <IdentityBackup identity={currentIdentity?.id || ''} />*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                     <div className="settings--block identity">
                         <p className="heading">WebUI security</p>
