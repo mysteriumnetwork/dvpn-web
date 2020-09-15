@@ -13,27 +13,28 @@ import { ToastProvider } from 'react-toast-notifications';
 
 import AppRouter from './Pages/AppRouter';
 import { store } from './redux/store';
-import SSEListener from './SSEListener';
-import OnboardingListener from './OnboardingListener';
+import SSERegister from './SSERegister';
+import OnboardingCheck from './OnboardingCheck';
 
 require('dotenv').config();
 
 ReactDOM.render(
     <Provider store={store}>
         <ToastProvider placement="top-right">
-            <SnackbarProvider maxSnack={3} anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-            }}>
-                <SSEListener>
-                    <OnboardingListener>
-                        <BrowserRouter>
-                            <AppRouter/>
-                        </BrowserRouter>
-                    </OnboardingListener>
-                </SSEListener>
+            <SnackbarProvider
+                maxSnack={3}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+            >
+                <SSERegister />
+                <OnboardingCheck />
+                <BrowserRouter>
+                    <AppRouter />
+                </BrowserRouter>
             </SnackbarProvider>
         </ToastProvider>
     </Provider>,
-    document.getElementById('root'),
+    document.getElementById('root')
 );

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { FC, ReactComponentElement, useLayoutEffect } from 'react';
+import { FC, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 
 import './assets/styles/pages/onboarding/main.scss';
@@ -14,16 +14,15 @@ import { checkCredentialsAndTerms } from './redux/actions/onboard';
 const mapDispatchToProps = { checkCredentialsAndTerms };
 
 interface Props {
-    children: ReactComponentElement<any>;
     checkCredentialsAndTerms: () => void;
 }
 
-const OnboardingListener: FC<Props> = ({ checkCredentialsAndTerms, children }) => {
+const OnboardingCheck: FC<Props> = ({ checkCredentialsAndTerms }) => {
     useLayoutEffect(() => {
         checkCredentialsAndTerms();
     }, []);
 
-    return children;
+    return null;
 };
 
-export default connect(null, mapDispatchToProps)(OnboardingListener);
+export default connect(null, mapDispatchToProps)(OnboardingCheck);
