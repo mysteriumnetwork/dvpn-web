@@ -4,10 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { Dispatch, FC, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router';
 
 import '../assets/styles/App.scss';
+
 import {
     ERROR,
     HOME,
@@ -19,6 +22,8 @@ import {
     WALLET,
     SETTINGS,
 } from '../constants/routes';
+import { fetchIdentity } from '../redux/actions/general';
+import { tequilapiClient } from '../api/TequilApiClient';
 
 import LoginPage from './Login/LoginPage';
 import OnboardingPage from './Onboarding/OnboardingPage';
@@ -27,7 +32,29 @@ import PageNotFound from './Error/PageNotFound';
 import IndexRoute from './IndexRoute';
 import AuthenticatedPage from './Authenticated/AuthenticatedPage';
 
-const AppRouter = () => {
+interface Props {
+    fetchIdentity: () => void;
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+    return {
+        fetchIdentity: () => dispatch(fetchIdentity()),
+    };
+};
+
+const AppRouter: FC<Props> = ({ fetchIdentity }) => {
+    const history = useHistory();
+
+    // TODO duct tape solution for fetching current identity on page refresh (by user)
+    useEffect(() => {
+        tequilapiClient
+            .healthCheck()
+            .then(() => fetchIdentity())
+            .catch(() => {
+                history.push(HOME);
+            });
+    }, []);
+
     return (
         <Switch>
             <Route exact path={HOME} component={IndexRoute} />
@@ -43,4 +70,4 @@ const AppRouter = () => {
         </Switch>
     );
 };
-export default AppRouter;
+export default connect(null, mapDispatchToProps)(AppRouter);
