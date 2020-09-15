@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { Identity, IdentityRegistrationStatusV3 } from 'mysterium-vpn-js';
@@ -17,8 +17,6 @@ import sideImage from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/onboarding/main.scss';
 import { OnboardingState } from '../../redux/actions/onboard';
 import isTermsAgreed from '../../commons/isTermsAgreed';
-import { tequilapiClient } from '../../api/TequilApiClient';
-import { DEFAULT_IDENTITY_PASSPHRASE } from '../../constants/defaults';
 
 import PasswordChange from './steps/PasswordChange';
 import Welcome from './steps/Welcome';
@@ -31,19 +29,20 @@ const { Registered, InProgress } = IdentityRegistrationStatusV3;
 
 const mapStateToProps = (state: RootState) => ({
     onboarding: state.onboarding,
+    identity: state.general.currentIdentity,
 });
 
 interface Props {
     onboarding: OnboardingState;
+    identity?: Identity;
 }
 
 const isIdentityRegistered = (identity?: Identity): boolean => {
     return !!identity && (identity.registrationStatus === Registered || identity.registrationStatus === InProgress);
 };
 
-const OnboardingPage: FC<Props> = ({ onboarding }) => {
+const OnboardingPage: FC<Props> = ({ onboarding, identity }) => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [identity, setIdentity] = useState<Identity>();
     const { isDefaultCredentials, termsAgreedAt, termsAgreedVersion } = onboarding;
 
     const history = useHistory();
@@ -53,19 +52,6 @@ const OnboardingPage: FC<Props> = ({ onboarding }) => {
             setCurrentStep(currentStep + 1);
         },
     };
-
-    const currentIdentity = () => {
-        tequilapiClient
-            .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
-            .then((identityRef) => tequilapiClient.identity(identityRef.id))
-            .then((identity) => setIdentity(identity))
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-    useEffect(() => {
-        currentIdentity();
-    }, []);
 
     const steps = [
         <Welcome key="welcome" callbacks={callbacks} />,

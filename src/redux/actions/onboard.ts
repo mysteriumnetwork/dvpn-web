@@ -8,7 +8,7 @@ import { Dispatch, Action } from 'redux';
 
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../constants/defaults';
 import { tequilapiClient } from '../../api/TequilApiClient';
-import {loginAndStoreCurrentIdentity} from "../../api/TequilAPIWrapper";
+import { loginAndStoreCurrentIdentity } from '../../api/TequilAPIWrapper';
 
 export const ONBOARDING_CREDENTIAL_AND_TERMS_CHECK = 'CREDENTIAL_AND_TERMS_CHECK';
 
