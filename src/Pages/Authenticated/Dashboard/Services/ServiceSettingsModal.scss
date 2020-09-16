@@ -1,0 +1,112 @@
+@import '../../../../assets/styles/base/variables';
+
+// modal
+.settings-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: 0;
+
+  &--block {
+    background: #FFFFFF;
+    box-shadow: 0px 6px 16px rgba(153, 155, 168, 0.1);
+    border-radius: 4px;
+    transition: unset;
+    width: 60%;
+    padding: 30px 35px;
+
+    .title {
+      font-weight: $medium-weight;
+      font-size: 18px;
+      line-height: 21px;
+      color: $main-text-color;
+      margin-bottom: 60px;
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 50px;
+
+      &--slider {
+        width: 45%;
+
+        p {
+          font-weight: $bold-weight;
+          color: $inputs-labels-text-color;
+          font-size: 12px;
+          line-height: 14px;
+          font-family: Lato;
+        }
+
+        .bottom-line {
+          display: flex;
+          justify-content: space-between;
+
+          p {
+            font-style: normal;
+            font-weight: $lighter-weight;
+            font-size: 12px;
+            line-height: 14px;
+            color: $names-text-color;
+          }
+        }
+      }
+    }
+
+    .partners-block {
+      .switch-row {
+        display: flex;
+        align-items: center;
+
+        .text {
+          margin-left: 25px;
+          font-style: normal;
+          font-weight: $bold-weight;
+          font-size: 14px;
+          line-height: 17px;
+          color: $main-text-color;
+        }
+      }
+
+      .under-text {
+        font-style: normal;
+        font-weight: $lighter-weight;
+        font-size: 14px;
+        line-height: 21px;
+        color: $names-text-color;
+        width: 80%;
+      }
+    }
+
+    .limits-block {
+      display: flex;
+      align-items: center;
+      margin: 40px 0;
+
+      .text {
+        font-style: normal;
+        font-weight: $bold-weight;
+        font-size: 14px;
+        line-height: 17px;
+        color: $main-text-color;
+        margin-left: 25px;
+      }
+    }
+
+    .buttons-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .btn {
+        width: 136px;
+      }
+
+      .btn.close {
+        background: #F6F6F6;
+      }
+    }
+
+  }
+}

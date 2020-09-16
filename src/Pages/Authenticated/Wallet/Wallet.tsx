@@ -8,7 +8,7 @@ import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState, Identity } from 'mysterium-vpn-js';
 
-import Header from '../Components/Header';
+import Header from '../../../Components/Header';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg';
 import MystTable from '../../../Components/MystTable/MystTable';
 import '../../../assets/styles/pages/wallet.scss';

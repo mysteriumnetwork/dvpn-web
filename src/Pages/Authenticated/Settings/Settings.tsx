@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import IdentityBackup from './Components/IdentityBackup';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 
-import Header from '../Components/Header';
+import Header from '../../../Components/Header';
 import MMN from './Components/MMN';
 import PasswordChange from './Components/PasswordChange';
-import IdentityBackup from './Components/IdentityBackup';
 
 import { GeneralState } from '../../../redux/actions/general';
 import { RootState } from '../../../redux/store';
@@ -50,13 +50,12 @@ const Settings: React.FC<Props> = ({ general }) => {
                 <Header logo={Logo} name="Settings"/>
                 <div className="settings--blocks">
 
-                    {/* TODO remove this if it won't be needed */}
-                    {/*<div className="settings--block identity">*/}
-                    {/*    <p className="heading">Identity</p>*/}
-                    {/*    <div className="content">*/}
-                    {/*        <IdentityBackup identity={currentIdentity?.id || ''} />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className="settings--block identity">
+                        <p className="heading">Identity</p>
+                        <div className="content">
+                            <IdentityBackup identity={currentIdentity?.id || ''} />
+                        </div>
+                    </div>
 
                     <div className="settings--block identity">
                         <p className="heading">WebUI security</p>

@@ -5,15 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
+import "./styles/header.scss"
 
-interface PropsInterface {
+interface Props {
     logo: React.ComponentProps<any>;
     name: string;
 }
 
-const Header: React.FC<PropsInterface> = (props: PropsInterface) => {
+const Header: React.FC<Props> = (props: Props) => {
     return (
-        <div className="authenticated--page-header">
+        <div className="header">
             <div className="logo">
                 <props.logo />
             </div>

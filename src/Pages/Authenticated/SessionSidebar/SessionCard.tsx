@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import '../../../assets/styles/pages/authenticated/pages/components/sideBlock.scss';
+import './SessionCard.scss';
 
 interface Props {
     country: string;
@@ -18,16 +18,18 @@ interface Props {
 
 const SessionCard: React.FC<Props> = ({ country, status, id, time, data, value }) => {
     return (
-        <div className="session-block">
-            <div className="heading-row">
+        <div className="session">
+            <div className="session__header">
                 <div className="title">{country}</div>
-                <div className={status ? 'status success' : 'status failed'}>{status ? 'Ongoing' : ''}</div>
+                <div className={status ? 'status status--success' : 'status status--failed'}>
+                    {status ? 'Ongoing' : ''}
+                </div>
             </div>
-            <div className="id">{id}</div>
-            <div className="stats-row">
-                <div className="stat">{time}</div>
-                <div className="stat">{data}</div>
-                <div className="stat">{value}</div>
+            <div className="session__id">{id}</div>
+            <div className="session__statistics">
+                <div className="statistic">{time}</div>
+                <div className="statistic">{data}</div>
+                <div className="statistic">{value}</div>
             </div>
         </div>
     );

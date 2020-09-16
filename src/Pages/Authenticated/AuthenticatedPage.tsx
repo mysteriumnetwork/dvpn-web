@@ -18,11 +18,11 @@ import Navigation from './Components/Navigation';
 
 const AuthenticatedPage: FC = () => {
     return (
-        <div className="authenticated">
-            <div className="authenticated--menu">
+        <div className="page">
+            <div className="page__menu">
                 <Navigation />
             </div>
-            <div className="authenticated--content">
+            <div className="page__content">
                 <Switch>
                     <Route exact={true} path={DASHBOARD}>
                         <Dashboard />

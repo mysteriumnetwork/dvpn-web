@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
 import React, { useEffect, useState } from 'react';
 import '../../../assets/styles/pages/authenticated/pages/dashboard.scss';
 import { CircularProgress } from '@material-ui/core';
@@ -12,11 +13,11 @@ import { Stats } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
-import Header from '../Components/Header';
+import Header from '../../../Components/Header';
 import { RootState } from '../../../redux/store';
 import { fetchIdentity, GeneralState } from '../../../redux/actions/general';
 import { SSEState } from '../../../redux/actions/sse';
-import SessionsSideList from '../SessionSideList/SessionsSideList';
+import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 
 import GraphCard from './GraphCard';
@@ -85,8 +86,8 @@ const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
     }
 
     return (
-        <div className="dashboard">
-            <div className="dashboard--content">
+        <div className="main">
+            <div className="main-block main-block--split">
                 <Header logo={Logo} name="Dashboard" />
                 <div className="dashboard--top-stats-block">
                     <Statistics stats={state.sessionStats} />
@@ -108,8 +109,8 @@ const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
                     </div>
                 </div>
             </div>
-            <div className="dashboard--side">
-                <SessionsSideList displayNavigation />
+            <div className="sidebar-block">
+                <SessionSidebar displayNavigation />
             </div>
         </div>
     );

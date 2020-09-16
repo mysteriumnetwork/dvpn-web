@@ -18,13 +18,6 @@ const IdentityBackup: React.FC<Props> = (props) => {
                 disabled={true}
                 value={props.identity}
             />
-            <Tooltip title="Coming soon!">
-                <div>
-                    <button className="btn btn-filled btn-center identity" disabled={true}>Backup
-                        private key
-                    </button>
-                </div>
-            </Tooltip>
         </div>
     );
 };

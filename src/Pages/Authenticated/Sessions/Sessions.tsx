@@ -7,12 +7,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Pagination, Session } from 'mysterium-vpn-js';
 
-import Header from '../Components/Header';
-import '../../../assets/styles/pages/authenticated/pages/sessions.scss';
+import Header from '../../../Components/Header';
+import './Sessions.scss';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import '../../../assets/styles/pages/sessionsList.scss';
-import SessionsSideList from '../SessionSideList/SessionsSideList';
+import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import MystTable from '../../../Components/MystTable/MystTable';
 import secondsToISOTime from '../../../commons/secondsToISOTime';
 import { displayMyst } from '../../../commons/money.utils';
@@ -27,7 +27,7 @@ interface StateProps {
 }
 
 const row = (s: Session) => (
-    <div className="list-block--item">
+    <div className="list-block--item" key={s.id}>
         <div className="value country">
             <div className="country-placeholder"></div>
             <p>{s.consumerCountry}</p>
@@ -57,8 +57,11 @@ const Sessions: FC = () => {
     useEffect(() => {
         Promise.all([1])
             .then(() => tequilapiClient.sessions({ pageSize: state.pageSize, page: state.currentPage }))
-            .then((resp) => setState({ ...state, isLoading: false, sessions: resp.sessions, paging: resp.paging }))
-            .catch((err) => {});
+            .then((resp) => {
+                setState({ ...state, isLoading: false, sessions: resp.sessions, paging: resp.paging });
+            })
+            .catch((err) => {
+            });
     }, [state.pageSize, state.currentPage]);
 
     const handlePrevPageButtonClick = () => {
@@ -77,8 +80,8 @@ const Sessions: FC = () => {
     };
 
     return (
-        <div className="sessions">
-            <div className="sessions--content">
+        <div className="main">
+            <div className="main-block main-block--split">
                 <Header logo={Logo} name="Sessions" />
                 <MystTable
                     headers={[
@@ -96,8 +99,8 @@ const Sessions: FC = () => {
                     onPageClick={onPageClicked}
                 />
             </div>
-            <div className="sessions--side">
-                <SessionsSideList />
+            <div className="sidebar-block">
+                <SessionSidebar />
             </div>
         </div>
     );

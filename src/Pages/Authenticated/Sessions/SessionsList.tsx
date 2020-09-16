@@ -12,6 +12,7 @@ import secondsToISOTime from '../../../commons/secondsToISOTime';
 import { displayMyst } from '../../../commons/money.utils';
 import formatBytes from '../../../commons/formatBytes';
 import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import "./SessionsList.scss"
 
 interface Props {
     sessions: Session[];
