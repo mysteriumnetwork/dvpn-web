@@ -9,7 +9,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ToastProvider } from 'react-toast-notifications';
 
 import AppRouter from './Pages/AppRouter';
 import { store } from './redux/store';
@@ -20,21 +19,19 @@ require('dotenv').config();
 
 ReactDOM.render(
     <Provider store={store}>
-        <ToastProvider placement="top-right">
-            <SnackbarProvider
-                maxSnack={3}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                }}
-            >
-                <SSERegister />
-                <OnboardingCheck />
-                <BrowserRouter>
-                    <AppRouter />
-                </BrowserRouter>
-            </SnackbarProvider>
-        </ToastProvider>
+        <SnackbarProvider
+            maxSnack={3}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}
+        >
+            <SSERegister />
+            <OnboardingCheck />
+            <BrowserRouter>
+                <AppRouter />
+            </BrowserRouter>
+        </SnackbarProvider>
     </Provider>,
     document.getElementById('root')
 );

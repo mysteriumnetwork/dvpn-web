@@ -47,9 +47,10 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
         setValues({ ...values, error: false });
         const isPasswordValid = validatePassword(values.password, values.passwordRepeat);
         if (isPasswordValid.success) {
-            tequilapiClient
-                .setMMNApiKey(values.apiKey)
-                .then(() => tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password))
+            Promise.all([
+                values.checked ? tequilapiClient.setMMNApiKey(values.apiKey) : null,
+                tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password),
+            ])
                 .then(() => callbacks.nextStep())
                 .catch((error) => {
                     console.log(error);

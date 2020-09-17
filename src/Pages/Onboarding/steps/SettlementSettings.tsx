@@ -100,7 +100,7 @@ const SettlementSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks
                         <p>Stake amount</p>
                         <DefaultSlider
                             value={thisState.stake}
-                            handleChange={() => handlePricePerGbChanged}
+                            handleChange={handlePricePerGbChanged}
                             step={1}
                             min={0}
                             max={50}

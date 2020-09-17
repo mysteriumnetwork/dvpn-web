@@ -6,25 +6,18 @@
  */
 
 import React, { FC, useState } from 'react';
-import {
-    DECIMAL_PART,
-    PaymentMethod,
-    pricePerGiB,
-    pricePerMinute,
-    ServiceInfo,
-    ServiceStatus,
-} from 'mysterium-vpn-js';
+import { DECIMAL_PART, PaymentMethod, pricePerGiB, pricePerMinute, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
-import { useToasts } from 'react-toast-notifications';
-import ServiceDetail from './ServiceDetail';
-import ServiceHeader from './ServiceHeader';
+import { useSnackbar } from 'notistack';
 
 import { ServiceType } from '../../../../commons';
 import { displayMoneyMyst, displayMyst } from '../../../../commons/money.utils';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import LoadingButton from '../../../../Components/Buttons/LoadingButton';
 
+import ServiceHeader from './ServiceHeader';
+import ServiceDetail from './ServiceDetail';
 import ServiceSettingsModal from './ServiceSettingsModal';
 
 const { RUNNING } = ServiceStatus;
@@ -68,7 +61,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
     const [modalState, setModalState] = useState<ModalProps>({ isOpen: false });
     const { status, proposal, id } = { ...serviceInfo };
-    const { addToast } = useToasts();
+    const { enqueueSnackbar } = useSnackbar();
 
     const startService = (serviceType: string) => {
         setTurnOnWorking(true);
@@ -77,9 +70,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                 providerId: identityRef,
                 type: serviceType,
             })
-            .catch(() =>
-                addToast(`Service "${serviceType}" could not be started`, { appearance: 'error', autoDismiss: true }),
-            )
+            .catch(() => enqueueSnackbar(`Service "${serviceType}" could not be started`, { variant: 'error' }))
             .finally(() => setTurnOnWorking(false));
     };
 
@@ -87,9 +78,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
         setTurnOnWorking(true);
         tequilapi
             .serviceStop(serviceId)
-            .catch(() =>
-                addToast(`Service "${serviceType}" could not be stopped`, { appearance: 'error', autoDismiss: true }),
-            )
+            .catch(() => enqueueSnackbar(`Service "${serviceType}" could not be stopped`, { variant: 'error' }))
             .finally(() => setTurnOnWorking(false));
     };
 
@@ -106,13 +95,9 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
             <ServiceHeader running={status === RUNNING} type={serviceType} />
 
             <div className="service__details">
-                <ServiceDetail label="Price per minute">
-                    {toMystMinute(proposal?.paymentMethod)}
-                </ServiceDetail>
+                <ServiceDetail label="Price per minute">{toMystMinute(proposal?.paymentMethod)}</ServiceDetail>
 
-                <ServiceDetail label="Price per GB">
-                    {toMystGb(proposal?.paymentMethod)}
-                </ServiceDetail>
+                <ServiceDetail label="Price per GB">{toMystGb(proposal?.paymentMethod)}</ServiceDetail>
 
                 <ServiceDetail label="Turned on" alignValueRight={true}>
                     <DefaultSwitch
