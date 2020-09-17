@@ -7,7 +7,7 @@
 import React, { FC, ReactElement } from 'react';
 import PaginationMaterial from '@material-ui/lab/Pagination';
 
-import '../../assets/styles/components/_mystTable.scss';
+import './Table.scss';
 import LoadingButton from '../Buttons/LoadingButton';
 
 export interface TableHeader {
@@ -15,9 +15,19 @@ export interface TableHeader {
     className?: string;
 }
 
+export interface TableRow {
+    cells: TableCell[]
+    key: string;
+}
+
+export interface TableCell {
+    content: ReactElement | string;
+    className?: string;
+}
+
 interface Props {
     headers: TableHeader[];
-    rows: ReactElement[];
+    rows: TableRow[];
     currentPage: number;
     lastPage: number;
     handlePrevPageButtonClick: () => void;
@@ -26,33 +36,47 @@ interface Props {
 }
 
 const header = (h: TableHeader) => (
-    <div className={'myst-table__header-cell'}>
-        <p>{h.name}</p>
+    <div className={'cell ' + h.className || ''}>
+        {h.name}
     </div>
 );
 
-const MystTable: FC<Props> = ({
-    headers,
-    rows,
-    currentPage,
-    lastPage,
-    onPageClick,
-    handlePrevPageButtonClick,
-    handleNextPageButtonClick,
-}) => {
+const Table: FC<Props> = ({
+      headers,
+      rows,
+      currentPage,
+      lastPage,
+      onPageClick,
+      handlePrevPageButtonClick,
+      handleNextPageButtonClick,
+  }) => {
     return (
-        <div className="myst-table">
-            <div className="myst-table__header">{headers.map(header)}</div>
-            <div className="myst-table__content">{rows}</div>
-            <div className="myst-table__footer">
+        <div className="table">
+            <div className="table__header">{headers.map(header)}</div>
+            <div className="table__body">
+                {rows.map(row => {
+                    return (
+                        <div className="row" key={row.key}>
+                            {row.cells.map(cell => {
+                                return (
+                                    <div className={'cell ' + cell.className || ''}>
+                                        {cell.content}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    );
+                })}
+            </div>
+            <div className="table__footer">
                 <LoadingButton
                     disabled={currentPage === 1}
-                    className="prev myst-table__footer__button prev pagination-button"
+                    className="prev table__footer__button prev pagination-button"
                     onClick={handlePrevPageButtonClick}
                 >
                     <p>Prev</p>
                 </LoadingButton>
-                <div className="myst-table__footer__pagination">
+                <div className="table__footer__pagination">
                     <PaginationMaterial
                         page={currentPage}
                         hideNextButton={true}
@@ -65,7 +89,7 @@ const MystTable: FC<Props> = ({
                 </div>
                 <LoadingButton
                     disabled={currentPage === lastPage}
-                    className="next myst-table__footer__button"
+                    className="next table__footer__button"
                     onClick={handleNextPageButtonClick}
                 >
                     <p>Next</p>
@@ -75,4 +99,4 @@ const MystTable: FC<Props> = ({
     );
 };
 
-export default MystTable;
+export default Table;

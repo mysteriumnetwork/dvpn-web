@@ -6,41 +6,21 @@
  */
 import React, { FC, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { AppState, Identity } from 'mysterium-vpn-js';
+import { AppState, Identity, Session } from 'mysterium-vpn-js';
 import { Settlement } from 'mysterium-vpn-js/src/transactor/settlement';
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement';
 
 import Header from '../../../Components/Header';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg';
-import MystTable from '../../../Components/MystTable/MystTable';
-import '../../../assets/styles/pages/wallet.scss';
+import Table, { TableRow } from '../../../Components/Table/Table';
 import LoadingButton from '../../../Components/Buttons/LoadingButton';
 import { displayMyst } from '../../../commons/money.utils';
 import { RootState } from '../../../redux/store';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 
+import './Wallet.scss';
 import SettingsCard from './SettingsCard';
 import WalletModal from './WalletModal';
-
-const row = (s: Settlement) => (
-    <div className="myst-table__content__row">
-        <div className="myst-table__content__row__row-value">
-            <p>{s.settledAt}</p>
-        </div>
-        <div className="myst-table__content__row__row-value">
-            <p>{s.beneficiary}</p>
-        </div>
-        <div className="myst-table__content__row__row-value">
-            <p>{s.txHash}</p>
-        </div>
-        <div className="myst-table__content__row__row-value">
-            <p>{}</p>
-        </div>
-        <div className="myst-table__content__row__row-value">
-            <p>{s.amount}</p>
-        </div>
-    </div>
-);
 
 interface StateProps {
     unsettledEarnings: number;
@@ -65,6 +45,36 @@ const earnings = (appState?: AppState, identityRef?: string): number => {
     }
 
     return appState.identities.filter((i) => i?.id == identityRef)[0].earnings;
+};
+
+const row = (s: Settlement): TableRow => {
+    const cells = [
+        {
+            className: 'w-20',
+            content: s.settledAt
+        },
+        {
+            className: 'w-30',
+            content: s.beneficiary
+        },
+        {
+            className: 'w-30',
+            content: s.txHash
+        },
+        {
+            className: 'w-10',
+            content: ''
+        },
+        {
+            className: 'w-10',
+            content: s.amount
+        }
+    ]
+
+    return {
+        key: s.txHash,
+        cells: cells
+    }
 };
 
 const Wallet: FC<Props> = ({ appState, identity }) => {
@@ -107,25 +117,28 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
 
     const openModel = () => setState({ ...state, isModalOpen: true });
     return (
-        <div className="wallet">
-            <div className="wallet__content">
+        <div className="main">
+            <div className="main-block main-block--split">
                 <Header logo={Logo} name="Wallet" />
+
                 <div className="wallet__earnings">
-                    <div className="wallet__earnings__myst">
-                        <p className="stat">{displayMyst(earnings(appState, identity?.id))}</p>
-                        <p className="name">Unsettled Earnings</p>
+                    <div className="earnings">
+                        <p className="earnings__value">{displayMyst(earnings(appState, identity?.id))}</p>
+                        <p className="earnings__label">Unsettled Earnings</p>
                     </div>
+
                     <LoadingButton disabled={!isSettlementPossible()} onClick={settle} className="btn btn-filled">
                         <span className="btn-text-white">Settle Now</span>
                     </LoadingButton>
                 </div>
-                <MystTable
+
+                <Table
                     headers={[
-                        { name: 'Date' },
-                        { name: 'Beneficiary' },
-                        { name: 'Transaction ID' },
-                        { name: 'Fee' },
-                        { name: 'Received Amount' },
+                        { name: 'Date', className:'w-20'},
+                        { name: 'Beneficiary', className:'w-30'},
+                        { name: 'Transaction ID', className:'w-30'},
+                        { name: 'Fee', className:'w-10'},
+                        { name: 'Received Amount', className:'w-10'},
                     ]}
                     rows={(state.settlementResponse?.items || []).map(row)}
                     currentPage={1}
@@ -135,7 +148,7 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                     onPageClick={() => {}}
                 />
             </div>
-            <div className="wallet__side-panel">
+            <div className="sidebar-block">
                 <SettingsCard
                     onEdit={openModel}
                     header="Payout Beneficiary address"

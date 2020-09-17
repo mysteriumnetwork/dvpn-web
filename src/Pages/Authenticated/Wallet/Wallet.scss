@@ -1,0 +1,33 @@
+@import '../../../assets/styles/base/variables';
+
+.wallet__earnings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 12px 25px 12px 28px;
+  text-align: left;
+
+  .earnings {
+    display: flex;
+    flex-direction: column;
+
+    &__value {
+      font-style: normal;
+      font-size: 28px;
+      line-height: 33px;
+      font-weight: $bold-weight;
+      color: #000000;
+    }
+
+    &__label {
+      font-style: normal;
+      font-size: 14px;
+      line-height: 21px;
+      font-weight: $lighter-weight;
+      color: $names-text-color;
+    }
+  }
+}

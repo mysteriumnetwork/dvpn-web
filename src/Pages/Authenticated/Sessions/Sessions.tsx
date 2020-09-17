@@ -4,20 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { Pageable, Session, SessionDirection, SessionListResponse, SessionStatus } from 'mysterium-vpn-js';
 import React, { FC, useEffect, useState } from 'react';
-import { Pageable, Session } from 'mysterium-vpn-js';
+import { tequilapiClient } from '../../../api/TequilApiClient';
+import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg';
+import '../../../assets/styles/pages/sessionsList.scss';
+import formatBytes from '../../../commons/formatBytes';
+import { displayMyst } from '../../../commons/money.utils';
+import secondsToISOTime from '../../../commons/secondsToISOTime';
+import { Flag } from '../../../Components/Flag/Flag';
 
 import Header from '../../../Components/Header';
-import './Sessions.scss';
-import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg';
-import { tequilapiClient } from '../../../api/TequilApiClient';
-import '../../../assets/styles/pages/sessionsList.scss';
+import Table, { TableRow } from '../../../Components/Table/Table';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
-import MystTable from '../../../Components/MystTable/MystTable';
-import secondsToISOTime from '../../../commons/secondsToISOTime';
-import { displayMyst } from '../../../commons/money.utils';
-import formatBytes from '../../../commons/formatBytes';
-import { Flag } from '../../../Components/Flag/Flag';
+import './Sessions.scss';
 
 interface StateProps {
     isLoading: boolean;
@@ -27,26 +27,35 @@ interface StateProps {
     currentPage: number;
 }
 
-const row = (s: Session) => (
-    <div className="list-block--item" key={s.id}>
-        <div className="value country">
-            <div className="country-placeholder"></div>
-            <Flag countryCode={s.consumerCountry} />
-        </div>
-        <div className="value duration">
-            <p>{secondsToISOTime(s.duration)}</p>
-        </div>
-        <div className="value earnings">
-            <p>{displayMyst(s.tokens)}</p>
-        </div>
-        <div className="value transferred">
-            <p>{formatBytes(s.bytesReceived + s.bytesSent)}</p>
-        </div>
-        <div className="value id">
-            <p>{s.id.split('-')[0]}</p>
-        </div>
-    </div>
-);
+const row = (s: Session): TableRow => {
+    const cells = [
+        {
+            className: 'w-10',
+            content: <Flag countryCode={s.consumerCountry} />
+        },
+        {
+            className: 'w-20',
+            content: secondsToISOTime(s.duration)
+        },
+        {
+            className: 'w-30',
+            content: displayMyst(s.tokens)
+        },
+        {
+            className: 'w-20',
+            content: formatBytes(s.bytesReceived + s.bytesSent)
+        },
+        {
+            className: 'w-30',
+            content: s.id.split('-')[0]
+        },
+    ]
+
+    return {
+        key: s.id,
+        cells: cells
+    }
+};
 
 const Sessions: FC = () => {
     const [state, setState] = useState<StateProps>({
@@ -84,13 +93,13 @@ const Sessions: FC = () => {
         <div className="main">
             <div className="main-block main-block--split">
                 <Header logo={Logo} name="Sessions" />
-                <MystTable
+                <Table
                     headers={[
-                        { name: 'Country' },
-                        { name: 'Duration' },
-                        { name: 'Earnings' },
-                        { name: 'Transferred' },
-                        { name: 'Session ID' },
+                        { name: 'Country', className: 'w-10' },
+                        { name: 'Duration', className: 'w-20' },
+                        { name: 'Earnings', className: 'w-30' },
+                        { name: 'Transferred', className: 'w-20' },
+                        { name: 'Session ID', className: 'w-30' },
                     ]}
                     rows={state.sessions.map(row)}
                     currentPage={state.currentPage}
