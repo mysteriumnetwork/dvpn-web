@@ -17,12 +17,12 @@ import {
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { useToasts } from 'react-toast-notifications';
+import ServiceDetail from './ServiceDetail';
+import ServiceHeader from './ServiceHeader';
 
 import { ServiceType } from '../../../../commons';
 import { displayMoneyMyst, displayMyst } from '../../../../commons/money.utils';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
-import { ReactComponent as WireGuardIcon } from '../../../../assets/images/wg-icon.svg';
-import { ReactComponent as OpenVpnIcon } from '../../../../assets/images/ovpn-icon.svg';
 import LoadingButton from '../../../../Components/Buttons/LoadingButton';
 
 import ServiceSettingsModal from './ServiceSettingsModal';
@@ -35,11 +35,6 @@ interface Props {
     serviceInfo?: ServiceInfo;
     userConfig: Config;
 }
-
-const icons = {
-    [ServiceType.OPENVPN]: <OpenVpnIcon />,
-    [ServiceType.WIREGUARD]: <WireGuardIcon />,
-};
 
 const toMystMinute = (pm?: PaymentMethod): string => {
     return pm
@@ -83,7 +78,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                 type: serviceType,
             })
             .catch(() =>
-                addToast(`Service "${serviceType}" could not be started`, { appearance: 'error', autoDismiss: true })
+                addToast(`Service "${serviceType}" could not be started`, { appearance: 'error', autoDismiss: true }),
             )
             .finally(() => setTurnOnWorking(false));
     };
@@ -93,7 +88,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
         tequilapi
             .serviceStop(serviceId)
             .catch(() =>
-                addToast(`Service "${serviceType}" could not be stopped`, { appearance: 'error', autoDismiss: true })
+                addToast(`Service "${serviceType}" could not be stopped`, { appearance: 'error', autoDismiss: true }),
             )
             .finally(() => setTurnOnWorking(false));
     };
@@ -107,32 +102,19 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
     };
 
     return (
-        <div className="services-blocks-row--block">
-            <div className="header-row">
-                <div className="logo-block">
-                    {icons[serviceType]}
-                    <div className={status === RUNNING ? 'status-dot on' : 'status-dot off'} />
-                </div>
-                <div className="name-block">
-                    <p className="name">{serviceType}</p>
-                    <p className="type">VPN</p>
-                </div>
-            </div>
-            <div className="stats-row">
-                <div className="service-stat text">
-                    <div className="title">Price per minute</div>
-                    <div className="text">{toMystMinute(proposal?.paymentMethod)}</div>
-                </div>
-                <div className="service-stat text">
-                    <div className="title">Price per GB</div>
-                    <div className="text">{toMystGb(proposal?.paymentMethod)}</div>
-                </div>
-{/*                <div className="service-stat switch">
-                    <div className="title">Whitelisted</div>
-                    <DefaultSwitch disabled={false} turnedOn={false} handleChange={() => {}} />
-                </div>*/}
-                <div className="service-stat switch">
-                    <div className="title">Turned on</div>
+        <div className="service">
+            <ServiceHeader running={status === RUNNING} type={serviceType} />
+
+            <div className="service__details">
+                <ServiceDetail label="Price per minute">
+                    {toMystMinute(proposal?.paymentMethod)}
+                </ServiceDetail>
+
+                <ServiceDetail label="Price per GB">
+                    {toMystGb(proposal?.paymentMethod)}
+                </ServiceDetail>
+
+                <ServiceDetail label="Turned on" alignValueRight={true}>
                     <DefaultSwitch
                         disabled={isTurnOnWorking}
                         turnedOn={!!serviceInfo}
@@ -144,13 +126,15 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                             }
                         }}
                     />
-                </div>
+                </ServiceDetail>
             </div>
-            <div className="control-row">
+
+            <div className="service__options">
                 <LoadingButton onClick={openSettings} className="button">
                     Settings
                 </LoadingButton>
             </div>
+
             <ServiceSettingsModal
                 isOpen={modalState.isOpen}
                 onClose={closeSettings}

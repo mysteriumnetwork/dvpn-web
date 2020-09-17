@@ -1,0 +1,42 @@
+@import '../../../../assets/styles/base/variables';
+
+.nat-status {
+  display: flex;
+  font-style: normal;
+  font-weight: $medium-weight;
+  font-size: 14px;
+  margin-right: 10px;
+
+  &__label {
+    font-style: normal;
+    font-weight: $medium-weight;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  &__state {
+    font-style: normal;
+    font-weight: $medium-weight;
+    font-size: 14px;
+    margin-right: 10px;
+
+    &--failed {
+      color: #CB0D0D;
+    }
+
+    &--success {
+      color: #6DD230;
+    }
+
+    &--warning {
+      color: #ffd34a;
+    }
+  }
+
+  &__help {
+    a {
+      text-decoration-line: underline;
+      color: #5E81F4;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+@import '../../../assets/styles/base/variables';
+
+.dashboard {
+  &__statistics {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+  }
+
+  &__services {
+    margin-top: 50px;
+
+    .services-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      justify-content: space-between;
+
+      &__title {
+        font-style: normal;
+        font-weight: $medium-weight;
+        font-size: 18px;
+        line-height: 32px;
+        color: $main-text-color;
+        margin-right: 20px;
+      }
+    }
+  }
+}

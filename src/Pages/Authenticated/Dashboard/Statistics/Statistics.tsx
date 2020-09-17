@@ -11,7 +11,7 @@ import secondsToISOTime from '../../../../commons/secondsToISOTime';
 import formatBytes, { add } from '../../../../commons/formatBytes';
 import { displayMyst } from '../../../../commons/money.utils';
 
-import StatCard from './TopStatBlock';
+import Statistic from './Statistic';
 
 interface Props {
     stats?: SessionStats;
@@ -20,11 +20,11 @@ interface Props {
 const Statistics: FC<Props> = ({ stats }) => {
     return (
         <>
-            <StatCard stat={displayMyst(stats?.sumTokens)} name="Unsettled earnings" />
-            <StatCard stat={secondsToISOTime(stats?.sumDuration || 0)} name="Sessions time" />
-            <StatCard stat={formatBytes(add(stats?.sumBytesSent, stats?.sumBytesReceived))} name="Transferred" />
-            <StatCard stat={'' + stats?.count} name="Sessions" />
-            <StatCard stat={'' + stats?.countConsumers} name="Unique clients" />
+            <Statistic stat={displayMyst(stats?.sumTokens)} name="Unsettled earnings" />
+            <Statistic stat={secondsToISOTime(stats?.sumDuration || 0)} name="Sessions time" />
+            <Statistic stat={formatBytes(add(stats?.sumBytesSent, stats?.sumBytesReceived))} name="Transferred" />
+            <Statistic stat={'' + stats?.count} name="Sessions" />
+            <Statistic stat={'' + stats?.countConsumers} name="Unique clients" />
         </>
     );
 };

@@ -9,6 +9,7 @@ import { ServiceInfo } from 'mysterium-vpn-js/src/provider/service-info';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { ServiceType } from '../../../../commons';
+import './Services.scss';
 
 import ServiceCard from './ServiceCard';
 
@@ -35,18 +36,20 @@ const findServiceInfo = (type: string, servicesInfos?: ServiceInfo[]): ServiceIn
 const Services: FC<Props> = ({ identityRef, servicesInfos, userConfig }) => {
     return (
         <>
-            {availableServices.map((serviceType) => {
-                const serviceInfo = findServiceInfo(serviceType.toLowerCase(), servicesInfos);
-                return (
-                    <ServiceCard
-                        key={serviceType}
-                        identityRef={identityRef}
-                        serviceInfo={serviceInfo}
-                        serviceType={serviceType}
-                        userConfig={userConfig}
-                    />
-                );
-            })}
+            <div className="service-list">
+                {availableServices.map((serviceType) => {
+                    const serviceInfo = findServiceInfo(serviceType.toLowerCase(), servicesInfos);
+                    return (
+                        <ServiceCard
+                            key={serviceType}
+                            identityRef={identityRef}
+                            serviceInfo={serviceInfo}
+                            serviceType={serviceType}
+                            userConfig={userConfig}
+                        />
+                    );
+                })}
+            </div>
         </>
     );
 };

@@ -6,7 +6,6 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import '../../../assets/styles/pages/authenticated/pages/dashboard.scss';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { SessionStats } from 'mysterium-vpn-js';
@@ -20,7 +19,9 @@ import { SSEState } from '../../../redux/actions/sse';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 
-import GraphCard from './GraphCard';
+import './Dashboard.scss';
+
+import Charts from './Charts/Charts';
 import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
 import Statistics from './Statistics/Statistics';
@@ -89,24 +90,24 @@ const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
         <div className="main">
             <div className="main-block main-block--split">
                 <Header logo={Logo} name="Dashboard" />
-                <div className="dashboard--top-stats-block">
+                <div className="dashboard__statistics">
                     <Statistics stats={state.sessionStats} />
                 </div>
-                <div className="dashboard--earnings-row">
-                    <GraphCard statsDaily={state.sessionStatsDaily} />
+                <div className="dashboard__charts">
+                    <Charts statsDaily={state.sessionStatsDaily} />
                 </div>
-                <div className="dashboard--services-row">
-                    <div className="heading-row">
-                        <p className="heading">Services</p>
-                        <NatStatus status={status} />
+                <div className="dashboard__services">
+                    <div className="services-header">
+                        <p className="services-header__title">Services</p>
+                        <div className="services-header__status">
+                            <NatStatus status={status} />
+                        </div>
                     </div>
-                    <div className="services-blocks-row">
-                        <Services
-                            identityRef={currentIdentity?.id}
-                            servicesInfos={serviceInfo}
-                            userConfig={state.userConfig}
-                        />
-                    </div>
+                    <Services
+                        identityRef={currentIdentity?.id}
+                        servicesInfos={serviceInfo}
+                        userConfig={state.userConfig}
+                    />
                 </div>
             </div>
             <div className="sidebar-block">

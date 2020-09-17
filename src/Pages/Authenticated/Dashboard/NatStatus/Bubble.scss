@@ -1,0 +1,19 @@
+.bubble {
+  width: 18px;
+  height: 18px;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  margin-right: 6px;
+  border-radius: 50%;
+  border: 5px solid;
+  display: inline-block;
+  &--failed {
+    border-color: #CB0D0D;
+  }
+  &--warning {
+    border-color: #ffd34a;
+  }
+  &--success {
+    border-color: #6DD230;
+  }
+}

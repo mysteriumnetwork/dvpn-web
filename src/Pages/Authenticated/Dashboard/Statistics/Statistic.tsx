@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
+import "./Statistic.scss"
 
 interface Props {
     stat: string;
@@ -13,9 +14,9 @@ interface Props {
 
 const StatCard: React.FC<Props> = ({ stat, name }) => {
     return (
-        <div className="dashboard--top-stat">
-            <p className="stat">{stat}</p>
-            <p className="name">{name}</p>
+        <div className="statistic">
+            <p className="statistic__value">{stat}</p>
+            <p className="statistic__label">{name}</p>
         </div>
     );
 };

@@ -5,9 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { FC } from 'react';
+import Bubble from './Bubble';
 
 import { natStatus, natStatusColor } from '../../../../commons/natStatus';
-import '../../../../assets/styles/pages/authenticated/pages/dashboard.scss';
+import './NatStatus.scss';
 
 interface Props {
     status?: string;
@@ -16,15 +17,17 @@ interface Props {
 const NatStatus: FC<Props> = ({ status }) => {
     const color = natStatusColor(status);
     return (
-        <div>
-            <div className={'status-circle inlined ' + color} />
-            <p className="heading inlined info">NAT status</p>
-            <p className={'status inlined failed ' + color}>{natStatus(status)}</p>
-            {status !== 'successful' && (
-                <a href="#" className="link">
-                    How to fix this?
-                </a>
-            )}
+        <div className="nat-status">
+            <Bubble type={color} />
+            <div className="nat-status__label">NAT status</div>
+            <div className={'nat-status__state nat-status__state--' + color}>
+                {natStatus(status)}
+            </div>
+            <div className="nat-status__help">
+                {status !== 'successful' && (
+                    <a href="#">How to fix this?</a>
+                )}
+            </div>
         </div>
     );
 };

@@ -8,14 +8,15 @@ import React from 'react';
 import { SessionStats } from 'mysterium-vpn-js';
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer, YAxis } from 'recharts';
 
-import { ReactComponent as Icon } from '../../../assets/images/authenticated/pages/dashboard/graph-icon.svg';
+import { ReactComponent as Icon } from '../../../../assets/images/authenticated/pages/dashboard/graph-icon.svg';
 
 import {
     Pair,
     sessionDailyStatsToData,
     sessionDailyStatsToEarningGraph,
     sessionDailyStatsToSessionsGraph,
-} from './graph.utils';
+} from './chart.utils';
+import "./Charts.scss"
 
 interface Props {
     statsDaily: {
@@ -56,7 +57,7 @@ const configByType = (type: ChartType): Config => {
     }
 };
 
-const GraphCard: React.FC<Props> = ({ statsDaily }) => {
+const Charts: React.FC<Props> = ({ statsDaily }) => {
     const [values, setValues] = React.useState<StateProps>({
         active: 'earnings',
         data: configByType('earnings').dataFunction,
@@ -124,4 +125,4 @@ const GraphCard: React.FC<Props> = ({ statsDaily }) => {
     );
 };
 
-export default GraphCard;
+export default Charts;

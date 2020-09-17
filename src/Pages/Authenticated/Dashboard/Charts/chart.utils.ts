@@ -6,8 +6,8 @@
  */
 import { DECIMAL_PART, SessionStats } from 'mysterium-vpn-js';
 
-import { displayMyst } from '../../../commons/money.utils';
-import { add } from '../../../commons/formatBytes';
+import { displayMyst } from '../../../../commons/money.utils';
+import { add } from '../../../../commons/formatBytes';
 
 export interface Pair {
     x: string;
