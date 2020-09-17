@@ -17,6 +17,7 @@ import MystTable from '../../../Components/MystTable/MystTable';
 import secondsToISOTime from '../../../commons/secondsToISOTime';
 import { displayMyst } from '../../../commons/money.utils';
 import formatBytes from '../../../commons/formatBytes';
+import { Flag } from '../../../Components/Flag/Flag';
 
 interface StateProps {
     isLoading: boolean;
@@ -30,7 +31,7 @@ const row = (s: Session) => (
     <div className="list-block--item" key={s.id}>
         <div className="value country">
             <div className="country-placeholder"></div>
-            <p>{s.consumerCountry}</p>
+            <Flag countryCode={s.consumerCountry} />
         </div>
         <div className="value duration">
             <p>{secondsToISOTime(s.duration)}</p>
