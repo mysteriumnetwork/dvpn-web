@@ -23,7 +23,7 @@ interface StateProps {
     isLoading: boolean;
     pageSize: number;
     sessions: Session[];
-    paging?: Pageable;
+    paging?: Pageable<Session>;
     currentPage: number;
 }
 
