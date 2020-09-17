@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { FC, useState } from 'react';
-import { Identity, IdentityRegistrationStatusV3 } from 'mysterium-vpn-js';
-import { TransactorFeesResponse } from 'mysterium-vpn-js/lib/payment/fees';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 // @ts-ignore

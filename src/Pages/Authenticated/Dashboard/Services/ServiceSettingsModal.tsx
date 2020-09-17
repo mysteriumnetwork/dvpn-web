@@ -6,15 +6,16 @@
  */
 import React, { FC, useState } from 'react';
 import { Fade, Modal } from '@material-ui/core';
-import { DECIMAL_PART_V3, Money, ServiceInfo } from 'mysterium-vpn-js';
+import { DECIMAL_PART, Money, ServiceInfo } from 'mysterium-vpn-js';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
+
 import { DefaultSlider } from '../../../../Components/DefaultSlider';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { ServiceType } from '../../../../commons';
 import LoadingButton from '../../../../Components/Buttons/LoadingButton';
 import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../api/TequilAPIWrapper';
 
-import "./ServiceSettingsModal.scss"
+import './ServiceSettingsModal.scss';
 
 interface Props {
     isOpen: boolean;
@@ -36,7 +37,7 @@ interface StateProps {
 }
 
 const myst2HumanReadable = (amount?: number): number => {
-    const humanReadable = (amount || 0) / DECIMAL_PART_V3;
+    const humanReadable = (amount || 0) / DECIMAL_PART;
     return parseFloat(humanReadable.toFixed(3));
 };
 
@@ -156,7 +157,7 @@ const ServiceSettingsModal: FC<Props> = ({
                                         })
                                     )
                                     .then(() => onClose())
-                                    .catch(() => { })
+                                    .catch(() => {})
                                     .finally(() => {
                                         setIsLoading(false);
                                     });

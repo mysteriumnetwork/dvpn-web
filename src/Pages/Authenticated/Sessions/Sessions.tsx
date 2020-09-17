@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { FC, useEffect, useState } from 'react';
-import { Pagination, Session } from 'mysterium-vpn-js';
+import { Pageable, Session } from 'mysterium-vpn-js';
 
 import Header from '../../../Components/Header';
 import './Sessions.scss';
@@ -23,7 +23,7 @@ interface StateProps {
     isLoading: boolean;
     pageSize: number;
     sessions: Session[];
-    paging?: Pagination;
+    paging?: Pageable;
     currentPage: number;
 }
 
@@ -59,7 +59,7 @@ const Sessions: FC = () => {
         Promise.all([1])
             .then(() => tequilapiClient.sessions({ pageSize: state.pageSize, page: state.currentPage }))
             .then((resp) => {
-                setState({ ...state, isLoading: false, sessions: resp.sessions, paging: resp.paging });
+                setState({ ...state, isLoading: false, sessions: resp.items, paging: resp });
             })
             .catch((err) => {
             });

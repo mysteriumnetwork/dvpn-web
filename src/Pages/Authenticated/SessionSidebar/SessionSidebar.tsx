@@ -6,7 +6,7 @@
  */
 import React, { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { Session, SessionStatus, Stats } from 'mysterium-vpn-js';
+import { Session, SessionStatus, SessionStats } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -24,7 +24,7 @@ import SessionCard from './SessionCard';
 
 export interface SessionSidebarPropsInterface {
     liveSessions?: Session[];
-    liveSessionStats?: Stats;
+    liveSessionStats?: SessionStats;
     displayNavigation?: boolean;
 }
 
@@ -33,7 +33,7 @@ const mapStateToProps = ({ sse }: RootState) => ({
     liveSessionStats: sse.appState?.sessionsStats,
 });
 
-const sumBytes = (sessionStats?: Stats) => {
+const sumBytes = (sessionStats?: SessionStats) => {
     return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0);
 };
 
@@ -72,7 +72,7 @@ const SessionSidebar: FC<SessionSidebarPropsInterface> = ({
     useEffect(() => {
         tequilapiClient
             .sessions({ pageSize: 10 })
-            .then((resp) => setState({ ...state, historySessions: resp.sessions }))
+            .then((resp) => setState({ ...state, historySessions: resp.items }))
             .catch((err) => {});
     }, []);
     const historySessionsDefined = state.historySessions || [];

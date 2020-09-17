@@ -7,7 +7,7 @@
 
 import React, { FC, useState } from 'react';
 import {
-    DECIMAL_PART_V3,
+    DECIMAL_PART,
     PaymentMethod,
     pricePerGiB,
     pricePerMinute,
@@ -44,17 +44,17 @@ const icons = {
 const toMystMinute = (pm?: PaymentMethod): string => {
     return pm
         ? displayMoneyMyst(pricePerMinute(pm), {
-              decimalPart: DECIMAL_PART_V3,
+              decimalPart: DECIMAL_PART,
           })
-        : displayMyst(0, { decimalPart: DECIMAL_PART_V3 });
+        : displayMyst(0, { decimalPart: DECIMAL_PART });
 };
 
 const toMystGb = (pm?: PaymentMethod): string => {
     return pm
         ? displayMoneyMyst(pricePerGiB(pm), {
-              decimalPart: DECIMAL_PART_V3,
+              decimalPart: DECIMAL_PART,
           })
-        : displayMyst(0, { decimalPart: DECIMAL_PART_V3 });
+        : displayMyst(0, { decimalPart: DECIMAL_PART });
 };
 
 interface ModalProps {

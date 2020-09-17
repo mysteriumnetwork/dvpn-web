@@ -8,7 +8,7 @@
 import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { Identity, IdentityRegistrationStatusV3 } from 'mysterium-vpn-js';
+import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 
 import { LOGIN } from '../../constants/routes';
@@ -25,7 +25,7 @@ import TermsAndConditions from './steps/TermsAndConditions';
 import PriceSettings from './steps/PriceSettings';
 import SettlementSettings from './steps/SettlementSettings';
 
-const { Registered, InProgress } = IdentityRegistrationStatusV3;
+const { Registered, InProgress } = IdentityRegistrationStatus;
 
 const mapStateToProps = (state: RootState) => ({
     onboarding: state.onboarding,

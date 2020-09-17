@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { DECIMAL_PART_V3, Stats } from 'mysterium-vpn-js';
+import { DECIMAL_PART, SessionStats } from 'mysterium-vpn-js';
 
 import { displayMyst } from '../../../commons/money.utils';
 import { add } from '../../../commons/formatBytes';
@@ -14,21 +14,21 @@ export interface Pair {
     y: number | string;
 }
 
-export const sessionDailyStatsToEarningGraph = (statsDaily: { [name: string]: Stats }): Pair[] => {
+export const sessionDailyStatsToEarningGraph = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
-        y: displayMyst(statsDaily[dateKey].sumTokens, { decimalPart: DECIMAL_PART_V3 }),
+        y: displayMyst(statsDaily[dateKey].sumTokens, { decimalPart: DECIMAL_PART }),
     }));
 };
 
-export const sessionDailyStatsToSessionsGraph = (statsDaily: { [name: string]: Stats }): Pair[] => {
+export const sessionDailyStatsToSessionsGraph = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
         y: statsDaily[dateKey].count,
     }));
 };
 
-export const sessionDailyStatsToData = (statsDaily: { [name: string]: Stats }): Pair[] => {
+export const sessionDailyStatsToData = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
         y: (add(statsDaily[dateKey].sumBytesReceived, statsDaily[dateKey].sumBytesSent) / (1024 * 1024 * 1024)).toFixed(

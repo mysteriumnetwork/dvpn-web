@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import { Stats } from 'mysterium-vpn-js';
+import { SessionStats } from 'mysterium-vpn-js';
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer, YAxis } from 'recharts';
 
 import { ReactComponent as Icon } from '../../../assets/images/authenticated/pages/dashboard/graph-icon.svg';
@@ -19,7 +19,7 @@ import {
 
 interface Props {
     statsDaily: {
-        [name: string]: Stats;
+        [name: string]: SessionStats;
     };
 }
 
@@ -27,12 +27,12 @@ type ChartType = 'earnings' | 'sessions' | 'data';
 
 interface StateProps {
     active: ChartType;
-    data: (arg: { [p: string]: Stats }) => Pair[];
+    data: (arg: { [p: string]: SessionStats }) => Pair[];
     dataName: string;
 }
 
 interface Config {
-    dataFunction: (arg: { [p: string]: Stats }) => Pair[];
+    dataFunction: (arg: { [p: string]: SessionStats }) => Pair[];
     dataName: string;
 }
 

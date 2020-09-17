@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { FC } from 'react';
-import { Stats } from 'mysterium-vpn-js';
+import { SessionStats } from 'mysterium-vpn-js';
 
 import secondsToISOTime from '../../../../commons/secondsToISOTime';
 import formatBytes, { add } from '../../../../commons/formatBytes';
@@ -14,7 +14,7 @@ import { displayMyst } from '../../../../commons/money.utils';
 import StatCard from './TopStatBlock';
 
 interface Props {
-    stats?: Stats;
+    stats?: SessionStats;
 }
 
 const Statistics: FC<Props> = ({ stats }) => {

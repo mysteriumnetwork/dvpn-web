@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import '../../../assets/styles/pages/authenticated/pages/dashboard.scss';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { Stats } from 'mysterium-vpn-js';
+import { SessionStats } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
@@ -41,9 +41,9 @@ const mapDispatchToProps = {
 };
 
 interface StateProps {
-    sessionStats: Stats;
+    sessionStats: SessionStats;
     sessionStatsDaily: {
-        [date: string]: Stats;
+        [date: string]: SessionStats;
     };
     userConfig: Config;
 }
