@@ -51,6 +51,54 @@ const earnings = (appState?: AppState, identityRef?: string): number => {
     return appState.identities.filter((i) => i?.id == identityRef)[0].earnings;
 };
 
+const settlers: Settlement[] = [
+    {
+        txHash: '#hashTagTx',
+        providerId: '?',
+        hermesId: '?',
+        beneficiary: '0x432341432...',
+        channelAddress: '?',
+        amount: '312 MYST',
+        settledAt: '2020-09-29',
+    },
+    {
+        txHash: '#hashTagTx',
+        providerId: '?',
+        hermesId: '?',
+        beneficiary: '0x432341432...',
+        channelAddress: '?',
+        amount: '312 MYST',
+        settledAt: '2020-09-29',
+    },
+    {
+        txHash: '#hashTagTx',
+        providerId: '?',
+        hermesId: '?',
+        beneficiary: '0x432341432...',
+        channelAddress: '?',
+        amount: '312 MYST',
+        settledAt: '2020-09-29',
+    },
+    {
+        txHash: '#hashTagTx',
+        providerId: '?',
+        hermesId: '?',
+        beneficiary: '0x432341432...',
+        channelAddress: '?',
+        amount: '312 MYST',
+        settledAt: '2020-09-29',
+    },
+    {
+        txHash: '#hashTagTx',
+        providerId: '?',
+        hermesId: '?',
+        beneficiary: '0x432341432...',
+        channelAddress: '?',
+        amount: '312 MYST',
+        settledAt: '2020-09-29',
+    },
+];
+
 const row = (s: Settlement): TableRow => {
     const cells = [
         {
@@ -153,7 +201,7 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                         { name: 'Fee', className: 'w-10' },
                         { name: 'Received Amount', className: 'w-10' },
                     ]}
-                    rows={(state.settlementResponse?.items || []).map(row)}
+                    rows={(settlers).map(row)}
                     currentPage={1}
                     lastPage={10}
                     handlePrevPageButtonClick={() => {
@@ -167,19 +215,34 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
             <div className="sidebar-block">
                 <div className="wallet-sidebar">
                     <SettingsCard
-                        onEdit={openModel}
-                        header="Payout Beneficiary address"
-                        contentHeader={beneficiary}
-                        isLoading={!beneficiary}
-                        content={
-                            <>
-                                <div>This is where you will get paid your ETH. Don't have a wallet?</div>
-                                <p className="m-t-10">
-                                    <a href="#">Get it here.</a>
-                                </p>
-                            </>
-                        }
+                      onEdit={openModel}
+                      header="Payout Beneficiary address"
+                      contentHeader={beneficiary}
+                      isLoading={!beneficiary}
+                      content={
+                          <>
+                              <div>This is where you will get paid your ETH. Don't have a wallet?</div>
+                              <p className="m-t-10">
+                                  <a href="#">Get it here.</a>
+                              </p>
+                          </>
+                      }
                     />
+
+                <SettingsCard
+                    onEdit={() => {}}
+                    header="Auto settlement threshold"
+                    contentHeader="1 MYST (90% of max settlement amount)"
+                    isLoading={false}
+                    content={
+                        <>
+                            <div>
+                                When unsettled earning will reach threshold node will do on-chain transaction and move
+                                funds into your beneficiary address.
+                            </div>
+                        </>
+                    }
+                />
                 </div>
             </div>
             <BeneficiaryChangeModal

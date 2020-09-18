@@ -44,7 +44,10 @@ const BeneficiaryChangeModal: FC<Props> = ({ isOpen, onClose, beneficiary, ident
         setIsLoading(true);
         tequilapiClient
             .updateIdentityPayout(identityId, state.beneficiary)
-            .then(() => onClose())
+            .then(() => {
+                enqueueSnackbar('Beneficiary address changed', { variant: 'success' });
+                onClose();
+            })
             .catch((err) => {
                 const msg = parseMessage(err);
                 enqueueSnackbar(msg || 'Beneficiary update failed', { variant: 'error' });
