@@ -15,8 +15,8 @@ interface Props {
 const StatCard: React.FC<Props> = ({ stat, name }) => {
     return (
         <div className="dashboard-statistic">
-            <p className="dashboard__statistic__value">{stat}</p>
-            <p className="dashboard__statistic__label">{name}</p>
+            <p className="dashboard-statistic__value">{stat}</p>
+            <p className="dashboard-statistic__label">{name}</p>
         </div>
     );
 };
