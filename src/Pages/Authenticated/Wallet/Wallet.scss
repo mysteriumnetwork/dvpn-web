@@ -31,3 +31,62 @@
     }
   }
 }
+
+.wallet-sidebar {
+  .truncate {
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__card {
+    display: block;
+    height: 100px;
+    margin: 0 0 20px 0;
+    padding: 15px;
+
+    .header {
+      margin-bottom: 20px;
+      padding-top: 10px;
+      color: $main-text-color;
+      font-style: normal;
+      font-weight: $medium-weight;
+      font-size: 18px;
+      line-height: 21px;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #ECECF2;
+      border-radius: 12px;
+
+      padding: 10px;
+      a {
+        text-decoration:  none;
+        color: #5E81F4;
+      }
+      &__header {
+        margin-bottom: 4px;
+        color: $main-text-color;
+        font-style: normal;
+        font-weight: $medium-weight;
+        font-size: 18px;
+        line-height: 21px;
+      }
+
+      &__subtext {
+        color: $secondary-text-color;
+        font-style: normal;
+        font-weight: $lighter-weight;
+        font-size: 14px;
+        line-height: 18px;
+      }
+
+      &__footer {
+        text-align: right;
+      }
+    }
+  }
+}

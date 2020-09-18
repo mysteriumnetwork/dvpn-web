@@ -99,13 +99,13 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                     settlementResponse: settlementResponse,
                     hermesId: defaultConfig?.data?.hermes?.hermesId,
                 });
-            }
+            },
         );
     }, []);
 
     useEffect(() => {
         (identity?.id ? tequilapiClient.identityBeneficiary(identity.id) : Promise.reject()).then((r) =>
-            setBeneficiary(r.beneficiary)
+            setBeneficiary(r.beneficiary),
         );
     }, [identity]);
 
@@ -156,26 +156,31 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                     rows={(state.settlementResponse?.items || []).map(row)}
                     currentPage={1}
                     lastPage={10}
-                    handlePrevPageButtonClick={() => {}}
-                    handleNextPageButtonClick={() => {}}
-                    onPageClick={() => {}}
+                    handlePrevPageButtonClick={() => {
+                    }}
+                    handleNextPageButtonClick={() => {
+                    }}
+                    onPageClick={() => {
+                    }}
                 />
             </div>
             <div className="sidebar-block">
-                <SettingsCard
-                    onEdit={openModel}
-                    header="Payout Beneficiary address"
-                    contentHeader={beneficiary}
-                    isLoading={!beneficiary}
-                    content={
-                        <>
-                            <div>This is where you will get paid your ETH. Don't have a wallet?</div>
-                            <p>
-                                <a href="#">Click here.</a>
-                            </p>
-                        </>
-                    }
-                />
+                <div className="wallet-sidebar">
+                    <SettingsCard
+                        onEdit={openModel}
+                        header="Payout Beneficiary address"
+                        contentHeader={beneficiary}
+                        isLoading={!beneficiary}
+                        content={
+                            <>
+                                <div>This is where you will get paid your ETH. Don't have a wallet?</div>
+                                <p className="m-t-10">
+                                    <a href="#">Get it here.</a>
+                                </p>
+                            </>
+                        }
+                    />
+                </div>
             </div>
             <BeneficiaryChangeModal
                 isOpen={state.isBeneficiaryModalOpen}

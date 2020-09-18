@@ -21,17 +21,17 @@ interface Props {
 
 const SettingsCard: FC<Props> = ({ onEdit, header, contentHeader, content, isLoading }) => {
     return (
-        <div className="settings-card">
-            <div className="settings-card__header">{header}</div>
-            <div className="settings-card__content">
+        <div className="wallet-sidebar__card">
+            <div className="header">{header}</div>
+            <div className="content">
                 {isLoading ? (
                     <CircularProgress />
                 ) : (
                     <>
-                        <div className="settings-card__content__header">{contentHeader}</div>
-                        <div className="settings-card__content__subtext">{content}</div>
-                        <div className="settings-card__content__footer">
-                            <LoadingButton onClick={onEdit}>
+                        <div className="content__header truncate">{contentHeader}</div>
+                        <div className="content__subtext">{content}</div>
+                        <div className="content__footer">
+                            <LoadingButton onClick={onEdit} className="button">
                                 <p>Edit</p>
                             </LoadingButton>
                         </div>
