@@ -6,9 +6,11 @@
  */
 import React, { FC, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { AppState, Identity, Session } from 'mysterium-vpn-js';
+import { AppState, Identity } from 'mysterium-vpn-js';
 import { Settlement } from 'mysterium-vpn-js/src/transactor/settlement';
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement';
+import { useSnackbar } from 'notistack';
+import { CircularProgress } from '@material-ui/core';
 
 import Header from '../../../Components/Header';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg';
@@ -19,12 +21,14 @@ import { RootState } from '../../../redux/store';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 
 import './Wallet.scss';
+
 import SettingsCard from './SettingsCard';
 import WalletModal from './WalletModal';
+import BeneficiaryChangeModal from './BeneficiaryChangeModal';
 
 interface StateProps {
     unsettledEarnings: number;
-    isModalOpen: boolean;
+    isBeneficiaryModalOpen: boolean;
     settlementResponse?: SettlementListResponse;
     hermesId?: string;
 }
@@ -51,48 +55,51 @@ const row = (s: Settlement): TableRow => {
     const cells = [
         {
             className: 'w-20',
-            content: s.settledAt
+            content: s.settledAt,
         },
         {
             className: 'w-30',
-            content: s.beneficiary
+            content: s.beneficiary,
         },
         {
             className: 'w-30',
-            content: s.txHash
+            content: s.txHash,
         },
         {
             className: 'w-10',
-            content: ''
+            content: '',
         },
         {
             className: 'w-10',
-            content: s.amount
-        }
-    ]
+            content: s.amount,
+        },
+    ];
 
     return {
         key: s.txHash,
-        cells: cells
-    }
+        cells: cells,
+    };
 };
 
 const Wallet: FC<Props> = ({ appState, identity }) => {
     const [state, setState] = useState<StateProps>({
         unsettledEarnings: 0,
-        isModalOpen: false,
+        isBeneficiaryModalOpen: false,
     });
 
     const [beneficiary, setBeneficiary] = useState<string>();
 
+    const { enqueueSnackbar } = useSnackbar();
+
     useEffect(() => {
         Promise.all([tequilapiClient.settlementHistory({}), tequilapiClient.defaultConfig()]).then(
-            ([settlementResponse, defaultConfig]) =>
+            ([settlementResponse, defaultConfig]) => {
                 setState({
                     ...state,
                     settlementResponse: settlementResponse,
-                    hermesId: defaultConfig?.data?.hermes['hermes-id'],
-                })
+                    hermesId: defaultConfig?.data?.hermes?.hermesId,
+                });
+            }
         );
     }, []);
 
@@ -102,20 +109,26 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
         );
     }, [identity]);
 
-    const isSettlementPossible = (): boolean => {
-        return !!identity?.id && !!state?.hermesId && identity?.earnings > 0;
-    };
-
     const settle = () => {
-        if (!!identity?.id && !!state?.hermesId && identity?.earnings > 0) {
-            tequilapiClient.settleSync({
-                hermesId: state.hermesId,
-                providerId: identity?.id,
-            });
+        if (!!identity?.id && !!state?.hermesId) {
+            tequilapiClient
+                .settleSync({
+                    hermesId: state.hermesId,
+                    providerId: identity?.id,
+                })
+                .catch((err) => {
+                    enqueueSnackbar('Settlement failed', { variant: 'error' });
+                    console.log(err);
+                });
         }
     };
 
-    const openModel = () => setState({ ...state, isModalOpen: true });
+    const openModel = () => setState({ ...state, isBeneficiaryModalOpen: true });
+
+    if (identity === undefined) {
+        return <CircularProgress className="spinner" />;
+    }
+
     return (
         <div className="main">
             <div className="main-block main-block--split">
@@ -123,22 +136,22 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
 
                 <div className="wallet__earnings">
                     <div className="earnings">
-                        <p className="earnings__value">{displayMyst(earnings(appState, identity?.id))}</p>
+                        <p className="earnings__value">{displayMyst(earnings(appState, identity.id))}</p>
                         <p className="earnings__label">Unsettled Earnings</p>
                     </div>
 
-                    <LoadingButton disabled={!isSettlementPossible()} onClick={settle} className="btn btn-filled">
+                    <LoadingButton onClick={settle} className="btn btn-filled">
                         <span className="btn-text-white">Settle Now</span>
                     </LoadingButton>
                 </div>
 
                 <Table
                     headers={[
-                        { name: 'Date', className:'w-20'},
-                        { name: 'Beneficiary', className:'w-30'},
-                        { name: 'Transaction ID', className:'w-30'},
-                        { name: 'Fee', className:'w-10'},
-                        { name: 'Received Amount', className:'w-10'},
+                        { name: 'Date', className: 'w-20' },
+                        { name: 'Beneficiary', className: 'w-30' },
+                        { name: 'Transaction ID', className: 'w-30' },
+                        { name: 'Fee', className: 'w-10' },
+                        { name: 'Received Amount', className: 'w-10' },
                     ]}
                     rows={(state.settlementResponse?.items || []).map(row)}
                     currentPage={1}
@@ -164,12 +177,20 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                     }
                 />
             </div>
-            <WalletModal
-                isOpen={state.isModalOpen}
+            <BeneficiaryChangeModal
+                isOpen={state.isBeneficiaryModalOpen}
                 onClose={() => {
-                    setState({ ...state, isModalOpen: false });
+                    setState({ ...state, isBeneficiaryModalOpen: false });
                 }}
+                beneficiary={beneficiary}
+                identityId={identity.id}
             />
+            {/*<WalletModal*/}
+            {/*    isOpen={state.isModalOpen}*/}
+            {/*    onClose={() => {*/}
+            {/*        setState({ ...state, isModalOpen: false });*/}
+            {/*    }}*/}
+            {/*/>*/}
         </div>
     );
 };
