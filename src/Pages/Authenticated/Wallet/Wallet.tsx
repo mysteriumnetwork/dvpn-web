@@ -215,34 +215,36 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
             <div className="sidebar-block">
                 <div className="wallet-sidebar">
                     <SettingsCard
-                      onEdit={openModel}
-                      header="Payout Beneficiary address"
-                      contentHeader={beneficiary}
-                      isLoading={!beneficiary}
-                      content={
-                          <>
-                              <div>This is where you will get paid your ETH. Don't have a wallet?</div>
-                              <p className="m-t-10">
-                                  <a href="#">Get it here.</a>
-                              </p>
-                          </>
-                      }
+                        onEdit={openModel}
+                        header="Payout Beneficiary address"
+                        contentHeader={beneficiary}
+                        isLoading={!beneficiary}
+                        content={
+                            <>
+                                <div>This is where you will get paid your ETH. Don't have a wallet?</div>
+                                <p className="m-t-10">
+                                    <a href="#">Get it here.</a>
+                                </p>
+                            </>
+                        }
                     />
 
-                <SettingsCard
-                    onEdit={() => {}}
-                    header="Auto settlement threshold"
-                    contentHeader="1 MYST (90% of max settlement amount)"
-                    isLoading={false}
-                    content={
-                        <>
-                            <div>
-                                When unsettled earning will reach threshold node will do on-chain transaction and move
-                                funds into your beneficiary address.
-                            </div>
-                        </>
-                    }
-                />
+                    <SettingsCard
+                        onEdit={() => {
+                        }}
+                        header="Auto settlement threshold"
+                        contentHeader="1 MYST (90% of max settlement amount)"
+                        isLoading={false}
+                        content={
+                            <>
+                                <div>
+                                    When unsettled earning will reach threshold node will do on-chain transaction and
+                                    move
+                                    funds into your beneficiary address.
+                                </div>
+                            </>
+                        }
+                    />
                 </div>
             </div>
             <BeneficiaryChangeModal
