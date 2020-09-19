@@ -30,7 +30,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@mysteriumnetwork/terms": "0.0.27",
     "dotenv": "^8.2.0",
-    "mysterium-vpn-js": "^5.0.2",
+    "mysterium-vpn-js": "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#master",
     "node-sass": "^4.14.1",
     "notistack": "^1.0.0",
     "react": "^16.13.1",
@@ -48,9 +48,10 @@
     "wallet-address-validator": "^0.2.4"
   },
   "scripts": {
+    "postinstall": "yarn install-deps",
     "start": "react-scripts start",
     "server": "./bin/run.sh",
-    "build": "react-scripts build",
+    "install-deps": "pushd node_modules/mysterium-vpn-js && yarn && yarn build && popd",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

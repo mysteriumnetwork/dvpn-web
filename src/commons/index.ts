@@ -4,8 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { DECIMAL_PART } from 'mysterium-vpn-js';
-import { DisplayMoneyOptions } from 'mysterium-vpn-js/lib/payment/myst';
+import { DECIMAL_PART, DisplayMoneyOptions } from 'mysterium-vpn-js';
 
 export enum ServiceType {
     WIREGUARD = 'WireGuard',
