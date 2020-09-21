@@ -8,7 +8,7 @@ import React, { FC, ReactElement } from 'react';
 import PaginationMaterial from '@material-ui/lab/Pagination';
 
 import './Table.scss';
-import LoadingButton from '../Buttons/LoadingButton';
+import Button from '../Buttons/Button';
 
 export interface TableHeader {
     name: string;
@@ -61,13 +61,13 @@ const Table: FC<Props> = ({
                 })}
             </div>
             <div className="table__footer">
-                <LoadingButton
+                <Button
                     disabled={currentPage === 1}
                     className="prev table__footer__button prev pagination-button"
                     onClick={handlePrevPageButtonClick}
                 >
                     <p>Prev</p>
-                </LoadingButton>
+                </Button>
                 <div className="table__footer__pagination">
                     <PaginationMaterial
                         page={currentPage}
@@ -79,13 +79,13 @@ const Table: FC<Props> = ({
                         onChange={onPageClick}
                     />
                 </div>
-                <LoadingButton
+                <Button
                     disabled={currentPage === lastPage}
                     className="next table__footer__button"
                     onClick={handleNextPageButtonClick}
                 >
                     <p>Next</p>
-                </LoadingButton>
+                </Button>
             </div>
         </div>
     );

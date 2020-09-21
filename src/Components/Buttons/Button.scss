@@ -1,5 +1,5 @@
-@import '../base/variables';
-@import '../base/mixins/linear-border';
+@import '../../assets/styles/base/variables';
+@import '../../assets/styles/base/mixins/linear-border';
 
 .btn {
   padding-top: 14px;
@@ -11,15 +11,12 @@
   display: block;
   text-align: center;
   height: 3em;
+  background: linear-gradient(270deg, #262262 0%, #9E1F63 100%);
+  color: #ffffff !important;
 
-  &-empty {
+  &--outline {
     @include box-border-gradient(#262262, #9E1F63, 1px);
     color: #000000;
-  }
-
-  &-filled {
-    background: linear-gradient(270deg, #262262 0%, #9E1F63 100%);
-    color: #ffffff;
   }
 
   &-text {

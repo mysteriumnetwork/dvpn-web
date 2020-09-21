@@ -9,7 +9,7 @@ import { CircularProgress } from '@material-ui/core';
 
 import './SettingsCards.scss';
 
-import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import Button from '../../../Components/Buttons/Button';
 
 interface Props {
     onEdit?: () => void;
@@ -31,9 +31,9 @@ const SettingsCard: FC<Props> = ({ onEdit, header, contentHeader, content, isLoa
                         <div className="content__header truncate">{contentHeader}</div>
                         <div className="content__subtext">{content}</div>
                         <div className="content__footer">
-                            <LoadingButton onClick={onEdit} className="button">
+                            <Button onClick={onEdit} className="button">
                                 <p>Edit</p>
-                            </LoadingButton>
+                            </Button>
                         </div>
                     </>
                 )}

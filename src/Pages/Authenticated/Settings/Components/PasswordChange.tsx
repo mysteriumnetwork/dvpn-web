@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSnackbar } from 'notistack';
 import { TequilapiError } from 'mysterium-vpn-js';
+import Button from '../../../../Components/Buttons/Button';
 import Errors from '../../../../Components/Validation/Errors';
 
 import { tequilapiClient } from '../../../../api/TequilApiClient';
@@ -81,7 +82,7 @@ const PasswordChange: React.FC = () => {
                     stateName="newPassword"
                 />
             </div>
-            <div className="password-repeat-input-block">
+            <div className="password-repeat-input-block m-b-20">
                 <p className="text-field-label">Repeat password</p>
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
@@ -90,9 +91,7 @@ const PasswordChange: React.FC = () => {
                     stateName="newPasswordConfirmation"
                 />
             </div>
-            <button onClick={handleSubmitPassword}
-                    className="btn btn-filled btn-center identity">Save
-            </button>
+            <Button onClick={handleSubmitPassword}>Save</Button>
         </div>
     );
 };

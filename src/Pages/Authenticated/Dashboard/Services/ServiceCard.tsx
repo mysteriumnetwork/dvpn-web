@@ -13,7 +13,7 @@ import { useSnackbar } from 'notistack';
 import { ServiceType } from '../../../../commons';
 import { displayMoneyMyst, displayMyst } from '../../../../commons/money.utils';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
-import LoadingButton from '../../../../Components/Buttons/LoadingButton';
+import Button from '../../../../Components/Buttons/Button';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
 
 import ServiceHeader from './ServiceHeader';
@@ -115,9 +115,9 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
             </div>
 
             <div className="service__options">
-                <LoadingButton onClick={openSettings} className="button">
+                <Button onClick={openSettings} className="button">
                     Settings
-                </LoadingButton>
+                </Button>
             </div>
 
             <ServiceSettingsModal

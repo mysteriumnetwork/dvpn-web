@@ -65,21 +65,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-
-      .btn {
-        width: 136px;
-      }
-
-      .btn.close {
-        background: #F6F6F6;
-        border-radius: 8px;
-        font-style: normal;
-        font-weight: $medium-weight;
-        font-size: 14px;
-        line-height: 16px;
-        text-align: center;
-        color: $names-text-color;
-      }
     }
   }
 }

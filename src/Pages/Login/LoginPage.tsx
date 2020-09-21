@@ -14,8 +14,7 @@ import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/login/main.scss';
 import { DefaultTextField } from '../../Components/DefaultTextField';
 import { DEFAULT_USERNAME } from '../../constants/defaults';
-import LoadingButton from '../../Components/Buttons/LoadingButton';
-import { tequilapiClient } from '../../api/TequilApiClient';
+import Button from '../../Components/Buttons/Button';
 import {loginAndStoreCurrentIdentity} from "../../api/TequilAPIWrapper";
 
 interface StateInterface {
@@ -69,13 +68,12 @@ const LoginPage = () => {
 
                             <div className="password-actions-block">
                                 <a href="#">Forgot password?</a>
-                                <LoadingButton
+                                <Button
                                     type="submit"
                                     isLoading={state.isLoading}
-                                    className="btn btn-filled login"
                                 >
-                                    <span className="btn-text-white">Sing In</span>
-                                </LoadingButton>
+                                    Sing In
+                                </Button>
                             </div>
                         </form>
                     </div>
