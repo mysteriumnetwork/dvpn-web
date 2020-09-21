@@ -10,7 +10,7 @@ import { Fade, Modal } from '@material-ui/core';
 import './WalletModel.scss';
 
 import { DefaultSlider } from '../../../Components/DefaultSlider';
-import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import Button from '../../../Components/Buttons/Button';
 
 interface Props {
     isOpen: boolean;
@@ -65,12 +65,12 @@ const WalletModal: FC<Props> = ({ onClose, isOpen }) => {
                         </p>
                     </div>
                     <div className="buttons-block">
-                        <LoadingButton onClick={onClose} className="button btn close">
+                        <Button onClick={onClose}>
                             Close
-                        </LoadingButton>
-                        <LoadingButton isLoading={isLoading} className="btn btn-filled save">
-                            <span className="btn-text-white">Save</span>
-                        </LoadingButton>
+                        </Button>
+                        <Button isLoading={isLoading}>
+                            Save
+                        </Button>
                     </div>
                 </div>
             </Fade>

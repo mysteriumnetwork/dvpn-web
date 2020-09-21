@@ -12,7 +12,7 @@ import { TermsEndUser } from '@mysteriumnetwork/terms';
 
 import { acceptWithTermsAndConditions } from '../../../api/TequilAPIWrapper';
 import '../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss';
-import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import Button from '../../../Components/Buttons/Button';
 
 const md = new showdown.Converter();
 
@@ -27,14 +27,13 @@ const TermsAndConditions: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks
             <h1 className="step-block--heading">Terms & Conditions</h1>
             <div className="step-block-content">
                 <div className="terms-and-conditions">{ReactHtmlParser(termsHtml)}</div>
-                <LoadingButton
+                <Button
                     onClick={() => {
                         agree();
                     }}
-                    className="btn btn-filled btn-center accept"
                 >
-                    <span className="btn-text-white">I accept</span>
-                </LoadingButton>
+                    I accept
+                </Button>
             </div>
         </div>
     );

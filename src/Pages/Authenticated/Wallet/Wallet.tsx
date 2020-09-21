@@ -15,7 +15,7 @@ import { CircularProgress } from '@material-ui/core';
 import Header from '../../../Components/Header';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg';
 import Table, { TableRow } from '../../../Components/Table/Table';
-import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import Button from '../../../Components/Buttons/Button';
 import { displayMyst } from '../../../commons/money.utils';
 import { RootState } from '../../../redux/store';
 import { tequilapiClient } from '../../../api/TequilApiClient';
@@ -161,9 +161,9 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                         <p className="earnings__label">Unsettled Earnings</p>
                     </div>
 
-                    <LoadingButton onClick={settle} className="btn btn-filled">
-                        <span className="btn-text-white">Settle Now</span>
-                    </LoadingButton>
+                    <Button onClick={settle}>
+                        Settle Now
+                    </Button>
                 </div>
 
                 <Table

@@ -9,7 +9,7 @@ import { Fade, Modal } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import './WalletModel.scss';
 
-import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import Button from '../../../Components/Buttons/Button';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import { parseMessage } from '../../../commons/error.utils';
@@ -79,21 +79,20 @@ const BeneficiaryChangeModal: FC<Props> = ({ isOpen, onClose, beneficiary, ident
                         />
                     </div>
                     <div className="buttons-block">
-                        <LoadingButton
+                        <Button
                             onClick={() => {
                                 onClose();
                             }}
                             className="button btn close"
                         >
                             Close
-                        </LoadingButton>
-                        <LoadingButton
+                        </Button>
+                        <Button
                             onClick={updateBeneficiary}
                             isLoading={isLoading}
-                            className="btn btn-filled save"
                         >
-                            <span className="btn-text-white">Save</span>
-                        </LoadingButton>
+                            Save
+                        </Button>
                     </div>
                 </div>
             </Fade>

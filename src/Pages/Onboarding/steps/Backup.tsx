@@ -7,6 +7,7 @@
 import React, { FC } from 'react';
 
 import '../../../assets/styles/pages/onboarding/steps/backup.scss';
+import Button from '../../../Components/Buttons/Button';
 
 const Backup: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
     return (
@@ -17,12 +18,12 @@ const Backup: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
                 safe. Read more about backup
             </p>
             <div className="step-block-content">
-                <div onClick={callbacks.nextStep} className="btn btn-empty skip">
-                    <span className="btn-text">Skip</span>
-                </div>
-                <div className="btn btn-filled download">
-                    <span className="btn-text">Download private key</span>
-                </div>
+                <Button onClick={callbacks.nextStep}>
+                    Skip
+                </Button>
+                {/*<div className="btn btn-filled download">*/}
+                {/*    <span className="btn-text">Download private key</span>*/}
+                {/*</div>*/}
             </div>
         </div>
     );

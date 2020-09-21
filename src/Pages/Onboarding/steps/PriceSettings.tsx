@@ -11,7 +11,7 @@ import { DefaultSlider } from '../../../Components/DefaultSlider';
 import '../../../assets/styles/pages/onboarding/steps/service-settings.scss';
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper';
 import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../constants/defaults';
-import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import Button from '../../../Components/Buttons/Button';
 
 interface StateInterface {
     checked: boolean;
@@ -86,9 +86,9 @@ const PriceSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) =
                     handleCheckboxChange={() => handleCheckboxChange}
                     label="Use default pricing"
                 />
-                <LoadingButton onClick={handleSettingSetup} className="btn btn-filled btn-center next">
-                    <span className="btn-text-white">Next</span>
-                </LoadingButton>
+                <Button onClick={handleSettingSetup}>
+                    Next
+                </Button>
             </div>
         </div>
     );

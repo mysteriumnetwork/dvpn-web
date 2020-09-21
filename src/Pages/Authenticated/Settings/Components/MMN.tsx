@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { TequilapiError } from 'mysterium-vpn-js';
+import Button from '../../../../Components/Buttons/Button';
 import Errors from '../../../../Components/Validation/Errors';
 
 import { tequilapiClient } from '../../../../api/TequilApiClient';
@@ -71,10 +72,9 @@ const MMN: React.FC<Props> = (props) => {
                 handleChange={handleTextFieldsChange}
                 value={values.apiKey}
             />
-
-            <button onClick={handleSubmitToken}
-                    className="btn btn-filled btn-center identity">Save
-            </button>
+            <div className="m-t-15">
+                <Button onClick={handleSubmitToken}>Save</Button>
+            </div>
         </div>
     );
 };

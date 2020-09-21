@@ -12,7 +12,7 @@ import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { DefaultSlider } from '../../../../Components/DefaultSlider';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { ServiceType } from '../../../../commons';
-import LoadingButton from '../../../../Components/Buttons/LoadingButton';
+import Button from '../../../../Components/Buttons/Button';
 import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../api/TequilAPIWrapper';
 
 import './ServiceSettingsModal.scss';
@@ -137,10 +137,10 @@ const ServiceSettingsModal: FC<Props> = ({
                         <p className="text">Limit bandwidth to 5Mb/s</p>
                     </div>
                     <div className="buttons-block">
-                        <LoadingButton onClick={onClose} className="button">
+                        <Button onClick={onClose} className="button">
                             Close
-                        </LoadingButton>
-                        <LoadingButton
+                        </Button>
+                        <Button
                             isLoading={isLoading}
                             onClick={() => {
                                 setIsLoading(true);
@@ -162,10 +162,9 @@ const ServiceSettingsModal: FC<Props> = ({
                                         setIsLoading(false);
                                     });
                             }}
-                            className="btn btn-filled save"
                         >
-                            <span className="btn-text-white">Save & Restart</span>
-                        </LoadingButton>
+                            Save & Restart
+                        </Button>
                     </div>
                 </div>
             </Fade>

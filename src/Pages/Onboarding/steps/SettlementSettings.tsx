@@ -15,7 +15,7 @@ import '../../../assets/styles/pages/onboarding/steps/payout-settings.scss';
 import { DefaultSlider } from '../../../Components/DefaultSlider';
 import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
-import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import Button from '../../../Components/Buttons/Button';
 
 interface StateInterface {
     walletAddress: string;
@@ -115,12 +115,12 @@ const SettlementSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks
                     </p>
                 </div>
                 <div className="buttons-block">
-                    <LoadingButton onClick={callbacks.nextStep} className="btn btn-empty skip">
-                        <div className="btn-text">Setup Later</div>
-                    </LoadingButton>
-                    <LoadingButton onClick={handleDone} className="btn btn-filled done" isLoading={isLoading}>
-                        <div className="btn-text">Next</div>
-                    </LoadingButton>
+                    <Button onClick={callbacks.nextStep}>
+                        Setup Later
+                    </Button>
+                    <Button onClick={handleDone} isLoading={isLoading}>
+                        Next
+                    </Button>
                 </div>
             </div>
         </div>

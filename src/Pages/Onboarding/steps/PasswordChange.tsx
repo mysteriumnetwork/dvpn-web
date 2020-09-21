@@ -15,7 +15,7 @@ import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import { validatePassword } from '../../../commons/ValidatePassword';
 import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
-import LoadingButton from '../../../Components/Buttons/LoadingButton';
+import Button from '../../../Components/Buttons/Button';
 
 interface StateInterface {
     passwordRepeat: string;
@@ -110,9 +110,9 @@ const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) 
                         stateName="apiToken"
                     />
                 </div>
-                <LoadingButton onClick={handleSubmitPassword} className="btn btn-filled btn-center next">
-                    <span className="btn-text-white">Done</span>
-                </LoadingButton>
+                <Button onClick={handleSubmitPassword}>
+                    Done
+                </Button>
             </div>
         </div>
     );
