@@ -18,10 +18,10 @@ export const displayUsd = (amount?: number): string => {
     return '$' + (amount || 0);
 };
 
-export const displayMyst = (amount?: number, opts?: DisplayMoneyOptions): string => {
-    return displayMoney({ amount: amount || 0, currency: Currency.MYST }, opts || DEFAULT_MONEY_DISPLAY_OPTIONS);
+export const displayMyst = (amount?: number, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
+    return displayMoney({ amount: amount || 0, currency: Currency.MYST }, opts);
 };
 
-export const displayMoneyMyst = (money?: Money, opts?: DisplayMoneyOptions): string => {
-    return displayMoney(money || { amount: 0, currency: Currency.MYST }, opts || DEFAULT_MONEY_DISPLAY_OPTIONS);
+export const displayMoneyMyst = (money?: Money, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
+    return displayMoney(money || { amount: 0, currency: Currency.MYST }, opts);
 };

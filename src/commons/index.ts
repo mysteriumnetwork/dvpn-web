@@ -15,5 +15,6 @@ export enum ServiceType {
 export const DEFAULT_MONEY_DISPLAY_OPTIONS: DisplayMoneyOptions = {
     showCurrency: true,
     fractionDigits: 3,
+    removeInsignificantZeros: false,
     decimalPart: DECIMAL_PART,
 };
