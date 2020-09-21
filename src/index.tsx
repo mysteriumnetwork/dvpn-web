@@ -12,8 +12,8 @@ import { Provider } from 'react-redux';
 
 import AppRouter from './Pages/AppRouter';
 import { store } from './redux/store';
-import SSERegister from './SSERegister';
-import OnboardingCheck from './OnboardingCheck';
+import ServerSentEventsSubscriber from './ServerSentEventsSubscriber';
+import InitialApplicationStateLoader from './InitialApplicationStateLoader';
 
 require('dotenv').config();
 
@@ -26,8 +26,8 @@ ReactDOM.render(
                 horizontal: 'right',
             }}
         >
-            <SSERegister />
-            <OnboardingCheck />
+            <ServerSentEventsSubscriber />
+            <InitialApplicationStateLoader />
             <BrowserRouter>
                 <AppRouter />
             </BrowserRouter>

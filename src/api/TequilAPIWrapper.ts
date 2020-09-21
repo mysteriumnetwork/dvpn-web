@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json';
+import { TequilapiError } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { ServiceType } from '../commons';
 import { store } from '../redux/store';
-import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults';
+import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults';
 import { IDENTITY_FETCH_FULFILLED } from '../redux/actions/general';
 
 import { tequilapiClient } from './TequilApiClient';
@@ -23,6 +24,30 @@ export const loginAndStoreCurrentIdentity = async (username: string, password: s
             store.dispatch({ type: IDENTITY_FETCH_FULFILLED, payload: identity });
             return Promise.resolve();
         });
+};
+
+export const hasDefaultCredentials = async (): Promise<boolean> => {
+    try {
+        await tequilapiClient.authLogin(DEFAULT_USERNAME, DEFAULT_PASSWORD);
+
+        return true;
+    } catch (e) {
+
+    }
+
+    return false
+};
+
+export const isUserAuthenticated = async (): Promise<boolean> => {
+    try {
+        await tequilapiClient.healthCheck();
+    } catch (e) {
+        if (e instanceof TequilapiError && e.isUnauthorizedError) {
+            return false;
+        }
+    }
+
+    return true;
 };
 
 export const acceptWithTermsAndConditions = async (): Promise<Config> => {
@@ -61,7 +86,7 @@ export const setTrafficShaping = async (enabled: boolean): Promise<Config> => {
 export const setServicePrice = async (
     pricePerMinute: number,
     pricePerGb: number,
-    service: ServiceType
+    service: ServiceType,
 ): Promise<Config> => {
     const configServiceName = service === ServiceType.OPENVPN ? 'openvpn' : 'wireguard';
     return await tequilapiClient.updateUserConfig({

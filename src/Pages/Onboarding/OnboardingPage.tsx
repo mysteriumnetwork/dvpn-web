@@ -55,19 +55,23 @@ const OnboardingPage: FC<Props> = ({ onboarding, identity }) => {
 
     const steps = [
         <Welcome key="welcome" callbacks={callbacks} />,
-        !isTermsAgreed(termsAgreedAt, termsAgreedVersion) ? (
-            <TermsAndConditions key="terms" callbacks={callbacks} />
-        ) : undefined,
-        !isIdentityRegistered(identity) ? <PriceSettings key="price" callbacks={callbacks} /> : undefined,
-        // Backup is disabled for initial release
-        // <Backup key="backup" callbacks={callbacks} />,
-        !isIdentityRegistered(identity) ? <SettlementSettings key="payout" callbacks={callbacks} /> : undefined,
-        <PasswordChange key="password" callbacks={callbacks} />,
-    ].filter((step) => step !== undefined);
+    ];
+
+    if (!isTermsAgreed(termsAgreedAt, termsAgreedVersion)) {
+        steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
+    }
+
+    if (!isIdentityRegistered(identity)) {
+        steps.push(<PriceSettings key="price" callbacks={callbacks} />);
+        steps.push(<SettlementSettings key="payout" callbacks={callbacks} />);
+    }
+
+    steps.push(<PasswordChange key="password" callbacks={callbacks} />);
+
     const totalStepCount = steps.length;
 
     if (!isDefaultCredentials || steps.length - 1 < currentStep) {
-        history.push(LOGIN);
+        // history.push(LOGIN);
     }
     const nextStepComponent = steps[currentStep];
 
