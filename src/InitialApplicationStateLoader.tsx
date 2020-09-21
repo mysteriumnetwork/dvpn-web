@@ -17,7 +17,7 @@ interface Props {
     checkCredentialsAndTerms: () => void;
 }
 
-const OnboardingCheck: FC<Props> = ({ checkCredentialsAndTerms }) => {
+const InitialApplicationStateLoader: FC<Props> = ({ checkCredentialsAndTerms }) => {
     useLayoutEffect(() => {
         checkCredentialsAndTerms();
     }, []);
@@ -25,4 +25,4 @@ const OnboardingCheck: FC<Props> = ({ checkCredentialsAndTerms }) => {
     return null;
 };
 
-export default connect(null, mapDispatchToProps)(OnboardingCheck);
+export default connect(null, mapDispatchToProps)(InitialApplicationStateLoader);

@@ -8,7 +8,7 @@ import React, { useLayoutEffect } from 'react';
 import { AppState, SSEEventType, SSEResponse } from 'mysterium-vpn-js';
 import { connect } from 'react-redux';
 
-import { sseConnect, eventBus } from './tequila-see';
+import ServerSentEvents from './sse/server-sent-events';
 import { sseAppStateStateChanged } from './redux/actions/sse';
 
 interface Props {
@@ -19,12 +19,14 @@ const mapDispatchToProps = {
     sseAppStateStateChanged,
 };
 
-const SSERegister: React.FC<Props> = ({ sseAppStateStateChanged }) => {
+const ServerSentEventsSubscriber: React.FC<Props> = ({ sseAppStateStateChanged }) => {
+    const sse = new ServerSentEvents()
+
     useLayoutEffect((): void => {
-        sseConnect();
-        eventBus.on(SSEEventType.AppStateChange, (state: AppState) => sseAppStateStateChanged(state));
+        sse.connect();
+        sse.on(SSEEventType.AppStateChange, (state: AppState) => sseAppStateStateChanged(state));
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
     return null;
 };
 
-export default connect(() => ({}), mapDispatchToProps)(SSERegister);
+export default connect(() => ({}), mapDispatchToProps)(ServerSentEventsSubscriber);
