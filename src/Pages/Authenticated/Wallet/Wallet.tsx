@@ -19,9 +19,9 @@ import LoadingButton from '../../../Components/Buttons/LoadingButton';
 import { displayMyst } from '../../../commons/money.utils';
 import { RootState } from '../../../redux/store';
 import { tequilapiClient } from '../../../api/TequilApiClient';
+import { parseMessage } from '../../../commons/error.utils';
 
 import './Wallet.scss';
-
 import SettingsCard from './SettingsCard';
 import WalletModal from './WalletModal';
 import BeneficiaryChangeModal from './BeneficiaryChangeModal';
@@ -31,6 +31,8 @@ interface StateProps {
     isBeneficiaryModalOpen: boolean;
     settlementResponse?: SettlementListResponse;
     hermesId?: string;
+    pageSize: number;
+    currentPage: number;
 }
 
 interface Props {
@@ -50,54 +52,6 @@ const earnings = (appState?: AppState, identityRef?: string): number => {
 
     return appState.identities.filter((i) => i?.id == identityRef)[0].earnings;
 };
-
-const settlers: Settlement[] = [
-    {
-        txHash: '#hashTagTx',
-        providerId: '?',
-        hermesId: '?',
-        beneficiary: '0x432341432...',
-        channelAddress: '?',
-        amount: '312 MYST',
-        settledAt: '2020-09-29',
-    },
-    {
-        txHash: '#hashTagTx',
-        providerId: '?',
-        hermesId: '?',
-        beneficiary: '0x432341432...',
-        channelAddress: '?',
-        amount: '312 MYST',
-        settledAt: '2020-09-29',
-    },
-    {
-        txHash: '#hashTagTx',
-        providerId: '?',
-        hermesId: '?',
-        beneficiary: '0x432341432...',
-        channelAddress: '?',
-        amount: '312 MYST',
-        settledAt: '2020-09-29',
-    },
-    {
-        txHash: '#hashTagTx',
-        providerId: '?',
-        hermesId: '?',
-        beneficiary: '0x432341432...',
-        channelAddress: '?',
-        amount: '312 MYST',
-        settledAt: '2020-09-29',
-    },
-    {
-        txHash: '#hashTagTx',
-        providerId: '?',
-        hermesId: '?',
-        beneficiary: '0x432341432...',
-        channelAddress: '?',
-        amount: '312 MYST',
-        settledAt: '2020-09-29',
-    },
-];
 
 const row = (s: Settlement): TableRow => {
     const cells = [
@@ -133,6 +87,8 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
     const [state, setState] = useState<StateProps>({
         unsettledEarnings: 0,
         isBeneficiaryModalOpen: false,
+        pageSize: 10,
+        currentPage: 1,
     });
 
     const [beneficiary, setBeneficiary] = useState<string>();
@@ -147,13 +103,13 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                     settlementResponse: settlementResponse,
                     hermesId: defaultConfig?.data?.hermes?.hermesId,
                 });
-            },
+            }
         );
-    }, []);
+    }, [state.pageSize, state.currentPage]);
 
     useEffect(() => {
         (identity?.id ? tequilapiClient.identityBeneficiary(identity.id) : Promise.reject()).then((r) =>
-            setBeneficiary(r.beneficiary),
+            setBeneficiary(r.beneficiary)
         );
     }, [identity]);
 
@@ -165,7 +121,7 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                     providerId: identity?.id,
                 })
                 .catch((err) => {
-                    enqueueSnackbar('Settlement failed', { variant: 'error' });
+                    enqueueSnackbar(parseMessage(err) || 'Settlement Failed', { variant: 'error' });
                     console.log(err);
                 });
         }
@@ -176,6 +132,23 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
     if (identity === undefined) {
         return <CircularProgress className="spinner" />;
     }
+
+    const handlePrevPageButtonClick = () => {
+        setState({ ...state, currentPage: state.currentPage - 1 });
+    };
+
+    const handleNextPageButtonClick = () => {
+        setState({
+            ...state,
+            currentPage: state.currentPage + 1,
+        });
+    };
+
+    const onPageClicked = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
+        setState({ ...state, currentPage: pageNumber });
+    };
+
+    const { items = [], totalPages = 0 } = { ...state?.settlementResponse };
 
     return (
         <div className="main">
@@ -201,15 +174,12 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                         { name: 'Fee', className: 'w-10' },
                         { name: 'Received Amount', className: 'w-10' },
                     ]}
-                    rows={(settlers).map(row)}
-                    currentPage={1}
-                    lastPage={10}
-                    handlePrevPageButtonClick={() => {
-                    }}
-                    handleNextPageButtonClick={() => {
-                    }}
-                    onPageClick={() => {
-                    }}
+                    rows={(items || []).map(row)}
+                    currentPage={state.currentPage}
+                    lastPage={totalPages}
+                    handlePrevPageButtonClick={handlePrevPageButtonClick}
+                    handleNextPageButtonClick={handleNextPageButtonClick}
+                    onPageClick={onPageClicked}
                 />
             </div>
             <div className="sidebar-block">
@@ -230,8 +200,7 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                     />
 
                     <SettingsCard
-                        onEdit={() => {
-                        }}
+                        onEdit={() => {}}
                         header="Auto settlement threshold"
                         contentHeader="1 MYST (90% of max settlement amount)"
                         isLoading={false}
@@ -239,8 +208,7 @@ const Wallet: FC<Props> = ({ appState, identity }) => {
                             <>
                                 <div>
                                     When unsettled earning will reach threshold node will do on-chain transaction and
-                                    move
-                                    funds into your beneficiary address.
+                                    move funds into your beneficiary address.
                                 </div>
                             </>
                         }

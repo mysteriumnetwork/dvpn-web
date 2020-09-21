@@ -8,7 +8,8 @@ import { TequilapiError } from 'mysterium-vpn-js';
 
 export const parseMessage = (error: any): string | undefined => {
     if (error instanceof TequilapiError) {
-        const tqerr: TequilapiError = error as TequilapiError;
-        return tqerr.message;
+        const tqerr = error as TequilapiError;
+        const responseData = tqerr.originalResponseData;
+        return responseData?.message;
     }
 };

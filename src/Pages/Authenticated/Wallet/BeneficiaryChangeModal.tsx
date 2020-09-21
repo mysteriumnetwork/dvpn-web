@@ -28,7 +28,7 @@ interface State {
 const BeneficiaryChangeModal: FC<Props> = ({ isOpen, onClose, beneficiary, identityId }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [state, setState] = useState<State>({
-        beneficiary: beneficiary || '',
+        beneficiary: '',
     });
     const { enqueueSnackbar } = useSnackbar();
 
@@ -74,11 +74,17 @@ const BeneficiaryChangeModal: FC<Props> = ({ isOpen, onClose, beneficiary, ident
                         <DefaultTextField
                             handleChange={handleTextFieldsChange}
                             value={state.beneficiary}
+                            defaultValue={{}}
                             stateName="beneficiary"
                         />
                     </div>
                     <div className="buttons-block">
-                        <LoadingButton onClick={onClose} className="button btn close">
+                        <LoadingButton
+                            onClick={() => {
+                                onClose();
+                            }}
+                            className="button btn close"
+                        >
                             Close
                         </LoadingButton>
                         <LoadingButton

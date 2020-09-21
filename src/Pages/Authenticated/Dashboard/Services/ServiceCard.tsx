@@ -7,7 +7,6 @@
 
 import React, { FC, useState } from 'react';
 import { DECIMAL_PART, PaymentMethod, pricePerGiB, pricePerMinute, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js';
-import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { useSnackbar } from 'notistack';
 
@@ -15,6 +14,7 @@ import { ServiceType } from '../../../../commons';
 import { displayMoneyMyst, displayMyst } from '../../../../commons/money.utils';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import LoadingButton from '../../../../Components/Buttons/LoadingButton';
+import { tequilapiClient } from '../../../../api/TequilApiClient';
 
 import ServiceHeader from './ServiceHeader';
 import ServiceDetail from './ServiceDetail';
@@ -65,7 +65,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
 
     const startService = (serviceType: string) => {
         setTurnOnWorking(true);
-        tequilapi
+        tequilapiClient
             .serviceStart({
                 providerId: identityRef,
                 type: serviceType,
@@ -76,7 +76,7 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
 
     const stopService = (serviceId: string) => {
         setTurnOnWorking(true);
-        tequilapi
+        tequilapiClient
             .serviceStop(serviceId)
             .catch(() => enqueueSnackbar(`Service "${serviceType}" could not be stopped`, { variant: 'error' }))
             .finally(() => setTurnOnWorking(false));

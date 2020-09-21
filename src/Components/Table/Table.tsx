@@ -16,7 +16,7 @@ export interface TableHeader {
 }
 
 export interface TableRow {
-    cells: TableCell[]
+    cells: TableCell[];
     key: string;
 }
 
@@ -35,34 +35,26 @@ interface Props {
     onPageClick: (event: React.ChangeEvent<unknown>, page: number) => void;
 }
 
-const header = (h: TableHeader) => (
-    <div className={'cell ' + h.className || ''}>
-        {h.name}
-    </div>
-);
+const header = (h: TableHeader) => <div className={'cell ' + h.className || ''}>{h.name}</div>;
 
 const Table: FC<Props> = ({
-      headers,
-      rows,
-      currentPage,
-      lastPage,
-      onPageClick,
-      handlePrevPageButtonClick,
-      handleNextPageButtonClick,
-  }) => {
+    headers,
+    rows,
+    currentPage,
+    lastPage,
+    onPageClick,
+    handlePrevPageButtonClick,
+    handleNextPageButtonClick,
+}) => {
     return (
         <div className="table">
             <div className="table__header">{headers.map(header)}</div>
             <div className="table__body">
-                {rows.map(row => {
+                {rows.map((row) => {
                     return (
                         <div className="row" key={row.key}>
-                            {row.cells.map(cell => {
-                                return (
-                                    <div className={'cell ' + cell.className || ''}>
-                                        {cell.content}
-                                    </div>
-                                );
+                            {row.cells.map((cell) => {
+                                return <div className={'cell ' + cell.className || ''}>{cell.content}</div>;
                             })}
                         </div>
                     );

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Pageable, Session } from 'mysterium-vpn-js';
+import { Session, SessionListResponse } from 'mysterium-vpn-js';
 import React, { FC, useEffect, useState } from 'react';
 
 import { tequilapiClient } from '../../../api/TequilApiClient';
@@ -14,7 +14,6 @@ import formatBytes from '../../../commons/formatBytes';
 import { displayMyst } from '../../../commons/money.utils';
 import secondsToISOTime from '../../../commons/secondsToISOTime';
 import { Flag } from '../../../Components/Flag/Flag';
-
 import Header from '../../../Components/Header';
 import Table, { TableRow } from '../../../Components/Table/Table';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
@@ -23,8 +22,7 @@ import './Sessions.scss';
 interface StateProps {
     isLoading: boolean;
     pageSize: number;
-    sessions: Session[];
-    paging?: Pageable<Session>;
+    sessionListResponse?: SessionListResponse;
     currentPage: number;
 }
 
@@ -32,35 +30,34 @@ const row = (s: Session): TableRow => {
     const cells = [
         {
             className: 'w-10',
-            content: <Flag countryCode={s.consumerCountry} />
+            content: <Flag countryCode={s.consumerCountry} />,
         },
         {
             className: 'w-20',
-            content: secondsToISOTime(s.duration)
+            content: secondsToISOTime(s.duration),
         },
         {
             className: 'w-30',
-            content: displayMyst(s.tokens)
+            content: displayMyst(s.tokens),
         },
         {
             className: 'w-20',
-            content: formatBytes(s.bytesReceived + s.bytesSent)
+            content: formatBytes(s.bytesReceived + s.bytesSent),
         },
         {
             className: 'w-30',
-            content: s.id.split('-')[0]
+            content: s.id.split('-')[0],
         },
-    ]
+    ];
 
     return {
         key: s.id,
-        cells: cells
-    }
+        cells: cells,
+    };
 };
 
 const Sessions: FC = () => {
     const [state, setState] = useState<StateProps>({
-        sessions: [],
         isLoading: true,
         pageSize: 10,
         currentPage: 1,
@@ -69,11 +66,12 @@ const Sessions: FC = () => {
         Promise.all([1])
             .then(() => tequilapiClient.sessions({ pageSize: state.pageSize, page: state.currentPage }))
             .then((resp) => {
-                setState({ ...state, isLoading: false, sessions: resp.items, paging: resp });
+                setState({ ...state, isLoading: false, sessionListResponse: resp });
             })
-            .catch((err) => {
-            });
+            .catch((err) => {});
     }, [state.pageSize, state.currentPage]);
+
+    const { items = [], totalPages = 0 } = { ...state.sessionListResponse };
 
     const handlePrevPageButtonClick = () => {
         setState({ ...state, currentPage: state.currentPage - 1 });
@@ -102,9 +100,9 @@ const Sessions: FC = () => {
                         { name: 'Transferred', className: 'w-20' },
                         { name: 'Session ID', className: 'w-30' },
                     ]}
-                    rows={state.sessions.map(row)}
+                    rows={items.map(row)}
                     currentPage={state.currentPage}
-                    lastPage={state?.paging?.totalPages || 0}
+                    lastPage={totalPages}
                     handlePrevPageButtonClick={handlePrevPageButtonClick}
                     handleNextPageButtonClick={handleNextPageButtonClick}
                     onPageClick={onPageClicked}

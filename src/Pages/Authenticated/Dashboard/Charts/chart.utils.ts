@@ -17,7 +17,7 @@ export interface Pair {
 export const sessionDailyStatsToEarningGraph = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
-        y: displayMyst(statsDaily[dateKey].sumTokens, { decimalPart: DECIMAL_PART }),
+        y: displayMyst(statsDaily[dateKey].sumTokens, { fractionDigits: 3 }),
     }));
 };
 
