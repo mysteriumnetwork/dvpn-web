@@ -6,6 +6,7 @@
  */
 import { Session, SessionListResponse } from 'mysterium-vpn-js';
 import React, { FC, useEffect, useState } from 'react';
+import { useSnackbar } from 'notistack';
 
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg';
@@ -18,6 +19,7 @@ import Header from '../../../Components/Header';
 import Table, { TableRow } from '../../../Components/Table/Table';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import './Sessions.scss';
+import { parseMessage } from '../../../commons/error.utils';
 
 interface StateProps {
     isLoading: boolean;
@@ -62,13 +64,18 @@ const Sessions: FC = () => {
         pageSize: 10,
         currentPage: 1,
     });
+
+    const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
-        Promise.all([1])
-            .then(() => tequilapiClient.sessions({ pageSize: state.pageSize, page: state.currentPage }))
+        tequilapiClient
+            .sessions({ pageSize: state.pageSize, page: state.currentPage })
             .then((resp) => {
                 setState({ ...state, isLoading: false, sessionListResponse: resp });
             })
-            .catch((err) => {});
+            .catch((err) => {
+                enqueueSnackbar(parseMessage(err) || 'Fetching Sessions Failed!');
+                console.log(err);
+            });
     }, [state.pageSize, state.currentPage]);
 
     const { items = [], totalPages = 0 } = { ...state.sessionListResponse };
@@ -109,7 +116,7 @@ const Sessions: FC = () => {
                 />
             </div>
             <div className="sidebar-block">
-                <SessionSidebar />
+                <SessionSidebar headerText="Live Sessions" liveSessionsOnly />
             </div>
         </div>
     );
