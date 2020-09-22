@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { FC } from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps, NavLink } from 'react-router-dom';
 
 import '../../../assets/styles/pages/authenticated/components/navigation.scss';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/components/navigation/Logo.svg';
@@ -30,18 +30,18 @@ const Navigation: FC<Props> = ({ location }: Props) => {
                 <Logo />
             </Link>
 
-            <Link to={DASHBOARD} className={pathname === DASHBOARD ? 'navigation--item active' : 'navigation--item '}>
+            <NavLink to={DASHBOARD} className={'navigation--item '} activeClassName="navigation--item active">
                 {pathname === DASHBOARD ? <DashboardActive /> : <Dashboard />}
-            </Link>
-            <Link to={SESSIONS} className={pathname === SESSIONS ? 'navigation--item active' : 'navigation--item '}>
+            </NavLink>
+            <NavLink to={SESSIONS} className={'navigation--item '} activeClassName="navigation--item active">
                 {pathname === SESSIONS ? <SessionsActive /> : <Sessions />}
-            </Link>
-            <Link to={SETTINGS} className={pathname === SETTINGS ? 'navigation--item active' : 'navigation--item '}>
+            </NavLink>
+            <NavLink to={SETTINGS} className={'navigation--item '} activeClassName="navigation--item active">
                 {pathname === SETTINGS ? <SettingsActive /> : <Settings />}
-            </Link>
-            <Link to={WALLET} className={pathname === WALLET ? 'navigation--item active' : 'navigation--item '}>
+            </NavLink>
+            <NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">
                 {pathname === WALLET ? <WalletActive /> : <Wallet />}
-            </Link>
+            </NavLink>
             <div className="navigation--flex-gow" />
             <div className="navigation--chat">
                 <Chat />
