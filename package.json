@@ -51,7 +51,7 @@
     "postinstall": "yarn install-deps",
     "start": "react-scripts start",
     "server": "./bin/run.sh",
-    "install-deps": "pushd node_modules/mysterium-vpn-js && yarn && yarn build && popd",
+    "install-deps": "cd node_modules/mysterium-vpn-js && yarn && yarn build && cd ../..",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
