@@ -10,6 +10,7 @@ import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { SessionStats } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
+import { useSnackbar } from 'notistack';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
@@ -18,9 +19,9 @@ import { fetchIdentity, GeneralState } from '../../../redux/actions/general';
 import { SSEState } from '../../../redux/actions/sse';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
+import { parseMessage } from '../../../commons/error.utils';
 
 import './Dashboard.scss';
-
 import Charts from './Charts/Charts';
 import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
@@ -62,29 +63,35 @@ const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
         sessionStatsDaily: {},
         userConfig: { data: {} },
     });
+
+    const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
         fetchIdentity();
 
         Promise.all([tequilapiClient.sessions(), tequilapiClient.userConfig()])
             .then((result) => {
-                const { stats, statsDaily } = result[0];
+                const [{ stats, statsDaily }, config] = result;
                 setState({
                     ...state,
                     sessionStats: stats,
                     sessionStatsDaily: statsDaily,
-                    userConfig: result[1] as Config,
+                    userConfig: config,
                 });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                enqueueSnackbar(parseMessage(err), { variant: 'error' });
+                console.log(err);
+            });
     }, []);
 
     const { currentIdentity } = general;
-    const serviceInfo = sse.appState?.serviceInfo;
-    const { status } = { ...sse.appState?.natStatus };
-
-    if (!currentIdentity) {
+    const { appState } = sse;
+    if (!currentIdentity || !appState) {
         return <CircularProgress className="spinner" />;
     }
+
+    const serviceInfo = appState.serviceInfo;
+    const { status } = appState.natStatus;
 
     return (
         <div className="main">
@@ -104,7 +111,7 @@ const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
                         </div>
                     </div>
                     <Services
-                        identityRef={currentIdentity?.id}
+                        identityRef={currentIdentity.id}
                         servicesInfos={serviceInfo}
                         userConfig={state.userConfig}
                     />

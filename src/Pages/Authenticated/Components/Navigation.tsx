@@ -42,7 +42,7 @@ const Navigation: FC<Props> = ({ location }: Props) => {
             <Link to={WALLET} className={pathname === WALLET ? 'navigation--item active' : 'navigation--item '}>
                 {pathname === WALLET ? <WalletActive /> : <Wallet />}
             </Link>
-            <div className="navigation--flex-gow"></div>
+            <div className="navigation--flex-gow" />
             <div className="navigation--chat">
                 <Chat />
             </div>
