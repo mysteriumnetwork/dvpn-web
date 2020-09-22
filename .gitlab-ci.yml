@@ -8,7 +8,7 @@ build:
   stage: deploy
   tags: [docker]
   script:
-    - apk add jq curl
+    - apk add jq curl git
     - yarn
     - yarn run build
     - tar -zcvf dist.tar.gz build/
