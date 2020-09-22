@@ -6,6 +6,7 @@ stages:
 
 build:
   stage: deploy
+  tags: [docker]
   script:
     - apk add jq curl
     - yarn
@@ -18,6 +19,7 @@ build:
 
 trigger-go-dvpn-web:
   stage: trigger-go-dvpn-web
+  tags: [docker]
   script:
     - apk add curl
     - "curl -X POST -F token=$GO_DVPN_WEB_TRIGGER_TOKEN -F ref=master -F variables[GIT_TAG_VERSION]=$CI_COMMIT_TAG https://gitlab.com/api/v4/projects/20001631/trigger/pipeline"
