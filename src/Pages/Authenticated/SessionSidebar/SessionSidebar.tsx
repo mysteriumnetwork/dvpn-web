@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { FC, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
 import { Session, SessionStatus, SessionStats } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import './SessionSidebar.scss';
 
 import formatBytes, { add } from '../../../commons/formatBytes';
 import secondsToISOTime from '../../../commons/secondsToISOTime';
@@ -17,16 +18,9 @@ import { displayMyst } from '../../../commons/money.utils';
 import { SESSIONS } from '../../../constants/routes';
 import { RootState } from '../../../redux/store';
 import { tequilapiClient } from '../../../api/TequilApiClient';
-
-import './SessionSidebar.scss';
+import { parseMessage } from '../../../commons/error.utils';
 
 import SessionCard from './SessionCard';
-
-export interface SessionSidebarPropsInterface {
-    liveSessions?: Session[];
-    liveSessionStats?: SessionStats;
-    displayNavigation?: boolean;
-}
 
 const mapStateToProps = ({ sse }: RootState) => ({
     liveSessions: sse.appState?.sessions,
@@ -59,39 +53,55 @@ const toSessionCard = ({
     );
 };
 
-interface StateProps {
-    historySessions?: Session[];
+export interface Props {
+    liveSessions?: Session[];
+    liveSessionStats?: SessionStats;
+    displayNavigation?: boolean;
+    liveSessionsOnly?: boolean;
+    headerText: string;
 }
 
-const SessionSidebar: FC<SessionSidebarPropsInterface> = ({
+interface StateProps {
+    historySessions: Session[];
+}
+
+const SessionSidebar: FC<Props> = ({
     liveSessions,
     liveSessionStats,
     displayNavigation,
+    liveSessionsOnly,
+    headerText,
 }) => {
-    const [state, setState] = useState<StateProps>({});
-    useEffect(() => {
-        tequilapiClient
-            .sessions({ pageSize: 10 })
-            .then((resp) => setState({ ...state, historySessions: resp.items }))
-            .catch((err) => {});
-    }, []);
-    const historySessionsDefined = state.historySessions || [];
-    const historySessionCount = historySessionsDefined.length >= 10 ? 10 : historySessionsDefined.length;
-    const historyCards = historySessionsDefined.slice(0, historySessionCount - 1).map((hs) => toSessionCard(hs));
-    const latestSessionCards = (liveSessions || []).map((ls) => toSessionCard(ls)).concat(historyCards);
+    const [state, setState] = useState<StateProps>({ historySessions: [] });
 
-    const history = useHistory();
+    const { enqueueSnackbar } = useSnackbar();
+
+    useEffect(() => {
+        if (!liveSessionsOnly) {
+            tequilapiClient
+                .sessions({ pageSize: 10 })
+                .then((resp) => setState({ ...state, historySessions: resp.items }))
+                .catch((err) => {
+                    enqueueSnackbar(parseMessage(err) || 'Fetching Sessions Failed!');
+                    console.log(err);
+                });
+        }
+    }, []);
+
+    const historySessionCount = state.historySessions.length >= 10 ? 10 : state.historySessions.length;
+    const historyCards = state.historySessions.slice(0, historySessionCount - 1).map((hs) => toSessionCard(hs));
+    const latestSessionCards = (liveSessions || []).map((ls) => toSessionCard(ls)).concat(historyCards);
 
     return (
         <div className="latest-sessions">
-            <p className="latest-sessions__heading">Latest Sessions</p>
+            <p className="latest-sessions__heading">{headerText}</p>
             <div className="latest-sessions__content">
                 {!liveSessions ? (
                     <div className="spinner">
                         <CircularProgress />
                     </div>
                 ) : (
-                    <div>{latestSessionCards || <div>No session history</div>}</div>
+                    <div>{latestSessionCards || <div>No sessions</div>}</div>
                 )}
             </div>
             {displayNavigation && (

@@ -111,7 +111,7 @@ const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
                 </div>
             </div>
             <div className="sidebar-block">
-                <SessionSidebar displayNavigation />
+                <SessionSidebar headerText="Latest Sessions" displayNavigation />
             </div>
         </div>
     );
