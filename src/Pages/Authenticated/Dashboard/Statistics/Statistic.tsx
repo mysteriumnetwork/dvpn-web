@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import "./Statistic.scss"
+import './Statistic.scss';
 
 interface Props {
     stat: string;

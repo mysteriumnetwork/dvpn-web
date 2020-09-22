@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const natStatus = (natStatus?: string): string => {
-    switch (natStatus || '') {
+export const statusText = (status: string): string => {
+    switch (status) {
         case 'not_finished':
             return 'Not Finished';
         case 'successful':
@@ -18,8 +18,8 @@ export const natStatus = (natStatus?: string): string => {
     }
 };
 
-export const natStatusColor = (natStatus?: string): string => {
-    switch (natStatus || '') {
+export const statusColor = (status: string): string => {
+    switch (status) {
         case 'not_finished':
             return 'warning';
         case 'successful':

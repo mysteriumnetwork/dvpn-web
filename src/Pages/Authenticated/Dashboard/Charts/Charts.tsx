@@ -16,11 +16,11 @@ import {
     sessionDailyStatsToEarningGraph,
     sessionDailyStatsToSessionsGraph,
 } from './chart.utils';
-import "./Charts.scss"
+import './Charts.scss';
 
 interface Props {
     statsDaily: {
-        [name: string]: SessionStats;
+        [date: string]: SessionStats;
     };
 }
 

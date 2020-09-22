@@ -14,17 +14,17 @@ import { displayMyst } from '../../../../commons/money.utils';
 import Statistic from './Statistic';
 
 interface Props {
-    stats?: SessionStats;
+    stats: SessionStats;
 }
 
 const Statistics: FC<Props> = ({ stats }) => {
     return (
         <>
-            <Statistic stat={displayMyst(stats?.sumTokens)} name="Unsettled earnings" />
-            <Statistic stat={secondsToISOTime(stats?.sumDuration || 0)} name="Sessions time" />
-            <Statistic stat={formatBytes(add(stats?.sumBytesSent, stats?.sumBytesReceived))} name="Transferred" />
-            <Statistic stat={'' + stats?.count} name="Sessions" />
-            <Statistic stat={'' + stats?.countConsumers} name="Unique clients" />
+            <Statistic stat={displayMyst(stats.sumTokens)} name="Unsettled earnings" />
+            <Statistic stat={secondsToISOTime(stats.sumDuration)} name="Sessions time" />
+            <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
+            <Statistic stat={'' + stats.count} name="Sessions" />
+            <Statistic stat={'' + stats.countConsumers} name="Unique clients" />
         </>
     );
 };
