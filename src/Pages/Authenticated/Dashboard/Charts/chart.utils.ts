@@ -15,23 +15,27 @@ export interface Pair {
 }
 
 export const sessionDailyStatsToEarningGraph = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
+    let accum = 0;
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
-        y: displayMyst(statsDaily[dateKey].sumTokens, { fractionDigits: 3 }),
+        y: displayMyst((accum += statsDaily[dateKey].sumTokens), { fractionDigits: 3 }),
     }));
 };
 
 export const sessionDailyStatsToSessionsGraph = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
+    let accum = 0;
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
-        y: statsDaily[dateKey].count,
+        y: accum += statsDaily[dateKey].count,
     }));
 };
 
 export const sessionDailyStatsToData = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
+    let accum = 0;
     return Object.keys(statsDaily).map<Pair>((dateKey) => ({
         x: formatDate(dateKey),
-        y: (add(statsDaily[dateKey].sumBytesReceived, statsDaily[dateKey].sumBytesSent) / (1024 * 1024 * 1024)).toFixed(
+        y: (accum +=
+            add(statsDaily[dateKey].sumBytesReceived, statsDaily[dateKey].sumBytesSent) / (1024 * 1024 * 1024)).toFixed(
             2
         ),
     }));
