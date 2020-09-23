@@ -20,6 +20,7 @@ import { SSEState } from '../../../redux/actions/sse';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import { parseMessage } from '../../../commons/error.utils';
+import { date2iso } from '../../../commons/date.utils';
 
 import './Dashboard.scss';
 import Charts from './Charts/Charts';
@@ -43,7 +44,7 @@ const mapDispatchToProps = {
 };
 
 interface StateProps {
-    sessionStats: SessionStats;
+    sessionStatsAllTime: SessionStats;
     sessionStatsDaily: {
         [date: string]: SessionStats;
     };
@@ -52,7 +53,7 @@ interface StateProps {
 
 const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
     const [state, setState] = useState<StateProps>({
-        sessionStats: {
+        sessionStatsAllTime: {
             count: 0,
             countConsumers: 0,
             sumBytesReceived: 0,
@@ -68,13 +69,17 @@ const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
     useEffect(() => {
         fetchIdentity();
 
-        Promise.all([tequilapiClient.sessions(), tequilapiClient.userConfig()])
+        Promise.all([
+            tequilapiClient.sessions(),
+            tequilapiClient.sessions({ dateFrom: date2iso('2017-01-01'), dateTo: date2iso('2100-01-01') }),
+            tequilapiClient.userConfig(),
+        ])
             .then((result) => {
-                const [{ stats, statsDaily }, config] = result;
+                const [{ statsDaily }, { stats: allTimeStats }, config] = result;
                 setState({
                     ...state,
-                    sessionStats: stats,
                     sessionStatsDaily: statsDaily,
+                    sessionStatsAllTime: allTimeStats,
                     userConfig: config,
                 });
             })
@@ -98,7 +103,7 @@ const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
             <div className="main-block main-block--split">
                 <Header logo={Logo} name="Dashboard" />
                 <div className="dashboard__statistics">
-                    <Statistics stats={state.sessionStats} unsettledEarnings={currentIdentity.earnings} />
+                    <Statistics stats={state.sessionStatsAllTime} unsettledEarnings={currentIdentity.earnings} />
                 </div>
                 <div className="dashboard__charts">
                     <Charts statsDaily={state.sessionStatsDaily} />

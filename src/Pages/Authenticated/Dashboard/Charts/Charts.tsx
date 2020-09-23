@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { SessionStats } from 'mysterium-vpn-js';
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer, YAxis } from 'recharts';
 
@@ -57,8 +57,8 @@ const configByType = (type: ChartType): Config => {
     }
 };
 
-const Charts: React.FC<Props> = ({ statsDaily }) => {
-    const [values, setValues] = React.useState<StateProps>({
+const Charts = ({ statsDaily }: Props) => {
+    const [values, setValues] = useState<StateProps>({
         active: 'earnings',
         data: configByType('earnings').dataFunction,
         dataName: configByType('earnings').dataName,
