@@ -71,7 +71,7 @@ const OnboardingPage: FC<Props> = ({ onboarding, identity }) => {
     const totalStepCount = steps.length;
 
     if (!isDefaultCredentials || steps.length - 1 < currentStep) {
-        // history.push(LOGIN);
+        history.push(LOGIN);
     }
     const nextStepComponent = steps[currentStep];
 

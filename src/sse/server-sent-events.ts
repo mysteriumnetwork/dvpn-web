@@ -9,8 +9,8 @@ import { EventEmitter } from 'events';
 import { parseSSEResponse, TEQUILAPI_SSE_URL } from 'mysterium-vpn-js';
 
 class ServerSentEvents {
-    emitter: EventEmitter
-    eventSource?: EventSource
+    emitter: EventEmitter;
+    eventSource?: EventSource;
 
     constructor() {
         this.emitter = new EventEmitter();
@@ -29,9 +29,9 @@ class ServerSentEvents {
         return this;
     }
 
-    on (channel: string, callback: any) {
-        this.emitter.on(channel, callback)
+    on(channel: string, callback: any) {
+        this.emitter.on(channel, callback);
     }
 }
 
-export default ServerSentEvents
+export default ServerSentEvents;

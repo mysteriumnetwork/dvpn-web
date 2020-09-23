@@ -19,7 +19,7 @@ const mapDispatchToProps = {
     sseAppStateStateChanged,
 };
 
-const ServerSentEventsSubscriber: React.FC<Props> = ({ sseAppStateStateChanged }) => {
+const ServerSentEventsSubscriber = ({ sseAppStateStateChanged }: Props) => {
     const sse = new ServerSentEvents()
 
     useLayoutEffect((): void => {
@@ -29,4 +29,4 @@ const ServerSentEventsSubscriber: React.FC<Props> = ({ sseAppStateStateChanged }
     return null;
 };
 
-export default connect(() => ({}), mapDispatchToProps)(ServerSentEventsSubscriber);
+export default connect(null, mapDispatchToProps)(ServerSentEventsSubscriber);
