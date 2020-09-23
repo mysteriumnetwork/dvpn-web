@@ -5,16 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { FC, useState } from 'react';
-import { DECIMAL_PART, PaymentMethod, pricePerGiB, pricePerMinute, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js';
+import React, { useState } from 'react';
+import { PaymentMethod, pricePerGiB, pricePerMinute, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { useSnackbar } from 'notistack';
 
 import { ServiceType } from '../../../../commons';
-import { displayMoneyMyst, displayMyst } from '../../../../commons/money.utils';
+import { displayMoneyMyst } from '../../../../commons/money.utils';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import Button from '../../../../Components/Buttons/Button';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
+import { parseMessage } from '../../../../commons/error.utils';
 
 import ServiceHeader from './ServiceHeader';
 import ServiceDetail from './ServiceDetail';
@@ -30,19 +31,11 @@ interface Props {
 }
 
 const toMystMinute = (pm?: PaymentMethod): string => {
-    return pm
-        ? displayMoneyMyst(pricePerMinute(pm), {
-              decimalPart: DECIMAL_PART,
-          })
-        : displayMyst(0, { decimalPart: DECIMAL_PART });
+    return displayMoneyMyst(pricePerMinute(pm));
 };
 
 const toMystGb = (pm?: PaymentMethod): string => {
-    return pm
-        ? displayMoneyMyst(pricePerGiB(pm), {
-              decimalPart: DECIMAL_PART,
-          })
-        : displayMyst(0, { decimalPart: DECIMAL_PART });
+    return displayMoneyMyst(pricePerGiB(pm));
 };
 
 interface ModalProps {
@@ -57,7 +50,7 @@ const isAccessPolicyEnabled = (config: Config): boolean => {
     return config?.data && config?.data['access-policy'] && config?.data['access-policy']?.list;
 };
 
-const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userConfig }) => {
+const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Props) => {
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
     const [modalState, setModalState] = useState<ModalProps>({ isOpen: false });
     const { status, proposal, id } = { ...serviceInfo };
@@ -70,7 +63,12 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
                 providerId: identityRef,
                 type: serviceType,
             })
-            .catch(() => enqueueSnackbar(`Service "${serviceType}" could not be started`, { variant: 'error' }))
+            .catch((err) => {
+                enqueueSnackbar(parseMessage(err) || `Service "${serviceType}" could not be started`, {
+                    variant: 'error',
+                });
+                console.log(err);
+            })
             .finally(() => setTurnOnWorking(false));
     };
 
@@ -78,7 +76,12 @@ const ServiceCard: FC<Props> = ({ serviceType, serviceInfo, identityRef, userCon
         setTurnOnWorking(true);
         tequilapiClient
             .serviceStop(serviceId)
-            .catch(() => enqueueSnackbar(`Service "${serviceType}" could not be stopped`, { variant: 'error' }))
+            .catch((err) => {
+                enqueueSnackbar(parseMessage(err) || `Service "${serviceType}" could not be stopped`, {
+                    variant: 'error',
+                });
+                console.log(err);
+            })
             .finally(() => setTurnOnWorking(false));
     };
 

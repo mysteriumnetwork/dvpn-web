@@ -8,10 +8,6 @@ import { Currency, displayMoney, DisplayMoneyOptions, Money } from 'mysterium-vp
 
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index';
 
-export const displayUsd = (amount?: number): string => {
-    return '$' + (amount || 0);
-};
-
 export const displayMyst = (amount?: number, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
     return displayMoney({ amount: amount || 0, currency: Currency.MYST }, opts);
 };

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 import { SessionStats } from 'mysterium-vpn-js';
 
 import secondsToISOTime from '../../../../commons/secondsToISOTime';
@@ -15,12 +15,13 @@ import Statistic from './Statistic';
 
 interface Props {
     stats: SessionStats;
+    unsettledEarnings: number;
 }
 
-const Statistics: FC<Props> = ({ stats }) => {
+const Statistics = ({ stats, unsettledEarnings }: Props) => {
     return (
         <>
-            <Statistic stat={displayMyst(stats.sumTokens)} name="Unsettled earnings" />
+            <Statistic stat={displayMyst(unsettledEarnings)} name="Unsettled earnings" />
             <Statistic stat={secondsToISOTime(stats.sumDuration)} name="Sessions time" />
             <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
             <Statistic stat={'' + stats.count} name="Sessions" />
