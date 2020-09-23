@@ -98,7 +98,7 @@ const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
             <div className="main-block main-block--split">
                 <Header logo={Logo} name="Dashboard" />
                 <div className="dashboard__statistics">
-                    <Statistics stats={state.sessionStats} />
+                    <Statistics stats={state.sessionStats} unsettledEarnings={currentIdentity.earnings} />
                 </div>
                 <div className="dashboard__charts">
                     <Charts statsDaily={state.sessionStatsDaily} />

@@ -15,12 +15,13 @@ import Statistic from './Statistic';
 
 interface Props {
     stats: SessionStats;
+    unsettledEarnings: number;
 }
 
-const Statistics: FC<Props> = ({ stats }) => {
+const Statistics: FC<Props> = ({ stats, unsettledEarnings }) => {
     return (
         <>
-            <Statistic stat={displayMyst(stats.sumTokens)} name="Unsettled earnings" />
+            <Statistic stat={displayMyst(unsettledEarnings)} name="Unsettled earnings" />
             <Statistic stat={secondsToISOTime(stats.sumDuration)} name="Sessions time" />
             <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
             <Statistic stat={'' + stats.count} name="Sessions" />
