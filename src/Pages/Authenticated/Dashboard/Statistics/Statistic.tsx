@@ -12,7 +12,7 @@ interface Props {
     name: string;
 }
 
-const StatCard: React.FC<Props> = ({ stat, name }) => {
+const StatCard = ({ stat, name }: Props) => {
     return (
         <div className="dashboard-statistic">
             <p className="dashboard-statistic__value">{stat}</p>

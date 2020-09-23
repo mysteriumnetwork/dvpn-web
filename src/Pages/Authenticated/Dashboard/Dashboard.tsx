@@ -50,7 +50,7 @@ interface StateProps {
     userConfig: Config;
 }
 
-const Dashboard: React.FC<Props> = ({ fetchIdentity, general, sse }) => {
+const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
     const [state, setState] = useState<StateProps>({
         sessionStats: {
             count: 0,

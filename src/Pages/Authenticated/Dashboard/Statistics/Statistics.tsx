@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 import { SessionStats } from 'mysterium-vpn-js';
 
 import secondsToISOTime from '../../../../commons/secondsToISOTime';
@@ -18,7 +18,7 @@ interface Props {
     unsettledEarnings: number;
 }
 
-const Statistics: FC<Props> = ({ stats, unsettledEarnings }) => {
+const Statistics = ({ stats, unsettledEarnings }: Props) => {
     return (
         <>
             <Statistic stat={displayMyst(unsettledEarnings)} name="Unsettled earnings" />

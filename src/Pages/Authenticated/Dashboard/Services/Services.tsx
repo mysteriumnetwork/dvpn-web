@@ -27,13 +27,13 @@ const findServiceInfo = (type: string, servicesInfos?: ServiceInfo[]): ServiceIn
     }
 
     const results = servicesInfos.filter((s) => s.type.toLowerCase() === type);
-    if (results.length != 1) {
+    if (results.length !== 1) {
         return undefined;
     }
     return results[0];
 };
 
-const Services: FC<Props> = ({ identityRef, servicesInfos, userConfig }) => {
+const Services = ({ identityRef, servicesInfos, userConfig }: Props) => {
     return (
         <>
             <div className="service-list">

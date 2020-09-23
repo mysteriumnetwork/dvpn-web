@@ -15,23 +15,23 @@ import '../../assets/styles/pages/login/main.scss';
 import { DefaultTextField } from '../../Components/DefaultTextField';
 import { DEFAULT_USERNAME } from '../../constants/defaults';
 import Button from '../../Components/Buttons/Button';
-import {loginAndStoreCurrentIdentity} from "../../api/TequilAPIWrapper";
+import { loginAndStoreCurrentIdentity } from '../../api/TequilAPIWrapper';
 
-interface StateInterface {
+interface StateProps {
     password: string;
     error: boolean;
     isLoading: boolean;
 }
 
 const LoginPage = () => {
-    const [state, setState] = React.useState<StateInterface>({
+    const [state, setState] = React.useState<StateProps>({
         password: '',
         error: false,
         isLoading: false,
     });
     const history = useHistory();
 
-    const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTextFieldsChange = (prop: keyof StateProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, [prop]: event.target.value });
     };
 
