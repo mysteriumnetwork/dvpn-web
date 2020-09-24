@@ -49,16 +49,13 @@
   "scripts": {
     "postinstall": "yarn install-deps",
     "start": "react-scripts start",
-    "build": "CI='' react-scripts build",
+    "build": "react-scripts build",
     "server": "./bin/run.sh",
     "install-deps": "cd node_modules/mysterium-vpn-js && yarn && yarn build && cd ../..",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "proxy": "http://127.0.0.1:4449/",
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
