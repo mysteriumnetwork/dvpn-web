@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import "./styles/header.scss"
+import './styles/header.scss';
 
 interface Props {
     logo: React.ComponentProps<any>;
     name: string;
 }
 
-const Header: React.FC<Props> = (props: Props) => {
+const Header = (props: Props): JSX.Element => {
     return (
         <div className="header">
             <div className="logo">

@@ -7,7 +7,7 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 
-interface PropsInterface {
+interface Props {
     password?: boolean;
     handleChange: Function;
     value: string;
@@ -17,7 +17,7 @@ interface PropsInterface {
     defaultValue?: unknown;
 }
 
-export const DefaultTextField: React.FC<PropsInterface> = ({
+export const DefaultTextField = ({
     id,
     password,
     handleChange,
@@ -25,7 +25,7 @@ export const DefaultTextField: React.FC<PropsInterface> = ({
     disabled,
     defaultValue,
     stateName,
-}) => {
+}: Props): JSX.Element => {
     return (
         <TextField
             id={id || 'field-' + stateName}

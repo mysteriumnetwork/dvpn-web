@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import showdown from 'showdown';
 // @ts-ignore
@@ -16,7 +16,7 @@ import Button from '../../../Components/Buttons/Button';
 
 const md = new showdown.Converter();
 
-const TermsAndConditions: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
+const TermsAndConditions = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
     const agree = () => {
         acceptWithTermsAndConditions().then(() => callbacks.nextStep());
     };

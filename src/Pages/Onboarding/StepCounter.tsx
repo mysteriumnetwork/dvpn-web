@@ -4,11 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 
 import '../../assets/styles/pages/onboarding/steps/welcome.scss';
 
-interface PropsInterface {
+interface Props {
     currentStep: number;
     totalStepCount: number;
 }
@@ -21,7 +21,7 @@ const generateSteps = (currentStep: number, totalStepCount: number): ReactElemen
     return steps;
 };
 
-const StepCounter: FC<PropsInterface> = ({ currentStep, totalStepCount }) => {
+const StepCounter = ({ currentStep, totalStepCount }: Props): JSX.Element => {
     return <div className="steps-counter">{generateSteps(currentStep, totalStepCount)}</div>;
 };
 

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Fade, Modal } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import './WalletModel.scss';
@@ -25,7 +25,7 @@ interface State {
     beneficiary: string;
 }
 
-const BeneficiaryChangeModal: FC<Props> = ({ isOpen, onClose, beneficiary, identityId }) => {
+const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Props): JSX.Element => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [state, setState] = useState<State>({
         beneficiary: '',
@@ -87,10 +87,7 @@ const BeneficiaryChangeModal: FC<Props> = ({ isOpen, onClose, beneficiary, ident
                         >
                             Close
                         </Button>
-                        <Button
-                            onClick={updateBeneficiary}
-                            isLoading={isLoading}
-                        >
+                        <Button onClick={updateBeneficiary} isLoading={isLoading}>
                             Save
                         </Button>
                     </div>

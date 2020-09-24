@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 // @ts-ignore
@@ -23,7 +23,7 @@ interface StateInterface {
     errors: string[];
 }
 
-const SettlementSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
+const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
     const [thisState, setValues] = useState<StateInterface>({
         walletAddress: '0x...',
         stake: DEFAULT_STAKE_AMOUNT,
@@ -115,9 +115,7 @@ const SettlementSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks
                     </p>
                 </div>
                 <div className="buttons-block">
-                    <Button onClick={callbacks.nextStep}>
-                        Setup Later
-                    </Button>
+                    <Button onClick={callbacks.nextStep}>Setup Later</Button>
                     <Button onClick={handleDone} isLoading={isLoading}>
                         Next
                     </Button>

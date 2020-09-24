@@ -19,13 +19,13 @@ const mapDispatchToProps = {
     sseAppStateStateChanged,
 };
 
-const ServerSentEventsSubscriber = ({ sseAppStateStateChanged }: Props) => {
-    const sse = new ServerSentEvents()
+const ServerSentEventsSubscriber = ({ sseAppStateStateChanged }: Props): null => {
+    const sse = new ServerSentEvents();
 
     useLayoutEffect((): void => {
         sse.connect();
         sse.on(SSEEventType.AppStateChange, (state: AppState) => sseAppStateStateChanged(state));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
     return null;
 };
 

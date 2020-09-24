@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import { DefaultSlider } from '../../../Components/DefaultSlider';
@@ -19,7 +19,7 @@ interface StateInterface {
     pricePerGb: number;
 }
 
-const PriceSettings: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
+const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
     const [values, setValues] = React.useState<StateInterface>({
         checked: false,
         pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,

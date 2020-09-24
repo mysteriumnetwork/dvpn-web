@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 import { TequilapiError } from 'mysterium-vpn-js';
@@ -26,7 +26,7 @@ interface StateInterface {
     errorMessage: string;
 }
 
-const PasswordChange: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
+const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
     const [values, setValues] = React.useState<StateInterface>({
         passwordRepeat: '',
         password: '',

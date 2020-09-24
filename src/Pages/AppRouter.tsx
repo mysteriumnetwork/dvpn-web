@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { Dispatch, FC, useEffect } from 'react';
+import React, { Dispatch, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -42,7 +42,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     };
 };
 
-const AppRouter: FC<Props> = ({ fetchIdentity }) => {
+const AppRouter = ({ fetchIdentity }: Props): JSX.Element => {
     const history = useHistory();
 
     // TODO duct tape solution for fetching current identity on page refresh (by user)

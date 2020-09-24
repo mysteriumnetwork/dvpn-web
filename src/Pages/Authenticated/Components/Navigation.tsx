@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 import { Link, withRouter, RouteComponentProps, NavLink } from 'react-router-dom';
 
 import '../../../assets/styles/pages/authenticated/components/navigation.scss';
@@ -22,7 +22,7 @@ import { DASHBOARD, SESSIONS, SETTINGS, WALLET } from '../../../constants/routes
 
 type Props = RouteComponentProps<any, any, any>;
 
-const Navigation: FC<Props> = ({ location }: Props) => {
+const Navigation = ({ location }: Props): JSX.Element => {
     const { pathname } = location;
     return (
         <div className="navigation wrapper">
