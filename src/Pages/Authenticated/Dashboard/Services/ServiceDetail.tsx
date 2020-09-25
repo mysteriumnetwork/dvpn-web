@@ -10,6 +10,7 @@ import './ServiceDetail.scss';
 interface Props {
     label: string;
     alignValueRight?: boolean;
+    children: any;
 }
 
 const ServiceDetail = ({ label, alignValueRight, children }: Props): JSX.Element => {

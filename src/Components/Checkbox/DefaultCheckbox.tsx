@@ -6,12 +6,13 @@
  */
 import React from 'react';
 import { Checkbox } from '@material-ui/core';
+import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase';
 
 import { CustomUncheckedIcon } from './DefaultIcons/CustomIcons';
 
 interface Props {
     checked: boolean;
-    handleCheckboxChange: Function;
+    handleCheckboxChange: SwitchBaseProps['onChange'];
     label?: string;
 }
 
