@@ -4,18 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { Fade, Modal } from '@material-ui/core';
 import { DECIMAL_PART, Money, ServiceInfo } from 'mysterium-vpn-js';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
+import { useSnackbar } from 'notistack';
+
+import './ServiceSettingsModal.scss';
 
 import { DefaultSlider } from '../../../../Components/DefaultSlider';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { ServiceType } from '../../../../commons';
 import Button from '../../../../Components/Buttons/Button';
 import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../api/TequilAPIWrapper';
-
-import './ServiceSettingsModal.scss';
+import { parseMessage } from '../../../../commons/error.utils';
 
 interface Props {
     isOpen: boolean;
@@ -41,7 +43,7 @@ const myst2HumanReadable = (amount?: number): number => {
     return parseFloat(humanReadable.toFixed(3));
 };
 
-const ServiceSettingsModal: FC<Props> = ({
+const ServiceSettingsModal = ({
     onClose,
     isOpen,
     serviceType,
@@ -51,7 +53,7 @@ const ServiceSettingsModal: FC<Props> = ({
     isCurrentTrafficShapingEnabled,
     serviceInfo,
     identityRef,
-}) => {
+}: Props): JSX.Element => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [state, setState] = useState<StateProps>({
         pricePerMinuteChosen: myst2HumanReadable(currentPricePerMinute.amount),
@@ -59,7 +61,7 @@ const ServiceSettingsModal: FC<Props> = ({
         isVerifiedTrafficEnabled: isCurrentAccessPolicyEnabled,
         isTrafficShapingEnabled: isCurrentTrafficShapingEnabled,
     });
-
+    const { enqueueSnackbar } = useSnackbar();
     return (
         <Modal
             className="settings-modal"
@@ -157,7 +159,10 @@ const ServiceSettingsModal: FC<Props> = ({
                                         })
                                     )
                                     .then(() => onClose())
-                                    .catch(() => {})
+                                    .catch((err) => {
+                                        enqueueSnackbar(parseMessage(err), { variant: 'error' });
+                                        console.log(err);
+                                    })
                                     .finally(() => {
                                         setIsLoading(false);
                                     });

@@ -16,7 +16,7 @@ interface Props {
     value: string;
 }
 
-const SessionCard: React.FC<Props> = ({ country, status, id, time, data, value }) => {
+const SessionCard = ({ country, status, id, time, data, value }: Props): JSX.Element => {
     return (
         <div className="session">
             <div className="session__header">

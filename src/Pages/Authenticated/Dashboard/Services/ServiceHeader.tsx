@@ -4,11 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
+
 import { ReactComponent as OpenVpnIcon } from '../../../../assets/images/ovpn-icon.svg';
 import { ReactComponent as WireGuardIcon } from '../../../../assets/images/wg-icon.svg';
 import { ServiceType } from '../../../../commons';
-import "./ServiceHeader.scss";
+import './ServiceHeader.scss';
 
 const icons = {
     [ServiceType.OPENVPN]: <OpenVpnIcon />,
@@ -20,7 +21,7 @@ interface Props {
     running: boolean;
 }
 
-const ServiceHeader: FC<Props> = ({ type, running }) => {
+const ServiceHeader = ({ type, running }: Props): JSX.Element => {
     return (
         <div className="service-header">
             <div className="service-header__logo">

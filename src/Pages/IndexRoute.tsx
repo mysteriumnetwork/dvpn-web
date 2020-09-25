@@ -21,7 +21,7 @@ interface Props {
     onboarding: OnboardingState;
 }
 
-const IndexRoute: React.FC<Props> = ({ onboarding }) => {
+const IndexRoute = ({ onboarding }: Props): JSX.Element => {
     if (onboarding.isCheckPending) {
         return <CircularProgress className="spinner" />;
     }

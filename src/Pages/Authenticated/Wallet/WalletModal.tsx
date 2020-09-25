@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { Fade, Modal } from '@material-ui/core';
 
 import './WalletModel.scss';
@@ -21,7 +21,7 @@ interface StateProps {
     stake: number;
 }
 
-const WalletModal: FC<Props> = ({ onClose, isOpen }) => {
+const WalletModal = ({ onClose, isOpen }: Props): JSX.Element => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [state, setState] = useState<StateProps>({
         stake: 30,
@@ -65,12 +65,8 @@ const WalletModal: FC<Props> = ({ onClose, isOpen }) => {
                         </p>
                     </div>
                     <div className="buttons-block">
-                        <Button onClick={onClose}>
-                            Close
-                        </Button>
-                        <Button isLoading={isLoading}>
-                            Save
-                        </Button>
+                        <Button onClick={onClose}>Close</Button>
+                        <Button isLoading={isLoading}>Save</Button>
                     </div>
                 </div>
             </Fade>

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 
 import Bubble from './Bubble';
 import { statusColor, statusText } from './nat-status.utils';
@@ -14,7 +14,7 @@ interface Props {
     status: string;
 }
 
-const NatStatus: FC<Props> = ({ status }) => {
+const NatStatus = ({ status }: Props) => {
     const color = statusColor(status);
     return (
         <div className="nat-status">

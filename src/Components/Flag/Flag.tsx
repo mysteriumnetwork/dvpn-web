@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { isUnknownCountry } from './countries';
 
@@ -26,7 +26,7 @@ const loadImage = (imageName: string, size: number) => {
     );
 };
 
-export const Flag: FC<Props> = ({ className, countryCode = 'unknown' }) => {
+export const Flag = ({ className, countryCode = 'unknown' }: Props) => {
     const [state, setState] = useState<StateProps>();
 
     useEffect(() => {

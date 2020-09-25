@@ -29,7 +29,6 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@mysteriumnetwork/terms": "0.0.27",
-    "dotenv": "^8.2.0",
     "mysterium-vpn-js": "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#master",
     "node-sass": "^4.14.1",
     "notistack": "^1.0.0",
@@ -50,16 +49,13 @@
   "scripts": {
     "postinstall": "yarn install-deps",
     "start": "react-scripts start",
-    "build": "CI='' react-scripts build",
+    "build": "react-scripts build",
     "server": "./bin/run.sh",
     "install-deps": "cd node_modules/mysterium-vpn-js && yarn && yarn build && cd ../..",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "proxy": "http://127.0.0.1:4449/",
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",

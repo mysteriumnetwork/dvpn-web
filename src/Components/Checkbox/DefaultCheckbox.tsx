@@ -9,24 +9,23 @@ import { Checkbox } from '@material-ui/core';
 
 import { CustomUncheckedIcon } from './DefaultIcons/CustomIcons';
 
-interface PropsInterface {
+interface Props {
     checked: boolean;
     handleCheckboxChange: Function;
     label?: string;
 }
 
-export const DefaultCheckbox: React.FC<PropsInterface> = (_props: PropsInterface) => {
-    const props: PropsInterface = { ..._props };
+export const DefaultCheckbox = ({ checked, handleCheckboxChange, label }: Props): JSX.Element => {
     return (
         <div className="checkbox-block">
             <Checkbox
-                checked={props.checked}
-                onChange={props.handleCheckboxChange()}
+                checked={checked}
+                onChange={handleCheckboxChange}
                 color="primary"
                 className="default-checkbox"
                 icon={<CustomUncheckedIcon />}
             />
-            <p>{props.label}</p>
+            <p>{label}</p>
         </div>
     );
 };

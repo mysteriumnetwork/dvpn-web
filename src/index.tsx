@@ -15,8 +15,6 @@ import { store } from './redux/store';
 import ServerSentEventsSubscriber from './ServerSentEventsSubscriber';
 import InitialApplicationStateLoader from './InitialApplicationStateLoader';
 
-require('dotenv').config();
-
 ReactDOM.render(
     <Provider store={store}>
         <SnackbarProvider

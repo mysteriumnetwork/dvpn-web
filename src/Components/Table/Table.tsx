@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import PaginationMaterial from '@material-ui/lab/Pagination';
 
 import './Table.scss';
@@ -37,7 +37,7 @@ interface Props {
 
 const header = (h: TableHeader) => <div className={'cell ' + h.className || ''}>{h.name}</div>;
 
-const Table: FC<Props> = ({
+const Table = ({
     headers,
     rows,
     currentPage,
@@ -45,7 +45,7 @@ const Table: FC<Props> = ({
     onPageClick,
     handlePrevPageButtonClick,
     handleNextPageButtonClick,
-}) => {
+}: Props): JSX.Element => {
     return (
         <div className="table">
             <div className="table__header">{headers.map(header)}</div>

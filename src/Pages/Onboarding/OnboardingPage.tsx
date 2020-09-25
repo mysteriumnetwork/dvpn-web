@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
@@ -41,7 +41,7 @@ const isIdentityRegistered = (identity?: Identity): boolean => {
     return !!identity && (identity.registrationStatus === Registered || identity.registrationStatus === InProgress);
 };
 
-const OnboardingPage: FC<Props> = ({ onboarding, identity }) => {
+const OnboardingPage = ({ onboarding, identity }: Props): JSX.Element => {
     const [currentStep, setCurrentStep] = useState(0);
     const { isDefaultCredentials, termsAgreedAt, termsAgreedVersion } = onboarding;
 
@@ -53,9 +53,7 @@ const OnboardingPage: FC<Props> = ({ onboarding, identity }) => {
         },
     };
 
-    const steps = [
-        <Welcome key="welcome" callbacks={callbacks} />,
-    ];
+    const steps = [<Welcome key="welcome" callbacks={callbacks} />];
 
     if (!isTermsAgreed(termsAgreedAt, termsAgreedVersion)) {
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { FC, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 
 import './assets/styles/pages/onboarding/main.scss';
@@ -17,7 +17,7 @@ interface Props {
     checkCredentialsAndTerms: () => void;
 }
 
-const InitialApplicationStateLoader: FC<Props> = ({ checkCredentialsAndTerms }) => {
+const InitialApplicationStateLoader = ({ checkCredentialsAndTerms }: Props): null => {
     useLayoutEffect(() => {
         checkCredentialsAndTerms();
     }, []);

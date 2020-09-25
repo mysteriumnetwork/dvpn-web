@@ -17,7 +17,7 @@ interface Props {
     mystSlider?: boolean;
 }
 
-export const DefaultSlider: React.FC<Props> = ({ value, handleChange, step, min, max, disabled, mystSlider }) => {
+export const DefaultSlider = ({ value, handleChange, step, min, max, disabled, mystSlider }: Props): JSX.Element => {
     return (
         <Slider
             valueLabelDisplay="auto"

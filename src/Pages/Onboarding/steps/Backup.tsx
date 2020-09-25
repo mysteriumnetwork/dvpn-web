@@ -4,12 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 
 import '../../../assets/styles/pages/onboarding/steps/backup.scss';
 import Button from '../../../Components/Buttons/Button';
 
-const Backup: FC<{ callbacks: OnboardingChildProps }> = ({ callbacks }) => {
+const Backup = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
     return (
         <div className="step-block backup">
             <h1 className="step-block--heading">Backup your keys</h1>

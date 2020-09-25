@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC, ReactComponentElement } from 'react';
+import React, { ReactComponentElement } from 'react';
 import { CircularProgress } from '@material-ui/core';
 
 import './SettingsCards.scss';
@@ -19,7 +19,7 @@ interface Props {
     content?: ReactComponentElement<any>;
 }
 
-const SettingsCard: FC<Props> = ({ onEdit, header, contentHeader, content, isLoading }) => {
+const SettingsCard = ({ onEdit, header, contentHeader, content, isLoading }: Props): JSX.Element => {
     return (
         <div className="wallet-sidebar__card">
             <div className="header">{header}</div>
