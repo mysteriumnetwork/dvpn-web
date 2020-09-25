@@ -73,14 +73,15 @@ const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
             tequilapiClient.sessions(),
             tequilapiClient.sessions({ dateFrom: date2iso('2017-01-01'), dateTo: date2iso('2100-01-01') }),
             tequilapiClient.userConfig(),
+            tequilapiClient.defaultConfig(),
         ])
             .then((result) => {
-                const [{ statsDaily }, { stats: allTimeStats }, config] = result;
+                const [{ statsDaily }, { stats: allTimeStats }, config, defaultConfig] = result;
                 setState({
                     ...state,
                     sessionStatsDaily: statsDaily,
                     sessionStatsAllTime: allTimeStats,
-                    userConfig: config,
+                    userConfig: { ...defaultConfig, ...config },
                 });
             })
             .catch((err) => {

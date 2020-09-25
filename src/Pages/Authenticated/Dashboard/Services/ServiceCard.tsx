@@ -6,12 +6,11 @@
  */
 
 import React, { useState } from 'react';
-import { PaymentMethod, pricePerGiB, pricePerMinute, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js';
+import { ServiceInfo, ServiceStatus } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { useSnackbar } from 'notistack';
 
 import { ServiceType } from '../../../../commons';
-import { displayMoneyMyst } from '../../../../commons/money.utils';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import Button from '../../../../Components/Buttons/Button';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
@@ -30,14 +29,6 @@ interface Props {
     userConfig: Config;
 }
 
-const toMystMinute = (pm?: PaymentMethod): string => {
-    return displayMoneyMyst(pricePerMinute(pm));
-};
-
-const toMystGb = (pm?: PaymentMethod): string => {
-    return displayMoneyMyst(pricePerGiB(pm));
-};
-
 interface ModalProps {
     isOpen: boolean;
 }
@@ -50,10 +41,20 @@ const isAccessPolicyEnabled = (config: Config): boolean => {
     return config?.data && config?.data['access-policy'] && config?.data['access-policy']?.list;
 };
 
+const pricePerGb = (c: Config, s: ServiceType): number => {
+    const serviceConfig = c?.data[s.toLowerCase()];
+    return serviceConfig['price-gb'] || 0;
+};
+
+const pricePerMin = (c: Config, s: ServiceType): number => {
+    const serviceConfig = c?.data[s.toLowerCase()];
+    return serviceConfig['price-minute'] || 0;
+};
+
 const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Props) => {
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
     const [modalState, setModalState] = useState<ModalProps>({ isOpen: false });
-    const { status, proposal, id } = { ...serviceInfo };
+    const { status, id } = { ...serviceInfo };
     const { enqueueSnackbar } = useSnackbar();
 
     const startService = (serviceType: string) => {
@@ -93,14 +94,22 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
         setModalState({ ...modalState, isOpen: false });
     };
 
+    const prices: {
+        pricePerMin: number;
+        pricePerGb: number;
+    } = {
+        pricePerMin: pricePerMin(userConfig, serviceType),
+        pricePerGb: pricePerGb(userConfig, serviceType),
+    };
+
     return (
         <div className="service">
             <ServiceHeader running={status === RUNNING} type={serviceType} />
 
             <div className="service__details">
-                <ServiceDetail label="Price per minute">{toMystMinute(proposal?.paymentMethod)}</ServiceDetail>
+                <ServiceDetail label="Price per minute">{prices.pricePerMin}</ServiceDetail>
 
-                <ServiceDetail label="Price per GB">{toMystGb(proposal?.paymentMethod)}</ServiceDetail>
+                <ServiceDetail label="Price per GB">{prices.pricePerGb}</ServiceDetail>
 
                 <ServiceDetail label="Turned on" alignValueRight={true}>
                     <DefaultSwitch
@@ -127,8 +136,8 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
                 isOpen={modalState.isOpen}
                 onClose={closeSettings}
                 serviceType={serviceType}
-                currentPricePerGb={pricePerGiB(proposal?.paymentMethod)}
-                currentPricePerMinute={pricePerMinute(proposal?.paymentMethod)}
+                currentPricePerGb={prices.pricePerGb}
+                currentPricePerMinute={prices.pricePerMin}
                 identityRef={identityRef}
                 serviceInfo={serviceInfo}
                 isCurrentTrafficShapingEnabled={isTrafficShapingEnabled(userConfig)}
