@@ -6,17 +6,12 @@
  */
 
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
-import { connect } from 'react-redux';
-import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
+import { Identity } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
-import { Terms } from '../../redux/reducers/app.reducer';
+import isIdentityRegistered from '../../commons/isIdentityRegistered';
 
-import { RootState } from '../../redux/store';
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/onboarding/main.scss';
-// import { OnboardingState } from '../../redux/actions/onboard';
-import isTermsAgreed from '../../commons/isTermsAgreed';
 
 import PasswordChange from './steps/PasswordChange';
 import Welcome from './steps/Welcome';
@@ -25,24 +20,13 @@ import TermsAndConditions from './steps/TermsAndConditions';
 import PriceSettings from './steps/PriceSettings';
 import SettlementSettings from './steps/SettlementSettings';
 
-const { Registered, InProgress } = IdentityRegistrationStatus;
-
-const mapStateToProps = (state: RootState) => ({
-    terms: state.app.terms,
-    identity: state.general.currentIdentity,
-});
-
 interface Props {
-    terms: Terms;
+    termsAccepted: boolean;
     identity?: Identity;
-    defaultCredentials: boolean;
+    needsPasswordChange: boolean;
 }
 
-const isIdentityRegistered = (identity?: Identity): boolean => {
-    return !!identity && (identity.registrationStatus === Registered || identity.registrationStatus === InProgress);
-};
-
-const OnboardingPage = ({ defaultCredentials, terms, identity }: Props) => {
+const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
 
     const callbacks: OnboardingChildProps = {
@@ -55,7 +39,7 @@ const OnboardingPage = ({ defaultCredentials, terms, identity }: Props) => {
         <Welcome key="welcome" callbacks={callbacks} />,
     ];
 
-    if (!isTermsAgreed(terms.acceptedAt, terms.acceptedVersion)) {
+    if (!termsAccepted) {
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
     }
 
@@ -64,7 +48,7 @@ const OnboardingPage = ({ defaultCredentials, terms, identity }: Props) => {
         steps.push(<SettlementSettings key="payout" callbacks={callbacks} />);
     }
 
-    if (defaultCredentials) {
+    if (needsPasswordChange) {
         steps.push(<PasswordChange key="password" callbacks={callbacks} />);
     }
 
@@ -93,4 +77,4 @@ const OnboardingPage = ({ defaultCredentials, terms, identity }: Props) => {
     );
 };
 
-export default connect(mapStateToProps)(OnboardingPage);
+export default OnboardingPage;

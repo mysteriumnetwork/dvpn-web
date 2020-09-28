@@ -26,4 +26,10 @@ function generalReducer(state: GeneralState = INITIAL_STATE, action: GeneralType
     }
 }
 
+function getIdentity(state: GeneralState): Identity | undefined {
+    return state.currentIdentity;
+}
+
+export { getIdentity };
+
 export default generalReducer;

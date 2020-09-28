@@ -7,6 +7,15 @@
 
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json';
 
-export default (agreedAt?: string, version?: string): boolean => {
+interface Agreement {
+    at?: string;
+    version?: string;
+}
+
+export const resolveTermsAgreement = (configData?: any): Agreement => {
+    return configData?.mysteriumwebui?.termsAgreed || {};
+};
+
+export const areTermsAccepted = (agreedAt?: string, version?: string): boolean => {
     return !!version && !!agreedAt && version === termsPackageJson.version;
 };
