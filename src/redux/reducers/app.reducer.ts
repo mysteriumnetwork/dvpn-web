@@ -1,8 +1,9 @@
+import { areTermsAccepted } from '../../commons/terms';
 import { AUTHENTICATE, AppActionTypes, ACCEPT_TERMS, LOADING } from '../actions/app';
 
 export interface Auth {
-    authenticated: boolean,
-    withDefaultCredentials: boolean
+    authenticated?: boolean,
+    withDefaultCredentials?: boolean
 }
 
 export interface Terms {
@@ -52,5 +53,23 @@ function appReducer(state: AppState = INITIAL_STATE, action: AppActionTypes): Ap
             return state;
     }
 }
+
+function isLoggedIn(state: AppState): boolean {
+    return !!state.auth.authenticated;
+}
+
+function needsPasswordChange(state: AppState): boolean {
+    return !!state.auth.withDefaultCredentials;
+}
+
+function termsAccepted(state: AppState): boolean {
+    return areTermsAccepted(state.terms.acceptedAt, state.terms.acceptedVersion);
+}
+
+function shouldBeOnboarded(state: AppState) {
+    return !termsAccepted(state) || needsPasswordChange(state)
+}
+
+export { isLoggedIn,needsPasswordChange, termsAccepted, shouldBeOnboarded };
 
 export default appReducer;
