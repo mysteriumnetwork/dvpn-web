@@ -6,7 +6,7 @@
  */
 import React, { useState } from 'react';
 import { Fade, Modal } from '@material-ui/core';
-import { DECIMAL_PART, Money, ServiceInfo } from 'mysterium-vpn-js';
+import { ServiceInfo } from 'mysterium-vpn-js';
 import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { useSnackbar } from 'notistack';
 
@@ -23,8 +23,8 @@ interface Props {
     isOpen: boolean;
     onClose: () => void;
     serviceType: ServiceType;
-    currentPricePerGb: Money;
-    currentPricePerMinute: Money;
+    currentPricePerGb: number;
+    currentPricePerMinute: number;
     identityRef: string;
     serviceInfo?: ServiceInfo;
     isCurrentAccessPolicyEnabled: boolean;
@@ -37,11 +37,6 @@ interface StateProps {
     isVerifiedTrafficEnabled: boolean;
     isTrafficShapingEnabled: boolean;
 }
-
-const myst2HumanReadable = (amount?: number): number => {
-    const humanReadable = (amount || 0) / DECIMAL_PART;
-    return parseFloat(humanReadable.toFixed(3));
-};
 
 const ServiceSettingsModal = ({
     onClose,
@@ -56,8 +51,8 @@ const ServiceSettingsModal = ({
 }: Props): JSX.Element => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [state, setState] = useState<StateProps>({
-        pricePerMinuteChosen: myst2HumanReadable(currentPricePerMinute.amount),
-        pricePerGbChosen: myst2HumanReadable(currentPricePerGb.amount),
+        pricePerMinuteChosen: currentPricePerMinute,
+        pricePerGbChosen: currentPricePerGb,
         isVerifiedTrafficEnabled: isCurrentAccessPolicyEnabled,
         isTrafficShapingEnabled: isCurrentTrafficShapingEnabled,
     });
