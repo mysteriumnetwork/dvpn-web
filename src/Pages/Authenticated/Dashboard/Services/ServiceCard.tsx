@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { ServiceInfo, ServiceStatus } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { useSnackbar } from 'notistack';
+import _ from 'lodash';
 
 import { ServiceType } from '../../../../commons';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
@@ -33,22 +34,20 @@ interface ModalProps {
     isOpen: boolean;
 }
 
-const isTrafficShapingEnabled = (config: Config): boolean => {
-    return config?.data?.shaper?.enabled;
+const isTrafficShapingEnabled = (c: Config): boolean => {
+    return _.get<Config, any>(c, 'data.shaper.enabled');
 };
 
-const isAccessPolicyEnabled = (config: Config): boolean => {
-    return config?.data && config?.data['access-policy'] && config?.data['access-policy']?.list;
+const isAccessPolicyEnabled = (c: Config): boolean => {
+    return _.get<Config, any>(c, 'data.access-policy.list');
 };
 
 const pricePerGb = (c: Config, s: ServiceType): number => {
-    const serviceConfig = c?.data[s.toLowerCase()];
-    return serviceConfig['price-gb'] || 0;
+    return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-gb`) || 0;
 };
 
 const pricePerMin = (c: Config, s: ServiceType): number => {
-    const serviceConfig = c?.data[s.toLowerCase()];
-    return serviceConfig['price-minute'] || 0;
+    return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-minute`) || 0;
 };
 
 const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Props) => {
