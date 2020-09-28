@@ -139,12 +139,6 @@ const AppRouter = ({ loading, identity, loggedIn, needsOnboarding, needsPassword
         goTo = <Redirect to={LOGIN} />;
     }
 
-    console.log('needsOnboarding', needsOnboarding);
-    console.log('needsPasswordChange', needsPasswordChange);
-    console.log('loggedIn', loggedIn);
-    console.log('termsAccepted', termsAccepted);
-    console.log('Go to', goTo);
-
     return (
         <Switch>
             <Route exact path={HOME}>
