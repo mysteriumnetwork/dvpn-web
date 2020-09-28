@@ -8,6 +8,8 @@ import React from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 import { TequilapiError } from 'mysterium-vpn-js';
+import { store } from '../../../redux/store';
+import { authenticate } from '../../../redux/actions/app';
 
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/node-settings.scss';
@@ -51,7 +53,10 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                 values.checked ? tequilapiClient.setMMNApiKey(values.apiKey) : null,
                 tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password),
             ])
-                .then(() => callbacks.nextStep())
+                .then(() => {
+                    store.dispatch(authenticate({ authenticated: true, withDefaultCredentials: false }));
+                    callbacks.nextStep();
+                })
                 .catch((error) => {
                     console.log(error);
                     if (error instanceof TequilapiError) {

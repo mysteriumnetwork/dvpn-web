@@ -26,13 +26,15 @@ export const loginAndStoreCurrentIdentity = async (username: string, password: s
         });
 };
 
-export const hasDefaultCredentials = async (): Promise<boolean> => {
+export const loginWithDefaultCredentials = async (): Promise<boolean> => {
     try {
         await tequilapiClient.authLogin(DEFAULT_USERNAME, DEFAULT_PASSWORD);
 
         return true;
     } catch (e) {
-
+        if (e instanceof TequilapiError && e.isUnauthorizedError) {
+            return false;
+        }
     }
 
     return false

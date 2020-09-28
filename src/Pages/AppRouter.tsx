@@ -4,12 +4,18 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { Dispatch, useEffect } from 'react';
+import { CircularProgress } from '@material-ui/core';
+import React, { Dispatch, FC, useEffect, useLayoutEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import '../assets/styles/App.scss';
+import ProtectedRoute from './ProtectedRoute';
+import { AppState } from '../redux/reducers/app.reducer';
+import { acceptTerms, authenticate, loading } from '../redux/actions/app';
+import { RootState, store } from '../redux/store';
+import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
 
 import {
     ERROR,
@@ -34,7 +40,18 @@ import AuthenticatedPage from './Authenticated/AuthenticatedPage';
 
 interface Props {
     fetchIdentity: () => void;
+    loading: boolean;
+    authenticated: boolean;
+    withDefaultCredentials: boolean;
+    onboarding: boolean;
 }
+
+const mapStateToProps = (state: RootState) => ({
+    loading: state.app.loading,
+    authenticated: state.app.auth.authenticated,
+    withDefaultCredentials: state.app.auth.withDefaultCredentials,
+    onboarding: state.app.auth.authenticated && (state.app.auth.withDefaultCredentials || !state.app.terms.acceptedAt),
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
@@ -42,32 +59,117 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     };
 };
 
-const AppRouter = ({ fetchIdentity }: Props): JSX.Element => {
-    const history = useHistory();
+interface Agreement {
+    at?: string;
+    version?: string;
+}
 
-    // TODO duct tape solution for fetching current identity on page refresh (by user)
-    useEffect(() => {
-        tequilapiClient
-            .healthCheck()
-            .then(() => fetchIdentity())
-            .catch(() => {
-                history.push(HOME);
-            });
+const resolveTermsAgreement = (configData?: any): Agreement => {
+    return configData?.mysteriumwebui?.termsAgreed || {};
+};
+
+const updateTermsStore = async () => {
+    const userConfig = await tequilapiClient.userConfig();
+    const { at, version } = resolveTermsAgreement(userConfig.data);
+    store.dispatch(acceptTerms({
+        acceptedAt: at,
+        acceptedVersion: version,
+    }));
+};
+
+const isUnauthenticatedDefaultPasswordFlow = async (onAuthentication: () => void) => {
+    const withDefaultCredentials = await loginWithDefaultCredentials();
+
+    if (withDefaultCredentials) { //login successful
+        await updateTermsStore();
+
+        store.dispatch(authenticate({
+            authenticated: true,
+            withDefaultCredentials: withDefaultCredentials,
+        }));
+
+        try {
+            onAuthentication();
+        } catch (e) {
+
+        }
+    }
+
+    store.dispatch(loading(false));
+};
+
+const checkAuthenticatedFlow = async () => {
+    const withDefaultCredentials = await loginWithDefaultCredentials();
+
+    await updateTermsStore();
+
+    store.dispatch(authenticate({
+        authenticated: true,
+        withDefaultCredentials: withDefaultCredentials,
+    }));
+
+    store.dispatch(loading(false));
+};
+
+const AppRouter = ({ loading, withDefaultCredentials, authenticated, onboarding, fetchIdentity }: Props) => {
+    useLayoutEffect(() => {
+        const doCheck = async () => {
+            const isAuthenticated = await isUserAuthenticated();
+            if (!isAuthenticated) {
+                await isUnauthenticatedDefaultPasswordFlow(fetchIdentity);
+
+                return;
+            }
+
+            await checkAuthenticatedFlow();
+
+            fetchIdentity();
+        };
+        doCheck();
     }, []);
+
+    console.log('loading', loading, 'onboarding', onboarding, 'auth', authenticated, 'defCreds', withDefaultCredentials);
+
+    if (loading) {
+        return (<CircularProgress className="spinner" />);
+    }
+    console.log('onboarding', onboarding, 'auth', authenticated, 'defCreds', withDefaultCredentials);
+    let goTo = (<Redirect to={DASHBOARD} />);
+    if (onboarding || withDefaultCredentials) {
+        goTo = <Redirect to={ONBOARDING_HOME} />;
+    } else if (!authenticated) {
+        goTo = <Redirect to={LOGIN} />;
+    }
 
     return (
         <Switch>
-            <Route exact path={HOME} component={IndexRoute} />
-            <Route exact path={LOGIN} component={LoginPage} />
+            <Route exact path={HOME}>
+                {goTo}
+            </Route>
+            <Route exact path={LOGIN} render={(props) => {
+                return !authenticated
+                    // @ts-ignore
+                    ? <LoginPage {...props} />
+                    : <Redirect to={DASHBOARD} />;
+            }
+            } />
+            <Route exact path={ONBOARDING_HOME} render={(props) => {
+                return onboarding
+                    ? <OnboardingPage {...props} defaultCredentials={withDefaultCredentials} />
+                    : <Redirect to={DASHBOARD} />;
+            }
+            } />
             <Route exact path={ERROR} component={RestartNode} />
-            <Route path={ONBOARDING_HOME} component={OnboardingPage} />
             <Route path={NOT_FOUND} component={PageNotFound} />
-            <Route path={DASHBOARD} component={AuthenticatedPage} />
-            <Route path={SESSIONS} component={AuthenticatedPage} />
-            <Route path={SETTINGS} component={AuthenticatedPage} />
-            <Route path={WALLET} component={AuthenticatedPage} />
+
+            <ProtectedRoute path={DASHBOARD} authenticated={authenticated} component={AuthenticatedPage} />
+            <ProtectedRoute path={SESSIONS} authenticated={authenticated} component={AuthenticatedPage} />
+            <ProtectedRoute path={SETTINGS} authenticated={authenticated} component={AuthenticatedPage} />
+            <ProtectedRoute path={WALLET} authenticated={authenticated} component={AuthenticatedPage} />
+
             <Redirect from="*" to={NOT_FOUND} />
         </Switch>
     );
 };
-export default connect(null, mapDispatchToProps)(AppRouter);
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppRouter);

@@ -11,22 +11,22 @@ import { CircularProgress } from '@material-ui/core';
 
 import { LOGIN, ONBOARDING_HOME } from '../constants/routes';
 import { RootState } from '../redux/store';
-import { OnboardingState } from '../redux/actions/onboard';
+// import { OnboardingState } from '../redux/actions/onboard';
 
 const mapStateToProps = (state: RootState) => ({
-    onboarding: state.onboarding,
+    // onboarding: state.onboarding,
 });
 
 interface Props {
-    onboarding: OnboardingState;
+    // onboarding: OnboardingState;
 }
 
-const IndexRoute = ({ onboarding }: Props): JSX.Element => {
-    if (onboarding.isCheckPending) {
+const IndexRoute: React.FC<Props> = ({ }) => {
+    // if (onboarding.isCheckPending) {
         return <CircularProgress className="spinner" />;
-    }
+    // }
 
-    return onboarding.isNeedsOnboarding ? <Redirect to={ONBOARDING_HOME} /> : <Redirect to={LOGIN} />;
+    // return onboarding.isNeedsOnboarding ? <Redirect to={ONBOARDING_HOME} /> : <Redirect to={LOGIN} />;
 };
 
 export default connect(mapStateToProps)(IndexRoute);
