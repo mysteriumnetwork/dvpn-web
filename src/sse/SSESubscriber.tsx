@@ -8,8 +8,8 @@ import React, { useLayoutEffect } from 'react';
 import { AppState, SSEEventType, SSEResponse } from 'mysterium-vpn-js';
 import { connect } from 'react-redux';
 
-import ServerSentEvents from './sse/server-sent-events';
-import { sseAppStateStateChanged } from './redux/actions/sse';
+import ServerSentEvents from './server-sent-events';
+import { sseAppStateStateChanged } from '../redux/actions/sse';
 
 interface Props {
     sseAppStateStateChanged: (state: AppState) => SSEResponse;
@@ -19,14 +19,14 @@ const mapDispatchToProps = {
     sseAppStateStateChanged,
 };
 
-const ServerSentEventsSubscriber = ({ sseAppStateStateChanged }: Props): null => {
-    const sse = new ServerSentEvents();
+const SSESubscriber = ({ sseAppStateStateChanged }: Props) => {
+    const sse = new ServerSentEvents()
 
     useLayoutEffect((): void => {
         sse.connect();
         sse.on(SSEEventType.AppStateChange, (state: AppState) => sseAppStateStateChanged(state));
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     return null;
 };
 
-export default connect(null, mapDispatchToProps)(ServerSentEventsSubscriber);
+export default connect(null, mapDispatchToProps)(SSESubscriber);

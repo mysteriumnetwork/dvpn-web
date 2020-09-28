@@ -6,14 +6,15 @@
  */
 import { combineReducers } from 'redux';
 
-import onboardingReducer from './onboarding.reducer';
+// import onboardingReducer from './onboarding.reducer';
 import generalReducer from './general.reducer';
 import sseReducer from './sse.reducer';
+import appReducer from './app.reducer';
 
 const rootReducer = combineReducers({
-    onboarding: onboardingReducer,
     general: generalReducer,
     sse: sseReducer,
+    app: appReducer
 });
 
 export default rootReducer;

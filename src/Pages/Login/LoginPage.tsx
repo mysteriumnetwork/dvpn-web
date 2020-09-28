@@ -8,8 +8,9 @@ import React, { FormEvent } from 'react';
 import Collapse from '@material-ui/core/Collapse';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useHistory } from 'react-router';
+import { authenticate } from '../../redux/actions/app';
+import { store } from '../../redux/store';
 
-import { DASHBOARD } from '../../constants/routes';
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/login/main.scss';
 import { DefaultTextField } from '../../Components/DefaultTextField';
@@ -29,7 +30,6 @@ const LoginPage = () => {
         error: false,
         isLoading: false,
     });
-    const history = useHistory();
 
     const handleTextFieldsChange = (prop: keyof StateProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, [prop]: event.target.value });
@@ -39,7 +39,7 @@ const LoginPage = () => {
         e.preventDefault();
         setState({ ...state, error: false, isLoading: true });
         loginAndStoreCurrentIdentity(DEFAULT_USERNAME, state.password)
-            .then(() => history.push(DASHBOARD))
+            .then(() => store.dispatch(authenticate({ authenticated: true, withDefaultCredentials: false })))
             .catch(() => setState({ ...state, error: true, isLoading: false }));
     };
     return (
