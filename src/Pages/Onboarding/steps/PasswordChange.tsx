@@ -120,11 +120,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                     <p className="text-field-label">
                         API Token (get it <a href="https://my.mysterium.network/login">here</a>)
                     </p>
-                    <DefaultTextField
-                        handleChange={handleTextFieldsChange}
-                        value={values.apiKey}
-                        stateName="apiToken"
-                    />
+                    <DefaultTextField handleChange={handleTextFieldsChange} value={values.apiKey} stateName="apiKey" />
                 </div>
                 <Button onClick={handleSubmitPassword}>Done</Button>
             </div>
