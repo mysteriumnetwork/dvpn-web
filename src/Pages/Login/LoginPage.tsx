@@ -7,10 +7,9 @@
 import React, { FormEvent } from 'react';
 import Collapse from '@material-ui/core/Collapse';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import { useHistory } from 'react-router';
+
 import { authenticate } from '../../redux/actions/app';
 import { store } from '../../redux/store';
-
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/login/main.scss';
 import { DefaultTextField } from '../../Components/DefaultTextField';
@@ -68,10 +67,7 @@ const LoginPage = () => {
 
                             <div className="password-actions-block">
                                 <a href="#">Forgot password?</a>
-                                <Button
-                                    type="submit"
-                                    isLoading={state.isLoading}
-                                >
+                                <Button type="submit" isLoading={state.isLoading}>
                                     Sing In
                                 </Button>
                             </div>
