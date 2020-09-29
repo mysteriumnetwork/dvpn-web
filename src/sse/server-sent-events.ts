@@ -6,7 +6,7 @@
  */
 import { EventEmitter } from 'events';
 
-import { parseSSEResponse, TEQUILAPI_SSE_URL } from 'mysterium-vpn-js';
+import { AppState, parseSSEResponse, SSEEventType, TEQUILAPI_SSE_URL } from 'mysterium-vpn-js';
 
 class ServerSentEvents {
     emitter: EventEmitter;
@@ -35,4 +35,10 @@ class ServerSentEvents {
     }
 }
 
-export default ServerSentEvents;
+const ConnectToSSE = (dispatcher: (state: any) => void) => {
+    const sse = new ServerSentEvents();
+    sse.connect();
+    sse.on(SSEEventType.AppStateChange, (state: any) => dispatcher(state));
+}
+
+export default ConnectToSSE

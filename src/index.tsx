@@ -12,7 +12,6 @@ import { Provider } from 'react-redux';
 
 import AppRouter from './Pages/AppRouter';
 import { store } from './redux/store';
-import SSESubscriber from './sse/SSESubscriber';
 
 ReactDOM.render(
     <Provider store={store}>
@@ -23,7 +22,6 @@ ReactDOM.render(
                 horizontal: 'right',
             }}
         >
-            <SSESubscriber />
             <BrowserRouter>
                 <AppRouter />
             </BrowserRouter>

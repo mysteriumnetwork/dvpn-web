@@ -5,12 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core';
-import { Identity } from 'mysterium-vpn-js';
-import React, { Dispatch, useLayoutEffect } from 'react';
+import { AppState, Identity, SSEEventType } from 'mysterium-vpn-js';
+import React, { Dispatch, useEffect, useLayoutEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import '../assets/styles/App.scss';
+import { sseAppStateStateChanged } from '../redux/actions/sse';
+import ConnectToSSE from '../sse/server-sent-events';
+import ServerSentEvents from '../sse/server-sent-events';
 import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
 import { getIdentity } from '../redux/reducers/general.reducer';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore, updateTermsStoreAsync } from '../redux/actions/app';
@@ -48,6 +51,7 @@ interface Props {
         updateTermsStoreAsync: () => void;
         updateAuthenticatedStore: (auth: Auth) => void;
         updateAuthFlowLoadingStore: (loading: boolean) => void;
+        sseAppStateStateChanged: (state: AppState) => void;
     };
 }
 
@@ -68,6 +72,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
             updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
             updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
             updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
+            sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
         },
     };
 };
@@ -83,13 +88,13 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
 };
 
 const AppRouter = ({
-    loading,
-    identity,
-    loggedIn,
-    needsOnboarding,
-    needsPasswordChange,
-    termsAccepted,
-    actions,
+   loading,
+   identity,
+   loggedIn,
+   needsOnboarding,
+   needsPasswordChange,
+   termsAccepted,
+   actions,
 }: Props) => {
     const authenticatedFlow = async () => {
         actions.updateAuthenticatedStore({
@@ -113,6 +118,14 @@ const AppRouter = ({
         };
         blockingCheck();
     }, []);
+
+    useEffect(() => {
+        if (!loggedIn) {
+            return;
+        }
+
+        ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state))
+    }, [loggedIn]);
 
     if (loading) {
         return <CircularProgress className="spinner" />;
