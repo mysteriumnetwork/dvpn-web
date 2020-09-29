@@ -91,49 +91,25 @@ const AppRouter = ({
     termsAccepted,
     actions,
 }: Props) => {
-    const unAuthenticatedFlow = async (cb: () => void) => {
-        const withDefaultCredentials = await loginWithDefaultCredentials();
-
-        if (!withDefaultCredentials) {
-            actions.updateAuthFlowLoadingStore(false);
-            return;
-        }
-
-        await actions.updateTermsStoreAsync();
-
-        actions.updateAuthenticatedStore({
-            authenticated: true,
-            withDefaultCredentials: withDefaultCredentials,
-        });
-
-        cb();
-        actions.updateAuthFlowLoadingStore(false);
-    };
-
     const authenticatedFlow = async () => {
-        const withDefaultCredentials = await loginWithDefaultCredentials();
-
-        await actions.updateTermsStoreAsync();
-
         actions.updateAuthenticatedStore({
             authenticated: true,
-            withDefaultCredentials: withDefaultCredentials,
+            withDefaultCredentials: await loginWithDefaultCredentials(),
         });
-
+        await actions.updateTermsStoreAsync();
         actions.updateAuthFlowLoadingStore(false);
+        actions.fetchIdentity();
     };
 
     useLayoutEffect(() => {
         const blockingCheck = async () => {
             const authenticated = await isUserAuthenticated();
-            if (!authenticated) {
-                await unAuthenticatedFlow(actions.fetchIdentity);
-                return;
+            const defaultCredentials = await loginWithDefaultCredentials();
+            if (!authenticated && !defaultCredentials) {
+                actions.updateAuthFlowLoadingStore(false);
+            } else {
+                await authenticatedFlow();
             }
-
-            await authenticatedFlow();
-
-            actions.fetchIdentity();
         };
         blockingCheck();
     }, []);
