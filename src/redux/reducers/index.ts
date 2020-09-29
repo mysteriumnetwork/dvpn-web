@@ -6,7 +6,6 @@
  */
 import { combineReducers } from 'redux';
 
-// import onboardingReducer from './onboarding.reducer';
 import generalReducer from './general.reducer';
 import sseReducer from './sse.reducer';
 import appReducer from './app.reducer';
@@ -14,7 +13,7 @@ import appReducer from './app.reducer';
 const rootReducer = combineReducers({
     general: generalReducer,
     sse: sseReducer,
-    app: appReducer
+    app: appReducer,
 });
 
 export default rootReducer;

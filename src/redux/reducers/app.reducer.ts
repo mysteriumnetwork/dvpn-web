@@ -1,20 +1,26 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import { areTermsAccepted } from '../../commons/terms';
 import { AUTHENTICATE, AppActionTypes, ACCEPT_TERMS, LOADING } from '../actions/app';
 
 export interface Auth {
-    authenticated?: boolean,
-    withDefaultCredentials?: boolean
+    authenticated?: boolean;
+    withDefaultCredentials?: boolean;
 }
 
 export interface Terms {
-    acceptedAt: string | undefined,
-    acceptedVersion: string | undefined
+    acceptedAt: string | undefined;
+    acceptedVersion: string | undefined;
 }
 
 export interface AppState {
-    loading: boolean
-    auth: Auth
-    terms: Terms
+    loading: boolean;
+    auth: Auth;
+    terms: Terms;
 }
 
 const INITIAL_STATE: AppState = {
@@ -34,13 +40,13 @@ function appReducer(state: AppState = INITIAL_STATE, action: AppActionTypes): Ap
         case AUTHENTICATE: {
             return {
                 ...state,
-                auth: { ...action.payload as Auth },
+                auth: { ...(action.payload as Auth) },
             };
         }
         case ACCEPT_TERMS: {
             return {
                 ...state,
-                terms: { ...action.payload as Terms },
+                terms: { ...(action.payload as Terms) },
             };
         }
         case LOADING: {
@@ -67,9 +73,11 @@ function termsAccepted(state: AppState): boolean {
 }
 
 function shouldBeOnboarded(state: AppState) {
-    return !termsAccepted(state) || needsPasswordChange(state)
+    // TODO if !needsPasswordChange(state) then infinite loading
+    // return !termsAccepted(state) || needsPasswordChange(state)
+    return needsPasswordChange(state);
 }
 
-export { isLoggedIn,needsPasswordChange, termsAccepted, shouldBeOnboarded };
+export { isLoggedIn, needsPasswordChange, termsAccepted, shouldBeOnboarded };
 
 export default appReducer;
