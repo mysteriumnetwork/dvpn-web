@@ -6,6 +6,7 @@
  */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Header from '../../../Components/Header';
@@ -13,12 +14,11 @@ import { GeneralState } from '../../../redux/actions/general';
 import { RootState } from '../../../redux/store';
 import '../../../assets/styles/pages/authenticated/pages/setings.scss';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg';
+import { parseMMNError } from '../../../commons/error.utils';
 
 import MMN from './Components/MMN';
 import PasswordChange from './Components/PasswordChange';
 import IdentityBackup from './Components/IdentityBackup';
-import {useSnackbar} from "notistack";
-import {parseMessage} from "../../../commons/error.utils";
 
 interface StateInterface {
     apiKey: string;
@@ -33,7 +33,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const Settings = ({ general }: Props): JSX.Element => {
-    const [values, setValues] = React.useState<StateInterface>({
+    const [state, setState] = React.useState<StateInterface>({
         apiKey: '',
     });
 
@@ -42,12 +42,10 @@ const Settings = ({ general }: Props): JSX.Element => {
     useEffect(() => {
         tequilapiClient
             .getMMNApiKey()
+            .then((response: any) => setState({ ...state, apiKey: response.apiKey }))
             .catch((err) => {
-                enqueueSnackbar(parseMessage(err), { variant: 'error' })
+                enqueueSnackbar(parseMMNError(err), { variant: 'error' });
                 console.log(err);
-            })
-            .then((response: any) => {
-                setValues({ ...values, apiKey: response.apiKey });
             });
     }, []);
 
@@ -73,7 +71,7 @@ const Settings = ({ general }: Props): JSX.Element => {
                     <div className="settings--block identity">
                         <p className="heading">MMN integration</p>
                         <div className="content">
-                            <MMN apiKey={values.apiKey} />
+                            <MMN apiKey={state.apiKey} />
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ import { validatePassword } from '../../../commons/ValidatePassword';
 import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
-import { parseMessage } from '../../../commons/error.utils';
+import { parseError, parseMMNError } from '../../../commons/error.utils';
 
 interface StateInterface {
     passwordRepeat: string;
@@ -29,8 +29,10 @@ interface StateInterface {
     nodeClaimed: boolean;
 }
 
+const API_CALL_FAILED = 'API Call failed.';
+
 const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
-    const [values, setValues] = React.useState<StateInterface>({
+    const [state, setState] = React.useState<StateInterface>({
         passwordRepeat: '',
         password: '',
         apiKey: '',
@@ -42,40 +44,44 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
 
     useEffect(() => {
         tequilapiClient.getMMNApiKey().then((resp) => {
-            setValues({ ...values, apiKey: resp.api_key });
+            setState({ ...state, apiKey: resp.api_key });
         });
     }, []);
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setState({ ...state, [prop]: event.target.value });
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...values, checked: event.target.checked });
+        setState({ ...state, checked: event.target.checked });
     };
 
     const handleSubmitPassword = async () => {
-        setValues({ ...values, error: false });
+        setState({ ...state, error: false });
 
-        if (values.checked && !values.apiKey) {
-            setValues({ ...values, error: true, errorMessage: 'Please enter MMN ApiKey' });
+        if (state.checked && !state.apiKey) {
+            setState({ ...state, error: true, errorMessage: 'Please enter MMN ApiKey' });
             return;
         }
 
-        const isPasswordValid = validatePassword(values.password, values.passwordRepeat);
+        const isPasswordValid = validatePassword(state.password, state.passwordRepeat);
         if (!isPasswordValid.success) {
-            setValues({ ...values, error: true, errorMessage: isPasswordValid.errorMessage });
+            setState({ ...state, error: true, errorMessage: isPasswordValid.errorMessage });
             return;
         }
 
-        (values.checked ? tequilapiClient.setMMNApiKey(values.apiKey) : Promise.resolve())
-            .then(() => tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password))
+        (state.checked ? tequilapiClient.setMMNApiKey(state.apiKey) : Promise.resolve())
+            .then(
+                () => tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, state.password),
+                (mmnError) =>
+                    setState({ ...state, error: true, errorMessage: parseMMNError(mmnError) || API_CALL_FAILED })
+            )
             .then(() =>
                 store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
             )
             .then(() => callbacks.nextStep())
             .catch((error) => {
-                setValues({ ...values, error: true, errorMessage: parseMessage(error) || 'API Call failed.' });
+                setState({ ...state, error: true, errorMessage: parseError(error) || API_CALL_FAILED });
                 console.log(error);
             });
     };
@@ -85,10 +91,10 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
             <h1 className="step-block--heading">Node settings</h1>
             <p className="step-block--heading-paragraph">Fill in the following information to setup your node.</p>
             <div className="step-block-content">
-                <Collapse in={values.error}>
+                <Collapse in={state.error}>
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>
-                        {values.errorMessage}
+                        {state.errorMessage}
                     </Alert>
                 </Collapse>
                 <div className="password-input-block">
@@ -96,7 +102,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
                         password={true}
-                        value={values.password}
+                        value={state.password}
                         stateName="password"
                     />
                 </div>
@@ -105,13 +111,13 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
                         password={true}
-                        value={values.passwordRepeat}
+                        value={state.passwordRepeat}
                         stateName="passwordRepeat"
                     />
                 </div>
                 <div className="claim-node-block">
                     <DefaultCheckbox
-                        checked={values.checked}
+                        checked={state.checked}
                         handleCheckboxChange={handleCheckboxChange}
                         label="Claim this node in my.mysterium.network"
                     />
@@ -120,7 +126,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                     <p className="text-field-label">
                         API Token (get it <a href="https://my.mysterium.network/login">here</a>)
                     </p>
-                    <DefaultTextField handleChange={handleTextFieldsChange} value={values.apiKey} stateName="apiKey" />
+                    <DefaultTextField handleChange={handleTextFieldsChange} value={state.apiKey} stateName="apiKey" />
                 </div>
                 <Button onClick={handleSubmitPassword}>Done</Button>
             </div>

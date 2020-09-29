@@ -6,10 +6,27 @@
  */
 import { TequilapiError } from 'mysterium-vpn-js';
 
-export const parseMessage = (error: any): string | undefined => {
+export const parseError = (error: any): string | undefined => {
     if (error instanceof TequilapiError) {
         const tqerr = error as TequilapiError;
         const responseData = tqerr.originalResponseData;
         return responseData?.message;
+    }
+};
+
+export interface MMNErrors {
+    [key: string]: {
+        code: string;
+        message: string;
+    }[];
+}
+
+export const parseMMNError = (error: any): string | undefined => {
+    if (error instanceof TequilapiError) {
+        const tqerr = error as TequilapiError;
+        const errors = (tqerr.originalResponseData?.errors || {}) as MMNErrors;
+        return Object.keys(errors)
+            .map((k) => errors[k].map((e) => e.message).join(','))
+            .join(',');
     }
 };

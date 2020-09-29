@@ -19,7 +19,7 @@ import Header from '../../../Components/Header';
 import Table, { TableRow } from '../../../Components/Table/Table';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import './Sessions.scss';
-import { parseMessage } from '../../../commons/error.utils';
+import { parseError } from '../../../commons/error.utils';
 
 interface StateProps {
     isLoading: boolean;
@@ -73,7 +73,7 @@ const Sessions: FC = () => {
                 setState({ ...state, isLoading: false, sessionListResponse: resp });
             })
             .catch((err) => {
-                enqueueSnackbar(parseMessage(err) || 'Fetching Sessions Failed!');
+                enqueueSnackbar(parseError(err) || 'Fetching Sessions Failed!');
                 console.log(err);
             });
     }, [state.pageSize, state.currentPage]);

@@ -12,7 +12,7 @@ import './WalletModel.scss';
 import Button from '../../../Components/Buttons/Button';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import { tequilapiClient } from '../../../api/TequilApiClient';
-import { parseMessage } from '../../../commons/error.utils';
+import { parseError } from '../../../commons/error.utils';
 
 interface Props {
     isOpen: boolean;
@@ -49,7 +49,7 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
                 onClose();
             })
             .catch((err) => {
-                const msg = parseMessage(err);
+                const msg = parseError(err);
                 enqueueSnackbar(msg || 'Beneficiary update failed', { variant: 'error' });
                 console.log(err);
             })

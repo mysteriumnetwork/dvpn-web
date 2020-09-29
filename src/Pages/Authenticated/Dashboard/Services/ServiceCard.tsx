@@ -15,7 +15,7 @@ import { ServiceType } from '../../../../commons';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import Button from '../../../../Components/Buttons/Button';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
-import { parseMessage } from '../../../../commons/error.utils';
+import { parseError } from '../../../../commons/error.utils';
 
 import ServiceHeader from './ServiceHeader';
 import ServiceDetail from './ServiceDetail';
@@ -64,7 +64,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
                 type: serviceType,
             })
             .catch((err) => {
-                enqueueSnackbar(parseMessage(err) || `Service "${serviceType}" could not be started`, {
+                enqueueSnackbar(parseError(err) || `Service "${serviceType}" could not be started`, {
                     variant: 'error',
                 });
                 console.log(err);
@@ -77,7 +77,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
         tequilapiClient
             .serviceStop(serviceId)
             .catch((err) => {
-                enqueueSnackbar(parseMessage(err) || `Service "${serviceType}" could not be stopped`, {
+                enqueueSnackbar(parseError(err) || `Service "${serviceType}" could not be stopped`, {
                     variant: 'error',
                 });
                 console.log(err);

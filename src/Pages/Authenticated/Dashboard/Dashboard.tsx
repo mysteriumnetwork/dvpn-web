@@ -19,7 +19,7 @@ import { fetchIdentity, GeneralState } from '../../../redux/actions/general';
 import { SSEState } from '../../../redux/actions/sse';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
-import { parseMessage } from '../../../commons/error.utils';
+import { parseError } from '../../../commons/error.utils';
 import { date2iso } from '../../../commons/date.utils';
 
 import './Dashboard.scss';
@@ -84,7 +84,7 @@ const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
                 });
             })
             .catch((err) => {
-                enqueueSnackbar(parseMessage(err), { variant: 'error' });
+                enqueueSnackbar(parseError(err), { variant: 'error' });
                 console.log(err);
             });
     }, []);
