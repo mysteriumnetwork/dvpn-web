@@ -17,7 +17,8 @@ class ServerSentEvents {
     }
 
     connect() {
-        this.eventSource = new EventSource(TEQUILAPI_SSE_URL);
+        const url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi/events/state`;
+        this.eventSource = new EventSource(url);
         this.eventSource.onerror = (evt): void => {
             console.log('[sse error]', evt);
         };
