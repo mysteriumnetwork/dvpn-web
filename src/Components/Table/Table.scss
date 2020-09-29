@@ -31,6 +31,21 @@
     flex-direction: column;
     overflow-x: scroll;
 
+    .empty {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .no-data {
+        font-style: normal;
+        font-weight: $normal-weight;
+        font-size: 18px;
+        line-height: 21px;
+        color: $names-text-color;
+      }
+    }
+
     .row {
       background: #FFFFFF;
       border: 1px solid #ECECF2;
