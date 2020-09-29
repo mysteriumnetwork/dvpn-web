@@ -5,7 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Action } from 'redux';
+import { Dispatch } from 'react';
+
 import { Auth, Terms } from '../reducers/app.reducer';
+import { tequilapiClient } from '../../api/TequilApiClient';
+import { resolveTermsAgreement } from '../../commons/terms';
+import { store } from '../store';
 
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const ACCEPT_TERMS = 'ACCEPT_TERMS';
@@ -16,7 +21,7 @@ export interface AppAction<T> extends Action {
     payload: T;
 }
 
-export type AppActionTypes = AppAction<Auth> | AppAction<Terms> | AppAction<boolean>
+export type AppActionTypes = AppAction<Auth> | AppAction<Terms> | AppAction<boolean>;
 
 export const authenticate = (auth: Auth): AppAction<Auth> => {
     return {
@@ -32,9 +37,22 @@ export const acceptTerms = (terms: Terms): AppAction<Terms> => {
     };
 };
 
-export const loading = (loading: boolean): AppAction<boolean> => {
+export const updateLoading = (loading: boolean): AppAction<boolean> => {
     return {
         type: LOADING,
         payload: loading,
+    };
+};
+
+export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
+    return async (dispatch) => {
+        const userConfig = await tequilapiClient.userConfig();
+        const { at, version } = resolveTermsAgreement(userConfig.data);
+        dispatch(
+            acceptTerms({
+                acceptedAt: at,
+                acceptedVersion: version,
+            })
+        );
     };
 };

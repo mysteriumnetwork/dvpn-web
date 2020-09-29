@@ -14,7 +14,7 @@ import '../assets/styles/App.scss';
 import { isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
 import { getIdentity } from '../redux/reducers/general.reducer';
 import { resolveTermsAgreement } from '../commons/terms';
-import { acceptTerms, authenticate, loading } from '../redux/actions/app';
+import { acceptTerms, authenticate, updateLoading, updateTermsStoreAsync } from '../redux/actions/app';
 import { RootState, store } from '../redux/store';
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
 import {
@@ -46,6 +46,7 @@ interface Props {
     needsPasswordChange: boolean;
     needsOnboarding: boolean;
     fetchIdentity: () => void;
+    updateTermsStoreAsync: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -61,54 +62,8 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
         fetchIdentity: () => dispatch(fetchIdentity()),
+        updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
     };
-};
-
-const updateTermsStore = async () => {
-    const userConfig = await tequilapiClient.userConfig();
-    const { at, version } = resolveTermsAgreement(userConfig.data);
-    store.dispatch(
-        acceptTerms({
-            acceptedAt: at,
-            acceptedVersion: version,
-        })
-    );
-};
-
-const unAuthenticatedFlow = async (cb: () => void) => {
-    const withDefaultCredentials = await loginWithDefaultCredentials();
-
-    if (!withDefaultCredentials) {
-        store.dispatch(loading(false));
-        return;
-    }
-
-    await updateTermsStore();
-
-    store.dispatch(
-        authenticate({
-            authenticated: true,
-            withDefaultCredentials: withDefaultCredentials,
-        })
-    );
-
-    cb();
-    store.dispatch(loading(false));
-};
-
-const authenticatedFlow = async () => {
-    const withDefaultCredentials = await loginWithDefaultCredentials();
-
-    await updateTermsStore();
-
-    store.dispatch(
-        authenticate({
-            authenticated: true,
-            withDefaultCredentials: withDefaultCredentials,
-        })
-    );
-
-    store.dispatch(loading(false));
 };
 
 const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element => {
@@ -129,7 +84,44 @@ const AppRouter = ({
     needsPasswordChange,
     termsAccepted,
     fetchIdentity,
+    updateTermsStoreAsync,
 }: Props) => {
+    const unAuthenticatedFlow = async (cb: () => void) => {
+        const withDefaultCredentials = await loginWithDefaultCredentials();
+
+        if (!withDefaultCredentials) {
+            store.dispatch(updateLoading(false));
+            return;
+        }
+
+        await updateTermsStoreAsync();
+
+        store.dispatch(
+            authenticate({
+                authenticated: true,
+                withDefaultCredentials: withDefaultCredentials,
+            })
+        );
+
+        cb();
+        store.dispatch(updateLoading(false));
+    };
+
+    const authenticatedFlow = async () => {
+        const withDefaultCredentials = await loginWithDefaultCredentials();
+
+        await updateTermsStoreAsync();
+
+        store.dispatch(
+            authenticate({
+                authenticated: true,
+                withDefaultCredentials: withDefaultCredentials,
+            })
+        );
+
+        store.dispatch(updateLoading(false));
+    };
+
     useLayoutEffect(() => {
         const blockingCheck = async () => {
             const authenticated = await isUserAuthenticated();
