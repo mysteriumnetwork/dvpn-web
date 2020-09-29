@@ -23,7 +23,7 @@ export interface AppAction<T> extends Action {
 
 export type AppActionTypes = AppAction<Auth> | AppAction<Terms> | AppAction<boolean>;
 
-export const authenticate = (auth: Auth): AppAction<Auth> => {
+export const updateAuthenticatedStore = (auth: Auth): AppAction<Auth> => {
     return {
         type: AUTHENTICATE,
         payload: auth,
@@ -37,7 +37,7 @@ export const acceptTerms = (terms: Terms): AppAction<Terms> => {
     };
 };
 
-export const updateLoading = (loading: boolean): AppAction<boolean> => {
+export const updateAuthFlowLoadingStore = (loading: boolean): AppAction<boolean> => {
     return {
         type: LOADING,
         payload: loading,

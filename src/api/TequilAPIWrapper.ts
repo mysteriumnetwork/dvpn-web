@@ -37,7 +37,7 @@ export const loginWithDefaultCredentials = async (): Promise<boolean> => {
         }
     }
 
-    return false
+    return false;
 };
 
 export const isUserAuthenticated = async (): Promise<boolean> => {
