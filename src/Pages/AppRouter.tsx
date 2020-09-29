@@ -159,13 +159,8 @@ const AppRouter = ({
             <Route
                 exact
                 path={LOGIN}
-                render={(props) => {
-                    return !loggedIn ? (
-                        // @ts-ignore
-                        <LoginPage {...props} />
-                    ) : (
-                        <Redirect to={DASHBOARD} />
-                    );
+                render={() => {
+                    return !loggedIn ? <LoginPage /> : <Redirect to={DASHBOARD} />;
                 }}
             />
             <Route
