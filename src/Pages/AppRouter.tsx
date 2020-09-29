@@ -14,11 +14,9 @@ import '../assets/styles/App.scss';
 import { isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
 import { getIdentity } from '../redux/reducers/general.reducer';
 import { resolveTermsAgreement } from '../commons/terms';
-import ProtectedRoute from './ProtectedRoute';
 import { acceptTerms, authenticate, loading } from '../redux/actions/app';
 import { RootState, store } from '../redux/store';
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
-
 import {
     ERROR,
     HOME,
@@ -33,6 +31,7 @@ import {
 import { fetchIdentity } from '../redux/actions/general';
 import { tequilapiClient } from '../api/TequilApiClient';
 
+import ProtectedRoute from './ProtectedRoute';
 import LoginPage from './Login/LoginPage';
 import OnboardingPage from './Onboarding/OnboardingPage';
 import RestartNode from './Error/RestartNode';
@@ -68,10 +67,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 const updateTermsStore = async () => {
     const userConfig = await tequilapiClient.userConfig();
     const { at, version } = resolveTermsAgreement(userConfig.data);
-    store.dispatch(acceptTerms({
-        acceptedAt: at,
-        acceptedVersion: version,
-    }));
+    store.dispatch(
+        acceptTerms({
+            acceptedAt: at,
+            acceptedVersion: version,
+        })
+    );
 };
 
 const isUnauthenticatedDefaultPasswordFlow = async (onAuthentication: () => void) => {
@@ -84,16 +85,14 @@ const isUnauthenticatedDefaultPasswordFlow = async (onAuthentication: () => void
 
     await updateTermsStore();
 
-    store.dispatch(authenticate({
-        authenticated: true,
-        withDefaultCredentials: withDefaultCredentials,
-    }));
+    store.dispatch(
+        authenticate({
+            authenticated: true,
+            withDefaultCredentials: withDefaultCredentials,
+        })
+    );
 
-    try {
-        onAuthentication();
-    } catch (e) {
-
-    }
+    onAuthentication();
 
     store.dispatch(loading(false));
 };
@@ -103,15 +102,35 @@ const checkAuthenticatedFlow = async () => {
 
     await updateTermsStore();
 
-    store.dispatch(authenticate({
-        authenticated: true,
-        withDefaultCredentials: withDefaultCredentials,
-    }));
+    store.dispatch(
+        authenticate({
+            authenticated: true,
+            withDefaultCredentials: withDefaultCredentials,
+        })
+    );
 
     store.dispatch(loading(false));
 };
 
-const AppRouter = ({ loading, identity, loggedIn, needsOnboarding, needsPasswordChange, termsAccepted, fetchIdentity }: Props) => {
+const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element => {
+    if (needsOnboarding) {
+        return <Redirect to={ONBOARDING_HOME} />;
+    } else if (!loggedIn) {
+        return <Redirect to={LOGIN} />;
+    }
+
+    return <Redirect to={DASHBOARD} />;
+};
+
+const AppRouter = ({
+    loading,
+    identity,
+    loggedIn,
+    needsOnboarding,
+    needsPasswordChange,
+    termsAccepted,
+    fetchIdentity,
+}: Props) => {
     useLayoutEffect(() => {
         const doCheck = async () => {
             const isAuthenticated = await isUserAuthenticated();
@@ -129,44 +148,69 @@ const AppRouter = ({ loading, identity, loggedIn, needsOnboarding, needsPassword
     }, []);
 
     if (loading) {
-        return (<CircularProgress className="spinner" />);
-    }
-
-    let goTo = (<Redirect to={DASHBOARD} />);
-    if (needsOnboarding) {
-        goTo = <Redirect to={ONBOARDING_HOME} />;
-    } else if (!loggedIn) {
-        goTo = <Redirect to={LOGIN} />;
+        return <CircularProgress className="spinner" />;
     }
 
     return (
         <Switch>
             <Route exact path={HOME}>
-                {goTo}
+                {redirectTo(needsOnboarding, loggedIn)}
             </Route>
-            <Route exact path={LOGIN} render={(props) => {
-                return !loggedIn
-                    // @ts-ignore
-                    ? <LoginPage {...props} />
-                    : <Redirect to={DASHBOARD} />;
-            }
-            } />
-            <Route exact path={ONBOARDING_HOME} render={(props) => {
-                return needsOnboarding
-                    ? <OnboardingPage {...props}
-                                      identity={identity}
-                                      termsAccepted={termsAccepted}
-                                      needsPasswordChange={needsPasswordChange} />
-                    : <Redirect to={DASHBOARD} />;
-            }
-            } />
+            <Route
+                exact
+                path={LOGIN}
+                render={(props) => {
+                    return !loggedIn ? (
+                        // @ts-ignore
+                        <LoginPage {...props} />
+                    ) : (
+                        <Redirect to={DASHBOARD} />
+                    );
+                }}
+            />
+            <Route
+                exact
+                path={ONBOARDING_HOME}
+                render={(props) => {
+                    return needsOnboarding ? (
+                        <OnboardingPage
+                            {...props}
+                            identity={identity}
+                            termsAccepted={termsAccepted}
+                            needsPasswordChange={needsPasswordChange}
+                        />
+                    ) : (
+                        <Redirect to={DASHBOARD} />
+                    );
+                }}
+            />
             <Route exact path={ERROR} component={RestartNode} />
             <Route path={NOT_FOUND} component={PageNotFound} />
 
-            <ProtectedRoute path={DASHBOARD} needsOnboarding={needsOnboarding} loggedIn={loggedIn} component={AuthenticatedPage} />
-            <ProtectedRoute path={SESSIONS} needsOnboarding={needsOnboarding} loggedIn={loggedIn} component={AuthenticatedPage} />
-            <ProtectedRoute path={SETTINGS} needsOnboarding={needsOnboarding} loggedIn={loggedIn} component={AuthenticatedPage} />
-            <ProtectedRoute path={WALLET} needsOnboarding={needsOnboarding} loggedIn={loggedIn} component={AuthenticatedPage} />
+            <ProtectedRoute
+                path={DASHBOARD}
+                needsOnboarding={needsOnboarding}
+                loggedIn={loggedIn}
+                component={AuthenticatedPage}
+            />
+            <ProtectedRoute
+                path={SESSIONS}
+                needsOnboarding={needsOnboarding}
+                loggedIn={loggedIn}
+                component={AuthenticatedPage}
+            />
+            <ProtectedRoute
+                path={SETTINGS}
+                needsOnboarding={needsOnboarding}
+                loggedIn={loggedIn}
+                component={AuthenticatedPage}
+            />
+            <ProtectedRoute
+                path={WALLET}
+                needsOnboarding={needsOnboarding}
+                loggedIn={loggedIn}
+                component={AuthenticatedPage}
+            />
 
             <Redirect from="*" to={NOT_FOUND} />
         </Switch>
