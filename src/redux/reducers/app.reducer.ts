@@ -60,23 +60,23 @@ function appReducer(state: AppState = INITIAL_STATE, action: AppActionTypes): Ap
     }
 }
 
-function isLoggedIn(state: AppState): boolean {
+const isLoggedIn = (state: AppState): boolean => {
     return !!state.auth.authenticated;
-}
+};
 
-function needsPasswordChange(state: AppState): boolean {
+const needsPasswordChange = (state: AppState): boolean => {
     return !!state.auth.withDefaultCredentials;
-}
+};
 
-function termsAccepted(state: AppState): boolean {
+const termsAccepted = (state: AppState): boolean => {
     return areTermsAccepted(state.terms.acceptedAt, state.terms.acceptedVersion);
-}
+};
 
-function shouldBeOnboarded(state: AppState) {
+const shouldBeOnboarded = (state: AppState): boolean => {
     // TODO if !needsPasswordChange(state) then infinite loading
     // return !termsAccepted(state) || needsPasswordChange(state)
     return needsPasswordChange(state);
-}
+};
 
 export { isLoggedIn, needsPasswordChange, termsAccepted, shouldBeOnboarded };
 
