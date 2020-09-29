@@ -8,9 +8,9 @@ import React from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 import { TequilapiError } from 'mysterium-vpn-js';
-import { store } from '../../../redux/store';
-import { authenticate } from '../../../redux/actions/app';
 
+import { store } from '../../../redux/store';
+import { updateAuthenticatedStore } from '../../../redux/actions/app';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import '../../../assets/styles/pages/onboarding/steps/node-settings.scss';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
@@ -54,7 +54,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                 tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password),
             ])
                 .then(() => {
-                    store.dispatch(authenticate({ authenticated: true, withDefaultCredentials: false }));
+                    store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }));
                     callbacks.nextStep();
                 })
                 .catch((error) => {
@@ -115,9 +115,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                         stateName="apiToken"
                     />
                 </div>
-                <Button onClick={handleSubmitPassword}>
-                    Done
-                </Button>
+                <Button onClick={handleSubmitPassword}>Done</Button>
             </div>
         </div>
     );

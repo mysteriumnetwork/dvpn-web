@@ -8,7 +8,7 @@ import React, { FormEvent } from 'react';
 import Collapse from '@material-ui/core/Collapse';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import { authenticate } from '../../redux/actions/app';
+import { updateAuthenticatedStore } from '../../redux/actions/app';
 import { store } from '../../redux/store';
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/login/main.scss';
@@ -38,7 +38,9 @@ const LoginPage = () => {
         e.preventDefault();
         setState({ ...state, error: false, isLoading: true });
         loginAndStoreCurrentIdentity(DEFAULT_USERNAME, state.password)
-            .then(() => store.dispatch(authenticate({ authenticated: true, withDefaultCredentials: false })))
+            .then(() =>
+                store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
+            )
             .catch(() => setState({ ...state, error: true, isLoading: false }));
     };
     return (

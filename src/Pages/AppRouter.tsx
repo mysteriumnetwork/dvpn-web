@@ -11,11 +11,10 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import '../assets/styles/App.scss';
-import { isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
+import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
 import { getIdentity } from '../redux/reducers/general.reducer';
-import { resolveTermsAgreement } from '../commons/terms';
-import { acceptTerms, authenticate, updateLoading, updateTermsStoreAsync } from '../redux/actions/app';
-import { RootState, store } from '../redux/store';
+import { updateAuthenticatedStore, updateAuthFlowLoadingStore, updateTermsStoreAsync } from '../redux/actions/app';
+import { RootState } from '../redux/store';
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
 import {
     ERROR,
@@ -29,7 +28,6 @@ import {
     SETTINGS,
 } from '../constants/routes';
 import { fetchIdentity } from '../redux/actions/general';
-import { tequilapiClient } from '../api/TequilApiClient';
 
 import ProtectedRoute from './ProtectedRoute';
 import LoginPage from './Login/LoginPage';
@@ -45,8 +43,12 @@ interface Props {
     termsAccepted: boolean;
     needsPasswordChange: boolean;
     needsOnboarding: boolean;
-    fetchIdentity: () => void;
-    updateTermsStoreAsync: () => void;
+    actions: {
+        fetchIdentity: () => void;
+        updateTermsStoreAsync: () => void;
+        updateAuthenticatedStore: (auth: Auth) => void;
+        updateAuthFlowLoadingStore: (loading: boolean) => void;
+    };
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -61,8 +63,12 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
-        fetchIdentity: () => dispatch(fetchIdentity()),
-        updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
+        actions: {
+            fetchIdentity: () => dispatch(fetchIdentity()),
+            updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
+            updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
+            updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
+        },
     };
 };
 
@@ -83,56 +89,51 @@ const AppRouter = ({
     needsOnboarding,
     needsPasswordChange,
     termsAccepted,
-    fetchIdentity,
-    updateTermsStoreAsync,
+    actions,
 }: Props) => {
     const unAuthenticatedFlow = async (cb: () => void) => {
         const withDefaultCredentials = await loginWithDefaultCredentials();
 
         if (!withDefaultCredentials) {
-            store.dispatch(updateLoading(false));
+            actions.updateAuthFlowLoadingStore(false);
             return;
         }
 
-        await updateTermsStoreAsync();
+        await actions.updateTermsStoreAsync();
 
-        store.dispatch(
-            authenticate({
-                authenticated: true,
-                withDefaultCredentials: withDefaultCredentials,
-            })
-        );
+        actions.updateAuthenticatedStore({
+            authenticated: true,
+            withDefaultCredentials: withDefaultCredentials,
+        });
 
         cb();
-        store.dispatch(updateLoading(false));
+        actions.updateAuthFlowLoadingStore(false);
     };
 
     const authenticatedFlow = async () => {
         const withDefaultCredentials = await loginWithDefaultCredentials();
 
-        await updateTermsStoreAsync();
+        await actions.updateTermsStoreAsync();
 
-        store.dispatch(
-            authenticate({
-                authenticated: true,
-                withDefaultCredentials: withDefaultCredentials,
-            })
-        );
+        actions.updateAuthenticatedStore({
+            authenticated: true,
+            withDefaultCredentials: withDefaultCredentials,
+        });
 
-        store.dispatch(updateLoading(false));
+        actions.updateAuthFlowLoadingStore(false);
     };
 
     useLayoutEffect(() => {
         const blockingCheck = async () => {
             const authenticated = await isUserAuthenticated();
             if (!authenticated) {
-                await unAuthenticatedFlow(fetchIdentity);
+                await unAuthenticatedFlow(actions.fetchIdentity);
                 return;
             }
 
             await authenticatedFlow();
 
-            fetchIdentity();
+            actions.fetchIdentity();
         };
         blockingCheck();
     }, []);
