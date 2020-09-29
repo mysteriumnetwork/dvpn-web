@@ -4,10 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
-import { TequilapiError } from 'mysterium-vpn-js';
 
 import { store } from '../../../redux/store';
 import { updateAuthenticatedStore } from '../../../redux/actions/app';
@@ -18,6 +17,7 @@ import { validatePassword } from '../../../commons/ValidatePassword';
 import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
+import { parseMessage } from '../../../commons/error.utils';
 
 interface StateInterface {
     passwordRepeat: string;
@@ -26,6 +26,7 @@ interface StateInterface {
     checked: boolean;
     error: boolean;
     errorMessage: string;
+    nodeClaimed: boolean;
 }
 
 const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
@@ -36,7 +37,15 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
         checked: false,
         error: false,
         errorMessage: '',
+        nodeClaimed: false,
     });
+
+    useEffect(() => {
+        tequilapiClient.getMMNApiKey().then((resp) => {
+            setValues({ ...values, apiKey: resp.api_key });
+        });
+    }, []);
+
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setValues({ ...values, [prop]: event.target.value });
     };
@@ -45,28 +54,30 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
         setValues({ ...values, checked: event.target.checked });
     };
 
-    const handleSubmitPassword = () => {
+    const handleSubmitPassword = async () => {
         setValues({ ...values, error: false });
-        const isPasswordValid = validatePassword(values.password, values.passwordRepeat);
-        if (isPasswordValid.success) {
-            Promise.all([
-                values.checked ? tequilapiClient.setMMNApiKey(values.apiKey) : null,
-                tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password),
-            ])
-                .then(() => {
-                    store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }));
-                    callbacks.nextStep();
-                })
-                .catch((error) => {
-                    console.log(error);
-                    if (error instanceof TequilapiError) {
-                        const apiError = error as TequilapiError;
-                        setValues({ ...values, error: true, errorMessage: apiError.message });
-                    }
-                });
-        } else {
-            setValues({ ...values, error: true, errorMessage: isPasswordValid.errorMessage });
+
+        if (values.checked && !values.apiKey) {
+            setValues({ ...values, error: true, errorMessage: 'Please enter MMN ApiKey' });
+            return;
         }
+
+        const isPasswordValid = validatePassword(values.password, values.passwordRepeat);
+        if (!isPasswordValid.success) {
+            setValues({ ...values, error: true, errorMessage: isPasswordValid.errorMessage });
+            return;
+        }
+
+        (values.checked ? tequilapiClient.setMMNApiKey(values.apiKey) : Promise.resolve())
+            .then(() => tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, values.password))
+            .then(() =>
+                store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
+            )
+            .then(() => callbacks.nextStep())
+            .catch((error) => {
+                setValues({ ...values, error: true, errorMessage: parseMessage(error) || 'API Call failed.' });
+                console.log(error);
+            });
     };
 
     return (
@@ -101,7 +112,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                 <div className="claim-node-block">
                     <DefaultCheckbox
                         checked={values.checked}
-                        handleCheckboxChange={() => handleCheckboxChange}
+                        handleCheckboxChange={handleCheckboxChange}
                         label="Claim this node in my.mysterium.network"
                     />
                 </div>
