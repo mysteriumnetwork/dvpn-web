@@ -75,7 +75,7 @@ const updateTermsStore = async () => {
     );
 };
 
-const isUnauthenticatedDefaultPasswordFlow = async (onAuthentication: () => void) => {
+const unAuthenticatedFlow = async (cb: () => void) => {
     const withDefaultCredentials = await loginWithDefaultCredentials();
 
     if (!withDefaultCredentials) {
@@ -92,12 +92,11 @@ const isUnauthenticatedDefaultPasswordFlow = async (onAuthentication: () => void
         })
     );
 
-    onAuthentication();
-
+    cb();
     store.dispatch(loading(false));
 };
 
-const checkAuthenticatedFlow = async () => {
+const authenticatedFlow = async () => {
     const withDefaultCredentials = await loginWithDefaultCredentials();
 
     await updateTermsStore();
@@ -132,19 +131,18 @@ const AppRouter = ({
     fetchIdentity,
 }: Props) => {
     useLayoutEffect(() => {
-        const doCheck = async () => {
-            const isAuthenticated = await isUserAuthenticated();
-            if (!isAuthenticated) {
-                await isUnauthenticatedDefaultPasswordFlow(fetchIdentity);
-
+        const blockingCheck = async () => {
+            const authenticated = await isUserAuthenticated();
+            if (!authenticated) {
+                await unAuthenticatedFlow(fetchIdentity);
                 return;
             }
 
-            await checkAuthenticatedFlow();
+            await authenticatedFlow();
 
             fetchIdentity();
         };
-        doCheck();
+        blockingCheck();
     }, []);
 
     if (loading) {
