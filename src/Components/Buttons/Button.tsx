@@ -15,18 +15,12 @@ interface Props {
     children?: any;
     onClick?: MouseEventHandler;
     disabled?: boolean;
-    outlined?: boolean;
+    style?: 'outline' | 'filled' | 'gray';
     type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
-const Button = ({ isLoading, outlined, className, children, onClick, type, disabled }: Props): JSX.Element => {
-    let classNames = 'btn p-r-30 p-l-30 btn--center ' + className;
-
-    if(outlined) {
-        classNames += ' btn--outline'
-    } else {
-        classNames += ' btn--filled'
-    }
+const Button = ({ isLoading, style, className, children, onClick, type, disabled }: Props): JSX.Element => {
+    const classNames = `btn p-r-30 p-l-30 ${className || ''} btn--${style || 'filled'}`;
 
     return (
         <button disabled={disabled} type={type} onClick={onClick} className={classNames}>

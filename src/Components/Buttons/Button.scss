@@ -68,6 +68,17 @@
     }
   }
 
+  &--gray {
+    background: #F5F5FA;
+    color: #000000 !important;
+    &:hover {
+      background: #f8f8f8;
+    }
+    &:active {
+      background: #eee;
+    }
+  }
+
   &-text {
     font-weight: $medium-weight;
     font-style: normal;

@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import '../../../../assets/styles/pages/authenticated/pages/setings.scss';
 
 import { DefaultTextField } from '../../../../Components/DefaultTextField';
 
@@ -15,8 +14,8 @@ interface Props {
 
 const IdentityBackup = ({ identity }: Props): JSX.Element => {
     return (
-        <div>
-            <p className="text-field-label">Your identity</p>
+        <div className="input-group">
+            <div className="input-group__label">Your identity</div>
             <DefaultTextField stateName={'identity'} handleChange={() => {}} disabled={true} value={identity} />
         </div>
     );

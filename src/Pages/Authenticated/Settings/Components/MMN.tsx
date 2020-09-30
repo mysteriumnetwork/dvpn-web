@@ -11,7 +11,6 @@ import { TequilapiError } from 'mysterium-vpn-js';
 import Button from '../../../../Components/Buttons/Button';
 import Errors from '../../../../Components/Validation/Errors';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
-import '../../../../assets/styles/pages/authenticated/pages/setings.scss';
 import { DefaultTextField } from '../../../../Components/DefaultTextField';
 import { MMN_USER_PROFILE_URL } from '../../../../constants/urls';
 
@@ -71,14 +70,16 @@ const MMN = ({ apiKey }: Props) => {
         <div>
             <Errors error={values.error} errorMessage={values.errorMessage} />
 
-            <p className="text-field-label">API Key (get it {link})</p>
-            <DefaultTextField
-                stateName={'apiKey'}
-                id={'api_key'}
-                handleChange={handleTextFieldsChange}
-                value={values.apiKey}
-            />
-            <div className="m-t-15">
+            <div className="input-group">
+                <div className="input-group__label">API Key (get it {link})</div>
+                <DefaultTextField
+                    stateName={'apiKey'}
+                    id={'api_key'}
+                    handleChange={handleTextFieldsChange}
+                    value={values.apiKey}
+                />
+            </div>
+            <div className="footer__buttons m-t-40">
                 <Button onClick={handleSubmitToken}>Save</Button>
             </div>
         </div>

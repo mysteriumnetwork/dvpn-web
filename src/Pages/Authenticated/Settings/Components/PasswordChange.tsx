@@ -7,8 +7,6 @@ import Errors from '../../../../Components/Validation/Errors';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
 import { validatePassword } from '../../../../commons/ValidatePassword';
 import { DEFAULT_USERNAME } from '../../../../constants/defaults';
-import '../../../../assets/styles/pages/authenticated/pages/setings.scss';
-
 import { DefaultTextField } from '../../../../Components/DefaultTextField';
 
 interface StateInterface {
@@ -64,34 +62,39 @@ const PasswordChange: React.FC = () => {
         <div>
             <Errors error={values.error} errorMessage={values.errorMessage} />
 
-            <div className="password-input-block">
-                <p className="text-field-label">Current password</p>
+            <div className="input-group">
+                <div className="text-field-label">Current password</div>
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
+                    placeholder={"*********"}
                     value={values.currentPassword}
                     stateName="currentPassword"
                 />
             </div>
-            <div className="password-input-block">
-                <p className="text-field-label">New password</p>
+            <div className="input-group">
+                <div className="input-group__label">New password</div>
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
+                    placeholder={"*********"}
                     value={values.newPassword}
                     stateName="newPassword"
                 />
             </div>
-            <div className="password-repeat-input-block m-b-20">
-                <p className="text-field-label">Repeat password</p>
+            <div className="input-group">
+                <div className="input-group__label">Repeat password</div>
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
+                    placeholder={"*********"}
                     value={values.newPasswordConfirmation}
                     stateName="newPasswordConfirmation"
                 />
             </div>
-            <Button onClick={handleSubmitPassword}>Save</Button>
+            <div className="footer__buttons m-t-40">
+                <Button onClick={handleSubmitPassword}>Save</Button>
+            </div>
         </div>
     );
 };
