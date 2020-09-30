@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TequilapiError } from 'mysterium-vpn-js';
+import _ from 'lodash';
 
 export const parseError = (error: any): string | undefined => {
     if (error instanceof TequilapiError) {
@@ -25,8 +26,9 @@ export const parseMMNError = (error: any): string | undefined => {
     if (error instanceof TequilapiError) {
         const tqerr = error as TequilapiError;
         const errors = (tqerr.originalResponseData?.errors || {}) as MMNErrors;
-        return Object.keys(errors)
-            .map((k) => errors[k].map((e) => e.message).join(','))
-            .join(',');
+
+        const allErrors = Object.keys(errors).map((k) => _.head(errors[k]));
+        const firstError = _.head(allErrors);
+        return firstError ? firstError.message : 'Unknown API Error';
     }
 };
