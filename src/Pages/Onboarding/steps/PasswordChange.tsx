@@ -18,6 +18,7 @@ import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults'
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
 import { parseError, parseMMNError } from '../../../commons/error.utils';
+import { MMN_USER_PROFILE_URL } from '../../../constants/urls';
 
 interface StateInterface {
     passwordRepeat: string;
@@ -124,7 +125,11 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                 </div>
                 <div className="api-token-block">
                     <p className="text-field-label">
-                        API Token (get it <a href="https://my.mysterium.network/login">here</a>)
+                        API Token (get it{' '}
+                        <a href={MMN_USER_PROFILE_URL} target="_blank" rel="noopener noreferrer">
+                            here
+                        </a>
+                        )
                     </p>
                     <DefaultTextField handleChange={handleTextFieldsChange} value={state.apiKey} stateName="apiKey" />
                 </div>

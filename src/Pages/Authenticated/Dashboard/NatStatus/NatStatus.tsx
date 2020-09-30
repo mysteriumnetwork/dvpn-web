@@ -6,6 +6,8 @@
  */
 import React from 'react';
 
+import { NAT_FIX_URL } from '../../../../constants/urls';
+
 import Bubble from './Bubble';
 import { statusColor, statusText } from './nat-status.utils';
 import './NatStatus.scss';
@@ -21,7 +23,13 @@ const NatStatus = ({ status }: Props) => {
             <Bubble type={color} />
             <div className="nat-status__label">NAT status</div>
             <div className={'nat-status__state nat-status__state--' + color}>{statusText(status)}</div>
-            <div className="nat-status__help">{status !== 'successful' && <a href="#">How to fix this?</a>}</div>
+            <div className="nat-status__help">
+                {status !== 'successful' && (
+                    <a href={NAT_FIX_URL} target="_blank" rel="noopener noreferrer">
+                        How to fix this?
+                    </a>
+                )}
+            </div>
         </div>
     );
 };

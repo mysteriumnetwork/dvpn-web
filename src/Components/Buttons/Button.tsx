@@ -19,11 +19,13 @@ interface Props {
     type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
+const defaultClassName = 'btn p-r-15 p-l-15 btn--filled btn--center';
+
 const Button = ({ isLoading, className, children, onClick, type, disabled }: Props): JSX.Element => {
-    const classNames = 'btn p-r-15 p-l-15 btn--filled btn--center';
+    const compositeClassName = className ? `${defaultClassName} ${className}` : defaultClassName;
 
     return (
-        <MuiButton disabled={disabled} type={type} onClick={onClick} className={classNames}>
+        <MuiButton disabled={disabled || isLoading} type={type} onClick={onClick} className={compositeClassName}>
             {isLoading ? <CircularProgress className="btn-spinner" /> : children}
         </MuiButton>
     );

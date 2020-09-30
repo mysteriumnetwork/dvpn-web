@@ -1,0 +1,17 @@
+.report-issue {
+
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    display: flex;
+  }
+
+  &__flex-grow {
+    flex: 1;
+  }
+
+  &__footer {
+    margin-top: 12px;
+  }
+}

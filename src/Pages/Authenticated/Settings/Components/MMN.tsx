@@ -13,6 +13,7 @@ import Errors from '../../../../Components/Validation/Errors';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
 import '../../../../assets/styles/pages/authenticated/pages/setings.scss';
 import { DefaultTextField } from '../../../../Components/DefaultTextField';
+import { MMN_USER_PROFILE_URL } from '../../../../constants/urls';
 
 interface StateInterface {
     apiKey: string;
@@ -62,7 +63,7 @@ const MMN = ({ apiKey }: Props) => {
     };
 
     const link = (
-        <a rel="noopener noreferrer" href="https://betanet.mysterium.network/user/profile" target={'_blank'}>
+        <a href={MMN_USER_PROFILE_URL} target="_blank" rel="noopener noreferrer">
             here
         </a>
     );
