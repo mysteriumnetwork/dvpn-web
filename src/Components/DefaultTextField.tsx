@@ -14,6 +14,7 @@ interface Props {
     stateName: string;
     disabled?: boolean;
     id?: string;
+    placeholder?: string;
     defaultValue?: unknown;
     placeholder?: any;
     multiline?: boolean;
@@ -22,6 +23,7 @@ interface Props {
 
 export const DefaultTextField = ({
     id,
+    placeholder,
     password,
     handleChange,
     value,
@@ -37,6 +39,7 @@ export const DefaultTextField = ({
             id={id || 'field-' + stateName}
             type={password ? 'password' : 'text'}
             disabled={disabled}
+            placeholder={placeholder}
             onChange={handleChange(stateName)}
             value={value}
             defaultValue={defaultValue}

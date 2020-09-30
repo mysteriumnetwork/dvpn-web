@@ -12,7 +12,7 @@ import { useSnackbar } from 'notistack';
 
 import './ServiceSettingsModal.scss';
 
-import { DefaultSlider } from '../../../../Components/DefaultSlider';
+import Slider from '../../../../Components/Slider/Slider';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { ServiceType } from '../../../../commons';
 import Button from '../../../../Components/Buttons/Button';
@@ -73,8 +73,8 @@ const ServiceSettingsModal = ({
                     <div className="title">{serviceType} Settings</div>
                     <div className="settings-row">
                         <div className="settings-row--slider">
-                            <p>Price per minute</p>
-                            <DefaultSlider
+                            <Slider
+                                label="Price per minute"
                                 value={state.pricePerMinuteChosen}
                                 handleChange={(e, v) => {
                                     setState({ ...state, pricePerMinuteChosen: v });
@@ -90,8 +90,8 @@ const ServiceSettingsModal = ({
                             </div>
                         </div>
                         <div className="settings-row--slider">
-                            <p>Price per GB</p>
-                            <DefaultSlider
+                            <Slider
+                                label="Price per GB"
                                 value={state.pricePerGbChosen}
                                 handleChange={(e, v) => {
                                     setState({ ...state, pricePerGbChosen: v });

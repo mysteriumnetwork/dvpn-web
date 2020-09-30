@@ -7,8 +7,7 @@
 import React from 'react';
 
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
-import { DefaultSlider } from '../../../Components/DefaultSlider';
-import '../../../assets/styles/pages/onboarding/steps/service-settings.scss';
+import Slider from '../../../Components/Slider/Slider';
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper';
 import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../constants/defaults';
 import Button from '../../../Components/Buttons/Button';
@@ -53,15 +52,16 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
     };
 
     return (
-        <div className="step-block service-settings">
-            <h1 className="step-block--heading">Service price settings</h1>
-            <p className="step-block--heading-paragraph">
+        <div className="step">
+            <h1 className="step__title">Service price settings</h1>
+            <p className="step__description">
                 Fill in the following information to start running a VPN service.
             </p>
-            <div className="step-block-content">
-                <div className="slider-block per-minute">
-                    <p>Price per minute</p>
-                    <DefaultSlider
+            <div className="step__content m-t-100">
+                <div className="input-group m-t-10">
+                    <Slider
+                        myst={true}
+                        label="Price per minute"
                         value={values.pricePerMinute}
                         handleChange={handlePricePerMinuteChanged}
                         step={0.001}
@@ -70,9 +70,10 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
                         disabled={values.checked}
                     />
                 </div>
-                <div className="slider-block per-gb">
-                    <p>Price per GB</p>
-                    <DefaultSlider
+                <div className="input-group m-t-40">
+                    <Slider
+                        myst={true}
+                        label="Price per GB"
                         value={values.pricePerGb}
                         handleChange={handlePricePerGbChanged}
                         step={0.001}
@@ -81,14 +82,18 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
                         disabled={values.checked}
                     />
                 </div>
-                <DefaultCheckbox
-                    checked={values.checked}
-                    handleCheckboxChange={handleCheckboxChange}
-                    label="Use default pricing"
-                />
-                <Button onClick={handleSettingSetup}>
-                    Next
-                </Button>
+                <div className="input-group m-t-50 m-b-50">
+                    <DefaultCheckbox
+                        checked={values.checked}
+                        handleCheckboxChange={handleCheckboxChange}
+                        label="Use default pricing"
+                    />
+                </div>
+                <div className="step__content-buttons step__content-buttons--center">
+                    <Button onClick={handleSettingSetup}>
+                        Next
+                    </Button>
+                </div>
             </div>
         </div>
     );

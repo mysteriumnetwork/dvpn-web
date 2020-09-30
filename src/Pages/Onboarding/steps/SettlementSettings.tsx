@@ -11,8 +11,7 @@ import Collapse from '@material-ui/core/Collapse';
 import WAValidator from 'wallet-address-validator';
 
 import { DefaultTextField } from '../../../Components/DefaultTextField';
-import '../../../assets/styles/pages/onboarding/steps/payout-settings.scss';
-import { DefaultSlider } from '../../../Components/DefaultSlider';
+import Slider from '../../../Components/Slider/Slider';
 import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
@@ -25,7 +24,7 @@ interface StateInterface {
 
 const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
     const [thisState, setValues] = useState<StateInterface>({
-        walletAddress: '0x...',
+        walletAddress: '',
         stake: DEFAULT_STAKE_AMOUNT,
         errors: [],
     });
@@ -73,10 +72,10 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
     };
 
     return (
-        <div className="step-block payout-settings">
-            <h1 className="step-block--heading">Payout settings</h1>
-            <p className="step-block--heading-paragraph">Fill in the following information to receive payments.</p>
-            <div className="step-block-content">
+        <div className="step">
+            <h1 className="step__title">Payout settings</h1>
+            <p className="step__description">Fill in the following information to receive payments.</p>
+            <div className="step__content m-t-100">
                 <Collapse in={thisState.errors.length > 0}>
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>
@@ -85,37 +84,36 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                         ))}
                     </Alert>
                 </Collapse>
-                <div className="wallet-input-block">
-                    <p className="text-field-label top">Ethereum wallet address</p>
+                <div className="input-group">
+                    <p className="input-group__label">Ethereum wallet address</p>
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
                         value={thisState.walletAddress}
+                        placeholder={"0x..."}
                         stateName="walletAddress"
                     />
-                    <p className="text-field-label bottom">Fill in the following information to receive payments.</p>
+                    <p className="input-group__help">Fill in the following information to receive payments.</p>
                 </div>
-                <div className="wallet-stake-block">
-                    <p className="wallet-stack-info-p top">Set your stake amount, MYSTT</p>
-                    <div className="slider-block">
-                        <p>Stake amount</p>
-                        <DefaultSlider
-                            value={thisState.stake}
-                            handleChange={handlePricePerGbChanged}
-                            step={1}
-                            min={0}
-                            max={50}
-                            mystSlider={true}
-                        />
-                    </div>
-                    <p className="wallet-stack-info-p bottom">
-                        In terms to start providing services and ensure smoth and secure payouts (settlements) in
-                        Mysterium Network, node runners should stake small amounts of tokens. If you choose default
-                        option, initial stake will be 0 and will be increased until minimal amount of 10MYST by taking
-                        10% during each promise settlement (payout).{' '}
+                <div className="input-group m-t-50">
+                    <p className="input-group__label m-b-15">Set your stake amount</p>
+                    <Slider
+                        label="Stake amount"
+                        value={thisState.stake}
+                        handleChange={handlePricePerGbChanged}
+                        step={1}
+                        min={0}
+                        max={50}
+                        myst={true}
+                    />
+                    <p className="input-group__help">
+                        To start providing services and ensure smooth and secure payouts (settlements) in
+                        Mysterium Network, node runners should stake a small amount of tokens. If you choose the default
+                        option, the initial stake amount will be set to 0 and it will be automatically increased up to 10 MYST by
+                        taking 10% of earnings during each promise settlement (payout).
                     </p>
                 </div>
-                <div className="buttons-block">
-                    <Button onClick={callbacks.nextStep}>Setup Later</Button>
+                <div className="step__content-buttons m-t-50">
+                    <Button onClick={callbacks.nextStep} outlined={true}>Setup Later</Button>
                     <Button onClick={handleDone} isLoading={isLoading}>
                         Next
                     </Button>

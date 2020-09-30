@@ -5,13 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect } from 'react';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import Collapse from '@material-ui/core/Collapse';
+import Errors from '../../../Components/Validation/Errors';
 
 import { store } from '../../../redux/store';
 import { updateAuthenticatedStore } from '../../../redux/actions/app';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
-import '../../../assets/styles/pages/onboarding/steps/node-settings.scss';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import { validatePassword } from '../../../commons/ValidatePassword';
 import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults';
@@ -88,52 +86,60 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
     };
 
     return (
-        <div className="step-block node-settings">
-            <h1 className="step-block--heading">Node settings</h1>
-            <p className="step-block--heading-paragraph">Fill in the following information to setup your node.</p>
-            <div className="step-block-content">
-                <Collapse in={state.error}>
-                    <Alert severity="error">
-                        <AlertTitle>Error</AlertTitle>
-                        {state.errorMessage}
-                    </Alert>
-                </Collapse>
-                <div className="password-input-block">
-                    <p className="text-field-label">Web UI password</p>
+        <div className="step">
+            <h1 className="step__title">Node settings</h1>
+            <p className="step__description">Fill in the following information to setup your node.</p>
+            <div className="step__content m-t-100">
+                <Errors error={state.error} errorMessage={state.errorMessage} />
+                <div className="input-group">
+                    <p className="input-group__label">Web UI password</p>
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
                         password={true}
+                        placeholder={"*********"}
                         value={state.password}
                         stateName="password"
                     />
                 </div>
-                <div className="password-repeat-input-block">
-                    <p className="text-field-label">Repeat password</p>
+                <div className="input-group">
+                    <p className="input-group__label">Repeat password</p>
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
                         password={true}
+                        placeholder={"*********"}
                         value={state.passwordRepeat}
                         stateName="passwordRepeat"
                     />
                 </div>
-                <div className="claim-node-block">
+                <div className="input-group m-t-50 m-b-20">
                     <DefaultCheckbox
                         checked={state.checked}
                         handleCheckboxChange={handleCheckboxChange}
                         label="Claim this node in my.mysterium.network"
                     />
                 </div>
-                <div className="api-token-block">
-                    <p className="text-field-label">
-                        API Token (get it{' '}
-                        <a href={MMN_USER_PROFILE_URL} target="_blank" rel="noopener noreferrer">
-                            here
-                        </a>
-                        )
-                    </p>
-                    <DefaultTextField handleChange={handleTextFieldsChange} value={state.apiKey} stateName="apiKey" />
+                {
+                    state.checked ?
+                    <div className="input-group m-t-20">
+                        <p className="input-group__label">
+                            API Token (
+                            <a href={MMN_USER_PROFILE_URL} target="_blank" rel="noopener noreferrer">
+                                Get it here
+                            </a>
+                            )
+                        </p>
+                        <DefaultTextField
+                            handleChange={handleTextFieldsChange}
+                            value={state.apiKey}
+                            placeholder={"Your API token"}
+                            stateName="apiKey"
+                        />
+                    </div>
+                    : null
+                }
+                <div className="step__content-buttons step__content-buttons--center m-t-30">
+                    <Button onClick={handleSubmitPassword}>Save & Continue</Button>
                 </div>
-                <Button onClick={handleSubmitPassword}>Done</Button>
             </div>
         </div>
     );
