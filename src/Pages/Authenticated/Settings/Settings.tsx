@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack';
 
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Header from '../../../Components/Header';
-import { GeneralState } from '../../../redux/actions/general';
+import { AppState } from '../../../redux/reducers/app.reducer';
 import { RootState } from '../../../redux/store';
 import '../../../assets/styles/pages/authenticated/pages/setings.scss';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg';
@@ -25,19 +25,19 @@ interface StateInterface {
 }
 
 interface Props {
-    general: GeneralState;
+    app: AppState;
 }
 
 const mapStateToProps = (state: RootState) => ({
-    general: state.general,
+    app: state.app,
 });
 
-const Settings = ({ general }: Props): JSX.Element => {
+const Settings = ({ app }: Props): JSX.Element => {
     const [state, setState] = React.useState<StateInterface>({
         apiKey: '',
     });
 
-    const { currentIdentity } = general;
+    const { currentIdentity } = app;
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
         tequilapiClient

@@ -11,7 +11,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { ServiceType } from '../commons';
 import { store } from '../redux/store';
 import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults';
-import { IDENTITY_FETCH_FULFILLED } from '../redux/actions/general';
+import { IDENTITY_FETCH_FULFILLED } from '../redux/actions/app';
 
 import { tequilapiClient } from './TequilApiClient';
 
@@ -88,7 +88,7 @@ export const setTrafficShaping = async (enabled: boolean): Promise<Config> => {
 export const setServicePrice = async (
     pricePerMinute: number,
     pricePerGb: number,
-    service: ServiceType,
+    service: ServiceType
 ): Promise<Config> => {
     const configServiceName = service === ServiceType.OPENVPN ? 'openvpn' : 'wireguard';
     return await tequilapiClient.updateUserConfig({

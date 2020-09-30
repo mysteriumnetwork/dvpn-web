@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core';
-import { AppState, Identity, SSEEventType } from 'mysterium-vpn-js';
+import { AppState, Identity } from 'mysterium-vpn-js';
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,7 +15,6 @@ import { sseAppStateStateChanged } from '../redux/actions/sse';
 import ConnectToSSE from '../sse/server-sent-events';
 import ServerSentEvents from '../sse/server-sent-events';
 import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
-import { getIdentity } from '../redux/reducers/general.reducer';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore, updateTermsStoreAsync } from '../redux/actions/app';
 import { RootState } from '../redux/store';
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
@@ -30,7 +29,7 @@ import {
     WALLET,
     SETTINGS,
 } from '../constants/routes';
-import { fetchIdentity } from '../redux/actions/general';
+import { fetchIdentityAsync } from '../redux/actions/app';
 
 import ProtectedRoute from './ProtectedRoute';
 import LoginPage from './Login/LoginPage';
@@ -47,7 +46,7 @@ interface Props {
     needsPasswordChange: boolean;
     needsOnboarding: boolean;
     actions: {
-        fetchIdentity: () => void;
+        fetchIdentityAsync: () => void;
         updateTermsStoreAsync: () => void;
         updateAuthenticatedStore: (auth: Auth) => void;
         updateAuthFlowLoadingStore: (loading: boolean) => void;
@@ -57,7 +56,7 @@ interface Props {
 
 const mapStateToProps = (state: RootState) => ({
     loading: state.app.loading,
-    identity: getIdentity(state.general),
+    identity: state.app.currentIdentity,
 
     loggedIn: isLoggedIn(state.app),
     termsAccepted: termsAccepted(state.app),
@@ -68,7 +67,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
         actions: {
-            fetchIdentity: () => dispatch(fetchIdentity()),
+            fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
             updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
             updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
             updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
@@ -88,13 +87,13 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
 };
 
 const AppRouter = ({
-   loading,
-   identity,
-   loggedIn,
-   needsOnboarding,
-   needsPasswordChange,
-   termsAccepted,
-   actions,
+    loading,
+    identity,
+    loggedIn,
+    needsOnboarding,
+    needsPasswordChange,
+    termsAccepted,
+    actions,
 }: Props) => {
     const authenticatedFlow = async () => {
         actions.updateAuthenticatedStore({
@@ -103,7 +102,7 @@ const AppRouter = ({
         });
         await actions.updateTermsStoreAsync();
         actions.updateAuthFlowLoadingStore(false);
-        actions.fetchIdentity();
+        actions.fetchIdentityAsync();
     };
 
     useLayoutEffect(() => {
@@ -124,7 +123,7 @@ const AppRouter = ({
             return;
         }
 
-        ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state))
+        ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state));
     }, [loggedIn]);
 
     if (loading) {
