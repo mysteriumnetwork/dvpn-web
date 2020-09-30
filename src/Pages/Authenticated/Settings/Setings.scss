@@ -1,0 +1,31 @@
+@import '../../../assets/styles/base/variables';
+
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  &__block {
+    min-width: 30%;
+
+    .heading {
+      color: $main-text-color;
+      font-weight: $medium-weight;
+      font-style: normal;
+      font-size: 18px;
+      line-height: 32px;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 30px 35px 40px 35px;
+    }
+  }
+}
+
+.footer__buttons {
+  display: flex;
+  justify-content: flex-end;
+}

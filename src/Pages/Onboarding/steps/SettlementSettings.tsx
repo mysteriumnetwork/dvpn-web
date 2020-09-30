@@ -113,7 +113,7 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                     </p>
                 </div>
                 <div className="step__content-buttons m-t-50">
-                    <Button onClick={callbacks.nextStep} outlined={true}>Setup Later</Button>
+                    <Button onClick={callbacks.nextStep} style="outline">Setup Later</Button>
                     <Button onClick={handleDone} isLoading={isLoading}>
                         Next
                     </Button>

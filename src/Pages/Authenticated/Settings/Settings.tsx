@@ -12,13 +12,14 @@ import { tequilapiClient } from '../../../api/TequilApiClient';
 import Header from '../../../Components/Header';
 import { GeneralState } from '../../../redux/actions/general';
 import { RootState } from '../../../redux/store';
-import '../../../assets/styles/pages/authenticated/pages/setings.scss';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg';
 import { parseMMNError } from '../../../commons/error.utils';
 
 import MMN from './Components/MMN';
 import PasswordChange from './Components/PasswordChange';
 import IdentityBackup from './Components/IdentityBackup';
+
+import './Setings.scss';
 
 interface StateInterface {
     apiKey: string;
@@ -50,25 +51,25 @@ const Settings = ({ general }: Props): JSX.Element => {
     }, []);
 
     return (
-        <div className="settings wrapper">
-            <div className="settings--content">
+        <div className="main">
+            <div className="main-block">
                 <Header logo={Logo} name="Settings" />
-                <div className="settings--blocks">
-                    <div className="settings--block identity">
+                <div className="settings">
+                    <div className="settings__block">
                         <p className="heading">Identity</p>
                         <div className="content">
                             <IdentityBackup identity={currentIdentity?.id || ''} />
                         </div>
                     </div>
 
-                    <div className="settings--block identity">
+                    <div className="settings__block">
                         <p className="heading">WebUI security</p>
                         <div className="content">
                             <PasswordChange />
                         </div>
                     </div>
 
-                    <div className="settings--block identity">
+                    <div className="settings__block">
                         <p className="heading">MMN integration</p>
                         <div className="content">
                             <MMN apiKey={state.apiKey} />

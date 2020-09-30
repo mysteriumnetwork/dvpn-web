@@ -126,7 +126,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
             </div>
 
             <div className="service__options">
-                <Button onClick={openSettings} className="button">
+                <Button onClick={openSettings} style="gray">
                     Settings
                 </Button>
             </div>
