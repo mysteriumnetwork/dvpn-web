@@ -20,13 +20,14 @@ export const DefaultCheckbox = ({ checked, handleCheckboxChange, label }: Props)
     return (
         <div className="checkbox-block">
             <Checkbox
+                id={"checkbox-" + label}
                 checked={checked}
                 onChange={handleCheckboxChange}
                 color="primary"
                 className="default-checkbox"
                 icon={<CustomUncheckedIcon />}
             />
-            <p>{label}</p>
+            <label htmlFor={"checkbox-" + label}>{label}</label>
         </div>
     );
 };

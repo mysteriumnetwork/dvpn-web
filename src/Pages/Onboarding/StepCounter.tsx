@@ -6,8 +6,6 @@
  */
 import React, { ReactElement } from 'react';
 
-import '../../assets/styles/pages/onboarding/steps/welcome.scss';
-
 interface Props {
     currentStep: number;
     totalStepCount: number;
@@ -16,13 +14,17 @@ interface Props {
 const generateSteps = (currentStep: number, totalStepCount: number): ReactElement[] => {
     const steps: ReactElement[] = [];
     for (let i = 0; i < totalStepCount; i++) {
-        steps.push(<div key={i} className={'steps-counter--circle ' + (currentStep >= i ? 'active' : '')}></div>);
+        steps.push(<div key={i} className={'circle ' + (currentStep >= i ? 'circle--active' : '')}></div>);
     }
     return steps;
 };
 
 const StepCounter = ({ currentStep, totalStepCount }: Props): JSX.Element => {
-    return <div className="steps-counter">{generateSteps(currentStep, totalStepCount)}</div>;
+    return (
+        <div className="steps__counter">
+            {generateSteps(currentStep, totalStepCount)}
+        </div>
+    );
 };
 
 export default StepCounter;

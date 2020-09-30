@@ -9,7 +9,7 @@ import { Fade, Modal } from '@material-ui/core';
 
 import './WalletModel.scss';
 
-import { DefaultSlider } from '../../../Components/DefaultSlider';
+import Slider from '../../../Components/Slider/Slider';
 import Button from '../../../Components/Buttons/Button';
 
 interface Props {
@@ -43,8 +43,8 @@ const WalletModal = ({ onClose, isOpen }: Props): JSX.Element => {
                     <div className="title">Update stake goal</div>
                     <div className="settings">
                         <div className="settings--slider">
-                            <p>Price per minute</p>
-                            <DefaultSlider
+                            <Slider
+                                label="Price per minute"
                                 value={state.stake}
                                 handleChange={(e, v) => {
                                     setState({ ...state, stake: v });

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core';
-import { AppState, Identity, SSEEventType } from 'mysterium-vpn-js';
+import { AppState, Identity } from 'mysterium-vpn-js';
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import '../assets/styles/App.scss';
 import { sseAppStateStateChanged } from '../redux/actions/sse';
 import ConnectToSSE from '../sse/server-sent-events';
-import ServerSentEvents from '../sse/server-sent-events';
 import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
 import { getIdentity } from '../redux/reducers/general.reducer';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore, updateTermsStoreAsync } from '../redux/actions/app';

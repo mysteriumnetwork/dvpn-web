@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-
-import '../../../assets/styles/pages/onboarding/steps/welcome.scss';
 import Button from '../../../Components/Buttons/Button';
 
 const Welcome = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
     return (
-        <div className="step-block welcome">
-            <h1 className="step-block--heading">Welcome node runner!</h1>
-            <p className="step-block--heading-paragraph">Lets get you up and running. </p>
-            <div className="step-block-content">
-                <Button onClick={callbacks.nextStep}>Start node setup</Button>
+        <div className="step">
+            <h1 className="step__title">Welcome node runner!</h1>
+            <p className="step__description">Lets get you up and running. </p>
+            <div className="step__content m-t-100">
+                <div className="step__content-buttons">
+                    <Button onClick={callbacks.nextStep}>Start node setup</Button>
+                </div>
             </div>
         </div>
     );

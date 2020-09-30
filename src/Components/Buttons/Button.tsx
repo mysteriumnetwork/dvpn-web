@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { MouseEventHandler } from 'react';
-import { Button as MuiButton } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './Button.scss';
@@ -16,18 +15,23 @@ interface Props {
     children?: any;
     onClick?: MouseEventHandler;
     disabled?: boolean;
+    outlined?: boolean;
     type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
-const defaultClassName = 'btn p-r-15 p-l-15 btn--filled btn--center';
+const Button = ({ isLoading, outlined, className, children, onClick, type, disabled }: Props): JSX.Element => {
+    let classNames = 'btn p-r-30 p-l-30 btn--center ' + className;
 
-const Button = ({ isLoading, className, children, onClick, type, disabled }: Props): JSX.Element => {
-    const compositeClassName = className ? `${defaultClassName} ${className}` : defaultClassName;
+    if(outlined) {
+        classNames += ' btn--outline'
+    } else {
+        classNames += ' btn--filled'
+    }
 
     return (
-        <MuiButton disabled={disabled || isLoading} type={type} onClick={onClick} className={compositeClassName}>
+        <button disabled={disabled} type={type} onClick={onClick} className={classNames}>
             {isLoading ? <CircularProgress className="btn-spinner" /> : children}
-        </MuiButton>
+        </button>
     );
 };
 

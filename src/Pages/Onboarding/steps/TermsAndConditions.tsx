@@ -11,8 +11,8 @@ import showdown from 'showdown';
 import { TermsEndUser } from '@mysteriumnetwork/terms';
 
 import { acceptWithTermsAndConditions } from '../../../api/TequilAPIWrapper';
-import '../../../assets/styles/pages/onboarding/steps/terms-and-condions.scss';
 import Button from '../../../Components/Buttons/Button';
+import "./TermsAndConditions.scss"
 
 const md = new showdown.Converter();
 
@@ -23,17 +23,21 @@ const TermsAndConditions = ({ callbacks }: { callbacks: OnboardingChildProps }):
 
     const termsHtml = md.makeHtml(TermsEndUser);
     return (
-        <div className="step-block term-and-conditions">
-            <h1 className="step-block--heading">Terms & Conditions</h1>
-            <div className="step-block-content">
-                <div className="terms-and-conditions">{ReactHtmlParser(termsHtml)}</div>
-                <Button
-                    onClick={() => {
-                        agree();
-                    }}
-                >
-                    I accept
-                </Button>
+        <div className="step">
+            <h1 className="step__title m-b-30">Terms & Conditions</h1>
+            <div className="step__content">
+                <div className="terms-and-conditions">
+                    {ReactHtmlParser(termsHtml)}
+                </div>
+                <div className="step__content-buttons step__content-buttons--center m-t-50">
+                    <Button
+                        onClick={() => {
+                            agree();
+                        }}
+                    >
+                        I accept
+                    </Button>
+                </div>
             </div>
         </div>
     );
