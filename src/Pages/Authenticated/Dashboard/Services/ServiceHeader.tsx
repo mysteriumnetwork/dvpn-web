@@ -16,6 +16,11 @@ const icons = {
     [ServiceType.WIREGUARD]: <WireGuardIcon />,
 };
 
+const displayName = {
+    [ServiceType.OPENVPN]: 'OpenVPN',
+    [ServiceType.WIREGUARD]: 'WG',
+};
+
 interface Props {
     type: ServiceType;
     running: boolean;
@@ -29,7 +34,7 @@ const ServiceHeader = ({ type, running }: Props): JSX.Element => {
                 <div className={running ? 'status-dot on' : 'status-dot off'} />
             </div>
             <div className="service-header__name">
-                <p className="name">{type}</p>
+                <p className="name">{displayName[type]}</p>
                 <p className="type">VPN</p>
             </div>
         </div>

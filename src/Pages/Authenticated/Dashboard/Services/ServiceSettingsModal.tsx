@@ -17,7 +17,7 @@ import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import { ServiceType } from '../../../../commons';
 import Button from '../../../../Components/Buttons/Button';
 import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../api/TequilAPIWrapper';
-import { parseMessage } from '../../../../commons/error.utils';
+import { parseError } from '../../../../commons/error.utils';
 
 interface Props {
     isOpen: boolean;
@@ -155,7 +155,7 @@ const ServiceSettingsModal = ({
                                     )
                                     .then(() => onClose())
                                     .catch((err) => {
-                                        enqueueSnackbar(parseMessage(err), { variant: 'error' });
+                                        enqueueSnackbar(parseError(err), { variant: 'error' });
                                         console.log(err);
                                     })
                                     .finally(() => {

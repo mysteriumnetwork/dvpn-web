@@ -35,7 +35,17 @@ interface Props {
     onPageClick: (event: React.ChangeEvent<unknown>, page: number) => void;
 }
 
-const header = (h: TableHeader) => <div className={'cell ' + h.className || ''}>{h.name}</div>;
+const header = (h: TableHeader, idx: number) => (
+    <div key={idx} className={'cell ' + h.className || ''}>
+        {h.name}
+    </div>
+);
+
+const noData = (
+    <div className="empty">
+        <div className="no-data">No Data</div>
+    </div>
+);
 
 const Table = ({
     headers,
@@ -46,20 +56,23 @@ const Table = ({
     handlePrevPageButtonClick,
     handleNextPageButtonClick,
 }: Props): JSX.Element => {
-    return (
-        <div className="table">
-            <div className="table__header">{headers.map(header)}</div>
-            <div className="table__body">
-                {rows.map((row) => {
+    const mappedRows = rows.map((row) => {
+        return (
+            <div className="row" key={row.key}>
+                {row.cells.map((cell, idx) => {
                     return (
-                        <div className="row" key={row.key}>
-                            {row.cells.map((cell) => {
-                                return <div className={'cell ' + cell.className || ''}>{cell.content}</div>;
-                            })}
+                        <div key={idx} className={'cell ' + cell.className || ''}>
+                            {cell.content}
                         </div>
                     );
                 })}
             </div>
+        );
+    });
+    return (
+        <div className="table">
+            <div className="table__header">{headers.map(header)}</div>
+            <div className="table__body">{mappedRows.length ? mappedRows : noData}</div>
             <div className="table__footer">
                 <Button
                     disabled={currentPage === 1}

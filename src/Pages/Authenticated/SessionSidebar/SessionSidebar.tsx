@@ -18,7 +18,7 @@ import { displayMyst } from '../../../commons/money.utils';
 import { SESSIONS } from '../../../constants/routes';
 import { RootState } from '../../../redux/store';
 import { tequilapiClient } from '../../../api/TequilApiClient';
-import { parseMessage } from '../../../commons/error.utils';
+import { parseError } from '../../../commons/error.utils';
 
 import SessionCard from './SessionCard';
 
@@ -76,7 +76,7 @@ const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liv
                 .sessions({ pageSize: 10 })
                 .then((resp) => setState({ ...state, historySessions: resp.items }))
                 .catch((err) => {
-                    enqueueSnackbar(parseMessage(err) || 'Fetching Sessions Failed!');
+                    enqueueSnackbar(parseError(err) || 'Fetching Sessions Failed!');
                     console.log(err);
                 });
         }

@@ -83,7 +83,7 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
                 </div>
                 <DefaultCheckbox
                     checked={values.checked}
-                    handleCheckboxChange={() => handleCheckboxChange}
+                    handleCheckboxChange={handleCheckboxChange}
                     label="Use default pricing"
                 />
                 <Button onClick={handleSettingSetup}>
