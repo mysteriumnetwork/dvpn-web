@@ -15,6 +15,9 @@ interface Props {
     disabled?: boolean;
     id?: string;
     defaultValue?: unknown;
+    placeholder?: any;
+    multiline?: boolean;
+    rows?: number;
 }
 
 export const DefaultTextField = ({
@@ -25,6 +28,9 @@ export const DefaultTextField = ({
     disabled,
     defaultValue,
     stateName,
+    placeholder,
+    multiline,
+    rows = 1,
 }: Props): JSX.Element => {
     return (
         <TextField
@@ -34,7 +40,10 @@ export const DefaultTextField = ({
             onChange={handleChange(stateName)}
             value={value}
             defaultValue={defaultValue}
+            placeholder={placeholder}
+            rows={rows}
             className="default-text-field"
+            multiline={multiline}
         />
     );
 };

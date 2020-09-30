@@ -17,8 +17,8 @@ import { ReactComponent as Settings } from '../../../assets/images/authenticated
 import { ReactComponent as SettingsActive } from '../../../assets/images/authenticated/components/navigation/SettingsActive.svg';
 import { ReactComponent as Wallet } from '../../../assets/images/authenticated/components/navigation/Wallet.svg';
 import { ReactComponent as WalletActive } from '../../../assets/images/authenticated/components/navigation/WalletActive.svg';
-import { ReactComponent as Chat } from '../../../assets/images/authenticated/components/navigation/Chat.svg';
 import { DASHBOARD, SESSIONS, SETTINGS, WALLET } from '../../../constants/routes';
+import ReportIssue from '../../../Components/ReportIssues/ReportIssue';
 
 type Props = RouteComponentProps<any, any, any>;
 
@@ -44,7 +44,7 @@ const Navigation = ({ location }: Props): JSX.Element => {
             </NavLink>
             <div className="navigation--flex-gow" />
             <div className="navigation--chat">
-                <Chat />
+                <ReportIssue />
             </div>
         </div>
     );
