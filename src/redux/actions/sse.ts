@@ -6,15 +6,6 @@
  */
 import { AppState, SSEEventType } from 'mysterium-vpn-js';
 
-export interface SessionsStats {
-    count: number;
-    countConsumers: number;
-    sumBytesReceived: number;
-    sumBytesSent: number;
-    sumDuration: number;
-    sumTokens: number;
-}
-
 export interface SSEState {
     appState?: AppState;
 }
