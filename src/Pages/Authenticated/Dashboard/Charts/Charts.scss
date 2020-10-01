@@ -1,38 +1,53 @@
 @import '../../../../assets/styles/base/variables';
 
 // graph block
-.dashboard--earnings-graph {
+.chart {
   width: 100%;
   background: #FFFFFF;
   border: 1px solid #ECECF2;
   border-radius: 12px;
   padding-top: 14px;
 
-  .control-row {
+  &__header {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-right: 15px;
-    padding-bottom: 10px;
+    justify-content: space-between;
 
-    .control-btn {
-      margin-left: 20px;
+    &-title {
       font-family: Lato;
       font-style: normal;
       font-weight: $normal-weight;
-      font-size: 14px;
-      line-height: 17px;
-      color: $names-text-color;
-      padding: 10px 8px;
-      color: #9A9A9A;
-      cursor: pointer;
+      font-size: 18px;
+      padding-left: 20px;
+      padding-top: 8px;
     }
 
-    .control-btn.active {
-      border: 1px solid #ECECF2;
-      box-sizing: border-box;
-      border-radius: 8px;
-      color: $main-text-color;
+    &-buttons {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-right: 15px;
+      padding-bottom: 10px;
+
+      .control-btn {
+        margin-left: 20px;
+        font-family: Lato;
+        font-style: normal;
+        font-weight: $normal-weight;
+        font-size: 14px;
+        line-height: 17px;
+        color: $names-text-color;
+        padding: 10px 8px;
+        color: #9A9A9A;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+
+      .control-btn.active {
+        border: 1px solid #ECECF2;
+        box-sizing: border-box;
+        border-radius: 8px;
+        color: $main-text-color;
+      }
     }
   }
 
@@ -58,7 +73,7 @@
     }
 
     .recharts-curve.recharts-line-curve {
-      stroke-width: 4px;
+      stroke-width: 2px;
       stroke: #9E1F63;
     }
 
@@ -71,10 +86,9 @@
     }
 
     .recharts-text.recharts-cartesian-axis-tick-value {
-      font-family: Lato;
-      font-style: normal;
-      font-weight: $bold-weight;
-      font-size: 14px;
+      font-family: Ubuntu, sans-serif;
+      font-style: normal !important;
+      font-size: 12px;
       line-height: 21px;
       fill: $names-text-color;
     }
@@ -87,7 +101,7 @@
     }
 
     .recharts-tooltip-label {
-      font-family: Lato;
+      font-family: "Ubuntu", sans-serif;
       font-style: normal;
       font-weight: $normal-weight;
       font-size: 14px;
@@ -96,7 +110,7 @@
     }
 
     .recharts-tooltip-item-list li {
-      font-family: Lato !important;
+      font-family: "Ubuntu", sans-serif !important;
       font-style: normal;
       font-weight: $bold-weight !important;
       font-size: 14px !important;

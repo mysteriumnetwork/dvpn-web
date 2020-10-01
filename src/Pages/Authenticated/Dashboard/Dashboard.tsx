@@ -71,7 +71,7 @@ const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
 
         Promise.all([
             tequilapiClient.sessions(),
-            tequilapiClient.sessions({ dateFrom: date2iso('2017-01-01'), dateTo: date2iso('2100-01-01') }),
+            tequilapiClient.sessions({ dateFrom: date2iso('2020-09-01'), dateTo: date2iso('2020-10-01') }),
             tequilapiClient.config(),
         ])
             .then((result) => {

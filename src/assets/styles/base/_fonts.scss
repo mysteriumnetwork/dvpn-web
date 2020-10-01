@@ -3,14 +3,14 @@
 // UBUNTU FONTS
 @font-face {
   font-family: 'Ubuntu';
-  src: url("../../fonts/Ubuntu/Ubuntu-Italic.ttf") format("truetype");
+  src: url("../../fonts/Ubuntu/Ubuntu-Medium.ttf") format("truetype");
   font-weight: $normal-weight;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Ubuntu';
-  src: url("../../fonts/Ubuntu/Ubuntu-BoldItalic.ttf") format("truetype");
+  src: url("../../fonts/Ubuntu/Ubuntu-MediumItalic.ttf") format("truetype");
   font-weight: $normal-weight;
   font-style: italic;
 }
