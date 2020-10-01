@@ -45,5 +45,5 @@ const formatDate = (malformed: string): string => {
     const year = malformed.substr(0, 4);
     const month = malformed.substr(4, 2);
     const day = malformed.substr(6, 2);
-    return `${year}-${month}-${day}`;
+    return `${month}-${day}`;
 };

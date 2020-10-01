@@ -39,27 +39,19 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity }: Props)
     const steps = [
         <Welcome key="welcome" callbacks={callbacks} />,
     ];
-    steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
-    steps.push(<PriceSettings key="price" callbacks={callbacks} />);
-    steps.push(<SettlementSettings key="payout" callbacks={callbacks} />);
-    steps.push(<PasswordChange key="password" callbacks={callbacks} />);
 
-    // const steps = [
-    //     <Welcome key="welcome" callbacks={callbacks} />,
-    // ];
-    //
-    // if (!termsAccepted) {
-    //     steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
-    // }
-    //
-    // if (!isIdentityRegistered(identity)) {
-    //     // steps.push(<PriceSettings key="price" callbacks={callbacks} />);
-    //     // steps.push(<SettlementSettings key="payout" callbacks={callbacks} />);
-    // }
-    //
-    // if (needsPasswordChange) {
-    //     steps.push(<PasswordChange key="password" callbacks={callbacks} />);
-    // }
+    if (!termsAccepted) {
+        steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
+    }
+
+    if (!isIdentityRegistered(identity)) {
+        steps.push(<PriceSettings key="price" callbacks={callbacks} />);
+        steps.push(<SettlementSettings key="payout" callbacks={callbacks} />);
+    }
+
+    if (needsPasswordChange) {
+        steps.push(<PasswordChange key="password" callbacks={callbacks} />);
+    }
 
     const totalStepCount = steps.length;
     const nextStepComponent = steps[currentStep];
