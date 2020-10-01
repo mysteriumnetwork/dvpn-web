@@ -100,7 +100,7 @@ const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liv
             </div>
             {displayNavigation && (
                 <div className="latest-sessions__button-block">
-                    <Link to={SESSIONS} className="btn btn-empty btn-center all">
+                    <Link to={SESSIONS} className="btn btn--outline-primary">
                         <span className="btn-text">View all sessions</span>
                     </Link>
                 </div>

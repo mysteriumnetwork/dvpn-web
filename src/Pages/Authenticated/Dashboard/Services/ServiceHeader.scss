@@ -13,8 +13,9 @@
     margin-right: 20px;
     border-radius: 8px;
 
-    img {
+    img, svg {
       max-width: 100%;
+      border-radius: 50%;
     }
 
     .status-dot {

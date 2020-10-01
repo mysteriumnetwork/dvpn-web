@@ -134,7 +134,7 @@ const ServiceSettingsModal = ({
                         <p className="text">Limit bandwidth to 5Mb/s</p>
                     </div>
                     <div className="buttons-block">
-                        <Button onClick={onClose} className="button">
+                        <Button onClick={onClose} style="gray">
                             Close
                         </Button>
                         <Button

@@ -15,7 +15,7 @@ interface Props {
     children?: any;
     onClick?: MouseEventHandler;
     disabled?: boolean;
-    style?: 'outline' | 'filled' | 'gray';
+    style?: 'outline' | 'filled' | 'gray' | 'outline-primary';
     type?: 'button' | 'submit' | 'reset' | undefined;
 }
 

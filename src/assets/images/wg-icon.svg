@@ -1,7 +1,7 @@
 <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
     <style>
-        .heavy { font: bold 34px Ubuntu; fill: #FFF; }
+        .heavy { font: bold 28px Ubuntu; fill: #FFF; }
     </style>
     <rect x="0" y="0" width="100%" height="100%" fill="#9E1F63"/>
-    <text x="4" y="44" class="heavy">WG</text>
+    <text x="9" y="42" class="heavy">WG</text>
 </svg>

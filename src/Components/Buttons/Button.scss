@@ -1,5 +1,5 @@
 @import '../../assets/styles/base/variables';
-@import '../../assets/styles/base/mixins/linear-border';
+@import '../../assets/styles/base/mixins/button-background';
 
 /*
   Ripple effect from: https://codepen.io/finnhvman/pen/jLXKJw
@@ -13,9 +13,11 @@
   background-position: center;
   transition: background 0.8s;
 }
+
 .ripple:hover {
   background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
 }
+
 .ripple:active {
   background-color: #6eb9f7;
   background-size: 100%;
@@ -30,14 +32,14 @@
   cursor: pointer;
   text-decoration: none;
   display: block;
-  text-align: center;
-  font-size: 0.8rem;
   box-sizing: border-box;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.8rem;
   font-family: "Ubuntu", sans-serif;
   font-weight: 500;
   line-height: 1.75;
   letter-spacing: 0.02857em;
-  text-transform: uppercase;
   border: none;
   outline: none;
   transition: border 0.2s, background 0.2s;
@@ -45,38 +47,42 @@
   &--filled {
     padding-top: 8px;
     padding-bottom: 10px;
-    background: linear-gradient(270deg, #262262 0%, #9E1F63 100%);
     color: #ffffff;
     transition: border 0.2s, background 0.3s;
-    &:hover {
-      background: linear-gradient(270deg, #312c7e 0%, #b5166d 100%);
-    }
-    &:active {
-      background: linear-gradient(270deg, #221e58 0%, #8a1a55 100%);
-    }
+    @include button-background(
+            linear-gradient(270deg, #262262 0%, #9E1F63 100%),
+            linear-gradient(270deg, #312c7e 0%, #b5166d 100%),
+            linear-gradient(270deg, #221e58 0%, #8a1a55 100%)
+    );
   }
 
   &--outline {
-    background: #fff;
     color: #422362 !important;
     border: 2px solid #eee;
-    &:hover {
-      background: #f8f8f8;
-    }
-    &:active {
-      background: #eee;
-    }
+    @include button-background(
+            #fff,
+            #f8f8f8,
+            #eee
+    );
+  }
+
+  &--outline-primary {
+    color: #422362 !important;
+    border: 2px solid #422362;
+    @include button-background(
+            #fff,
+            rgba(79, 6, 162, 0.02),
+            rgba(79, 6, 162, 0.05)
+    );
   }
 
   &--gray {
-    background: #F5F5FA;
     color: #000000 !important;
-    &:hover {
-      background: #f8f8f8;
-    }
-    &:active {
-      background: #eee;
-    }
+    @include button-background(
+            #F5F5FA,
+            #f8f8f8,
+            #eee
+    );
   }
 
   &-text {
