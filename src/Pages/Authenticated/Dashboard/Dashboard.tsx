@@ -5,17 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { SessionStats } from 'mysterium-vpn-js';
-import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { useSnackbar } from 'notistack';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
 import { RootState } from '../../../redux/store';
-import { fetchIdentityAsync } from '../../../redux/actions/app';
+import { fetchConfigAsync, fetchIdentityAsync } from '../../../redux/actions/app';
 import { AppState } from '../../../redux/reducers/app.reducer';
 import { SSEState } from '../../../redux/actions/sse';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
@@ -32,7 +31,10 @@ import Statistics from './Statistics/Statistics';
 interface Props {
     app: AppState;
     sse: SSEState;
-    fetchIdentityAsync: () => void;
+    actions: {
+        fetchIdentityAsync: () => void;
+        fetchConfigAsync: () => void;
+    };
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -40,8 +42,13 @@ const mapStateToProps = (state: RootState) => ({
     sse: state.sse,
 });
 
-const mapDispatchToProps = {
-    fetchIdentityAsync,
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+    return {
+        actions: {
+            fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
+            fetchConfigAsync: () => dispatch(fetchConfigAsync()),
+        },
+    };
 };
 
 interface StateProps {
@@ -49,10 +56,9 @@ interface StateProps {
     sessionStatsDaily: {
         [date: string]: SessionStats;
     };
-    userConfig: Config;
 }
 
-const Dashboard = ({ fetchIdentityAsync, app, sse }: Props) => {
+const Dashboard = ({ actions, app, sse }: Props) => {
     const [state, setState] = useState<StateProps>({
         sessionStatsAllTime: {
             count: 0,
@@ -63,25 +69,22 @@ const Dashboard = ({ fetchIdentityAsync, app, sse }: Props) => {
             sumTokens: 0,
         },
         sessionStatsDaily: {},
-        userConfig: { data: {} },
     });
 
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
-        fetchIdentityAsync();
-
+        actions.fetchIdentityAsync();
+        actions.fetchConfigAsync();
         Promise.all([
             tequilapiClient.sessions(),
             tequilapiClient.sessions({ dateFrom: date2iso('2020-09-01'), dateTo: date2iso('2020-10-01') }),
-            tequilapiClient.config(),
         ])
             .then((result) => {
-                const [{ statsDaily }, { stats: allTimeStats }, config] = result;
+                const [{ statsDaily }, { stats: allTimeStats }] = result;
                 setState({
                     ...state,
                     sessionStatsDaily: statsDaily,
                     sessionStatsAllTime: allTimeStats,
-                    userConfig: config,
                 });
             })
             .catch((err) => {
@@ -90,9 +93,9 @@ const Dashboard = ({ fetchIdentityAsync, app, sse }: Props) => {
             });
     }, []);
 
-    const { currentIdentity } = app;
+    const { currentIdentity, config } = app;
     const { appState } = sse;
-    if (!currentIdentity || !appState) {
+    if (!currentIdentity || !appState || !config) {
         return <CircularProgress className="spinner" />;
     }
 
@@ -116,11 +119,7 @@ const Dashboard = ({ fetchIdentityAsync, app, sse }: Props) => {
                             <NatStatus status={status} />
                         </div>
                     </div>
-                    <Services
-                        identityRef={currentIdentity.id}
-                        servicesInfos={serviceInfo}
-                        userConfig={state.userConfig}
-                    />
+                    <Services identityRef={currentIdentity.id} servicesInfos={serviceInfo} userConfig={config} />
                 </div>
             </div>
             <div className="sidebar-block">

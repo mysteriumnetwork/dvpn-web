@@ -11,7 +11,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { ServiceType } from '../commons';
 import { store } from '../redux/store';
 import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults';
-import { IDENTITY_FETCH_FULFILLED } from '../redux/actions/app';
+import { updateConfigStore, updateIdentityStore } from '../redux/actions/app';
 
 import { tequilapiClient } from './TequilApiClient';
 
@@ -21,7 +21,7 @@ export const loginAndStoreCurrentIdentity = async (username: string, password: s
         .then(() => tequilapiClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE }))
         .then((identityRef) => tequilapiClient.identity(identityRef.id))
         .then((identity) => {
-            store.dispatch({ type: IDENTITY_FETCH_FULFILLED, payload: identity });
+            store.dispatch(updateIdentityStore(identity));
             return Promise.resolve();
         });
 };
@@ -65,24 +65,33 @@ export const acceptWithTermsAndConditions = async (): Promise<Config> => {
     });
 };
 
+const updateConfig = (c: Config): Promise<Config> => {
+    store.dispatch(updateConfigStore(c));
+    return Promise.resolve(c);
+};
+
 export const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
-    return await tequilapiClient.updateUserConfig({
-        data: {
-            'access-policy': {
-                list: policyName,
+    return await tequilapiClient
+        .updateUserConfig({
+            data: {
+                'access-policy': {
+                    list: policyName,
+                },
             },
-        },
-    });
+        })
+        .then(updateConfig);
 };
 
 export const setTrafficShaping = async (enabled: boolean): Promise<Config> => {
-    return await tequilapiClient.updateUserConfig({
-        data: {
-            shaper: {
-                enabled: enabled,
+    return await tequilapiClient
+        .updateUserConfig({
+            data: {
+                shaper: {
+                    enabled: enabled,
+                },
             },
-        },
-    });
+        })
+        .then(updateConfig);
 };
 
 export const setServicePrice = async (
@@ -91,27 +100,31 @@ export const setServicePrice = async (
     service: ServiceType
 ): Promise<Config> => {
     const configServiceName = service === ServiceType.OPENVPN ? 'openvpn' : 'wireguard';
-    return await tequilapiClient.updateUserConfig({
-        data: {
-            [configServiceName]: {
-                'price-minute': pricePerMinute,
-                'price-gb': pricePerGb,
+    return await tequilapiClient
+        .updateUserConfig({
+            data: {
+                [configServiceName]: {
+                    'price-minute': pricePerMinute,
+                    'price-gb': pricePerGb,
+                },
             },
-        },
-    });
+        })
+        .then(updateConfig);
 };
 
 export const setAllServicePrice = async (pricePerMinute: number | null, pricePerGb: number | null): Promise<Config> => {
-    return await tequilapiClient.updateUserConfig({
-        data: {
-            openvpn: {
-                'price-minute': pricePerMinute,
-                'price-gb': pricePerGb,
+    return await tequilapiClient
+        .updateUserConfig({
+            data: {
+                openvpn: {
+                    'price-minute': pricePerMinute,
+                    'price-gb': pricePerGb,
+                },
+                wireguard: {
+                    'price-minute': pricePerMinute,
+                    'price-gb': pricePerGb,
+                },
             },
-            wireguard: {
-                'price-minute': pricePerMinute,
-                'price-gb': pricePerGb,
-            },
-        },
-    });
+        })
+        .then(updateConfig);
 };
