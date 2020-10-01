@@ -6,14 +6,9 @@
  */
 import React, { useState } from 'react';
 import { IconButton } from '@material-ui/core';
-
-import { ReactComponent as Chat } from '../../assets/images/authenticated/components/navigation/Chat.svg';
+import BugReportOutlinedIcon from '@material-ui/icons/BugReportOutlined';
 
 import ReportIssueModal from './ReportIssueModal';
-
-interface StateProps {
-    showModal: boolean;
-}
 
 const ReportIssue = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -25,7 +20,7 @@ const ReportIssue = () => {
     return (
         <div>
             <IconButton onClick={() => setShowModal(true)}>
-                <Chat />
+                <BugReportOutlinedIcon style={{ color: '#FFF' }} />
             </IconButton>
             <ReportIssueModal onClose={onClose} open={showModal} />
         </div>

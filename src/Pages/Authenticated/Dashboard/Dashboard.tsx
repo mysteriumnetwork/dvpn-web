@@ -15,7 +15,8 @@ import { useSnackbar } from 'notistack';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
 import { RootState } from '../../../redux/store';
-import { fetchIdentity, GeneralState } from '../../../redux/actions/general';
+import { fetchIdentityAsync } from '../../../redux/actions/app';
+import { AppState } from '../../../redux/reducers/app.reducer';
 import { SSEState } from '../../../redux/actions/sse';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
@@ -29,18 +30,18 @@ import Services from './Services/Services';
 import Statistics from './Statistics/Statistics';
 
 interface Props {
-    general: GeneralState;
+    app: AppState;
     sse: SSEState;
-    fetchIdentity: () => void;
+    fetchIdentityAsync: () => void;
 }
 
 const mapStateToProps = (state: RootState) => ({
-    general: state.general,
+    app: state.app,
     sse: state.sse,
 });
 
 const mapDispatchToProps = {
-    fetchIdentity,
+    fetchIdentityAsync,
 };
 
 interface StateProps {
@@ -51,7 +52,7 @@ interface StateProps {
     userConfig: Config;
 }
 
-const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
+const Dashboard = ({ fetchIdentityAsync, app, sse }: Props) => {
     const [state, setState] = useState<StateProps>({
         sessionStatsAllTime: {
             count: 0,
@@ -67,7 +68,7 @@ const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
 
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
-        fetchIdentity();
+        fetchIdentityAsync();
 
         Promise.all([
             tequilapiClient.sessions(),
@@ -89,7 +90,7 @@ const Dashboard = ({ fetchIdentity, general, sse }: Props) => {
             });
     }, []);
 
-    const { currentIdentity } = general;
+    const { currentIdentity } = app;
     const { appState } = sse;
     if (!currentIdentity || !appState) {
         return <CircularProgress className="spinner" />;

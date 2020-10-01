@@ -35,7 +35,7 @@ interface Props {
 
 const mapStateToProps = (state: RootState) => ({
     appState: state.sse.appState,
-    identity: state.general.currentIdentity,
+    identity: state.app.currentIdentity,
 });
 
 const earnings = (appState?: AppState, identityRef?: string): number => {

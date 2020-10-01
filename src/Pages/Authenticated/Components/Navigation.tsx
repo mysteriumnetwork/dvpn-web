@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, withRouter, RouteComponentProps, NavLink } from 'react-router-dom';
 
 import '../../../assets/styles/pages/authenticated/components/navigation.scss';
@@ -24,6 +24,15 @@ type Props = RouteComponentProps<any, any, any>;
 
 const Navigation = ({ location }: Props): JSX.Element => {
     const { pathname } = location;
+
+    useEffect(() => {
+        // Load intercom chat
+        // @ts-ignore
+        window.Intercom('boot', {
+            app_id: 'h7hlm9on',
+        });
+    }, []);
+
     return (
         <div className="navigation wrapper">
             <Link to={DASHBOARD} className="navigation--logo">
@@ -43,9 +52,10 @@ const Navigation = ({ location }: Props): JSX.Element => {
                 {pathname === WALLET ? <WalletActive /> : <Wallet />}
             </NavLink>
             <div className="navigation--flex-gow" />
-            <div className="navigation--chat">
+            <div className="navigation--issue">
                 <ReportIssue />
             </div>
+            <div className="navigation--chat-space" />
         </div>
     );
 };

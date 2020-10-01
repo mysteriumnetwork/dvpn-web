@@ -27,7 +27,7 @@
     border-radius: 4px;
   }
 
-  &--chat {
+  &--issue {
     //position: absolute;
     width: 48px;
     height: 48px;
@@ -46,5 +46,17 @@
   &--flex-gow {
     flex-grow: 1;
   }
+
+  &--chat-space {
+    height: 90px;
+  }
+}
+
+.intercom-launcher-frame {
+  left: 10px !important;
+}
+
+.intercom-lightweight-app-launcher {
+  left: 10px !important;
 }
 

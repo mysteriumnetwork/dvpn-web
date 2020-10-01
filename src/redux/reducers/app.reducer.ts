@@ -4,8 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { Identity } from 'mysterium-vpn-js';
+
 import { areTermsAccepted } from '../../commons/terms';
 import { AUTHENTICATE, AppActionTypes, ACCEPT_TERMS, LOADING } from '../actions/app';
+import { IDENTITY_FETCH_FULFILLED } from '../actions/app';
 
 export interface Auth {
     authenticated?: boolean;
@@ -19,6 +22,7 @@ export interface Terms {
 
 export interface AppState {
     loading: boolean;
+    currentIdentity?: Identity;
     auth: Auth;
     terms: Terms;
 }
@@ -41,6 +45,12 @@ function appReducer(state: AppState = INITIAL_STATE, action: AppActionTypes): Ap
             return {
                 ...state,
                 auth: { ...(action.payload as Auth) },
+            };
+        }
+        case IDENTITY_FETCH_FULFILLED: {
+            return {
+                ...state,
+                currentIdentity: action.payload as Identity,
             };
         }
         case ACCEPT_TERMS: {

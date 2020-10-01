@@ -6,12 +6,10 @@
  */
 import { combineReducers } from 'redux';
 
-import generalReducer from './general.reducer';
 import sseReducer from './sse.reducer';
 import appReducer from './app.reducer';
 
 const rootReducer = combineReducers({
-    general: generalReducer,
     sse: sseReducer,
     app: appReducer,
 });
