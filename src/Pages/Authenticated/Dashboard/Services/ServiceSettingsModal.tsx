@@ -75,6 +75,7 @@ const ServiceSettingsModal = ({
                         <div className="settings-row--slider">
                             <Slider
                                 label="Price per minute"
+                                myst={true}
                                 value={state.pricePerMinuteChosen}
                                 handleChange={(e, v) => {
                                     setState({ ...state, pricePerMinuteChosen: v });
@@ -92,6 +93,7 @@ const ServiceSettingsModal = ({
                         <div className="settings-row--slider">
                             <Slider
                                 label="Price per GB"
+                                myst={true}
                                 value={state.pricePerGbChosen}
                                 handleChange={(e, v) => {
                                     setState({ ...state, pricePerGbChosen: v });
