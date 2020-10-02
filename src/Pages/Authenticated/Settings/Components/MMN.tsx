@@ -63,7 +63,7 @@ const MMN = ({ apiKey }: Props) => {
 
     const link = (
         <a href={MMN_USER_PROFILE_URL} target="_blank" rel="noopener noreferrer">
-            here
+            Get it here
         </a>
     );
     return (
@@ -71,7 +71,7 @@ const MMN = ({ apiKey }: Props) => {
             <Errors error={values.error} errorMessage={values.errorMessage} />
 
             <div className="input-group">
-                <div className="input-group__label">API Key (get it {link})</div>
+                <div className="input-group__label">API Key ({link})</div>
                 <DefaultTextField
                     stateName={'apiKey'}
                     id={'api_key'}
