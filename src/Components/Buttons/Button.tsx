@@ -24,7 +24,7 @@ const Button = ({ isLoading, style, className, children, onClick, type, disabled
 
     return (
         <button disabled={disabled} type={type} onClick={onClick} className={classNames}>
-            {isLoading ? <CircularProgress className="btn-spinner" /> : children}
+            {isLoading ? <CircularProgress className="loader" /> : children}
         </button>
     );
 };

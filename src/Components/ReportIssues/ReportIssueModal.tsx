@@ -58,7 +58,6 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
                 enqueueSnackbar('Thank you! Your report has been sent.', { variant: 'success' });
             })
             .catch((err) => {
-                console.error(err)
                 enqueueSnackbar(parseError(err), { variant: 'error' });
             })
             .finally(() => {
