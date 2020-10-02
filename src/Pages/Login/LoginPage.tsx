@@ -8,7 +8,7 @@ import React, { FormEvent } from 'react';
 import Collapse from '@material-ui/core/Collapse';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import { updateAuthenticatedStore } from '../../redux/actions/app';
+import { updateAuthenticatedStore } from '../../redux/app.slice';
 import { store } from '../../redux/store';
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/login/main.scss';

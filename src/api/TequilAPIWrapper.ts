@@ -11,7 +11,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { ServiceType } from '../commons';
 import { store } from '../redux/store';
 import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults';
-import { updateConfigStore, updateIdentityStore } from '../redux/actions/app';
+import { updateConfigStore, updateIdentityStore } from '../redux/app.slice';
 
 import { tequilapiClient } from './TequilApiClient';
 
