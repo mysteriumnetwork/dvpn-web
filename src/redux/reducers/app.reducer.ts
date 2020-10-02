@@ -6,10 +6,11 @@
  */
 import { Identity } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
+import { createReducer } from '@reduxjs/toolkit';
 
 import { areTermsAccepted } from '../../commons/terms';
-import { AUTHENTICATE, AppActionTypes, ACCEPT_TERMS, LOADING, CONFIG_FETCH_FULFILLED } from '../actions/app';
-import { IDENTITY_FETCH_FULFILLED } from '../actions/app';
+import { acceptTerms, updateIdentityStore, updateAuthFlowLoadingStore, updateConfigStore } from '../actions/app';
+import { updateAuthenticatedStore } from '../actions/app';
 
 export interface Auth {
     authenticated?: boolean;
@@ -41,42 +42,23 @@ const INITIAL_STATE: AppState = {
     },
 };
 
-function appReducer(state: AppState = INITIAL_STATE, action: AppActionTypes): AppState {
-    switch (action.type) {
-        case AUTHENTICATE: {
-            return {
-                ...state,
-                auth: { ...(action.payload as Auth) },
-            };
-        }
-        case IDENTITY_FETCH_FULFILLED: {
-            return {
-                ...state,
-                currentIdentity: action.payload as Identity,
-            };
-        }
-        case ACCEPT_TERMS: {
-            return {
-                ...state,
-                terms: { ...(action.payload as Terms) },
-            };
-        }
-        case LOADING: {
-            return {
-                ...state,
-                loading: action.payload as boolean,
-            };
-        }
-        case CONFIG_FETCH_FULFILLED: {
-            return {
-                ...state,
-                config: action.payload as Config,
-            };
-        }
-        default:
-            return state;
-    }
-}
+export const appReducer = createReducer(INITIAL_STATE, {
+    [updateAuthenticatedStore.type]: (state, action) => {
+        state.auth = action.payload;
+    },
+    [updateIdentityStore.type]: (state, action) => {
+        state.currentIdentity = action.payload;
+    },
+    [acceptTerms.type]: (state, action) => {
+        state.terms = action.payload;
+    },
+    [updateAuthFlowLoadingStore.type]: (state, action) => {
+        state.loading = action.payload;
+    },
+    [updateConfigStore.type]: (state, action) => {
+        state.config = action.payload;
+    },
+});
 
 const isLoggedIn = (state: AppState): boolean => {
     return !!state.auth.authenticated;

@@ -5,19 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { AppState, SSEEventType } from 'mysterium-vpn-js';
+import { createAction } from '@reduxjs/toolkit';
 
 export interface SSEState {
     appState?: AppState;
 }
 
-export interface SSEAction {
-    type: SSEEventType;
-    payload: AppState;
-}
-
-export const sseAppStateStateChanged = (state: AppState): SSEAction => {
-    return {
-        type: SSEEventType.AppStateChange,
-        payload: state,
-    };
-};
+export const sseAppStateStateChanged = createAction<AppState>(SSEEventType.AppStateChange);

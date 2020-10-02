@@ -8,6 +8,7 @@ import { Action } from 'redux';
 import { Dispatch } from 'react';
 import { Identity } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
+import { createAction } from '@reduxjs/toolkit';
 
 import { Auth, Terms } from '../reducers/app.reducer';
 import { tequilapiClient } from '../../api/TequilApiClient';
@@ -32,26 +33,11 @@ export type AppActionTypes =
     | AppAction<Identity>
     | AppAction<Config>;
 
-export const updateAuthenticatedStore = (auth: Auth): AppAction<Auth> => {
-    return {
-        type: AUTHENTICATE,
-        payload: auth,
-    };
-};
-
-export const acceptTerms = (terms: Terms): AppAction<Terms> => {
-    return {
-        type: ACCEPT_TERMS,
-        payload: terms,
-    };
-};
-
-export const updateAuthFlowLoadingStore = (loading: boolean): AppAction<boolean> => {
-    return {
-        type: LOADING,
-        payload: loading,
-    };
-};
+export const updateAuthenticatedStore = createAction<Auth>(AUTHENTICATE);
+export const acceptTerms = createAction<Terms>(ACCEPT_TERMS);
+export const updateAuthFlowLoadingStore = createAction<boolean>(LOADING);
+export const updateIdentityStore = createAction<Identity>(IDENTITY_FETCH_FULFILLED);
+export const updateConfigStore = createAction<Config>(CONFIG_FETCH_FULFILLED);
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
     return async (dispatch) => {
@@ -70,22 +56,8 @@ export const fetchIdentityAsync = (): ((dispatch: Dispatch<any>) => void) => {
     return async (dispatch) => {
         const identity = await tequilapiClient
             .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
-            .then((identityRef) => tequilapiClient.identity(identityRef.id))
+            .then((identityRef) => tequilapiClient.identity(identityRef.id));
         dispatch(updateIdentityStore(identity));
-    };
-};
-
-export const updateIdentityStore = (identity: Identity): AppAction<Identity> => {
-    return {
-        type: IDENTITY_FETCH_FULFILLED,
-        payload: identity,
-    };
-};
-
-export const updateConfigStore = (config: Config): AppAction<Config> => {
-    return {
-        type: CONFIG_FETCH_FULFILLED,
-        payload: config,
     };
 };
 
