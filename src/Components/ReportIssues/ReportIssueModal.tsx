@@ -58,7 +58,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
                 enqueueSnackbar('Thank you! Your report has been sent.', { variant: 'success' });
             })
             .catch((err) => {
-                enqueueSnackbar(parseError(err), { variant: 'error' });
+                enqueueSnackbar('Error: ' + parseError(err), { variant: 'error' });
             })
             .finally(() => {
                 handleClose();
@@ -94,7 +94,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
             </DialogTitle>
             <DialogContent>
                 <div className="report-issue">
-                    <form autoComplete="off">
+                    <form autoComplete="off" onSubmit={(e) => {e.preventDefault()}}>
                         <div className="input-group">
                             <div className="input-group__label">Email address (optional)</div>
                             <DefaultTextField
