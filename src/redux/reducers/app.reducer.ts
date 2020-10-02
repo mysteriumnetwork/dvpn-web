@@ -6,7 +6,7 @@
  */
 import { Identity } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
-import { createReducer } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { areTermsAccepted } from '../../commons/terms';
 import { acceptTerms, updateIdentityStore, updateAuthFlowLoadingStore, updateConfigStore } from '../actions/app';
@@ -42,21 +42,26 @@ const INITIAL_STATE: AppState = {
     },
 };
 
-export const appReducer = createReducer(INITIAL_STATE, {
-    [updateAuthenticatedStore.type]: (state, action) => {
-        state.auth = action.payload;
-    },
-    [updateIdentityStore.type]: (state, action) => {
-        state.currentIdentity = action.payload;
-    },
-    [acceptTerms.type]: (state, action) => {
-        state.terms = action.payload;
-    },
-    [updateAuthFlowLoadingStore.type]: (state, action) => {
-        state.loading = action.payload;
-    },
-    [updateConfigStore.type]: (state, action) => {
-        state.config = action.payload;
+const slice = createSlice({
+    name: 'app',
+    initialState: INITIAL_STATE,
+    reducers: {},
+    extraReducers: {
+        [updateAuthenticatedStore.type]: (state, action) => {
+            state.auth = action.payload;
+        },
+        [updateIdentityStore.type]: (state, action) => {
+            state.currentIdentity = action.payload;
+        },
+        [acceptTerms.type]: (state, action) => {
+            state.terms = action.payload;
+        },
+        [updateAuthFlowLoadingStore.type]: (state, action) => {
+            state.loading = action.payload;
+        },
+        [updateConfigStore.type]: (state, action) => {
+            state.config = action.payload;
+        },
     },
 });
 
@@ -80,4 +85,4 @@ const shouldBeOnboarded = (state: AppState): boolean => {
 
 export { isLoggedIn, needsPasswordChange, termsAccepted, shouldBeOnboarded };
 
-export default appReducer;
+export default slice.reducer;
