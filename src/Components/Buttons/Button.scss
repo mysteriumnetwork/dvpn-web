@@ -99,5 +99,14 @@
   &-center {
     margin: 0 auto;
   }
+
+  .loader {
+    position: relative;
+    color: #fff;
+    fill: #fff;
+    width: 15px !important;
+    height: 15px !important;
+    top: 2px;
+  }
 }
 
