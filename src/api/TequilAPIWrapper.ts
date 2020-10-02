@@ -65,9 +65,11 @@ export const acceptWithTermsAndConditions = async (): Promise<Config> => {
     });
 };
 
-const updateConfig = (c: Config): Promise<Config> => {
-    store.dispatch(updateConfigStore(c));
-    return Promise.resolve(c);
+const updateConfig = async (): Promise<Config> => {
+    return await tequilapiClient.config().then((config) => {
+        store.dispatch(updateConfigStore(config));
+        return config;
+    });
 };
 
 export const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
