@@ -8,6 +8,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, IconButton } from '@material-ui/core';
 import { Issue } from 'mysterium-vpn-js/lib/feedback/issue';
 import { useSnackbar } from 'notistack';
+import ChatIcon from '@material-ui/icons/Chat';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { DefaultTextField } from '../DefaultTextField';
@@ -50,8 +51,14 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
 
     const reportIssue = () => {
         Promise.resolve(setState({ ...state, sending: true }))
-            .then(() => tequilapiClient.reportIssue(state, 60000))
+            .then(() => {
+                return tequilapiClient.reportIssue(state, 60000);
+            })
+            .then(() => {
+                enqueueSnackbar('Thank you! Your report has been sent.', { variant: 'success' });
+            })
             .catch((err) => {
+                console.error(err)
                 enqueueSnackbar(parseError(err), { variant: 'error' });
             })
             .finally(() => {
@@ -59,44 +66,73 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
             });
     };
 
+    const openChat = () => {
+        // @ts-ignore
+        window.Intercom('showNewMessage', 'Hi there! I need some assistance.');
+        handleClose();
+    };
+
     return (
         <Dialog disableBackdropClick fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
             <DialogTitle>
                 <div className="report-issue__header">
-                    <span>Report issue</span>
-                    <div className="flex-grow" />
-                    <IconButton onClick={handleClose}>
-                        <CloseIcon />
-                    </IconButton>
+                    <div className="title">
+                        Report issue
+                        <p className="title__description">Describe your issue</p>
+                    </div>
+                    <div className="chat">
+                        <a href="#" onClick={() => openChat()}>
+                            <ChatIcon className="chat__icon" />
+                            Talk to us via live chat
+                        </a>
+                    </div>
+                    <div className="close">
+                        <IconButton onClick={handleClose}>
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
                 </div>
             </DialogTitle>
             <DialogContent>
                 <div className="report-issue">
-                    <div>
-                        <DefaultTextField
-                            placeholder="Describe what went wrong (minimum 30 characters)"
-                            handleChange={handleTextFieldsChange}
-                            value={state.description}
-                            stateName="description"
-                            rows={4}
-                            multiline
-                        />
-                        <DefaultTextField
-                            placeholder="Your Email (optional)"
-                            handleChange={handleTextFieldsChange}
-                            value={state.email || ''}
-                            stateName="email"
-                        />
-                    </div>
-                    <div className="report-issue__footer">
-                        <Button
-                            disabled={state.description.length < 30}
-                            isLoading={state.sending}
-                            onClick={reportIssue}
-                        >
-                            Send
-                        </Button>
-                    </div>
+                    <form autoComplete="off">
+                        <div className="input-group">
+                            <div className="input-group__label">Email address (optional)</div>
+                            <DefaultTextField
+                                placeholder="node@runner.com"
+                                handleChange={handleTextFieldsChange}
+                                value={state.email || ''}
+                                stateName="email"
+                            />
+                        </div>
+                        <div className="input-group">
+                            <div className="input-group__label">Your message</div>
+                            <DefaultTextField
+                                placeholder=""
+                                handleChange={handleTextFieldsChange}
+                                value={state.description}
+                                stateName="description"
+                                rows={4}
+                                multiline
+                            />
+                            <div className="input-group__help m-t-5">Describe what went wrong (minimum 30 characters)
+                            </div>
+                        </div>
+                        <div className="report-issue__footer m-t-50 p-b-15">
+                            <p className="agreement">
+                                By submitting this form, agree to send to Mysterium Network some account information
+                                like
+                                IP, country and system information which will be used to improve the services.
+                            </p>
+                            <Button
+                                disabled={state.description.length < 30}
+                                isLoading={state.sending}
+                                onClick={reportIssue}
+                            >
+                                Send
+                            </Button>
+                        </div>
+                    </form>
                 </div>
             </DialogContent>
         </Dialog>

@@ -1,10 +1,41 @@
 .report-issue {
-
+  font-family: Lato, sans-serif;
   display: flex;
   flex-direction: column;
 
   &__header {
     display: flex;
+    justify-content: space-between;
+
+    .title {
+      &__description {
+        font-size: 14px;
+        color: #8181A5;
+      }
+    }
+
+    .chat {
+      flex: 1;
+      margin-left: 30px;
+
+      a {
+        font-family: Lato, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      &__icon {
+        width: 20px;
+        height: 20px;
+        margin-top: 10px;
+        position: relative;
+        top: 7px;
+        right: 6px;
+      }
+    }
+
+    .close {
+    }
   }
 
   &__flex-grow {
@@ -12,6 +43,13 @@
   }
 
   &__footer {
-    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+
+    .agreement {
+      color: #8181A5;
+      font-size: 13px;
+      width: 80%;
+    }
   }
 }

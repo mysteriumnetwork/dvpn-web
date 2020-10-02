@@ -121,7 +121,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                 {state.checked ? (
                     <div className="input-group m-t-20">
                         <p className="input-group__label">
-                            API Token (
+                            API Key (
                             <a href={MMN_USER_PROFILE_URL} target="_blank" rel="noopener noreferrer">
                                 Get it here
                             </a>

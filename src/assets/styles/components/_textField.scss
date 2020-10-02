@@ -15,7 +15,7 @@
   width: 100%;
 
   .MuiInputBase-input {
-    padding-bottom: 17px;
+    padding: 10px 0;
     color: $main-text-color;
     font-family: Lato;
     font-style: normal;
@@ -24,9 +24,24 @@
     line-height: 17px;
   }
 
-  .MuiInput-underline:after {
-    border: 1px solid #F0F0F3;
-    transform: none;
-    transition: none;
+  .MuiInput-underline{
+    &.Mui-disabled:before {
+      border-bottom-style: solid;
+      border-bottom-color: #F0F0F3;
+    }
+    &.Mui-focused:before {
+      border-bottom: 2px solid #9a1f63b3;
+    }
+    &:hover:not(.Mui-disabled):before {
+      border-bottom: 2px solid #9a1f63b3;
+    }
+    &:before {
+      border-bottom: 2px solid #F0F0F3;
+    }
+    &:after {
+      border: 0 solid #F0F0F3;
+      transform: none;
+      transition: none;
+    }
   }
 }
