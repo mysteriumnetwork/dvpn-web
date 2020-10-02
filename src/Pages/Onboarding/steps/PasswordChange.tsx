@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import Errors from '../../../Components/Validation/Errors';
 
 import { store } from '../../../redux/store';
-import { updateAuthenticatedStore } from '../../../redux/actions/app';
+import { updateAuthenticatedStore } from '../../../redux/app.slice';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import { validatePassword } from '../../../commons/ValidatePassword';

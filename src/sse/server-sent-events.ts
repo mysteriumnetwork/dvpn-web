@@ -39,6 +39,6 @@ const ConnectToSSE = (dispatcher: (state: any) => void) => {
     const sse = new ServerSentEvents();
     sse.connect();
     sse.on(SSEEventType.AppStateChange, (state: any) => dispatcher(state));
-}
+};
 
-export default ConnectToSSE
+export default ConnectToSSE;

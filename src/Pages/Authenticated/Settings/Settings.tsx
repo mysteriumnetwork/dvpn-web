@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack';
 
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Header from '../../../Components/Header';
-import { AppState } from '../../../redux/reducers/app.reducer';
+import { AppState } from '../../../redux/app.slice';
 import { RootState } from '../../../redux/store';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg';
 import { parseMMNError } from '../../../commons/error.utils';

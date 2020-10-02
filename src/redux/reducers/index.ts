@@ -6,8 +6,8 @@
  */
 import { combineReducers } from 'redux';
 
-import sseReducer from './sse.reducer';
-import appReducer from './app.reducer';
+import sseReducer from '../sse.slice';
+import appReducer from '../app.slice';
 
 const rootReducer = combineReducers({
     sse: sseReducer,

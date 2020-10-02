@@ -11,10 +11,11 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import '../assets/styles/App.scss';
-import { sseAppStateStateChanged } from '../redux/actions/sse';
+import { sseAppStateStateChanged } from '../redux/sse.slice';
 import ConnectToSSE from '../sse/server-sent-events';
-import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
-import { updateAuthenticatedStore, updateAuthFlowLoadingStore, updateTermsStoreAsync } from '../redux/actions/app';
+import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/app.slice';
+import { updateTermsStoreAsync } from '../redux/app.async.actions';
+import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice';
 import { RootState } from '../redux/store';
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
 import {
@@ -28,7 +29,7 @@ import {
     WALLET,
     SETTINGS,
 } from '../constants/routes';
-import { fetchIdentityAsync } from '../redux/actions/app';
+import { fetchIdentityAsync } from '../redux/app.async.actions';
 
 import ProtectedRoute from './ProtectedRoute';
 import LoginPage from './Login/LoginPage';
