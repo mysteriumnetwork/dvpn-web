@@ -64,7 +64,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
             <DialogTitle>
                 <div className="report-issue__header">
                     <span>Report issue</span>
-                    <div className="report-issue__flex-grow" />
+                    <div className="flex-grow" />
                     <IconButton onClick={handleClose}>
                         <CloseIcon />
                     </IconButton>

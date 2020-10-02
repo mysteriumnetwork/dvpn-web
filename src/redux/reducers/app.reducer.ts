@@ -5,9 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Identity } from 'mysterium-vpn-js';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { areTermsAccepted } from '../../commons/terms';
-import { AUTHENTICATE, AppActionTypes, ACCEPT_TERMS, LOADING } from '../actions/app';
+import { AUTHENTICATE, AppActionTypes, ACCEPT_TERMS, LOADING, CONFIG_FETCH_FULFILLED } from '../actions/app';
 import { IDENTITY_FETCH_FULFILLED } from '../actions/app';
 
 export interface Auth {
@@ -25,6 +26,7 @@ export interface AppState {
     currentIdentity?: Identity;
     auth: Auth;
     terms: Terms;
+    config?: Config;
 }
 
 const INITIAL_STATE: AppState = {
@@ -63,6 +65,12 @@ function appReducer(state: AppState = INITIAL_STATE, action: AppActionTypes): Ap
             return {
                 ...state,
                 loading: action.payload as boolean,
+            };
+        }
+        case CONFIG_FETCH_FULFILLED: {
+            return {
+                ...state,
+                config: action.payload as Config,
             };
         }
         default:

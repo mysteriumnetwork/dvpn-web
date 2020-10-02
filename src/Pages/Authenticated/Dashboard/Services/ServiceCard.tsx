@@ -100,10 +100,10 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
         pricePerMin: pricePerMin(userConfig, serviceType),
         pricePerGb: pricePerGb(userConfig, serviceType),
     };
-
+    const accessPolicyEnabled = isAccessPolicyEnabled(userConfig);
     return (
         <div className="service">
-            <ServiceHeader running={status === RUNNING} type={serviceType} />
+            <ServiceHeader whitelisted={accessPolicyEnabled} running={status === RUNNING} type={serviceType} />
 
             <div className="service__details">
                 <ServiceDetail label="Price per minute">{prices.pricePerMin}</ServiceDetail>
@@ -140,7 +140,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
                 identityRef={identityRef}
                 serviceInfo={serviceInfo}
                 isCurrentTrafficShapingEnabled={isTrafficShapingEnabled(userConfig)}
-                isCurrentAccessPolicyEnabled={isAccessPolicyEnabled(userConfig)}
+                isCurrentAccessPolicyEnabled={accessPolicyEnabled}
             />
         </div>
     );

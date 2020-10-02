@@ -144,7 +144,7 @@ const ServiceSettingsModal = ({
                             onClick={() => {
                                 setIsLoading(true);
                                 setServicePrice(state.pricePerMinuteChosen, state.pricePerGbChosen, serviceType)
-                                    .then(() => setAccessPolicy(state.isVerifiedTrafficEnabled ? 'mysterium' : null))
+                                    .then(() => setAccessPolicy(state.isVerifiedTrafficEnabled ? 'mysterium' : ''))
                                     .then(() => setTrafficShaping(state.isTrafficShapingEnabled))
                                     .then(() =>
                                         serviceInfo?.id ? tequilapi.serviceStop(serviceInfo.id) : Promise.resolve()

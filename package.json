@@ -51,7 +51,7 @@
   "scripts": {
     "postinstall": "yarn install-deps",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI='' react-scripts build",
     "server": "./bin/run.sh",
     "install-deps": "cd node_modules/mysterium-vpn-js && yarn && yarn build && cd ../..",
     "test": "react-scripts test",
