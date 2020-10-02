@@ -11,7 +11,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import '../assets/styles/App.scss';
-import { sseAppStateStateChanged } from '../redux/actions/sse';
+import { sseAppStateStateChanged } from '../redux/sse.slice';
 import ConnectToSSE from '../sse/server-sent-events';
 import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/reducers/app.reducer';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore, updateTermsStoreAsync } from '../redux/actions/app';

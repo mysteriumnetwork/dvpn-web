@@ -45,7 +45,9 @@ const INITIAL_STATE: AppState = {
 const slice = createSlice({
     name: 'app',
     initialState: INITIAL_STATE,
-    reducers: {},
+    reducers: {
+
+    },
     extraReducers: {
         [updateAuthenticatedStore.type]: (state, action) => {
             state.auth = action.payload;

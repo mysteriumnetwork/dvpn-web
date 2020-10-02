@@ -16,7 +16,7 @@ import Header from '../../../Components/Header';
 import { RootState } from '../../../redux/store';
 import { fetchConfigAsync, fetchIdentityAsync } from '../../../redux/actions/app';
 import { AppState } from '../../../redux/reducers/app.reducer';
-import { SSEState } from '../../../redux/actions/sse';
+import { SSEState } from '../../../redux/sse.slice';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import { parseError } from '../../../commons/error.utils';
