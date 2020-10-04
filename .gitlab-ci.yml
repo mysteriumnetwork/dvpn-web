@@ -1,16 +1,22 @@
 image: node:10-alpine
 
 stages:
-  - deploy
-  - trigger-go-dvpn-web
+  - build
+  - publish
 
 build:
-  stage: deploy
+  stage: build
   tags: [docker]
   script:
-    - apk add jq curl git
+    - apk add git
     - yarn
-    - yarn run build
+    - yarn build
+
+publish-assets:
+  stage: publish
+  tags: [docker]
+  script:
+    - apk add jq curl
     - tar -zcvf dist.tar.gz build/
     - RELEASE_ID=$(curl -s -H "Authorization:token $GITHUB_API_TOKEN" https://api.github.com/repos/mysteriumnetwork/dvpn-web/releases/tags/$CI_COMMIT_TAG | jq -r .id)
     - curl --data-binary @dist.tar.gz -H "Authorization:token $GITHUB_API_TOKEN" -H "Content-Type:application/octet-stream" https://uploads.github.com/repos/mysteriumnetwork/dvpn-web/releases/$RELEASE_ID/assets?name=dist.tar.gz
@@ -18,7 +24,7 @@ build:
     - tags
 
 trigger-go-dvpn-web:
-  stage: trigger-go-dvpn-web
+  stage: publish
   tags: [docker]
   script:
     - apk add curl
