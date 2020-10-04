@@ -20,7 +20,6 @@ import { SSEState } from '../../../redux/sse.slice';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import { parseError } from '../../../commons/error.utils';
-import { date2iso } from '../../../commons/date.utils';
 
 import './Dashboard.scss';
 import Charts from './Charts/Charts';
@@ -75,12 +74,9 @@ const Dashboard = ({ actions, app, sse }: Props) => {
     useEffect(() => {
         actions.fetchIdentityAsync();
         actions.fetchConfigAsync();
-        Promise.all([
-            tequilapiClient.sessions(),
-            tequilapiClient.sessions({ dateFrom: date2iso('2020-09-01'), dateTo: date2iso('2020-10-01') }),
-        ])
+        Promise.all([tequilapiClient.sessionStatsDaily(), tequilapiClient.sessionStatsAggregated()])
             .then((result) => {
-                const [{ statsDaily }, { stats: allTimeStats }] = result;
+                const [{ items: statsDaily }, { stats: allTimeStats }] = result;
                 setState({
                     ...state,
                     sessionStatsDaily: statsDaily,
