@@ -17,7 +17,7 @@ import { tequilapiClient } from './TequilApiClient';
 
 export const loginAndStoreCurrentIdentity = async (username: string, password: string): Promise<void> => {
     return await tequilapiClient
-        .authLogin(username, password)
+        .authLogin({ username, password })
         .then(() => tequilapiClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE }))
         .then((identityRef) => tequilapiClient.identity(identityRef.id))
         .then((identity) => {
@@ -28,7 +28,7 @@ export const loginAndStoreCurrentIdentity = async (username: string, password: s
 
 export const loginWithDefaultCredentials = async (): Promise<boolean> => {
     try {
-        await tequilapiClient.authLogin(DEFAULT_USERNAME, DEFAULT_PASSWORD);
+        await tequilapiClient.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD });
 
         return true;
     } catch (e) {

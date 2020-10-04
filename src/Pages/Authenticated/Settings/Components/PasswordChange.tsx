@@ -51,7 +51,11 @@ const PasswordChange: React.FC = () => {
         }
 
         tequilapiClient
-            .authChangePassword(DEFAULT_USERNAME, values.currentPassword, values.newPassword)
+            .authChangePassword({
+                username: DEFAULT_USERNAME,
+                oldPassword: values.currentPassword,
+                newPassword: values.newPassword,
+            })
             .then(() => {
                 setValues(defaultState);
                 enqueueSnackbar('Password changed.', { variant: 'success' });
