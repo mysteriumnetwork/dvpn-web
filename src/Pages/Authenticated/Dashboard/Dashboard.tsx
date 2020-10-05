@@ -14,7 +14,7 @@ import { useSnackbar } from 'notistack';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
 import { RootState } from '../../../redux/store';
-import { fetchConfigAsync, fetchIdentityAsync } from '../../../redux/app.async.actions';
+import { fetchConfigAsync } from '../../../redux/app.async.actions';
 import { AppState } from '../../../redux/app.slice';
 import { SSEState } from '../../../redux/sse.slice';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
@@ -31,7 +31,6 @@ interface Props {
     app: AppState;
     sse: SSEState;
     actions: {
-        fetchIdentityAsync: () => void;
         fetchConfigAsync: () => void;
     };
 }
@@ -44,7 +43,6 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
         actions: {
-            fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
             fetchConfigAsync: () => dispatch(fetchConfigAsync()),
         },
     };
@@ -72,9 +70,8 @@ const Dashboard = ({ actions, app, sse }: Props) => {
 
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
-        actions.fetchIdentityAsync();
         actions.fetchConfigAsync();
-    }, []);
+    });
 
     const { currentIdentity, config } = app;
     useEffect(() => {
