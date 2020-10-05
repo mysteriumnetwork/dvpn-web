@@ -14,7 +14,6 @@ import '../../../assets/styles/pages/sessionsList.scss';
 import formatBytes from '../../../commons/formatBytes';
 import { displayMyst } from '../../../commons/money.utils';
 import secondsToISOTime from '../../../commons/secondsToISOTime';
-import { Flag } from '../../../Components/Flag/Flag';
 import Header from '../../../Components/Header';
 import Table, { TableRow } from '../../../Components/Table/Table';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
@@ -32,7 +31,7 @@ const row = (s: Session): TableRow => {
     const cells = [
         {
             className: 'w-10',
-            content: <Flag countryCode={s.consumerCountry} />,
+            content: s.consumerCountry,
         },
         {
             className: 'w-20',
