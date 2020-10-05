@@ -8,7 +8,7 @@
 import React, { Dispatch, useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { SessionStats } from 'mysterium-vpn-js';
+import { SessionDirection, SessionStats } from 'mysterium-vpn-js';
 import { useSnackbar } from 'notistack';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
@@ -74,7 +74,19 @@ const Dashboard = ({ actions, app, sse }: Props) => {
     useEffect(() => {
         actions.fetchIdentityAsync();
         actions.fetchConfigAsync();
-        Promise.all([tequilapiClient.sessionStatsDaily(), tequilapiClient.sessionStatsAggregated()])
+    }, []);
+
+    const { currentIdentity, config } = app;
+    useEffect(() => {
+        if (!currentIdentity) {
+            return;
+        }
+
+        const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: currentIdentity.id };
+        Promise.all([
+            tequilapiClient.sessionStatsDaily(sessionFilter),
+            tequilapiClient.sessionStatsAggregated(sessionFilter),
+        ])
             .then((result) => {
                 const [{ items: statsDaily }, { stats: allTimeStats }] = result;
                 setState({
@@ -87,9 +99,8 @@ const Dashboard = ({ actions, app, sse }: Props) => {
                 enqueueSnackbar(parseError(err), { variant: 'error' });
                 console.log(err);
             });
-    }, []);
+    }, [currentIdentity?.id]);
 
-    const { currentIdentity, config } = app;
     const { appState } = sse;
     if (!currentIdentity || !appState || !config) {
         return <CircularProgress className="spinner" />;
