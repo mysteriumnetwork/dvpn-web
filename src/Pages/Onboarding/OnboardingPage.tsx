@@ -36,9 +36,7 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity }: Props)
         },
     };
 
-    const steps = [
-        <Welcome key="welcome" callbacks={callbacks} />,
-    ];
+    const steps = [<Welcome key="welcome" callbacks={callbacks} />];
 
     if (!termsAccepted) {
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
@@ -68,9 +66,7 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity }: Props)
 
     return (
         <div className="onboarding">
-            <div className="onboarding__content">
-                {content}
-            </div>
+            <div className="onboarding__content">{content}</div>
             <div className="onboarding__sidebar">
                 <img alt="onboarding" src={sideImage} />
             </div>

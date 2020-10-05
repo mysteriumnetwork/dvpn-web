@@ -13,8 +13,8 @@ interface StateInterface {
     newPasswordConfirmation: string;
     newPassword: string;
     currentPassword: string;
-    error: boolean,
-    errorMessage: string,
+    error: boolean;
+    errorMessage: string;
 }
 
 const defaultState = {
@@ -67,7 +67,7 @@ const PasswordChange: React.FC = () => {
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
-                    placeholder={"*********"}
+                    placeholder={'*********'}
                     value={values.currentPassword}
                     stateName="currentPassword"
                 />
@@ -77,7 +77,7 @@ const PasswordChange: React.FC = () => {
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
-                    placeholder={"*********"}
+                    placeholder={'*********'}
                     value={values.newPassword}
                     stateName="newPassword"
                 />
@@ -87,7 +87,7 @@ const PasswordChange: React.FC = () => {
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
-                    placeholder={"*********"}
+                    placeholder={'*********'}
                     value={values.newPasswordConfirmation}
                     stateName="newPasswordConfirmation"
                 />

@@ -45,7 +45,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
         tequilapiClient.getMMNApiKey().then((resp) => {
             setState({ ...state, apiKey: resp.api_key });
         });
-    }, []);
+    }, [state]);
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, [prop]: event.target.value });
@@ -73,10 +73,10 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
             .then(
                 () => tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, state.password),
                 (mmnError) =>
-                    setState({ ...state, error: true, errorMessage: parseMMNError(mmnError) || API_CALL_FAILED })
+                    setState({ ...state, error: true, errorMessage: parseMMNError(mmnError) || API_CALL_FAILED }),
             )
             .then(() =>
-                store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
+                store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })),
             )
             .then(() => callbacks.nextStep())
             .catch((error) => {
@@ -96,7 +96,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
                         password={true}
-                        placeholder={"*********"}
+                        placeholder={'*********'}
                         value={state.password}
                         stateName="password"
                     />
@@ -106,7 +106,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
                         password={true}
-                        placeholder={"*********"}
+                        placeholder={'*********'}
                         value={state.passwordRepeat}
                         stateName="passwordRepeat"
                     />
@@ -118,8 +118,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                         label="Claim this node in my.mysterium.network"
                     />
                 </div>
-                {
-                    state.checked ?
+                {state.checked ? (
                     <div className="input-group m-t-20">
                         <p className="input-group__label">
                             API Token (
@@ -131,12 +130,11 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                         <DefaultTextField
                             handleChange={handleTextFieldsChange}
                             value={state.apiKey}
-                            placeholder={"Your API token"}
+                            placeholder={'Your API token'}
                             stateName="apiKey"
                         />
                     </div>
-                    : null
-                }
+                ) : null}
                 <div className="step__content-buttons step__content-buttons--center m-t-30">
                     <Button onClick={handleSubmitPassword}>Save & Continue</Button>
                 </div>

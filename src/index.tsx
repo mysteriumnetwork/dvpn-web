@@ -27,5 +27,5 @@ ReactDOM.render(
             </BrowserRouter>
         </SnackbarProvider>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById('root'),
 );

@@ -36,13 +36,12 @@ export const sessionDailyStatsToData = (statsDaily: { [name: string]: SessionSta
         x: formatDate(dateKey),
         y: (accum +=
             add(statsDaily[dateKey].sumBytesReceived, statsDaily[dateKey].sumBytesSent) / (1024 * 1024 * 1024)).toFixed(
-            2
+            2,
         ),
     }));
 };
 
 const formatDate = (malformed: string): string => {
-    const year = malformed.substr(0, 4);
     const month = malformed.substr(4, 2);
     const day = malformed.substr(6, 2);
     return `${month}-${day}`;

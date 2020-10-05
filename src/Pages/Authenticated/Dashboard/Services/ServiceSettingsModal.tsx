@@ -136,6 +136,7 @@ const ServiceSettingsModal = ({
                         <p className="text">Limit bandwidth to 5Mb/s</p>
                     </div>
                     <div className="buttons-block">
+                        {/* eslint-disable-next-line react/style-prop-object */}
                         <Button onClick={onClose} style="gray">
                             Close
                         </Button>
@@ -147,13 +148,13 @@ const ServiceSettingsModal = ({
                                     .then(() => setAccessPolicy(state.isVerifiedTrafficEnabled ? 'mysterium' : ''))
                                     .then(() => setTrafficShaping(state.isTrafficShapingEnabled))
                                     .then(() =>
-                                        serviceInfo?.id ? tequilapi.serviceStop(serviceInfo.id) : Promise.resolve()
+                                        serviceInfo?.id ? tequilapi.serviceStop(serviceInfo.id) : Promise.resolve(),
                                     )
                                     .then(() =>
                                         tequilapi.serviceStart({
                                             providerId: identityRef,
                                             type: serviceType.toLowerCase(),
-                                        })
+                                        }),
                                     )
                                     .then(() => onClose())
                                     .catch((err) => {

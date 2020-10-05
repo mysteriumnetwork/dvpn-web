@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import { Slider as MUISlider } from '@material-ui/core';
-import "./Slider.scss"
+import './Slider.scss';
 
 interface Props {
     label: string;
@@ -21,16 +21,14 @@ interface Props {
 }
 
 const Slider = ({ value, myst, label, handleChange, step, min, max, disabled }: Props): JSX.Element => {
-    const labelFormat = (value: number) => `${value} ${myst ? 'MYST' : ''}`
+    const labelFormat = (value: number) => `${value} ${myst ? 'MYST' : ''}`;
 
     return (
         <div className="slider">
             <div className="slider__header">
-                <div className="slider__header--label">
-                    {label}
-                </div>
+                <div className="slider__header--label">{label}</div>
                 <div className="slider__header--amount">
-                    { value } {myst ? 'MYST': ''}
+                    {value} {myst ? 'MYST' : ''}
                 </div>
             </div>
             <div className="slider__container">
@@ -53,4 +51,4 @@ const Slider = ({ value, myst, label, handleChange, step, min, max, disabled }: 
     );
 };
 
-export default Slider
+export default Slider;
