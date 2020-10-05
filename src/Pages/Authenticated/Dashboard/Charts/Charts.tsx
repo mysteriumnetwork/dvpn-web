@@ -99,7 +99,7 @@ const Charts = ({ statsDaily }: Props) => {
                                     types[type].name
                                 }
                             </div>
-                        )
+                        );
                     })}
                 </div>
             </div>
@@ -124,7 +124,8 @@ const Charts = ({ statsDaily }: Props) => {
                             tickMargin={10}
                             ticks={types[values.active].ticks}
                             dataKey="y"
-                            unit={values.dataName} />
+                            unit={values.dataName}
+                        />
                         <Tooltip />
                         <Line
                             type="monotone"

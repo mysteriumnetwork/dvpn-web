@@ -126,6 +126,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
             </div>
 
             <div className="service__options">
+                {/* eslint-disable-next-line react/style-prop-object */}
                 <Button onClick={openSettings} style="gray">
                     Settings
                 </Button>

@@ -39,7 +39,7 @@ const LoginPage = () => {
         setState({ ...state, error: false, isLoading: true });
         loginAndStoreCurrentIdentity(DEFAULT_USERNAME, state.password)
             .then(() =>
-                store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
+                store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })),
             )
             .catch(() => setState({ ...state, error: true, isLoading: false }));
     };
@@ -68,6 +68,7 @@ const LoginPage = () => {
                             </div>
 
                             <div className="password-actions-block">
+                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                 <a href="#">Forgot password?</a>
                                 <Button type="submit" isLoading={state.isLoading}>
                                     Sing In

@@ -6,7 +6,7 @@
  */
 import { EventEmitter } from 'events';
 
-import { AppState, parseSSEResponse, SSEEventType, TEQUILAPI_SSE_URL } from 'mysterium-vpn-js';
+import { parseSSEResponse, SSEEventType } from 'mysterium-vpn-js';
 
 class ServerSentEvents {
     emitter: EventEmitter;

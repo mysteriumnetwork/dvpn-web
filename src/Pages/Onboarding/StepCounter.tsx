@@ -20,11 +20,7 @@ const generateSteps = (currentStep: number, totalStepCount: number): ReactElemen
 };
 
 const StepCounter = ({ currentStep, totalStepCount }: Props): JSX.Element => {
-    return (
-        <div className="steps__counter">
-            {generateSteps(currentStep, totalStepCount)}
-        </div>
-    );
+    return <div className="steps__counter">{generateSteps(currentStep, totalStepCount)}</div>;
 };
 
 export default StepCounter;

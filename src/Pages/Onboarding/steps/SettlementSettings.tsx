@@ -89,7 +89,7 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
                         value={thisState.walletAddress}
-                        placeholder={"0x..."}
+                        placeholder={'0x...'}
                         stateName="walletAddress"
                     />
                     <p className="input-group__help">Fill in the following information to receive payments.</p>
@@ -106,14 +106,17 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                         myst={true}
                     />
                     <p className="input-group__help">
-                        To start providing services and ensure smooth and secure payouts (settlements) in
-                        Mysterium Network, node runners should stake a small amount of tokens. If you choose the default
-                        option, the initial stake amount will be set to 0 and it will be automatically increased up to 10 MYST by
-                        taking 10% of earnings during each promise settlement (payout).
+                        To start providing services and ensure smooth and secure payouts (settlements) in Mysterium
+                        Network, node runners should stake a small amount of tokens. If you choose the default option,
+                        the initial stake amount will be set to 0 and it will be automatically increased up to 10 MYST
+                        by taking 10% of earnings during each promise settlement (payout).
                     </p>
                 </div>
                 <div className="step__content-buttons m-t-50">
-                    <Button onClick={callbacks.nextStep} style="outline">Setup Later</Button>
+                    {/* eslint-disable-next-line react/style-prop-object */}
+                    <Button onClick={callbacks.nextStep} style="outline">
+                        Setup Later
+                    </Button>
                     <Button onClick={handleDone} isLoading={isLoading}>
                         Next
                     </Button>

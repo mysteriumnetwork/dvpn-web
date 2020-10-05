@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2020 BlockDev AG
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import React from 'react';
 import { useSnackbar } from 'notistack';
 import { TequilapiError } from 'mysterium-vpn-js';
@@ -13,8 +19,8 @@ interface StateInterface {
     newPasswordConfirmation: string;
     newPassword: string;
     currentPassword: string;
-    error: boolean,
-    errorMessage: string,
+    error: boolean;
+    errorMessage: string;
 }
 
 const defaultState = {
@@ -67,7 +73,7 @@ const PasswordChange: React.FC = () => {
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
-                    placeholder={"*********"}
+                    placeholder={'*********'}
                     value={values.currentPassword}
                     stateName="currentPassword"
                 />
@@ -77,7 +83,7 @@ const PasswordChange: React.FC = () => {
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
-                    placeholder={"*********"}
+                    placeholder={'*********'}
                     value={values.newPassword}
                     stateName="newPassword"
                 />
@@ -87,7 +93,7 @@ const PasswordChange: React.FC = () => {
                 <DefaultTextField
                     handleChange={handleTextFieldsChange}
                     password={true}
-                    placeholder={"*********"}
+                    placeholder={'*********'}
                     value={values.newPasswordConfirmation}
                     stateName="newPasswordConfirmation"
                 />

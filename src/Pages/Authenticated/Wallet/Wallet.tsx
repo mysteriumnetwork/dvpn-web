@@ -43,7 +43,7 @@ const earnings = (appState?: AppState, identityRef?: string): number => {
         return 0;
     }
 
-    return appState.identities.filter((i) => i?.id == identityRef)[0].earnings;
+    return appState.identities.filter((i) => i?.id === identityRef)[0].earnings;
 };
 
 const row = (s: Settlement): TableRow => {

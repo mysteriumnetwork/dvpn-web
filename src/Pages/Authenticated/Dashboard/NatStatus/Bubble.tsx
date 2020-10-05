@@ -13,9 +13,7 @@ interface Props {
 }
 
 const Bubble = ({ type }: Props): JSX.Element => {
-    return (
-        <div className={`bubble bubble--${type}`} />
-    );
+    return <div className={`bubble bubble--${type}`} />;
 };
 
 export default Bubble;

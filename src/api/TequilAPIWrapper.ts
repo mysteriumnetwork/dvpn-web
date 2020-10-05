@@ -99,7 +99,7 @@ export const setTrafficShaping = async (enabled: boolean): Promise<Config> => {
 export const setServicePrice = async (
     pricePerMinute: number,
     pricePerGb: number,
-    service: ServiceType
+    service: ServiceType,
 ): Promise<Config> => {
     const configServiceName = service === ServiceType.OPENVPN ? 'openvpn' : 'wireguard';
     return await tequilapiClient

@@ -20,7 +20,7 @@ export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => 
             updateTermsStore({
                 acceptedAt: at,
                 acceptedVersion: version,
-            })
+            }),
         );
     };
 };

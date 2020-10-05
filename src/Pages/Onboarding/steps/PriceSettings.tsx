@@ -54,9 +54,7 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
     return (
         <div className="step">
             <h1 className="step__title">Service price settings</h1>
-            <p className="step__description">
-                Fill in the following information to start running a VPN service.
-            </p>
+            <p className="step__description">Fill in the following information to start running a VPN service.</p>
             <div className="step__content m-t-100">
                 <div className="input-group m-t-10">
                     <Slider
@@ -90,9 +88,7 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
                     />
                 </div>
                 <div className="step__content-buttons step__content-buttons--center">
-                    <Button onClick={handleSettingSetup}>
-                        Next
-                    </Button>
+                    <Button onClick={handleSettingSetup}>Next</Button>
                 </div>
             </div>
         </div>
