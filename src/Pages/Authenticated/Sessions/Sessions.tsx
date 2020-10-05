@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Session, SessionListResponse } from 'mysterium-vpn-js';
+import { Session, SessionDirection, SessionListResponse } from 'mysterium-vpn-js';
 import React, { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 
@@ -19,6 +19,17 @@ import Table, { TableRow } from '../../../Components/Table/Table';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import './Sessions.scss';
 import { parseError } from '../../../commons/error.utils';
+import { RootState } from '../../../redux/store';
+import { connect } from 'react-redux';
+
+export interface Props {
+    filterDirection?: SessionDirection;
+    filterProviderId?: string;
+}
+
+const mapStateToProps = (state: RootState) => ({
+    filterProviderId: state.app.currentIdentity?.id,
+});
 
 interface StateProps {
     isLoading: boolean;
@@ -57,7 +68,7 @@ const row = (s: Session): TableRow => {
     };
 };
 
-const Sessions: FC = () => {
+const Sessions: FC<Props> = ({ filterDirection = SessionDirection.PROVIDED, filterProviderId }: Props) => {
     const [state, setState] = useState<StateProps>({
         isLoading: true,
         pageSize: 10,
@@ -67,7 +78,12 @@ const Sessions: FC = () => {
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
         tequilapiClient
-            .sessions({ pageSize: state.pageSize, page: state.currentPage })
+            .sessions({
+                direction: filterDirection,
+                providerId: filterProviderId,
+                pageSize: state.pageSize,
+                page: state.currentPage,
+            })
             .then((resp) => {
                 setState({ ...state, isLoading: false, sessionListResponse: resp });
             })
@@ -121,4 +137,4 @@ const Sessions: FC = () => {
     );
 };
 
-export default Sessions;
+export default connect(mapStateToProps)(Sessions);
