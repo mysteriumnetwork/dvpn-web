@@ -58,6 +58,7 @@ export interface Props {
     liveSessionStats?: SessionStats;
     displayNavigation?: boolean;
     liveSessionsOnly?: boolean;
+    sessionsLimit?: number;
     headerText: string;
 }
 
@@ -65,7 +66,7 @@ interface StateProps {
     historySessions: Session[];
 }
 
-const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liveSessionsOnly, headerText }: Props) => {
+const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liveSessionsOnly, sessionsLimit = 10, headerText }: Props) => {
     const [state, setState] = useState<StateProps>({ historySessions: [] });
 
     const { enqueueSnackbar } = useSnackbar();
@@ -73,7 +74,7 @@ const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liv
     useEffect(() => {
         if (!liveSessionsOnly) {
             tequilapiClient
-                .sessions({ pageSize: 10 })
+                .sessions({ pageSize: sessionsLimit })
                 .then((resp) => setState({ ...state, historySessions: resp.items }))
                 .catch((err) => {
                     enqueueSnackbar(parseError(err) || 'Fetching Sessions Failed!');
@@ -82,8 +83,9 @@ const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liv
         }
     }, []);
 
-    const historySessionCount = state.historySessions.length >= 10 ? 10 : state.historySessions.length;
-    const historyCards = state.historySessions.slice(0, historySessionCount - 1).map((hs) => toSessionCard(hs));
+    const historyCards = (state.historySessions.length >= sessionsLimit ? state.historySessions : state.historySessions)
+        .slice(0, sessionsLimit - 1)
+        .map((hs) => toSessionCard(hs));
     const latestSessionCards = (liveSessions || []).map((ls) => toSessionCard(ls)).concat(historyCards);
 
     return (
