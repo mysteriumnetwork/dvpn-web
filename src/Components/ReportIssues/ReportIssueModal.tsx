@@ -80,6 +80,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
                         <p className="title__description">Describe your issue</p>
                     </div>
                     <div className="chat">
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                         <a href="#" onClick={() => openChat()}>
                             <ChatIcon className="chat__icon" />
                             Talk to us via live chat
@@ -94,7 +95,12 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
             </DialogTitle>
             <DialogContent>
                 <div className="report-issue">
-                    <form autoComplete="off" onSubmit={(e) => {e.preventDefault()}}>
+                    <form
+                        autoComplete="off"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                        }}
+                    >
                         <div className="input-group">
                             <div className="input-group__label">Email address (optional)</div>
                             <DefaultTextField
@@ -114,14 +120,14 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
                                 rows={4}
                                 multiline
                             />
-                            <div className="input-group__help m-t-5">Describe what went wrong (minimum 30 characters)
+                            <div className="input-group__help m-t-5">
+                                Describe what went wrong (minimum 30 characters)
                             </div>
                         </div>
                         <div className="report-issue__footer m-t-50 p-b-15">
                             <p className="agreement">
                                 By submitting this form, agree to send to Mysterium Network some account information
-                                like
-                                IP, country and system information which will be used to improve the services.
+                                like IP, country and system information which will be used to improve the services.
                             </p>
                             <Button
                                 disabled={state.description.length < 30}
