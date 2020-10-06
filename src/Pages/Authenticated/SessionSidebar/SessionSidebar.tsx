@@ -95,9 +95,7 @@ const SessionSidebar = ({
         }
     }, []);
 
-    const historyCards = (state.historySessions.length >= sessionsLimit ? state.historySessions : state.historySessions)
-        .slice(0, sessionsLimit - 1)
-        .map((hs) => toSessionCard(hs));
+    const historyCards = state.historySessions.map((hs) => toSessionCard(hs));
     const latestSessionCards = (liveSessions || []).map((ls) => toSessionCard(ls)).concat(historyCards);
 
     return (

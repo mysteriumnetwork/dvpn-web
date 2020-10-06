@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Session, SessionDirection, SessionListResponse } from 'mysterium-vpn-js';
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 
 import { tequilapiClient } from '../../../api/TequilApiClient';
@@ -68,7 +68,7 @@ const row = (s: Session): TableRow => {
     };
 };
 
-const Sessions: FC<Props> = ({ filterDirection = SessionDirection.PROVIDED, filterProviderId }: Props) => {
+const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderId }: Props) => {
     const [state, setState] = useState<StateProps>({
         isLoading: true,
         pageSize: 10,
