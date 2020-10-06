@@ -12,7 +12,6 @@ import Button from '../../../../Components/Buttons/Button';
 import Errors from '../../../../Components/Validation/Errors';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
 import { DefaultTextField } from '../../../../Components/DefaultTextField';
-import { MMN_USER_PROFILE_URL } from '../../../../constants/urls';
 
 interface StateInterface {
     apiKey: string;
@@ -22,9 +21,10 @@ interface StateInterface {
 
 interface Props {
     apiKey: string;
+    mmnUrl: string;
 }
 
-const MMN = ({ apiKey }: Props) => {
+const MMN = ({ apiKey, mmnUrl }: Props) => {
     const { enqueueSnackbar } = useSnackbar();
     const [values, setValues] = React.useState<StateInterface>({
         apiKey: '',
@@ -62,7 +62,7 @@ const MMN = ({ apiKey }: Props) => {
     };
 
     const link = (
-        <a href={MMN_USER_PROFILE_URL} target="_blank" rel="noopener noreferrer">
+        <a href={`${mmnUrl}/user/profile`} target="_blank" rel="noopener noreferrer">
             Get it here
         </a>
     );

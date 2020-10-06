@@ -6,5 +6,3 @@
  */
 export const NAT_FIX_URL =
     'http://docs.mysterium.network/en/latest/user-guide/installation/#router-configuration-for-nodes-behind-nat';
-
-export const MMN_USER_PROFILE_URL = 'https://betanet.mysterium.network/user/profile';

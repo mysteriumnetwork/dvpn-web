@@ -37,6 +37,7 @@ import OnboardingPage from './Onboarding/OnboardingPage';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
 import AuthenticatedPage from './Authenticated/AuthenticatedPage';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 interface Props {
     loading: boolean;
@@ -45,6 +46,7 @@ interface Props {
     termsAccepted: boolean;
     needsPasswordChange: boolean;
     needsOnboarding: boolean;
+    config?: Config;
     actions: {
         fetchIdentityAsync: () => void;
         updateTermsStoreAsync: () => void;
@@ -57,7 +59,7 @@ interface Props {
 const mapStateToProps = (state: RootState) => ({
     loading: state.app.loading,
     identity: state.app.currentIdentity,
-
+    config: state.app.config,
     loggedIn: isLoggedIn(state.app),
     termsAccepted: termsAccepted(state.app),
     needsPasswordChange: needsPasswordChange(state.app),
