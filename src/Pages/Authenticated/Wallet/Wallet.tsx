@@ -85,12 +85,14 @@ const Wallet = ({ appState, identity }: Props) => {
     });
 
     useEffect(() => {
-        tequilapiClient.settlementHistory({}).then((settlementResponse) => {
-            setState({
-                ...state,
-                settlementResponse: settlementResponse,
+        tequilapiClient
+            .settlementHistory({ pageSize: state.pageSize, page: state.currentPage })
+            .then((settlementResponse) => {
+                setState({
+                    ...state,
+                    settlementResponse: settlementResponse,
+                });
             });
-        });
     }, [state.pageSize, state.currentPage]);
 
     if (identity === undefined) {

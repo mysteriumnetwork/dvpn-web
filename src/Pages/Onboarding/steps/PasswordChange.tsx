@@ -71,7 +71,12 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
 
         (state.checked ? tequilapiClient.setMMNApiKey(state.apiKey) : Promise.resolve())
             .then(
-                () => tequilapiClient.authChangePassword(DEFAULT_USERNAME, DEFAULT_PASSWORD, state.password),
+                () =>
+                    tequilapiClient.authChangePassword({
+                        username: DEFAULT_USERNAME,
+                        oldPassword: DEFAULT_PASSWORD,
+                        newPassword: state.password,
+                    }),
                 (mmnError) =>
                     setState({ ...state, error: true, errorMessage: parseMMNError(mmnError) || API_CALL_FAILED }),
             )
