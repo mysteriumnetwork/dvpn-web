@@ -14,7 +14,7 @@ import '../assets/styles/App.scss';
 import { sseAppStateStateChanged } from '../redux/sse.slice';
 import ConnectToSSE from '../sse/server-sent-events';
 import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/app.slice';
-import { updateTermsStoreAsync } from '../redux/app.async.actions';
+import { fetchConfigAsync, updateTermsStoreAsync } from '../redux/app.async.actions';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice';
 import { RootState } from '../redux/store';
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
@@ -53,6 +53,7 @@ interface Props {
         updateAuthenticatedStore: (auth: Auth) => void;
         updateAuthFlowLoadingStore: (loading: boolean) => void;
         sseAppStateStateChanged: (state: AppState) => void;
+        fetchConfigAsync: () => void;
     };
 }
 
@@ -74,6 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
             updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
             updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
             sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
+            fetchConfigAsync: () => dispatch(fetchConfigAsync()),
         },
     };
 };
@@ -105,6 +107,7 @@ const AppRouter = ({
         await actions.updateTermsStoreAsync();
         actions.updateAuthFlowLoadingStore(false);
         actions.fetchIdentityAsync();
+        actions.fetchConfigAsync();
     };
 
     useLayoutEffect(() => {

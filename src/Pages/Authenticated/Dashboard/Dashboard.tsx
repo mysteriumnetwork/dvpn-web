@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { SessionDirection, SessionStats } from 'mysterium-vpn-js';
@@ -14,7 +14,6 @@ import { useSnackbar } from 'notistack';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
 import { RootState } from '../../../redux/store';
-import { fetchConfigAsync } from '../../../redux/app.async.actions';
 import { AppState } from '../../../redux/app.slice';
 import { SSEState } from '../../../redux/sse.slice';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
@@ -30,23 +29,12 @@ import Statistics from './Statistics/Statistics';
 interface Props {
     app: AppState;
     sse: SSEState;
-    actions: {
-        fetchConfigAsync: () => void;
-    };
 }
 
 const mapStateToProps = (state: RootState) => ({
     app: state.app,
     sse: state.sse,
 });
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-    return {
-        actions: {
-            fetchConfigAsync: () => dispatch(fetchConfigAsync()),
-        },
-    };
-};
 
 interface StateProps {
     sessionStatsAllTime: SessionStats;
@@ -55,7 +43,7 @@ interface StateProps {
     };
 }
 
-const Dashboard = ({ actions, app, sse }: Props) => {
+const Dashboard = ({ app, sse }: Props) => {
     const [state, setState] = useState<StateProps>({
         sessionStatsAllTime: {
             count: 0,
@@ -69,10 +57,6 @@ const Dashboard = ({ actions, app, sse }: Props) => {
     });
 
     const { enqueueSnackbar } = useSnackbar();
-    useEffect(() => {
-        actions.fetchConfigAsync();
-    });
-
     const { currentIdentity, config } = app;
     useEffect(() => {
         if (!currentIdentity) {
@@ -133,4 +117,4 @@ const Dashboard = ({ actions, app, sse }: Props) => {
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps)(Dashboard);
