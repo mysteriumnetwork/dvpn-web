@@ -8,13 +8,13 @@
 import React, { Dispatch, useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { SessionStats } from 'mysterium-vpn-js';
+import { SessionDirection, SessionStats } from 'mysterium-vpn-js';
 import { useSnackbar } from 'notistack';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
 import { RootState } from '../../../redux/store';
-import { fetchConfigAsync, fetchIdentityAsync } from '../../../redux/app.async.actions';
+import { fetchConfigAsync } from '../../../redux/app.async.actions';
 import { AppState } from '../../../redux/app.slice';
 import { SSEState } from '../../../redux/sse.slice';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
@@ -31,7 +31,6 @@ interface Props {
     app: AppState;
     sse: SSEState;
     actions: {
-        fetchIdentityAsync: () => void;
         fetchConfigAsync: () => void;
     };
 }
@@ -44,7 +43,6 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
         actions: {
-            fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
             fetchConfigAsync: () => dispatch(fetchConfigAsync()),
         },
     };
@@ -72,9 +70,20 @@ const Dashboard = ({ actions, app, sse }: Props) => {
 
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
-        actions.fetchIdentityAsync();
         actions.fetchConfigAsync();
-        Promise.all([tequilapiClient.sessionStatsDaily(), tequilapiClient.sessionStatsAggregated()])
+    });
+
+    const { currentIdentity, config } = app;
+    useEffect(() => {
+        if (!currentIdentity) {
+            return;
+        }
+
+        const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: currentIdentity.id };
+        Promise.all([
+            tequilapiClient.sessionStatsDaily(sessionFilter),
+            tequilapiClient.sessionStatsAggregated(sessionFilter),
+        ])
             .then((result) => {
                 const [{ items: statsDaily }, { stats: allTimeStats }] = result;
                 setState({
@@ -87,9 +96,8 @@ const Dashboard = ({ actions, app, sse }: Props) => {
                 enqueueSnackbar(parseError(err), { variant: 'error' });
                 console.log(err);
             });
-    }, []);
+    }, [currentIdentity?.id]);
 
-    const { currentIdentity, config } = app;
     const { appState } = sse;
     if (!currentIdentity || !appState || !config) {
         return <CircularProgress className="spinner" />;

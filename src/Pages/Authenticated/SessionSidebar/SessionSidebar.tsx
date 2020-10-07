@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect, useState } from 'react';
-import { Session, SessionStatus, SessionStats } from 'mysterium-vpn-js';
+import { Session, SessionStatus, SessionStats, SessionDirection } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -22,7 +22,8 @@ import { parseError } from '../../../commons/error.utils';
 
 import SessionCard from './SessionCard';
 
-const mapStateToProps = ({ sse }: RootState) => ({
+const mapStateToProps = ({ sse, app }: RootState) => ({
+    filterProviderId: app?.currentIdentity?.id,
     liveSessions: sse.appState?.sessions,
     liveSessionStats: sse.appState?.sessionsStats,
 });
@@ -58,6 +59,9 @@ export interface Props {
     liveSessionStats?: SessionStats;
     displayNavigation?: boolean;
     liveSessionsOnly?: boolean;
+    filterDirection?: SessionDirection;
+    filterProviderId?: string;
+    sessionsLimit?: number;
     headerText: string;
 }
 
@@ -65,7 +69,16 @@ interface StateProps {
     historySessions: Session[];
 }
 
-const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liveSessionsOnly, headerText }: Props) => {
+const SessionSidebar = ({
+    liveSessions,
+    liveSessionStats,
+    displayNavigation,
+    liveSessionsOnly,
+    filterDirection = SessionDirection.PROVIDED,
+    filterProviderId,
+    sessionsLimit = 10,
+    headerText,
+}: Props) => {
     const [state, setState] = useState<StateProps>({ historySessions: [] });
 
     const { enqueueSnackbar } = useSnackbar();
@@ -73,7 +86,7 @@ const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liv
     useEffect(() => {
         if (!liveSessionsOnly) {
             tequilapiClient
-                .sessions({ pageSize: 10 })
+                .sessions({ direction: filterDirection, providerId: filterProviderId, pageSize: sessionsLimit })
                 .then((resp) => setState({ ...state, historySessions: resp.items }))
                 .catch((err) => {
                     enqueueSnackbar(parseError(err) || 'Fetching Sessions Failed!');
@@ -82,8 +95,7 @@ const SessionSidebar = ({ liveSessions, liveSessionStats, displayNavigation, liv
         }
     }, []);
 
-    const historySessionCount = state.historySessions.length >= 10 ? 10 : state.historySessions.length;
-    const historyCards = state.historySessions.slice(0, historySessionCount - 1).map((hs) => toSessionCard(hs));
+    const historyCards = state.historySessions.map((hs) => toSessionCard(hs));
     const latestSessionCards = (liveSessions || []).map((ls) => toSessionCard(ls)).concat(historyCards);
 
     return (
