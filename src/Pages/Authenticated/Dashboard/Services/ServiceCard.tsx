@@ -9,9 +9,14 @@ import React, { useState } from 'react';
 import { ServiceInfo, ServiceStatus } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { useSnackbar } from 'notistack';
-import _ from 'lodash';
 
 import { ServiceType } from '../../../../commons';
+import {
+    isAccessPolicyEnabled,
+    isTrafficShapingEnabled,
+    servicePricePerGb,
+    servicePricePerMin,
+} from '../../../../commons/config';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
 import Button from '../../../../Components/Buttons/Button';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
@@ -33,22 +38,6 @@ interface Props {
 interface ModalProps {
     isOpen: boolean;
 }
-
-const isTrafficShapingEnabled = (c: Config): boolean => {
-    return _.get<Config, any>(c, 'data.shaper.enabled');
-};
-
-const isAccessPolicyEnabled = (c: Config): boolean => {
-    return _.get<Config, any>(c, 'data.access-policy.list');
-};
-
-const pricePerGb = (c: Config, s: ServiceType): number => {
-    return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-gb`) || 0;
-};
-
-const pricePerMin = (c: Config, s: ServiceType): number => {
-    return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-minute`) || 0;
-};
 
 const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Props) => {
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
@@ -97,8 +86,8 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
         pricePerMin: number;
         pricePerGb: number;
     } = {
-        pricePerMin: pricePerMin(userConfig, serviceType),
-        pricePerGb: pricePerGb(userConfig, serviceType),
+        pricePerMin: servicePricePerMin(userConfig, serviceType),
+        pricePerGb: servicePricePerGb(userConfig, serviceType),
     };
     const accessPolicyEnabled = isAccessPolicyEnabled(userConfig);
     return (

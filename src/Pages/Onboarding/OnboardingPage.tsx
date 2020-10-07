@@ -26,7 +26,7 @@ interface Props {
     termsAccepted: boolean;
     identity?: Identity;
     needsPasswordChange: boolean;
-    config?: Config;
+    config: Config;
 }
 
 const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }: Props) => {
@@ -45,7 +45,7 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }
     }
 
     if (!isIdentityRegistered(identity)) {
-        steps.push(<PriceSettings key="price" callbacks={callbacks} />);
+        steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
         steps.push(<SettlementSettings key="payout" callbacks={callbacks} />);
     }
 
