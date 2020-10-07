@@ -50,7 +50,7 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
         tequilapiClient.getMMNApiKey().then((resp) => {
             setState({ ...state, apiKey: resp.api_key });
         });
-    }, [state]);
+    }, [state.apiKey]);
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, [prop]: event.target.value });

@@ -19,14 +19,14 @@ interface StateInterface {
 }
 
 const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
-    const [values, setValues] = React.useState<StateInterface>({
+    const [state, setState] = React.useState<StateInterface>({
         checked: false,
         pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
         pricePerGb: DEFAULT_PRICE_PER_GB,
     });
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({
+        setState({
             checked: event.target.checked,
             pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
             pricePerGb: DEFAULT_PRICE_PER_GB,
@@ -34,21 +34,21 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
     };
 
     const handlePricePerMinuteChanged = (event: any, newValue: number) => {
-        setValues({
-            ...values,
+        setState({
+            ...state,
             pricePerMinute: newValue,
         });
     };
 
     const handlePricePerGbChanged = (event: any, newValue: number) => {
-        setValues({
-            ...values,
+        setState({
+            ...state,
             pricePerGb: newValue,
         });
     };
 
     const handleSettingSetup = () => {
-        setAllServicePrice(values.pricePerMinute, values.pricePerGb).then(() => callbacks.nextStep());
+        setAllServicePrice(state.pricePerMinute, state.pricePerGb).then(() => callbacks.nextStep());
     };
 
     return (
@@ -60,29 +60,29 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
                     <Slider
                         myst={true}
                         label="Price per minute"
-                        value={values.pricePerMinute}
+                        value={state.pricePerMinute}
                         handleChange={handlePricePerMinuteChanged}
                         step={0.001}
                         min={0}
                         max={0.01}
-                        disabled={values.checked}
+                        disabled={state.checked}
                     />
                 </div>
                 <div className="input-group m-t-40">
                     <Slider
                         myst={true}
                         label="Price per GB"
-                        value={values.pricePerGb}
+                        value={state.pricePerGb}
                         handleChange={handlePricePerGbChanged}
                         step={0.001}
                         min={0}
                         max={0.01}
-                        disabled={values.checked}
+                        disabled={state.checked}
                     />
                 </div>
                 <div className="input-group m-t-50 m-b-50">
                     <DefaultCheckbox
-                        checked={values.checked}
+                        checked={state.checked}
                         handleCheckboxChange={handleCheckboxChange}
                         label="Use default pricing"
                     />

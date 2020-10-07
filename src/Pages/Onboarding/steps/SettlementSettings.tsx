@@ -7,14 +7,15 @@
 import React, { useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
-// @ts-ignore
-import WAValidator from 'wallet-address-validator';
 
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import Slider from '../../../Components/Slider/Slider';
 import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
+import { parseError } from '../../../commons/error.utils';
+import { DECIMAL_PART } from 'mysterium-vpn-js';
+import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
 
 interface StateInterface {
     walletAddress: string;
@@ -23,7 +24,7 @@ interface StateInterface {
 }
 
 const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
-    const [thisState, setValues] = useState<StateInterface>({
+    const [state, setState] = useState<StateInterface>({
         walletAddress: '',
         stake: DEFAULT_STAKE_AMOUNT,
         errors: [],
@@ -31,30 +32,30 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const errors = (...messages: string[]): void => {
-        setValues({ ...thisState, errors: messages });
+        setState({ ...state, errors: messages });
     };
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...thisState, [prop]: event.target.value });
+        setState({ ...state, [prop]: event.target.value });
     };
 
     const handlePricePerGbChanged = (event: any, newValue: number) => {
-        setValues({ ...thisState, stake: newValue });
+        setState({ ...state, stake: newValue });
     };
 
     const handleDone = () => {
-        if (!validateWalletAddress(thisState.walletAddress)) {
+        if (!isValidEthereumAddress(state.walletAddress)) {
             errors('Invalid Ethereum wallet address');
             return;
         }
-
         setIsLoading(true);
+
         tequilapiClient
             .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
             .then((args) => registerIdentityInTransactor(args.id))
             .then(() => callbacks.nextStep())
             .catch((error) => {
-                errors('API call failed!');
+                errors(parseError(error) || 'API call failed');
                 console.log(error);
                 setIsLoading(false);
             });
@@ -62,13 +63,9 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
 
     const registerIdentityInTransactor = (identity: string): Promise<void> => {
         return tequilapiClient.identityRegister(identity, {
-            beneficiary: thisState.walletAddress,
-            stake: thisState.stake,
+            beneficiary: state.walletAddress,
+            stake: state.stake * DECIMAL_PART,
         });
-    };
-
-    const validateWalletAddress = (walletAddress: string): boolean => {
-        return WAValidator.validate(walletAddress, 'eth');
     };
 
     return (
@@ -76,10 +73,10 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
             <h1 className="step__title">Payout settings</h1>
             <p className="step__description">Fill in the following information to receive payments.</p>
             <div className="step__content m-t-100">
-                <Collapse in={thisState.errors.length > 0}>
+                <Collapse in={state.errors.length > 0}>
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>
-                        {thisState.errors.map((err, idx) => (
+                        {state.errors.map((err, idx) => (
                             <div key={idx}>{err}</div>
                         ))}
                     </Alert>
@@ -88,7 +85,7 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                     <p className="input-group__label">Ethereum wallet address</p>
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
-                        value={thisState.walletAddress}
+                        value={state.walletAddress}
                         placeholder={'0x...'}
                         stateName="walletAddress"
                     />
@@ -98,7 +95,7 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                     <p className="input-group__label m-b-15">Set your stake amount</p>
                     <Slider
                         label="Stake amount"
-                        value={thisState.stake}
+                        value={state.stake}
                         handleChange={handlePricePerGbChanged}
                         step={1}
                         min={0}
