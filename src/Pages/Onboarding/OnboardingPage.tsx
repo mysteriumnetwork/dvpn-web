@@ -20,14 +20,16 @@ import PriceSettings from './steps/PriceSettings';
 import SettlementSettings from './steps/SettlementSettings';
 
 import './Onboarding.scss';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 interface Props {
     termsAccepted: boolean;
     identity?: Identity;
     needsPasswordChange: boolean;
+    config?: Config;
 }
 
-const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity }: Props) => {
+const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
 
     const callbacks: OnboardingChildProps = {
@@ -48,7 +50,7 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity }: Props)
     }
 
     if (needsPasswordChange) {
-        steps.push(<PasswordChange key="password" callbacks={callbacks} />);
+        steps.push(<PasswordChange key="password" config={config} callbacks={callbacks} />);
     }
 
     const totalStepCount = steps.length;

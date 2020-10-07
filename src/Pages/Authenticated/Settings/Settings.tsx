@@ -20,6 +20,7 @@ import PasswordChange from './Components/PasswordChange';
 import IdentityBackup from './Components/IdentityBackup';
 
 import './Setings.scss';
+import { mmnWebAddress } from '../../../commons/config.utls';
 
 interface StateInterface {
     apiKey: string;
@@ -38,7 +39,7 @@ const Settings = ({ app }: Props): JSX.Element => {
         apiKey: '',
     });
 
-    const { currentIdentity } = app;
+    const { currentIdentity, config } = app;
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
         tequilapiClient
@@ -72,7 +73,7 @@ const Settings = ({ app }: Props): JSX.Element => {
                     <div className="settings__block">
                         <p className="heading">MMN integration</p>
                         <div className="content">
-                            <MMN apiKey={state.apiKey} />
+                            <MMN mmnUrl={mmnWebAddress(config)} apiKey={state.apiKey} />
                         </div>
                     </div>
                 </div>

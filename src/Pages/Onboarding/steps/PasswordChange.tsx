@@ -16,7 +16,7 @@ import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults'
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
 import { parseError, parseMMNError } from '../../../commons/error.utils';
-import { MMN_USER_PROFILE_URL } from '../../../constants/urls';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 interface StateInterface {
     passwordRepeat: string;
@@ -30,7 +30,12 @@ interface StateInterface {
 
 const API_CALL_FAILED = 'API Call failed.';
 
-const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
+interface Props {
+    config?: Config;
+    callbacks: OnboardingChildProps;
+}
+
+const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
     const [state, setState] = React.useState<StateInterface>({
         passwordRepeat: '',
         password: '',
@@ -127,7 +132,7 @@ const PasswordChange = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX
                     <div className="input-group m-t-20">
                         <p className="input-group__label">
                             API Key (
-                            <a href={MMN_USER_PROFILE_URL} target="_blank" rel="noopener noreferrer">
+                            <a href={`${config}/user/profile`} target="_blank" rel="noopener noreferrer">
                                 Get it here
                             </a>
                             )

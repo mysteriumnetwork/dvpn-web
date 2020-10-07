@@ -23,7 +23,7 @@ const Button = ({ isLoading, style, className, children, onClick, type, disabled
     const classNames = `btn p-r-30 p-l-30 ${className || ''} btn--${style || 'filled'}`;
 
     return (
-        <button disabled={disabled} type={type} onClick={onClick} className={classNames}>
+        <button disabled={disabled || isLoading} type={type} onClick={onClick} className={classNames}>
             {isLoading ? <CircularProgress className="loader" /> : children}
         </button>
     );

@@ -14,7 +14,7 @@ import '../assets/styles/App.scss';
 import { sseAppStateStateChanged } from '../redux/sse.slice';
 import ConnectToSSE from '../sse/server-sent-events';
 import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/app.slice';
-import { updateTermsStoreAsync } from '../redux/app.async.actions';
+import { fetchConfigAsync, updateTermsStoreAsync } from '../redux/app.async.actions';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice';
 import { RootState } from '../redux/store';
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
@@ -37,6 +37,7 @@ import OnboardingPage from './Onboarding/OnboardingPage';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
 import AuthenticatedPage from './Authenticated/AuthenticatedPage';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 interface Props {
     loading: boolean;
@@ -45,19 +46,21 @@ interface Props {
     termsAccepted: boolean;
     needsPasswordChange: boolean;
     needsOnboarding: boolean;
+    config?: Config;
     actions: {
         fetchIdentityAsync: () => void;
         updateTermsStoreAsync: () => void;
         updateAuthenticatedStore: (auth: Auth) => void;
         updateAuthFlowLoadingStore: (loading: boolean) => void;
         sseAppStateStateChanged: (state: AppState) => void;
+        fetchConfigAsync: () => void;
     };
 }
 
 const mapStateToProps = (state: RootState) => ({
     loading: state.app.loading,
     identity: state.app.currentIdentity,
-
+    config: state.app.config,
     loggedIn: isLoggedIn(state.app),
     termsAccepted: termsAccepted(state.app),
     needsPasswordChange: needsPasswordChange(state.app),
@@ -72,6 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
             updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
             updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
             sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
+            fetchConfigAsync: () => dispatch(fetchConfigAsync()),
         },
     };
 };
@@ -103,6 +107,7 @@ const AppRouter = ({
         await actions.updateTermsStoreAsync();
         actions.updateAuthFlowLoadingStore(false);
         actions.fetchIdentityAsync();
+        actions.fetchConfigAsync();
     };
 
     useLayoutEffect(() => {
