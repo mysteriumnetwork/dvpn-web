@@ -14,6 +14,8 @@ import { ServiceType } from '../../../../commons';
 import {
     isAccessPolicyEnabled,
     isTrafficShapingEnabled,
+    pricePerGbMax,
+    pricePerMinMax,
     servicePricePerGb,
     servicePricePerMin,
 } from '../../../../commons/config';
@@ -85,7 +87,11 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
     const prices: {
         pricePerMin: number;
         pricePerGb: number;
+        pricePerMinMax: number;
+        pricePerGbMax: number;
     } = {
+        pricePerGbMax: pricePerGbMax(userConfig),
+        pricePerMinMax: pricePerMinMax(userConfig),
         pricePerMin: servicePricePerMin(userConfig, serviceType),
         pricePerGb: servicePricePerGb(userConfig, serviceType),
     };
@@ -125,6 +131,8 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
                 isOpen={modalState.isOpen}
                 onClose={closeSettings}
                 serviceType={serviceType}
+                pricePerGbMax={prices.pricePerGbMax}
+                pricePerMinuteMax={prices.pricePerMinMax}
                 currentPricePerGb={prices.pricePerGb}
                 currentPricePerMinute={prices.pricePerMin}
                 identityRef={identityRef}

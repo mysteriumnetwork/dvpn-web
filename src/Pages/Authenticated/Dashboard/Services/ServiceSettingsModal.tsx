@@ -11,6 +11,7 @@ import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { useSnackbar } from 'notistack';
 
 import './ServiceSettingsModal.scss';
+import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../../constants/defaults';
 
 import Slider from '../../../../Components/Slider/Slider';
 import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
@@ -25,6 +26,8 @@ interface Props {
     serviceType: ServiceType;
     currentPricePerGb: number;
     currentPricePerMinute: number;
+    pricePerGbMax: number;
+    pricePerMinuteMax: number;
     identityRef: string;
     serviceInfo?: ServiceInfo;
     isCurrentAccessPolicyEnabled: boolean;
@@ -44,6 +47,8 @@ const ServiceSettingsModal = ({
     serviceType,
     currentPricePerGb,
     currentPricePerMinute,
+    pricePerGbMax,
+    pricePerMinuteMax,
     isCurrentAccessPolicyEnabled,
     isCurrentTrafficShapingEnabled,
     serviceInfo,
@@ -80,9 +85,9 @@ const ServiceSettingsModal = ({
                                 handleChange={(e, v) => {
                                     setState({ ...state, pricePerMinuteChosen: v });
                                 }}
-                                step={0.001}
+                                step={PRICE_PER_MINUTE_STEP}
                                 min={0}
-                                max={0.01}
+                                max={pricePerMinuteMax}
                                 disabled={false}
                             />
                             <div className="bottom-line">
@@ -98,9 +103,9 @@ const ServiceSettingsModal = ({
                                 handleChange={(e, v) => {
                                     setState({ ...state, pricePerGbChosen: v });
                                 }}
-                                step={0.01}
+                                step={PRICE_PER_GB_STEP}
                                 min={0}
-                                max={0.5}
+                                max={pricePerGbMax}
                                 disabled={false}
                             />
                             <div className="bottom-line">
