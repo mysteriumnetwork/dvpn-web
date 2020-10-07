@@ -92,7 +92,7 @@ const ServiceSettingsModal = ({
                             />
                             <div className="bottom-line">
                                 <p>0 MYST</p>
-                                <p>0.001 MYST</p>
+                                <p>{pricePerMinuteMax} MYST</p>
                             </div>
                         </div>
                         <div className="settings-row--slider">
@@ -110,7 +110,7 @@ const ServiceSettingsModal = ({
                             />
                             <div className="bottom-line">
                                 <p>0 MYST</p>
-                                <p>0.50 MYST</p>
+                                <p>{pricePerGbMax} MYST</p>
                             </div>
                         </div>
                     </div>
