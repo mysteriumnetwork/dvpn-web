@@ -6,6 +6,7 @@
  */
 import { CircularProgress } from '@material-ui/core';
 import { AppState, Identity } from 'mysterium-vpn-js';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -37,30 +38,29 @@ import OnboardingPage from './Onboarding/OnboardingPage';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
 import AuthenticatedPage from './Authenticated/AuthenticatedPage';
-import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 interface Props {
+    config?: Config,
     loading: boolean;
     identity?: Identity;
     loggedIn: boolean;
     termsAccepted: boolean;
     needsPasswordChange: boolean;
     needsOnboarding: boolean;
-    config?: Config;
     actions: {
         fetchIdentityAsync: () => void;
+        fetchConfigAsync: () => void;
         updateTermsStoreAsync: () => void;
         updateAuthenticatedStore: (auth: Auth) => void;
         updateAuthFlowLoadingStore: (loading: boolean) => void;
         sseAppStateStateChanged: (state: AppState) => void;
-        fetchConfigAsync: () => void;
     };
 }
 
 const mapStateToProps = (state: RootState) => ({
+    config: state.app.config,
     loading: state.app.loading,
     identity: state.app.currentIdentity,
-    config: state.app.config,
     loggedIn: isLoggedIn(state.app),
     termsAccepted: termsAccepted(state.app),
     needsPasswordChange: needsPasswordChange(state.app),
@@ -71,11 +71,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
         actions: {
             fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
+            fetchConfigAsync: () => dispatch(fetchConfigAsync()),
             updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
             updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
             updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
             sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
-            fetchConfigAsync: () => dispatch(fetchConfigAsync()),
         },
     };
 };
@@ -91,6 +91,7 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
 };
 
 const AppRouter = ({
+    config,
     loading,
     identity,
     loggedIn,
