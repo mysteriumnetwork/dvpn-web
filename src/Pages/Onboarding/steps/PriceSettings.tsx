@@ -4,12 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 import React from 'react';
+import { pricePerGbMax, pricePerMinMax, defaultPricePerGb, defaultPricePerMin } from '../../../commons/config';
 
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import Slider from '../../../Components/Slider/Slider';
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper';
-import { DEFAULT_PRICE_PER_MINUTE_PRICE, DEFAULT_PRICE_PER_GB } from '../../../constants/defaults';
+import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../constants/defaults';
 import Button from '../../../Components/Buttons/Button';
 
 interface StateInterface {
@@ -18,18 +20,21 @@ interface StateInterface {
     pricePerGb: number;
 }
 
-const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
+const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: OnboardingChildProps }): JSX.Element => {
+    const pricePerMinMaxRange = pricePerMinMax(config);
+    const pricePerGbMaxRange = pricePerGbMax(config);
+
     const [state, setState] = React.useState<StateInterface>({
         checked: false,
-        pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
-        pricePerGb: DEFAULT_PRICE_PER_GB,
+        pricePerMinute: defaultPricePerMin(config),
+        pricePerGb: defaultPricePerGb(config),
     });
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({
             checked: event.target.checked,
-            pricePerMinute: DEFAULT_PRICE_PER_MINUTE_PRICE,
-            pricePerGb: DEFAULT_PRICE_PER_GB,
+            pricePerMinute: defaultPricePerMin(config),
+            pricePerGb: defaultPricePerGb(config),
         });
     };
 
@@ -62,9 +67,9 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
                         label="Price per minute"
                         value={state.pricePerMinute}
                         handleChange={handlePricePerMinuteChanged}
-                        step={0.001}
+                        step={PRICE_PER_MINUTE_STEP}
                         min={0}
-                        max={0.01}
+                        max={pricePerMinMaxRange}
                         disabled={state.checked}
                     />
                 </div>
@@ -74,9 +79,9 @@ const PriceSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.
                         label="Price per GB"
                         value={state.pricePerGb}
                         handleChange={handlePricePerGbChanged}
-                        step={0.001}
+                        step={PRICE_PER_GB_STEP}
                         min={0}
-                        max={0.01}
+                        max={pricePerGbMaxRange}
                         disabled={state.checked}
                     />
                 </div>

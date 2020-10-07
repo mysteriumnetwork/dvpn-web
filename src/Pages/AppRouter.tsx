@@ -40,7 +40,7 @@ import PageNotFound from './Error/PageNotFound';
 import AuthenticatedPage from './Authenticated/AuthenticatedPage';
 
 interface Props {
-    config?: Config,
+    config?: Config;
     loading: boolean;
     identity?: Identity;
     loggedIn: boolean;
@@ -132,7 +132,7 @@ const AppRouter = ({
         ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state));
     }, [loggedIn]);
 
-    if (loading) {
+    if (loading || !config) {
         return <CircularProgress className="spinner" />;
     }
 
@@ -155,6 +155,7 @@ const AppRouter = ({
                     return needsOnboarding ? (
                         <OnboardingPage
                             {...props}
+                            config={config}
                             identity={identity}
                             termsAccepted={termsAccepted}
                             needsPasswordChange={needsPasswordChange}
