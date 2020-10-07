@@ -15,6 +15,7 @@ import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
 import { parseError } from '../../../commons/error.utils';
 import { DECIMAL_PART } from 'mysterium-vpn-js';
+import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
 
 interface StateInterface {
     walletAddress: string;
@@ -43,7 +44,12 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
     };
 
     const handleDone = () => {
+        if (!isValidEthereumAddress(state.walletAddress)) {
+            errors('Invalid Ethereum wallet address');
+            return;
+        }
         setIsLoading(true);
+
         tequilapiClient
             .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
             .then((args) => registerIdentityInTransactor(args.id))
