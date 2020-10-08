@@ -15,7 +15,6 @@ import { store } from './redux/store';
 
 import { unregister } from './serviceWorker';
 
-unregister(); // cache busting
 ReactDOM.render(
     <Provider store={store}>
         <SnackbarProvider
@@ -32,3 +31,5 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root'),
 );
+
+unregister(); // cache busting
