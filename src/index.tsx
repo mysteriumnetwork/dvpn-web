@@ -7,7 +7,7 @@
 import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import AppRouter from './Pages/AppRouter';
@@ -25,9 +25,9 @@ ReactDOM.render(
                 horizontal: 'right',
             }}
         >
-            <BrowserRouter>
+            <HashRouter>
                 <AppRouter />
-            </BrowserRouter>
+            </HashRouter>
         </SnackbarProvider>
     </Provider>,
     document.getElementById('root'),

@@ -17,13 +17,17 @@ import { DEFAULT_USERNAME } from '../../constants/defaults';
 import Button from '../../Components/Buttons/Button';
 import { loginAndStoreCurrentIdentity } from '../../api/TequilAPIWrapper';
 
+interface Props {
+    onSuccessLogin: () => void;
+}
+
 interface StateProps {
     password: string;
     error: boolean;
     isLoading: boolean;
 }
 
-const LoginPage = () => {
+const LoginPage = ({ onSuccessLogin }: Props) => {
     const [state, setState] = React.useState<StateProps>({
         password: '',
         error: false,
@@ -41,6 +45,7 @@ const LoginPage = () => {
             .then(() =>
                 store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })),
             )
+            .then(() => onSuccessLogin())
             .catch(() => setState({ ...state, error: true, isLoading: false }));
     };
     return (
