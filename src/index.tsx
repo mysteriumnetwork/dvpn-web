@@ -13,6 +13,9 @@ import { Provider } from 'react-redux';
 import AppRouter from './Pages/AppRouter';
 import { store } from './redux/store';
 
+import { unregister } from './serviceWorker';
+
+unregister(); // cache busting
 ReactDOM.render(
     <Provider store={store}>
         <SnackbarProvider
