@@ -44,7 +44,7 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
     };
 
     const handleDone = () => {
-        if (!isValidEthereumAddress(state.walletAddress)) {
+        if (state.walletAddress && !isValidEthereumAddress(state.walletAddress)) {
             errors('Invalid Ethereum wallet address');
             return;
         }
