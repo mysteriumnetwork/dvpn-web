@@ -52,7 +52,8 @@
     "install-deps": "cd node_modules/mysterium-vpn-js && yarn && yarn build && cd ../..",
     "test": "yarn run clear_cache:eslint && react-scripts test",
     "eject": "react-scripts eject",
-    "clear_cache:eslint": "rimraf node_modules/.cache/eslint-loader"
+    "clear_cache:eslint": "rimraf node_modules/.cache/eslint-loader",
+    "local_release": "yarn run build && tar -zcvf dist.tar.gz build/"
   },
   "proxy": "http://127.0.0.1:4449/",
   "browserslist": {

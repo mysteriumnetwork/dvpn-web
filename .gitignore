@@ -24,3 +24,5 @@ yarn-error.log*
 react-app-env.d.ts
 
 src/data
+dist.tar.gz
+CHANGELOG.md
