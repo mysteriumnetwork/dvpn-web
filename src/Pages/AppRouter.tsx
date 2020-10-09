@@ -115,6 +115,11 @@ const AppRouter = ({
         const blockingCheck = async () => {
             const authenticated = await isUserAuthenticated();
             const defaultCredentials = await loginWithDefaultCredentials();
+
+            if (defaultCredentials) {
+                actions.fetchConfigAsync();
+            }
+
             if (!authenticated && !defaultCredentials) {
                 actions.updateAuthFlowLoadingStore(false);
             } else {
@@ -132,7 +137,7 @@ const AppRouter = ({
         ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state));
     }, [loggedIn]);
 
-    if (loading || !config) {
+    if (loading) {
         return <CircularProgress className="spinner" />;
     }
 
@@ -145,7 +150,11 @@ const AppRouter = ({
                 exact
                 path={LOGIN}
                 render={() => {
-                    return !loggedIn ? <LoginPage /> : <Redirect to={DASHBOARD} />;
+                    return !loggedIn ? (
+                        <LoginPage onSuccessLogin={() => actions.fetchConfigAsync()} />
+                    ) : (
+                        <Redirect to={DASHBOARD} />
+                    );
                 }}
             />
             <Route
@@ -155,7 +164,7 @@ const AppRouter = ({
                     return needsOnboarding ? (
                         <OnboardingPage
                             {...props}
-                            config={config}
+                            config={config || { data: {} }}
                             identity={identity}
                             termsAccepted={termsAccepted}
                             needsPasswordChange={needsPasswordChange}
