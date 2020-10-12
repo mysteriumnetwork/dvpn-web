@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 
@@ -16,11 +16,15 @@ import Button from '../../../Components/Buttons/Button';
 import { parseError } from '../../../commons/error.utils';
 import { DECIMAL_PART } from 'mysterium-vpn-js';
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
+import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
+import { IdentityRegisterRequest } from 'mysterium-vpn-js/src/identity/registration';
 
 interface StateInterface {
     walletAddress: string;
     stake: number;
     errors: string[];
+    hasReferralCode: boolean;
+    referralCode: string;
 }
 
 const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
@@ -28,6 +32,8 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
         walletAddress: '',
         stake: DEFAULT_STAKE_AMOUNT,
         errors: [],
+        hasReferralCode: false,
+        referralCode: '',
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -62,17 +68,24 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
     };
 
     const registerIdentityInTransactor = (identity: string): Promise<void> => {
-        return tequilapiClient.identityRegister(identity, {
+        const req: IdentityRegisterRequest = {
             beneficiary: state.walletAddress,
             stake: state.stake * DECIMAL_PART,
-        });
+        };
+
+        if (state.hasReferralCode) {
+            req.token = state.referralCode;
+            req.stake = 20 * DECIMAL_PART;
+        }
+
+        return tequilapiClient.identityRegister(identity, req);
     };
 
     return (
         <div className="step">
             <h1 className="step__title">Payout settings</h1>
             <p className="step__description">Fill in the following information to receive payments.</p>
-            <div className="step__content m-t-100">
+            <div className="step__content m-t-20">
                 <Collapse in={state.errors.length > 0}>
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>
@@ -95,6 +108,7 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                     <p className="input-group__label m-b-15">Set your stake amount</p>
                     <Slider
                         label="Stake amount"
+                        disabled={state.hasReferralCode}
                         value={state.stake}
                         handleChange={handlePricePerGbChanged}
                         step={1}
@@ -109,11 +123,29 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                         by taking 10% of earnings during each promise settlement (payout).
                     </p>
                 </div>
-                <div className="step__content-buttons m-t-50">
-                    {/* eslint-disable-next-line react/style-prop-object */}
-                    <Button onClick={callbacks.nextStep} style="outline">
-                        Setup Later
-                    </Button>
+                <div className="settlement-referral-block">
+                    <div className="input-group m-t-50 m-b-20">
+                        <DefaultCheckbox
+                            label="I have referral code"
+                            checked={state.hasReferralCode}
+                            handleCheckboxChange={() => {
+                                setState({ ...state, hasReferralCode: !state.hasReferralCode });
+                            }}
+                        />
+                    </div>
+                    {state.hasReferralCode && (
+                        <div className="input-group">
+                            <DefaultTextField
+                                handleChange={handleTextFieldsChange}
+                                placeholder="Referral code"
+                                value={state.referralCode}
+                                stateName="referralCode"
+                            />
+                            <p className="input-group__help">Enter your referral code.</p>
+                        </div>
+                    )}
+                </div>
+                <div className="step__content-buttons step__content-buttons--center">
                     <Button onClick={handleDone} isLoading={isLoading}>
                         Next
                     </Button>
