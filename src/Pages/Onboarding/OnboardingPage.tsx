@@ -6,9 +6,9 @@
  */
 
 import React, { useState } from 'react';
-import { Identity } from 'mysterium-vpn-js';
+import { Fees, Identity } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
-import isIdentityRegistered from '../../commons/isIdentityRegistered';
+import { isUnregistered } from '../../commons/isIdentity.utils';
 
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 
@@ -21,16 +21,31 @@ import SettlementSettings from './steps/SettlementSettings';
 
 import './Onboarding.scss';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
+import Topup from './steps/Topup';
+import { SSEState } from '../../redux/sse.slice';
+import _ from 'lodash';
+import { DEFAULT_STAKE_AMOUNT } from '../../constants/defaults';
 
 interface Props {
     termsAccepted: boolean;
     identity?: Identity;
     needsPasswordChange: boolean;
-    config: Config;
+    config?: Config;
+    fees?: Fees;
+    sse?: SSEState;
 }
 
-const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }: Props) => {
+export interface SettlementProps {
+    stake: number;
+    beneficiary: string;
+}
+
+const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, fees, sse }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
+    const [settlement, setSettlement] = useState<SettlementProps>({
+        stake: DEFAULT_STAKE_AMOUNT,
+        beneficiary: '',
+    });
 
     const callbacks: OnboardingChildProps = {
         nextStep: (): void => {
@@ -38,15 +53,50 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }
         },
     };
 
+    const currentSSEIdentity = (): Identity | undefined => {
+        const sseIdentities = sse?.appState?.identities || [];
+        sseIdentities.filter((si) => si.id === identity?.id);
+        return _.first(sseIdentities);
+    };
+
+    const sseIdentity = currentSSEIdentity();
+
+    if (!sse || !sseIdentity || !config || !fees) {
+        return <CircularProgress className="spinner" />;
+    }
+
     const steps = [<Welcome key="welcome" callbacks={callbacks} />];
 
     if (!termsAccepted) {
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
     }
 
-    if (!isIdentityRegistered(identity)) {
+    if (isUnregistered(sseIdentity)) {
         steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
-        steps.push(<SettlementSettings key="payout" callbacks={callbacks} />);
+        steps.push(
+            <SettlementSettings
+                key="payout"
+                onSettingsChanged={(stake, beneficiary) => {
+                    setSettlement({ ...setSettlement, stake, beneficiary });
+                }}
+                identity={sseIdentity}
+                callbacks={callbacks}
+            />,
+        );
+    }
+
+    if (isUnregistered(sseIdentity)) {
+        steps.push(
+            <Topup
+                key="topup"
+                stake={settlement.stake}
+                beneficiary={settlement.beneficiary}
+                fees={fees}
+                channelAddress={sseIdentity.channelAddress}
+                identity={sseIdentity}
+                callbacks={callbacks}
+            />,
+        );
     }
 
     if (needsPasswordChange) {
@@ -54,21 +104,16 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }
     }
 
     const totalStepCount = steps.length;
-    const nextStepComponent = steps[currentStep];
-
-    let content = <CircularProgress />;
-    if (!!identity) {
-        content = (
-            <div className="steps">
-                {nextStepComponent}
-                <StepCounter currentStep={currentStep} totalStepCount={totalStepCount} />
-            </div>
-        );
-    }
+    const nextStepComponent = steps[currentStep > steps.length - 1 ? steps.length - 1 : currentStep];
 
     return (
         <div className="onboarding">
-            <div className="onboarding__content">{content}</div>
+            <div className="onboarding__content">
+                <div className="steps">
+                    {nextStepComponent}
+                    <StepCounter currentStep={currentStep} totalStepCount={totalStepCount} />
+                </div>
+            </div>
             <div className="onboarding__sidebar">
                 <img alt="onboarding" src={sideImage} />
             </div>

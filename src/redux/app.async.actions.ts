@@ -10,7 +10,7 @@ import { tequilapiClient } from '../api/TequilApiClient';
 import { resolveTermsAgreement } from '../commons/terms';
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults';
 
-import { updateTermsStore, updateConfigStore, updateIdentityStore } from './app.slice';
+import { updateTermsStore, updateConfigStore, updateIdentityStore, updateFeesStore } from './app.slice';
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
     return async (dispatch) => {
@@ -38,5 +38,12 @@ export const fetchConfigAsync = (): ((dispatch: Dispatch<any>) => void) => {
     return async (dispatch) => {
         const config = await tequilapiClient.config();
         dispatch(updateConfigStore(config));
+    };
+};
+
+export const fetchFeesAsync = (): ((dispatch: Dispatch<any>) => void) => {
+    return async (dispatch) => {
+        const config = await tequilapiClient.transactorFees();
+        dispatch(updateFeesStore(config));
     };
 };

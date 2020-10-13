@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Identity } from 'mysterium-vpn-js';
+import { Fees, Identity } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { createSlice } from '@reduxjs/toolkit';
 
@@ -26,6 +26,7 @@ export interface AppState {
     auth: Auth;
     terms: Terms;
     config?: Config;
+    fees?: Fees;
 }
 
 const INITIAL_STATE: AppState = {
@@ -59,6 +60,9 @@ const slice = createSlice({
         updateConfigStore: (state, action) => {
             state.config = action.payload;
         },
+        updateFeesStore: (state, action) => {
+            state.fees = action.payload;
+        },
     },
 });
 
@@ -88,5 +92,6 @@ export const {
     updateTermsStore,
     updateAuthFlowLoadingStore,
     updateConfigStore,
+    updateFeesStore,
 } = slice.actions;
 export default slice.reducer;

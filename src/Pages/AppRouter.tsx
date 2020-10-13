@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core';
-import { AppState, Identity } from 'mysterium-vpn-js';
+import { AppState, Fees, Identity } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import '../assets/styles/App.scss';
-import { sseAppStateStateChanged } from '../redux/sse.slice';
+import { sseAppStateStateChanged, SSEState } from '../redux/sse.slice';
 import ConnectToSSE from '../sse/server-sent-events';
 import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/app.slice';
-import { fetchConfigAsync, updateTermsStoreAsync } from '../redux/app.async.actions';
+import { fetchConfigAsync, fetchFeesAsync, updateTermsStoreAsync } from '../redux/app.async.actions';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice';
 import { RootState } from '../redux/store';
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper';
@@ -47,10 +47,13 @@ interface Props {
     termsAccepted: boolean;
     needsPasswordChange: boolean;
     needsOnboarding: boolean;
+    fees?: Fees;
+    sse?: SSEState;
     actions: {
         fetchIdentityAsync: () => void;
         fetchConfigAsync: () => void;
         updateTermsStoreAsync: () => void;
+        fetchFeesAsync: () => void;
         updateAuthenticatedStore: (auth: Auth) => void;
         updateAuthFlowLoadingStore: (loading: boolean) => void;
         sseAppStateStateChanged: (state: AppState) => void;
@@ -65,6 +68,8 @@ const mapStateToProps = (state: RootState) => ({
     termsAccepted: termsAccepted(state.app),
     needsPasswordChange: needsPasswordChange(state.app),
     needsOnboarding: shouldBeOnboarded(state.app),
+    fees: state.app.fees,
+    sse: state.sse,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
@@ -73,6 +78,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
             fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
             fetchConfigAsync: () => dispatch(fetchConfigAsync()),
             updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
+            fetchFeesAsync: () => dispatch(fetchFeesAsync()),
             updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
             updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
             sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
@@ -98,8 +104,16 @@ const AppRouter = ({
     needsOnboarding,
     needsPasswordChange,
     termsAccepted,
+    fees,
     actions,
+    sse,
 }: Props) => {
+    const loginActions = () => {
+        actions.fetchIdentityAsync();
+        actions.fetchConfigAsync();
+        actions.fetchFeesAsync();
+    };
+
     const authenticatedFlow = async () => {
         actions.updateAuthenticatedStore({
             authenticated: true,
@@ -107,8 +121,7 @@ const AppRouter = ({
         });
         await actions.updateTermsStoreAsync();
         actions.updateAuthFlowLoadingStore(false);
-        actions.fetchIdentityAsync();
-        actions.fetchConfigAsync();
+        loginActions();
     };
 
     useLayoutEffect(() => {
@@ -150,11 +163,7 @@ const AppRouter = ({
                 exact
                 path={LOGIN}
                 render={() => {
-                    return !loggedIn ? (
-                        <LoginPage onSuccessLogin={() => actions.fetchConfigAsync()} />
-                    ) : (
-                        <Redirect to={DASHBOARD} />
-                    );
+                    return !loggedIn ? <LoginPage onSuccessLogin={loginActions} /> : <Redirect to={DASHBOARD} />;
                 }}
             />
             <Route
@@ -164,10 +173,12 @@ const AppRouter = ({
                     return needsOnboarding ? (
                         <OnboardingPage
                             {...props}
-                            config={config || { data: {} }}
+                            config={config}
+                            fees={fees}
                             identity={identity}
                             termsAccepted={termsAccepted}
                             needsPasswordChange={needsPasswordChange}
+                            sse={sse}
                         />
                     ) : (
                         <Redirect to={DASHBOARD} />

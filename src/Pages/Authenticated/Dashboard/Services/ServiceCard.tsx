@@ -35,13 +35,14 @@ interface Props {
     serviceType: ServiceType;
     serviceInfo?: ServiceInfo;
     userConfig: Config;
+    disabled?: boolean;
 }
 
 interface ModalProps {
     isOpen: boolean;
 }
 
-const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Props) => {
+const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig, disabled = false }: Props) => {
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
     const [modalState, setModalState] = useState<ModalProps>({ isOpen: false });
     const { status, id } = { ...serviceInfo };
@@ -107,7 +108,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
 
                 <ServiceDetail label="Turned on" alignValueRight={true}>
                     <DefaultSwitch
-                        disabled={isTurnOnWorking}
+                        disabled={isTurnOnWorking || disabled}
                         turnedOn={!!serviceInfo}
                         handleChange={() => {
                             if (!id) {
@@ -122,7 +123,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig }: Prop
 
             <div className="service__options">
                 {/* eslint-disable-next-line react/style-prop-object */}
-                <Button onClick={openSettings} style="gray">
+                <Button disabled={disabled} onClick={openSettings} style="gray">
                     Settings
                 </Button>
             </div>
