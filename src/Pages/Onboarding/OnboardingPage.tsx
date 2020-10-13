@@ -6,9 +6,9 @@
  */
 
 import React, { useState } from 'react';
-import { Identity } from 'mysterium-vpn-js';
+import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
-import isIdentityRegistered from '../../commons/isIdentityRegistered';
+import { isIdentityRegistrationInProgress, isIdentityRegistered } from '../../commons/isIdentity.utils';
 
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 
@@ -21,21 +21,36 @@ import SettlementSettings from './steps/SettlementSettings';
 
 import './Onboarding.scss';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
+import Topup from './steps/Topup';
 
 interface Props {
     termsAccepted: boolean;
     identity?: Identity;
     needsPasswordChange: boolean;
-    config: Config;
+    config?: Config;
+    fees?: Fees;
 }
 
-const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }: Props) => {
+const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, fees }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
+    const [stake, setStake] = useState(20);
 
     const callbacks: OnboardingChildProps = {
         nextStep: (): void => {
             setCurrentStep(currentStep + 1);
         },
+    };
+
+    if (!identity || !config || !fees) {
+        return <CircularProgress className="spinner" />;
+    }
+
+    const resolveStake = (): number => {
+        return stake ? stake * DECIMAL_PART : identity.stake; // TODO bad logic
+    };
+
+    const transferAmount = (): number => {
+        return resolveStake() + fees.registration;
     };
 
     const steps = [<Welcome key="welcome" callbacks={callbacks} />];
@@ -44,9 +59,28 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
     }
 
-    if (!isIdentityRegistered(identity)) {
+    if (!isIdentityRegistered(identity) && !isIdentityRegistrationInProgress(identity)) {
         steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
-        steps.push(<SettlementSettings key="payout" callbacks={callbacks} />);
+        steps.push(
+            <SettlementSettings
+                key="payout"
+                onSetStake={(s) => {
+                    setStake(s);
+                }}
+                callbacks={callbacks}
+            />,
+        );
+    }
+
+    if (isIdentityRegistrationInProgress(identity)) {
+        steps.push(
+            <Topup
+                key="topup"
+                transferAmount={transferAmount()}
+                channelAddress={identity.channelAddress}
+                callbacks={callbacks}
+            />,
+        );
     }
 
     if (needsPasswordChange) {
@@ -56,19 +90,14 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config }
     const totalStepCount = steps.length;
     const nextStepComponent = steps[currentStep];
 
-    let content = <CircularProgress />;
-    if (!!identity) {
-        content = (
-            <div className="steps">
-                {nextStepComponent}
-                <StepCounter currentStep={currentStep} totalStepCount={totalStepCount} />
-            </div>
-        );
-    }
-
     return (
         <div className="onboarding">
-            <div className="onboarding__content">{content}</div>
+            <div className="onboarding__content">
+                <div className="steps">
+                    {nextStepComponent}
+                    <StepCounter currentStep={currentStep} totalStepCount={totalStepCount} />
+                </div>
+            </div>
             <div className="onboarding__sidebar">
                 <img alt="onboarding" src={sideImage} />
             </div>

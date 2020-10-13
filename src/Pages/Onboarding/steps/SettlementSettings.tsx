@@ -14,10 +14,14 @@ import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_STAKE_AMOUNT } from '../../../cons
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
 import { parseError } from '../../../commons/error.utils';
-import { DECIMAL_PART } from 'mysterium-vpn-js';
+import { DECIMAL_PART, IdentityRegisterRequest } from 'mysterium-vpn-js';
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
-import { IdentityRegisterRequest } from 'mysterium-vpn-js/src/identity/registration';
+
+interface Props {
+    callbacks: OnboardingChildProps;
+    onSetStake: (stake: number) => void;
+}
 
 interface StateInterface {
     walletAddress: string;
@@ -27,7 +31,7 @@ interface StateInterface {
     referralCode: string;
 }
 
-const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {
+const SettlementSettings = ({ callbacks, onSetStake }: Props): JSX.Element => {
     const [state, setState] = useState<StateInterface>({
         walletAddress: '',
         stake: DEFAULT_STAKE_AMOUNT,
@@ -45,8 +49,9 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
         setState({ ...state, [prop]: event.target.value });
     };
 
-    const handlePricePerGbChanged = (event: any, newValue: number) => {
+    const handleStakeChanged = (event: any, newValue: number) => {
         setState({ ...state, stake: newValue });
+        onSetStake(newValue);
     };
 
     const handleDone = () => {
@@ -110,7 +115,7 @@ const SettlementSettings = ({ callbacks }: { callbacks: OnboardingChildProps }):
                         label="Stake amount"
                         disabled={state.hasReferralCode}
                         value={state.stake}
-                        handleChange={handlePricePerGbChanged}
+                        handleChange={handleStakeChanged}
                         step={1}
                         min={0}
                         max={50}
