@@ -12,7 +12,7 @@ Use generate changelog for release notes.
     - https://gitlab.com/mysteriumnetwork/dvpn-web/-/pipelines
     - https://gitlab.com/mysteriumnetwork/go-dvpn-web/-/pipelines
 
-4. On the node side you need to update dependency  
+4. On the node side you will need to update the `go-dvpn-web` bundler dependency. 
     ```console
     $ go get github.com/mysteriumnetwork/go-dvpn-web@v0.1.6
     ```
@@ -28,4 +28,4 @@ Use generate changelog for release notes.
     $ go run mage.go daemon
     ```
 
-5. Create a PR with similar to [this one](https://github.com/mysteriumnetwork/node/pull/2720) 
+5. Create a PR similar to [this one](https://github.com/mysteriumnetwork/node/pull/2720) 
