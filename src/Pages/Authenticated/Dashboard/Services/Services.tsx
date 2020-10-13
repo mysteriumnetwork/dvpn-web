@@ -17,6 +17,7 @@ interface Props {
     identityRef: string;
     servicesInfos?: ServiceInfo[];
     userConfig: Config;
+    disabled?: boolean;
 }
 
 const availableServices = [ServiceType.OPENVPN, ServiceType.WIREGUARD];
@@ -33,7 +34,7 @@ const findServiceInfo = (type: string, servicesInfos?: ServiceInfo[]): ServiceIn
     return results[0];
 };
 
-const Services = ({ identityRef, servicesInfos, userConfig }: Props) => {
+const Services = ({ identityRef, servicesInfos, userConfig, disabled }: Props) => {
     return (
         <>
             <div className="service-list">
@@ -46,6 +47,7 @@ const Services = ({ identityRef, servicesInfos, userConfig }: Props) => {
                             serviceInfo={serviceInfo}
                             serviceType={serviceType}
                             userConfig={userConfig}
+                            disabled={disabled}
                         />
                     );
                 })}

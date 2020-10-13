@@ -12,7 +12,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import '../assets/styles/App.scss';
-import { sseAppStateStateChanged } from '../redux/sse.slice';
+import { sseAppStateStateChanged, SSEState } from '../redux/sse.slice';
 import ConnectToSSE from '../sse/server-sent-events';
 import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/app.slice';
 import { fetchConfigAsync, fetchFeesAsync, updateTermsStoreAsync } from '../redux/app.async.actions';
@@ -48,6 +48,7 @@ interface Props {
     needsPasswordChange: boolean;
     needsOnboarding: boolean;
     fees?: Fees;
+    sse?: SSEState;
     actions: {
         fetchIdentityAsync: () => void;
         fetchConfigAsync: () => void;
@@ -68,6 +69,7 @@ const mapStateToProps = (state: RootState) => ({
     needsPasswordChange: needsPasswordChange(state.app),
     needsOnboarding: shouldBeOnboarded(state.app),
     fees: state.app.fees,
+    sse: state.sse,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
@@ -104,6 +106,7 @@ const AppRouter = ({
     termsAccepted,
     fees,
     actions,
+    sse,
 }: Props) => {
     const loginActions = () => {
         actions.fetchIdentityAsync();
@@ -175,6 +178,7 @@ const AppRouter = ({
                             identity={identity}
                             termsAccepted={termsAccepted}
                             needsPasswordChange={needsPasswordChange}
+                            sse={sse}
                         />
                     ) : (
                         <Redirect to={DASHBOARD} />

@@ -10,17 +10,18 @@ import Collapse from '@material-ui/core/Collapse';
 
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import Slider from '../../../Components/Slider/Slider';
-import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults';
+import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
 import { parseError } from '../../../commons/error.utils';
-import { DECIMAL_PART, IdentityRegisterRequest } from 'mysterium-vpn-js';
+import { DECIMAL_PART, Identity } from 'mysterium-vpn-js';
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 
 interface Props {
     callbacks: OnboardingChildProps;
-    onSetStake: (stake: number) => void;
+    identity: Identity;
+    onSettingsChanged: (stake: number, beneficiary: string) => void;
 }
 
 interface StateInterface {
@@ -31,7 +32,7 @@ interface StateInterface {
     referralCode: string;
 }
 
-const SettlementSettings = ({ callbacks, onSetStake }: Props): JSX.Element => {
+const SettlementSettings = ({ callbacks, identity, onSettingsChanged }: Props): JSX.Element => {
     const [state, setState] = useState<StateInterface>({
         walletAddress: '',
         stake: DEFAULT_STAKE_AMOUNT,
@@ -47,11 +48,12 @@ const SettlementSettings = ({ callbacks, onSetStake }: Props): JSX.Element => {
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, [prop]: event.target.value });
+        onSettingsChanged(state.stake * DECIMAL_PART, state.walletAddress);
     };
 
     const handleStakeChanged = (event: any, newValue: number) => {
         setState({ ...state, stake: newValue });
-        onSetStake(newValue);
+        onSettingsChanged(state.stake * DECIMAL_PART, state.walletAddress);
     };
 
     const handleDone = () => {
@@ -61,9 +63,7 @@ const SettlementSettings = ({ callbacks, onSetStake }: Props): JSX.Element => {
         }
         setIsLoading(true);
 
-        tequilapiClient
-            .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
-            .then((args) => registerIdentityInTransactor(args.id))
+        register(identity.id)
             .then(() => callbacks.nextStep())
             .catch((error) => {
                 errors(parseError(error) || 'API call failed');
@@ -72,18 +72,16 @@ const SettlementSettings = ({ callbacks, onSetStake }: Props): JSX.Element => {
             });
     };
 
-    const registerIdentityInTransactor = (identity: string): Promise<void> => {
-        const req: IdentityRegisterRequest = {
-            beneficiary: state.walletAddress,
-            stake: state.stake * DECIMAL_PART,
-        };
-
+    const register = (identity: string): Promise<void> => {
         if (state.hasReferralCode) {
-            req.token = state.referralCode;
-            req.stake = 20 * DECIMAL_PART;
+            return tequilapiClient.identityRegister(identity, {
+                beneficiary: state.walletAddress,
+                stake: state.stake * DECIMAL_PART,
+                token: state.referralCode,
+            });
         }
 
-        return tequilapiClient.identityRegister(identity, req);
+        return Promise.resolve();
     };
 
     return (
@@ -152,7 +150,7 @@ const SettlementSettings = ({ callbacks, onSetStake }: Props): JSX.Element => {
                 </div>
                 <div className="step__content-buttons step__content-buttons--center">
                     <Button onClick={handleDone} isLoading={isLoading}>
-                        Next
+                        {state.hasReferralCode ? 'Register' : 'Payment Information'}
                     </Button>
                 </div>
             </div>

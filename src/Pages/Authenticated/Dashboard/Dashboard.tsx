@@ -25,6 +25,7 @@ import Charts from './Charts/Charts';
 import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
 import Statistics from './Statistics/Statistics';
+import { isRegistered } from '../../../commons/isIdentity.utils';
 
 interface Props {
     app: AppState;
@@ -107,7 +108,12 @@ const Dashboard = ({ app, sse }: Props) => {
                             <NatStatus status={status} />
                         </div>
                     </div>
-                    <Services identityRef={currentIdentity.id} servicesInfos={serviceInfo} userConfig={config} />
+                    <Services
+                        identityRef={currentIdentity.id}
+                        servicesInfos={serviceInfo}
+                        userConfig={config}
+                        disabled={!isRegistered(currentIdentity)}
+                    />
                 </div>
             </div>
             <div className="sidebar-block">

@@ -6,9 +6,9 @@
  */
 
 import React, { useState } from 'react';
-import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js';
+import { Fees, Identity } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
-import { isIdentityRegistrationInProgress, isIdentityRegistered } from '../../commons/isIdentity.utils';
+import { isUnregistered } from '../../commons/isIdentity.utils';
 
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 
@@ -22,6 +22,9 @@ import SettlementSettings from './steps/SettlementSettings';
 import './Onboarding.scss';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import Topup from './steps/Topup';
+import { SSEState } from '../../redux/sse.slice';
+import _ from 'lodash';
+import { DEFAULT_STAKE_AMOUNT } from '../../constants/defaults';
 
 interface Props {
     termsAccepted: boolean;
@@ -29,11 +32,20 @@ interface Props {
     needsPasswordChange: boolean;
     config?: Config;
     fees?: Fees;
+    sse?: SSEState;
 }
 
-const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, fees }: Props) => {
+export interface SettlementProps {
+    stake: number;
+    beneficiary: string;
+}
+
+const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, fees, sse }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [stake, setStake] = useState(20);
+    const [settlement, setSettlement] = useState<SettlementProps>({
+        stake: DEFAULT_STAKE_AMOUNT,
+        beneficiary: '',
+    });
 
     const callbacks: OnboardingChildProps = {
         nextStep: (): void => {
@@ -41,17 +53,17 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, 
         },
     };
 
-    if (!identity || !config || !fees) {
+    const currentSSEIdentity = (): Identity | undefined => {
+        const sseIdentities = sse?.appState?.identities || [];
+        sseIdentities.filter((si) => si.id === identity?.id);
+        return _.first(sseIdentities);
+    };
+
+    const sseIdentity = currentSSEIdentity();
+
+    if (!sse || !sseIdentity || !config || !fees) {
         return <CircularProgress className="spinner" />;
     }
-
-    const resolveStake = (): number => {
-        return stake ? stake * DECIMAL_PART : identity.stake; // TODO bad logic
-    };
-
-    const transferAmount = (): number => {
-        return resolveStake() + fees.registration;
-    };
 
     const steps = [<Welcome key="welcome" callbacks={callbacks} />];
 
@@ -59,25 +71,29 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, 
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
     }
 
-    if (!isIdentityRegistered(identity) && !isIdentityRegistrationInProgress(identity)) {
+    if (isUnregistered(sseIdentity)) {
         steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
         steps.push(
             <SettlementSettings
                 key="payout"
-                onSetStake={(s) => {
-                    setStake(s);
+                onSettingsChanged={(stake, beneficiary) => {
+                    setSettlement({ ...setSettlement, stake, beneficiary });
                 }}
+                identity={sseIdentity}
                 callbacks={callbacks}
             />,
         );
     }
 
-    if (isIdentityRegistrationInProgress(identity)) {
+    if (isUnregistered(sseIdentity)) {
         steps.push(
             <Topup
                 key="topup"
-                transferAmount={transferAmount()}
-                channelAddress={identity.channelAddress}
+                stake={settlement.stake}
+                beneficiary={settlement.beneficiary}
+                fees={fees}
+                channelAddress={sseIdentity.channelAddress}
+                identity={sseIdentity}
                 callbacks={callbacks}
             />,
         );
@@ -88,7 +104,7 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, 
     }
 
     const totalStepCount = steps.length;
-    const nextStepComponent = steps[currentStep];
+    const nextStepComponent = steps[currentStep > steps.length - 1 ? steps.length - 1 : currentStep];
 
     return (
         <div className="onboarding">

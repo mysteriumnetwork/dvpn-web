@@ -4,24 +4,40 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QRCode } from 'react-qr-svg';
 import Button from '../../../Components/Buttons/Button';
 import { displayMyst } from '../../../commons/money.utils';
+import { tequilapiClient } from '../../../api/TequilApiClient';
+import { Fees, Identity } from 'mysterium-vpn-js';
 
 interface Props {
     callbacks: OnboardingChildProps;
     channelAddress: string;
-    transferAmount: number;
+    beneficiary: string;
+    stake: number;
+    fees: Fees;
+    identity: Identity;
 }
 
-const Topup = ({ callbacks, channelAddress, transferAmount }: Props) => {
+const Topup = ({ callbacks, channelAddress, fees, identity, stake, beneficiary }: Props) => {
+    useEffect(() => {
+        if (identity.balance >= fees.registration + stake) {
+            tequilapiClient
+                .identityRegister(identity.id, {
+                    beneficiary,
+                    stake,
+                })
+                .then(() => callbacks.nextStep());
+        }
+    }, [identity]);
+
     return (
         <div className="step">
             <h1 className="step__title">Topup</h1>
             <p className="step__description">
-                To activate your account, transfer {displayMyst(transferAmount)} to your wallet (Görli Testnet
-                blockchain)
+                To activate your account, transfer {displayMyst(fees.registration + stake)} to your wallet (Görli
+                Testnet blockchain)
             </p>
             <div className="step__content m-t-20">
                 <div className="qr-code">
@@ -31,9 +47,7 @@ const Topup = ({ callbacks, channelAddress, transferAmount }: Props) => {
                     Do not send any other cryptocurrency to this address! Only MYST tokens are accepted.
                 </p>
                 <div className="step__content-buttons step__content-buttons--center m-t-50">
-                    <Button onClick={callbacks.nextStep} isLoading={false}>
-                        Next
-                    </Button>
+                    <Button isLoading={true}>Next</Button>
                 </div>
             </div>
         </div>

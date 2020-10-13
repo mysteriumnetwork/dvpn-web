@@ -5,12 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js';
-const { Registered, InProgress } = IdentityRegistrationStatus;
+const { Registered, InProgress, Unregistered } = IdentityRegistrationStatus;
 
-export const isIdentityRegistered = (identity: Identity): boolean => {
+export const isRegistered = (identity: Identity): boolean => {
     return identity.registrationStatus === Registered;
 };
 
-export const isIdentityRegistrationInProgress = (identity: Identity): boolean => {
+export const isInProgress = (identity: Identity): boolean => {
     return identity.registrationStatus === InProgress;
+};
+
+export const isUnregistered = (identity: Identity): boolean => {
+    return identity.registrationStatus === Unregistered;
 };
