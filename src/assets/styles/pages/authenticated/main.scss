@@ -42,3 +42,59 @@
   }
 }
 
+.registration-overlay {
+    position: absolute;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 100vh;
+    max-height: 100vh;
+    height: 100vh;
+    z-index: 1000;
+    opacity: 80%;
+    //background: #ffffff;
+    background: $secondary-text-color;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &__content {
+        display: flex;
+        align-items: center;
+        font-weight: $bold-weight;
+        color: $main-text-color;
+    }
+
+    &__footer {
+        display: flex;
+        align-items: center;
+    }
+
+    &__identity {
+        font-weight: $medium-weight;
+        color: $secondary-text-color;
+    }
+
+    &__copy {
+        color: $main-text-color;
+    }
+}
+
+.intercom-help-pointer {
+    position: absolute;
+    bottom: 30px;
+    left: 80px;
+    z-index: 1001;
+
+    display: flex;
+
+    align-items: center;
+
+    font-weight: $bold-weight;
+    color: $main-text-color;
+
+    &__arrow {
+        font-size: 2em;
+    }
+}
