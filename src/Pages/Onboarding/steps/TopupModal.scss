@@ -19,10 +19,22 @@
         display: flex;
     }
 
+    &__address {
+        display: flex;
+        align-items: center;
+        color: $main-text-color;
+        font-weight: $bold-weight;
+    }
+
     &__description {
         color: $secondary-text-color;
         font-weight: $lighter-weight;
         margin-top: 10px;
+    }
+
+    &__highlighted {
+        color: $main-text-color;
+        font-weight: $bold-weight;
     }
 
     &__qr {

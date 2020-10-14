@@ -12,6 +12,7 @@ import { tequilapiClient } from '../../../api/TequilApiClient';
 import { Fees, Identity } from 'mysterium-vpn-js';
 import { CircularProgress, Fade, Modal } from '@material-ui/core';
 import './TopupModal.scss';
+import CopyToClipboard from '../../../Components/CopyToClipboard/CopyToClipboard';
 
 interface Props {
     onTopup: () => void;
@@ -52,9 +53,14 @@ const TopupModal = ({ fees, identity, stake, beneficiary, onTopup, open, onClose
             <Fade in={open}>
                 <div className="topup-modal__block">
                     <p className="topup-modal__description">
-                        To activate your account, transfer {displayMyst(registrationFee() + stake)} to your wallet
-                        (Görli Testnet blockchain)
+                        To activate your account, transfer{' '}
+                        <span className="topup-modal__highlighted">{displayMyst(registrationFee() + stake)}</span> to
+                        your wallet on (Görli Testnet blockchain)
                     </p>
+                    <div className="topup-modal__address">
+                        {identity.channelAddress}
+                        <CopyToClipboard text={identity.channelAddress} />
+                    </div>
                     <div className="m-t-20">
                         <div className="topup-modal__content">
                             <div className="topup-modal__balance">

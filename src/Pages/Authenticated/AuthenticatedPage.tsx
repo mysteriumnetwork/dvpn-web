@@ -60,7 +60,7 @@ const displayOverlay = (identity?: Identity): boolean => {
 const AuthenticatedPage = ({ identity }: Props) => {
     return (
         <div className="page">
-            {true && (
+            {displayOverlay(identity) && (
                 <>
                     <RegistrationOverlay identityRef={identity?.id || ''} />
                     <HelpArrow />
