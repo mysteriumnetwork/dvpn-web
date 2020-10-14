@@ -40,7 +40,7 @@ const HelpArrow = () => {
     return (
         <div className="intercom-help-pointer">
             <ArrowBackIcon className="intercom-help-pointer__arrow" fontSize="large" />
-            <h2>have questions? Try contacting support via intercom</h2>
+            <h2>have questions? Talk to us!</h2>
         </div>
     );
 };

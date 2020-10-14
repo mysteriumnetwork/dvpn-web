@@ -50,9 +50,7 @@
     max-height: 100vh;
     height: 100vh;
     z-index: 1000;
-    opacity: 80%;
-    //background: #ffffff;
-    background: $secondary-text-color;
+    background: #dfdfdfd1;
 
     display: flex;
     align-items: center;
@@ -63,7 +61,7 @@
         display: flex;
         align-items: center;
         font-weight: $bold-weight;
-        color: $main-text-color;
+        color: $third-color;
     }
 
     &__footer {
@@ -73,7 +71,7 @@
 
     &__identity {
         font-weight: $medium-weight;
-        color: $secondary-text-color;
+        color: $third-color;
     }
 
     &__copy {
