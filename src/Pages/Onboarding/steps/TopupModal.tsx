@@ -52,37 +52,36 @@ const TopupModal = ({ fees, identity, stake, beneficiary, onTopup, open, onClose
         >
             <Fade in={open}>
                 <div className="topup-modal__block">
-                    <p className="topup-modal__description">
+                    <div className="topup-modal__description">
                         To activate your account, transfer{' '}
                         <span className="topup-modal__highlighted">{displayMyst(registrationFee() + stake)}</span> to
-                        your wallet on (Görli Testnet blockchain)
-                    </p>
+                        your wallet
+                        <br />
+                        (Görli Testnet blockchain)
+                    </div>
                     <div className="topup-modal__address">
-                        {identity.channelAddress}
+                        <div className="topup-modal__address_hash">{identity.channelAddress}</div>
                         <CopyToClipboard text={identity.channelAddress} />
                     </div>
-                    <div className="m-t-20">
-                        <div className="topup-modal__content">
-                            <div className="topup-modal__balance">
-                                <p className="topup-modal__balance__label">Your current balance</p>
-                                <p className="topup-modal__balance__value">{displayMyst(identity.balance)}</p>
-                            </div>
-                            <div className="topup-modal__qr">
-                                <QRCode value={identity.channelAddress} />
-                            </div>
+                    <div className="topup-modal__qr">
+                        <QRCode value={identity.channelAddress} />
+                    </div>
+                    <div className="topup-modal__balance">
+                        <p className="topup-modal__balance__label">Your current balance</p>
+                        <p className="topup-modal__balance__value">{displayMyst(identity.balance)}</p>
+                    </div>
+                    <div className="topup-modal__description m-t-15">
+                        Do not send any other cryptocurrency to this address! Only MYST tokens are accepted.
+                    </div>
+                    <div className="topup-modal__footer-block m-t-20">
+                        <div className="topup-modal__blockchain">
+                            <p>Waiting for transfer</p>
+                            <small>Automatically scanning blockchain...</small>
                         </div>
-                        <p className="topup-modal__description m-t-20">
-                            Do not send any other cryptocurrency to this address! Only MYST tokens are accepted.
-                        </p>
-                        <div className="topup-modal__footer m-t-20">
-                            <Button onClick={onClose}>Back</Button>
-                            <div className="flex-grow" />
-                            <div className="topup-modal__blockchain">
-                                <p>Waiting for transfer</p>
-                                <small>Automatically scanning blockchain...</small>
-                            </div>
-                            <CircularProgress className="m-l-20" disableShrink />
-                        </div>
+                        <CircularProgress className="m-l-20" disableShrink />
+                    </div>
+                    <div className="topup-modal__footer-block m-t-15">
+                        <Button onClick={onClose}>Back</Button>
                     </div>
                 </div>
             </Fade>
