@@ -33,6 +33,7 @@ interface Props {
     handlePrevPageButtonClick: () => void;
     handleNextPageButtonClick: () => void;
     onPageClick: (event: React.ChangeEvent<unknown>, page: number) => void;
+    loading?: boolean;
 }
 
 const header = (h: TableHeader, idx: number) => (
@@ -55,7 +56,8 @@ const Table = ({
     onPageClick,
     handlePrevPageButtonClick,
     handleNextPageButtonClick,
-}: Props): JSX.Element => {
+    loading = false,
+}: Props) => {
     const mappedRows = rows.map((row) => {
         return (
             <div className="row" key={row.key}>
@@ -75,7 +77,7 @@ const Table = ({
             <div className="table__body">{mappedRows.length ? mappedRows : noData}</div>
             <div className="table__footer">
                 <Button
-                    disabled={currentPage === 1}
+                    disabled={currentPage === 1 || loading}
                     className="prev table__footer__button prev pagination-button"
                     onClick={handlePrevPageButtonClick}
                 >
@@ -84,6 +86,7 @@ const Table = ({
                 <div className="table__footer__pagination">
                     <PaginationMaterial
                         page={currentPage}
+                        disabled={loading}
                         hideNextButton={true}
                         hidePrevButton={true}
                         count={lastPage}
@@ -93,7 +96,7 @@ const Table = ({
                     />
                 </div>
                 <Button
-                    disabled={currentPage === lastPage}
+                    disabled={currentPage === lastPage || loading}
                     className="next table__footer__button"
                     onClick={handleNextPageButtonClick}
                 >

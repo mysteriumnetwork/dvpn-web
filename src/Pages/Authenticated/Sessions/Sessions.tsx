@@ -96,18 +96,15 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderI
     const { items = [], totalPages = 0 } = { ...state.sessionListResponse };
 
     const handlePrevPageButtonClick = () => {
-        setState({ ...state, currentPage: state.currentPage - 1 });
+        setState({ ...state, currentPage: state.currentPage - 1, isLoading: true });
     };
 
     const handleNextPageButtonClick = () => {
-        setState({
-            ...state,
-            currentPage: state.currentPage + 1,
-        });
+        setState({ ...state, currentPage: state.currentPage + 1, isLoading: true });
     };
 
     const onPageClicked = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
-        setState({ ...state, currentPage: pageNumber });
+        setState({ ...state, currentPage: pageNumber, isLoading: true });
     };
 
     return (
@@ -128,6 +125,7 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderI
                     handlePrevPageButtonClick={handlePrevPageButtonClick}
                     handleNextPageButtonClick={handleNextPageButtonClick}
                     onPageClick={onPageClicked}
+                    loading={state.isLoading}
                 />
             </div>
             <div className="sidebar-block">
