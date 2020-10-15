@@ -14,33 +14,35 @@ import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
 import { parseError } from '../../../commons/error.utils';
-import { DECIMAL_PART, Identity } from 'mysterium-vpn-js';
+import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js';
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
+import TopupModal from './TopupModal';
 
 interface Props {
     callbacks: OnboardingChildProps;
     identity: Identity;
-    onSettingsChanged: (stake: number, beneficiary: string) => void;
+    fees: Fees;
 }
 
 interface StateInterface {
-    walletAddress: string;
+    beneficiary: string;
     stake: number;
     errors: string[];
     hasReferralCode: boolean;
     referralCode: string;
 }
 
-const SettlementSettings = ({ callbacks, identity, onSettingsChanged }: Props): JSX.Element => {
+const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
     const [state, setState] = useState<StateInterface>({
-        walletAddress: '',
+        beneficiary: '',
         stake: DEFAULT_STAKE_AMOUNT,
         errors: [],
         hasReferralCode: false,
         referralCode: '',
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [topupOpen, setTopupOpen] = useState<boolean>(false);
 
     const errors = (...messages: string[]): void => {
         setState({ ...state, errors: messages });
@@ -48,40 +50,42 @@ const SettlementSettings = ({ callbacks, identity, onSettingsChanged }: Props): 
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, [prop]: event.target.value });
-        onSettingsChanged(state.stake * DECIMAL_PART, state.walletAddress);
     };
 
     const handleStakeChanged = (event: any, newValue: number) => {
         setState({ ...state, stake: newValue });
-        onSettingsChanged(state.stake * DECIMAL_PART, state.walletAddress);
     };
 
     const handleDone = () => {
-        if (state.walletAddress && !isValidEthereumAddress(state.walletAddress)) {
+        if (state.beneficiary && !isValidEthereumAddress(state.beneficiary)) {
             errors('Invalid Ethereum wallet address');
+            return;
+        }
+        if (state.hasReferralCode && !state.referralCode) {
+            errors('Please enter referral code');
             return;
         }
         setIsLoading(true);
 
-        register(identity.id)
-            .then(() => callbacks.nextStep())
-            .catch((error) => {
-                errors(parseError(error) || 'API call failed');
-                console.log(error);
-                setIsLoading(false);
-            });
+        if (state.hasReferralCode) {
+            register(identity.id)
+                .then(() => callbacks.nextStep())
+                .catch((error) => {
+                    errors(parseError(error) || 'API call failed');
+                    console.log(error);
+                    setIsLoading(false);
+                });
+        } else {
+            setTopupOpen(true);
+        }
     };
 
     const register = (identity: string): Promise<void> => {
-        if (state.hasReferralCode) {
-            return tequilapiClient.identityRegister(identity, {
-                beneficiary: state.walletAddress,
-                stake: state.stake * DECIMAL_PART,
-                token: state.referralCode,
-            });
-        }
-
-        return Promise.resolve();
+        return tequilapiClient.identityRegister(identity, {
+            beneficiary: state.beneficiary,
+            stake: state.stake * DECIMAL_PART,
+            token: state.referralCode,
+        });
     };
 
     return (
@@ -101,9 +105,9 @@ const SettlementSettings = ({ callbacks, identity, onSettingsChanged }: Props): 
                     <p className="input-group__label">Ethereum wallet address</p>
                     <DefaultTextField
                         handleChange={handleTextFieldsChange}
-                        value={state.walletAddress}
+                        value={state.beneficiary}
                         placeholder={'0x...'}
-                        stateName="walletAddress"
+                        stateName="beneficiary"
                     />
                     <p className="input-group__help">Fill in the following information to receive payments.</p>
                 </div>
@@ -154,6 +158,22 @@ const SettlementSettings = ({ callbacks, identity, onSettingsChanged }: Props): 
                     </Button>
                 </div>
             </div>
+            <TopupModal
+                open={topupOpen}
+                beneficiary={state.beneficiary}
+                stake={state.stake * DECIMAL_PART}
+                fees={fees}
+                identity={identity}
+                onClose={() => {
+                    setTopupOpen(false);
+                    setIsLoading(false);
+                }}
+                onTopup={() => {
+                    setTopupOpen(false);
+                    setIsLoading(false);
+                    callbacks.nextStep();
+                }}
+            />
         </div>
     );
 };

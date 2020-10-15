@@ -38,6 +38,7 @@ import OnboardingPage from './Onboarding/OnboardingPage';
 import RestartNode from './Error/RestartNode';
 import PageNotFound from './Error/PageNotFound';
 import AuthenticatedPage from './Authenticated/AuthenticatedPage';
+import _ from 'lodash';
 
 interface Props {
     config?: Config;
@@ -150,6 +151,15 @@ const AppRouter = ({
         ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state));
     }, [loggedIn]);
 
+    const sseCurrentIdentity = (): Identity | undefined => {
+        const result = (sse?.appState?.identities || []).filter((si) => si.id === identity?.id);
+        return _.head(result);
+    };
+
+    const authenticatedPage = () => {
+        return <AuthenticatedPage identity={sseCurrentIdentity()} />;
+    };
+
     if (loading) {
         return <CircularProgress className="spinner" />;
     }
@@ -192,7 +202,7 @@ const AppRouter = ({
                 path={DASHBOARD}
                 needsOnboarding={needsOnboarding}
                 loggedIn={loggedIn}
-                component={AuthenticatedPage}
+                component={authenticatedPage}
             />
             <ProtectedRoute
                 path={SESSIONS}

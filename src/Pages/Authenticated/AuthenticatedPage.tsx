@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FC } from 'react';
+import React from 'react';
 import '../../assets/styles/pages/authenticated/main.scss';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -15,10 +15,57 @@ import Sessions from './Sessions/Sessions';
 import Settings from './Settings/Settings';
 import Wallet from './Wallet/Wallet';
 import Navigation from './Components/Navigation';
+import { CircularProgress } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Identity } from 'mysterium-vpn-js';
+import { isRegistered } from '../../commons/isIdentity.utils';
+import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard';
 
-const AuthenticatedPage: FC = () => {
+const RegistrationOverlay = ({ identityRef }: { identityRef: string }) => {
+    return (
+        <div className="registration-overlay">
+            <div className="registration-overlay__content">
+                <CircularProgress className="m-r-10" />
+                <h2>Your identity is being registered, please be patient...</h2>
+            </div>
+            <div className="registration-overlay__footer">
+                <span className="registration-overlay__identity">{identityRef}</span>
+                <CopyToClipboard text={identityRef} />
+            </div>
+        </div>
+    );
+};
+
+const HelpArrow = () => {
+    return (
+        <div className="intercom-help-pointer">
+            <ArrowBackIcon className="intercom-help-pointer__arrow" fontSize="large" />
+            <h2>have questions? Talk to us!</h2>
+        </div>
+    );
+};
+
+interface Props {
+    identity?: Identity;
+}
+
+const displayOverlay = (identity?: Identity): boolean => {
+    if (!identity) {
+        return false;
+    }
+
+    return !isRegistered(identity);
+};
+
+const AuthenticatedPage = ({ identity }: Props) => {
     return (
         <div className="page">
+            {displayOverlay(identity) && (
+                <>
+                    <RegistrationOverlay identityRef={identity?.id || ''} />
+                    <HelpArrow />
+                </>
+            )}
             <div className="page__menu">
                 <Navigation />
             </div>

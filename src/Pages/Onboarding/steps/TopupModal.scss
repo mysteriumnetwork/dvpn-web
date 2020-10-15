@@ -1,0 +1,78 @@
+@import "../../../assets/styles/base/variables";
+
+.topup-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: 0;
+
+    &__block {
+        background: #FFFFFF;
+        box-shadow: 0px 6px 16px rgba(153, 155, 168, 0.1);
+        border-radius: 4px;
+        transition: unset;
+        width: 40%;
+        padding: 30px 35px;
+    }
+
+    &__content {
+        display: flex;
+    }
+
+    &__address {
+        display: flex;
+        align-items: center;
+        color: $main-text-color;
+        font-weight: $bold-weight;
+    }
+
+    &__description {
+        color: $secondary-text-color;
+        font-weight: $lighter-weight;
+        margin-top: 10px;
+    }
+
+    &__highlighted {
+        color: $main-text-color;
+        font-weight: $bold-weight;
+    }
+
+    &__qr {
+        height: 120px;
+        width: 120px;
+        margin: 0 auto;
+    }
+
+    &__footer {
+        display: flex;
+        align-content: space-between;
+    }
+
+    &__blockchain {
+        font-weight: $lighter-weight;
+    }
+
+    &__balance {
+        display: flex;
+        flex-direction: column;
+        //justify-content: center;
+        align-content: center;
+        margin-top: 10%;
+
+        &__label {
+            font-style: normal;
+            font-size: 14px;
+            line-height: 21px;
+            font-weight: $lighter-weight;
+            color: $secondary-text-color;
+        }
+
+        &__value {
+            font-style: normal;
+            font-size: 20px;
+            line-height: 32px;
+            font-weight: $medium-weight;
+            color: $main-text-color;
+        }
+    }
+}

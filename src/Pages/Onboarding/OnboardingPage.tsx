@@ -21,10 +21,8 @@ import SettlementSettings from './steps/SettlementSettings';
 
 import './Onboarding.scss';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
-import Topup from './steps/Topup';
 import { SSEState } from '../../redux/sse.slice';
 import _ from 'lodash';
-import { DEFAULT_STAKE_AMOUNT } from '../../constants/defaults';
 
 interface Props {
     termsAccepted: boolean;
@@ -42,10 +40,6 @@ export interface SettlementProps {
 
 const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, fees, sse }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [settlement, setSettlement] = useState<SettlementProps>({
-        stake: DEFAULT_STAKE_AMOUNT,
-        beneficiary: '',
-    });
 
     const callbacks: OnboardingChildProps = {
         nextStep: (): void => {
@@ -73,30 +67,7 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, 
 
     if (isUnregistered(sseIdentity)) {
         steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
-        steps.push(
-            <SettlementSettings
-                key="payout"
-                onSettingsChanged={(stake, beneficiary) => {
-                    setSettlement({ ...setSettlement, stake, beneficiary });
-                }}
-                identity={sseIdentity}
-                callbacks={callbacks}
-            />,
-        );
-    }
-
-    if (isUnregistered(sseIdentity)) {
-        steps.push(
-            <Topup
-                key="topup"
-                stake={settlement.stake}
-                beneficiary={settlement.beneficiary}
-                fees={fees}
-                channelAddress={sseIdentity.channelAddress}
-                identity={sseIdentity}
-                callbacks={callbacks}
-            />,
-        );
+        steps.push(<SettlementSettings key="payout" identity={sseIdentity} callbacks={callbacks} fees={fees} />);
     }
 
     if (needsPasswordChange) {

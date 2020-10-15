@@ -7,7 +7,6 @@
 import React, { useState } from 'react';
 import { Fade, Modal } from '@material-ui/core';
 import { ServiceInfo } from 'mysterium-vpn-js';
-import { tequilapi } from 'mysterium-vpn-js/lib/tequilapi-client-factory';
 import { useSnackbar } from 'notistack';
 
 import './ServiceSettingsModal.scss';
@@ -19,6 +18,7 @@ import { ServiceType } from '../../../../commons';
 import Button from '../../../../Components/Buttons/Button';
 import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../api/TequilAPIWrapper';
 import { parseError } from '../../../../commons/error.utils';
+import { tequilapiClient } from '../../../../api/TequilApiClient';
 
 interface Props {
     isOpen: boolean;
@@ -153,10 +153,12 @@ const ServiceSettingsModal = ({
                                     .then(() => setAccessPolicy(state.isVerifiedTrafficEnabled ? 'mysterium' : ''))
                                     .then(() => setTrafficShaping(state.isTrafficShapingEnabled))
                                     .then(() =>
-                                        serviceInfo?.id ? tequilapi.serviceStop(serviceInfo.id) : Promise.resolve(),
+                                        serviceInfo?.id
+                                            ? tequilapiClient.serviceStop(serviceInfo.id)
+                                            : Promise.resolve(),
                                     )
                                     .then(() =>
-                                        tequilapi.serviceStart({
+                                        tequilapiClient.serviceStart({
                                             providerId: identityRef,
                                             type: serviceType.toLowerCase(),
                                         }),
