@@ -21,18 +21,13 @@ const sumBytes = (sessionStats?: SessionStats) => {
     return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0);
 };
 
-const toSessionCard = ({
-    id,
-    consumerCountry,
-    status,
-    duration,
-    bytesSent,
-    bytesReceived,
-    tokens,
-}: Session): JSX.Element => {
+const toSessionCard = (
+    key: string,
+    { id, consumerCountry, status, duration, bytesSent, bytesReceived, tokens }: Session,
+): JSX.Element => {
     return (
         <SessionCard
-            key={id}
+            key={key}
             country={consumerCountry}
             status={status === SessionStatus.NEW}
             id={id}
@@ -62,8 +57,8 @@ const SessionSidebar = ({
     headerText,
     historySessions = [],
 }: Props) => {
-    const historyCards = historySessions.map((hs) => toSessionCard(hs));
-    const latestSessionCards = liveSessions.map((ls) => toSessionCard(ls)).concat(historyCards);
+    const historyCards = historySessions.map((hs, idx) => toSessionCard(`${idx}h`, hs));
+    const latestSessionCards = liveSessions.map((ls, idx) => toSessionCard(`${idx}l`, ls)).concat(historyCards);
 
     return (
         <div className="latest-sessions">
