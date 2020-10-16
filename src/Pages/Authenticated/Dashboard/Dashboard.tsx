@@ -8,7 +8,7 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { SessionDirection, SessionStats } from 'mysterium-vpn-js';
+import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js';
 import { useSnackbar } from 'notistack';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
@@ -42,6 +42,7 @@ interface StateProps {
     sessionStatsDaily: {
         [date: string]: SessionStats;
     };
+    historySessions: Session[];
 }
 
 const Dashboard = ({ app, sse }: Props) => {
@@ -55,6 +56,7 @@ const Dashboard = ({ app, sse }: Props) => {
             sumTokens: 0,
         },
         sessionStatsDaily: {},
+        historySessions: [],
     });
 
     const { enqueueSnackbar } = useSnackbar();
@@ -68,13 +70,20 @@ const Dashboard = ({ app, sse }: Props) => {
         Promise.all([
             tequilapiClient.sessionStatsDaily(sessionFilter),
             tequilapiClient.sessionStatsAggregated(sessionFilter),
+            tequilapiClient.sessions({
+                direction: SessionDirection.PROVIDED,
+                providerId: currentIdentity.id,
+                pageSize: 10,
+                status: SessionStatus.COMPLETED,
+            }),
         ])
             .then((result) => {
-                const [{ items: statsDaily }, { stats: allTimeStats }] = result;
+                const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }] = result;
                 setState({
                     ...state,
                     sessionStatsDaily: statsDaily,
                     sessionStatsAllTime: allTimeStats,
+                    historySessions: sidebarSessions,
                 });
             })
             .catch((err) => {
@@ -117,7 +126,13 @@ const Dashboard = ({ app, sse }: Props) => {
                 </div>
             </div>
             <div className="sidebar-block">
-                <SessionSidebar headerText="Latest Sessions" displayNavigation />
+                <SessionSidebar
+                    liveSessions={sse.appState?.sessions}
+                    liveSessionStats={sse.appState?.sessionsStats}
+                    historySessions={state.historySessions}
+                    headerText="Latest Sessions"
+                    displayNavigation
+                />
             </div>
         </div>
     );

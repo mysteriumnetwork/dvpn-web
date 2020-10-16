@@ -156,8 +156,8 @@ const AppRouter = ({
         return _.head(result);
     };
 
-    const authenticatedPage = () => {
-        return <AuthenticatedPage identity={sseCurrentIdentity()} />;
+    const authenticatedPage = (props: any) => {
+        return <AuthenticatedPage identity={sseCurrentIdentity()} {...props} />;
     };
 
     if (loading) {
@@ -208,19 +208,19 @@ const AppRouter = ({
                 path={SESSIONS}
                 needsOnboarding={needsOnboarding}
                 loggedIn={loggedIn}
-                component={AuthenticatedPage}
+                component={authenticatedPage}
             />
             <ProtectedRoute
                 path={SETTINGS}
                 needsOnboarding={needsOnboarding}
                 loggedIn={loggedIn}
-                component={AuthenticatedPage}
+                component={authenticatedPage}
             />
             <ProtectedRoute
                 path={WALLET}
                 needsOnboarding={needsOnboarding}
                 loggedIn={loggedIn}
-                component={AuthenticatedPage}
+                component={authenticatedPage}
             />
 
             <Redirect from="*" to={NOT_FOUND} />

@@ -13,6 +13,9 @@
         transition: unset;
         width: 40%;
         padding: 30px 35px;
+
+        display: flex;
+        flex-direction: column;
     }
 
     &__content {
@@ -21,7 +24,12 @@
 
     &__address {
         display: flex;
+        margin-top: 10px;
         align-items: center;
+        justify-content: center;
+    }
+
+    &__address_hash {
         color: $main-text-color;
         font-weight: $bold-weight;
     }
@@ -29,7 +37,7 @@
     &__description {
         color: $secondary-text-color;
         font-weight: $lighter-weight;
-        margin-top: 10px;
+        text-align: center;
     }
 
     &__highlighted {
@@ -43,8 +51,10 @@
         margin: 0 auto;
     }
 
-    &__footer {
+    &__footer-block {
         display: flex;
+        justify-content: center;
+        align-items: center;
         align-content: space-between;
     }
 
@@ -53,12 +63,8 @@
     }
 
     &__balance {
-        display: flex;
-        flex-direction: column;
-        //justify-content: center;
-        align-content: center;
-        margin-top: 10%;
-
+        text-align: center;
+        margin-top: 10px;
         &__label {
             font-style: normal;
             font-size: 14px;

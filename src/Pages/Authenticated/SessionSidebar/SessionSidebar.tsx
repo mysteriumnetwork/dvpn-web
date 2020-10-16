@@ -4,46 +4,30 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Session, SessionStatus, SessionStats, SessionDirection } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
 import './SessionSidebar.scss';
 
 import formatBytes, { add } from '../../../commons/formatBytes';
 import secondsToISOTime from '../../../commons/secondsToISOTime';
 import { displayMyst } from '../../../commons/money.utils';
 import { SESSIONS } from '../../../constants/routes';
-import { RootState } from '../../../redux/store';
-import { tequilapiClient } from '../../../api/TequilApiClient';
-import { parseError } from '../../../commons/error.utils';
 
 import SessionCard from './SessionCard';
-
-const mapStateToProps = ({ sse, app }: RootState) => ({
-    filterProviderId: app?.currentIdentity?.id,
-    liveSessions: sse.appState?.sessions,
-    liveSessionStats: sse.appState?.sessionsStats,
-});
 
 const sumBytes = (sessionStats?: SessionStats) => {
     return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0);
 };
 
-const toSessionCard = ({
-    id,
-    consumerCountry,
-    status,
-    duration,
-    bytesSent,
-    bytesReceived,
-    tokens,
-}: Session): JSX.Element => {
+const toSessionCard = (
+    key: string,
+    { id, consumerCountry, status, duration, bytesSent, bytesReceived, tokens }: Session,
+): JSX.Element => {
     return (
         <SessionCard
-            key={id}
+            key={key}
             country={consumerCountry}
             status={status === SessionStatus.NEW}
             id={id}
@@ -63,40 +47,18 @@ export interface Props {
     filterProviderId?: string;
     sessionsLimit?: number;
     headerText: string;
-}
-
-interface StateProps {
-    historySessions: Session[];
+    historySessions?: Session[];
 }
 
 const SessionSidebar = ({
-    liveSessions,
+    liveSessions = [],
     liveSessionStats,
     displayNavigation,
-    liveSessionsOnly,
-    filterDirection = SessionDirection.PROVIDED,
-    filterProviderId,
-    sessionsLimit = 10,
     headerText,
+    historySessions = [],
 }: Props) => {
-    const [state, setState] = useState<StateProps>({ historySessions: [] });
-
-    const { enqueueSnackbar } = useSnackbar();
-
-    useEffect(() => {
-        if (!liveSessionsOnly) {
-            tequilapiClient
-                .sessions({ direction: filterDirection, providerId: filterProviderId, pageSize: sessionsLimit })
-                .then((resp) => setState({ ...state, historySessions: resp.items }))
-                .catch((err) => {
-                    enqueueSnackbar(parseError(err) || 'Fetching Sessions Failed!');
-                    console.log(err);
-                });
-        }
-    }, []);
-
-    const historyCards = state.historySessions.map((hs) => toSessionCard(hs));
-    const latestSessionCards = (liveSessions || []).map((ls) => toSessionCard(ls)).concat(historyCards);
+    const historyCards = historySessions.map((hs, idx) => toSessionCard(`${idx}h`, hs));
+    const latestSessionCards = liveSessions.map((ls, idx) => toSessionCard(`${idx}l`, ls)).concat(historyCards);
 
     return (
         <div className="latest-sessions">
@@ -131,4 +93,4 @@ const SessionSidebar = ({
     );
 };
 
-export default connect(mapStateToProps)(SessionSidebar);
+export default SessionSidebar;

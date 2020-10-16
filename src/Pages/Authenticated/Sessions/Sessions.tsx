@@ -25,10 +25,12 @@ import { connect } from 'react-redux';
 export interface Props {
     filterDirection?: SessionDirection;
     filterProviderId?: string;
+    liveSessions?: Session[];
 }
 
 const mapStateToProps = (state: RootState) => ({
     filterProviderId: state.app.currentIdentity?.id,
+    liveSessions: state?.sse?.appState?.sessions,
 });
 
 interface StateProps {
@@ -68,7 +70,7 @@ const row = (s: Session): TableRow => {
     };
 };
 
-const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderId }: Props) => {
+const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderId, liveSessions }: Props) => {
     const [state, setState] = useState<StateProps>({
         isLoading: true,
         pageSize: 10,
@@ -129,7 +131,7 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderI
                 />
             </div>
             <div className="sidebar-block">
-                <SessionSidebar headerText="Live Sessions" liveSessionsOnly />
+                <SessionSidebar liveSessions={liveSessions} headerText="Live Sessions" />
             </div>
         </div>
     );

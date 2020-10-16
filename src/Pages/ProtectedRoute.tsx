@@ -10,7 +10,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { LOGIN, ONBOARDING_HOME } from '../constants/routes';
 
 interface Props {
-    component: any;
+    component: (props: any) => any;
     loggedIn: boolean;
     needsOnboarding: boolean;
     path: string;
@@ -27,14 +27,14 @@ const redirectComponent = (needsOnboarding: boolean, loggedIn: boolean): JSX.Ele
     return null;
 };
 
-const ProtectedRoute = ({ component: Component, loggedIn, needsOnboarding, ...rest }: Props): JSX.Element => {
+const ProtectedRoute = ({ component, loggedIn, needsOnboarding, ...rest }: Props): JSX.Element => {
     const redirect = redirectComponent(needsOnboarding, loggedIn);
 
     return (
         <Route
             {...rest}
             render={(props) => {
-                return redirect || <Component {...props} />;
+                return redirect || component(props);
             }}
         />
     );
