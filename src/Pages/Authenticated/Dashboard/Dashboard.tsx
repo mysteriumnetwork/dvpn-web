@@ -8,7 +8,7 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { Session, SessionDirection, SessionStats } from 'mysterium-vpn-js';
+import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js';
 import { useSnackbar } from 'notistack';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
@@ -74,6 +74,7 @@ const Dashboard = ({ app, sse }: Props) => {
                 direction: SessionDirection.PROVIDED,
                 providerId: currentIdentity.id,
                 pageSize: 10,
+                status: SessionStatus.COMPLETED,
             }),
         ])
             .then((result) => {
