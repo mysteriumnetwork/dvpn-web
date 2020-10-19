@@ -17,14 +17,21 @@ interface Props {
     disabled?: boolean;
     style?: 'outline' | 'filled' | 'gray' | 'outline-primary';
     type?: 'button' | 'submit' | 'reset' | undefined;
+    autoFocus?: boolean;
 }
 
-const Button = ({ isLoading, style, className, children, onClick, type, disabled }: Props): JSX.Element => {
+const Button = ({ isLoading, style, className, children, onClick, type, disabled, autoFocus }: Props): JSX.Element => {
     const classNames = `btn p-r-30 p-l-30 ${className || ''} btn--${style || 'filled'}`;
 
     return (
-        <button disabled={disabled || isLoading} type={type} onClick={onClick} className={classNames}>
-            {isLoading ? <CircularProgress className="loader" /> : children}
+        <button
+            disabled={disabled || isLoading}
+            type={type}
+            onClick={onClick}
+            className={classNames}
+            autoFocus={autoFocus}
+        >
+            {isLoading ? <CircularProgress className="loader" disableShrink /> : children}
         </button>
     );
 };
