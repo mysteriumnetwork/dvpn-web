@@ -1,5 +1,7 @@
 # Node WebUI
 
+> NOTE: Issues should be created in [node](https://github.com/mysteriumnetwork/node/issues) repo
+
 ## Release
 
 1. Start a Draft release from https://github.com/mysteriumnetwork/dvpn-web/releases  
@@ -29,3 +31,4 @@ Use generate changelog for release notes.
     ```
 
 5. Create a PR similar to [this one](https://github.com/mysteriumnetwork/node/pull/2720) 
+
