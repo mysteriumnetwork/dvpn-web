@@ -8,7 +8,6 @@
 import React, { useState } from 'react';
 import { Fees, Identity } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
-import { isUnregistered } from '../../commons/isIdentity.utils';
 
 import sideImage from '../../assets/images/onboarding/SideImage.png';
 
@@ -26,6 +25,7 @@ interface Props {
     termsAccepted: boolean;
     identity?: Identity;
     needsPasswordChange: boolean;
+    needsRegisteredIdentity: boolean;
     config?: Config;
     fees?: Fees;
 }
@@ -35,7 +35,14 @@ export interface SettlementProps {
     beneficiary: string;
 }
 
-const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, fees }: Props) => {
+const OnboardingPage = ({
+    needsPasswordChange,
+    needsRegisteredIdentity,
+    termsAccepted,
+    identity,
+    config,
+    fees,
+}: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
 
     const callbacks: OnboardingChildProps = {
@@ -54,7 +61,7 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, 
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
     }
 
-    if (isUnregistered(identity)) {
+    if (needsRegisteredIdentity) {
         steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
         steps.push(<SettlementSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} />);
     }

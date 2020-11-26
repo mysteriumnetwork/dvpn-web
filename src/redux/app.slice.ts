@@ -9,6 +9,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { areTermsAccepted } from '../commons/terms';
+import { isUnregistered } from '../commons/isIdentity.utils';
 
 export interface Auth {
     authenticated?: boolean;
@@ -74,6 +75,10 @@ const needsPasswordChange = (state: AppState): boolean => {
     return !!state.auth.withDefaultCredentials;
 };
 
+const needsRegisteredIdentity = (state: AppState): boolean => {
+    return !state.currentIdentity || isUnregistered(state.currentIdentity);
+};
+
 const termsAccepted = (state: AppState): boolean => {
     return areTermsAccepted(state.terms.acceptedAt, state.terms.acceptedVersion);
 };
@@ -81,10 +86,10 @@ const termsAccepted = (state: AppState): boolean => {
 const shouldBeOnboarded = (state: AppState): boolean => {
     // TODO if !needsPasswordChange(state) then infinite loading
     // return !termsAccepted(state) || needsPasswordChange(state)
-    return needsPasswordChange(state);
+    return needsPasswordChange(state) || needsRegisteredIdentity(state);
 };
 
-export { isLoggedIn, needsPasswordChange, termsAccepted, shouldBeOnboarded };
+export { isLoggedIn, needsPasswordChange, needsRegisteredIdentity, termsAccepted, shouldBeOnboarded };
 
 export const {
     updateAuthenticatedStore,
