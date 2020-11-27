@@ -10,20 +10,13 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 import { ServiceType } from '../commons';
 import { store } from '../redux/store';
-import { DEFAULT_IDENTITY_PASSPHRASE, DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults';
-import { updateConfigStore, updateIdentityStore } from '../redux/app.slice';
+import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults';
+import { updateConfigStore } from '../redux/app.slice';
 
 import { tequilapiClient } from './TequilApiClient';
 
-export const loginAndStoreCurrentIdentity = async (username: string, password: string): Promise<void> => {
-    return await tequilapiClient
-        .authLogin({ username, password })
-        .then(() => tequilapiClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE }))
-        .then((identityRef) => tequilapiClient.identity(identityRef.id))
-        .then((identity) => {
-            store.dispatch(updateIdentityStore(identity));
-            return Promise.resolve();
-        });
+export const login = async (username: string, password: string): Promise<void> => {
+    return await tequilapiClient.authLogin({ username, password }).then(() => Promise.resolve());
 };
 
 export const loginWithDefaultCredentials = async (): Promise<boolean> => {
