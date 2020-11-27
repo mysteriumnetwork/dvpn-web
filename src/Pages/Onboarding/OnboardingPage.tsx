@@ -21,8 +21,6 @@ import SettlementSettings from './steps/SettlementSettings';
 
 import './Onboarding.scss';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
-import { SSEState } from '../../redux/sse.slice';
-import _ from 'lodash';
 
 interface Props {
     termsAccepted: boolean;
@@ -30,7 +28,6 @@ interface Props {
     needsPasswordChange: boolean;
     config?: Config;
     fees?: Fees;
-    sse?: SSEState;
 }
 
 export interface SettlementProps {
@@ -38,7 +35,7 @@ export interface SettlementProps {
     beneficiary: string;
 }
 
-const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, fees, sse }: Props) => {
+const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, fees }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
 
     const callbacks: OnboardingChildProps = {
@@ -47,15 +44,7 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, 
         },
     };
 
-    const currentSSEIdentity = (): Identity | undefined => {
-        const sseIdentities = sse?.appState?.identities || [];
-        sseIdentities.filter((si) => si.id === identity?.id);
-        return _.first(sseIdentities);
-    };
-
-    const sseIdentity = currentSSEIdentity();
-
-    if (!sse || !sseIdentity || !config || !fees) {
+    if (!identity || !config || !fees) {
         return <CircularProgress className="spinner" />;
     }
 
@@ -65,9 +54,9 @@ const OnboardingPage = ({ needsPasswordChange, termsAccepted, identity, config, 
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
     }
 
-    if (isUnregistered(sseIdentity)) {
+    if (isUnregistered(identity)) {
         steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
-        steps.push(<SettlementSettings key="payout" identity={sseIdentity} callbacks={callbacks} fees={fees} />);
+        steps.push(<SettlementSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} />);
     }
 
     if (needsPasswordChange) {
