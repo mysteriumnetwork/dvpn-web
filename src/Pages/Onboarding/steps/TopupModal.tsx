@@ -8,8 +8,7 @@ import React, { useEffect } from 'react';
 import { QRCode } from 'react-qr-svg';
 import Button from '../../../Components/Buttons/Button';
 import { displayMyst } from '../../../commons/money.utils';
-import { tequilapiClient } from '../../../api/TequilApiClient';
-import { Fees, Identity } from 'mysterium-vpn-js';
+import { Identity } from 'mysterium-vpn-js';
 import { CircularProgress, Fade, Modal } from '@material-ui/core';
 import './TopupModal.scss';
 import CopyToClipboard from '../../../Components/CopyToClipboard/CopyToClipboard';
@@ -17,28 +16,18 @@ import CopyToClipboard from '../../../Components/CopyToClipboard/CopyToClipboard
 interface Props {
     onTopup: () => void;
     onClose: () => void;
-    beneficiary: string;
-    stake: number;
-    fees: Fees;
+    topupSum: number;
     identity: Identity;
     open: boolean;
 }
 
-const TopupModal = ({ fees, identity, stake, beneficiary, onTopup, open, onClose }: Props) => {
-    const registrationFee = () => {
-        return fees?.registration || 0;
-    };
-
+const TopupModal = ({ identity, topupSum, onTopup, open, onClose }: Props) => {
     useEffect(() => {
-        if (identity.balance >= registrationFee() + stake) {
-            tequilapiClient
-                .identityRegister(identity.id, {
-                    beneficiary,
-                    stake,
-                })
-                .then(() => onTopup());
+        if (identity.balance >= topupSum) {
+            onTopup();
+            return;
         }
-    }, [identity, open]);
+    }, [identity.balance, open]);
 
     return (
         <Modal
@@ -54,8 +43,7 @@ const TopupModal = ({ fees, identity, stake, beneficiary, onTopup, open, onClose
                 <div className="topup-modal__block">
                     <div className="topup-modal__description">
                         To activate your account, transfer{' '}
-                        <span className="topup-modal__highlighted">{displayMyst(registrationFee() + stake)}</span> to
-                        your wallet
+                        <span className="topup-modal__highlighted">{displayMyst(topupSum)}</span> to your wallet
                         <br />
                         (Görli Testnet blockchain)
                     </div>

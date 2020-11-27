@@ -30,7 +30,7 @@ interface StateInterface {
     stake: number;
     errors: string[];
     hasReferralCode: boolean;
-    referralCode: string;
+    referralCode?: string;
 }
 
 const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
@@ -39,7 +39,6 @@ const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
         stake: DEFAULT_STAKE_AMOUNT,
         errors: [],
         hasReferralCode: false,
-        referralCode: '',
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [topupOpen, setTopupOpen] = useState<boolean>(false);
@@ -67,17 +66,12 @@ const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
         }
         setIsLoading(true);
 
-        if (state.hasReferralCode) {
-            register(identity.id)
-                .then(() => callbacks.nextStep())
-                .catch((error) => {
-                    errors(parseError(error) || 'API call failed');
-                    console.log(error);
-                    setIsLoading(false);
-                });
-        } else {
-            setTopupOpen(true);
-        }
+        register(identity.id)
+            .then(() => setTopupOpen(true))
+            .catch((error) => {
+                errors(parseError(error) || 'API call failed');
+                setIsLoading(false);
+            });
     };
 
     const register = (identity: string): Promise<void> => {
@@ -154,16 +148,14 @@ const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
                 </div>
                 <div className="step__content-buttons step__content-buttons--center">
                     <Button onClick={handleDone} isLoading={isLoading}>
-                        {state.hasReferralCode ? 'Register' : 'Payment Information'}
+                        Next
                     </Button>
                 </div>
             </div>
             <TopupModal
                 open={topupOpen}
-                beneficiary={state.beneficiary}
-                stake={state.stake * DECIMAL_PART}
-                fees={fees}
                 identity={identity}
+                topupSum={fees.registration + state.stake * DECIMAL_PART}
                 onClose={() => {
                     setTopupOpen(false);
                     setIsLoading(false);
