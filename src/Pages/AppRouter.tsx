@@ -17,6 +17,7 @@ import ConnectToSSE from '../sse/server-sent-events';
 import {
     Auth,
     isLoggedIn,
+    currentIdentity,
     needsPasswordChange,
     needsRegisteredIdentity,
     termsAccepted,
@@ -71,7 +72,7 @@ interface Props {
 const mapStateToProps = (state: RootState) => ({
     config: state.app.config,
     loading: state.app.loading,
-    identity: state.app.currentIdentity,
+    identity: currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities),
     loggedIn: isLoggedIn(state.app),
     termsAccepted: termsAccepted(state.app),
     needsPasswordChange: needsPasswordChange(state.app),
