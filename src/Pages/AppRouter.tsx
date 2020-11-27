@@ -58,15 +58,18 @@ interface Props {
     };
 }
 
-const mapStateToProps = (state: RootState) => ({
-    config: state.app.config,
-    loading: state.app.loading,
-    loggedIn: isLoggedIn(state.app.auth),
-    identity: currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities),
-    onboarding: onboardingState(state.app.auth, state.app.terms, state.app.currentIdentity),
-    fees: state.app.fees,
-    sse: state.sse,
-});
+const mapStateToProps = (state: RootState) => {
+    const identity = currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities);
+    return {
+        config: state.app.config,
+        loading: state.app.loading,
+        loggedIn: isLoggedIn(state.app.auth),
+        identity: identity,
+        onboarding: onboardingState(state.app.auth, state.app.terms, identity),
+        fees: state.app.fees,
+        sse: state.sse,
+    };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
