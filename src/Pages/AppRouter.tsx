@@ -96,10 +96,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 };
 
 const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element => {
+    if (!loggedIn) {
+        return <Redirect to={LOGIN} />;
+    }
     if (needsOnboarding) {
         return <Redirect to={ONBOARDING_HOME} />;
-    } else if (!loggedIn) {
-        return <Redirect to={LOGIN} />;
     }
 
     return <Redirect to={DASHBOARD} />;
