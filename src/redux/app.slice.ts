@@ -22,6 +22,13 @@ export interface Terms {
     acceptedVersion: string | undefined;
 }
 
+export interface Onboarding {
+    termsAccepted: boolean;
+    needsPasswordChange: boolean;
+    needsRegisteredIdentity: boolean;
+    needsOnboarding: boolean;
+}
+
 export interface AppState {
     loading: boolean;
     currentIdentityRef?: IdentityRef;
@@ -75,29 +82,29 @@ const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]) => 
     return _.head(result);
 };
 
-const isLoggedIn = (state: AppState): boolean => {
-    return !!state.auth.authenticated;
-};
+const onboardingState = (auth: Auth, terms: Terms, currentIdentity?: Identity): Onboarding => {
+    const onboarding = {
+        termsAccepted: termsAccepted(terms),
+        needsPasswordChange: !!auth.withDefaultCredentials,
+        needsRegisteredIdentity: !currentIdentity || isUnregistered(currentIdentity),
+    } as Onboarding;
 
-const needsPasswordChange = (state: AppState): boolean => {
-    return !!state.auth.withDefaultCredentials;
-};
-
-const needsRegisteredIdentity = (state: AppState): boolean => {
-    return !state.currentIdentity || isUnregistered(state.currentIdentity);
-};
-
-const termsAccepted = (state: AppState): boolean => {
-    return areTermsAccepted(state.terms.acceptedAt, state.terms.acceptedVersion);
-};
-
-const shouldBeOnboarded = (state: AppState): boolean => {
     // TODO if !needsPasswordChange(state) then infinite loading
-    // return !termsAccepted(state) || needsPasswordChange(state)
-    return needsPasswordChange(state) || needsRegisteredIdentity(state);
+    // onboarding.needsOnboarding = !termsAccepted || onboarding.needsPasswordChange
+    onboarding.needsOnboarding = onboarding.needsPasswordChange || onboarding.needsRegisteredIdentity;
+
+    return onboarding;
 };
 
-export { isLoggedIn, currentIdentity, needsPasswordChange, needsRegisteredIdentity, termsAccepted, shouldBeOnboarded };
+const isLoggedIn = (auth: Auth): boolean => {
+    return !!auth.authenticated;
+};
+
+const termsAccepted = (terms: Terms): boolean => {
+    return areTermsAccepted(terms.acceptedAt, terms.acceptedVersion);
+};
+
+export { currentIdentity, onboardingState, isLoggedIn, termsAccepted };
 
 export const {
     updateAuthenticatedStore,
