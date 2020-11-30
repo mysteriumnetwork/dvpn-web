@@ -14,7 +14,14 @@ import { connect } from 'react-redux';
 import '../assets/styles/App.scss';
 import { sseAppStateStateChanged, SSEState } from '../redux/sse.slice';
 import ConnectToSSE from '../sse/server-sent-events';
-import { Auth, isLoggedIn, needsPasswordChange, shouldBeOnboarded, termsAccepted } from '../redux/app.slice';
+import {
+    Auth,
+    isLoggedIn,
+    needsPasswordChange,
+    needsRegisteredIdentity,
+    termsAccepted,
+    shouldBeOnboarded,
+} from '../redux/app.slice';
 import { fetchConfigAsync, fetchFeesAsync, updateTermsStoreAsync } from '../redux/app.async.actions';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice';
 import { RootState } from '../redux/store';
@@ -46,6 +53,7 @@ interface Props {
     loggedIn: boolean;
     termsAccepted: boolean;
     needsPasswordChange: boolean;
+    needsRegisteredIdentity: boolean;
     needsOnboarding: boolean;
     fees?: Fees;
     sse?: SSEState;
@@ -67,6 +75,7 @@ const mapStateToProps = (state: RootState) => ({
     loggedIn: isLoggedIn(state.app),
     termsAccepted: termsAccepted(state.app),
     needsPasswordChange: needsPasswordChange(state.app),
+    needsRegisteredIdentity: needsRegisteredIdentity(state.app),
     needsOnboarding: shouldBeOnboarded(state.app),
     fees: state.app.fees,
     sse: state.sse,
@@ -87,10 +96,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
 };
 
 const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element => {
+    if (!loggedIn) {
+        return <Redirect to={LOGIN} />;
+    }
     if (needsOnboarding) {
         return <Redirect to={ONBOARDING_HOME} />;
-    } else if (!loggedIn) {
-        return <Redirect to={LOGIN} />;
     }
 
     return <Redirect to={DASHBOARD} />;
@@ -103,6 +113,7 @@ const AppRouter = ({
     loggedIn,
     needsOnboarding,
     needsPasswordChange,
+    needsRegisteredIdentity,
     termsAccepted,
     fees,
     actions,
@@ -179,8 +190,9 @@ const AppRouter = ({
                             config={config}
                             fees={fees}
                             identity={identity}
-                            termsAccepted={termsAccepted}
                             needsPasswordChange={needsPasswordChange}
+                            needsRegisteredIdentity={needsRegisteredIdentity}
+                            termsAccepted={termsAccepted}
                         />
                     ) : (
                         <Redirect to={DASHBOARD} />
