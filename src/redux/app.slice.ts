@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Fees, Identity } from 'mysterium-vpn-js';
+import { Fees, IdentityRef, Identity } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { areTermsAccepted } from '../commons/terms';
 import { isUnregistered } from '../commons/isIdentity.utils';
+import _ from 'lodash';
 
 export interface Auth {
     authenticated?: boolean;
@@ -21,8 +22,16 @@ export interface Terms {
     acceptedVersion: string | undefined;
 }
 
+export interface Onboarding {
+    termsAccepted: boolean;
+    needsPasswordChange: boolean;
+    needsRegisteredIdentity: boolean;
+    needsOnboarding: boolean;
+}
+
 export interface AppState {
     loading: boolean;
+    currentIdentityRef?: IdentityRef;
     currentIdentity?: Identity;
     auth: Auth;
     terms: Terms;
@@ -67,29 +76,35 @@ const slice = createSlice({
     },
 });
 
-const isLoggedIn = (state: AppState): boolean => {
-    return !!state.auth.authenticated;
+// Hot identity details (from SSE).
+const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]) => {
+    const result = (identities || []).filter((si) => si.id === identityRef?.id);
+    return _.head(result);
 };
 
-const needsPasswordChange = (state: AppState): boolean => {
-    return !!state.auth.withDefaultCredentials;
-};
+const onboardingState = (auth: Auth, terms: Terms, currentIdentity?: Identity): Onboarding => {
+    const onboarding = {
+        termsAccepted: termsAccepted(terms),
+        needsPasswordChange: !!auth.withDefaultCredentials,
+        needsRegisteredIdentity: !currentIdentity || isUnregistered(currentIdentity),
+    } as Onboarding;
 
-const needsRegisteredIdentity = (state: AppState): boolean => {
-    return !state.currentIdentity || isUnregistered(state.currentIdentity);
-};
-
-const termsAccepted = (state: AppState): boolean => {
-    return areTermsAccepted(state.terms.acceptedAt, state.terms.acceptedVersion);
-};
-
-const shouldBeOnboarded = (state: AppState): boolean => {
     // TODO if !needsPasswordChange(state) then infinite loading
-    // return !termsAccepted(state) || needsPasswordChange(state)
-    return needsPasswordChange(state) || needsRegisteredIdentity(state);
+    // onboarding.needsOnboarding = !termsAccepted || onboarding.needsPasswordChange
+    onboarding.needsOnboarding = onboarding.needsPasswordChange || onboarding.needsRegisteredIdentity;
+
+    return onboarding;
 };
 
-export { isLoggedIn, needsPasswordChange, needsRegisteredIdentity, termsAccepted, shouldBeOnboarded };
+const isLoggedIn = (auth: Auth): boolean => {
+    return !!auth.authenticated;
+};
+
+const termsAccepted = (terms: Terms): boolean => {
+    return areTermsAccepted(terms.acceptedAt, terms.acceptedVersion);
+};
+
+export { currentIdentity, onboardingState, isLoggedIn, termsAccepted };
 
 export const {
     updateAuthenticatedStore,

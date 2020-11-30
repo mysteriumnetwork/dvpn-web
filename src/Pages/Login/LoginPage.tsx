@@ -15,7 +15,7 @@ import '../../assets/styles/pages/login/main.scss';
 import { DefaultTextField } from '../../Components/DefaultTextField';
 import { DEFAULT_USERNAME } from '../../constants/defaults';
 import Button from '../../Components/Buttons/Button';
-import { loginAndStoreCurrentIdentity } from '../../api/TequilAPIWrapper';
+import { login } from '../../api/TequilAPIWrapper';
 
 interface Props {
     onSuccessLogin: () => void;
@@ -41,7 +41,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
     const handleLogin = (e: FormEvent<any>) => {
         e.preventDefault();
         setState({ ...state, error: false, isLoading: true });
-        loginAndStoreCurrentIdentity(DEFAULT_USERNAME, state.password)
+        login(DEFAULT_USERNAME, state.password)
             .then(() =>
                 store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })),
             )

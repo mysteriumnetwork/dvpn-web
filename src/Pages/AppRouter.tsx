@@ -14,14 +14,7 @@ import { connect } from 'react-redux';
 import '../assets/styles/App.scss';
 import { sseAppStateStateChanged, SSEState } from '../redux/sse.slice';
 import ConnectToSSE from '../sse/server-sent-events';
-import {
-    Auth,
-    isLoggedIn,
-    needsPasswordChange,
-    needsRegisteredIdentity,
-    termsAccepted,
-    shouldBeOnboarded,
-} from '../redux/app.slice';
+import { Auth, Onboarding, isLoggedIn, currentIdentity, onboardingState } from '../redux/app.slice';
 import { fetchConfigAsync, fetchFeesAsync, updateTermsStoreAsync } from '../redux/app.async.actions';
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice';
 import { RootState } from '../redux/store';
@@ -49,12 +42,9 @@ import AuthenticatedPage from './Authenticated/AuthenticatedPage';
 interface Props {
     config?: Config;
     loading: boolean;
-    identity?: Identity;
     loggedIn: boolean;
-    termsAccepted: boolean;
-    needsPasswordChange: boolean;
-    needsRegisteredIdentity: boolean;
-    needsOnboarding: boolean;
+    identity?: Identity;
+    onboarding: Onboarding;
     fees?: Fees;
     sse?: SSEState;
     actions: {
@@ -68,18 +58,18 @@ interface Props {
     };
 }
 
-const mapStateToProps = (state: RootState) => ({
-    config: state.app.config,
-    loading: state.app.loading,
-    identity: state.app.currentIdentity,
-    loggedIn: isLoggedIn(state.app),
-    termsAccepted: termsAccepted(state.app),
-    needsPasswordChange: needsPasswordChange(state.app),
-    needsRegisteredIdentity: needsRegisteredIdentity(state.app),
-    needsOnboarding: shouldBeOnboarded(state.app),
-    fees: state.app.fees,
-    sse: state.sse,
-});
+const mapStateToProps = (state: RootState) => {
+    const identity = currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities);
+    return {
+        config: state.app.config,
+        loading: state.app.loading,
+        loggedIn: isLoggedIn(state.app.auth),
+        identity: identity,
+        onboarding: onboardingState(state.app.auth, state.app.terms, identity),
+        fees: state.app.fees,
+        sse: state.sse,
+    };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     return {
@@ -106,18 +96,7 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
     return <Redirect to={DASHBOARD} />;
 };
 
-const AppRouter = ({
-    config,
-    loading,
-    identity,
-    loggedIn,
-    needsOnboarding,
-    needsPasswordChange,
-    needsRegisteredIdentity,
-    termsAccepted,
-    fees,
-    actions,
-}: Props) => {
+const AppRouter = ({ config, loading, identity, loggedIn, onboarding, fees, actions }: Props) => {
     const loginActions = () => {
         actions.fetchIdentityAsync();
         actions.fetchConfigAsync();
@@ -171,7 +150,7 @@ const AppRouter = ({
     return (
         <Switch>
             <Route exact path={HOME}>
-                {redirectTo(needsOnboarding, loggedIn)}
+                {redirectTo(onboarding.needsOnboarding, loggedIn)}
             </Route>
             <Route
                 exact
@@ -184,15 +163,13 @@ const AppRouter = ({
                 exact
                 path={ONBOARDING_HOME}
                 render={(props) => {
-                    return needsOnboarding ? (
+                    return onboarding.needsOnboarding ? (
                         <OnboardingPage
                             {...props}
+                            onboarding={onboarding}
                             config={config}
                             fees={fees}
                             identity={identity}
-                            needsPasswordChange={needsPasswordChange}
-                            needsRegisteredIdentity={needsRegisteredIdentity}
-                            termsAccepted={termsAccepted}
                         />
                     ) : (
                         <Redirect to={DASHBOARD} />
@@ -204,25 +181,25 @@ const AppRouter = ({
 
             <ProtectedRoute
                 path={DASHBOARD}
-                needsOnboarding={needsOnboarding}
+                needsOnboarding={onboarding.needsOnboarding}
                 loggedIn={loggedIn}
                 component={authenticatedPage}
             />
             <ProtectedRoute
                 path={SESSIONS}
-                needsOnboarding={needsOnboarding}
+                needsOnboarding={onboarding.needsOnboarding}
                 loggedIn={loggedIn}
                 component={authenticatedPage}
             />
             <ProtectedRoute
                 path={SETTINGS}
-                needsOnboarding={needsOnboarding}
+                needsOnboarding={onboarding.needsOnboarding}
                 loggedIn={loggedIn}
                 component={authenticatedPage}
             />
             <ProtectedRoute
                 path={WALLET}
-                needsOnboarding={needsOnboarding}
+                needsOnboarding={onboarding.needsOnboarding}
                 loggedIn={loggedIn}
                 component={authenticatedPage}
             />

@@ -19,13 +19,12 @@ import PriceSettings from './steps/PriceSettings';
 import SettlementSettings from './steps/SettlementSettings';
 
 import './Onboarding.scss';
+import { Onboarding } from '../../redux/app.slice';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 
 interface Props {
-    termsAccepted: boolean;
+    onboarding: Onboarding;
     identity?: Identity;
-    needsPasswordChange: boolean;
-    needsRegisteredIdentity: boolean;
     config?: Config;
     fees?: Fees;
 }
@@ -35,14 +34,7 @@ export interface SettlementProps {
     beneficiary: string;
 }
 
-const OnboardingPage = ({
-    needsPasswordChange,
-    needsRegisteredIdentity,
-    termsAccepted,
-    identity,
-    config,
-    fees,
-}: Props) => {
+const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
 
     const callbacks: OnboardingChildProps = {
@@ -57,16 +49,16 @@ const OnboardingPage = ({
 
     const steps = [<Welcome key="welcome" callbacks={callbacks} />];
 
-    if (!termsAccepted) {
+    if (!onboarding.termsAccepted) {
         steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />);
     }
 
-    if (needsRegisteredIdentity) {
+    if (onboarding.needsRegisteredIdentity) {
         steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
         steps.push(<SettlementSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} />);
     }
 
-    if (needsPasswordChange) {
+    if (onboarding.needsPasswordChange) {
         steps.push(<PasswordChange key="password" config={config} callbacks={callbacks} />);
     }
 
