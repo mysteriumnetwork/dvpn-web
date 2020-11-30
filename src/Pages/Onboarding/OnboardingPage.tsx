@@ -56,7 +56,7 @@ const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
     if (onboarding.needsRegisteredIdentity) {
         steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />);
         steps.push(
-            <SettlementSettings key="payout" identity={identity} callbacks={callbacks} config={config} fees={fees} />,
+            <SettlementSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} config={config} />,
         );
     }
 
