@@ -58,6 +58,9 @@ const slice = createSlice({
         updateAuthenticatedStore: (state, action) => {
             state.auth = action.payload;
         },
+        updateIdentityRefStore: (state, action) => {
+            state.currentIdentityRef = action.payload;
+        },
         updateIdentityStore: (state, action) => {
             state.currentIdentity = action.payload;
         },
@@ -108,6 +111,7 @@ export { currentIdentity, onboardingState, isLoggedIn, termsAccepted };
 
 export const {
     updateAuthenticatedStore,
+    updateIdentityRefStore,
     updateIdentityStore,
     updateTermsStore,
     updateAuthFlowLoadingStore,

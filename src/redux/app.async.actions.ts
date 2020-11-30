@@ -10,7 +10,13 @@ import { tequilapiClient } from '../api/TequilApiClient';
 import { resolveTermsAgreement } from '../commons/terms';
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults';
 
-import { updateTermsStore, updateConfigStore, updateIdentityStore, updateFeesStore } from './app.slice';
+import {
+    updateTermsStore,
+    updateConfigStore,
+    updateIdentityRefStore,
+    updateIdentityStore,
+    updateFeesStore,
+} from './app.slice';
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
     return async (dispatch) => {
@@ -27,9 +33,10 @@ export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => 
 
 export const fetchIdentityAsync = (): ((dispatch: Dispatch<any>) => void) => {
     return async (dispatch) => {
-        const identity = await tequilapiClient
-            .identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
-            .then((identityRef) => tequilapiClient.identity(identityRef.id));
+        const identityRef = await tequilapiClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE });
+        dispatch(updateIdentityRefStore(identityRef));
+
+        const identity = await tequilapiClient.identity(identityRef.id);
         dispatch(updateIdentityStore(identity));
     };
 };
