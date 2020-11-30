@@ -15,13 +15,16 @@ import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
 import { parseError } from '../../../commons/error.utils';
 import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import TopupModal from './TopupModal';
+import { isFreeRegistration } from '../../../commons/config';
 
 interface Props {
     callbacks: OnboardingChildProps;
     identity: Identity;
+    config: Config;
     fees: Fees;
 }
 
@@ -33,7 +36,7 @@ interface StateInterface {
     referralCode?: string;
 }
 
-const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
+const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
     const [state, setState] = useState<StateInterface>({
         beneficiary: '',
         stake: DEFAULT_STAKE_AMOUNT,
@@ -67,7 +70,15 @@ const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
         setIsLoading(true);
 
         register(identity.id)
-            .then(() => setTopupOpen(true))
+            .then(() => {
+                if (isFreeRegistration(config)) {
+                    setIsLoading(false);
+                    callbacks.nextStep();
+                    return;
+                } else {
+                    setTopupOpen(true);
+                }
+            })
             .catch((error) => {
                 errors(parseError(error) || 'API call failed');
                 setIsLoading(false);
