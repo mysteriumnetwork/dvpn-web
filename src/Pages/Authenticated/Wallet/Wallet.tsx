@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { AppState, Identity } from 'mysterium-vpn-js';
+import { AppState, Fees, Identity } from 'mysterium-vpn-js';
 import { Settlement } from 'mysterium-vpn-js/src/transactor/settlement';
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement';
 import { CircularProgress } from '@material-ui/core';
@@ -19,6 +19,10 @@ import { RootState } from '../../../redux/store';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 
 import './Wallet.scss';
+import Button from '../../../Components/Buttons/Button';
+import SettlementModal from './SettlementModal';
+import { parseError } from '../../../commons/error.utils';
+import { useSnackbar } from 'notistack';
 
 interface StateProps {
     unsettledEarnings: number;
@@ -26,6 +30,12 @@ interface StateProps {
     settlementResponse?: SettlementListResponse;
     pageSize: number;
     currentPage: number;
+}
+
+interface SettlementState {
+    loading: boolean;
+    dialogueOpen: boolean;
+    fees?: Fees;
 }
 
 interface Props {
@@ -83,7 +93,12 @@ const Wallet = ({ appState, identity }: Props) => {
         pageSize: 10,
         currentPage: 1,
     });
+    const [settlementState, setSettlementState] = useState<SettlementState>({
+        loading: false,
+        dialogueOpen: false,
+    });
 
+    const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
         tequilapiClient
             .settlementHistory({ pageSize: state.pageSize, page: state.currentPage })
@@ -95,7 +110,7 @@ const Wallet = ({ appState, identity }: Props) => {
             });
     }, [state.pageSize, state.currentPage]);
 
-    if (identity === undefined) {
+    if (!identity) {
         return <CircularProgress className="spinner" />;
     }
 
@@ -115,7 +130,7 @@ const Wallet = ({ appState, identity }: Props) => {
     };
 
     const { items = [], totalPages = 0 } = { ...state?.settlementResponse };
-
+    const earning = earnings(appState, identity.id);
     return (
         <div className="main">
             <div className="main-block">
@@ -123,8 +138,32 @@ const Wallet = ({ appState, identity }: Props) => {
 
                 <div className="wallet__earnings">
                     <div className="earnings">
-                        <p className="earnings__value">{displayMyst(earnings(appState, identity.id))}</p>
+                        <p className="earnings__value">{displayMyst(earning)}</p>
                         <p className="earnings__label">Unsettled Earnings</p>
+                    </div>
+                    <div>
+                        <Button
+                            className="wallet-settle-button"
+                            isLoading={settlementState.loading}
+                            onClick={() => {
+                                Promise.all([setSettlementState({ ...settlementState, loading: true })])
+                                    .then(() => tequilapiClient.transactorFees())
+                                    .then((fees) => {
+                                        setSettlementState({
+                                            ...settlementState,
+                                            dialogueOpen: true,
+                                            loading: false,
+                                            fees: fees,
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        enqueueSnackbar('Error: ' + parseError(err), { variant: 'error' });
+                                        setSettlementState({ ...settlementState, loading: false });
+                                    });
+                            }}
+                        >
+                            Settle Now
+                        </Button>
                     </div>
                 </div>
 
@@ -144,6 +183,18 @@ const Wallet = ({ appState, identity }: Props) => {
                     onPageClick={onPageClicked}
                 />
             </div>
+            <SettlementModal
+                unsettledEarnings={identity.earnings}
+                fees={settlementState.fees}
+                open={settlementState.dialogueOpen}
+                onClose={() => {
+                    setSettlementState({ ...settlementState, dialogueOpen: false });
+                }}
+                onSettle={() => {
+                    setSettlementState({ ...settlementState, dialogueOpen: false });
+                    tequilapiClient.settleAsync({ providerId: identity.id, hermesId: 'TODO' });
+                }}
+            />
         </div>
     );
 };
