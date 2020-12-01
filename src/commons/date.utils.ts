@@ -7,3 +7,7 @@
 export const date2iso = (ds: string): string => {
     return new Date(Date.parse(ds)).toISOString();
 };
+
+export const date2human = (ds: string): string => {
+    return new Date(Date.parse(ds)).toLocaleString();
+};

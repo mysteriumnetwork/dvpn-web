@@ -21,6 +21,7 @@ import './Sessions.scss';
 import { parseError } from '../../../commons/error.utils';
 import { RootState } from '../../../redux/store';
 import { connect } from 'react-redux';
+import { date2human } from '../../../commons/date.utils';
 
 export interface Props {
     filterDirection?: SessionDirection;
@@ -49,11 +50,15 @@ const row = (s: Session): TableRow => {
             content: s.consumerCountry,
         },
         {
-            className: 'w-20',
+            className: 'w-10',
             content: secondsToISOTime(s.duration),
         },
         {
-            className: 'w-30',
+            className: 'w-20',
+            content: date2human(s.createdAt),
+        },
+        {
+            className: 'w-20',
             content: displayMyst(s.tokens),
         },
         {
@@ -61,7 +66,7 @@ const row = (s: Session): TableRow => {
             content: formatBytes(s.bytesReceived + s.bytesSent),
         },
         {
-            className: 'w-30',
+            className: 'w-20',
             content: s.id.split('-')[0],
         },
     ];
@@ -123,10 +128,11 @@ const Sessions = ({
                 <Table
                     headers={[
                         { name: 'Country', className: 'w-10' },
-                        { name: 'Duration', className: 'w-20' },
-                        { name: 'Earnings', className: 'w-30' },
+                        { name: 'Duration', className: 'w-10' },
+                        { name: 'Started', className: 'w-20' },
+                        { name: 'Earnings', className: 'w-20' },
                         { name: 'Transferred', className: 'w-20' },
-                        { name: 'Session ID', className: 'w-30' },
+                        { name: 'Session ID', className: 'w-20' },
                     ]}
                     rows={items.map(row)}
                     currentPage={state.currentPage}
