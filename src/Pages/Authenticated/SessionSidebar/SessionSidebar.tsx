@@ -42,7 +42,6 @@ export interface Props {
     liveSessions?: Session[];
     liveSessionStats?: SessionStats;
     displayNavigation?: boolean;
-    liveSessionsOnly?: boolean;
     filterDirection?: SessionDirection;
     filterProviderId?: string;
     sessionsLimit?: number;

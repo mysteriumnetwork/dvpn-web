@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Session, SessionDirection, SessionListResponse } from 'mysterium-vpn-js';
+import { Session, SessionDirection, SessionListResponse, SessionStats } from 'mysterium-vpn-js';
 import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 
@@ -26,11 +26,13 @@ export interface Props {
     filterDirection?: SessionDirection;
     filterProviderId?: string;
     liveSessions?: Session[];
+    liveSessionStats?: SessionStats;
 }
 
 const mapStateToProps = (state: RootState) => ({
     filterProviderId: state.app.currentIdentity?.id,
-    liveSessions: state?.sse?.appState?.sessions,
+    liveSessions: state.sse.appState?.sessions,
+    liveSessionStats: state.sse.appState?.sessionsStats,
 });
 
 interface StateProps {
@@ -70,7 +72,12 @@ const row = (s: Session): TableRow => {
     };
 };
 
-const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderId, liveSessions }: Props) => {
+const Sessions = ({
+    filterDirection = SessionDirection.PROVIDED,
+    filterProviderId,
+    liveSessions,
+    liveSessionStats,
+}: Props) => {
     const [state, setState] = useState<StateProps>({
         isLoading: true,
         pageSize: 10,
@@ -131,7 +138,11 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderI
                 />
             </div>
             <div className="sidebar-block">
-                <SessionSidebar liveSessions={liveSessions} headerText="Live Sessions" />
+                <SessionSidebar
+                    liveSessions={liveSessions}
+                    liveSessionStats={liveSessionStats}
+                    headerText="Live Sessions"
+                />
             </div>
         </div>
     );
