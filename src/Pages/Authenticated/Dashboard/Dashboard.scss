@@ -8,6 +8,12 @@
     margin-bottom: 25px;
   }
 
+  &__charts {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
   &__services {
     margin-top: 50px;
 

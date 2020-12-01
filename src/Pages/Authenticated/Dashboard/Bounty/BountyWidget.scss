@@ -1,0 +1,27 @@
+@import '../../../../assets/styles/base/variables';
+
+.bounty {
+  width: 30%;
+  height: calc(100%);
+  background: #FFFFFF;
+  border: 1px solid #ECECF2;
+  border-radius: 12px;
+  padding-top: 14px;
+
+  &__header{
+    &__title{
+      font-family: Lato;
+      font-style: normal;
+      font-weight: $normal-weight;
+      font-size: 18px;
+      padding-left: 20px;
+      padding-top: 8px;
+    }
+  }
+
+  &__body{
+    &__label{
+
+    }
+  }
+}

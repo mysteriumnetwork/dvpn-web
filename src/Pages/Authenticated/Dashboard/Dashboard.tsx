@@ -26,6 +26,7 @@ import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
 import Statistics from './Statistics/Statistics';
 import { isRegistered } from '../../../commons/isIdentity.utils';
+import BountyWidget from './Bounty/BountyWidget';
 
 interface Props {
     app: AppState;
@@ -110,6 +111,7 @@ const Dashboard = ({ app, sse }: Props) => {
                     <Statistics stats={state.sessionStatsAllTime} unsettledEarnings={identity.earnings} />
                 </div>
                 <div className="dashboard__charts">
+                    <BountyWidget />
                     <Charts statsDaily={state.sessionStatsDaily} />
                 </div>
                 <div className="dashboard__services">
