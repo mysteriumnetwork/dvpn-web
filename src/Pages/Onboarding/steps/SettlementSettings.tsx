@@ -20,6 +20,10 @@ import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import TopupModal from './TopupModal';
 import { isFreeRegistration } from '../../../commons/config';
+import { Radio } from '@material-ui/core';
+import { setChainId } from '../../../api/TequilAPIWrapper';
+import './SettlmentSettings.scss';
+import { chainId, L1ChainId, L2ChainId } from '../../../commons/config';
 
 interface Props {
     callbacks: OnboardingChildProps;
@@ -34,6 +38,7 @@ interface StateInterface {
     errors: string[];
     hasReferralCode: boolean;
     referralCode?: string;
+    chainId: number;
 }
 
 const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
@@ -42,6 +47,7 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
         stake: DEFAULT_STAKE_AMOUNT,
         errors: [],
         hasReferralCode: false,
+        chainId: chainId(config),
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [topupOpen, setTopupOpen] = useState<boolean>(false);
@@ -135,28 +141,75 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
                         by taking 10% of earnings during each promise settlement (payout).
                     </p>
                 </div>
-                <div className="settlement-referral-block">
-                    <div className="input-group m-t-50 m-b-20">
-                        <DefaultCheckbox
-                            label="I have referral code"
-                            checked={state.hasReferralCode}
-                            handleCheckboxChange={() => {
-                                setState({ ...state, hasReferralCode: !state.hasReferralCode });
-                            }}
-                        />
-                    </div>
-                    {state.hasReferralCode && (
-                        <div className="input-group">
-                            <DefaultTextField
-                                handleChange={handleTextFieldsChange}
-                                placeholder="Referral code"
-                                value={state.referralCode}
-                                stateName="referralCode"
-                            />
-                            <p className="input-group__help">Enter your referral code.</p>
+                <div>
+                    <div className="chain-radio">
+                        <div className="input-group__label m-r-15">Select Chain</div>
+                        <div className="chain-radio__options">
+                            <div className="chain-radio__group">
+                                <div className="chain-radio__label">L1</div>
+                                <Radio
+                                    checked={state.chainId === L1ChainId}
+                                    onChange={() => {
+                                        if (state.chainId !== L1ChainId) {
+                                            setState({ ...state, chainId: L1ChainId });
+                                            setChainId(L1ChainId);
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div className="chain-radio__group">
+                                <div className="chain-radio__label">L2</div>
+                                <Radio
+                                    disabled={true}
+                                    checked={state.chainId === L2ChainId}
+                                    onChange={(e) => {
+                                        if (state.chainId !== L2ChainId) {
+                                            setState({ ...state, chainId: L2ChainId });
+                                            setChainId(L2ChainId);
+                                        }
+                                    }}
+                                />
+                            </div>
                         </div>
-                    )}
+                    </div>
+                    <p className="input-group__help">
+                        <ul>
+                            <li>
+                                L1 (Ethereum) gives faster go to exchange functionality, but is more expensive to settle
+                                funds. Would require to have more stake.
+                            </li>
+                            <li>
+                                L2 (Matic side-chain) gives much cheaper settlements and would require much less or even
+                                zero stake. But it would take some time (and fee) to move collected funds into Ethereum.
+                            </li>
+                        </ul>
+                    </p>
                 </div>
+
+                {state.chainId === 80001 && (
+                    <div className="settlement-referral-block">
+                        <div className="input-group m-t-50 m-b-20">
+                            <DefaultCheckbox
+                                label="I have referral code"
+                                checked={state.hasReferralCode}
+                                handleCheckboxChange={() => {
+                                    setState({ ...state, hasReferralCode: !state.hasReferralCode });
+                                }}
+                            />
+                        </div>
+                        {state.hasReferralCode && (
+                            <div className="input-group">
+                                <DefaultTextField
+                                    handleChange={handleTextFieldsChange}
+                                    placeholder="Referral code"
+                                    value={state.referralCode}
+                                    stateName="referralCode"
+                                />
+                                <p className="input-group__help">Enter your referral code.</p>
+                            </div>
+                        )}
+                    </div>
+                )}
                 <div className="step__content-buttons step__content-buttons--center">
                     <Button onClick={handleDone} isLoading={isLoading}>
                         Next

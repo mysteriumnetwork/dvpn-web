@@ -123,3 +123,13 @@ export const setAllServicePrice = async (pricePerMinute: number | null, pricePer
         })
         .then(updateConfig);
 };
+
+export const setChainId = async (chainId: number): Promise<Config> => {
+    return await tequilapiClient
+        .updateUserConfig({
+            data: {
+                'chain-id': chainId,
+            },
+        })
+        .then(updateConfig);
+};

@@ -10,6 +10,9 @@ import { DECIMAL_PART } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { ServiceType } from './index';
 
+export const L1ChainId = 5;
+export const L2ChainId = 80001;
+
 export const isFreeRegistration = (c: Config): boolean => {
     return _.get<Config, any>(c, 'data.testnet2');
 };
@@ -48,4 +51,8 @@ export const pricePerMinMax = (c: Config): number => {
     const max = _.get<Config, any>(c, `data.payments.consumer.price-perminute-max`) || 0;
 
     return max / DECIMAL_PART;
+};
+
+export const chainId = (c: Config): number => {
+    return _.get<Config, any>(c, 'data.chain-id');
 };
