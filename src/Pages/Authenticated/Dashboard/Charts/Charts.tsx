@@ -45,12 +45,12 @@ const configByType = (type: ChartType): Config => {
         case 'sessions':
             return {
                 dataFunction: sessionDailyStatsToSessionsGraph,
-                dataName: '',
+                dataName: 'sessions',
             };
         case 'data':
             return {
                 dataFunction: sessionDailyStatsToData,
-                dataName: ' Gb',
+                dataName: ' GB',
             };
     }
 };
@@ -132,7 +132,7 @@ const Charts = ({ statsDaily }: Props) => {
                             dataKey="y"
                             name={values.dataName}
                             stroke="#8884d8"
-                            activeDot={{ stroke: '#C986AB', fill: '#9E1F63', strokeWidth: 5, r: 8 }}
+                            activeDot={{ stroke: '#C986AB', fill: '#9e1f63', strokeWidth: 5, r: 8 }}
                         />
                     </LineChart>
                 </ResponsiveContainer>
