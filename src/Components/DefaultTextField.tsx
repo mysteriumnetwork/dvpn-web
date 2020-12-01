@@ -10,7 +10,7 @@ import { TextField } from '@material-ui/core';
 interface Props {
     password?: boolean;
     handleChange: Function;
-    value: string;
+    value?: string;
     stateName: string;
     disabled?: boolean;
     id?: string;

@@ -10,6 +10,10 @@ import { DECIMAL_PART } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { ServiceType } from './index';
 
+export const isFreeRegistration = (c: Config): boolean => {
+    return _.get<Config, any>(c, 'data.testnet2');
+};
+
 export const isTrafficShapingEnabled = (c: Config): boolean => {
     return _.get<Config, any>(c, 'data.shaper.enabled');
 };

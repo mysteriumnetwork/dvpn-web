@@ -15,13 +15,16 @@ import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';
 import { parseError } from '../../../commons/error.utils';
 import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js';
+import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
 import TopupModal from './TopupModal';
+import { isFreeRegistration } from '../../../commons/config';
 
 interface Props {
     callbacks: OnboardingChildProps;
     identity: Identity;
+    config: Config;
     fees: Fees;
 }
 
@@ -30,16 +33,15 @@ interface StateInterface {
     stake: number;
     errors: string[];
     hasReferralCode: boolean;
-    referralCode: string;
+    referralCode?: string;
 }
 
-const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
+const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
     const [state, setState] = useState<StateInterface>({
         beneficiary: '',
         stake: DEFAULT_STAKE_AMOUNT,
         errors: [],
         hasReferralCode: false,
-        referralCode: '',
     });
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [topupOpen, setTopupOpen] = useState<boolean>(false);
@@ -67,17 +69,20 @@ const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
         }
         setIsLoading(true);
 
-        if (state.hasReferralCode) {
-            register(identity.id)
-                .then(() => callbacks.nextStep())
-                .catch((error) => {
-                    errors(parseError(error) || 'API call failed');
-                    console.log(error);
+        register(identity.id)
+            .then(() => {
+                if (isFreeRegistration(config)) {
                     setIsLoading(false);
-                });
-        } else {
-            setTopupOpen(true);
-        }
+                    callbacks.nextStep();
+                    return;
+                } else {
+                    setTopupOpen(true);
+                }
+            })
+            .catch((error) => {
+                errors(parseError(error) || 'API call failed');
+                setIsLoading(false);
+            });
     };
 
     const register = (identity: string): Promise<void> => {
@@ -154,16 +159,14 @@ const SettlementSettings = ({ callbacks, identity, fees }: Props) => {
                 </div>
                 <div className="step__content-buttons step__content-buttons--center">
                     <Button onClick={handleDone} isLoading={isLoading}>
-                        {state.hasReferralCode ? 'Register' : 'Payment Information'}
+                        Next
                     </Button>
                 </div>
             </div>
             <TopupModal
                 open={topupOpen}
-                beneficiary={state.beneficiary}
-                stake={state.stake * DECIMAL_PART}
-                fees={fees}
                 identity={identity}
+                topupSum={fees.registration + state.stake * DECIMAL_PART}
                 onClose={() => {
                     setTopupOpen(false);
                     setIsLoading(false);
