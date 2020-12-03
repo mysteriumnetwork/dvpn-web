@@ -11,6 +11,7 @@ import './SettlementModal.scss';
 import { displayMyst } from '../../../commons/money.utils';
 import { Fade, Modal } from '@material-ui/core';
 import ConfirmationDialogue from '../../../Components/ConfirmationDialogue/ConfirmationDialogue';
+import { useSnackbar } from 'notistack';
 
 interface Props {
     open?: boolean;
@@ -22,6 +23,8 @@ interface Props {
 
 const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = () => {}, unsettledEarnings }: Props) => {
     const [confirmation, setConfirmation] = useState<boolean>(false);
+
+    const { enqueueSnackbar } = useSnackbar();
 
     const calculateEstimatedEarnings = (): number => {
         const settlementFee = fees?.settlement || 0;
@@ -37,17 +40,19 @@ const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = ()
                         <div className="settlement-modal__title">Settlement fees</div>
                         <div className="settlement-modal__content">
                             <div className="settlement-modal__fees">
+                                <div className="settlement-modal__fees-row-description">Beneficiary address:</div>
+                                <div>{displayMyst(fees?.settlement)}</div>
+                                <hr className="m-b-15 m-t-15" />
+                                <div className="settlement-modal__fees-row-description">Amount to settle</div>
+                                <div>{displayMyst(unsettledEarnings)}</div>
+                                <hr className="m-b-15 m-t-15" />
                                 <div className="settlement-modal__fees-row">
-                                    <div className="settlement-modal__fees-row-description">Settlement:</div>
+                                    <div className="settlement-modal__fees-row-description">Transactor fee:</div>
                                     <div>{displayMyst(fees?.settlement)}</div>
                                 </div>
+
                                 <div className="settlement-modal__fees-row">
-                                    <div className="settlement-modal__fees-row-description">Hermes:</div>
-                                    <div>{displayMyst(fees?.hermes)}</div>
-                                </div>
-                                <hr />
-                                <div className="settlement-modal__fees-row">
-                                    <div className="settlement-modal__fees-row-description">Estimated earnings:</div>
+                                    <div className="settlement-modal__fees-row-description">You will get:</div>
                                     <div>{displayMyst(calculateEstimatedEarnings())}</div>
                                 </div>
                             </div>
@@ -63,7 +68,7 @@ const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = ()
                                 }}
                                 autoFocus
                             >
-                                Ok
+                                Settle
                             </Button>
                         </div>
                     </div>
@@ -73,6 +78,7 @@ const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = ()
                 open={confirmation}
                 onCancel={() => setConfirmation(false)}
                 onConfirm={() => {
+                    enqueueSnackbar('Settlement submitted for processing', { variant: 'success' });
                     setConfirmation(false);
                     onSettle();
                 }}
