@@ -15,9 +15,7 @@ import { ReactComponent as Sessions } from '../../../assets/images/authenticated
 import { ReactComponent as SessionsActive } from '../../../assets/images/authenticated/components/navigation/SessionsActive.svg';
 import { ReactComponent as Settings } from '../../../assets/images/authenticated/components/navigation/Settings.svg';
 import { ReactComponent as SettingsActive } from '../../../assets/images/authenticated/components/navigation/SettingsActive.svg';
-import { ReactComponent as Wallet } from '../../../assets/images/authenticated/components/navigation/Wallet.svg';
-import { ReactComponent as WalletActive } from '../../../assets/images/authenticated/components/navigation/WalletActive.svg';
-import { DASHBOARD, SESSIONS, SETTINGS, WALLET } from '../../../constants/routes';
+import { DASHBOARD, SESSIONS, SETTINGS } from '../../../constants/routes';
 import ReportIssue from '../../../Components/ReportIssues/ReportIssue';
 
 type Props = RouteComponentProps<any, any, any>;
@@ -48,9 +46,9 @@ const Navigation = ({ location }: Props): JSX.Element => {
             <NavLink to={SETTINGS} className={'navigation--item '} activeClassName="navigation--item active">
                 {pathname === SETTINGS ? <SettingsActive /> : <Settings />}
             </NavLink>
-            <NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">
-                {pathname === WALLET ? <WalletActive /> : <Wallet />}
-            </NavLink>
+            {/*<NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">*/}
+            {/*    {pathname === WALLET ? <WalletActive /> : <Wallet />}*/}
+            {/*</NavLink>*/}
             <div className="flex-grow" />
             <div className="navigation--issue">
                 <ReportIssue />

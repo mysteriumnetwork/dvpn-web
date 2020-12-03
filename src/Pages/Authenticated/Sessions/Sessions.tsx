@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Session, SessionDirection, SessionListResponse } from 'mysterium-vpn-js';
+import { Session, SessionDirection, SessionListResponse, SessionStats } from 'mysterium-vpn-js';
 import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 
@@ -21,16 +21,19 @@ import './Sessions.scss';
 import { parseError } from '../../../commons/error.utils';
 import { RootState } from '../../../redux/store';
 import { connect } from 'react-redux';
+import { date2human } from '../../../commons/date.utils';
 
 export interface Props {
     filterDirection?: SessionDirection;
     filterProviderId?: string;
     liveSessions?: Session[];
+    liveSessionStats?: SessionStats;
 }
 
 const mapStateToProps = (state: RootState) => ({
     filterProviderId: state.app.currentIdentity?.id,
-    liveSessions: state?.sse?.appState?.sessions,
+    liveSessions: state.sse.appState?.sessions,
+    liveSessionStats: state.sse.appState?.sessionsStats,
 });
 
 interface StateProps {
@@ -47,11 +50,15 @@ const row = (s: Session): TableRow => {
             content: s.consumerCountry,
         },
         {
-            className: 'w-20',
+            className: 'w-10',
             content: secondsToISOTime(s.duration),
         },
         {
-            className: 'w-30',
+            className: 'w-20',
+            content: date2human(s.createdAt),
+        },
+        {
+            className: 'w-20',
             content: displayMyst(s.tokens),
         },
         {
@@ -59,7 +66,7 @@ const row = (s: Session): TableRow => {
             content: formatBytes(s.bytesReceived + s.bytesSent),
         },
         {
-            className: 'w-30',
+            className: 'w-20',
             content: s.id.split('-')[0],
         },
     ];
@@ -70,7 +77,12 @@ const row = (s: Session): TableRow => {
     };
 };
 
-const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderId, liveSessions }: Props) => {
+const Sessions = ({
+    filterDirection = SessionDirection.PROVIDED,
+    filterProviderId,
+    liveSessions,
+    liveSessionStats,
+}: Props) => {
     const [state, setState] = useState<StateProps>({
         isLoading: true,
         pageSize: 10,
@@ -116,10 +128,11 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderI
                 <Table
                     headers={[
                         { name: 'Country', className: 'w-10' },
-                        { name: 'Duration', className: 'w-20' },
-                        { name: 'Earnings', className: 'w-30' },
+                        { name: 'Duration', className: 'w-10' },
+                        { name: 'Started', className: 'w-20' },
+                        { name: 'Earnings', className: 'w-20' },
                         { name: 'Transferred', className: 'w-20' },
-                        { name: 'Session ID', className: 'w-30' },
+                        { name: 'Session ID', className: 'w-20' },
                     ]}
                     rows={items.map(row)}
                     currentPage={state.currentPage}
@@ -131,7 +144,11 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED, filterProviderI
                 />
             </div>
             <div className="sidebar-block">
-                <SessionSidebar liveSessions={liveSessions} headerText="Live Sessions" />
+                <SessionSidebar
+                    liveSessions={liveSessions}
+                    liveSessionStats={liveSessionStats}
+                    headerText="Live Sessions"
+                />
             </div>
         </div>
     );

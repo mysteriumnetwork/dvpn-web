@@ -45,14 +45,39 @@ const configByType = (type: ChartType): Config => {
         case 'sessions':
             return {
                 dataFunction: sessionDailyStatsToSessionsGraph,
-                dataName: '',
+                dataName: ' sessions',
             };
         case 'data':
             return {
                 dataFunction: sessionDailyStatsToData,
-                dataName: ' Gb',
+                dataName: ' GB',
             };
     }
+};
+
+const round = (n: number): number => {
+    return Math.ceil(n / 10) * 10;
+};
+
+// calculates ticks by the taking the largest number from pairs, rounding it to the nearest
+// multiple of 10 (i.e.: 8 -> 10, 48 -> 50, 74 -> 80) and converting into 3 ticks: [0, n/2, n] where n is nearest multiple of 10
+const ticks = (allPairs: Pair[]): number[] => {
+    const defaultTicks = [0, 5, 10];
+
+    if (allPairs.length === 0) {
+        return defaultTicks;
+    }
+
+    const lastPair = allPairs[allPairs.length - 1];
+    const maxValue = lastPair.y as number;
+
+    if (maxValue < 10) {
+        return defaultTicks;
+    }
+
+    const maxTick = round(maxValue);
+    const midTick = maxTick / 2;
+    return [0, midTick, maxTick];
 };
 
 const Charts = ({ statsDaily }: Props) => {
@@ -70,15 +95,12 @@ const Charts = ({ statsDaily }: Props) => {
     let types = {
         earnings: {
             name: 'Earnings',
-            ticks: [0, 5, 10],
         },
         sessions: {
             name: 'Sessions',
-            ticks: [0, 5, 10],
         },
         data: {
             name: 'Data',
-            ticks: [0, 2.5, 5],
         },
     };
 
@@ -122,7 +144,7 @@ const Charts = ({ statsDaily }: Props) => {
                         <YAxis
                             tick={{ width: 250 }}
                             tickMargin={10}
-                            ticks={types[values.active].ticks}
+                            ticks={ticks(values.data(statsDaily))}
                             dataKey="y"
                             unit={values.dataName}
                         />
@@ -132,7 +154,7 @@ const Charts = ({ statsDaily }: Props) => {
                             dataKey="y"
                             name={values.dataName}
                             stroke="#8884d8"
-                            activeDot={{ stroke: '#C986AB', fill: '#9E1F63', strokeWidth: 5, r: 8 }}
+                            activeDot={{ stroke: '#C986AB', fill: '#9e1f63', strokeWidth: 5, r: 8 }}
                         />
                     </LineChart>
                 </ResponsiveContainer>
