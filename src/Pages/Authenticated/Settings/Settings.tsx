@@ -10,10 +10,10 @@ import { useSnackbar } from 'notistack';
 
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Header from '../../../Components/Header';
-import { AppState } from '../../../redux/app.slice';
+import { AppState, currentIdentity } from '../../../redux/app.slice';
 import { RootState } from '../../../redux/store';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg';
-import { parseMMNError } from '../../../commons/error.utils';
+import { parseError, parseMMNError } from '../../../commons/error.utils';
 
 import MMN from './Components/MMN';
 import PasswordChange from './Components/PasswordChange';
@@ -21,25 +21,56 @@ import IdentityBackup from './Components/IdentityBackup';
 
 import './Setings.scss';
 import { mmnWebAddress } from '../../../commons/config.utls';
+import PayoutAddress from './Components/PayoutAddress';
+import { SSEState } from '../../../redux/sse.slice';
+import _ from 'lodash';
+import { hermesId } from '../../../commons/config';
+import { Fees, Identity } from 'mysterium-vpn-js';
 
 interface StateInterface {
     apiKey: string;
+    fees?: Fees;
 }
 
 interface Props {
     app: AppState;
+    beneficiary: string;
+    hermesId?: string;
+    identity?: Identity;
 }
+
+const beneficiary = (sse: SSEState): string => {
+    const firstChannel = _.head(sse.appState?.channels);
+
+    if (firstChannel === null || firstChannel === undefined) {
+        return 'N/A';
+    }
+
+    // TODO update js client
+    // @ts-ignore
+    return firstChannel.beneficiary;
+};
 
 const mapStateToProps = (state: RootState) => ({
     app: state.app,
+    beneficiary: beneficiary(state.sse),
+    hermesId: hermesId(state.app.config),
+    identity: currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities),
 });
 
-const Settings = ({ app }: Props): JSX.Element => {
+const canSettle = (identity?: Identity, fees?: Fees): boolean => {
+    if (identity === undefined || fees === undefined) {
+        return false;
+    }
+    return identity?.earnings - fees?.settlement > 0;
+};
+
+const Settings = ({ app, beneficiary, hermesId, identity }: Props): JSX.Element => {
     const [state, setState] = React.useState<StateInterface>({
         apiKey: '',
     });
 
-    const { currentIdentity, config } = app;
+    const { config } = app;
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
         tequilapiClient
@@ -47,6 +78,14 @@ const Settings = ({ app }: Props): JSX.Element => {
             .then((response: any) => setState({ ...state, apiKey: response.apiKey }))
             .catch((err) => {
                 enqueueSnackbar(parseMMNError(err), { variant: 'error' });
+                console.log(err);
+            });
+
+        tequilapiClient
+            .transactorFees()
+            .then((response) => setState({ ...state, fees: response }))
+            .catch((err) => {
+                enqueueSnackbar(parseError(err), { variant: 'error' });
                 console.log(err);
             });
     }, []);
@@ -59,7 +98,7 @@ const Settings = ({ app }: Props): JSX.Element => {
                     <div className="settings__block">
                         <p className="heading">Identity</p>
                         <div className="content">
-                            <IdentityBackup identity={currentIdentity?.id || ''} />
+                            <IdentityBackup identity={identity?.id || ''} />
                         </div>
                     </div>
 
@@ -74,6 +113,17 @@ const Settings = ({ app }: Props): JSX.Element => {
                         <p className="heading">MMN integration</p>
                         <div className="content">
                             <MMN mmnUrl={mmnWebAddress(config)} apiKey={state.apiKey} />
+                        </div>
+                    </div>
+                    <div className="settings__block">
+                        <p className="heading">Beneficiary</p>
+                        <div className="content">
+                            <PayoutAddress
+                                canSettle={canSettle(identity, state.fees)}
+                                beneficiary={beneficiary}
+                                hermesId={hermesId}
+                                providerId={identity?.id}
+                            />
                         </div>
                     </div>
                 </div>
