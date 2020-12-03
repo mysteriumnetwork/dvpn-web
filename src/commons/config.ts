@@ -56,3 +56,18 @@ export const pricePerMinMax = (c: Config): number => {
 export const chainId = (c: Config): number => {
     return _.get<Config, any>(c, 'data.chain-id');
 };
+
+export const etherscanTxUrl = (c?: Config): string => {
+    const etherscanTxUrl = 'https://etherscan.io/tx';
+
+    if (!c) {
+        return etherscanTxUrl;
+    }
+
+    switch (chainId(c)) {
+        case 5:
+            return 'https://goerli.etherscan.io/tx';
+        default:
+            return etherscanTxUrl;
+    }
+};

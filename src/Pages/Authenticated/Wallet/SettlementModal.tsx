@@ -73,6 +73,7 @@ const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = ()
                 open={confirmation}
                 onCancel={() => setConfirmation(false)}
                 onConfirm={() => {
+                    setConfirmation(false);
                     onSettle();
                 }}
             />

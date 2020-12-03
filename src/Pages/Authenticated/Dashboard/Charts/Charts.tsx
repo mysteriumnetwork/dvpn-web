@@ -70,7 +70,6 @@ const ticks = (allPairs: Pair[]): number[] => {
 
     const lastPair = allPairs[allPairs.length - 1];
     const maxValue = lastPair.y as number;
-
     if (maxValue < 10) {
         return defaultTicks;
     }

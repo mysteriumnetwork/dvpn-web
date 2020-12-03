@@ -14,7 +14,7 @@ import { useSnackbar } from 'notistack';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
 import { RootState } from '../../../redux/store';
-import { AppState } from '../../../redux/app.slice';
+import { AppState, currentIdentity } from '../../../redux/app.slice';
 import { SSEState } from '../../../redux/sse.slice';
 import SessionSidebar from '../SessionSidebar/SessionSidebar';
 import { tequilapiClient } from '../../../api/TequilApiClient';
@@ -60,19 +60,21 @@ const Dashboard = ({ app, sse }: Props) => {
     });
 
     const { enqueueSnackbar } = useSnackbar();
-    const { currentIdentity, config } = app;
+    const { config } = app;
+    const identity = currentIdentity(app.currentIdentityRef, sse.appState?.identities);
+
     useEffect(() => {
-        if (!currentIdentity) {
+        if (!identity) {
             return;
         }
 
-        const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: currentIdentity.id };
+        const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id };
         Promise.all([
             tequilapiClient.sessionStatsDaily(sessionFilter),
             tequilapiClient.sessionStatsAggregated(sessionFilter),
             tequilapiClient.sessions({
                 direction: SessionDirection.PROVIDED,
-                providerId: currentIdentity.id,
+                providerId: identity.id,
                 pageSize: 10,
                 status: SessionStatus.COMPLETED,
             }),
@@ -90,10 +92,10 @@ const Dashboard = ({ app, sse }: Props) => {
                 enqueueSnackbar(parseError(err), { variant: 'error' });
                 console.log(err);
             });
-    }, [currentIdentity?.id]);
+    }, [identity?.id]);
 
     const { appState } = sse;
-    if (!currentIdentity || !appState || !config) {
+    if (!identity || !appState || !config) {
         return <CircularProgress className="spinner" />;
     }
 
@@ -105,7 +107,7 @@ const Dashboard = ({ app, sse }: Props) => {
             <div className="main-block main-block--split">
                 <Header logo={Logo} name="Dashboard" />
                 <div className="dashboard__statistics">
-                    <Statistics stats={state.sessionStatsAllTime} unsettledEarnings={currentIdentity.earnings} />
+                    <Statistics stats={state.sessionStatsAllTime} unsettledEarnings={identity.earnings} />
                 </div>
                 <div className="dashboard__charts">
                     <Charts statsDaily={state.sessionStatsDaily} />
@@ -118,10 +120,10 @@ const Dashboard = ({ app, sse }: Props) => {
                         </div>
                     </div>
                     <Services
-                        identityRef={currentIdentity.id}
+                        identityRef={identity.id}
                         servicesInfos={serviceInfo}
                         userConfig={config}
-                        disabled={!isRegistered(currentIdentity)}
+                        disabled={!isRegistered(identity)}
                     />
                 </div>
             </div>
