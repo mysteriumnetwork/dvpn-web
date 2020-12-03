@@ -30,6 +30,7 @@ const ConfirmationDialogue = ({ open = false, onCancel, onConfirm, message = 'Ar
                 <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
             </DialogContent>
             <DialogActions>
+                {/* eslint-disable-next-line react/style-prop-object */}
                 <Button onClick={onCancel} style="gray">
                     Cancel
                 </Button>
