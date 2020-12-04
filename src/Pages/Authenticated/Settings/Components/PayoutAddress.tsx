@@ -10,6 +10,7 @@ import { DefaultTextField } from '../../../../Components/DefaultTextField';
 import Button from '../../../../Components/Buttons/Button';
 import { useSnackbar } from 'notistack';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
+import { parseError } from '../../../../commons/error.utils';
 
 interface Props {
     beneficiary?: string;
@@ -49,12 +50,23 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
                 {canSettle && (
                     <Button
                         onClick={() => {
-                            tequilapiClient.settleWithBeneficiary({
-                                providerId: providerId || '',
-                                hermesId: hermesId || '',
-                                beneficiary: state.beneficiary || '',
-                            });
-                            enqueueSnackbar('Settlement with beneficiary change submitted!', { variant: 'success' });
+                            tequilapiClient
+                                .settleWithBeneficiary({
+                                    providerId: providerId || '',
+                                    hermesId: hermesId || '',
+                                    beneficiary: state.beneficiary || '',
+                                })
+                                .then(() =>
+                                    enqueueSnackbar('Settlement with beneficiary change submitted!', {
+                                        variant: 'success',
+                                    }),
+                                )
+                                .catch((errResponse) => {
+                                    const msg = parseError(errResponse);
+                                    enqueueSnackbar(msg, {
+                                        variant: 'error',
+                                    });
+                                });
                         }}
                         disabled={saveDisabled}
                     >
