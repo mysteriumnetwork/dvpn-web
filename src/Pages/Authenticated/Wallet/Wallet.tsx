@@ -23,9 +23,7 @@ import Button from '../../../Components/Buttons/Button';
 import SettlementModal from './SettlementModal';
 import { parseError } from '../../../commons/error.utils';
 import { useSnackbar } from 'notistack';
-import { Config } from 'mysterium-vpn-js/lib/config/config';
-import _ from 'lodash';
-import { etherscanTxUrl } from '../../../commons/config';
+import { etherscanTxUrl, hermesId } from '../../../commons/config';
 import { date2human } from '../../../commons/date.utils';
 
 interface StateProps {
@@ -53,7 +51,7 @@ const mapStateToProps = (state: RootState) => ({
     appState: state.sse.appState,
     identity: state.app.currentIdentity,
     etherscanTxUrl: etherscanTxUrl(state.app.config),
-    hermesId: _.get<Config, any>(state.app.config, 'data.hermes.hermes-id'),
+    hermesId: hermesId(state.app.config),
 });
 
 const earnings = (appState?: AppState, identityRef?: string): number => {

@@ -71,3 +71,7 @@ export const etherscanTxUrl = (c?: Config): string => {
             return etherscanTxUrl;
     }
 };
+
+export const hermesId = (c?: Config): string => {
+    return _.get<Config, any>(c, 'data.hermes.hermes-id');
+};
