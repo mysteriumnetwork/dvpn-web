@@ -6,6 +6,7 @@
  */
 import { createSlice } from '@reduxjs/toolkit';
 import { AppState } from 'mysterium-vpn-js';
+import _ from 'lodash';
 
 export interface SSEState {
     appState?: AppState;
@@ -21,6 +22,18 @@ const slice = createSlice({
         },
     },
 });
+
+export const beneficiary = (sse: SSEState): string => {
+    const firstChannel = _.head(sse.appState?.channels);
+
+    if (firstChannel === null || firstChannel === undefined) {
+        return 'N/A';
+    }
+
+    // TODO update js client
+    // @ts-ignore
+    return firstChannel.beneficiary;
+};
 
 export const { sseAppStateStateChanged } = slice.actions;
 export default slice.reducer;
