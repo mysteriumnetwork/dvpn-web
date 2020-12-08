@@ -48,7 +48,7 @@ const TopupModal = ({ identity, topupSum, onTopup, open, onClose }: Props) => {
                         (Görli Testnet blockchain)
                     </div>
                     <div className="topup-modal__address">
-                        <div className="topup-modal__address_hash">{identity.channelAddress}</div>
+                        <div className="topup-modal__address_hash m-r-10">{identity.channelAddress}</div>
                         <CopyToClipboard text={identity.channelAddress} />
                     </div>
                     <div className="topup-modal__qr">

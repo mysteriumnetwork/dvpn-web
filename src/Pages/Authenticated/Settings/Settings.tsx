@@ -43,7 +43,7 @@ const beneficiary = (sse: SSEState): string => {
     const firstChannel = _.head(sse.appState?.channels);
 
     if (firstChannel === null || firstChannel === undefined) {
-        return 'N/A';
+        return '';
     }
 
     // TODO update js client
@@ -100,6 +100,16 @@ const Settings = ({ app, beneficiary, hermesId, identity }: Props): JSX.Element 
                         <div className="content">
                             <IdentityBackup identity={identity?.id || ''} />
                         </div>
+
+                        <p className="heading m-t-20">Beneficiary</p>
+                        <div className="content">
+                            <PayoutAddress
+                                canSettle={canSettle(identity, state.fees)}
+                                beneficiary={beneficiary}
+                                hermesId={hermesId}
+                                providerId={identity?.id}
+                            />
+                        </div>
                     </div>
 
                     <div className="settings__block">
@@ -113,17 +123,6 @@ const Settings = ({ app, beneficiary, hermesId, identity }: Props): JSX.Element 
                         <p className="heading">MMN integration</p>
                         <div className="content">
                             <MMN mmnUrl={mmnWebAddress(config)} apiKey={state.apiKey} />
-                        </div>
-                    </div>
-                    <div className="settings__block">
-                        <p className="heading">Beneficiary</p>
-                        <div className="content">
-                            <PayoutAddress
-                                canSettle={canSettle(identity, state.fees)}
-                                beneficiary={beneficiary}
-                                hermesId={hermesId}
-                                providerId={identity?.id}
-                            />
                         </div>
                     </div>
                 </div>

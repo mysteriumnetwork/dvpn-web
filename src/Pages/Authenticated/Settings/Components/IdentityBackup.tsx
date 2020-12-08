@@ -17,7 +17,7 @@ const IdentityBackup = ({ identity }: Props): JSX.Element => {
     return (
         <div className="input-group">
             <div className="flex-row">
-                <div className="input-group__label">Your identity</div>
+                <div className="input-group__label m-t-5">Your identity</div>
                 <CopyToClipboard text={identity} />
             </div>
             <DefaultTextField stateName={'identity'} handleChange={() => {}} disabled={true} value={identity} />

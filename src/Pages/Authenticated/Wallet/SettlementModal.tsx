@@ -37,23 +37,30 @@ const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = ()
             <Modal className="settlement-modal" open={open} onClose={onClose} disableBackdropClick>
                 <Fade in={open}>
                     <div className="settlement-modal__block">
-                        <div className="settlement-modal__title">Settlement fees</div>
+                        <div className="settlement-modal__title">Settle your earnings</div>
                         <div className="settlement-modal__content">
-                            <div className="settlement-modal__fees">
-                                <div className="settlement-modal__fees-row-description">Beneficiary address:</div>
-                                <div>{displayMyst(fees?.settlement)}</div>
-                                <hr className="m-b-15 m-t-15" />
-                                <div className="settlement-modal__fees-row-description">Amount to settle</div>
-                                <div>{displayMyst(unsettledEarnings)}</div>
-                                <hr className="m-b-15 m-t-15" />
-                                <div className="settlement-modal__fees-row">
-                                    <div className="settlement-modal__fees-row-description">Transactor fee:</div>
-                                    <div>{displayMyst(fees?.settlement)}</div>
+                            <div className="settlement">
+                                <div className="settlement-details">
+                                    <div className="settlement-details__label">Beneficiary address:</div>
+                                    <div className="settlement-details__value">{displayMyst(fees?.settlement)}</div>
                                 </div>
-
-                                <div className="settlement-modal__fees-row">
-                                    <div className="settlement-modal__fees-row-description">You will get:</div>
-                                    <div>{displayMyst(calculateEstimatedEarnings())}</div>
+                                <div className="settlement-details">
+                                    <div className="settlement-details__label">Amount to settle:</div>
+                                    <div className="settlement-details__value">{displayMyst(unsettledEarnings)}</div>
+                                </div>
+                            </div>
+                            <div className="fee">
+                                <div className="fee-details">
+                                    <div className="fee-details__label">Transactor fee:</div>
+                                    <div className="fee-details__value">{displayMyst(fees?.settlement)}</div>
+                                </div>
+                            </div>
+                            <div className="estimate">
+                                <div className="estimate-details">
+                                    <div className="estimate-details__label">You will get:</div>
+                                    <div className="estimate-details__value">
+                                        {displayMyst(calculateEstimatedEarnings())}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -63,6 +70,7 @@ const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = ()
                                 Cancel
                             </Button>
                             <Button
+                                className="m-l-10"
                                 disabled={unsettledEarnings < 1}
                                 onClick={() => {
                                     setConfirmation(true);

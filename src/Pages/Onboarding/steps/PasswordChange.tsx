@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect } from 'react';
+import { mmnDomainName, mmnWebAddress } from '../../../commons/config.utls';
 import Errors from '../../../Components/Validation/Errors';
 
 import { store } from '../../../redux/store';
@@ -48,9 +49,10 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
 
     useEffect(() => {
         tequilapiClient.getMMNApiKey().then((resp) => {
-            setState({ ...state, apiKey: resp.api_key });
+            // @ts-ignore
+            setState({ ...state, apiKey: resp.apiKey });
         });
-    }, [state.apiKey]);
+    }, []);
 
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, [prop]: event.target.value });
@@ -125,14 +127,14 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
                     <DefaultCheckbox
                         checked={state.checked}
                         handleCheckboxChange={handleCheckboxChange}
-                        label="Claim this node in my.mysterium.network"
+                        label={'Claim this node in ' + mmnDomainName(config)}
                     />
                 </div>
                 {state.checked ? (
                     <div className="input-group m-t-20">
                         <p className="input-group__label">
                             API Key (
-                            <a href={`${config}/user/profile`} target="_blank" rel="noopener noreferrer">
+                            <a href={`${mmnWebAddress(config)}user/profile`} target="_blank" rel="noopener noreferrer">
                                 Get it here
                             </a>
                             )

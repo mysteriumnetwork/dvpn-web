@@ -11,38 +11,79 @@
         box-shadow: 0px 6px 16px rgba(153, 155, 168, 0.1);
         border-radius: 4px;
         transition: unset;
-        width: 40%;
         padding: 30px 35px;
     }
     &__title {
         color: $main-text-color;
         font-weight: $bold-weight;
         font-size: 1.5em;
-        margin-bottom: 20px;
     }
 
     &__content {
         width: 350px;
-        height: 150px;
-    }
+        .settlement {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
 
-    &__fees {
-        display: flex;
-        flex-direction: column;
-    }
+            &-details {
+                margin-bottom: 10px;
+                &__label {
+                    font-family: Lato, sans-serif;
+                    font-style: normal;
+                    font-weight: $normal-weight;
+                    font-size: 14px;
+                    line-height: 21px;
+                    color: $secondary-text-color;
+                    margin-bottom: 6px;
+                    margin-top: 20px;
+                    text-align: left;
+                }
+                &__value {
+                    font-size: 1em;
+                    margin-bottom: 5px;
+                    //font-weight: bold;
+                }
+            }
+        }
+        .fee {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
 
-    &__fees-row-description {
-        color: $secondary-text-color;
-        font-weight: $lighter-weight;
-    }
+            &-details {
+                text-align: right;
+                &__label {
+                    color :$secondary-text-color;
+                    font-size: 0.8em;
+                    margin-bottom: 5px;
+                    //font-weight: bold;
+                }
+                &__value {
+                    font-size: 1em;
+                }
+            }
+        }
+        .estimate {
+            padding: 10px 0;
 
-    &__fees-row {
-        display: flex;
-        justify-content: space-between;
+            &-details {
+                margin-bottom: 10px;
+                text-align: right;
+                &__label {
+                    color :$secondary-text-color;
+                    font-size: 0.8em;
+                    margin-bottom: 5px;
+                }
+                &__value {
+                    font-size: 1em;
+                    font-weight: bold;
+                }
+            }
+        }
     }
 
     &__footer {
+        margin-top: 30px;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
     }
 }

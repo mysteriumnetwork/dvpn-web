@@ -10,3 +10,10 @@ import _ from 'lodash';
 export const mmnWebAddress = (c?: Config): string => {
     return _.get<Config, any>(c, 'data.mmn.web-address') || '#';
 };
+export const mmnDomainName = (c?: Config): string => {
+    const address = _.get<Config, any>(c, 'data.mmn.web-address') || '#';
+
+    const url = new URL(address);
+
+    return url.hostname;
+};
