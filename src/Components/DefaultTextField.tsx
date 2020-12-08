@@ -35,6 +35,7 @@ export const DefaultTextField = ({
     return (
         <TextField
             id={id || 'field-' + stateName}
+            name={stateName ? stateName : id}
             type={password ? 'password' : 'text'}
             disabled={disabled}
             onChange={handleChange(stateName)}
@@ -42,6 +43,7 @@ export const DefaultTextField = ({
             defaultValue={defaultValue}
             placeholder={placeholder}
             rows={rows}
+            autoComplete={password ? '' : 'off'}
             className="default-text-field"
             multiline={multiline}
         />

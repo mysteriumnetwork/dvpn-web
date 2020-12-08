@@ -141,7 +141,8 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
                         by taking 10% of earnings during each promise settlement (payout).
                     </p>
                 </div>
-                <div>
+
+                <div style={{ display: 'none' }}>
                     <div className="chain-radio">
                         <div className="input-group__label m-r-15">Select Chain</div>
                         <div className="chain-radio__options">
@@ -172,7 +173,7 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
                             </div>
                         </div>
                     </div>
-                    <p className="input-group__help">
+                    <div className="input-group__help">
                         <ul>
                             <li>
                                 L1 (Ethereum) gives faster go to exchange functionality, but is more expensive to settle
@@ -183,10 +184,10 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
                                 zero stake. But it would take some time (and fee) to move collected funds into Ethereum.
                             </li>
                         </ul>
-                    </p>
+                    </div>
                 </div>
 
-                {state.chainId === 80001 && (
+                {state.chainId === L2ChainId && (
                     <div className="settlement-referral-block">
                         <div className="input-group m-t-50 m-b-20">
                             <DefaultCheckbox
@@ -210,7 +211,7 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
                         )}
                     </div>
                 )}
-                <div className="step__content-buttons step__content-buttons--center">
+                <div className="step__content-buttons step__content-buttons--center m-t-40">
                     <Button onClick={handleDone} isLoading={isLoading}>
                         Next
                     </Button>

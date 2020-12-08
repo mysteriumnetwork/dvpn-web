@@ -6,7 +6,7 @@
   justify-content: space-between;
 
   &__block {
-    min-width: 30%;
+    width: 30%;
 
     .heading {
       color: $main-text-color;
@@ -34,4 +34,5 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 }

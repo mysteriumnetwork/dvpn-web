@@ -27,24 +27,30 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
     const [state, setState] = useState<State>({
         beneficiary: beneficiary || '',
     });
-    //0x1479922a0f314b0f7a805f7503df65d2419dc64a
     const { enqueueSnackbar } = useSnackbar();
     const saveDisabled = !providerId || !hermesId || !beneficiary;
     return (
         <>
             <div className="input-group">
                 <div className="flex-row">
-                    <div className="input-group__label">Beneficiary wallet address</div>
+                    <div className="input-group__label m-t-5">Beneficiary wallet address</div>
                     <CopyToClipboard text={beneficiary || ''} />
                 </div>
-
                 <DefaultTextField
                     stateName="beneficiary"
+                    placeholder="0x..."
+                    disabled={!canSettle}
                     handleChange={() => (e: React.ChangeEvent<HTMLInputElement>) => {
                         setState({ ...state, beneficiary: e.target.value });
                     }}
                     value={state?.beneficiary}
                 />
+                {!canSettle && (
+                    <p className="input-group__help m-t-20" style={{ maxWidth: '100%' }}>
+                        To change the beneficiary address you need to have earned at least a little bit of MYST to be
+                        able to settle your earnings.
+                    </p>
+                )}
             </div>
             <div className="footer__buttons m-t-40">
                 {canSettle && (
