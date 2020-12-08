@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import './SessionSidebar.scss';
 
 import formatBytes, { add } from '../../../commons/formatBytes';
-import secondsToISOTime from '../../../commons/secondsToISOTime';
+import { seconds2ISOTime } from '../../../commons/date.utils';
 import { displayMyst } from '../../../commons/money.utils';
 import { SESSIONS } from '../../../constants/routes';
 
@@ -31,7 +31,7 @@ const toSessionCard = (
             country={consumerCountry}
             status={status === SessionStatus.NEW}
             id={id}
-            time={secondsToISOTime(duration)}
+            time={seconds2ISOTime(duration)}
             data={formatBytes(add(bytesSent, bytesReceived))}
             value={displayMyst(tokens)}
         />

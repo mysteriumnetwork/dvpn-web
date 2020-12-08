@@ -11,7 +11,7 @@ import Button from '../../../../Components/Buttons/Button';
 import Errors from '../../../../Components/Validation/Errors';
 
 import { tequilapiClient } from '../../../../api/TequilApiClient';
-import { validatePassword } from '../../../../commons/ValidatePassword';
+import { validatePassword } from '../../../../commons/password';
 import { DEFAULT_USERNAME } from '../../../../constants/defaults';
 import { DefaultTextField } from '../../../../Components/DefaultTextField';
 

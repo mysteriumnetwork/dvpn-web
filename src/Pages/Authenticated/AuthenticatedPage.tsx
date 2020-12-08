@@ -18,7 +18,7 @@ import Navigation from './Components/Navigation';
 import { CircularProgress } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Identity } from 'mysterium-vpn-js';
-import { isRegistered } from '../../commons/isIdentity.utils';
+import { isRegistered } from '../../commons/identity.utils';
 import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard';
 
 const RegistrationOverlay = ({ identityRef }: { identityRef: string }) => {

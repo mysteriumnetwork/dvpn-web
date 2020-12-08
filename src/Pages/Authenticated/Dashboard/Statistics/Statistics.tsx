@@ -7,7 +7,7 @@
 import React from 'react';
 import { SessionStats } from 'mysterium-vpn-js';
 
-import secondsToISOTime from '../../../../commons/secondsToISOTime';
+import { seconds2ISOTime } from '../../../../commons/date.utils';
 import formatBytes, { add } from '../../../../commons/formatBytes';
 import { displayMyst } from '../../../../commons/money.utils';
 
@@ -22,7 +22,7 @@ const Statistics = ({ stats, unsettledEarnings }: Props) => {
     return (
         <>
             <Statistic stat={displayMyst(unsettledEarnings)} name="Unsettled earnings" />
-            <Statistic stat={secondsToISOTime(stats.sumDuration)} name="Sessions time" />
+            <Statistic stat={seconds2ISOTime(stats.sumDuration)} name="Sessions time" />
             <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
             <Statistic stat={'' + stats.count} name="Sessions" />
             <Statistic stat={'' + stats.countConsumers} name="Unique clients" />

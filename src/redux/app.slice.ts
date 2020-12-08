@@ -9,7 +9,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { areTermsAccepted } from '../commons/terms';
-import { isUnregistered } from '../commons/isIdentity.utils';
+import { isUnregistered } from '../commons/identity.utils';
 import _ from 'lodash';
 
 export interface Auth {

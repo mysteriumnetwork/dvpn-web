@@ -20,10 +20,9 @@ import PasswordChange from './Components/PasswordChange';
 import IdentityBackup from './Components/IdentityBackup';
 
 import './Setings.scss';
-import { mmnWebAddress } from '../../../commons/config.utls';
+import { mmnWebAddress, hermesId } from '../../../commons/config';
 import PayoutAddress from './Components/PayoutAddress';
 import { beneficiary } from '../../../redux/sse.slice';
-import { hermesId } from '../../../commons/config';
 import { Fees, Identity } from 'mysterium-vpn-js';
 
 interface StateInterface {

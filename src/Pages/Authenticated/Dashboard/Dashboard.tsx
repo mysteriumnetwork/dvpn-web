@@ -10,7 +10,7 @@ import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js';
 import { useSnackbar } from 'notistack';
-import { mmnWebAddress } from '../../../commons/config.utls';
+import { mmnWebAddress } from '../../../commons/config';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
@@ -26,7 +26,7 @@ import Charts from './Charts/Charts';
 import NatStatus from './NatStatus/NatStatus';
 import Services from './Services/Services';
 import Statistics from './Statistics/Statistics';
-import { isRegistered } from '../../../commons/isIdentity.utils';
+import { isRegistered } from '../../../commons/identity.utils';
 import BountyWidget from './Bounty/BountyWidget';
 
 interface Props {

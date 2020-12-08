@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect } from 'react';
-import { mmnDomainName, mmnWebAddress } from '../../../commons/config.utls';
+import { mmnDomainName, mmnWebAddress } from '../../../commons/config';
 import Errors from '../../../Components/Validation/Errors';
 
 import { store } from '../../../redux/store';
 import { updateAuthenticatedStore } from '../../../redux/app.slice';
 import { DefaultTextField } from '../../../Components/DefaultTextField';
 import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
-import { validatePassword } from '../../../commons/ValidatePassword';
+import { validatePassword } from '../../../commons/password';
 import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Button from '../../../Components/Buttons/Button';

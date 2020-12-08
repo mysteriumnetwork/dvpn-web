@@ -18,7 +18,7 @@ interface ValidateResultInterface {
     errorMessage: string;
 }
 
-export const validatePassword = (password: string, passwordRepeat: string): ValidateResultInterface => {
+export const validatePassword = (password: string, repeat: string): ValidateResultInterface => {
     const response = {
         success: true,
         passwordBlank: false,
@@ -27,7 +27,7 @@ export const validatePassword = (password: string, passwordRepeat: string): Vali
         errorMessage: '',
     };
 
-    if (isPasswordsNotBlank(password, passwordRepeat)) {
+    if (isBlank(password, repeat)) {
         response.success = false;
         response.passwordBlank = true;
         response.errorMessage = NEW_PASSWORD_ERROR_BLANK;
@@ -35,7 +35,7 @@ export const validatePassword = (password: string, passwordRepeat: string): Vali
         return response;
     }
 
-    if (isPasswordsSame(password, passwordRepeat)) {
+    if (!isEqual(password, repeat)) {
         response.success = false;
         response.passwordNotSame = true;
         response.errorMessage = NEW_PASSWORD_ERROR_NOT_SAME;
@@ -43,7 +43,7 @@ export const validatePassword = (password: string, passwordRepeat: string): Vali
         return response;
     }
 
-    if (isPasswordValid(password)) {
+    if (isValid(password)) {
         response.success = false;
         response.passwordShort = true;
         response.errorMessage = NEW_PASSWORD_ERROR_TO_SHORT;
@@ -54,14 +54,14 @@ export const validatePassword = (password: string, passwordRepeat: string): Vali
     return response;
 };
 
-const isPasswordsSame = (password: string, passwordRepeat: string): boolean => {
-    return password !== passwordRepeat;
+const isEqual = (password: string, passwordRepeat: string): boolean => {
+    return password === passwordRepeat;
 };
 
-const isPasswordValid = (password: string): boolean => {
+const isValid = (password: string): boolean => {
     return password.length < 10;
 };
 
-const isPasswordsNotBlank = (password: string, passwordRepeat: string): boolean => {
-    return !(password !== '' || passwordRepeat !== '');
+const isBlank = (password: string, passwordRepeat: string): boolean => {
+    return password === '' || passwordRepeat === '';
 };
