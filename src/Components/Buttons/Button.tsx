@@ -20,7 +20,16 @@ interface Props {
     autoFocus?: boolean;
 }
 
-const Button = ({ isLoading, extraStyle, className, children, onClick, type, disabled, autoFocus }: Props): JSX.Element => {
+const Button = ({
+    isLoading,
+    extraStyle,
+    className,
+    children,
+    onClick,
+    type,
+    disabled,
+    autoFocus,
+}: Props): JSX.Element => {
     const classNames = `btn p-r-30 p-l-30 ${className || ''} btn--${extraStyle || 'filled'}`;
 
     return (
