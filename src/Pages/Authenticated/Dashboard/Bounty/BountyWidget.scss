@@ -5,7 +5,13 @@
     background: #FFFFFF;
     border: 1px solid #ECECF2;
     border-radius: 12px;
+    position: relative;
     padding: 10px 20px;
+
+    .loader {
+        margin-left: -20px;
+        margin-top: -20px;
+    }
 
     &__title {
         display: flex;
@@ -29,7 +35,6 @@
         &--empty {
             display: flex;
             justify-content: center;
-            //align-items: left;
             text-align: left;
             height: 200px;
         }
@@ -49,11 +54,7 @@
                 }
                 .value {
                     font-size: 22px;
-                }
-                &__earnings {
-                }
-                &__position {
-
+                    color: $third-color;
                 }
             }
         }
