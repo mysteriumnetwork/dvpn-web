@@ -141,8 +141,7 @@ const ServiceSettingsModal = ({
                         <p className="text">Limit bandwidth to 5Mb/s</p>
                     </div>
                     <div className="buttons-block">
-                        {/* eslint-disable-next-line react/style-prop-object */}
-                        <Button onClick={onClose} style="gray">
+                        <Button onClick={onClose} extraStyle="gray">
                             Close
                         </Button>
                         <Button

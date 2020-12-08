@@ -122,8 +122,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig, disabl
             </div>
 
             <div className="service__options">
-                {/* eslint-disable-next-line react/style-prop-object */}
-                <Button disabled={disabled} onClick={openSettings} style="gray">
+                <Button disabled={disabled} onClick={openSettings} extraStyle="gray">
                     Settings
                 </Button>
             </div>
