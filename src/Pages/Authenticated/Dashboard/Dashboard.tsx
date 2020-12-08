@@ -10,6 +10,7 @@ import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js';
 import { useSnackbar } from 'notistack';
+import { mmnWebAddress } from '../../../commons/config.utls';
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg';
 import Header from '../../../Components/Header';
@@ -110,9 +111,13 @@ const Dashboard = ({ app, sse }: Props) => {
                 <div className="dashboard__statistics">
                     <Statistics stats={state.sessionStatsAllTime} unsettledEarnings={identity.earnings} />
                 </div>
-                <div className="dashboard__charts">
-                    <BountyWidget />
-                    <Charts statsDaily={state.sessionStatsDaily} />
+                <div className="dashboard__widgets">
+                    <div className="widget widget--bounty">
+                        <BountyWidget mmnUrl={mmnWebAddress(config)} />
+                    </div>
+                    <div className="widget widget--chart">
+                        <Charts statsDaily={state.sessionStatsDaily} />
+                    </div>
                 </div>
                 <div className="dashboard__services">
                     <div className="services-header">

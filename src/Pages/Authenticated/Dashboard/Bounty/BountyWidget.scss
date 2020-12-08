@@ -1,27 +1,61 @@
 @import '../../../../assets/styles/base/variables';
 
-.bounty {
-  width: 30%;
-  height: calc(100%);
-  background: #FFFFFF;
-  border: 1px solid #ECECF2;
-  border-radius: 12px;
-  padding-top: 14px;
+.bounty-widget {
+    height: calc(100%);
+    background: #FFFFFF;
+    border: 1px solid #ECECF2;
+    border-radius: 12px;
+    padding: 10px 20px;
 
-  &__header{
-    &__title{
-      font-family: Lato;
-      font-style: normal;
-      font-weight: $normal-weight;
-      font-size: 18px;
-      padding-left: 20px;
-      padding-top: 8px;
+    &__title {
+        display: flex;
+        justify-content: space-between;
+
+        font-family: Lato;
+        font-style: normal;
+        font-weight: $normal-weight;
+        font-size: 18px;
+        padding-top: 8px;
+        margin-bottom: 35px;
+        a {
+            font-size: 14px;
+        }
     }
-  }
 
-  &__body{
-    &__label{
+    &__body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        &--empty {
+            display: flex;
+            justify-content: center;
+            //align-items: left;
+            text-align: left;
+            height: 200px;
+        }
+        //height: 70%;
+        .bounty {
+            &--global {
+                margin-top: 50px;
+            }
+            &-title {
+                margin-bottom: 20px;
+            }
+            &-status {
+                display: flex;
+                justify-content: space-between;
+                .label {
+                    color: $secondary-text-color;
+                }
+                .value {
+                    font-size: 22px;
+                }
+                &__earnings {
+                }
+                &__position {
 
+                }
+            }
+        }
     }
-  }
 }

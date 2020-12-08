@@ -5,21 +5,28 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { SETTINGS } from '../../../../constants/routes';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
-import { MMNReport } from 'mysterium-vpn-js';
+import { MMNReport, MMNReportResponse } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
 import './BountyWidget.scss';
 
-const BountyWidget = () => {
+const BountyWidget = ({ mmnUrl }: { mmnUrl: string }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [report, setReport] = useState<MMNReport>({} as MMNReport);
+    const [bountyReport, setBountyReport] = useState<MMNReport>({} as MMNReport);
+    const [nodeInfo, setNodeInfo] = useState<MMNReportResponse>({} as MMNReportResponse);
 
     useEffect(() => {
         setIsLoading(true);
         tequilapiClient
             .getMMNNodeReport()
             .then((response) => {
-                setReport(response.report as MMNReport);
+                setNodeInfo(response);
+                setBountyReport(response.report as MMNReport);
+            })
+            .catch((e) => {
+                console.log(e);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -27,31 +34,78 @@ const BountyWidget = () => {
     }, []);
 
     if (isLoading) {
-        return <CircularProgress className="spinner" />;
+        return (
+            <div className="bounty-widget">
+                <CircularProgress className="spinner" />
+            </div>
+        );
     }
 
+    if (!bountyReport) {
+        return (
+            <div className="bounty-widget">
+                <div className="bounty-widget__title">
+                    <div>Bounty pilot</div>
+                </div>
+                <div className="bounty-widget__body bounty-widget__body--empty">
+                    <div>
+                        To participate in the bounty pilot, please go to <Link to={SETTINGS}>Settings</Link> and enter
+                        your MMN API token to claim this node.
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    const formatPosition = (position?: number) => {
+        if (!position) {
+            return '-';
+        }
+
+        return position;
+    };
+
     return (
-        <div className="bounty">
-            <div className="bounty__header">
-                <div className="bounty__header__title">Bounty pilot</div>
+        <div className="bounty-widget">
+            <div className="bounty-widget__title">
+                <div>Bounty pilot</div>
+                <div>
+                    <a href={`${mmnUrl}nodes/${nodeInfo.id}/dashboard`}>View in MMN</a>
+                </div>
             </div>
 
-            <div className="bounty__body">
-                <div className="bounty__body_row">
-                    {report.earningTokens ?? '-'} MYST
-                    <span className="bounty__body__label">${report.earningUsd ?? '-'}</span>
+            <div className="bounty-widget__body">
+                <div className="bounty bounty--residential">
+                    <div className="bounty-title">Residential bounty</div>
+                    <div className="bounty-status">
+                        <div className="bounty-status__earnings">
+                            <div className="label">Earnings</div>
+                            <div className="value">
+                                {bountyReport.balanceResidentialTokens} /{' '}
+                                <small>${bountyReport.balanceResidentialUsd}</small>
+                            </div>
+                        </div>
+                        <div className="bounty-status__position">
+                            <div className="label">Position</div>
+                            <div className="value">{formatPosition(bountyReport.positionResidential)}</div>
+                        </div>
+                    </div>
                 </div>
-                <hr />
-                <div className="bounty__body_row">
-                    Residential position: {report.position ?? '-'}
-                    <span className="bounty__body__label">out of 250</span>
-                    <div>Eligible</div>
-                </div>
-                <hr />
-                <div className="bounty__body_row">
-                    Country possition: {report.positionPerCountry ?? '-'}
-                    <span className="bounty__body__label">out of 8</span>
-                    <div>Eligible</div>
+
+                <div className="bounty bounty--global">
+                    <div className="bounty-title">Global bounty</div>
+                    <div className="bounty-status">
+                        <div className="bounty-status__earnings">
+                            <div className="label">Earnings</div>
+                            <div className="value">
+                                {bountyReport.balanceGlobalTokens} / <small>${bountyReport.balanceGlobalUsd}</small>
+                            </div>
+                        </div>
+                        <div className="bounty-status__position">
+                            <div className="label">Position</div>
+                            <div className="value">{formatPosition(bountyReport.positionGlobal)}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
