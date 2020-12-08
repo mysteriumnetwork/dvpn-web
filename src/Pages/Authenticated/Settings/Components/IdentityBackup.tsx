@@ -6,7 +6,7 @@
  */
 import React from 'react';
 
-import { DefaultTextField } from '../../../../Components/DefaultTextField';
+import { TextField } from '../../../../Components/TextField';
 import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard';
 
 interface Props {
@@ -20,7 +20,7 @@ const IdentityBackup = ({ identity }: Props): JSX.Element => {
                 <div className="input-group__label m-t-5">Your identity</div>
                 <CopyToClipboard text={identity} />
             </div>
-            <DefaultTextField stateName={'identity'} handleChange={() => {}} disabled={true} value={identity} />
+            <TextField stateName={'identity'} handleChange={() => {}} disabled={true} value={identity} />
         </div>
     );
 };

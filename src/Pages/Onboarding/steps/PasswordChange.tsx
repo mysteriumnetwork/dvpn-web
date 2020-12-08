@@ -10,8 +10,8 @@ import Errors from '../../../Components/Validation/Errors';
 
 import { store } from '../../../redux/store';
 import { updateAuthenticatedStore } from '../../../redux/app.slice';
-import { DefaultTextField } from '../../../Components/DefaultTextField';
-import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
+import { TextField } from '../../../Components/TextField';
+import { Checkbox } from '../../../Components/Checkbox/Checkbox';
 import { validatePassword } from '../../../commons/password';
 import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
@@ -104,7 +104,7 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
                 <Errors error={state.error} errorMessage={state.errorMessage} />
                 <div className="input-group">
                     <p className="input-group__label">Web UI password</p>
-                    <DefaultTextField
+                    <TextField
                         handleChange={handleTextFieldsChange}
                         password={true}
                         placeholder={'*********'}
@@ -114,7 +114,7 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
                 </div>
                 <div className="input-group">
                     <p className="input-group__label">Repeat password</p>
-                    <DefaultTextField
+                    <TextField
                         handleChange={handleTextFieldsChange}
                         password={true}
                         placeholder={'*********'}
@@ -123,7 +123,7 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
                     />
                 </div>
                 <div className="input-group m-t-50 m-b-20">
-                    <DefaultCheckbox
+                    <Checkbox
                         checked={state.checked}
                         handleCheckboxChange={handleCheckboxChange}
                         label={'Claim this node in ' + mmnDomainName(config)}
@@ -138,7 +138,7 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
                             </a>
                             )
                         </p>
-                        <DefaultTextField
+                        <TextField
                             handleChange={handleTextFieldsChange}
                             value={state.apiKey}
                             placeholder={'Your API token'}

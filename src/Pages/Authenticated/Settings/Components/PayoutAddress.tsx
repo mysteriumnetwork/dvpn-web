@@ -6,7 +6,7 @@
  */
 import React, { useState } from 'react';
 import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard';
-import { DefaultTextField } from '../../../../Components/DefaultTextField';
+import { TextField } from '../../../../Components/TextField';
 import Button from '../../../../Components/Buttons/Button';
 import { useSnackbar } from 'notistack';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
@@ -37,7 +37,7 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
                     <div className="input-group__label m-t-5">Beneficiary wallet address</div>
                     <CopyToClipboard text={beneficiary || ''} />
                 </div>
-                <DefaultTextField
+                <TextField
                     stateName="beneficiary"
                     placeholder="0x..."
                     disabled={!canSettle}

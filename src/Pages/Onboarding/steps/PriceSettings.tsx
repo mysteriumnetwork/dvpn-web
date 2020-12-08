@@ -8,7 +8,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import React from 'react';
 import { pricePerGbMax, pricePerMinMax, defaultPricePerGb, defaultPricePerMin } from '../../../commons/config';
 
-import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
+import { Checkbox } from '../../../Components/Checkbox/Checkbox';
 import Slider from '../../../Components/Slider/Slider';
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper';
 import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../constants/defaults';
@@ -86,7 +86,7 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
                     />
                 </div>
                 <div className="input-group m-t-50 m-b-50">
-                    <DefaultCheckbox
+                    <Checkbox
                         checked={state.checked}
                         handleCheckboxChange={handleCheckboxChange}
                         label="Use default pricing"

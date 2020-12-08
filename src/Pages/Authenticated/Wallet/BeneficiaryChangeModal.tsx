@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack';
 import './WalletModel.scss';
 
 import Button from '../../../Components/Buttons/Button';
-import { DefaultTextField } from '../../../Components/DefaultTextField';
+import { TextField } from '../../../Components/TextField';
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import { parseError } from '../../../commons/error.utils';
 
@@ -71,7 +71,7 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
                 <div className="wallet-modal--block">
                     <div className="title">Update beneficiary address</div>
                     <div className="settings">
-                        <DefaultTextField
+                        <TextField
                             handleChange={handleTextFieldsChange}
                             value={state.beneficiary}
                             defaultValue={{}}

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField as MUITextField } from '@material-ui/core';
 
 interface Props {
     password?: boolean;
@@ -20,7 +20,7 @@ interface Props {
     rows?: number;
 }
 
-export const DefaultTextField = ({
+export const TextField = ({
     id,
     placeholder,
     password,
@@ -33,7 +33,7 @@ export const DefaultTextField = ({
     rows = 1,
 }: Props): JSX.Element => {
     return (
-        <TextField
+        <MUITextField
             id={id || 'field-' + stateName}
             name={stateName ? stateName : id}
             type={password ? 'password' : 'text'}

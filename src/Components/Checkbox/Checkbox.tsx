@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox as MUICheckbox } from '@material-ui/core';
 import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase';
 
-import { CustomUncheckedIcon } from './DefaultIcons/CustomIcons';
+import { UncheckedIcon } from './CustomIcons';
 
 interface Props {
     checked: boolean;
@@ -16,16 +16,16 @@ interface Props {
     label?: string;
 }
 
-export const DefaultCheckbox = ({ checked, handleCheckboxChange, label }: Props): JSX.Element => {
+export const Checkbox = ({ checked, handleCheckboxChange, label }: Props): JSX.Element => {
     return (
         <div className="checkbox-block">
-            <Checkbox
+            <MUICheckbox
                 id={'checkbox-' + label}
                 checked={checked}
                 onChange={handleCheckboxChange}
                 color="primary"
                 className="default-checkbox"
-                icon={<CustomUncheckedIcon />}
+                icon={<UncheckedIcon />}
             />
             <label htmlFor={'checkbox-' + label}>{label}</label>
         </div>

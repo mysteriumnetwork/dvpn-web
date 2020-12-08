@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Collapse from '@material-ui/core/Collapse';
 
-import { DefaultTextField } from '../../../Components/DefaultTextField';
+import { TextField } from '../../../Components/TextField';
 import Slider from '../../../Components/Slider/Slider';
 import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults';
 import { tequilapiClient } from '../../../api/TequilApiClient';
@@ -17,7 +17,7 @@ import { parseError } from '../../../commons/error.utils';
 import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js';
 import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils';
-import { DefaultCheckbox } from '../../../Components/Checkbox/DefaultCheckbox';
+import { Checkbox } from '../../../Components/Checkbox/Checkbox';
 import TopupModal from './TopupModal';
 import { isFreeRegistration } from '../../../commons/config';
 import { Radio } from '@material-ui/core';
@@ -114,7 +114,7 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
                 </Collapse>
                 <div className="input-group">
                     <p className="input-group__label">Ethereum wallet address</p>
-                    <DefaultTextField
+                    <TextField
                         handleChange={handleTextFieldsChange}
                         value={state.beneficiary}
                         placeholder={'0x...'}
@@ -190,7 +190,7 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
                 {state.chainId === L2ChainId && (
                     <div className="settlement-referral-block">
                         <div className="input-group m-t-50 m-b-20">
-                            <DefaultCheckbox
+                            <Checkbox
                                 label="I have referral code"
                                 checked={state.hasReferralCode}
                                 handleCheckboxChange={() => {
@@ -200,7 +200,7 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
                         </div>
                         {state.hasReferralCode && (
                             <div className="input-group">
-                                <DefaultTextField
+                                <TextField
                                     handleChange={handleTextFieldsChange}
                                     placeholder="Referral code"
                                     value={state.referralCode}
