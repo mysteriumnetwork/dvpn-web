@@ -39,11 +39,18 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
                 <DefaultTextField
                     stateName="beneficiary"
                     placeholder="0x..."
+                    disabled={!canSettle}
                     handleChange={() => (e: React.ChangeEvent<HTMLInputElement>) => {
                         setState({ ...state, beneficiary: e.target.value });
                     }}
                     value={state?.beneficiary}
                 />
+                {!canSettle && (
+                    <p className="input-group__help m-t-20" style={{ maxWidth: '100%' }}>
+                        To change the beneficiary address you need to have earned at least a little bit of MYST to be
+                        able to settle your earnings.
+                    </p>
+                )}
             </div>
             <div className="footer__buttons m-t-40">
                 {canSettle && (

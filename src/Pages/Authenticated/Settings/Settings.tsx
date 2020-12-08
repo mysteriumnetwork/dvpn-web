@@ -101,7 +101,7 @@ const Settings = ({ app, beneficiary, hermesId, identity }: Props): JSX.Element 
                             <IdentityBackup identity={identity?.id || ''} />
                         </div>
 
-                        <p className="heading m-t-20">Beneficiary</p>
+                        <p className="heading m-t-20">Beneficiary (payout address)</p>
                         <div className="content">
                             <PayoutAddress
                                 canSettle={canSettle(identity, state.fees)}
