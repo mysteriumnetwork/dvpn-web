@@ -22,8 +22,7 @@ import IdentityBackup from './Components/IdentityBackup';
 import './Setings.scss';
 import { mmnWebAddress } from '../../../commons/config.utls';
 import PayoutAddress from './Components/PayoutAddress';
-import { SSEState } from '../../../redux/sse.slice';
-import _ from 'lodash';
+import { beneficiary } from '../../../redux/sse.slice';
 import { hermesId } from '../../../commons/config';
 import { Fees, Identity } from 'mysterium-vpn-js';
 
@@ -38,18 +37,6 @@ interface Props {
     hermesId?: string;
     identity?: Identity;
 }
-
-const beneficiary = (sse: SSEState): string => {
-    const firstChannel = _.head(sse.appState?.channels);
-
-    if (firstChannel === null || firstChannel === undefined) {
-        return '';
-    }
-
-    // TODO update js client
-    // @ts-ignore
-    return firstChannel.beneficiary;
-};
 
 const mapStateToProps = (state: RootState) => ({
     app: state.app,

@@ -91,7 +91,11 @@ const Charts = ({ statsDaily }: Props) => {
         setValues({ ...values, active: active, data: config.dataFunction, dataName: config.dataName });
     };
 
-    let types = {
+    const types: {
+        [key: string]: {
+            name: string;
+        };
+    } = {
         earnings: {
             name: 'Earnings',
         },
@@ -115,10 +119,7 @@ const Charts = ({ statsDaily }: Props) => {
                                 className={values.active === type ? 'control-btn active' : 'control-btn'}
                                 onClick={() => changeGraph(type as ChartType)}
                             >
-                                {
-                                    // @ts-ignore
-                                    types[type].name
-                                }
+                                {types[type].name}
                             </div>
                         );
                     })}

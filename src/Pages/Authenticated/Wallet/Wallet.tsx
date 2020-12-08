@@ -25,6 +25,9 @@ import { parseError } from '../../../commons/error.utils';
 import { useSnackbar } from 'notistack';
 import { etherscanTxUrl, hermesId } from '../../../commons/config';
 import { date2human } from '../../../commons/date.utils';
+import SettingsCard from './SettingsCard';
+import { currentIdentity } from '../../../redux/app.slice';
+import { beneficiary } from '../../../redux/sse.slice';
 
 interface StateProps {
     unsettledEarnings: number;
@@ -45,13 +48,15 @@ interface Props {
     identity?: Identity;
     hermesId?: string;
     etherscanTxUrl: string;
+    beneficiary: string;
 }
 
 const mapStateToProps = (state: RootState) => ({
     appState: state.sse.appState,
-    identity: state.app.currentIdentity,
+    identity: currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities),
     etherscanTxUrl: etherscanTxUrl(state.app.config),
     hermesId: hermesId(state.app.config),
+    beneficiary: beneficiary(state.sse),
 });
 
 const earnings = (appState?: AppState, identityRef?: string): number => {
@@ -69,7 +74,7 @@ const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
             content: date2human(s.settledAt),
         },
         {
-            className: 'w-30',
+            className: 'w-40',
             content: s.beneficiary,
         },
         {
@@ -77,14 +82,12 @@ const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
             content: <a href={`${etherscanTxUrl}/${s.txHash}`}>{s.txHash.substr(s.txHash.length - 8)}</a>,
         },
         {
-            className: 'w-20',
-            // @ts-ignore
+            className: 'w-15',
             content: displayMyst(s.fees),
         },
         {
-            className: 'w-20',
-            // @ts-ignore
-            content: displayMyst(s.amount as number),
+            className: 'w-15',
+            content: displayMyst(s.amount),
         },
     ];
 
@@ -94,7 +97,7 @@ const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
     };
 };
 
-const Wallet = ({ appState, identity, hermesId, etherscanTxUrl }: Props) => {
+const Wallet = ({ appState, identity, hermesId, etherscanTxUrl, beneficiary }: Props) => {
     const [state, setState] = useState<StateProps>({
         unsettledEarnings: 0,
         isBeneficiaryModalOpen: false,
@@ -141,7 +144,7 @@ const Wallet = ({ appState, identity, hermesId, etherscanTxUrl }: Props) => {
     const earning = earnings(appState, identity.id);
     return (
         <div className="main">
-            <div className="main-block">
+            <div className="main-block main-block--split">
                 <Header logo={Logo} name="Wallet" />
 
                 <div className="wallet__earnings">
@@ -178,10 +181,10 @@ const Wallet = ({ appState, identity, hermesId, etherscanTxUrl }: Props) => {
                 <Table
                     headers={[
                         { name: 'Date', className: 'w-20' },
-                        { name: 'Beneficiary', className: 'w-30' },
+                        { name: 'Beneficiary', className: 'w-40' },
                         { name: 'Transaction ID', className: 'w-10' },
-                        { name: 'Fee', className: 'w-20' },
-                        { name: 'Received Amount', className: 'w-20' },
+                        { name: 'Fee', className: 'w-15' },
+                        { name: 'Received Amount', className: 'w-15' },
                     ]}
                     rows={(items || []).map((i) => row(i, etherscanTxUrl))}
                     currentPage={state.currentPage}
@@ -191,10 +194,12 @@ const Wallet = ({ appState, identity, hermesId, etherscanTxUrl }: Props) => {
                     onPageClick={onPageClicked}
                 />
             </div>
+
             <SettlementModal
                 unsettledEarnings={identity.earnings}
                 fees={settlementState.fees}
                 open={settlementState.dialogueOpen}
+                beneficiary={beneficiary}
                 onClose={() => {
                     setSettlementState({ ...settlementState, dialogueOpen: false });
                 }}
@@ -203,6 +208,38 @@ const Wallet = ({ appState, identity, hermesId, etherscanTxUrl }: Props) => {
                     tequilapiClient.settleAsync({ providerId: identity.id, hermesId: hermesId });
                 }}
             />
+
+            <div className="sidebar-block">
+                <div className="wallet-sidebar">
+                    <SettingsCard
+                        header="Payout Beneficiary address"
+                        contentHeader={beneficiary}
+                        isLoading={!beneficiary}
+                        content={
+                            <>
+                                <div>This is where you will get paid your ETH. Don't have a wallet?</div>
+                                {/*<p className="m-t-10">*/}
+                                {/*    <a href="#">Get it here.</a>*/}
+                                {/*</p>*/}
+                            </>
+                        }
+                    />
+
+                    <SettingsCard
+                        header="Auto settlement threshold"
+                        contentHeader="1 MYST (90% of max settlement amount)"
+                        isLoading={false}
+                        content={
+                            <>
+                                <div>
+                                    When unsettled earning will reach threshold node will do on-chain transaction and
+                                    move funds into your beneficiary address.
+                                </div>
+                            </>
+                        }
+                    />
+                </div>
+            </div>
         </div>
     );
 };

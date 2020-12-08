@@ -27,6 +27,7 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
     const [state, setState] = useState<State>({
         beneficiary: beneficiary || '',
     });
+
     const { enqueueSnackbar } = useSnackbar();
     const saveDisabled = !providerId || !hermesId || !beneficiary;
     return (

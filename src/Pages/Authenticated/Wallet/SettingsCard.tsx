@@ -30,11 +30,13 @@ const SettingsCard = ({ onEdit, header, contentHeader, content, isLoading }: Pro
                     <>
                         <div className="content__header truncate">{contentHeader}</div>
                         <div className="content__subtext">{content}</div>
-                        <div className="content__footer">
-                            <Button onClick={onEdit} className="button">
-                                <p>Edit</p>
-                            </Button>
-                        </div>
+                        {onEdit && (
+                            <div className="content__footer">
+                                <Button onClick={onEdit} className="button">
+                                    <p>Edit</p>
+                                </Button>
+                            </div>
+                        )}
                     </>
                 )}
             </div>

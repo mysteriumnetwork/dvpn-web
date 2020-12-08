@@ -7615,9 +7615,9 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-"mysterium-vpn-js@https://github.com/mysteriumnetwork/mysterium-vpn-js.git#improvements/referal-token":
+"mysterium-vpn-js@https://github.com/mysteriumnetwork/mysterium-vpn-js.git#improvements/general":
   version "6.0.0"
-  resolved "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#969c0e147afce0ee34d277a5be0f7d02cc0224da"
+  resolved "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#58d0ee079b3cf25271f181ecd4a6c0771f1d5b1a"
   dependencies:
     axios "^0.19.2"
     camelcase-keys "^6.2.2"
