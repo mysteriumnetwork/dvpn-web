@@ -83,13 +83,11 @@ const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
         },
         {
             className: 'w-15',
-            // @ts-ignore
             content: displayMyst(s.fees),
         },
         {
             className: 'w-15',
-            // @ts-ignore
-            content: displayMyst(s.amount as number),
+            content: displayMyst(s.amount),
         },
     ];
 
@@ -219,9 +217,9 @@ const Wallet = ({ appState, identity, hermesId, etherscanTxUrl, beneficiary }: P
                         content={
                             <>
                                 <div>This is where you will get paid your ETH. Don't have a wallet?</div>
-                                <p className="m-t-10">
-                                    <a href="#">Get it here.</a>
-                                </p>
+                                {/*<p className="m-t-10">*/}
+                                {/*    <a href="#">Get it here.</a>*/}
+                                {/*</p>*/}
                             </>
                         }
                     />

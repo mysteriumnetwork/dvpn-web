@@ -30,8 +30,6 @@ export const beneficiary = (sse: SSEState): string => {
         return 'N/A';
     }
 
-    // TODO update js client
-    // @ts-ignore
     return firstChannel.beneficiary;
 };
 

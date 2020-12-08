@@ -49,7 +49,6 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
 
     useEffect(() => {
         tequilapiClient.getMMNApiKey().then((resp) => {
-            // @ts-ignore
             setState({ ...state, apiKey: resp.apiKey });
         });
     }, []);
