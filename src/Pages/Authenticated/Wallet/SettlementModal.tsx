@@ -19,9 +19,17 @@ interface Props {
     onSettle?: () => void;
     fees?: Fees;
     unsettledEarnings: number;
+    beneficiary: string;
 }
 
-const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = () => {}, unsettledEarnings }: Props) => {
+const SettlementModal = ({
+    open = false,
+    onClose = () => {},
+    fees,
+    onSettle = () => {},
+    unsettledEarnings,
+    beneficiary,
+}: Props) => {
     const [confirmation, setConfirmation] = useState<boolean>(false);
 
     const { enqueueSnackbar } = useSnackbar();
@@ -42,7 +50,7 @@ const SettlementModal = ({ open = false, onClose = () => {}, fees, onSettle = ()
                             <div className="settlement">
                                 <div className="settlement-details">
                                     <div className="settlement-details__label">Beneficiary address:</div>
-                                    <div className="settlement-details__value">{displayMyst(fees?.settlement)}</div>
+                                    <div className="settlement-details__value">{beneficiary}</div>
                                 </div>
                                 <div className="settlement-details">
                                     <div className="settlement-details__label">Amount to settle:</div>

@@ -199,6 +199,7 @@ const Wallet = ({ appState, identity, hermesId, etherscanTxUrl, beneficiary }: P
                 unsettledEarnings={identity.earnings}
                 fees={settlementState.fees}
                 open={settlementState.dialogueOpen}
+                beneficiary={beneficiary}
                 onClose={() => {
                     setSettlementState({ ...settlementState, dialogueOpen: false });
                 }}
