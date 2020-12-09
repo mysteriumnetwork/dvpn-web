@@ -9,7 +9,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { areTermsAccepted } from '../commons/terms';
-import { isUnregistered } from '../commons/isIdentity.utils';
+import { isUnregistered } from '../commons/identity.utils';
 import _ from 'lodash';
 
 export interface Auth {
@@ -92,8 +92,6 @@ const onboardingState = (auth: Auth, terms: Terms, currentIdentity?: Identity): 
         needsRegisteredIdentity: !currentIdentity || isUnregistered(currentIdentity),
     } as Onboarding;
 
-    // TODO if !needsPasswordChange(state) then infinite loading
-    // onboarding.needsOnboarding = !termsAccepted || onboarding.needsPasswordChange
     onboarding.needsOnboarding = onboarding.needsPasswordChange || onboarding.needsRegisteredIdentity;
 
     return onboarding;

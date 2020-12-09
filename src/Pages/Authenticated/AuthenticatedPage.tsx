@@ -14,11 +14,11 @@ import Dashboard from './Dashboard/Dashboard';
 import Sessions from './Sessions/Sessions';
 import Settings from './Settings/Settings';
 import Wallet from './Wallet/Wallet';
-import Navigation from './Components/Navigation';
+import Navigation from './Navigation/Navigation';
 import { CircularProgress } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Identity } from 'mysterium-vpn-js';
-import { isRegistered } from '../../commons/isIdentity.utils';
+import { isRegistered } from '../../commons/identity.utils';
 import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard';
 
 const RegistrationOverlay = ({ identityRef }: { identityRef: string }) => {

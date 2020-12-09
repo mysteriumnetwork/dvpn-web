@@ -11,9 +11,9 @@ import Button from '../../../../Components/Buttons/Button';
 import Errors from '../../../../Components/Validation/Errors';
 
 import { tequilapiClient } from '../../../../api/TequilApiClient';
-import { validatePassword } from '../../../../commons/ValidatePassword';
+import { validatePassword } from '../../../../commons/password';
 import { DEFAULT_USERNAME } from '../../../../constants/defaults';
-import { DefaultTextField } from '../../../../Components/DefaultTextField';
+import { TextField } from '../../../../Components/TextField';
 
 interface StateInterface {
     newPasswordConfirmation: string;
@@ -74,7 +74,7 @@ const PasswordChange: React.FC = () => {
 
             <div className="input-group">
                 <div className="text-field-label">Current password</div>
-                <DefaultTextField
+                <TextField
                     handleChange={handleTextFieldsChange}
                     password={true}
                     placeholder={'*********'}
@@ -84,7 +84,7 @@ const PasswordChange: React.FC = () => {
             </div>
             <div className="input-group">
                 <div className="input-group__label">New password</div>
-                <DefaultTextField
+                <TextField
                     handleChange={handleTextFieldsChange}
                     password={true}
                     placeholder={'*********'}
@@ -94,7 +94,7 @@ const PasswordChange: React.FC = () => {
             </div>
             <div className="input-group">
                 <div className="input-group__label">Repeat password</div>
-                <DefaultTextField
+                <TextField
                     handleChange={handleTextFieldsChange}
                     password={true}
                     placeholder={'*********'}

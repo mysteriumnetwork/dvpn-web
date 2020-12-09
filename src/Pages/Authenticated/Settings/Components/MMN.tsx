@@ -11,7 +11,7 @@ import { TequilapiError } from 'mysterium-vpn-js';
 import Button from '../../../../Components/Buttons/Button';
 import Errors from '../../../../Components/Validation/Errors';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
-import { DefaultTextField } from '../../../../Components/DefaultTextField';
+import { TextField } from '../../../../Components/TextField';
 
 interface StateInterface {
     apiKey: string;
@@ -72,7 +72,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
 
             <div className="input-group">
                 <div className="input-group__label">API Key ({link})</div>
-                <DefaultTextField
+                <TextField
                     stateName={'apiKey'}
                     id={'api_key'}
                     handleChange={handleTextFieldsChange}

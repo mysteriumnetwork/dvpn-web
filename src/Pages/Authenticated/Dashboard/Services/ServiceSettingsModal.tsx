@@ -13,7 +13,7 @@ import './ServiceSettingsModal.scss';
 import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../../constants/defaults';
 
 import Slider from '../../../../Components/Slider/Slider';
-import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
+import { Switch } from '../../../../Components/Switch';
 import { ServiceType } from '../../../../commons';
 import Button from '../../../../Components/Buttons/Button';
 import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../api/TequilAPIWrapper';
@@ -116,7 +116,7 @@ const ServiceSettingsModal = ({
                     </div>
                     <div className="partners-block">
                         <div className="switch-row">
-                            <DefaultSwitch
+                            <Switch
                                 disabled={false}
                                 turnedOn={state.isVerifiedTrafficEnabled}
                                 handleChange={(e, checked) => {
@@ -131,7 +131,7 @@ const ServiceSettingsModal = ({
                         </p>
                     </div>
                     <div className="limits-block">
-                        <DefaultSwitch
+                        <Switch
                             disabled={false}
                             turnedOn={state.isTrafficShapingEnabled}
                             handleChange={(e, checked) => {
@@ -141,8 +141,7 @@ const ServiceSettingsModal = ({
                         <p className="text">Limit bandwidth to 5Mb/s</p>
                     </div>
                     <div className="buttons-block">
-                        {/* eslint-disable-next-line react/style-prop-object */}
-                        <Button onClick={onClose} style="gray">
+                        <Button onClick={onClose} extraStyle="gray">
                             Close
                         </Button>
                         <Button

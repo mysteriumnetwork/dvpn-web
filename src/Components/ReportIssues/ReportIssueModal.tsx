@@ -11,7 +11,7 @@ import { useSnackbar } from 'notistack';
 import ChatIcon from '@material-ui/icons/Chat';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { DefaultTextField } from '../DefaultTextField';
+import { TextField } from '../TextField';
 import Button from '../Buttons/Button';
 import { tequilapiClient } from '../../api/TequilApiClient';
 import { parseError } from '../../commons/error.utils';
@@ -103,7 +103,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
                     >
                         <div className="input-group">
                             <div className="input-group__label">Email address (optional)</div>
-                            <DefaultTextField
+                            <TextField
                                 placeholder="node@runner.com"
                                 handleChange={handleTextFieldsChange}
                                 value={state.email || ''}
@@ -112,7 +112,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
                         </div>
                         <div className="input-group">
                             <div className="input-group__label">Your message</div>
-                            <DefaultTextField
+                            <TextField
                                 placeholder=""
                                 handleChange={handleTextFieldsChange}
                                 value={state.description}

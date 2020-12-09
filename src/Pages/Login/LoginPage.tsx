@@ -12,7 +12,7 @@ import { updateAuthenticatedStore } from '../../redux/app.slice';
 import { store } from '../../redux/store';
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png';
 import '../../assets/styles/pages/login/main.scss';
-import { DefaultTextField } from '../../Components/DefaultTextField';
+import { TextField } from '../../Components/TextField';
 import { DEFAULT_USERNAME } from '../../constants/defaults';
 import Button from '../../Components/Buttons/Button';
 import { login } from '../../api/TequilAPIWrapper';
@@ -64,7 +64,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
                         <form onSubmit={handleLogin}>
                             <div className="password-input-block">
                                 <p className="text-field-label">Web UI password</p>
-                                <DefaultTextField
+                                <TextField
                                     handleChange={handleTextFieldsChange}
                                     password={true}
                                     value={state.password}

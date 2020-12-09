@@ -19,7 +19,7 @@ import {
     servicePricePerGb,
     servicePricePerMin,
 } from '../../../../commons/config';
-import { DefaultSwitch } from '../../../../Components/DefaultSwitch';
+import { Switch } from '../../../../Components/Switch';
 import Button from '../../../../Components/Buttons/Button';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
 import { parseError } from '../../../../commons/error.utils';
@@ -107,7 +107,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig, disabl
                 <ServiceDetail label="Price per GB">{prices.pricePerGb}</ServiceDetail>
 
                 <ServiceDetail label="Turned on" alignValueRight={true}>
-                    <DefaultSwitch
+                    <Switch
                         disabled={isTurnOnWorking || disabled}
                         turnedOn={!!serviceInfo}
                         handleChange={() => {
@@ -122,8 +122,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig, disabl
             </div>
 
             <div className="service__options">
-                {/* eslint-disable-next-line react/style-prop-object */}
-                <Button disabled={disabled} onClick={openSettings} style="gray">
+                <Button disabled={disabled} onClick={openSettings} extraStyle="gray">
                     Settings
                 </Button>
             </div>

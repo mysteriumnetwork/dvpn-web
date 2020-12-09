@@ -7,11 +7,17 @@
 import { Currency, displayMoney, DisplayMoneyOptions, Money } from 'mysterium-vpn-js';
 
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index';
+import { isTestnet } from './config';
+import { store } from '../redux/store';
+
+const currentCurrency = (): Currency => {
+    return isTestnet(store.getState()?.app?.config) ? Currency.MYSTTestToken : Currency.MYST;
+};
 
 export const displayMyst = (amount?: number, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
-    return displayMoney({ amount: amount || 0, currency: Currency.MYST }, opts);
+    return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts);
 };
 
 export const displayMoneyMyst = (money?: Money, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
-    return displayMoney(money || { amount: 0, currency: Currency.MYST }, opts);
+    return displayMoney(money || { amount: 0, currency: currentCurrency() }, opts);
 };

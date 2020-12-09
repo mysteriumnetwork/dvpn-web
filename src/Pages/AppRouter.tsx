@@ -97,36 +97,26 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
 };
 
 const AppRouter = ({ config, loading, identity, loggedIn, onboarding, fees, actions }: Props) => {
-    const loginActions = () => {
-        actions.fetchIdentityAsync();
-        actions.fetchConfigAsync();
-        actions.fetchFeesAsync();
-    };
-
-    const authenticatedFlow = async () => {
-        actions.updateAuthenticatedStore({
+    const loginActions = async () => {
+        await actions.updateAuthenticatedStore({
             authenticated: true,
             withDefaultCredentials: await loginWithDefaultCredentials(),
         });
+        await actions.fetchIdentityAsync();
+        await actions.fetchConfigAsync();
+        await actions.fetchFeesAsync();
         await actions.updateTermsStoreAsync();
-        actions.updateAuthFlowLoadingStore(false);
-        loginActions();
     };
 
     useLayoutEffect(() => {
         const blockingCheck = async () => {
             const authenticated = await isUserAuthenticated();
-            const defaultCredentials = await loginWithDefaultCredentials();
 
-            if (defaultCredentials) {
-                actions.fetchConfigAsync();
+            if (authenticated) {
+                await loginActions();
             }
 
-            if (!authenticated && !defaultCredentials) {
-                actions.updateAuthFlowLoadingStore(false);
-            } else {
-                await authenticatedFlow();
-            }
+            await actions.updateAuthFlowLoadingStore(false);
         };
         blockingCheck();
     }, []);

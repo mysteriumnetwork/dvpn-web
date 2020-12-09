@@ -73,8 +73,7 @@ const SettlementModal = ({
                             </div>
                         </div>
                         <div className="settlement-modal__footer">
-                            {/* eslint-disable-next-line react/style-prop-object */}
-                            <Button onClick={onClose} style="gray">
+                            <Button onClick={onClose} extraStyle="gray">
                                 Cancel
                             </Button>
                             <Button

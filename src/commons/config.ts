@@ -75,3 +75,23 @@ export const etherscanTxUrl = (c?: Config): string => {
 export const hermesId = (c?: Config): string => {
     return _.get<Config, any>(c, 'data.hermes.hermes-id');
 };
+
+export const mmnWebAddress = (c?: Config): string => {
+    return _.get<Config, any>(c, 'data.mmn.web-address') || '#';
+};
+export const mmnDomainName = (c?: Config): string => {
+    const address = _.get<Config, any>(c, 'data.mmn.web-address') || '#';
+
+    const url = new URL(address);
+
+    return url.hostname;
+};
+
+export const isTestnet = (c?: Config): boolean => {
+    if (!c) {
+        return true;
+    }
+    const isTestnet = _.get<Config, any>(c, 'data.testnet') as boolean;
+    const isTestnet2 = _.get<Config, any>(c, 'data.testnet2') as boolean;
+    return isTestnet || isTestnet2;
+};
