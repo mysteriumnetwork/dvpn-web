@@ -86,3 +86,12 @@ export const mmnDomainName = (c?: Config): string => {
 
     return url.hostname;
 };
+
+export const isTestnet = (c?: Config): boolean => {
+    if (!c) {
+        return true;
+    }
+    const isTestnet = _.get<Config, any>(c, 'data.testnet') as boolean;
+    const isTestnet2 = _.get<Config, any>(c, 'data.testnet2') as boolean;
+    return isTestnet || isTestnet2;
+};
