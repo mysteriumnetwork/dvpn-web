@@ -92,8 +92,6 @@ const onboardingState = (auth: Auth, terms: Terms, currentIdentity?: Identity): 
         needsRegisteredIdentity: !currentIdentity || isUnregistered(currentIdentity),
     } as Onboarding;
 
-    // TODO if !needsPasswordChange(state) then infinite loading
-    // onboarding.needsOnboarding = !termsAccepted || onboarding.needsPasswordChange
     onboarding.needsOnboarding = onboarding.needsPasswordChange || onboarding.needsRegisteredIdentity;
 
     return onboarding;
