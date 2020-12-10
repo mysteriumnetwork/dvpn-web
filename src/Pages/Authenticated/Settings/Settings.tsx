@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack';
 
 import { tequilapiClient } from '../../../api/TequilApiClient';
 import Header from '../../../Components/Header';
-import { AppState, currentIdentity } from '../../../redux/app.slice';
+import { currentIdentity } from '../../../redux/app.slice';
 import { RootState } from '../../../redux/store';
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg';
 import { parseError, parseMMNError } from '../../../commons/error.utils';
@@ -31,17 +31,17 @@ interface StateInterface {
 }
 
 interface Props {
-    app: AppState;
     beneficiary: string;
     hermesId?: string;
     identity?: Identity;
+    mmnWebAddress: string;
 }
 
 const mapStateToProps = (state: RootState) => ({
-    app: state.app,
     beneficiary: beneficiary(state.sse),
     hermesId: hermesId(state.app.config),
     identity: currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities),
+    mmnWebAddress: mmnWebAddress(state.app.config),
 });
 
 const canSettle = (identity?: Identity, fees?: Fees): boolean => {
@@ -51,27 +51,19 @@ const canSettle = (identity?: Identity, fees?: Fees): boolean => {
     return identity?.earnings - fees?.settlement > 0;
 };
 
-const Settings = ({ app, beneficiary, hermesId, identity }: Props): JSX.Element => {
+const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JSX.Element => {
     const [state, setState] = React.useState<StateInterface>({
         apiKey: '',
     });
 
-    const { config } = app;
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
-        tequilapiClient
-            .getMMNApiKey()
-            .then((response: any) => setState({ ...state, apiKey: response.apiKey }))
+        Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.transactorFees()])
+            .then(([mmn, fees]) => {
+                setState({ ...state, apiKey: mmn.apiKey, fees: fees });
+            })
             .catch((err) => {
-                enqueueSnackbar(parseMMNError(err), { variant: 'error' });
-                console.log(err);
-            });
-
-        tequilapiClient
-            .transactorFees()
-            .then((response) => setState({ ...state, fees: response }))
-            .catch((err) => {
-                enqueueSnackbar(parseError(err), { variant: 'error' });
+                enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' });
                 console.log(err);
             });
     }, []);
@@ -108,7 +100,7 @@ const Settings = ({ app, beneficiary, hermesId, identity }: Props): JSX.Element 
                     <div className="settings__block">
                         <p className="heading">MMN integration</p>
                         <div className="content">
-                            <MMN mmnUrl={mmnWebAddress(config)} apiKey={state.apiKey} />
+                            <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
                         </div>
                     </div>
                 </div>

@@ -26,18 +26,18 @@ interface Props {
 
 const MMN = ({ apiKey, mmnUrl }: Props) => {
     const { enqueueSnackbar } = useSnackbar();
-    const [values, setValues] = React.useState<StateInterface>({
+    const [state, setState] = React.useState<StateInterface>({
         apiKey: '',
         error: false,
         errorMessage: '',
     });
 
     useEffect(() => {
-        setValues({ ...values, apiKey: apiKey });
+        setState({ ...state, apiKey: apiKey });
     }, [apiKey]);
-
+    console.log('child', state);
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setState({ ...state, [prop]: event.target.value });
     };
 
     const getValidationMessage = (response: any): string => {
@@ -45,18 +45,18 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
     };
 
     const handleSubmitToken = () => {
-        setValues({ ...values, error: false });
+        setState({ ...state, error: false });
 
         tequilapiClient
-            .setMMNApiKey(values.apiKey)
+            .setMMNApiKey(state.apiKey)
             .then(() => {
-                setValues({ ...values, error: false, errorMessage: '' });
+                setState({ ...state, error: false, errorMessage: '' });
                 enqueueSnackbar('MMN API key updated.', { variant: 'success' });
             })
             .catch((error: Error) => {
                 if (error instanceof TequilapiError) {
                     const apiError = getValidationMessage(error._originalError.response);
-                    setValues({ ...values, error: true, errorMessage: apiError });
+                    setState({ ...state, error: true, errorMessage: apiError });
                 }
             });
     };
@@ -68,7 +68,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
     );
     return (
         <div>
-            <Errors error={values.error} errorMessage={values.errorMessage} />
+            <Errors error={state.error} errorMessage={state.errorMessage} />
 
             <div className="input-group">
                 <div className="input-group__label">API Key ({link})</div>
@@ -76,7 +76,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
                     stateName={'apiKey'}
                     id={'api_key'}
                     handleChange={handleTextFieldsChange}
-                    value={values.apiKey}
+                    value={state.apiKey}
                 />
             </div>
             <div className="footer__buttons m-t-40">
