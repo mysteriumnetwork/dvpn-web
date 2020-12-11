@@ -22,7 +22,7 @@ export const isTrafficShapingEnabled = (c: Config): boolean => {
 };
 
 export const isAccessPolicyEnabled = (c: Config): boolean => {
-    return _.get<Config, any>(c, 'data.access-policy.list');
+    return !!_.get<Config, any>(c, 'data.access-policy.list');
 };
 
 export const servicePricePerGb = (c: Config, s: ServiceType): number => {

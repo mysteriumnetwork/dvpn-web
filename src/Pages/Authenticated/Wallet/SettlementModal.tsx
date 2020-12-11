@@ -97,6 +97,7 @@ const SettlementModal = ({
                     enqueueSnackbar('Settlement submitted for processing', { variant: 'success' });
                     setConfirmation(false);
                     onSettle();
+                    return Promise.resolve();
                 }}
             />
         </>

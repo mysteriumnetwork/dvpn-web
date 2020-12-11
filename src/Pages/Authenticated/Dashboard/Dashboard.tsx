@@ -28,6 +28,7 @@ import Services from './Services/Services';
 import Statistics from './Statistics/Statistics';
 import { isRegistered } from '../../../commons/identity.utils';
 import BountyWidget from './Bounty/BountyWidget';
+import GlobalServicesSettings from './Services/GlobalServicesSettings';
 
 interface Props {
     app: AppState;
@@ -92,7 +93,6 @@ const Dashboard = ({ app, sse }: Props) => {
             })
             .catch((err) => {
                 enqueueSnackbar(parseError(err), { variant: 'error' });
-                console.log(err);
             });
     }, [identity?.id]);
 
@@ -101,7 +101,7 @@ const Dashboard = ({ app, sse }: Props) => {
         return <CircularProgress className="spinner" />;
     }
 
-    const serviceInfo = appState.serviceInfo;
+    const serviceInfos = appState.serviceInfo;
     const { status } = appState.natStatus;
 
     return (
@@ -128,10 +128,11 @@ const Dashboard = ({ app, sse }: Props) => {
                     </div>
                     <Services
                         identityRef={identity.id}
-                        servicesInfos={serviceInfo}
+                        servicesInfos={serviceInfos}
                         userConfig={config}
                         disabled={!isRegistered(identity)}
                     />
+                    <GlobalServicesSettings config={config} servicesInfos={serviceInfos} />
                 </div>
             </div>
             <div className="sidebar-block">

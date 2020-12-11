@@ -46,7 +46,7 @@ const Services = ({ identityRef, servicesInfos, userConfig, disabled }: Props) =
                             identityRef={identityRef}
                             serviceInfo={serviceInfo}
                             serviceType={serviceType}
-                            userConfig={userConfig}
+                            config={userConfig}
                             disabled={disabled}
                         />
                     );

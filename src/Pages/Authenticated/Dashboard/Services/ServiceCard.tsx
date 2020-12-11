@@ -13,7 +13,6 @@ import { useSnackbar } from 'notistack';
 import { ServiceType } from '../../../../commons';
 import {
     isAccessPolicyEnabled,
-    isTrafficShapingEnabled,
     pricePerGbMax,
     pricePerMinMax,
     servicePricePerGb,
@@ -34,7 +33,7 @@ interface Props {
     identityRef: string;
     serviceType: ServiceType;
     serviceInfo?: ServiceInfo;
-    userConfig: Config;
+    config: Config;
     disabled?: boolean;
 }
 
@@ -42,7 +41,7 @@ interface ModalProps {
     isOpen: boolean;
 }
 
-const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig, disabled = false }: Props) => {
+const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled = false }: Props) => {
     const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false);
     const [modalState, setModalState] = useState<ModalProps>({ isOpen: false });
     const { status, id } = { ...serviceInfo };
@@ -91,12 +90,12 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig, disabl
         pricePerMinMax: number;
         pricePerGbMax: number;
     } = {
-        pricePerGbMax: pricePerGbMax(userConfig),
-        pricePerMinMax: pricePerMinMax(userConfig),
-        pricePerMin: servicePricePerMin(userConfig, serviceType),
-        pricePerGb: servicePricePerGb(userConfig, serviceType),
+        pricePerGbMax: pricePerGbMax(config),
+        pricePerMinMax: pricePerMinMax(config),
+        pricePerMin: servicePricePerMin(config, serviceType),
+        pricePerGb: servicePricePerGb(config, serviceType),
     };
-    const accessPolicyEnabled = isAccessPolicyEnabled(userConfig);
+    const accessPolicyEnabled = isAccessPolicyEnabled(config);
     return (
         <div className="service">
             <ServiceHeader whitelisted={accessPolicyEnabled} running={status === RUNNING} type={serviceType} />
@@ -137,8 +136,6 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, userConfig, disabl
                 currentPricePerMinute={prices.pricePerMin}
                 identityRef={identityRef}
                 serviceInfo={serviceInfo}
-                isCurrentTrafficShapingEnabled={isTrafficShapingEnabled(userConfig)}
-                isCurrentAccessPolicyEnabled={accessPolicyEnabled}
             />
         </div>
     );
