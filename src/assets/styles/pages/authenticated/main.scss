@@ -2,6 +2,7 @@
 
 .page {
   display: flex;
+
   min-height: 100vh;
   width: 100%;
   height: 100vh;
@@ -19,6 +20,7 @@
 
     .main {
       display: flex;
+      flex-direction: column;
       width: 100%;
       height: 100%;
 
@@ -38,6 +40,11 @@
         width: 30%;
         background: #FFFFFF;
       }
+    }
+
+    .version {
+        display: flex;
+        justify-content: center;
     }
   }
 }

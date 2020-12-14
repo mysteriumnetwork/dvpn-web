@@ -25,6 +25,7 @@ import PayoutAddress from './Components/PayoutAddress';
 import { beneficiary } from '../../../redux/sse.slice';
 import { Fees, Identity } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
+import Version from './Components/Version';
 
 interface StateInterface {
     apiKey: string;
@@ -108,6 +109,9 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="version">
+                <Version />
             </div>
         </div>
     );
