@@ -12,7 +12,7 @@ interface Props {
     message?: string;
     turnedOn: boolean;
     disabled?: boolean;
-    onConfirm: () => Promise<any>;
+    onConfirm: () => void;
     onCancel?: () => void;
     confirmButton?: (onConfirm?: () => void) => JSX.Element;
 }
@@ -47,12 +47,10 @@ const ConfirmationSwitch = ({
                     onCancel();
                     setShowConfirm(false);
                 }}
-                onConfirm={() =>
-                    onConfirm().then(() => {
-                        setShowConfirm(false);
-                        return Promise.resolve();
-                    })
-                }
+                onConfirm={async () => {
+                    await onConfirm();
+                    setShowConfirm(false);
+                }}
             />
         </>
     );

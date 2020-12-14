@@ -47,6 +47,7 @@ const ServiceSettingsModal = ({
     serviceInfo,
     identityRef,
 }: Props): JSX.Element => {
+    const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [state, setState] = useState<StateProps>({
         pricePerMinuteChosen: currentPricePerMinute,
@@ -61,7 +62,18 @@ const ServiceSettingsModal = ({
         });
     }, [currentPricePerMinute, currentPricePerGb]);
 
-    const { enqueueSnackbar } = useSnackbar();
+    const restartService = (): Promise<any> => {
+        if (!serviceInfo?.id) {
+            return Promise.resolve(); // service is stopped
+        }
+        return tequilapiClient.serviceStop(serviceInfo.id).then(() =>
+            tequilapiClient.serviceStart({
+                providerId: identityRef,
+                type: serviceType.toLowerCase(),
+            }),
+        );
+    };
+
     return (
         <Modal
             className="settings-modal"
@@ -123,17 +135,7 @@ const ServiceSettingsModal = ({
                             onClick={() => {
                                 setIsLoading(true);
                                 setServicePrice(state.pricePerMinuteChosen, state.pricePerGbChosen, serviceType)
-                                    .then(() =>
-                                        serviceInfo?.id
-                                            ? tequilapiClient.serviceStop(serviceInfo.id)
-                                            : Promise.resolve(),
-                                    )
-                                    .then(() =>
-                                        tequilapiClient.serviceStart({
-                                            providerId: identityRef,
-                                            type: serviceType.toLowerCase(),
-                                        }),
-                                    )
+                                    .then(() => restartService())
                                     .then(() => onClose())
                                     .catch((err) => {
                                         enqueueSnackbar(parseError(err), { variant: 'error' });

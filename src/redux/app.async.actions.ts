@@ -20,8 +20,8 @@ import {
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
     return async (dispatch) => {
-        const userConfig = await tequilapiClient.userConfig();
-        const { at, version } = resolveTermsAgreement(userConfig.data);
+        const config = await tequilapiClient.config();
+        const { at, version } = resolveTermsAgreement(config.data);
         dispatch(
             updateTermsStore({
                 acceptedAt: at,

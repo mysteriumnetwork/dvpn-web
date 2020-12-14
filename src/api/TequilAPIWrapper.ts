@@ -59,7 +59,7 @@ export const acceptWithTermsAndConditions = async (): Promise<Config> => {
 };
 
 export const updateConfig = async (): Promise<Config> => {
-    return await tequilapiClient.userConfig().then((config) => {
+    return await tequilapiClient.config().then((config) => {
         store.dispatch(updateConfigStore(config));
         return config;
     });

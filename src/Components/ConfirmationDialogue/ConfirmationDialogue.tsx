@@ -14,17 +14,12 @@ import Button from '../Buttons/Button';
 interface Props {
     open?: boolean;
     onCancel?: () => void;
-    onConfirm?: () => Promise<any>;
+    onConfirm?: () => void;
     message?: string;
     confirmButton?: (onConfirm?: () => void) => JSX.Element;
 }
 
-const ConfirmationDialogue = ({
-    open = false,
-    onCancel,
-    onConfirm = () => Promise.resolve(),
-    message = 'Are you sure?',
-}: Props) => {
+const ConfirmationDialogue = ({ open = false, onCancel, onConfirm = () => {}, message = 'Are you sure?' }: Props) => {
     const [loading, setLoading] = useState<boolean>(false);
     return (
         <Dialog
@@ -40,7 +35,6 @@ const ConfirmationDialogue = ({
                 <Button onClick={onCancel} extraStyle="gray">
                     Cancel
                 </Button>
-                {/*{confirmButton ? confirmButton(onConfirm) : defaultConfirmButton(onConfirm)}*/}
                 <Button
                     onClick={() => {
                         Promise.resolve()
