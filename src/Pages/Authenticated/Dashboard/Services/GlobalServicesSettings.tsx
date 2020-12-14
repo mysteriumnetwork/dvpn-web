@@ -25,14 +25,24 @@ interface State {
     isShaping: boolean;
 }
 
-const GlobalServicesSettings = ({ config, servicesInfos = [] }: Props) => {
-    const stopServices = servicesInfos.map((s) => (): Promise<void> => tequilapiClient.serviceStop(s.id));
-    const startServices = servicesInfos.map((s) => (): Promise<ServiceInfo> =>
+const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
+    const services = servicesInfos || [];
+    const stopServices = services.map((s) => (): Promise<void> => tequilapiClient.serviceStop(s.id));
+    const startServices = services.map((s) => (): Promise<ServiceInfo> =>
         tequilapiClient.serviceStart({
             providerId: s.providerId,
             type: s.type,
         }),
     );
+
+    const restartServices = (doBefore: Promise<any>): Promise<any> => {
+        return doBefore
+            .then(() => Promise.all(stopServices.map((stop) => stop())))
+            .then(() => Promise.all(startServices.map((start) => start())))
+            .catch((err) => {
+                enqueueSnackbar(parseError(err), { variant: 'error' });
+            });
+    };
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -58,12 +68,7 @@ const GlobalServicesSettings = ({ config, servicesInfos = [] }: Props) => {
                             onConfirm={() => {
                                 const c = !state.isVerified;
                                 setState({ ...state, isVerified: c });
-                                return setAccessPolicy(c ? 'mysterium' : '')
-                                    .then(() => Promise.all(stopServices.map((stop) => stop())))
-                                    .then(() => Promise.all(startServices.map((start) => start())))
-                                    .catch((err) => {
-                                        enqueueSnackbar(parseError(err), { variant: 'error' });
-                                    });
+                                return restartServices(setAccessPolicy(c ? 'mysterium' : ''));
                             }}
                         />
                         <p className="text">Only Mysterium verified partner traffic</p>
@@ -80,12 +85,7 @@ const GlobalServicesSettings = ({ config, servicesInfos = [] }: Props) => {
                         onConfirm={() => {
                             const c = !state.isShaping;
                             setState({ ...state, isShaping: c });
-                            return setTrafficShaping(c)
-                                .then(() => Promise.all(stopServices.map((stop) => stop())))
-                                .then(() => Promise.all(startServices.map((start) => start())))
-                                .catch((err) => {
-                                    enqueueSnackbar(parseError(err), { variant: 'error' });
-                                });
+                            return restartServices(setTrafficShaping(c));
                         }}
                     />
                     <p className="text">Limit bandwidth to 5Mb/s</p>
