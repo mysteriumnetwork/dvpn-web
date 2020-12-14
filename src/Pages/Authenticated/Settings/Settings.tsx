@@ -74,38 +74,40 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
     }
 
     return (
-        <div className="main">
-            <div className="main-block">
-                <Header logo={Logo} name="Settings" />
-                <div className="settings">
-                    <div className="settings__block">
-                        <p className="heading">Identity</p>
-                        <div className="content">
-                            <IdentityBackup identity={identity?.id || ''} />
+        <>
+            <div className="main">
+                <div className="main-block">
+                    <Header logo={Logo} name="Settings" />
+                    <div className="settings">
+                        <div className="settings__block">
+                            <p className="heading">Identity</p>
+                            <div className="content">
+                                <IdentityBackup identity={identity?.id || ''} />
+                            </div>
+
+                            <p className="heading m-t-20">Beneficiary (payout address)</p>
+                            <div className="content">
+                                <PayoutAddress
+                                    canSettle={canSettle(identity, state.fees)}
+                                    beneficiary={beneficiary}
+                                    hermesId={hermesId}
+                                    providerId={identity?.id}
+                                />
+                            </div>
                         </div>
 
-                        <p className="heading m-t-20">Beneficiary (payout address)</p>
-                        <div className="content">
-                            <PayoutAddress
-                                canSettle={canSettle(identity, state.fees)}
-                                beneficiary={beneficiary}
-                                hermesId={hermesId}
-                                providerId={identity?.id}
-                            />
+                        <div className="settings__block">
+                            <p className="heading">WebUI security</p>
+                            <div className="content">
+                                <PasswordChange />
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="settings__block">
-                        <p className="heading">WebUI security</p>
-                        <div className="content">
-                            <PasswordChange />
-                        </div>
-                    </div>
-
-                    <div className="settings__block">
-                        <p className="heading">MMN integration</p>
-                        <div className="content">
-                            <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
+                        <div className="settings__block">
+                            <p className="heading">MMN integration</p>
+                            <div className="content">
+                                <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,7 +115,7 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
             <div className="version">
                 <Version />
             </div>
-        </div>
+        </>
     );
 };
 
