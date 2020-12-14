@@ -24,6 +24,7 @@ import { mmnWebAddress, hermesId } from '../../../commons/config';
 import PayoutAddress from './Components/PayoutAddress';
 import { beneficiary } from '../../../redux/sse.slice';
 import { Fees, Identity } from 'mysterium-vpn-js';
+import { CircularProgress } from '@material-ui/core';
 
 interface StateInterface {
     apiKey: string;
@@ -64,9 +65,12 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
             })
             .catch((err) => {
                 enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' });
-                console.log(err);
             });
     }, []);
+
+    if (!state.apiKey) {
+        return <CircularProgress className="spinner" />;
+    }
 
     return (
         <div className="main">

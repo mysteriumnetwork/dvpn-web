@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Fade, Modal } from '@material-ui/core';
 import { ServiceInfo } from 'mysterium-vpn-js';
 import { useSnackbar } from 'notistack';
@@ -13,10 +13,9 @@ import './ServiceSettingsModal.scss';
 import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../../constants/defaults';
 
 import Slider from '../../../../Components/Slider/Slider';
-import { Switch } from '../../../../Components/Switch';
 import { ServiceType } from '../../../../commons';
 import Button from '../../../../Components/Buttons/Button';
-import { setAccessPolicy, setServicePrice, setTrafficShaping } from '../../../../api/TequilAPIWrapper';
+import { setServicePrice } from '../../../../api/TequilAPIWrapper';
 import { parseError } from '../../../../commons/error.utils';
 import { tequilapiClient } from '../../../../api/TequilApiClient';
 
@@ -30,15 +29,11 @@ interface Props {
     pricePerMinuteMax: number;
     identityRef: string;
     serviceInfo?: ServiceInfo;
-    isCurrentAccessPolicyEnabled: boolean;
-    isCurrentTrafficShapingEnabled: boolean;
 }
 
 interface StateProps {
     pricePerGbChosen: number;
     pricePerMinuteChosen: number;
-    isVerifiedTrafficEnabled: boolean;
-    isTrafficShapingEnabled: boolean;
 }
 
 const ServiceSettingsModal = ({
@@ -49,19 +44,36 @@ const ServiceSettingsModal = ({
     currentPricePerMinute,
     pricePerGbMax,
     pricePerMinuteMax,
-    isCurrentAccessPolicyEnabled,
-    isCurrentTrafficShapingEnabled,
     serviceInfo,
     identityRef,
 }: Props): JSX.Element => {
+    const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [state, setState] = useState<StateProps>({
         pricePerMinuteChosen: currentPricePerMinute,
         pricePerGbChosen: currentPricePerGb,
-        isVerifiedTrafficEnabled: isCurrentAccessPolicyEnabled,
-        isTrafficShapingEnabled: isCurrentTrafficShapingEnabled,
     });
-    const { enqueueSnackbar } = useSnackbar();
+
+    useEffect(() => {
+        setState({
+            ...state,
+            pricePerMinuteChosen: currentPricePerMinute,
+            pricePerGbChosen: currentPricePerGb,
+        });
+    }, [currentPricePerMinute, currentPricePerGb]);
+
+    const restartService = (): Promise<any> => {
+        if (!serviceInfo?.id) {
+            return Promise.resolve(); // service is stopped
+        }
+        return tequilapiClient.serviceStop(serviceInfo.id).then(() =>
+            tequilapiClient.serviceStart({
+                providerId: identityRef,
+                type: serviceType.toLowerCase(),
+            }),
+        );
+    };
+
     return (
         <Modal
             className="settings-modal"
@@ -114,32 +126,6 @@ const ServiceSettingsModal = ({
                             </div>
                         </div>
                     </div>
-                    <div className="partners-block">
-                        <div className="switch-row">
-                            <Switch
-                                disabled={false}
-                                turnedOn={state.isVerifiedTrafficEnabled}
-                                handleChange={(e, checked) => {
-                                    setState({ ...state, isVerifiedTrafficEnabled: checked });
-                                }}
-                            />
-                            <p className="text">Only Mysterium verified partner traffic</p>
-                        </div>
-                        <p className="under-text">
-                            Safe option: traffic vetted via business contracts, unavailable to the general public and
-                            limited to streaming. This option potentially will give less reward.
-                        </p>
-                    </div>
-                    <div className="limits-block">
-                        <Switch
-                            disabled={false}
-                            turnedOn={state.isTrafficShapingEnabled}
-                            handleChange={(e, checked) => {
-                                setState({ ...state, isTrafficShapingEnabled: checked });
-                            }}
-                        />
-                        <p className="text">Limit bandwidth to 5Mb/s</p>
-                    </div>
                     <div className="buttons-block">
                         <Button onClick={onClose} extraStyle="gray">
                             Close
@@ -149,30 +135,17 @@ const ServiceSettingsModal = ({
                             onClick={() => {
                                 setIsLoading(true);
                                 setServicePrice(state.pricePerMinuteChosen, state.pricePerGbChosen, serviceType)
-                                    .then(() => setAccessPolicy(state.isVerifiedTrafficEnabled ? 'mysterium' : ''))
-                                    .then(() => setTrafficShaping(state.isTrafficShapingEnabled))
-                                    .then(() =>
-                                        serviceInfo?.id
-                                            ? tequilapiClient.serviceStop(serviceInfo.id)
-                                            : Promise.resolve(),
-                                    )
-                                    .then(() =>
-                                        tequilapiClient.serviceStart({
-                                            providerId: identityRef,
-                                            type: serviceType.toLowerCase(),
-                                        }),
-                                    )
+                                    .then(() => restartService())
                                     .then(() => onClose())
                                     .catch((err) => {
                                         enqueueSnackbar(parseError(err), { variant: 'error' });
-                                        console.log(err);
                                     })
                                     .finally(() => {
                                         setIsLoading(false);
                                     });
                             }}
                         >
-                            Save & Restart
+                            {serviceInfo ? 'Save & Restart' : 'Save'}
                         </Button>
                     </div>
                 </div>

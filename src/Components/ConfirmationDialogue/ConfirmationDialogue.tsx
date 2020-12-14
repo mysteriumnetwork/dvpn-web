@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -16,9 +16,11 @@ interface Props {
     onCancel?: () => void;
     onConfirm?: () => void;
     message?: string;
+    confirmButton?: (onConfirm?: () => void) => JSX.Element;
 }
 
-const ConfirmationDialogue = ({ open = false, onCancel, onConfirm, message = 'Are you sure?' }: Props) => {
+const ConfirmationDialogue = ({ open = false, onCancel, onConfirm = () => {}, message = 'Are you sure?' }: Props) => {
+    const [loading, setLoading] = useState<boolean>(false);
     return (
         <Dialog
             open={open}
@@ -33,7 +35,16 @@ const ConfirmationDialogue = ({ open = false, onCancel, onConfirm, message = 'Ar
                 <Button onClick={onCancel} extraStyle="gray">
                     Cancel
                 </Button>
-                <Button onClick={onConfirm} autoFocus>
+                <Button
+                    onClick={() => {
+                        Promise.resolve()
+                            .then(() => setLoading(true))
+                            .then(() => onConfirm())
+                            .finally(() => setLoading(false));
+                    }}
+                    isLoading={loading}
+                    autoFocus
+                >
                     Ok
                 </Button>
             </DialogActions>
