@@ -35,7 +35,6 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
     useEffect(() => {
         setState({ ...state, apiKey: apiKey });
     }, [apiKey]);
-    console.log('child', state);
     const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, [prop]: event.target.value });
     };

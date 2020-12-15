@@ -36,3 +36,10 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.settings-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -25,6 +25,7 @@ import PayoutAddress from './Components/PayoutAddress';
 import { beneficiary } from '../../../redux/sse.slice';
 import { Fees, Identity } from 'mysterium-vpn-js';
 import { CircularProgress } from '@material-ui/core';
+import Version from './Components/Version';
 
 interface StateInterface {
     apiKey: string;
@@ -53,6 +54,7 @@ const canSettle = (identity?: Identity, fees?: Fees): boolean => {
 };
 
 const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JSX.Element => {
+    const [loading, setLoading] = React.useState<boolean>(true);
     const [state, setState] = React.useState<StateInterface>({
         apiKey: '',
     });
@@ -65,51 +67,59 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
             })
             .catch((err) => {
                 enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' });
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }, []);
 
-    if (!state.apiKey) {
+    if (loading) {
         return <CircularProgress className="spinner" />;
     }
 
     return (
-        <div className="main">
-            <div className="main-block">
-                <Header logo={Logo} name="Settings" />
-                <div className="settings">
-                    <div className="settings__block">
-                        <p className="heading">Identity</p>
-                        <div className="content">
-                            <IdentityBackup identity={identity?.id || ''} />
-                        </div>
-
-                        <p className="heading m-t-20">Beneficiary (payout address)</p>
-                        <div className="content">
-                            <PayoutAddress
-                                canSettle={canSettle(identity, state.fees)}
-                                beneficiary={beneficiary}
-                                hermesId={hermesId}
-                                providerId={identity?.id}
-                            />
-                        </div>
+        <>
+            <div className="main">
+                <div className="main-block">
+                    <div className="settings-header">
+                        <Header logo={Logo} name="Settings" />
+                        <Version />
                     </div>
+                    <div className="settings">
+                        <div className="settings__block">
+                            <p className="heading">Identity</p>
+                            <div className="content">
+                                <IdentityBackup identity={identity?.id || ''} />
+                            </div>
 
-                    <div className="settings__block">
-                        <p className="heading">WebUI security</p>
-                        <div className="content">
-                            <PasswordChange />
+                            <p className="heading m-t-20">Beneficiary (payout address)</p>
+                            <div className="content">
+                                <PayoutAddress
+                                    canSettle={canSettle(identity, state.fees)}
+                                    beneficiary={beneficiary}
+                                    hermesId={hermesId}
+                                    providerId={identity?.id}
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="settings__block">
-                        <p className="heading">MMN integration</p>
-                        <div className="content">
-                            <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
+                        <div className="settings__block">
+                            <p className="heading">WebUI security</p>
+                            <div className="content">
+                                <PasswordChange />
+                            </div>
+                        </div>
+
+                        <div className="settings__block">
+                            <p className="heading">MMN integration</p>
+                            <div className="content">
+                                <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
