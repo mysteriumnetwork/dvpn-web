@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
-import { Slider as MUISlider } from '@material-ui/core';
+import { Mark, Slider as MUISlider } from '@material-ui/core';
 import './Slider.scss';
 
 interface Props {
@@ -18,9 +18,10 @@ interface Props {
     disabled?: boolean;
     myst?: boolean;
     mystSlider?: boolean;
+    marks?: Mark[];
 }
 
-const Slider = ({ value, myst, label, handleChange, step, min, max, disabled }: Props): JSX.Element => {
+const Slider = ({ value, myst, label, handleChange, step, min, max, disabled, marks }: Props): JSX.Element => {
     const labelFormat = (value: number) => `${value} ${myst ? 'MYST' : ''}`;
 
     return (
@@ -45,6 +46,7 @@ const Slider = ({ value, myst, label, handleChange, step, min, max, disabled }: 
                     value={value}
                     disabled={disabled}
                     valueLabelFormat={labelFormat}
+                    marks={marks}
                 />
             </div>
         </div>

@@ -15,16 +15,24 @@ interface Props {
     onEdit?: () => void;
     header?: string;
     contentHeader?: string;
-    isLoading?: boolean;
+    isContentLoading?: boolean;
+    isButtonLoading?: boolean;
     content?: ReactComponentElement<any>;
 }
 
-const SettingsCard = ({ onEdit, header, contentHeader, content, isLoading }: Props): JSX.Element => {
+const SettingsCard = ({
+    onEdit,
+    header,
+    contentHeader,
+    content,
+    isContentLoading,
+    isButtonLoading,
+}: Props): JSX.Element => {
     return (
         <div className="wallet-sidebar__card">
             <div className="header">{header}</div>
             <div className="content">
-                {isLoading ? (
+                {isContentLoading ? (
                     <CircularProgress />
                 ) : (
                     <>
@@ -32,7 +40,7 @@ const SettingsCard = ({ onEdit, header, contentHeader, content, isLoading }: Pro
                         <div className="content__subtext">{content}</div>
                         {onEdit && (
                             <div className="content__footer">
-                                <Button onClick={onEdit} className="button">
+                                <Button isLoading={isButtonLoading} onClick={onEdit} className="button">
                                     <p>Edit</p>
                                 </Button>
                             </div>
