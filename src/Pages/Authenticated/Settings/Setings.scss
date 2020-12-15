@@ -37,9 +37,9 @@
     justify-content: space-between;
 }
 
-.version {
-    position: absolute;
-    bottom: 0;
-    right: 25%;
-    left: 50%;
+.settings-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }

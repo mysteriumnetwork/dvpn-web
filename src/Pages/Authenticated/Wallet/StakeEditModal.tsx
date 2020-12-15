@@ -11,7 +11,6 @@ import './WalletModel.scss';
 
 import Button from '../../../Components/Buttons/Button';
 import { Fees, Identity } from 'mysterium-vpn-js';
-import { MYST_DENOMINATOR } from '../../../commons/formatCurrency';
 import { displayMyst } from '../../../commons/money.utils';
 
 interface Props {

@@ -54,6 +54,7 @@ const canSettle = (identity?: Identity, fees?: Fees): boolean => {
 };
 
 const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JSX.Element => {
+    const [loading, setLoading] = React.useState<boolean>(true);
     const [state, setState] = React.useState<StateInterface>({
         apiKey: '',
     });
@@ -66,10 +67,13 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
             })
             .catch((err) => {
                 enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' });
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }, []);
 
-    if (!state.apiKey) {
+    if (loading) {
         return <CircularProgress className="spinner" />;
     }
 
@@ -77,7 +81,10 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
         <>
             <div className="main">
                 <div className="main-block">
-                    <Header logo={Logo} name="Settings" />
+                    <div className="settings-header">
+                        <Header logo={Logo} name="Settings" />
+                        <Version />
+                    </div>
                     <div className="settings">
                         <div className="settings__block">
                             <p className="heading">Identity</p>
@@ -111,9 +118,6 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="version">
-                <Version />
             </div>
         </>
     );

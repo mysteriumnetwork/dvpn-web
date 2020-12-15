@@ -8,7 +8,7 @@ import React from 'react';
 import packageJson from '../../../../../package.json';
 
 const Version = () => {
-    return <div>Version {packageJson.version}</div>;
+    return <div>WebUI version {packageJson.version}</div>;
 };
 
 export default Version;
