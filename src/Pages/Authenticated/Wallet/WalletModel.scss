@@ -19,7 +19,7 @@
       font-size: 18px;
       line-height: 21px;
       color: $main-text-color;
-      margin-bottom: 60px;
+      margin-bottom: 10px;
     }
 
     .settings {
@@ -61,10 +61,27 @@
       }
     }
 
+	.line {
+		border-bottom: 1px solid #eee;
+		margin-bottom: 15px;
+	}
+
     .buttons-block {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
   }
+
+    .settings--point {
+		font-family: Lato, sans-serif;
+		font-style: normal;
+		font-weight: $normal-weight;
+		font-size: 14px;
+		line-height: 21px;
+		color: $secondary-text-color;
+		margin-bottom: 6px;
+		margin-top: 20px;
+		text-align: left;
+    }
 }

@@ -127,7 +127,7 @@ const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary }: Props) => {
     }
 
     const autoThresholdInfo = () => {
-        const number = identity.stake * 0.9;
+        const number = displayMyst(identity.stake * 0.9);
         return number ? `${number} MYST (90% of max settlement amount)` : 'You have no stake';
     };
 
@@ -262,6 +262,7 @@ const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary }: Props) => {
                         onDecreaseStake={(amount) => {
                             return tequilapiClient.decreaseStake({
                                 amount: amount,
+                                id: identity.id,
                             });
                         }}
                         onIncreaseStake={() => {

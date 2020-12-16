@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useState } from 'react';
-import { CircularProgress, Fade, Mark, Modal, Slider as MUISlider } from '@material-ui/core';
+import { CircularProgress, Fade, Mark, Modal } from '@material-ui/core';
 
 import './WalletModel.scss';
 
 import Button from '../../../Components/Buttons/Button';
-import { Fees, Identity } from 'mysterium-vpn-js';
+import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js';
 import { displayMyst } from '../../../commons/money.utils';
+import Slider from '../../../Components/Slider/Slider';
 
 interface Props {
     isOpen: boolean;
@@ -42,7 +43,9 @@ const marks = (stake: number): Mark[] => {
 };
 
 const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDecreaseStake }: Props): JSX.Element => {
-    const { earnings, stake } = identity;
+    const { earnings, stake: rawStake } = identity;
+
+    const stake = Number((rawStake / DECIMAL_PART).toFixed(2));
 
     const [state, setState] = useState<State>({
         initialStake: stake,
@@ -54,12 +57,12 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
         return earnings - (fees?.settlement || 0);
     };
 
-    const decreaseEnabled = (): boolean => {
-        return state.initialStake > state.selectedStake;
+    const decreaseBy = (): number => {
+        return (state.initialStake - state.selectedStake) * DECIMAL_PART - (fees?.decreaseStake || 0);
     };
 
-    const increaseEnabled = (): boolean => {
-        return increaseBy() > 0;
+    const decreaseEnabled = (): boolean => {
+        return state.initialStake > state.selectedStake;
     };
 
     const calcMarks = marks(stake);
@@ -79,56 +82,65 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
                 <div className="wallet-modal--block">
                     <div className="title">Edit Stake</div>
                     <div className="settings">
+                        <div className="settings--point m-b-5">
+                            Decrease - will transfer the amount your stake was decreased by minus fees to your wallet.
+                        </div>
+                        <div className="settings--point m-b-20">
+                            Increase - will settle current unsettled amount minus fees to your stake increasing it.
+                        </div>
                         {fees === undefined ? (
                             <CircularProgress className="spinner" />
                         ) : (
                             <div className="settings--slider">
-                                {stake > 0 ? (
-                                    <MUISlider
+                                {rawStake > 0 ? (
+                                    <Slider
                                         marks={calcMarks}
                                         value={state.selectedStake}
                                         disabled={false}
-                                        onChange={(e, v) => {
+                                        handleChange={(e, v) => {
                                             setState({ ...state, selectedStake: v as number });
                                         }}
-                                        valueLabelDisplay="on"
                                         max={state.initialStake}
+                                        label="Stake"
+                                        min={0}
+                                        step={0.01}
                                     />
                                 ) : (
-                                    <div>You have no stake - you can increase it.</div>
+                                    <div>Either you have no stake or you have no payment channel generated.</div>
                                 )}
-                                <hr className="m-t-5 m-b-5" />
-                                <div>Estimated increase: {displayMyst(increaseBy())}</div>
                             </div>
                         )}
                     </div>
+                    <div className="line" />
                     <div className="buttons-block">
-                        <Button
-                            onClick={() => {
-                                Promise.all([setState({ ...state, loading: true })])
-                                    .then(() => onDecreaseStake(state.selectedStake))
-                                    .then(() => onClose())
-                                    .catch(() => setState({ ...state, loading: false }))
-                                    .finally(() => setState({ ...state, loading: false }));
-                            }}
-                            extraStyle="outline-primary"
-                            disabled={!decreaseEnabled()}
-                        >
-                            Decrease
-                        </Button>
-                        <div className="m-r-5" />
-                        <Button
-                            onClick={() => {
-                                Promise.all([setState({ ...state, loading: true })])
-                                    .then(() => onIncreaseStake())
-                                    .then(() => onClose())
-                                    .catch(() => setState({ ...state, loading: false }))
-                                    .finally(() => setState({ ...state, loading: false }));
-                            }}
-                            disabled={!increaseEnabled()}
-                        >
-                            Increase
-                        </Button>
+                        {decreaseEnabled() ? (
+                            <Button
+                                extraStyle="outline-primary"
+                                onClick={() => {
+                                    Promise.all([setState({ ...state, loading: true })])
+                                        .then(() => onDecreaseStake(state.selectedStake * DECIMAL_PART))
+                                        .then(() => onClose())
+                                        .catch(() => setState({ ...state, loading: false }))
+                                        .finally(() => setState({ ...state, loading: false }));
+                                }}
+                                disabled={decreaseBy() < 0}
+                            >
+                                Decrease ({displayMyst(decreaseBy())})
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={() => {
+                                    Promise.all([setState({ ...state, loading: true })])
+                                        .then(() => onIncreaseStake())
+                                        .then(() => onClose())
+                                        .catch(() => setState({ ...state, loading: false }))
+                                        .finally(() => setState({ ...state, loading: false }));
+                                }}
+                                disabled={increaseBy() < 0}
+                            >
+                                Increase ({displayMyst(increaseBy())})
+                            </Button>
+                        )}
                         <div className="flex-grow" />
                         <Button onClick={onClose} extraStyle="outline">
                             Close
