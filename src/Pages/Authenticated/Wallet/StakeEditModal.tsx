@@ -82,11 +82,10 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
         <div className="wallet-modal--block">
           <div className="title">Edit Stake</div>
           <div className="settings">
-            <div className="settings--point m-b-5">
-              Decrease - will transfer the amount your stake was decreased by minus fees to your wallet.
-            </div>
             <div className="settings--point m-b-20">
-              Increase - will settle current unsettled amount minus fees to your stake increasing it.
+              Stake increase is done by settling the unsettled amount into it. You can decrease the stake by lowering
+              slider value below maximum. When decreasing stake, the amount which you decrease it by will be settled to
+              you wallet. Both actions have corresponding fees.
             </div>
             {fees === undefined ? (
               <CircularProgress className="spinner" />
