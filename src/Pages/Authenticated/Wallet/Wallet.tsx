@@ -25,10 +25,9 @@ import { parseError } from '../../../commons/error.utils'
 import { useSnackbar } from 'notistack'
 import { etherscanTxUrl, hermesId } from '../../../commons/config'
 import { date2human } from '../../../commons/date.utils'
-import SettingsCard from './SettingsCard'
 import { currentIdentity } from '../../../redux/app.slice'
 import { beneficiary } from '../../../redux/sse.slice'
-import StakeEditModal from './StakeEditModal'
+import WalletSidebar from './WalletSidebar'
 
 interface State {
   unsettledEarnings: number
@@ -44,17 +43,12 @@ interface SettlementState {
   fees?: Fees
 }
 
-interface StakeEditState {
-  modalOpen: boolean
-  loading: boolean
-  fees?: Fees
-}
-
 interface Props {
   identity?: Identity
   hermesId?: string
   etherscanTxUrl: string
   beneficiary: string
+  totalMyst: number
 }
 
 const mapStateToProps = (state: RootState) => ({
@@ -62,6 +56,7 @@ const mapStateToProps = (state: RootState) => ({
   etherscanTxUrl: etherscanTxUrl(state.app.config),
   hermesId: hermesId(state.app.config),
   beneficiary: beneficiary(state.sse),
+  totalMyst: state.sse?.appState?.sessionsStats?.sumTokens || 0,
 })
 
 const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
@@ -94,7 +89,8 @@ const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
   }
 }
 
-const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary }: Props) => {
+const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary, totalMyst }: Props) => {
+  const { enqueueSnackbar } = useSnackbar()
   const [state, setState] = useState<State>({
     unsettledEarnings: 0,
     isBeneficiaryModalOpen: false,
@@ -105,12 +101,7 @@ const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary }: Props) => {
     loading: false,
     modalOpen: false,
   })
-  const [stakeEditState, setStakeEditState] = useState<StakeEditState>({
-    modalOpen: false,
-    loading: false,
-  })
 
-  const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
     tequilapiClient
       .settlementHistory({ pageSize: state.pageSize, page: state.currentPage })
@@ -124,11 +115,6 @@ const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary }: Props) => {
 
   if (!identity || !hermesId) {
     return <CircularProgress className="spinner" />
-  }
-
-  const autoThresholdInfo = () => {
-    const number = displayMyst(identity.stake * 0.9)
-    return number ? `${number} MYST (90% of max settlement amount)` : 'You have no stake'
   }
 
   const handlePrevPageButtonClick = () => {
@@ -216,69 +202,7 @@ const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary }: Props) => {
       />
 
       <div className="sidebar-block">
-        <div className="wallet-sidebar">
-          <SettingsCard
-            header="Payout Beneficiary address"
-            contentHeader={beneficiary}
-            isContentLoading={!beneficiary}
-            content={
-              <>
-                <div>This is where you will get paid your ETH. Don't have a wallet?</div>
-                {/*<p className="m-t-10">*/}
-                {/*    <a href="#">Get it here.</a>*/}
-                {/*</p>*/}
-              </>
-            }
-          />
-
-          <SettingsCard
-            header="Auto settlement threshold"
-            contentHeader={autoThresholdInfo()}
-            isButtonLoading={stakeEditState.loading}
-            onEdit={() => {
-              Promise.all([setStakeEditState({ ...stakeEditState, loading: true })])
-                .then(() => tequilapiClient.transactorFees())
-                .then((resp) =>
-                  setStakeEditState({
-                    ...stakeEditState,
-                    loading: false,
-                    fees: resp,
-                    modalOpen: true,
-                  }),
-                )
-                .catch((err) => {
-                  enqueueSnackbar('Error: ' + parseError(err), { variant: 'error' })
-                  setStakeEditState({ ...stakeEditState, loading: false })
-                })
-            }}
-            content={
-              <div>
-                When unsettled earning will reach threshold node will do on-chain transaction and move funds into your
-                beneficiary address.
-              </div>
-            }
-          />
-          <StakeEditModal
-            onDecreaseStake={(amount) => {
-              return tequilapiClient.decreaseStake({
-                amount: amount,
-                id: identity.id,
-              })
-            }}
-            onIncreaseStake={() => {
-              return tequilapiClient.settleIntoStakeAsync({
-                hermesId: hermesId,
-                providerId: identity.id,
-              })
-            }}
-            identity={identity}
-            fees={stakeEditState.fees}
-            isOpen={stakeEditState.modalOpen}
-            onClose={() => {
-              setStakeEditState({ ...stakeEditState, modalOpen: false })
-            }}
-          />
-        </div>
+        <WalletSidebar beneficiary={beneficiary} identity={identity} hermesId={hermesId} />
       </div>
     </div>
   )
