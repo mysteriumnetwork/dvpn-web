@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import * as termsPackageJson from '@mysteriumnetwork/terms/package.json';
+import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
 
 interface Agreement {
-    at?: string;
-    version?: string;
+  at?: string
+  version?: string
 }
 
 export const resolveTermsAgreement = (configData?: any): Agreement => {
-    return configData?.mysteriumwebui?.termsAgreed || {};
-};
+  return configData?.mysteriumwebui?.termsAgreed || {}
+}
 
 export const areTermsAccepted = (agreedAt?: string, version?: string): boolean => {
-    return !!version && !!agreedAt && version === termsPackageJson.version;
-};
+  return !!version && !!agreedAt && version === termsPackageJson.version
+}

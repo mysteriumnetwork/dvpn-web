@@ -5,5 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 export const copy2clipboard = (text: string): void => {
-    navigator.clipboard.writeText(text);
-};
+  navigator.clipboard.writeText(text)
+}

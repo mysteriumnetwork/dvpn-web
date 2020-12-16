@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 export const date2human = (ds: string): string => {
-    return new Date(Date.parse(ds)).toLocaleString();
-};
+  return new Date(Date.parse(ds)).toLocaleString()
+}
 
 export const seconds2ISOTime = (seconds: number): string => {
-    return new Date(seconds * 1000).toISOString().substr(11, 8);
-};
+  return new Date(seconds * 1000).toISOString().substr(11, 8)
+}

@@ -4,25 +4,25 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React from 'react'
 
-import { TextField } from '../../../../Components/TextField';
-import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard';
+import { TextField } from '../../../../Components/TextField'
+import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
 
 interface Props {
-    identity: string;
+  identity: string
 }
 
 const IdentityBackup = ({ identity }: Props): JSX.Element => {
-    return (
-        <div className="input-group">
-            <div className="flex-row">
-                <div className="input-group__label m-t-5">Your identity</div>
-                <CopyToClipboard text={identity} />
-            </div>
-            <TextField stateName={'identity'} handleChange={() => {}} disabled={true} value={identity} />
-        </div>
-    );
-};
+  return (
+    <div className="input-group">
+      <div className="flex-row">
+        <div className="input-group__label m-t-5">Your identity</div>
+        <CopyToClipboard text={identity} />
+      </div>
+      <TextField stateName={'identity'} handleChange={() => {}} disabled={true} value={identity} />
+    </div>
+  )
+}
 
-export default IdentityBackup;
+export default IdentityBackup

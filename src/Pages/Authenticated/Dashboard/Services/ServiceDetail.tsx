@@ -4,24 +4,24 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
-import './ServiceDetail.scss';
+import React from 'react'
+import './ServiceDetail.scss'
 
 interface Props {
-    label: string;
-    alignValueRight?: boolean;
-    children: any;
+  label: string
+  alignValueRight?: boolean
+  children: any
 }
 
 const ServiceDetail = ({ label, alignValueRight, children }: Props): JSX.Element => {
-    const alignRightClass = alignValueRight ? 'service-detail__value--align-right' : '';
+  const alignRightClass = alignValueRight ? 'service-detail__value--align-right' : ''
 
-    return (
-        <div className="service-detail">
-            <div className="service-detail__label">{label}</div>
-            <div className={`service-detail__value ${alignRightClass}`}>{children}</div>
-        </div>
-    );
-};
+  return (
+    <div className="service-detail">
+      <div className="service-detail__label">{label}</div>
+      <div className={`service-detail__value ${alignRightClass}`}>{children}</div>
+    </div>
+  )
+}
 
-export default ServiceDetail;
+export default ServiceDetail

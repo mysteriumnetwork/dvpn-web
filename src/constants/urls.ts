@@ -5,4 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 export const NAT_FIX_URL =
-    'http://docs.mysterium.network/en/latest/user-guide/installation/#router-configuration-for-nodes-behind-nat';
+  'http://docs.mysterium.network/en/latest/user-guide/installation/#router-configuration-for-nodes-behind-nat'

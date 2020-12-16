@@ -4,53 +4,53 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Dispatch } from 'react';
+import { Dispatch } from 'react'
 
-import { tequilapiClient } from '../api/TequilApiClient';
-import { resolveTermsAgreement } from '../commons/terms';
-import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults';
+import { tequilapiClient } from '../api/TequilApiClient'
+import { resolveTermsAgreement } from '../commons/terms'
+import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
 import {
-    updateTermsStore,
-    updateConfigStore,
-    updateIdentityRefStore,
-    updateIdentityStore,
-    updateFeesStore,
-} from './app.slice';
+  updateTermsStore,
+  updateConfigStore,
+  updateIdentityRefStore,
+  updateIdentityStore,
+  updateFeesStore,
+} from './app.slice'
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
-    return async (dispatch) => {
-        const config = await tequilapiClient.config();
-        const { at, version } = resolveTermsAgreement(config.data);
-        dispatch(
-            updateTermsStore({
-                acceptedAt: at,
-                acceptedVersion: version,
-            }),
-        );
-    };
-};
+  return async (dispatch) => {
+    const config = await tequilapiClient.config()
+    const { at, version } = resolveTermsAgreement(config.data)
+    dispatch(
+      updateTermsStore({
+        acceptedAt: at,
+        acceptedVersion: version,
+      }),
+    )
+  }
+}
 
 export const fetchIdentityAsync = (): ((dispatch: Dispatch<any>) => void) => {
-    return async (dispatch) => {
-        const identityRef = await tequilapiClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE });
-        dispatch(updateIdentityRefStore(identityRef));
+  return async (dispatch) => {
+    const identityRef = await tequilapiClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
+    dispatch(updateIdentityRefStore(identityRef))
 
-        const identity = await tequilapiClient.identity(identityRef.id);
-        dispatch(updateIdentityStore(identity));
-    };
-};
+    const identity = await tequilapiClient.identity(identityRef.id)
+    dispatch(updateIdentityStore(identity))
+  }
+}
 
 export const fetchConfigAsync = (): ((dispatch: Dispatch<any>) => void) => {
-    return async (dispatch) => {
-        const config = await tequilapiClient.config();
-        dispatch(updateConfigStore(config));
-    };
-};
+  return async (dispatch) => {
+    const config = await tequilapiClient.config()
+    dispatch(updateConfigStore(config))
+  }
+}
 
 export const fetchFeesAsync = (): ((dispatch: Dispatch<any>) => void) => {
-    return async (dispatch) => {
-        const config = await tequilapiClient.transactorFees();
-        dispatch(updateFeesStore(config));
-    };
-};
+  return async (dispatch) => {
+    const config = await tequilapiClient.transactorFees()
+    dispatch(updateFeesStore(config))
+  }
+}

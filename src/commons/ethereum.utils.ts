@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 export const isValidEthereumAddress = (address?: string): boolean => {
-    if (address) {
-        let match = address.match('^0x[0-9a-fA-F]{40}$');
-        return match != null && match.length === 1;
-    }
+  if (address) {
+    let match = address.match('^0x[0-9a-fA-F]{40}$')
+    return match != null && match.length === 1
+  }
 
-    return false;
-};
+  return false
+}

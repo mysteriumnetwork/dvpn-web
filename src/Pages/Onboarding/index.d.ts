@@ -6,5 +6,5 @@
  */
 
 interface OnboardingChildProps {
-    nextStep: () => void;
+  nextStep: () => void
 }
