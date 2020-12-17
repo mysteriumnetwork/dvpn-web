@@ -110,6 +110,16 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
               </div>
             )}
           </div>
+          <div className="additional-info">
+            <div>
+              <div className="additional-info__title">Increase Fee:</div>
+              <div className="additional-info__text">{displayMyst(fees?.settlement)}</div>
+            </div>
+            <div>
+              <div className="additional-info__title">Decrease Fee:</div>
+              <div className="additional-info__text">{displayMyst(fees?.decreaseStake)}</div>
+            </div>
+          </div>
           <div className="line" />
           <div className="buttons-block">
             {decreaseEnabled() ? (
@@ -140,7 +150,6 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
                 Increase ({displayMyst(increaseBy())})
               </Button>
             )}
-            <div className="flex-grow" />
             <Button onClick={onClose} extraStyle="outline">
               Close
             </Button>

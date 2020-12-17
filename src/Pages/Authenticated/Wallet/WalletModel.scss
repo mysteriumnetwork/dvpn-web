@@ -23,7 +23,7 @@
     }
 
     .settings {
-      margin-bottom: 50px;
+      margin-bottom: 10px;
 
       &--slider {
         width: 100%;
@@ -61,10 +61,11 @@
       }
     }
 
-	.line {
-		border-bottom: 1px solid #eee;
-		margin-bottom: 15px;
-	}
+    .line {
+      border-bottom: 1px solid #eee;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
 
     .buttons-block {
       display: flex;
@@ -73,15 +74,34 @@
     }
   }
 
-    .settings--point {
-		font-family: Lato, sans-serif;
-		font-style: normal;
-		font-weight: $normal-weight;
-		font-size: 14px;
-		line-height: 21px;
-		color: $secondary-text-color;
-		margin-bottom: 6px;
-		margin-top: 20px;
-		text-align: left;
+  .additional-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    &__title {
+      font-family: Lato, sans-serif;
+      font-style: normal;
+      font-weight: $normal-weight;
+      font-size: 14px;
+      line-height: 21px;
+      color: $secondary-text-color;
     }
+
+    &__text {
+
+    }
+  }
+
+  .settings--point {
+    font-family: Lato, sans-serif;
+    font-style: normal;
+    font-weight: $normal-weight;
+    font-size: 14px;
+    line-height: 21px;
+    color: $secondary-text-color;
+    margin-bottom: 6px;
+    margin-top: 20px;
+    text-align: left;
+  }
 }
