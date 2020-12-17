@@ -4,21 +4,21 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
-import './Statistic.scss';
+import React from 'react'
+import './Statistic.scss'
 
 interface Props {
-    stat: string;
-    name: string;
+  stat: string
+  name: string
 }
 
 const StatCard = ({ stat, name }: Props) => {
-    return (
-        <div className="dashboard-statistic">
-            <p className="dashboard-statistic__value">{stat}</p>
-            <p className="dashboard-statistic__label">{name}</p>
-        </div>
-    );
-};
+  return (
+    <div className="dashboard-statistic">
+      <p className="dashboard-statistic__value">{stat}</p>
+      <p className="dashboard-statistic__label">{name}</p>
+    </div>
+  )
+}
 
-export default StatCard;
+export default StatCard

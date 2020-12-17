@@ -37,6 +37,10 @@
 }
 
 .wallet-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
   .truncate {
     width: 80%;
     white-space: nowrap;
@@ -93,4 +97,9 @@
       }
     }
   }
+}
+
+.wallet-sidebar-footer {
+  display: flex;
+  border-top: 1px solid #EEEEEE;;
 }

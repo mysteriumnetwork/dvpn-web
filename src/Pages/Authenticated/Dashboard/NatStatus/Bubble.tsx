@@ -4,16 +4,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React from 'react'
 
-import './Bubble.scss';
+import './Bubble.scss'
 
 interface Props {
-    type?: string;
+  type?: string
 }
 
 const Bubble = ({ type }: Props): JSX.Element => {
-    return <div className={`bubble bubble--${type}`} />;
-};
+  return <div className={`bubble bubble--${type}`} />
+}
 
-export default Bubble;
+export default Bubble

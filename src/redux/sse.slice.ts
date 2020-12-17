@@ -4,34 +4,34 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { createSlice } from '@reduxjs/toolkit';
-import { AppState } from 'mysterium-vpn-js';
-import _ from 'lodash';
+import { createSlice } from '@reduxjs/toolkit'
+import { AppState } from 'mysterium-vpn-js'
+import _ from 'lodash'
 
 export interface SSEState {
-    appState?: AppState;
+  appState?: AppState
 }
-const INITIAL_STATE: SSEState = {};
+const INITIAL_STATE: SSEState = {}
 
 const slice = createSlice({
-    name: 'sse',
-    initialState: INITIAL_STATE,
-    reducers: {
-        sseAppStateStateChanged: (state, action) => {
-            state.appState = action.payload;
-        },
+  name: 'sse',
+  initialState: INITIAL_STATE,
+  reducers: {
+    sseAppStateStateChanged: (state, action) => {
+      state.appState = action.payload
     },
-});
+  },
+})
 
 export const beneficiary = (sse: SSEState): string => {
-    const firstChannel = _.head(sse.appState?.channels);
+  const firstChannel = _.head(sse.appState?.channels)
 
-    if (firstChannel === null || firstChannel === undefined) {
-        return 'N/A';
-    }
+  if (firstChannel === null || firstChannel === undefined) {
+    return 'N/A'
+  }
 
-    return firstChannel.beneficiary;
-};
+  return firstChannel.beneficiary
+}
 
-export const { sseAppStateStateChanged } = slice.actions;
-export default slice.reducer;
+export const { sseAppStateStateChanged } = slice.actions
+export default slice.reducer

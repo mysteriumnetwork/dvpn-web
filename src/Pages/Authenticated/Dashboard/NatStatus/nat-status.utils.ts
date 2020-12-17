@@ -6,27 +6,27 @@
  */
 
 export const statusText = (status: string): string => {
-    switch (status) {
-        case 'not_finished':
-            return 'Not Finished';
-        case 'successful':
-            return 'Success';
-        case 'failed':
-            return 'Failed';
-        default:
-            return 'Unknown';
-    }
-};
+  switch (status) {
+    case 'not_finished':
+      return 'Not Finished'
+    case 'successful':
+      return 'Success'
+    case 'failed':
+      return 'Failed'
+    default:
+      return 'Unknown'
+  }
+}
 
 export const statusColor = (status: string): string => {
-    switch (status) {
-        case 'not_finished':
-            return 'warning';
-        case 'successful':
-            return 'success';
-        case 'failed':
-            return 'failed';
-        default:
-            return 'warning';
-    }
-};
+  switch (status) {
+    case 'not_finished':
+      return 'warning'
+    case 'successful':
+      return 'success'
+    case 'failed':
+      return 'failed'
+    default:
+      return 'warning'
+  }
+}
