@@ -7,7 +7,7 @@
 import React, { useState } from 'react'
 import { CircularProgress, Fade, Mark, Modal } from '@material-ui/core'
 
-import './WalletModel.scss'
+import './SettingsModal.scss'
 
 import Button from '../../../Components/Buttons/Button'
 import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
@@ -69,7 +69,7 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
 
   return (
     <Modal
-      className="wallet-modal"
+      className="settings-modal"
       open={isOpen}
       onClose={onClose}
       closeAfterTransition
@@ -79,13 +79,18 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
       }}
     >
       <Fade in={isOpen}>
-        <div className="wallet-modal--block">
+        <div className="settings-modal--block">
           <div className="title">Edit Stake</div>
           <div className="settings">
             <div className="settings--point m-b-20">
+              <p className="m-b-5">
+                Stake amount defines how often your node will auto-settle payments. Lowering the value will make
+                settling more expensive because more transactions will be made, therefore more transaction fees will
+                occur.
+              </p>
               Stake increase is done by settling the unsettled amount into it. You can decrease the stake by lowering
-              slider value below maximum. When decreasing stake, the amount which you decrease it by will be settled to
-              you wallet. Both actions have corresponding fees.
+              slider value below the maximum. When decreasing stake, the amount which you decrease it by will be settled
+              to your wallet. Both actions have corresponding fees.
             </div>
             {fees === undefined ? (
               <CircularProgress className="spinner" />

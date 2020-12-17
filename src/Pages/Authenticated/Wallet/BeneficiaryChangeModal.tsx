@@ -58,7 +58,7 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
 
   return (
     <Modal
-      className="wallet-modal"
+      className="settings-modal"
       open={isOpen}
       onClose={onClose}
       closeAfterTransition

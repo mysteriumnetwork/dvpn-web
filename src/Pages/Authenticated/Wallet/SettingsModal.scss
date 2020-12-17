@@ -1,6 +1,6 @@
 @import "../../../assets/styles/base/variables";
 
-.wallet-modal {
+.settings-modal {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,6 +13,7 @@
     transition: unset;
     width: 40%;
     padding: 30px 35px;
+    outline: 0;
 
     .title {
       font-weight: $medium-weight;

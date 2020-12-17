@@ -30,7 +30,7 @@ const WalletModal = ({ onClose, isOpen }: Props): JSX.Element => {
 
   return (
     <Modal
-      className="wallet-modal"
+      className="settings-modal"
       open={isOpen}
       onClose={onClose}
       closeAfterTransition
@@ -62,7 +62,7 @@ const WalletModal = ({ onClose, isOpen }: Props): JSX.Element => {
             </div>
             <p className="bottom-text">
               Stake goal should be between min and max values. If current stake will be less than stake goal, 10% of
-              each settlement amount will be used to increaase stake.
+              each settlement amount will be used to increase stake.
             </p>
           </div>
           <div className="buttons-block">
