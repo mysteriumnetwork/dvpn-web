@@ -95,7 +95,7 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
     return tequilapiClient.identityRegister(identity, {
       beneficiary: state.beneficiary,
       stake: state.stake * DECIMAL_PART,
-      token: state.referralCode,
+      referralToken: state.referralCode,
     })
   }
 

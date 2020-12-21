@@ -1,7 +1,7 @@
 {
   "name": "dvpn-web",
   "productName": "Mysterium WebUI",
-  "version": "0.1.13",
+  "version": "0.1.15",
   "description": "Mysterium WebUI is a web application for accessing Mysterium Network - decentralized VPN built on blockchain.",
   "license": "MIT",
   "repository": {
@@ -32,7 +32,7 @@
     "@mysteriumnetwork/terms": "0.0.27",
     "@reduxjs/toolkit": "^1.4.0",
     "lodash": "^4.17.20",
-    "mysterium-vpn-js": "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#improvements/general",
+    "mysterium-vpn-js": "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#d3d7edcf508e81e742bd19272b8dbede143f8735",
     "notistack": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
