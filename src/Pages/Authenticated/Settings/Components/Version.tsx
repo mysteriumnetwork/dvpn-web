@@ -7,8 +7,17 @@
 import React from 'react'
 import packageJson from '../../../../../package.json'
 
-const Version = () => {
-  return <div>WebUI version {packageJson.version}</div>
+interface Props {
+  nodeVersion?: string
+}
+
+const Version = ({ nodeVersion }: Props) => {
+  return (
+    <div>
+      <div>Node version {nodeVersion}</div>
+      <div>WebUI version {packageJson.version}</div>
+    </div>
+  )
 }
 
 export default Version
