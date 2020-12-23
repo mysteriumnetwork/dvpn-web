@@ -62,7 +62,7 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
 
   const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
-    Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.transactorFees(), tequilapiClient.healthCheck(15)])
+    Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.transactorFees(), tequilapiClient.healthCheck(15_000)])
       .then(([mmn, fees, healthcheck]) => {
         setState({ ...state, apiKey: mmn.apiKey, fees: fees, nodeVersion: healthcheck.version })
       })
