@@ -41,7 +41,7 @@ interface StateInterface {
   chainId: number
 }
 
-const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
+const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
   const [state, setState] = useState<StateInterface>({
     beneficiary: '',
     stake: DEFAULT_STAKE_AMOUNT,
@@ -235,4 +235,4 @@ const SettlementSettings = ({ callbacks, identity, config, fees }: Props) => {
   )
 }
 
-export default SettlementSettings
+export default PayoutSettings

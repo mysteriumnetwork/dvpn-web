@@ -16,7 +16,7 @@ import Welcome from './steps/Welcome'
 import StepCounter from './StepCounter'
 import TermsAndConditions from './steps/TermsAndConditions'
 import PriceSettings from './steps/PriceSettings'
-import SettlementSettings from './steps/SettlementSettings'
+import PayoutSettings from './steps/PayoutSettings'
 
 import './Onboarding.scss'
 import { Onboarding } from '../../redux/app.slice'
@@ -53,11 +53,10 @@ const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
     steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />)
   }
 
+  steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />)
+
   if (onboarding.needsRegisteredIdentity) {
-    steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />)
-    steps.push(
-      <SettlementSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} config={config} />,
-    )
+    steps.push(<PayoutSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} config={config} />)
   }
 
   if (onboarding.needsPasswordChange) {

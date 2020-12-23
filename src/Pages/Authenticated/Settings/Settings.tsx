@@ -30,6 +30,7 @@ import Version from './Components/Version'
 interface StateInterface {
   apiKey: string
   fees?: Fees
+  nodeVersion?: string
 }
 
 interface Props {
@@ -61,9 +62,9 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
 
   const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
-    Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.transactorFees()])
-      .then(([mmn, fees]) => {
-        setState({ ...state, apiKey: mmn.apiKey, fees: fees })
+    Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.transactorFees(), tequilapiClient.healthCheck(15)])
+      .then(([mmn, fees, healthcheck]) => {
+        setState({ ...state, apiKey: mmn.apiKey, fees: fees, nodeVersion: healthcheck.version })
       })
       .catch((err) => {
         enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' })
@@ -83,7 +84,7 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
         <div className="main-block">
           <div className="settings-header">
             <Header logo={Logo} name="Settings" />
-            <Version />
+            <Version nodeVersion={state.nodeVersion} />
           </div>
           <div className="settings">
             <div className="settings__block">

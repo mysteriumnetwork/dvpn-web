@@ -11,8 +11,11 @@ import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { MMNReport, MMNReportResponse } from 'mysterium-vpn-js'
 import { CircularProgress } from '@material-ui/core'
 import './BountyWidget.scss'
+import { useSnackbar } from 'notistack'
+import { parseError, parseMMNError } from '../../../../commons/error.utils'
 
 const BountyWidget = ({ mmnUrl }: { mmnUrl: string }) => {
+  const { enqueueSnackbar } = useSnackbar()
   const [isLoading, setIsLoading] = useState(true)
   const [bountyReport, setBountyReport] = useState<MMNReport>({} as MMNReport)
   const [nodeInfo, setNodeInfo] = useState<MMNReportResponse>({} as MMNReportResponse)
@@ -26,6 +29,7 @@ const BountyWidget = ({ mmnUrl }: { mmnUrl: string }) => {
         setBountyReport(response.report as MMNReport)
       })
       .catch((e) => {
+        enqueueSnackbar(parseError(e) || parseMMNError(e), { variant: 'error' })
         console.log(e)
       })
       .finally(() => {

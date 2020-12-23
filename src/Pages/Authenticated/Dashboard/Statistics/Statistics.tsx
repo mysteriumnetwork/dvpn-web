@@ -16,12 +16,17 @@ import Statistic from './Statistic'
 interface Props {
   stats: SessionStats
   unsettledEarnings: number
+  testnet?: boolean
 }
 
-const Statistics = ({ stats, unsettledEarnings }: Props) => {
+const Statistics = ({ stats, unsettledEarnings, testnet }: Props) => {
   return (
     <>
-      <Statistic stat={displayMyst(unsettledEarnings)} name="Unsettled earnings" />
+      {testnet ? (
+        <Statistic stat={displayMyst(stats.sumTokens)} name="Total Earnings" />
+      ) : (
+        <Statistic stat={displayMyst(unsettledEarnings)} name="Unsettled earnings" />
+      )}
       <Statistic stat={seconds2ISOTime(stats.sumDuration)} name="Sessions time" />
       <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
       <Statistic stat={'' + stats.count} name="Sessions" />

@@ -110,6 +110,7 @@ const AppRouter = ({ config, loading, identity, loggedIn, onboarding, fees, acti
 
   useLayoutEffect(() => {
     const blockingCheck = async () => {
+      await loginWithDefaultCredentials()
       const authenticated = await isUserAuthenticated()
 
       if (authenticated) {
