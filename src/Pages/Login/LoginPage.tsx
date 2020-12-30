@@ -74,7 +74,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a href="#">Forgot password?</a>
                 <Button type="submit" isLoading={state.isLoading}>
-                  Sing In
+                  Sign In
                 </Button>
               </div>
             </form>
