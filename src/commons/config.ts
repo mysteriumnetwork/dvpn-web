@@ -77,7 +77,11 @@ export const hermesId = (c?: Config): string => {
 }
 
 export const mmnWebAddress = (c?: Config): string => {
-  return _.get<Config, any>(c, 'data.mmn.web-address') || '#'
+  let url = _.get<Config, any>(c, 'data.mmn.web-address') || '#'
+  if (url.endsWith('/')) {
+    url = url.substr(0, url.length - 1)
+  }
+  return url
 }
 export const mmnDomainName = (c?: Config): string => {
   const address = _.get<Config, any>(c, 'data.mmn.web-address') || '#'
