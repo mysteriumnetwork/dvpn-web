@@ -83,12 +83,17 @@ export const mmnWebAddress = (c?: Config): string => {
   }
   return url
 }
+
 export const mmnDomainName = (c?: Config): string => {
   const address = _.get<Config, any>(c, 'data.mmn.web-address') || '#'
 
   const url = new URL(address)
 
   return url.hostname
+}
+
+export const mmnApiKey = (c?: Config): string => {
+  return _.get<Config, any>(c, 'data.mmn.api-key')
 }
 
 export const isTestnet = (c?: Config): boolean => {

@@ -14,7 +14,7 @@ import './BountyWidget.scss'
 import { useSnackbar } from 'notistack'
 import { parseError, parseMMNError } from '../../../../commons/error.utils'
 
-const BountyWidget = ({ mmnUrl }: { mmnUrl: string }) => {
+const BountyWidget = ({ mmnUrl, apiKey }: { mmnUrl: string; apiKey: string }) => {
   const { enqueueSnackbar } = useSnackbar()
   const [isLoading, setIsLoading] = useState(true)
   const [bountyReport, setBountyReport] = useState<MMNReport>({} as MMNReport)
@@ -45,7 +45,7 @@ const BountyWidget = ({ mmnUrl }: { mmnUrl: string }) => {
     )
   }
 
-  if (!bountyReport) {
+  if (!apiKey) {
     return (
       <div className="bounty-widget">
         <div className="bounty-widget__title">
@@ -56,6 +56,19 @@ const BountyWidget = ({ mmnUrl }: { mmnUrl: string }) => {
             To participate in the bounty pilot, please go to <Link to={SETTINGS}>Settings</Link> and enter your MMN API
             token to claim this node.
           </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!bountyReport) {
+    return (
+      <div className="bounty-widget">
+        <div className="bounty-widget__title">
+          <div>Bounty pilot</div>
+        </div>
+        <div className="bounty-widget__body bounty-widget__body--empty">
+          <div>Your bounty report is being generated. Refresh this page in a moment to update.</div>
         </div>
       </div>
     )

@@ -10,7 +10,7 @@ import { CircularProgress } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
-import { isTestnet, mmnWebAddress } from '../../../commons/config'
+import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import Header from '../../../Components/Header'
@@ -114,7 +114,7 @@ const Dashboard = ({ app, sse }: Props) => {
         </div>
         <div className="dashboard__widgets">
           <div className="widget widget--bounty">
-            <BountyWidget mmnUrl={mmnWebAddress(config)} />
+            <BountyWidget mmnUrl={mmnWebAddress(config)} apiKey={mmnApiKey(config)} />
           </div>
           <div className="widget widget--chart">
             <Charts statsDaily={state.sessionStatsDaily} />

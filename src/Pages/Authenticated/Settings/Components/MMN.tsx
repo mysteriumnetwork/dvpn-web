@@ -50,7 +50,9 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState({ ...state, error: false, errorMessage: '' })
-        enqueueSnackbar('MMN API key updated.', { variant: 'success' })
+        enqueueSnackbar('MMN API key updated. Refresh the dashboard to view the bounty report.', {
+          variant: 'success',
+        })
       })
       .catch((error: Error) => {
         if (error instanceof TequilapiError) {
