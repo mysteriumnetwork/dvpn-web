@@ -96,8 +96,11 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
   return (
     <div className="step">
       <h1 className="step__title">Node settings</h1>
-      <p className="step__description">Fill in the following information to setup your node.</p>
+      <p className="step__description">Fill in the following information to finish setting up your node.</p>
       <div className="step__content m-t-100">
+        <p className="step__description m-b-20">
+          <strong>Please change the default WebUI password. At least 10 characters are required.</strong>
+        </p>
         <Errors error={state.error} errorMessage={state.errorMessage} />
         <div className="input-group">
           <p className="input-group__label">Web UI password</p>

@@ -132,7 +132,7 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
                 extraStyle="outline-primary"
                 onClick={() => {
                   Promise.all([setState({ ...state, loading: true })])
-                    .then(() => onDecreaseStake(state.selectedStake * DECIMAL_PART))
+                    .then(() => onDecreaseStake(decreaseBy()))
                     .then(() => onClose())
                     .catch(() => setState({ ...state, loading: false }))
                     .finally(() => setState({ ...state, loading: false }))
