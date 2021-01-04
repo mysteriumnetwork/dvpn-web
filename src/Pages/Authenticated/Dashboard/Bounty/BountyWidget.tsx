@@ -87,7 +87,7 @@ const BountyWidget = ({ mmnUrl, apiKey }: { mmnUrl: string; apiKey: string }) =>
       <div className="bounty-widget__title">
         <div>Bounty pilot</div>
         <div>
-          <a href={`${mmnUrl}nodes/${nodeInfo.id}/dashboard`}>View in MMN</a>
+          <a href={`${mmnUrl}/nodes/${nodeInfo.id}/dashboard`}>View in MMN</a>
         </div>
       </div>
 
