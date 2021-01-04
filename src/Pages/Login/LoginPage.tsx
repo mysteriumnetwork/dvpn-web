@@ -27,6 +27,8 @@ interface StateProps {
   isLoading: boolean
 }
 
+const DOCS_URL = 'https://docs-v2.mysterium.network/node-runners/troubleshooting/#forgot-tequilapi-password'
+
 const LoginPage = ({ onSuccessLogin }: Props) => {
   const [state, setState] = React.useState<StateProps>({
     password: '',
@@ -71,8 +73,8 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
               </div>
 
               <div className="password-actions-block">
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a href="#">Forgot password?</a>
+                {/* we can get config after login only */}
+                <a href={DOCS_URL}>Forgot password?</a>
                 <Button type="submit" isLoading={state.isLoading}>
                   Sign In
                 </Button>

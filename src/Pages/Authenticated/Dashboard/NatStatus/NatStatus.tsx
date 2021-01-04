@@ -6,17 +6,16 @@
  */
 import React from 'react'
 
-import { NAT_FIX_URL } from '../../../../constants/urls'
-
 import Bubble from './Bubble'
 import { statusColor, statusText } from './nat-status.utils'
 import './NatStatus.scss'
 
 interface Props {
   status: string
+  natFixUrl: string
 }
 
-const NatStatus = ({ status }: Props) => {
+const NatStatus = ({ status, natFixUrl }: Props) => {
   const color = statusColor(status)
   return (
     <div className="nat-status">
@@ -25,7 +24,7 @@ const NatStatus = ({ status }: Props) => {
       <div className={'nat-status__state nat-status__state--' + color}>{statusText(status)}</div>
       <div className="nat-status__help">
         {status !== 'successful' && (
-          <a href={NAT_FIX_URL} target="_blank" rel="noopener noreferrer">
+          <a href={natFixUrl} target="_blank" rel="noopener noreferrer">
             How to fix this?
           </a>
         )}

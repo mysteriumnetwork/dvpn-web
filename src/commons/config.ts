@@ -76,12 +76,18 @@ export const hermesId = (c?: Config): string => {
   return _.get<Config, any>(c, 'data.hermes.hermes-id')
 }
 
+const dropLeadingSlash = (s: string): string => {
+  return s.endsWith('/') ? s.substr(0, s.length - 1) : s
+}
+
 export const mmnWebAddress = (c?: Config): string => {
   let url = _.get<Config, any>(c, 'data.mmn.web-address') || '#'
-  if (url.endsWith('/')) {
-    url = url.substr(0, url.length - 1)
-  }
-  return url
+  return dropLeadingSlash(url)
+}
+
+export const docsAddress = (c?: Config): string => {
+  let url = _.get<Config, any>(c, 'data.docs-url') || '#'
+  return dropLeadingSlash(url)
 }
 
 export const mmnDomainName = (c?: Config): string => {
