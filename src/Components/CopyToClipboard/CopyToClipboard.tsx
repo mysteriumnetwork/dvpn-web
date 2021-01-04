@@ -16,7 +16,7 @@ interface Props {
 const CopyToClipboard = ({ text }: Props) => {
   useEffect(() => {
     const clipboard = new Clipboard('.c2c-btn')
-    return clipboard.destroy
+    return () => clipboard.destroy()
   })
 
   return (
