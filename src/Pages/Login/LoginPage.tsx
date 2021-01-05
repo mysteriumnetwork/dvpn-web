@@ -74,7 +74,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
 
               <div className="password-actions-block">
                 {/* we can get config after login only */}
-                <a href={DOCS_URL}>Forgot password?</a>
+                <a href={DOCS_URL} target="_blank" rel="noopener noreferrer">Forgot password?</a>
                 <Button type="submit" isLoading={state.isLoading}>
                   Sign In
                 </Button>
