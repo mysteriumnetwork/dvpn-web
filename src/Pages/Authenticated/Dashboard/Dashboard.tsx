@@ -10,7 +10,7 @@ import { CircularProgress } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
-import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
+import { docsAddress, isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import Header from '../../../Components/Header'
@@ -29,6 +29,7 @@ import Statistics from './Statistics/Statistics'
 import { isRegistered } from '../../../commons/identity.utils'
 import BountyWidget from './Bounty/BountyWidget'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
+import { DOCS_NAT_FIX } from '../../../constants/urls'
 
 interface Props {
   app: AppState
@@ -124,7 +125,7 @@ const Dashboard = ({ app, sse }: Props) => {
           <div className="services-header">
             <p className="services-header__title">Services</p>
             <div className="services-header__status">
-              <NatStatus status={status} />
+              <NatStatus natFixUrl={`${docsAddress(config)}/${DOCS_NAT_FIX}`} status={status} />
             </div>
           </div>
           <Services

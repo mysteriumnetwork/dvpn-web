@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
 import React, { useEffect } from 'react'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import IconButton from '../IconButton/IconButton'
@@ -16,7 +17,7 @@ interface Props {
 const CopyToClipboard = ({ text }: Props) => {
   useEffect(() => {
     const clipboard = new Clipboard('.c2c-btn')
-    return clipboard.destroy
+    return () => clipboard.destroy()
   })
 
   return (
