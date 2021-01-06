@@ -8,7 +8,7 @@ import React from 'react'
 import ReactHtmlParser from 'react-html-parser'
 import showdown from 'showdown'
 // @ts-ignore
-import { TermsEndUser } from '@mysteriumnetwork/terms'
+import { TermsExitNode } from '@mysteriumnetwork/terms'
 
 import { acceptWithTermsAndConditions } from '../../../api/TequilAPIWrapper'
 import Button from '../../../Components/Buttons/Button'
@@ -21,7 +21,7 @@ const TermsAndConditions = ({ callbacks }: { callbacks: OnboardingChildProps }):
     acceptWithTermsAndConditions().then(() => callbacks.nextStep())
   }
 
-  const termsHtml = md.makeHtml(TermsEndUser)
+  const termsHtml = md.makeHtml(TermsExitNode)
   return (
     <div className="step">
       <h1 className="step__title m-b-30">Terms & Conditions</h1>
