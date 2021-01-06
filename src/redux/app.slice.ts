@@ -17,7 +17,6 @@ export interface Auth {
 }
 
 export interface Terms {
-  acceptedAt: string | undefined
   acceptedVersion: string | undefined
 }
 
@@ -45,7 +44,6 @@ const INITIAL_STATE: AppState = {
     withDefaultCredentials: false,
   },
   terms: {
-    acceptedAt: undefined,
     acceptedVersion: undefined,
   },
 }
@@ -102,7 +100,7 @@ const isLoggedIn = (auth: Auth): boolean => {
 }
 
 const termsAccepted = (terms: Terms): boolean => {
-  return !!terms.acceptedVersion && !!terms.acceptedAt && terms.acceptedVersion === termsPackageJson.version
+  return !!terms.acceptedVersion && terms.acceptedVersion === termsPackageJson.version
 }
 
 export { currentIdentity, onboardingState, isLoggedIn, termsAccepted }

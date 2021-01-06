@@ -45,16 +45,10 @@ export const isUserAuthenticated = async (): Promise<boolean> => {
   return true
 }
 
-export const acceptWithTermsAndConditions = async (): Promise<Config> => {
-  return await tequilapiClient.updateUserConfig({
-    data: {
-      mysteriumWebUi: {
-        termsAgreed: {
-          version: termsPackageJson.version,
-          at: new Date().toISOString(),
-        },
-      },
-    },
+export const acceptWithTermsAndConditions = async () => {
+  return await tequilapiClient.termsUpdate({
+    agreedProvider: true,
+    agreedVersion: termsPackageJson.version,
   })
 }
 
