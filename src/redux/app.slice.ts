@@ -7,8 +7,7 @@
 import { Fees, IdentityRef, Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { createSlice } from '@reduxjs/toolkit'
-
-import { areTermsAccepted } from '../commons/terms'
+import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { isUnregistered } from '../commons/identity.utils'
 import _ from 'lodash'
 
@@ -23,7 +22,7 @@ export interface Terms {
 }
 
 export interface Onboarding {
-  termsAccepted: boolean
+  needsAgreedTerms: boolean
   needsPasswordChange: boolean
   needsRegisteredIdentity: boolean
   needsOnboarding: boolean
@@ -87,12 +86,13 @@ const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]) => 
 
 const onboardingState = (auth: Auth, terms: Terms, currentIdentity?: Identity): Onboarding => {
   const onboarding = {
-    termsAccepted: termsAccepted(terms),
+    needsAgreedTerms: !termsAccepted(terms),
     needsPasswordChange: !!auth.withDefaultCredentials,
     needsRegisteredIdentity: !currentIdentity || isUnregistered(currentIdentity),
   } as Onboarding
 
-  onboarding.needsOnboarding = onboarding.needsPasswordChange || onboarding.needsRegisteredIdentity
+  onboarding.needsOnboarding =
+    onboarding.needsAgreedTerms || onboarding.needsPasswordChange || onboarding.needsRegisteredIdentity
 
   return onboarding
 }
@@ -102,7 +102,7 @@ const isLoggedIn = (auth: Auth): boolean => {
 }
 
 const termsAccepted = (terms: Terms): boolean => {
-  return areTermsAccepted(terms.acceptedAt, terms.acceptedVersion)
+  return !!terms.acceptedVersion && !!terms.acceptedAt && terms.acceptedVersion === termsPackageJson.version
 }
 
 export { currentIdentity, onboardingState, isLoggedIn, termsAccepted }
