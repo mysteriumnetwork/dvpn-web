@@ -34,7 +34,7 @@
     "@types/clipboard": "^2.0.1",
     "clipboard": "^2.0.6",
     "lodash": "^4.17.20",
-    "mysterium-vpn-js": "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#d3d7edcf508e81e742bd19272b8dbede143f8735",
+    "mysterium-vpn-js": "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#master",
     "notistack": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

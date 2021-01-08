@@ -49,7 +49,7 @@ const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
 
   const steps = [<Welcome key="welcome" callbacks={callbacks} />]
 
-  if (!onboarding.termsAccepted) {
+  if (onboarding.needsAgreedTerms) {
     steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />)
   }
 

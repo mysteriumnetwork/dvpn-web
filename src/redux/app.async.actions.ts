@@ -7,7 +7,6 @@
 import { Dispatch } from 'react'
 
 import { tequilapiClient } from '../api/TequilApiClient'
-import { resolveTermsAgreement } from '../commons/terms'
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
 import {
@@ -20,12 +19,10 @@ import {
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const config = await tequilapiClient.config()
-    const { at, version } = resolveTermsAgreement(config.data)
+    const terms = await tequilapiClient.terms()
     dispatch(
       updateTermsStore({
-        acceptedAt: at,
-        acceptedVersion: version,
+        acceptedVersion: terms.agreedVersion,
       }),
     )
   }
