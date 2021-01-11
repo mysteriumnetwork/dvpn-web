@@ -133,7 +133,7 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
           <div className="input-group m-t-20">
             <p className="input-group__label">
               API Key (
-              <a href={`${mmnWebAddress(config)}user/profile`} target="_blank" rel="noopener noreferrer">
+              <a href={`${mmnWebAddress(config)}/user/profile`} target="_blank" rel="noopener noreferrer">
                 Get it here
               </a>
               )
