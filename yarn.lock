@@ -7634,7 +7634,7 @@ mute-stream@0.0.8:
 
 "mysterium-vpn-js@https://github.com/mysteriumnetwork/mysterium-vpn-js.git#master":
   version "7.0.4"
-  resolved "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#e544b22e9656586cbbc7fb7c4dbdfcf885d78768"
+  resolved "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#25c8605768e19c3d32d720335bf8ede7af49b9bc"
   dependencies:
     axios "^0.21.1"
     camelcase-keys "^6.2.2"
