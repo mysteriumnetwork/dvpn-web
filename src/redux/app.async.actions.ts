@@ -15,6 +15,7 @@ import {
   updateIdentityRefStore,
   updateIdentityStore,
   updateFeesStore,
+  updateUserConfigStore,
 } from './app.slice'
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
@@ -42,6 +43,13 @@ export const fetchConfigAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
     const config = await tequilapiClient.config()
     dispatch(updateConfigStore(config))
+  }
+}
+
+export const fetcUserConfigAsync = (): ((dispatch: Dispatch<any>) => void) => {
+  return async (dispatch) => {
+    const config = await tequilapiClient.userConfig()
+    dispatch(updateUserConfigStore(config))
   }
 }
 

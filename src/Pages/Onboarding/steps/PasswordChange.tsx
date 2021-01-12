@@ -18,6 +18,8 @@ import { tequilapiClient } from '../../../api/TequilApiClient'
 import Button from '../../../Components/Buttons/Button'
 import { parseError, parseMMNError } from '../../../commons/error.utils'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { useHistory } from 'react-router-dom'
+import { DASHBOARD } from '../../../constants/routes'
 
 interface StateInterface {
   passwordRepeat: string
@@ -37,6 +39,7 @@ interface Props {
 }
 
 const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
+  const history = useHistory()
   const [state, setState] = React.useState<StateInterface>({
     passwordRepeat: '',
     password: '',
@@ -87,6 +90,7 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
       )
       .then(() => store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })))
       .then(() => callbacks.nextStep())
+      .then(() => history.push(DASHBOARD))
       .catch((error) => {
         setState({ ...state, error: true, errorMessage: parseError(error) || API_CALL_FAILED })
         console.log(error)

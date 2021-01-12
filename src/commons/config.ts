@@ -110,3 +110,15 @@ export const isTestnet = (c?: Config): boolean => {
   const isTestnet2 = _.get<Config, any>(c, 'data.testnet2') as boolean
   return isTestnet || isTestnet2
 }
+
+export const userConfigHasPrices = (c: Config): boolean => {
+  const allPricesSet: boolean =
+    [
+      _.get<Config, any>(c, 'data.openvpn.price-minute'),
+      _.get<Config, any>(c, 'data.openvpn.price-gb'),
+      _.get<Config, any>(c, 'data.wireguard.price-minute'),
+      _.get<Config, any>(c, 'data.wireguard.price-gb'),
+    ].filter((e) => e === undefined || e === null).length === 0
+
+  return allPricesSet
+}
