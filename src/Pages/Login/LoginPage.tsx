@@ -27,7 +27,7 @@ interface StateProps {
   isLoading: boolean
 }
 
-const DOCS_URL = 'https://docs-v2.mysterium.network/node-runners/troubleshooting/#forgot-tequilapi-password'
+const DOCS_URL = 'https://docs.mysterium.network/node-runners/troubleshooting/#forgot-password'
 
 const LoginPage = ({ onSuccessLogin }: Props) => {
   const [state, setState] = React.useState<StateProps>({
