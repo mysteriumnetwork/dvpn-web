@@ -15,7 +15,12 @@ import '../assets/styles/App.scss'
 import { sseAppStateStateChanged, SSEState } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
 import { Auth, Onboarding, isLoggedIn, currentIdentity, onboardingState } from '../redux/app.slice'
-import { fetchConfigAsync, fetchFeesAsync, updateTermsStoreAsync } from '../redux/app.async.actions'
+import {
+  fetchConfigAsync,
+  fetchFeesAsync,
+  updateTermsStoreAsync,
+  fetcUserConfigAsync,
+} from '../redux/app.async.actions'
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
 import { RootState } from '../redux/store'
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper'
@@ -50,6 +55,7 @@ interface Props {
   actions: {
     fetchIdentityAsync: () => void
     fetchConfigAsync: () => void
+    fetcUserConfigAsync: () => void
     updateTermsStoreAsync: () => void
     fetchFeesAsync: () => void
     updateAuthenticatedStore: (auth: Auth) => void
@@ -65,7 +71,7 @@ const mapStateToProps = (state: RootState) => {
     loading: state.app.loading,
     loggedIn: isLoggedIn(state.app.auth),
     identity: identity,
-    onboarding: onboardingState(state.app.auth, state.app.terms, identity),
+    onboarding: onboardingState(state.app.auth, state.app.terms, state.app.userConfigHasPrices, identity),
     fees: state.app.fees,
     sse: state.sse,
   }
@@ -76,6 +82,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     actions: {
       fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
       fetchConfigAsync: () => dispatch(fetchConfigAsync()),
+      fetcUserConfigAsync: () => dispatch(fetcUserConfigAsync()),
       updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
       fetchFeesAsync: () => dispatch(fetchFeesAsync()),
       updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
@@ -104,6 +111,7 @@ const AppRouter = ({ config, loading, identity, loggedIn, onboarding, fees, acti
     })
     await actions.fetchIdentityAsync()
     await actions.fetchConfigAsync()
+    await actions.fetcUserConfigAsync()
     await actions.fetchFeesAsync()
     await actions.updateTermsStoreAsync()
   }
