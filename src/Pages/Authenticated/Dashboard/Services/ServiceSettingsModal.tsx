@@ -12,7 +12,7 @@ import { useSnackbar } from 'notistack'
 import './ServiceSettingsModal.scss'
 import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../../constants/defaults'
 
-import Slider from '../../../../Components/Slider/Slider'
+import MystSlider from '../../../../Components/MystSlider/MystSlider'
 import { ServiceType } from '../../../../commons'
 import Button from '../../../../Components/Buttons/Button'
 import { setServicePrice } from '../../../../api/TequilAPIWrapper'
@@ -90,7 +90,7 @@ const ServiceSettingsModal = ({
           <div className="title">{serviceType} Settings</div>
           <div className="settings-row">
             <div className="settings-row--slider">
-              <Slider
+              <MystSlider
                 label="Price per minute"
                 myst={true}
                 value={state.pricePerMinuteChosen}
@@ -108,7 +108,7 @@ const ServiceSettingsModal = ({
               </div>
             </div>
             <div className="settings-row--slider">
-              <Slider
+              <MystSlider
                 label="Price per GB"
                 myst={true}
                 value={state.pricePerGbChosen}

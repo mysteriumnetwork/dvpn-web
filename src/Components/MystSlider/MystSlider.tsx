@@ -6,7 +6,7 @@
  */
 import React from 'react'
 import { Mark, Slider as MUISlider } from '@material-ui/core'
-import './Slider.scss'
+import './MystSlider.scss'
 
 interface Props {
   label: string
@@ -21,7 +21,7 @@ interface Props {
   marks?: Mark[]
 }
 
-const Slider = ({ value, myst, label, handleChange, step, min, max, disabled, marks }: Props): JSX.Element => {
+const MystSlider = ({ value, myst, label, handleChange, step, min, max, disabled, marks }: Props): JSX.Element => {
   const labelFormat = (value: number) => `${value} ${myst ? 'MYST' : ''}`
 
   return (
@@ -53,4 +53,4 @@ const Slider = ({ value, myst, label, handleChange, step, min, max, disabled, ma
   )
 }
 
-export default Slider
+export default MystSlider

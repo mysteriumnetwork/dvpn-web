@@ -9,7 +9,7 @@ import React from 'react'
 import { pricePerGbMax, pricePerMinMax, defaultPricePerGb, defaultPricePerMin } from '../../../commons/config'
 
 import { Checkbox } from '../../../Components/Checkbox/Checkbox'
-import Slider from '../../../Components/Slider/Slider'
+import MystSlider from '../../../Components/MystSlider/MystSlider'
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper'
 import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../constants/defaults'
 import Button from '../../../Components/Buttons/Button'
@@ -62,7 +62,7 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
       <p className="step__description">Fill in the following information to start running a VPN service.</p>
       <div className="step__content m-t-100">
         <div className="input-group m-t-10">
-          <Slider
+          <MystSlider
             myst={true}
             label="Price per minute"
             value={state.pricePerMinute}
@@ -74,7 +74,7 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
           />
         </div>
         <div className="input-group m-t-40">
-          <Slider
+          <MystSlider
             myst={true}
             label="Price per GB"
             value={state.pricePerGb}

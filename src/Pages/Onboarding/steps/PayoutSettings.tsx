@@ -9,7 +9,7 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
 
 import { TextField } from '../../../Components/TextField'
-import Slider from '../../../Components/Slider/Slider'
+import MystSlider from '../../../Components/MystSlider/MystSlider'
 import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import Button from '../../../Components/Buttons/Button'
@@ -124,7 +124,7 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
         </div>
         <div className="input-group m-t-50">
           <p className="input-group__label m-b-15">Set your stake amount</p>
-          <Slider
+          <MystSlider
             label="Stake amount"
             disabled={state.hasReferralCode}
             value={state.stake}
