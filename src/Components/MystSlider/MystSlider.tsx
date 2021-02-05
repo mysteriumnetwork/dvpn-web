@@ -19,18 +19,28 @@ interface Props {
   myst?: boolean
   mystSlider?: boolean
   marks?: Mark[]
+  headerAmount?: (value: number, myst?: boolean) => string
+  popover?: (value: number, myst?: boolean) => string
 }
 
-const MystSlider = ({ value, myst, label, handleChange, step, min, max, disabled, marks }: Props): JSX.Element => {
-  const labelFormat = (value: number) => `${value} ${myst ? 'MYST' : ''}`
-
+const MystSlider = ({
+  value,
+  myst,
+  label,
+  handleChange,
+  step,
+  min,
+  max,
+  disabled,
+  marks,
+  popover = (value: number, myst?: boolean) => `${value} ${myst ? 'MYST' : ''}`,
+  headerAmount = (value: number, myst?: boolean): string => `${value} ${myst ? 'MYST' : ''}`,
+}: Props): JSX.Element => {
   return (
     <div className="slider">
       <div className="slider__header">
         <div className="slider__header--label">{label}</div>
-        <div className="slider__header--amount">
-          {value} {myst ? 'MYST' : ''}
-        </div>
+        <div className="slider__header--amount">{headerAmount(value, myst)}</div>
       </div>
       <div className="slider__container">
         <MUISlider
@@ -45,7 +55,7 @@ const MystSlider = ({ value, myst, label, handleChange, step, min, max, disabled
           }}
           value={value}
           disabled={disabled}
-          valueLabelFormat={labelFormat}
+          valueLabelFormat={(v) => popover(v, myst)}
           marks={marks}
         />
       </div>

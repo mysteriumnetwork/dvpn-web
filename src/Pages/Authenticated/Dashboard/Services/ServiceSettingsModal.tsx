@@ -18,6 +18,7 @@ import Button from '../../../../Components/Buttons/Button'
 import { setServicePrice } from '../../../../api/TequilAPIWrapper'
 import { parseError } from '../../../../commons/error.utils'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { displayMyst, displayMystLongNoDecimal, displayMystNoDecimal } from '../../../../commons/money.utils'
 
 interface Props {
   isOpen: boolean
@@ -91,7 +92,9 @@ const ServiceSettingsModal = ({
           <div className="settings-row">
             <div className="settings-row--slider">
               <MystSlider
-                label="Price per minute"
+                label="Price per hour"
+                headerAmount={(v) => `${displayMystLongNoDecimal(v * 60)}`}
+                popover={(v) => `${displayMystLongNoDecimal(v * 60)}`}
                 myst={true}
                 value={state.pricePerMinuteChosen}
                 handleChange={(e, v) => {
@@ -103,13 +106,14 @@ const ServiceSettingsModal = ({
                 disabled={false}
               />
               <div className="bottom-line">
-                <p>0 MYST</p>
-                <p>{pricePerMinuteMax} MYST</p>
+                <p>{displayMystLongNoDecimal(0)}</p>
+                <p>{displayMystLongNoDecimal(pricePerMinuteMax * 60)}</p>
               </div>
             </div>
             <div className="settings-row--slider">
               <MystSlider
                 label="Price per GB"
+                headerAmount={(v) => displayMystNoDecimal(v)}
                 myst={true}
                 value={state.pricePerGbChosen}
                 handleChange={(e, v) => {
@@ -121,8 +125,8 @@ const ServiceSettingsModal = ({
                 disabled={false}
               />
               <div className="bottom-line">
-                <p>0 MYST</p>
-                <p>{pricePerGbMax} MYST</p>
+                <p>{displayMystNoDecimal(0)}</p>
+                <p>{displayMystNoDecimal(pricePerGbMax)}</p>
               </div>
             </div>
           </div>

@@ -26,6 +26,7 @@ import { parseError } from '../../../../commons/error.utils'
 import ServiceHeader from './ServiceHeader'
 import ServiceDetail from './ServiceDetail'
 import ServiceSettingsModal from './ServiceSettingsModal'
+import { displayMystLongNoDecimal } from '../../../../commons/money.utils'
 
 const { RUNNING } = ServiceStatus
 
@@ -101,7 +102,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
       <ServiceHeader whitelisted={accessPolicyEnabled} running={status === RUNNING} type={serviceType} />
 
       <div className="service__details">
-        <ServiceDetail label="Price per minute">{prices.pricePerMin}</ServiceDetail>
+        <ServiceDetail label="Price per hour">{displayMystLongNoDecimal(prices.pricePerMin * 60)}</ServiceDetail>
 
         <ServiceDetail label="Price per GB">{prices.pricePerGb}</ServiceDetail>
 
