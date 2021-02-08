@@ -18,7 +18,7 @@ import Button from '../../../../Components/Buttons/Button'
 import { setServicePrice } from '../../../../api/TequilAPIWrapper'
 import { parseError } from '../../../../commons/error.utils'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
-import { displayMyst, displayMystLongNoDecimal, displayMystNoDecimal } from '../../../../commons/money.utils'
+import { displayMystLongNoDecimal, displayMystNoDecimal } from '../../../../commons/money.utils'
 
 interface Props {
   isOpen: boolean
