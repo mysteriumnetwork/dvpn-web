@@ -12,7 +12,7 @@ import './SettingsModal.scss'
 import Button from '../../../Components/Buttons/Button'
 import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
 import { displayMyst } from '../../../commons/money.utils'
-import Slider from '../../../Components/Slider/Slider'
+import MystSlider from '../../../Components/MystSlider/MystSlider'
 
 interface Props {
   isOpen: boolean
@@ -97,7 +97,7 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
             ) : (
               <div className="settings--slider">
                 {rawStake > 0 ? (
-                  <Slider
+                  <MystSlider
                     marks={calcMarks}
                     value={state.selectedStake}
                     disabled={false}

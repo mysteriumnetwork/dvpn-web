@@ -6,7 +6,7 @@
  */
 import React from 'react'
 import { Mark, Slider as MUISlider } from '@material-ui/core'
-import './Slider.scss'
+import './MystSlider.scss'
 
 interface Props {
   label: string
@@ -19,18 +19,28 @@ interface Props {
   myst?: boolean
   mystSlider?: boolean
   marks?: Mark[]
+  headerAmount?: (value: number, myst?: boolean) => string
+  popover?: (value: number, myst?: boolean) => string
 }
 
-const Slider = ({ value, myst, label, handleChange, step, min, max, disabled, marks }: Props): JSX.Element => {
-  const labelFormat = (value: number) => `${value} ${myst ? 'MYST' : ''}`
-
+const MystSlider = ({
+  value,
+  myst,
+  label,
+  handleChange,
+  step,
+  min,
+  max,
+  disabled,
+  marks,
+  popover = (value: number, myst?: boolean) => `${value} ${myst ? 'MYST' : ''}`,
+  headerAmount = (value: number, myst?: boolean): string => `${value} ${myst ? 'MYST' : ''}`,
+}: Props): JSX.Element => {
   return (
     <div className="slider">
       <div className="slider__header">
         <div className="slider__header--label">{label}</div>
-        <div className="slider__header--amount">
-          {value} {myst ? 'MYST' : ''}
-        </div>
+        <div className="slider__header--amount">{headerAmount(value, myst)}</div>
       </div>
       <div className="slider__container">
         <MUISlider
@@ -45,7 +55,7 @@ const Slider = ({ value, myst, label, handleChange, step, min, max, disabled, ma
           }}
           value={value}
           disabled={disabled}
-          valueLabelFormat={labelFormat}
+          valueLabelFormat={(v) => popover(v, myst)}
           marks={marks}
         />
       </div>
@@ -53,4 +63,4 @@ const Slider = ({ value, myst, label, handleChange, step, min, max, disabled, ma
   )
 }
 
-export default Slider
+export default MystSlider

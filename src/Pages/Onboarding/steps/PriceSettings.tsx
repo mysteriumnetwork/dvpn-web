@@ -9,10 +9,11 @@ import React from 'react'
 import { pricePerGbMax, pricePerMinMax, defaultPricePerGb, defaultPricePerMin } from '../../../commons/config'
 
 import { Checkbox } from '../../../Components/Checkbox/Checkbox'
-import Slider from '../../../Components/Slider/Slider'
+import MystSlider from '../../../Components/MystSlider/MystSlider'
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper'
 import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../constants/defaults'
 import Button from '../../../Components/Buttons/Button'
+import { displayMystLongNoDecimal, displayMystNoDecimal } from '../../../commons/money.utils'
 
 interface StateInterface {
   checked: boolean
@@ -62,9 +63,10 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
       <p className="step__description">Fill in the following information to start running a VPN service.</p>
       <div className="step__content m-t-100">
         <div className="input-group m-t-10">
-          <Slider
-            myst={true}
-            label="Price per minute"
+          <MystSlider
+            headerAmount={(v) => `${displayMystLongNoDecimal(v * 60)}`}
+            popover={(v) => `${displayMystLongNoDecimal(v * 60)}`}
+            label="Price per hour"
             value={state.pricePerMinute}
             handleChange={handlePricePerMinuteChanged}
             step={PRICE_PER_MINUTE_STEP}
@@ -74,8 +76,9 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
           />
         </div>
         <div className="input-group m-t-40">
-          <Slider
-            myst={true}
+          <MystSlider
+            headerAmount={(v) => `${displayMystNoDecimal(v * 60)}`}
+            popover={(v) => `${displayMystNoDecimal(v * 60)}`}
             label="Price per GB"
             value={state.pricePerGb}
             handleChange={handlePricePerGbChanged}
