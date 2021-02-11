@@ -77,8 +77,8 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
         </div>
         <div className="input-group m-t-40">
           <MystSlider
-            headerAmount={(v) => `${displayMystNoDecimal(v * 60)}`}
-            popover={(v) => `${displayMystNoDecimal(v * 60)}`}
+            headerAmount={(v) => `${displayMystNoDecimal(v)}`}
+            popover={(v) => `${displayMystNoDecimal(v)}`}
             label="Price per GB"
             value={state.pricePerGb}
             handleChange={handlePricePerGbChanged}
