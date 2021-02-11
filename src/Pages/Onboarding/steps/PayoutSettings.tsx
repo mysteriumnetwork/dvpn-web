@@ -24,6 +24,7 @@ import { Radio } from '@material-ui/core'
 import { setChainId } from '../../../api/TequilAPIWrapper'
 import './SettlmentSettings.scss'
 import { chainId, L1ChainId, L2ChainId } from '../../../commons/config'
+import { displayMystWholeOnly } from '../../../commons/money.utils'
 
 interface Props {
   callbacks: OnboardingChildProps
@@ -125,6 +126,8 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
         <div className="input-group m-t-50">
           <p className="input-group__label m-b-15">Set your stake amount</p>
           <MystSlider
+            headerAmount={(v) => `${displayMystWholeOnly(v)}`}
+            popover={(v) => `${displayMystWholeOnly(v)}`}
             label="Stake amount"
             disabled={state.hasReferralCode}
             value={state.stake}

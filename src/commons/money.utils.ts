@@ -22,16 +22,16 @@ export const displayMoneyMyst = (money?: Money, opts: DisplayMoneyOptions = DEFA
   return displayMoney(money || { amount: 0, currency: currentCurrency() }, opts)
 }
 
-export const displayMystNoDecimal = (
+export const displayMystLongNoDecimal = (
   amount?: number,
   opts: DisplayMoneyOptions = { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 4, decimalPart: 1 },
 ): string => {
   return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
 }
 
-export const displayMystLongNoDecimal = (
+export const displayMystWholeOnly = (
   amount?: number,
-  opts: DisplayMoneyOptions = { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 4, decimalPart: 1 },
+  opts: DisplayMoneyOptions = { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 0, decimalPart: 1 },
 ): string => {
   return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
 }

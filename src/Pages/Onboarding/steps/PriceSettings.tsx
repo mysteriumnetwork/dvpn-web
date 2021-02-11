@@ -13,7 +13,7 @@ import MystSlider from '../../../Components/MystSlider/MystSlider'
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper'
 import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../constants/defaults'
 import Button from '../../../Components/Buttons/Button'
-import { displayMystLongNoDecimal, displayMystNoDecimal } from '../../../commons/money.utils'
+import { displayMystLongNoDecimal } from '../../../commons/money.utils'
 
 interface StateInterface {
   checked: boolean
@@ -77,8 +77,8 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
         </div>
         <div className="input-group m-t-40">
           <MystSlider
-            headerAmount={(v) => `${displayMystNoDecimal(v)}`}
-            popover={(v) => `${displayMystNoDecimal(v)}`}
+            headerAmount={(v) => `${displayMystLongNoDecimal(v)}`}
+            popover={(v) => `${displayMystLongNoDecimal(v)}`}
             label="Price per GB"
             value={state.pricePerGb}
             handleChange={handlePricePerGbChanged}
