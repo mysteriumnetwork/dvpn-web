@@ -18,7 +18,7 @@ import Button from '../../../../Components/Buttons/Button'
 import { setServicePrice } from '../../../../api/TequilAPIWrapper'
 import { parseError } from '../../../../commons/error.utils'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
-import { displayMystLongNoDecimal, displayMystNoDecimal } from '../../../../commons/money.utils'
+import { displayMystLongNoDecimal } from '../../../../commons/money.utils'
 
 interface Props {
   isOpen: boolean
@@ -113,7 +113,7 @@ const ServiceSettingsModal = ({
             <div className="settings-row--slider">
               <MystSlider
                 label="Price per GB"
-                headerAmount={(v) => displayMystNoDecimal(v)}
+                headerAmount={(v) => displayMystLongNoDecimal(v)}
                 myst={true}
                 value={state.pricePerGbChosen}
                 handleChange={(e, v) => {
@@ -125,8 +125,8 @@ const ServiceSettingsModal = ({
                 disabled={false}
               />
               <div className="bottom-line">
-                <p>{displayMystNoDecimal(0)}</p>
-                <p>{displayMystNoDecimal(pricePerGbMax)}</p>
+                <p>{displayMystLongNoDecimal(0)}</p>
+                <p>{displayMystLongNoDecimal(pricePerGbMax)}</p>
               </div>
             </div>
           </div>

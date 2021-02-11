@@ -104,7 +104,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
       <div className="service__details">
         <ServiceDetail label="Price per hour">{displayMystLongNoDecimal(prices.pricePerMin * 60)}</ServiceDetail>
 
-        <ServiceDetail label="Price per GB">{prices.pricePerGb}</ServiceDetail>
+        <ServiceDetail label="Price per GB">{displayMystLongNoDecimal(prices.pricePerGb)}</ServiceDetail>
 
         <ServiceDetail label="Turned on" alignValueRight={true}>
           <Switch
