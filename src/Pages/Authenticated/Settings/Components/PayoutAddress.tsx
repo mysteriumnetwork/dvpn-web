@@ -29,7 +29,6 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
   })
 
   const { enqueueSnackbar } = useSnackbar()
-  const saveDisabled = !providerId || !hermesId || !beneficiary
   return (
     <>
       <div className="input-group">
@@ -75,7 +74,6 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
                   })
                 })
             }}
-            disabled={saveDisabled}
           >
             Save
           </Button>
