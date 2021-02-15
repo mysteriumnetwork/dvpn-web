@@ -72,8 +72,14 @@ export const etherscanTxUrl = (c?: Config): string => {
   }
 }
 
-export const hermesId = (c?: Config): string => {
-  return _.get<Config, any>(c, 'data.hermes.hermes-id')
+export const hermesId = (c?: Config): string | undefined => {
+  const chainId = _.get<Config, any>(c, 'data.chain-id')
+  const chains = _.get<Config, any>(c, 'data.chains')
+  const chainNumber = _.find(Object.keys(chains), (k) => chains[k].chainid === chainId)
+  if (!chainNumber) {
+    return undefined
+  }
+  return chains[chainNumber].hermes
 }
 
 const dropLeadingSlash = (s: string): string => {
