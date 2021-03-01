@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useSnackbar } from 'notistack'
 
 import { tequilapiClient } from '../../../api/TequilApiClient'
@@ -20,32 +20,18 @@ import PasswordChange from './Components/PasswordChange'
 import IdentityBackup from './Components/IdentityBackup'
 
 import './Setings.scss'
-import { mmnWebAddress, hermesId } from '../../../commons/config'
+import * as config from '../../../commons/config'
 import PayoutAddress from './Components/PayoutAddress'
-import { beneficiary } from '../../../redux/sse.slice'
 import { Fees, Identity } from 'mysterium-vpn-js'
 import { CircularProgress } from '@material-ui/core'
 import Version from './Components/Version'
 
 interface StateInterface {
   apiKey: string
+  beneficiary?: string
   fees?: Fees
   nodeVersion?: string
 }
-
-interface Props {
-  beneficiary: string
-  hermesId?: string
-  identity?: Identity
-  mmnWebAddress: string
-}
-
-const mapStateToProps = (state: RootState) => ({
-  beneficiary: beneficiary(state.sse),
-  hermesId: hermesId(state.app.config),
-  identity: currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities),
-  mmnWebAddress: mmnWebAddress(state.app.config),
-})
 
 const canSettle = (identity?: Identity, fees?: Fees): boolean => {
   if (identity === undefined || fees === undefined) {
@@ -54,25 +40,39 @@ const canSettle = (identity?: Identity, fees?: Fees): boolean => {
   return identity?.earnings - fees?.settlement > 0
 }
 
-const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JSX.Element => {
+const Settings = (): JSX.Element => {
+  const { enqueueSnackbar } = useSnackbar()
+
+  const hermesId = useSelector<RootState, string | undefined>(({ app }) => config.hermesId(app.config))
+  const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
+    currentIdentity(app.currentIdentityRef, sse.appState?.identities),
+  )
+  const mmnWebAddress = useSelector<RootState, string>(({ app }) => config.mmnWebAddress(app.config))
+
   const [loading, setLoading] = React.useState<boolean>(true)
   const [state, setState] = React.useState<StateInterface>({
     apiKey: '',
   })
 
-  const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
-    Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.transactorFees(), tequilapiClient.healthCheck(15_000)])
-      .then(([mmn, fees, healthcheck]) => {
-        setState({ ...state, apiKey: mmn.apiKey, fees: fees, nodeVersion: healthcheck.version })
-      })
-      .catch((err) => {
-        enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [])
+    Promise.all([
+      tequilapiClient.getMMNApiKey(),
+      tequilapiClient.transactorFees(),
+      tequilapiClient.healthCheck(15_000),
+      !identity ? Promise.reject() : tequilapiClient.identityBeneficiary(identity.id),
+    ])
+      .then(([mmn, fees, healthcheck, { beneficiary }]) =>
+        setState({
+          ...state,
+          apiKey: mmn.apiKey,
+          fees: fees,
+          nodeVersion: healthcheck.version,
+          beneficiary: beneficiary,
+        }),
+      )
+      .catch((err) => enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' }))
+      .finally(() => setLoading(false))
+  }, [identity])
 
   if (loading) {
     return <CircularProgress className="spinner" />
@@ -97,7 +97,7 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
               <div className="content">
                 <PayoutAddress
                   canSettle={canSettle(identity, state.fees)}
-                  beneficiary={beneficiary}
+                  beneficiary={state.beneficiary}
                   hermesId={hermesId}
                   providerId={identity?.id}
                 />
@@ -124,4 +124,4 @@ const Settings = ({ beneficiary, hermesId, identity, mmnWebAddress }: Props): JS
   )
 }
 
-export default connect(mapStateToProps)(Settings)
+export default Settings

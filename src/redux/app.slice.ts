@@ -84,7 +84,7 @@ const slice = createSlice({
 })
 
 // Hot identity details (from SSE).
-const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]) => {
+const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]): Identity | undefined => {
   const result = (identities || []).filter((si) => si.id === identityRef?.id)
   return _.head(result)
 }
