@@ -97,9 +97,10 @@ const Settings = (): JSX.Element => {
               <div className="content">
                 <PayoutAddress
                   canSettle={canSettle(identity, state.fees)}
-                  beneficiary={state.beneficiary}
-                  hermesId={hermesId}
-                  providerId={identity?.id}
+                  beneficiary={state.beneficiary!}
+                  hermesId={hermesId!}
+                  providerId={identity?.id!}
+                  fees={state.fees!}
                 />
               </div>
             </div>

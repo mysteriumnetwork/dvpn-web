@@ -11,23 +11,26 @@ import Button from '../../../../Components/Buttons/Button'
 import { useSnackbar } from 'notistack'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
-import { currentCurrency } from '../../../../commons/money.utils'
+import { currentCurrency, displayMyst } from '../../../../commons/money.utils'
+import { Fees } from 'mysterium-vpn-js'
 
 interface Props {
-  beneficiary?: string
-  providerId?: string
-  hermesId?: string
+  beneficiary: string
+  providerId: string
+  hermesId: string
   canSettle: boolean
+  fees: Fees
 }
 
 interface State {
   beneficiary: string
 }
 
-const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) => {
+const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle, fees }: Props) => {
   const [state, setState] = useState<State>({
-    beneficiary: beneficiary || '',
+    beneficiary: beneficiary,
   })
+  const totalFees = fees.settlement + fees.hermes
 
   const { enqueueSnackbar } = useSnackbar()
   return (
@@ -35,7 +38,7 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
       <div className="input-group">
         <div className="flex-row">
           <div className="input-group__label m-t-5">Beneficiary wallet address</div>
-          <CopyToClipboard text={beneficiary || ''} />
+          <CopyToClipboard text={beneficiary} />
         </div>
         <TextField
           stateName="beneficiary"
@@ -44,14 +47,15 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
           handleChange={() => (e: React.ChangeEvent<HTMLInputElement>) => {
             setState({ ...state, beneficiary: e.target.value })
           }}
-          value={state?.beneficiary}
+          value={state.beneficiary}
         />
-        {!canSettle && (
-          <p className="input-group__help m-t-20" style={{ maxWidth: '100%' }}>
-            {`To change the beneficiary address you need to have earned at least a little bit of ${currentCurrency()} to be able to settle
-            your earnings.`}
-          </p>
-        )}
+
+        <p className="input-group__help m-t-20" style={{ maxWidth: '100%' }}>
+          {`To change the beneficiary address you need to have earned some ${currentCurrency()} (approx. ${displayMyst(
+            totalFees,
+          )}) to be able to settle
+            your earnings. Please note that it can take up to 5 minutes to settle.`}
+        </p>
       </div>
       <div className="footer__buttons m-t-40">
         {canSettle && (
@@ -59,9 +63,9 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
             onClick={() => {
               tequilapiClient
                 .settleWithBeneficiary({
-                  providerId: providerId || '',
-                  hermesId: hermesId || '',
-                  beneficiary: state.beneficiary || '',
+                  providerId: providerId,
+                  hermesId: hermesId,
+                  beneficiary: state.beneficiary,
                 })
                 .then(() =>
                   enqueueSnackbar('Settlement with beneficiary change submitted!', {
