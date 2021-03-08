@@ -27,8 +27,8 @@ interface State {
 
 const timestampKey = 'lastBeneficiaryChange'
 const minute = 1000 * 60
+
 const isSettleAllowed = (identity: Identity, fees: Fees): boolean => {
-  console.log(identity?.earnings - fees?.settlement)
   return identity?.earnings - fees?.settlement > 0
 }
 
