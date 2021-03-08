@@ -68,7 +68,7 @@ const Settings = (): JSX.Element => {
   }, [identity])
 
   if (loading) {
-    return <CircularProgress className="spinner" />
+    return <CircularProgress className="spinner" disableShrink />
   }
 
   return (

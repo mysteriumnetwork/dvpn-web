@@ -143,7 +143,7 @@ const AppRouter = ({ config, loading, identity, loggedIn, onboarding, fees, acti
   }
 
   if (loading) {
-    return <CircularProgress className="spinner" />
+    return <CircularProgress className="spinner" disableShrink />
   }
 
   return (

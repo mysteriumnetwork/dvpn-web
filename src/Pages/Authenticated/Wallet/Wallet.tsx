@@ -114,7 +114,7 @@ const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary, totalMyst }: 
   }, [state.pageSize, state.currentPage])
 
   if (!identity || !hermesId) {
-    return <CircularProgress className="spinner" />
+    return <CircularProgress className="spinner" disableShrink />
   }
 
   const handlePrevPageButtonClick = () => {

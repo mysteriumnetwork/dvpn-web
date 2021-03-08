@@ -99,7 +99,7 @@ const Dashboard = ({ app, sse }: Props) => {
 
   const { appState } = sse
   if (!identity || !appState || !config) {
-    return <CircularProgress className="spinner" />
+    return <CircularProgress className="spinner" disableShrink />
   }
 
   const serviceInfos = appState.serviceInfo

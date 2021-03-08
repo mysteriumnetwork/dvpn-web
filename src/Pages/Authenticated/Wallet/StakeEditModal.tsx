@@ -93,7 +93,7 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
               to your wallet. Both actions have corresponding fees.
             </div>
             {fees === undefined ? (
-              <CircularProgress className="spinner" />
+              <CircularProgress className="spinner" disableShrink />
             ) : (
               <div className="settings--slider">
                 {rawStake > 0 ? (

@@ -33,7 +33,7 @@ const SettingsCard = ({
       <div className="header">{header}</div>
       <div className="content">
         {isContentLoading ? (
-          <CircularProgress />
+          <CircularProgress disableShrink />
         ) : (
           <>
             <div className="content__header truncate">{contentHeader}</div>
