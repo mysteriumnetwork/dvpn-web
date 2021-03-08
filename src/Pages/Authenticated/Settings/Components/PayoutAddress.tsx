@@ -12,13 +12,12 @@ import { useSnackbar } from 'notistack'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
 import { currentCurrency, displayMyst } from '../../../../commons/money.utils'
-import { Fees } from 'mysterium-vpn-js'
+import { Fees, Identity } from 'mysterium-vpn-js'
 
 interface Props {
+  identity: Identity
   beneficiary: string
-  providerId: string
   hermesId: string
-  canSettle: boolean
   fees: Fees
 }
 
@@ -26,10 +25,25 @@ interface State {
   beneficiary: string
 }
 
-const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle, fees }: Props) => {
+const timestampKey = 'lastBeneficiaryChange'
+const minute = 1000 * 60
+const isSettleAllowed = (identity: Identity, fees: Fees): boolean => {
+  console.log(identity?.earnings - fees?.settlement)
+  return identity?.earnings - fees?.settlement > 0
+}
+
+const isSettleInProgress = () => {
+  const lastChange = parseInt(localStorage.getItem(timestampKey) || '0')
+  return Date.now() - 3 * minute < lastChange
+}
+
+const PayoutAddress = ({ beneficiary, identity, hermesId, fees }: Props) => {
   const [state, setState] = useState<State>({
     beneficiary: beneficiary,
   })
+  const [txInProgress, setTxInProgress] = useState<boolean>(isSettleInProgress())
+
+  const canSettle = isSettleAllowed(identity, fees)
   const totalFees = fees.settlement + fees.hermes
 
   const { enqueueSnackbar } = useSnackbar()
@@ -58,23 +72,23 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle, fees }: P
         </p>
       </div>
       <div className="footer__buttons m-t-40">
-        {canSettle && (
+        {!canSettle && (
           <Button
+            isLoading={txInProgress}
             onClick={() => {
               tequilapiClient
                 .settleWithBeneficiary({
-                  providerId: providerId,
+                  providerId: identity.id,
                   hermesId: hermesId,
                   beneficiary: state.beneficiary,
                 })
-                .then(() =>
-                  enqueueSnackbar('Settlement with beneficiary change submitted!', {
-                    variant: 'success',
-                  }),
-                )
+                .then(() => {
+                  enqueueSnackbar('Settlement with beneficiary change submitted!', { variant: 'success' })
+                  localStorage.setItem(timestampKey, Date.now().toString())
+                  setTxInProgress(isSettleInProgress)
+                })
                 .catch((errResponse) => {
-                  const msg = parseError(errResponse)
-                  enqueueSnackbar(msg, {
+                  enqueueSnackbar(parseError(errResponse), {
                     variant: 'error',
                   })
                 })

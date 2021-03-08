@@ -33,13 +33,6 @@ interface StateInterface {
   nodeVersion?: string
 }
 
-const canSettle = (identity?: Identity, fees?: Fees): boolean => {
-  if (identity === undefined || fees === undefined) {
-    return false
-  }
-  return identity?.earnings - fees?.settlement > 0
-}
-
 const Settings = (): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar()
 
@@ -96,10 +89,9 @@ const Settings = (): JSX.Element => {
               <p className="heading m-t-20">Beneficiary (payout address)</p>
               <div className="content">
                 <PayoutAddress
-                  canSettle={canSettle(identity, state.fees)}
+                  identity={identity!}
                   beneficiary={state.beneficiary!}
                   hermesId={hermesId!}
-                  providerId={identity?.id!}
                   fees={state.fees!}
                 />
               </div>
