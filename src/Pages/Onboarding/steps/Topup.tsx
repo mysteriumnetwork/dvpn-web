@@ -7,7 +7,7 @@
 import React, { useEffect } from 'react'
 import { QRCode } from 'react-qr-svg'
 import Button from '../../../Components/Buttons/Button'
-import { displayMyst } from '../../../commons/money.utils'
+import { currentCurrency, displayMyst } from '../../../commons/money.utils'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import { Fees, Identity } from 'mysterium-vpn-js'
 
@@ -44,7 +44,7 @@ const Topup = ({ callbacks, channelAddress, fees, identity, stake, beneficiary }
           <QRCode value={channelAddress} />
         </div>
         <p className="step__description">
-          Do not send any other cryptocurrency to this address! Only MYST tokens are accepted.
+          {`Do not send any other cryptocurrency to this address! Only ${currentCurrency()} tokens are accepted.`}
         </p>
         <div className="step__content-buttons step__content-buttons--center m-t-50">
           <Button isLoading={true}>Next</Button>

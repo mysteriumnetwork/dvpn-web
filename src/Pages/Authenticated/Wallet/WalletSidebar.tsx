@@ -9,7 +9,7 @@ import SettingsCard from './SettingsCard'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import { parseError } from '../../../commons/error.utils'
 import StakeEditModal from './StakeEditModal'
-import { displayMyst } from '../../../commons/money.utils'
+import { currentCurrency, displayMyst } from '../../../commons/money.utils'
 import { Fees, Identity } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
 import './Wallet.scss'
@@ -50,7 +50,7 @@ const WalletSidebar = ({ beneficiary, identity, hermesId }: Props) => {
 
   const autoThresholdInfo = () => {
     const number = displayMyst(identity.stake * 0.9)
-    return number ? `${number} MYST (90% of max settlement amount)` : 'You have no stake'
+    return number ? `${number} ${currentCurrency()} (90% of max settlement amount)` : 'You have no stake'
   }
 
   return (

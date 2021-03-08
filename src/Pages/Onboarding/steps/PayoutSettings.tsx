@@ -24,7 +24,7 @@ import { Radio } from '@material-ui/core'
 import { setChainId } from '../../../api/TequilAPIWrapper'
 import './SettlmentSettings.scss'
 import { chainId, L1ChainId, L2ChainId } from '../../../commons/config'
-import { displayMystWholeOnly } from '../../../commons/money.utils'
+import { currentCurrency, displayMystWholeOnly } from '../../../commons/money.utils'
 
 interface Props {
   callbacks: OnboardingChildProps
@@ -138,10 +138,10 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
             myst={true}
           />
           <p className="input-group__help">
-            To start providing services and ensure smooth and secure payouts (settlements) in Mysterium Network, node
+            {`To start providing services and ensure smooth and secure payouts (settlements) in Mysterium Network, node
             runners should stake a small amount of tokens. If you choose the default option, the initial stake amount
-            will be set to 0 and it will be automatically increased up to 10 MYST by taking 10% of earnings during each
-            promise settlement (payout).
+            will be set to 0 and it will be automatically increased up to 10 ${currentCurrency()} by taking 10% of earnings during each
+            promise settlement (payout).`}
           </p>
         </div>
 

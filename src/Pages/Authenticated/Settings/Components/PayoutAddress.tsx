@@ -11,6 +11,7 @@ import Button from '../../../../Components/Buttons/Button'
 import { useSnackbar } from 'notistack'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
+import { currentCurrency } from '../../../../commons/money.utils'
 
 interface Props {
   beneficiary?: string
@@ -47,8 +48,8 @@ const PayoutAddress = ({ beneficiary, providerId, hermesId, canSettle }: Props) 
         />
         {!canSettle && (
           <p className="input-group__help m-t-20" style={{ maxWidth: '100%' }}>
-            To change the beneficiary address you need to have earned at least a little bit of MYST to be able to settle
-            your earnings.
+            {`To change the beneficiary address you need to have earned at least a little bit of ${currentCurrency()} to be able to settle
+            your earnings.`}
           </p>
         )}
       </div>

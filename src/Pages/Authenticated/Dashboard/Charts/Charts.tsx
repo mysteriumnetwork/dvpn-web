@@ -15,6 +15,7 @@ import {
   sessionDailyStatsToSessionsGraph,
 } from './chart.utils'
 import './Charts.scss'
+import { currentCurrency } from '../../../../commons/money.utils'
 
 interface Props {
   statsDaily: {
@@ -40,7 +41,7 @@ const configByType = (type: ChartType): Config => {
     case 'earnings':
       return {
         dataFunction: sessionDailyStatsToEarningGraph,
-        dataName: ' MYST',
+        dataName: ` ${currentCurrency()}`,
       }
     case 'sessions':
       return {
