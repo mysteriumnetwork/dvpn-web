@@ -53,7 +53,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
     isShaping: isShaping,
   })
   useEffect(() => {
-    setState({ ...state, isShaping: isShaping, isVerified: isVerified })
+    setState((cs) => ({ ...cs, isShaping: isShaping, isVerified: isVerified }))
   }, [isShaping, isVerified])
 
   return (
@@ -67,7 +67,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
               turnedOn={state.isVerified}
               onConfirm={() => {
                 const c = !state.isVerified
-                setState({ ...state, isVerified: c })
+                setState((cs) => ({ ...cs, isVerified: c }))
                 return restartServices(setAccessPolicy(c ? 'mysterium' : ''))
               }}
             />
@@ -84,7 +84,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             turnedOn={state.isShaping}
             onConfirm={() => {
               const c = !state.isShaping
-              setState({ ...state, isShaping: c })
+              setState((cs) => ({ ...cs, isShaping: c }))
               return restartServices(setTrafficShaping(c))
             }}
           />

@@ -92,7 +92,7 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
         page: state.currentPage,
       })
       .then((resp) => {
-        setState({ ...state, isLoading: false, sessionListResponse: resp })
+        setState((cs) => ({ ...cs, isLoading: false, sessionListResponse: resp }))
       })
       .catch((err) => {
         enqueueSnackbar(parseError(err) || 'Fetching Sessions Failed!')
@@ -103,15 +103,15 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
   const { items = [], totalPages = 0 } = { ...state.sessionListResponse }
 
   const handlePrevPageButtonClick = () => {
-    setState({ ...state, currentPage: state.currentPage - 1, isLoading: true })
+    setState((cs) => ({ ...cs, currentPage: state.currentPage - 1, isLoading: true }))
   }
 
   const handleNextPageButtonClick = () => {
-    setState({ ...state, currentPage: state.currentPage + 1, isLoading: true })
+    setState((cs) => ({ ...cs, currentPage: state.currentPage + 1, isLoading: true }))
   }
 
   const onPageClicked = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
-    setState({ ...state, currentPage: pageNumber, isLoading: true })
+    setState((cs) => ({ ...cs, currentPage: pageNumber, isLoading: true }))
   }
 
   return (

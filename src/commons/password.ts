@@ -18,7 +18,7 @@ interface ValidateResultInterface {
   errorMessage: string
 }
 
-export const validatePassword = (password: string, repeat: string): ValidateResultInterface => {
+export const validatePassword = (password?: string, repeat?: string): ValidateResultInterface => {
   const response = {
     success: true,
     passwordBlank: false,
@@ -54,14 +54,14 @@ export const validatePassword = (password: string, repeat: string): ValidateResu
   return response
 }
 
-const isEqual = (password: string, passwordRepeat: string): boolean => {
+const isEqual = (password?: string, passwordRepeat?: string): boolean => {
   return password === passwordRepeat
 }
 
-const isValid = (password: string): boolean => {
-  return password.length < 10
+const isValid = (password?: string): boolean => {
+  return !password || password.length < 10
 }
 
-const isBlank = (password: string, passwordRepeat: string): boolean => {
-  return password === '' || passwordRepeat === ''
+const isBlank = (password?: string, passwordRepeat?: string): boolean => {
+  return !password || !passwordRepeat
 }

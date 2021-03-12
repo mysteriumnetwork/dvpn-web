@@ -102,7 +102,7 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
                     value={state.selectedStake}
                     disabled={false}
                     handleChange={(e, v) => {
-                      setState({ ...state, selectedStake: v as number })
+                      setState((cs) => ({ ...cs, selectedStake: v as number }))
                     }}
                     max={state.initialStake}
                     label="Stake"
@@ -131,11 +131,11 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
               <Button
                 extraStyle="outline-primary"
                 onClick={() => {
-                  Promise.all([setState({ ...state, loading: true })])
+                  Promise.all([setState((cs) => ({ ...cs, loading: true }))])
                     .then(() => onDecreaseStake(decreaseBy()))
                     .then(() => onClose())
-                    .catch(() => setState({ ...state, loading: false }))
-                    .finally(() => setState({ ...state, loading: false }))
+                    .catch(() => setState((cs) => ({ ...cs, loading: false })))
+                    .finally(() => setState((cs) => ({ ...cs, loading: false })))
                 }}
                 disabled={decreaseBy() < 0}
               >
@@ -144,11 +144,11 @@ const StakeEditModal = ({ isOpen, onClose, identity, fees, onIncreaseStake, onDe
             ) : (
               <Button
                 onClick={() => {
-                  Promise.all([setState({ ...state, loading: true })])
+                  Promise.all([setState((cs) => ({ ...cs, loading: true }))])
                     .then(() => onIncreaseStake())
                     .then(() => onClose())
-                    .catch(() => setState({ ...state, loading: false }))
-                    .finally(() => setState({ ...state, loading: false }))
+                    .catch(() => setState((cs) => ({ ...cs, loading: false })))
+                    .finally(() => setState((cs) => ({ ...cs, loading: false })))
                 }}
                 disabled={increaseBy() < 0}
               >

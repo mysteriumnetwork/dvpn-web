@@ -54,15 +54,16 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
   const [topupOpen, setTopupOpen] = useState<boolean>(false)
 
   const errors = (...messages: string[]): void => {
-    setState({ ...state, errors: messages })
+    setState((cs) => ({ ...cs, errors: messages }))
   }
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [prop]: event.target.value })
+    const { value } = event.target
+    setState((cs) => ({ ...cs, [prop]: value }))
   }
 
   const handleStakeChanged = (event: any, newValue: number) => {
-    setState({ ...state, stake: newValue })
+    setState((cs) => ({ ...cs, stake: newValue }))
   }
 
   const handleDone = () => {
@@ -155,7 +156,7 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
                   checked={state.chainId === L1ChainId}
                   onChange={() => {
                     if (state.chainId !== L1ChainId) {
-                      setState({ ...state, chainId: L1ChainId })
+                      setState((cs) => ({ ...cs, chainId: L1ChainId }))
                       setChainId(L1ChainId)
                     }
                   }}
@@ -168,7 +169,7 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
                   checked={state.chainId === L2ChainId}
                   onChange={(e) => {
                     if (state.chainId !== L2ChainId) {
-                      setState({ ...state, chainId: L2ChainId })
+                      setState((cs) => ({ ...cs, chainId: L2ChainId }))
                       setChainId(L2ChainId)
                     }
                   }}
@@ -197,7 +198,7 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
                 label="I have referral code"
                 checked={state.hasReferralCode}
                 handleCheckboxChange={() => {
-                  setState({ ...state, hasReferralCode: !state.hasReferralCode })
+                  setState((cs) => ({ ...cs, hasReferralCode: !state.hasReferralCode }))
                 }}
               />
             </div>

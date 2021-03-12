@@ -37,7 +37,8 @@ const PasswordChange: React.FC = () => {
   const [values, setValues] = React.useState<StateInterface>(defaultState)
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
+    const { value } = event.target
+    setValues({ ...values, [prop]: value })
   }
 
   const handleSubmitPassword = () => {

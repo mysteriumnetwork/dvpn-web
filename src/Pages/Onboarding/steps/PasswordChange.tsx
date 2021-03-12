@@ -21,9 +21,9 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { useHistory } from 'react-router-dom'
 import { DASHBOARD } from '../../../constants/routes'
 
-interface StateInterface {
-  passwordRepeat: string
-  password: string
+interface State {
+  passwordRepeat?: string
+  password?: string
   apiKey: string
   checked: boolean
   error: boolean
@@ -40,7 +40,7 @@ interface Props {
 
 const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
   const history = useHistory()
-  const [state, setState] = React.useState<StateInterface>({
+  const [state, setState] = React.useState<State>({
     passwordRepeat: '',
     password: '',
     apiKey: '',
@@ -52,29 +52,30 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
 
   useEffect(() => {
     tequilapiClient.getMMNApiKey().then((resp) => {
-      setState({ ...state, apiKey: resp.apiKey })
+      setState((cs) => ({ ...cs, apiKey: resp.apiKey }))
     })
   }, [])
 
-  const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [prop]: event.target.value })
+  const handleTextFieldsChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    setState((cs) => ({ ...cs, [prop]: value }))
   }
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, checked: event.target.checked })
+    setState((cs) => ({ ...cs, checked: event.target.checked }))
   }
 
   const handleSubmitPassword = async () => {
-    setState({ ...state, error: false })
+    setState((cs) => ({ ...cs, error: false }))
 
     if (state.checked && !state.apiKey) {
-      setState({ ...state, error: true, errorMessage: 'Please enter MMN ApiKey' })
+      setState((cs) => ({ ...cs, error: true, errorMessage: 'Please enter MMN ApiKey' }))
       return
     }
 
     const isPasswordValid = validatePassword(state.password, state.passwordRepeat)
     if (!isPasswordValid.success) {
-      setState({ ...state, error: true, errorMessage: isPasswordValid.errorMessage })
+      setState((cs) => ({ ...cs, error: true, errorMessage: isPasswordValid.errorMessage }))
       return
     }
 
@@ -84,15 +85,16 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
           tequilapiClient.authChangePassword({
             username: DEFAULT_USERNAME,
             oldPassword: DEFAULT_PASSWORD,
-            newPassword: state.password,
+            newPassword: state.password || '',
           }),
-        (mmnError) => setState({ ...state, error: true, errorMessage: parseMMNError(mmnError) || API_CALL_FAILED }),
+        (mmnError) =>
+          setState((cs) => ({ ...cs, error: true, errorMessage: parseMMNError(mmnError) || API_CALL_FAILED })),
       )
       .then(() => store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })))
       .then(() => callbacks.nextStep())
       .then(() => history.push(DASHBOARD))
       .catch((error) => {
-        setState({ ...state, error: true, errorMessage: parseError(error) || API_CALL_FAILED })
+        setState((cs) => ({ ...cs, error: true, errorMessage: parseError(error) || API_CALL_FAILED }))
         console.log(error)
       })
   }

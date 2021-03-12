@@ -97,10 +97,10 @@ const Wallet = () => {
     tequilapiClient
       .settlementHistory({ pageSize: state.pageSize, page: state.currentPage })
       .then((settlementResponse) => {
-        setState({
-          ...state,
+        setState((cs) => ({
+          ...cs,
           settlementResponse: settlementResponse,
-        })
+        }))
       })
   }, [state.pageSize, state.currentPage])
 
@@ -109,18 +109,18 @@ const Wallet = () => {
   }
 
   const handlePrevPageButtonClick = () => {
-    setState({ ...state, currentPage: state.currentPage - 1 })
+    setState((cs) => ({ ...cs, currentPage: state.currentPage - 1 }))
   }
 
   const handleNextPageButtonClick = () => {
-    setState({
-      ...state,
+    setState((cs) => ({
+      ...cs,
       currentPage: state.currentPage + 1,
-    })
+    }))
   }
 
   const onPageClicked = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
-    setState({ ...state, currentPage: pageNumber })
+    setState((cs) => ({ ...cs, currentPage: pageNumber }))
   }
 
   const { items = [], totalPages = 0 } = { ...state?.settlementResponse }

@@ -78,12 +78,12 @@ const Dashboard = () => {
     ])
       .then((result) => {
         const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }] = result
-        setState({
-          ...state,
+        setState((cs) => ({
+          ...cs,
           sessionStatsDaily: statsDaily,
           sessionStatsAllTime: allTimeStats,
           historySessions: sidebarSessions,
-        })
+        }))
       })
       .catch((err) => {
         enqueueSnackbar(parseError(err), { variant: 'error' })

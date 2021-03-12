@@ -33,11 +33,12 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-    setState({ ...state, beneficiary: beneficiary || '' })
+    setState((cs) => ({ ...cs, beneficiary: beneficiary || '' }))
   }, [beneficiary])
 
   const handleTextFieldsChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [prop]: event.target.value })
+    const { value } = event.target
+    setState((cs) => ({ ...cs, [prop]: value }))
   }
 
   const updateBeneficiary = () => {

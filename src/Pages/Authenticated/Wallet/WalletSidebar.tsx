@@ -44,7 +44,7 @@ const WalletSidebar = ({ beneficiary, identity, hermesId }: Props) => {
   useEffect(() => {
     tequilapiClient
       .sessionStatsAggregated()
-      .then((resp) => setState({ ...state, totalMyst: resp.stats.sumTokens }))
+      .then((resp) => setState((cs) => ({ ...cs, totalMyst: resp.stats.sumTokens })))
       .catch((err) => enqueueSnackbar(parseError(err), { variant: 'error' }))
   }, [])
 

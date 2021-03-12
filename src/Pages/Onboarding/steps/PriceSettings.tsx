@@ -32,25 +32,26 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
   })
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
+    setState((cs) => ({
+      ...cs,
       checked: event.target.checked,
       pricePerMinute: defaultPricePerMin(config),
       pricePerGb: defaultPricePerGb(config),
-    })
+    }))
   }
 
   const handlePricePerMinuteChanged = (event: any, newValue: number) => {
-    setState({
-      ...state,
+    setState((cs) => ({
+      ...cs,
       pricePerMinute: newValue,
-    })
+    }))
   }
 
   const handlePricePerGbChanged = (event: any, newValue: number) => {
-    setState({
-      ...state,
+    setState((cs) => ({
+      ...cs,
       pricePerGb: newValue,
-    })
+    }))
   }
 
   const handleSettingSetup = () => {
