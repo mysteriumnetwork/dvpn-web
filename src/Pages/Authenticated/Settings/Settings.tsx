@@ -55,17 +55,17 @@ const Settings = (): JSX.Element => {
       !identity ? Promise.reject() : tequilapiClient.identityBeneficiary(identity.id),
     ])
       .then(([mmn, fees, healthcheck, { beneficiary }]) =>
-        setState({
-          ...state,
+        setState((cs) => ({
+          ...cs,
           apiKey: mmn.apiKey,
           fees: fees,
           nodeVersion: healthcheck.version,
           beneficiary: beneficiary,
-        }),
+        })),
       )
       .catch((err) => enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' }))
       .finally(() => setLoading(false))
-  }, [identity])
+  }, [identity?.id])
 
   if (loading) {
     return <CircularProgress className="spinner" disableShrink />

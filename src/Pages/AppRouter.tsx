@@ -9,10 +9,10 @@ import { AppState, Fees, Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 
 import '../assets/styles/App.scss'
-import { sseAppStateStateChanged, SSEState } from '../redux/sse.slice'
+import { sseAppStateStateChanged } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
 import { Auth, Onboarding, isLoggedIn, currentIdentity, onboardingState } from '../redux/app.slice'
 import {
@@ -45,13 +45,6 @@ import PageNotFound from './Error/PageNotFound'
 import AuthenticatedPage from './Authenticated/AuthenticatedPage'
 
 interface Props {
-  config?: Config
-  loading: boolean
-  loggedIn: boolean
-  identity?: Identity
-  onboarding: Onboarding
-  fees?: Fees
-  sse?: SSEState
   actions: {
     fetchIdentityAsync: () => void
     fetchConfigAsync: () => void
@@ -61,19 +54,6 @@ interface Props {
     updateAuthenticatedStore: (auth: Auth) => void
     updateAuthFlowLoadingStore: (loading: boolean) => void
     sseAppStateStateChanged: (state: AppState) => void
-  }
-}
-
-const mapStateToProps = (state: RootState) => {
-  const identity = currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities)
-  return {
-    config: state.app.config,
-    loading: state.app.loading,
-    loggedIn: isLoggedIn(state.app.auth),
-    identity: identity,
-    onboarding: onboardingState(state.app.auth, state.app.terms, state.app.userConfigHasPrices, identity),
-    fees: state.app.fees,
-    sse: state.sse,
   }
 }
 
@@ -103,7 +83,23 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
   return <Redirect to={DASHBOARD} />
 }
 
-const AppRouter = ({ config, loading, identity, loggedIn, onboarding, fees, actions }: Props) => {
+const AppRouter = ({ actions }: Props) => {
+  const config = useSelector<RootState, Config | undefined>(({ app }) => app.config)
+  const loading = useSelector<RootState, boolean>(({ app }) => app.loading)
+  const loggedIn = useSelector<RootState, boolean>(({ app }) => isLoggedIn(app.auth))
+  const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
+    currentIdentity(app.currentIdentityRef, sse.appState?.identities),
+  )
+  const onboarding = useSelector<RootState, Onboarding>(({ app, sse }) =>
+    onboardingState(
+      app.auth,
+      app.terms,
+      app.userConfigHasPrices,
+      currentIdentity(app.currentIdentityRef, sse.appState?.identities),
+    ),
+  )
+  const fees = useSelector<RootState, Fees | undefined>(({ app }) => app.fees)
+
   const loginActions = async () => {
     await actions.updateAuthenticatedStore({
       authenticated: true,
@@ -202,4 +198,4 @@ const AppRouter = ({ config, loading, identity, loggedIn, onboarding, fees, acti
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppRouter)
+export default connect(null, mapDispatchToProps)(AppRouter)

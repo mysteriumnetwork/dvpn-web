@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
 import { TextField } from '../../../../Components/TextField'
 import Button from '../../../../Components/Buttons/Button'
@@ -12,7 +12,8 @@ import { useSnackbar } from 'notistack'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
 import { currentCurrency, displayMyst } from '../../../../commons/money.utils'
-import { Fees, Identity } from 'mysterium-vpn-js'
+import { BeneficiaryTxState, Fees, Identity } from 'mysterium-vpn-js'
+import './PayoutAddress.scss'
 
 interface Props {
   identity: Identity
@@ -23,25 +24,32 @@ interface Props {
 
 interface State {
   beneficiary: string
+  txInProgress: boolean
+  errorMessage: string
 }
-
-const timestampKey = 'lastBeneficiaryChange'
-const minute = 1000 * 60
 
 const isSettleAllowed = (identity: Identity, fees: Fees): boolean => {
   return identity?.earnings - fees?.settlement > 0
 }
 
-const isSettleInProgress = () => {
-  const lastChange = parseInt(localStorage.getItem(timestampKey) || '0')
-  return Date.now() - 3 * minute < lastChange
-}
-
 const PayoutAddress = ({ beneficiary, identity, hermesId, fees }: Props) => {
   const [state, setState] = useState<State>({
     beneficiary: beneficiary,
+    txInProgress: true,
+    errorMessage: '',
   })
-  const [txInProgress, setTxInProgress] = useState<boolean>(isSettleInProgress())
+  useEffect(() => {
+    tequilapiClient
+      .beneficiaryTxStatus(identity.id)
+      .then((resp) => {
+        setState((cs) => ({
+          ...cs,
+          txInProgress: resp.state === BeneficiaryTxState.PENDING,
+          errorMessage: resp.error,
+        }))
+      })
+      .catch(() => setState((cs) => ({ ...cs, txInProgress: false, errorMessage: '' })))
+  }, [])
 
   const canSettle = isSettleAllowed(identity, fees)
   const totalFees = fees.settlement + fees.hermes
@@ -59,7 +67,7 @@ const PayoutAddress = ({ beneficiary, identity, hermesId, fees }: Props) => {
           placeholder="0x..."
           disabled={!canSettle}
           handleChange={() => (e: React.ChangeEvent<HTMLInputElement>) => {
-            setState({ ...state, beneficiary: e.target.value })
+            setState((cs) => ({ ...cs, beneficiary: e.target.value }))
           }}
           value={state.beneficiary}
         />
@@ -70,11 +78,12 @@ const PayoutAddress = ({ beneficiary, identity, hermesId, fees }: Props) => {
           )}) to be able to settle
             your earnings. Please note that it can take up to 5 minutes to settle.`}
         </p>
+        {state.errorMessage && <p className="error">{state.errorMessage}</p>}
       </div>
       <div className="footer__buttons m-t-40">
-        {!canSettle && (
+        {canSettle && (
           <Button
-            isLoading={txInProgress}
+            isLoading={state.txInProgress}
             onClick={() => {
               tequilapiClient
                 .settleWithBeneficiary({
@@ -84,8 +93,7 @@ const PayoutAddress = ({ beneficiary, identity, hermesId, fees }: Props) => {
                 })
                 .then(() => {
                   enqueueSnackbar('Settlement with beneficiary change submitted!', { variant: 'success' })
-                  localStorage.setItem(timestampKey, Date.now().toString())
-                  setTxInProgress(isSettleInProgress)
+                  setState((cs) => ({ ...cs, txInProgress: true }))
                 })
                 .catch((errResponse) => {
                   enqueueSnackbar(parseError(errResponse), {
