@@ -40,7 +40,7 @@ const BountyWidget = ({ mmnUrl, apiKey }: { mmnUrl: string; apiKey: string }) =>
   if (isLoading) {
     return (
       <div className="bounty-widget">
-        <CircularProgress className="loader spinner" />
+        <CircularProgress className="loader spinner" disableShrink />
       </div>
     )
   }

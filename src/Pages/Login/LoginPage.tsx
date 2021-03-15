@@ -37,16 +37,17 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
   })
 
   const handleTextFieldsChange = (prop: keyof StateProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [prop]: event.target.value })
+    const { value } = event.target
+    setState((cs) => ({ ...cs, [prop]: value }))
   }
 
   const handleLogin = (e: FormEvent<any>) => {
     e.preventDefault()
-    setState({ ...state, error: false, isLoading: true })
+    setState((cs) => ({ ...cs, error: false, isLoading: true }))
     login(DEFAULT_USERNAME, state.password)
       .then(() => store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })))
       .then(() => onSuccessLogin())
-      .catch(() => setState({ ...state, error: true, isLoading: false }))
+      .catch(() => setState((cs) => ({ ...cs, error: true, isLoading: false })))
   }
   return (
     <div className="login wrapper">

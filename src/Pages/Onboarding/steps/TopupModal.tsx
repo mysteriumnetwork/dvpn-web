@@ -7,7 +7,7 @@
 import React, { useEffect } from 'react'
 import { QRCode } from 'react-qr-svg'
 import Button from '../../../Components/Buttons/Button'
-import { displayMyst } from '../../../commons/money.utils'
+import { currentCurrency, displayMyst } from '../../../commons/money.utils'
 import { Identity } from 'mysterium-vpn-js'
 import { CircularProgress, Fade, Modal } from '@material-ui/core'
 import './TopupModal.scss'
@@ -59,7 +59,7 @@ const TopupModal = ({ identity, topupSum, onTopup, open, onClose }: Props) => {
             <p className="topup-modal__balance__value">{displayMyst(identity.balance)}</p>
           </div>
           <div className="topup-modal__description m-t-15">
-            Do not send any other cryptocurrency to this address! Only MYST tokens are accepted.
+            {`Do not send any other cryptocurrency to this address! Only ${currentCurrency()} tokens are accepted.`}
           </div>
           <div className="topup-modal__footer-block m-t-20">
             <div className="topup-modal__blockchain">

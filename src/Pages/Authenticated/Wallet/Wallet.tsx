@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Fees, Identity } from 'mysterium-vpn-js'
 import { Settlement } from 'mysterium-vpn-js/src/transactor/settlement'
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
@@ -23,10 +23,10 @@ import Button from '../../../Components/Buttons/Button'
 import SettlementModal from './SettlementModal'
 import { parseError } from '../../../commons/error.utils'
 import { useSnackbar } from 'notistack'
-import { etherscanTxUrl, hermesId } from '../../../commons/config'
+import * as config from '../../../commons/config'
 import { date2human } from '../../../commons/date.utils'
 import { currentIdentity } from '../../../redux/app.slice'
-import { beneficiary } from '../../../redux/sse.slice'
+import * as sseSlice from '../../../redux/sse.slice'
 import WalletSidebar from './WalletSidebar'
 
 interface State {
@@ -42,22 +42,6 @@ interface SettlementState {
   modalOpen: boolean
   fees?: Fees
 }
-
-interface Props {
-  identity?: Identity
-  hermesId?: string
-  etherscanTxUrl: string
-  beneficiary: string
-  totalMyst: number
-}
-
-const mapStateToProps = (state: RootState) => ({
-  identity: currentIdentity(state.app.currentIdentityRef, state.sse.appState?.identities),
-  etherscanTxUrl: etherscanTxUrl(state.app.config),
-  hermesId: hermesId(state.app.config),
-  beneficiary: beneficiary(state.sse),
-  totalMyst: state.sse?.appState?.sessionsStats?.sumTokens || 0,
-})
 
 const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
   const cells = [
@@ -89,7 +73,14 @@ const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
   }
 }
 
-const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary, totalMyst }: Props) => {
+const Wallet = () => {
+  const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
+    currentIdentity(app.currentIdentityRef, sse.appState?.identities),
+  )
+  const etherscanTxUrl = useSelector<RootState, string>(({ app }) => config.etherscanTxUrl(app.config))
+  const hermesId = useSelector<RootState, string | undefined>(({ app }) => config.hermesId(app.config))
+  const beneficiary = useSelector<RootState, string>(({ sse }) => sseSlice.beneficiary(sse))
+
   const { enqueueSnackbar } = useSnackbar()
   const [state, setState] = useState<State>({
     unsettledEarnings: 0,
@@ -106,30 +97,30 @@ const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary, totalMyst }: 
     tequilapiClient
       .settlementHistory({ pageSize: state.pageSize, page: state.currentPage })
       .then((settlementResponse) => {
-        setState({
-          ...state,
+        setState((cs) => ({
+          ...cs,
           settlementResponse: settlementResponse,
-        })
+        }))
       })
   }, [state.pageSize, state.currentPage])
 
   if (!identity || !hermesId) {
-    return <CircularProgress className="spinner" />
+    return <CircularProgress className="spinner" disableShrink />
   }
 
   const handlePrevPageButtonClick = () => {
-    setState({ ...state, currentPage: state.currentPage - 1 })
+    setState((cs) => ({ ...cs, currentPage: state.currentPage - 1 }))
   }
 
   const handleNextPageButtonClick = () => {
-    setState({
-      ...state,
+    setState((cs) => ({
+      ...cs,
       currentPage: state.currentPage + 1,
-    })
+    }))
   }
 
   const onPageClicked = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
-    setState({ ...state, currentPage: pageNumber })
+    setState((cs) => ({ ...cs, currentPage: pageNumber }))
   }
 
   const { items = [], totalPages = 0 } = { ...state?.settlementResponse }
@@ -208,4 +199,4 @@ const Wallet = ({ identity, hermesId, etherscanTxUrl, beneficiary, totalMyst }: 
   )
 }
 
-export default connect(mapStateToProps)(Wallet)
+export default Wallet

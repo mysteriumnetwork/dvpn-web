@@ -7,6 +7,7 @@
 import React from 'react'
 import { Mark, Slider as MUISlider } from '@material-ui/core'
 import './MystSlider.scss'
+import { currentCurrency } from '../../commons/money.utils'
 
 interface Props {
   label: string
@@ -33,8 +34,8 @@ const MystSlider = ({
   max,
   disabled,
   marks,
-  popover = (value: number, myst?: boolean) => `${value} ${myst ? 'MYST' : ''}`,
-  headerAmount = (value: number, myst?: boolean): string => `${value} ${myst ? 'MYST' : ''}`,
+  popover = (value: number, myst?: boolean) => `${value} ${myst ? currentCurrency() : ''}`,
+  headerAmount = (value: number, myst?: boolean): string => `${value} ${myst ? currentCurrency() : ''}`,
 }: Props): JSX.Element => {
   return (
     <div className="slider">

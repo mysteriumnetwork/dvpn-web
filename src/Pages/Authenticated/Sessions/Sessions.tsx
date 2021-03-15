@@ -20,7 +20,7 @@ import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import './Sessions.scss'
 import { parseError } from '../../../commons/error.utils'
 import { RootState } from '../../../redux/store'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { date2human } from '../../../commons/date.utils'
 
 export interface Props {
@@ -29,12 +29,6 @@ export interface Props {
   liveSessions?: Session[]
   liveSessionStats?: SessionStats
 }
-
-const mapStateToProps = (state: RootState) => ({
-  filterProviderId: state.app.currentIdentity?.id,
-  liveSessions: state.sse.appState?.sessions,
-  liveSessionStats: state.sse.appState?.sessionsStats,
-})
 
 interface StateProps {
   isLoading: boolean
@@ -77,17 +71,16 @@ const row = (s: Session): TableRow => {
   }
 }
 
-const Sessions = ({
-  filterDirection = SessionDirection.PROVIDED,
-  filterProviderId,
-  liveSessions,
-  liveSessionStats,
-}: Props) => {
+const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
   const [state, setState] = useState<StateProps>({
     isLoading: true,
     pageSize: 10,
     currentPage: 1,
   })
+
+  const filterProviderId = useSelector<RootState, string | undefined>(({ app }) => app.currentIdentity?.id)
+  const liveSessions = useSelector<RootState, Session[] | undefined>(({ sse }) => sse.appState?.sessions)
+  const liveSessionStats = useSelector<RootState, SessionStats | undefined>(({ sse }) => sse.appState?.sessionsStats)
 
   const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
@@ -99,7 +92,7 @@ const Sessions = ({
         page: state.currentPage,
       })
       .then((resp) => {
-        setState({ ...state, isLoading: false, sessionListResponse: resp })
+        setState((cs) => ({ ...cs, isLoading: false, sessionListResponse: resp }))
       })
       .catch((err) => {
         enqueueSnackbar(parseError(err) || 'Fetching Sessions Failed!')
@@ -110,15 +103,15 @@ const Sessions = ({
   const { items = [], totalPages = 0 } = { ...state.sessionListResponse }
 
   const handlePrevPageButtonClick = () => {
-    setState({ ...state, currentPage: state.currentPage - 1, isLoading: true })
+    setState((cs) => ({ ...cs, currentPage: state.currentPage - 1, isLoading: true }))
   }
 
   const handleNextPageButtonClick = () => {
-    setState({ ...state, currentPage: state.currentPage + 1, isLoading: true })
+    setState((cs) => ({ ...cs, currentPage: state.currentPage + 1, isLoading: true }))
   }
 
   const onPageClicked = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
-    setState({ ...state, currentPage: pageNumber, isLoading: true })
+    setState((cs) => ({ ...cs, currentPage: pageNumber, isLoading: true }))
   }
 
   return (
@@ -150,4 +143,4 @@ const Sessions = ({
   )
 }
 
-export default connect(mapStateToProps)(Sessions)
+export default Sessions

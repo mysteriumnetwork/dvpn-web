@@ -44,7 +44,7 @@ const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
   }
 
   if (!identity || !config || !fees) {
-    return <CircularProgress className="spinner" />
+    return <CircularProgress className="spinner" disableShrink />
   }
 
   const steps = [<Welcome key="welcome" callbacks={callbacks} />]

@@ -56,11 +56,11 @@ const ServiceSettingsModal = ({
   })
 
   useEffect(() => {
-    setState({
-      ...state,
+    setState((cs) => ({
+      ...cs,
       pricePerMinuteChosen: currentPricePerMinute,
       pricePerGbChosen: currentPricePerGb,
-    })
+    }))
   }, [currentPricePerMinute, currentPricePerGb])
 
   const restartService = (): Promise<any> => {
@@ -98,7 +98,7 @@ const ServiceSettingsModal = ({
                 myst={true}
                 value={state.pricePerMinuteChosen}
                 handleChange={(e, v) => {
-                  setState({ ...state, pricePerMinuteChosen: v })
+                  setState((cs) => ({ ...cs, pricePerMinuteChosen: v }))
                 }}
                 step={PRICE_PER_MINUTE_STEP}
                 min={0}
@@ -117,7 +117,7 @@ const ServiceSettingsModal = ({
                 myst={true}
                 value={state.pricePerGbChosen}
                 handleChange={(e, v) => {
-                  setState({ ...state, pricePerGbChosen: v })
+                  setState((cs) => ({ ...cs, pricePerGbChosen: v }))
                 }}
                 step={PRICE_PER_GB_STEP}
                 min={0}

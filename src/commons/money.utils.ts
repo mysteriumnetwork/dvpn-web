@@ -10,7 +10,7 @@ import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index'
 import { isTestnet } from './config'
 import { store } from '../redux/store'
 
-const currentCurrency = (): Currency => {
+export const currentCurrency = (): Currency => {
   return isTestnet(store.getState()?.app?.config) ? Currency.MYSTTestToken : Currency.MYST
 }
 

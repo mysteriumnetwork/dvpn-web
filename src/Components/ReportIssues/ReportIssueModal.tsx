@@ -37,11 +37,12 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const handleTextFieldsChange = (prop: keyof StateProps) => (event: ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [prop]: event.target.value })
+    const { value } = event.target
+    setState((cs) => ({ ...cs, [prop]: value }))
   }
 
   const resetState = () => {
-    setState({ ...state, description: '', email: '', sending: false })
+    setState((cs) => ({ ...cs, description: '', email: '', sending: false }))
   }
 
   const handleClose = () => {
@@ -50,7 +51,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
   }
 
   const reportIssue = () => {
-    Promise.resolve(setState({ ...state, sending: true }))
+    Promise.resolve(setState((cs) => ({ ...cs, sending: true })))
       .then(() => {
         return tequilapiClient.reportIssue(state, 60000)
       })

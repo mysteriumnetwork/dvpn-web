@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { CircularProgress } from '@material-ui/core'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
 import { docsAddress, isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
@@ -31,16 +31,6 @@ import BountyWidget from './Bounty/BountyWidget'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import { DOCS_NAT_FIX } from '../../../constants/urls'
 
-interface Props {
-  app: AppState
-  sse: SSEState
-}
-
-const mapStateToProps = (state: RootState) => ({
-  app: state.app,
-  sse: state.sse,
-})
-
 interface StateProps {
   sessionStatsAllTime: SessionStats
   sessionStatsDaily: {
@@ -49,7 +39,10 @@ interface StateProps {
   historySessions: Session[]
 }
 
-const Dashboard = ({ app, sse }: Props) => {
+const Dashboard = () => {
+  const app = useSelector<RootState, AppState>(({ app }) => app)
+  const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
+
   const [state, setState] = useState<StateProps>({
     sessionStatsAllTime: {
       count: 0,
@@ -85,12 +78,12 @@ const Dashboard = ({ app, sse }: Props) => {
     ])
       .then((result) => {
         const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }] = result
-        setState({
-          ...state,
+        setState((cs) => ({
+          ...cs,
           sessionStatsDaily: statsDaily,
           sessionStatsAllTime: allTimeStats,
           historySessions: sidebarSessions,
-        })
+        }))
       })
       .catch((err) => {
         enqueueSnackbar(parseError(err), { variant: 'error' })
@@ -99,7 +92,7 @@ const Dashboard = ({ app, sse }: Props) => {
 
   const { appState } = sse
   if (!identity || !appState || !config) {
-    return <CircularProgress className="spinner" />
+    return <CircularProgress className="spinner" disableShrink />
   }
 
   const serviceInfos = appState.serviceInfo
@@ -150,4 +143,4 @@ const Dashboard = ({ app, sse }: Props) => {
   )
 }
 
-export default connect(mapStateToProps)(Dashboard)
+export default Dashboard

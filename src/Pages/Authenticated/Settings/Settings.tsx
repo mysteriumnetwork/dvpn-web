@@ -33,13 +33,6 @@ interface StateInterface {
   nodeVersion?: string
 }
 
-const canSettle = (identity?: Identity, fees?: Fees): boolean => {
-  if (identity === undefined || fees === undefined) {
-    return false
-  }
-  return identity?.earnings - fees?.settlement > 0
-}
-
 const Settings = (): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar()
 
@@ -62,20 +55,20 @@ const Settings = (): JSX.Element => {
       !identity ? Promise.reject() : tequilapiClient.identityBeneficiary(identity.id),
     ])
       .then(([mmn, fees, healthcheck, { beneficiary }]) =>
-        setState({
-          ...state,
+        setState((cs) => ({
+          ...cs,
           apiKey: mmn.apiKey,
           fees: fees,
           nodeVersion: healthcheck.version,
           beneficiary: beneficiary,
-        }),
+        })),
       )
       .catch((err) => enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' }))
       .finally(() => setLoading(false))
-  }, [identity])
+  }, [identity?.id])
 
   if (loading) {
-    return <CircularProgress className="spinner" />
+    return <CircularProgress className="spinner" disableShrink />
   }
 
   return (
@@ -96,10 +89,10 @@ const Settings = (): JSX.Element => {
               <p className="heading m-t-20">Beneficiary (payout address)</p>
               <div className="content">
                 <PayoutAddress
-                  canSettle={canSettle(identity, state.fees)}
-                  beneficiary={state.beneficiary}
-                  hermesId={hermesId}
-                  providerId={identity?.id}
+                  identity={identity!}
+                  beneficiary={state.beneficiary!}
+                  hermesId={hermesId!}
+                  fees={state.fees!}
                 />
               </div>
             </div>

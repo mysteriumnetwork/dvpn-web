@@ -25,7 +25,7 @@ const RegistrationOverlay = ({ identityRef }: { identityRef: string }) => {
   return (
     <div className="registration-overlay">
       <div className="registration-overlay__content">
-        <CircularProgress className="m-r-10" />
+        <CircularProgress className="m-r-10" disableShrink />
         <h2>Your identity is being registered, please be patient...</h2>
       </div>
       <div className="registration-overlay__footer">

@@ -33,10 +33,11 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   })
 
   useEffect(() => {
-    setState({ ...state, apiKey: apiKey })
+    setState((cs) => ({ ...cs, apiKey: apiKey }))
   }, [apiKey])
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [prop]: event.target.value })
+    const { value } = event.target
+    setState((cs) => ({ ...cs, [prop]: value }))
   }
 
   const getValidationMessage = (response: any): string => {
@@ -44,12 +45,12 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   }
 
   const handleSubmitToken = () => {
-    setState({ ...state, error: false })
+    setState((cs) => ({ ...cs, error: false }))
 
     tequilapiClient
       .setMMNApiKey(state.apiKey)
       .then(() => {
-        setState({ ...state, error: false, errorMessage: '' })
+        setState((cs) => ({ ...cs, error: false, errorMessage: '' }))
         enqueueSnackbar('MMN API key updated. Refresh the dashboard to view the bounty report.', {
           variant: 'success',
         })
@@ -57,7 +58,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       .catch((error: Error) => {
         if (error instanceof TequilapiError) {
           const apiError = getValidationMessage(error._originalError.response)
-          setState({ ...state, error: true, errorMessage: apiError })
+          setState((cs) => ({ ...cs, error: true, errorMessage: apiError }))
         }
       })
   }

@@ -48,7 +48,7 @@ const WalletModal = ({ onClose, isOpen }: Props): JSX.Element => {
                 label="Price per minute"
                 value={state.stake}
                 handleChange={(e, v) => {
-                  setState({ ...state, stake: v })
+                  setState((cs) => ({ ...cs, stake: v }))
                 }}
                 step={1}
                 min={12}

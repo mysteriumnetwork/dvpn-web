@@ -65,7 +65,7 @@ const SessionSidebar = ({
       <div className="latest-sessions__content">
         {!liveSessions ? (
           <div className="spinner">
-            <CircularProgress />
+            <CircularProgress disableShrink />
           </div>
         ) : (
           <div>{latestSessionCards || <div>No sessions</div>}</div>
