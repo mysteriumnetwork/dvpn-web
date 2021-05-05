@@ -14,7 +14,7 @@ import { userConfigHasPrices } from '../commons/config'
 
 export interface Auth {
   authenticated?: boolean
-  withDefaultCredentials?: boolean
+  withDefaultCredentials: boolean
 }
 
 export interface Terms {
@@ -104,7 +104,6 @@ const onboardingState = (
 
   onboarding.needsOnboarding =
     onboarding.needsAgreedTerms || onboarding.needsPasswordChange || onboarding.needsRegisteredIdentity
-
   return onboarding
 }
 
