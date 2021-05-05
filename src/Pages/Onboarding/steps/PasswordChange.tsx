@@ -18,8 +18,6 @@ import { tequilapiClient } from '../../../api/TequilApiClient'
 import Button from '../../../Components/Buttons/Button'
 import { parseError, parseMMNError } from '../../../commons/error.utils'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { useHistory } from 'react-router-dom'
-import { DASHBOARD } from '../../../constants/routes'
 
 interface State {
   passwordRepeat?: string
@@ -38,8 +36,7 @@ interface Props {
   callbacks: OnboardingChildProps
 }
 
-const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
-  const history = useHistory()
+const PasswordChange = ({ config }: Props): JSX.Element => {
   const [state, setState] = React.useState<State>({
     passwordRepeat: '',
     password: '',
@@ -91,8 +88,6 @@ const PasswordChange = ({ callbacks, config }: Props): JSX.Element => {
           setState((cs) => ({ ...cs, error: true, errorMessage: parseMMNError(mmnError) || API_CALL_FAILED })),
       )
       .then(() => store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })))
-      .then(() => callbacks.nextStep())
-      .then(() => history.push(DASHBOARD))
       .catch((error) => {
         setState((cs) => ({ ...cs, error: true, errorMessage: parseError(error) || API_CALL_FAILED }))
         console.log(error)

@@ -29,6 +29,13 @@ interface Props {
   fees?: Fees
 }
 
+interface StateProps {
+  needsAgreedTerms: boolean
+  needPriceConfiguration: boolean
+  needsRegisteredIdentity: boolean
+  needsPasswordChange: boolean
+}
+
 export interface SettlementProps {
   stake: number
   beneficiary: string
@@ -36,6 +43,12 @@ export interface SettlementProps {
 
 const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
   const [currentStep, setCurrentStep] = useState(0)
+  const [state] = useState<StateProps>({
+    needsAgreedTerms: onboarding.needsAgreedTerms,
+    needPriceConfiguration: onboarding.needPriceConfiguration,
+    needsRegisteredIdentity: onboarding.needsRegisteredIdentity,
+    needsPasswordChange: onboarding.needsPasswordChange,
+  })
 
   const callbacks: OnboardingChildProps = {
     nextStep: (): void => {
@@ -49,19 +62,19 @@ const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
 
   const steps = [<Welcome key="welcome" callbacks={callbacks} />]
 
-  if (onboarding.needsAgreedTerms) {
+  if (state.needsAgreedTerms) {
     steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />)
   }
 
-  if (onboarding.needPriceConfiguration) {
+  if (state.needPriceConfiguration) {
     steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />)
   }
 
-  if (onboarding.needsRegisteredIdentity) {
+  if (state.needsRegisteredIdentity) {
     steps.push(<PayoutSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} config={config} />)
   }
 
-  if (onboarding.needsPasswordChange) {
+  if (state.needsPasswordChange) {
     steps.push(<PasswordChange key="password" config={config} callbacks={callbacks} />)
   }
 

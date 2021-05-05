@@ -11,7 +11,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { ServiceType } from '../commons'
 import { store } from '../redux/store'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
-import { updateConfigStore } from '../redux/app.slice'
+import { updateConfigStore, updateTermsStore, updateUserConfigStore } from '../redux/app.slice'
 
 import { tequilapiClient } from './TequilApiClient'
 
@@ -46,15 +46,24 @@ export const isUserAuthenticated = async (): Promise<boolean> => {
 }
 
 export const acceptWithTermsAndConditions = async () => {
-  return await tequilapiClient.termsUpdate({
-    agreedProvider: true,
-    agreedVersion: termsPackageJson.version,
-  })
+  return await tequilapiClient
+    .termsUpdate({
+      agreedProvider: true,
+      agreedVersion: termsPackageJson.version,
+    })
+    .then(() => store.dispatch(updateTermsStore({ acceptedVersion: termsPackageJson.version })))
 }
 
 export const updateConfig = async (): Promise<Config> => {
   return await tequilapiClient.config().then((config) => {
     store.dispatch(updateConfigStore(config))
+    return config
+  })
+}
+
+export const updateUserConfig = async (): Promise<Config> => {
+  return await tequilapiClient.userConfig().then((config) => {
+    store.dispatch(updateUserConfigStore(config))
     return config
   })
 }
@@ -116,6 +125,7 @@ export const setAllServicePrice = async (pricePerMinute: number | null, pricePer
       },
     })
     .then(updateConfig)
+    .then(updateUserConfig)
 }
 
 export const setChainId = async (chainId: number): Promise<Config> => {
