@@ -7,7 +7,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Fees, Identity } from 'mysterium-vpn-js'
-import { Settlement } from 'mysterium-vpn-js/src/transactor/settlement'
+import { Settlement } from 'mysterium-vpn-js'
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
 import { CircularProgress } from '@material-ui/core'
 

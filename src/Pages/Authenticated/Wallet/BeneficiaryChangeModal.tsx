@@ -42,7 +42,7 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
   }
 
   const updateBeneficiary = () => {
-    setIsLoading(true)
+    /*    setIsLoading(true)
     tequilapiClient
       .updateIdentityPayout(identityId, state.beneficiary)
       .then(() => {
@@ -54,7 +54,7 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
         enqueueSnackbar(msg || 'Beneficiary update failed', { variant: 'error' })
         console.log(err)
       })
-      .finally(() => setIsLoading(false))
+      .finally(() => setIsLoading(false))*/
   }
 
   return (

@@ -93,8 +93,8 @@ export const setTrafficShaping = async (enabled: boolean): Promise<Config> => {
 }
 
 export const setServicePrice = async (
-  pricePerMinute: number,
-  pricePerGb: number,
+  pricePerHour: number,
+  pricePerGiB: number,
   service: ServiceType,
 ): Promise<Config> => {
   const configServiceName = service === ServiceType.OPENVPN ? 'openvpn' : 'wireguard'
@@ -102,25 +102,25 @@ export const setServicePrice = async (
     .updateUserConfig({
       data: {
         [configServiceName]: {
-          'price-minute': pricePerMinute,
-          'price-gb': pricePerGb,
+          'price-hour': pricePerHour,
+          'price-gib': pricePerGiB,
         },
       },
     })
     .then(updateConfig)
 }
 
-export const setAllServicePrice = async (pricePerMinute: number | null, pricePerGb: number | null): Promise<Config> => {
+export const setAllServicePrice = async (pricePerHour: number | null, pricePerGiB: number | null): Promise<Config> => {
   return await tequilapiClient
     .updateUserConfig({
       data: {
         openvpn: {
-          'price-minute': pricePerMinute,
-          'price-gb': pricePerGb,
+          'price-hour': pricePerHour,
+          'price-gib': pricePerGiB,
         },
         wireguard: {
-          'price-minute': pricePerMinute,
-          'price-gb': pricePerGb,
+          'price-hour': pricePerHour,
+          'price-gib': pricePerGiB,
         },
       },
     })

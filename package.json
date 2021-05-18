@@ -34,7 +34,7 @@
     "@types/clipboard": "^2.0.1",
     "clipboard": "^2.0.6",
     "lodash": "^4.17.20",
-    "mysterium-vpn-js": "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#master",
+    "mysterium-vpn-js": "12.0.1",
     "notistack": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -45,14 +45,12 @@
     "react-scripts": "3.4.3",
     "recharts": "^1.8.5",
     "showdown": "^1.9.1",
-    "typescript": "~4.0.3"
+    "typescript": "^4.2.4"
   },
   "scripts": {
-    "postinstall": "yarn install-deps",
     "start": "yarn run clear_cache:eslint && react-scripts start",
     "build": "yarn run clear_cache:eslint && react-scripts build",
     "server": "./bin/run.sh",
-    "install-deps": "cd node_modules/mysterium-vpn-js && yarn && yarn build && cd ../..",
     "test": "yarn run clear_cache:eslint && react-scripts test",
     "eject": "react-scripts eject",
     "clear_cache:eslint": "rimraf node_modules/.cache/eslint-loader",

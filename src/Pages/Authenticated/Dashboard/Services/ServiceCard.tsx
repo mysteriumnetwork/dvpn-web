@@ -13,10 +13,10 @@ import { useSnackbar } from 'notistack'
 import { ServiceType } from '../../../../commons'
 import {
   isAccessPolicyEnabled,
-  pricePerGbMax,
-  pricePerMinMax,
-  servicePricePerGb,
-  servicePricePerMin,
+  pricePerGiBMax,
+  pricePerHourMax,
+  servicePricePerGiB,
+  servicePricePerHour,
 } from '../../../../commons/config'
 import { Switch } from '../../../../Components/Switch'
 import Button from '../../../../Components/Buttons/Button'
@@ -86,15 +86,15 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
   }
 
   const prices: {
-    pricePerMin: number
-    pricePerGb: number
-    pricePerMinMax: number
-    pricePerGbMax: number
+    pricePerHour: number
+    pricePerGiB: number
+    pricePerHourMax: number
+    pricePerGiBMax: number
   } = {
-    pricePerGbMax: pricePerGbMax(config),
-    pricePerMinMax: pricePerMinMax(config),
-    pricePerMin: servicePricePerMin(config, serviceType),
-    pricePerGb: servicePricePerGb(config, serviceType),
+    pricePerGiBMax: pricePerGiBMax(config),
+    pricePerHourMax: pricePerHourMax(config),
+    pricePerHour: servicePricePerHour(config, serviceType),
+    pricePerGiB: servicePricePerGiB(config, serviceType),
   }
   const accessPolicyEnabled = isAccessPolicyEnabled(config)
   return (
@@ -102,9 +102,9 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
       <ServiceHeader whitelisted={accessPolicyEnabled} running={status === RUNNING} type={serviceType} />
 
       <div className="service__details">
-        <ServiceDetail label="Price per hour">{displayMystLongNoDecimal(prices.pricePerMin * 60)}</ServiceDetail>
+        <ServiceDetail label="Price per hour">{displayMystLongNoDecimal(prices.pricePerHour)}</ServiceDetail>
 
-        <ServiceDetail label="Price per GB">{displayMystLongNoDecimal(prices.pricePerGb)}</ServiceDetail>
+        <ServiceDetail label="Price per GiB">{displayMystLongNoDecimal(prices.pricePerGiB)}</ServiceDetail>
 
         <ServiceDetail label="Turned on" alignValueRight={true}>
           <Switch
@@ -131,10 +131,10 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
         isOpen={modalState.isOpen}
         onClose={closeSettings}
         serviceType={serviceType}
-        pricePerGbMax={prices.pricePerGbMax}
-        pricePerMinuteMax={prices.pricePerMinMax}
-        currentPricePerGb={prices.pricePerGb}
-        currentPricePerMinute={prices.pricePerMin}
+        pricePerGiBMax={prices.pricePerGiBMax}
+        pricePerHourMax={prices.pricePerHourMax}
+        currentPricePerGiB={prices.pricePerGiB}
+        currentPricePerHour={prices.pricePerHour}
         identityRef={identityRef}
         serviceInfo={serviceInfo}
       />

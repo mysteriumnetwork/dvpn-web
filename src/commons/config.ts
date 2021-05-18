@@ -25,30 +25,30 @@ export const isAccessPolicyEnabled = (c: Config): boolean => {
   return !!_.get<Config, any>(c, 'data.access-policy.list')
 }
 
-export const servicePricePerGb = (c: Config, s: ServiceType): number => {
-  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-gb`) || 0
+export const servicePricePerGiB = (c: Config, s: ServiceType): number => {
+  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-gib`) || 0
 }
 
-export const servicePricePerMin = (c: Config, s: ServiceType): number => {
-  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-minute`) || 0
+export const servicePricePerHour = (c: Config, s: ServiceType): number => {
+  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-hour`) || 0
 }
 
-export const defaultPricePerGb = (c: Config): number => {
-  return _.get<Config, any>(c, `data.payment.price-gb`) || 0
+export const defaultPricePerGiB = (c: Config): number => {
+  return _.get<Config, any>(c, `data.payment.price-gib`) || 0
 }
 
-export const defaultPricePerMin = (c: Config): number => {
-  return _.get<Config, any>(c, `data.payment.price-minute`) || 0
+export const defaultPricePerHour = (c: Config): number => {
+  return _.get<Config, any>(c, `data.payment.price-hour`) || 0
 }
 
-export const pricePerGbMax = (c: Config): number => {
-  const max = _.get<Config, any>(c, `data.payments.consumer.price-pergib-max`) || 0
+export const pricePerGiBMax = (c: Config): number => {
+  const max = _.get<Config, any>(c, `data.payments.consumer.price-gib-max`) || 0
 
   return max / DECIMAL_PART
 }
 
-export const pricePerMinMax = (c: Config): number => {
-  const max = _.get<Config, any>(c, `data.payments.consumer.price-perminute-max`) || 0
+export const pricePerHourMax = (c: Config): number => {
+  const max = _.get<Config, any>(c, `data.payments.consumer.price-hour-max`) || 0
 
   return max / DECIMAL_PART
 }
@@ -120,10 +120,10 @@ export const isTestnet = (c?: Config): boolean => {
 export const userConfigHasPrices = (c: Config): boolean => {
   const allPricesSet: boolean =
     [
-      _.get<Config, any>(c, 'data.openvpn.price-minute'),
-      _.get<Config, any>(c, 'data.openvpn.price-gb'),
-      _.get<Config, any>(c, 'data.wireguard.price-minute'),
-      _.get<Config, any>(c, 'data.wireguard.price-gb'),
+      _.get<Config, any>(c, 'data.openvpn.price-hour'),
+      _.get<Config, any>(c, 'data.openvpn.price-gib'),
+      _.get<Config, any>(c, 'data.wireguard.price-hour'),
+      _.get<Config, any>(c, 'data.wireguard.price-gib'),
     ].filter((e) => e === undefined || e === null).length === 0
 
   return allPricesSet

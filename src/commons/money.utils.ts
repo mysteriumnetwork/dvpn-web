@@ -24,7 +24,7 @@ export const displayMoneyMyst = (money?: Money, opts: DisplayMoneyOptions = DEFA
 
 export const displayMystLongNoDecimal = (
   amount?: number,
-  opts: DisplayMoneyOptions = { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 4, decimalPart: 1 },
+  opts: DisplayMoneyOptions = { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 5, decimalPart: 1 },
 ): string => {
   return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
 }
