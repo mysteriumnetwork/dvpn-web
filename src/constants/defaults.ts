@@ -8,8 +8,8 @@ export const DEFAULT_IDENTITY_PASSPHRASE = ''
 export const DEFAULT_USERNAME = 'myst'
 export const DEFAULT_PASSWORD = 'mystberry'
 
-export const PRICE_PER_GB_STEP = 0.05
-export const PRICE_PER_MINUTE_STEP = 0.000005
+export const PRICE_PER_GIB_STEP = 0.05
+export const PRICE_PER_HOUR_STEP = 0.000005
 
 export const DEFAULT_STAKE_AMOUNT = 20
 

@@ -6,56 +6,56 @@
  */
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React from 'react'
-import { pricePerGbMax, pricePerMinMax, defaultPricePerGb, defaultPricePerMin } from '../../../commons/config'
+import { pricePerGiBMax, pricePerHourMax, defaultPricePerGiB, defaultPricePerHour } from '../../../commons/config'
 
 import { Checkbox } from '../../../Components/Checkbox/Checkbox'
 import MystSlider from '../../../Components/MystSlider/MystSlider'
 import { setAllServicePrice } from '../../../api/TequilAPIWrapper'
-import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../constants/defaults'
+import { PRICE_PER_GIB_STEP, PRICE_PER_HOUR_STEP } from '../../../constants/defaults'
 import Button from '../../../Components/Buttons/Button'
 import { displayMystLongNoDecimal } from '../../../commons/money.utils'
 
 interface StateInterface {
   checked: boolean
-  pricePerMinute: number
-  pricePerGb: number
+  pricePerHour: number
+  pricePerGiB: number
 }
 
 const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: OnboardingChildProps }): JSX.Element => {
-  const pricePerMinMaxRange = pricePerMinMax(config)
-  const pricePerGbMaxRange = pricePerGbMax(config)
+  const pricePerMinMaxRange = pricePerHourMax(config)
+  const pricePerGbMaxRange = pricePerGiBMax(config)
 
   const [state, setState] = React.useState<StateInterface>({
     checked: false,
-    pricePerMinute: defaultPricePerMin(config),
-    pricePerGb: defaultPricePerGb(config),
+    pricePerHour: defaultPricePerHour(config),
+    pricePerGiB: defaultPricePerGiB(config),
   })
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState((cs) => ({
       ...cs,
       checked: event.target.checked,
-      pricePerMinute: defaultPricePerMin(config),
-      pricePerGb: defaultPricePerGb(config),
+      pricePerHour: defaultPricePerHour(config),
+      pricePerGiB: defaultPricePerGiB(config),
     }))
   }
 
-  const handlePricePerMinuteChanged = (event: any, newValue: number) => {
+  const handlePricePerHourChanged = (event: any, newValue: number) => {
     setState((cs) => ({
       ...cs,
-      pricePerMinute: newValue,
+      pricePerHour: newValue,
     }))
   }
 
-  const handlePricePerGbChanged = (event: any, newValue: number) => {
+  const handlePricePerGiBChanged = (event: any, newValue: number) => {
     setState((cs) => ({
       ...cs,
-      pricePerGb: newValue,
+      pricePerGiB: newValue,
     }))
   }
 
   const handleSettingSetup = () => {
-    setAllServicePrice(state.pricePerMinute, state.pricePerGb).then(() => callbacks.nextStep())
+    setAllServicePrice(state.pricePerHour, state.pricePerGiB).then(() => callbacks.nextStep())
   }
 
   return (
@@ -65,12 +65,12 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
       <div className="step__content m-t-100">
         <div className="input-group m-t-10">
           <MystSlider
-            headerAmount={(v) => `${displayMystLongNoDecimal(v * 60)}`}
-            popover={(v) => `${displayMystLongNoDecimal(v * 60)}`}
+            headerAmount={(v) => `${displayMystLongNoDecimal(v)}`}
+            popover={(v) => `${displayMystLongNoDecimal(v)}`}
             label="Price per hour"
-            value={state.pricePerMinute}
-            handleChange={handlePricePerMinuteChanged}
-            step={PRICE_PER_MINUTE_STEP}
+            value={state.pricePerHour}
+            handleChange={handlePricePerHourChanged}
+            step={PRICE_PER_HOUR_STEP}
             min={0}
             max={pricePerMinMaxRange}
             disabled={state.checked}
@@ -80,10 +80,10 @@ const PriceSettings = ({ config, callbacks }: { config: Config; callbacks: Onboa
           <MystSlider
             headerAmount={(v) => `${displayMystLongNoDecimal(v)}`}
             popover={(v) => `${displayMystLongNoDecimal(v)}`}
-            label="Price per GB"
-            value={state.pricePerGb}
-            handleChange={handlePricePerGbChanged}
-            step={PRICE_PER_GB_STEP}
+            label="Price per GiB"
+            value={state.pricePerGiB}
+            handleChange={handlePricePerGiBChanged}
+            step={PRICE_PER_GIB_STEP}
             min={0}
             max={pricePerGbMaxRange}
             disabled={state.checked}

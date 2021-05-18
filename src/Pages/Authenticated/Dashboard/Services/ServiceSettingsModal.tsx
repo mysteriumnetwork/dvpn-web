@@ -10,7 +10,7 @@ import { ServiceInfo } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
 
 import './ServiceSettingsModal.scss'
-import { PRICE_PER_GB_STEP, PRICE_PER_MINUTE_STEP } from '../../../../constants/defaults'
+import { PRICE_PER_GIB_STEP, PRICE_PER_HOUR_STEP } from '../../../../constants/defaults'
 
 import MystSlider from '../../../../Components/MystSlider/MystSlider'
 import { ServiceType } from '../../../../commons'
@@ -24,44 +24,44 @@ interface Props {
   isOpen: boolean
   onClose: () => void
   serviceType: ServiceType
-  currentPricePerGb: number
-  currentPricePerMinute: number
-  pricePerGbMax: number
-  pricePerMinuteMax: number
+  currentPricePerGiB: number
+  currentPricePerHour: number
+  pricePerGiBMax: number
+  pricePerHourMax: number
   identityRef: string
   serviceInfo?: ServiceInfo
 }
 
 interface StateProps {
-  pricePerGbChosen: number
-  pricePerMinuteChosen: number
+  pricePerGiBChosen: number
+  pricePerHourChosen: number
 }
 
 const ServiceSettingsModal = ({
   onClose,
   isOpen,
   serviceType,
-  currentPricePerGb,
-  currentPricePerMinute,
-  pricePerGbMax,
-  pricePerMinuteMax,
+  currentPricePerGiB,
+  currentPricePerHour,
+  pricePerGiBMax,
+  pricePerHourMax,
   serviceInfo,
   identityRef,
 }: Props): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [state, setState] = useState<StateProps>({
-    pricePerMinuteChosen: currentPricePerMinute,
-    pricePerGbChosen: currentPricePerGb,
+    pricePerHourChosen: currentPricePerHour,
+    pricePerGiBChosen: currentPricePerGiB,
   })
 
   useEffect(() => {
     setState((cs) => ({
       ...cs,
-      pricePerMinuteChosen: currentPricePerMinute,
-      pricePerGbChosen: currentPricePerGb,
+      pricePerHourChosen: currentPricePerHour,
+      pricePerGiBChosen: currentPricePerGiB,
     }))
-  }, [currentPricePerMinute, currentPricePerGb])
+  }, [currentPricePerHour, currentPricePerGiB])
 
   const restartService = (): Promise<any> => {
     if (!serviceInfo?.id) {
@@ -93,40 +93,40 @@ const ServiceSettingsModal = ({
             <div className="settings-row--slider">
               <MystSlider
                 label="Price per hour"
-                headerAmount={(v) => `${displayMystLongNoDecimal(v * 60)}`}
-                popover={(v) => `${displayMystLongNoDecimal(v * 60)}`}
+                headerAmount={(v) => `${displayMystLongNoDecimal(v)}`}
+                popover={(v) => `${displayMystLongNoDecimal(v)}`}
                 myst={true}
-                value={state.pricePerMinuteChosen}
+                value={state.pricePerHourChosen}
                 handleChange={(e, v) => {
-                  setState((cs) => ({ ...cs, pricePerMinuteChosen: v }))
+                  setState((cs) => ({ ...cs, pricePerHourChosen: v }))
                 }}
-                step={PRICE_PER_MINUTE_STEP}
+                step={PRICE_PER_HOUR_STEP}
                 min={0}
-                max={pricePerMinuteMax}
+                max={pricePerHourMax}
                 disabled={false}
               />
               <div className="bottom-line">
                 <p>{displayMystLongNoDecimal(0)}</p>
-                <p>{displayMystLongNoDecimal(pricePerMinuteMax * 60)}</p>
+                <p>{displayMystLongNoDecimal(pricePerHourMax)}</p>
               </div>
             </div>
             <div className="settings-row--slider">
               <MystSlider
-                label="Price per GB"
+                label="Price per GiB"
                 headerAmount={(v) => displayMystLongNoDecimal(v)}
                 myst={true}
-                value={state.pricePerGbChosen}
+                value={state.pricePerGiBChosen}
                 handleChange={(e, v) => {
-                  setState((cs) => ({ ...cs, pricePerGbChosen: v }))
+                  setState((cs) => ({ ...cs, pricePerGiBChosen: v }))
                 }}
-                step={PRICE_PER_GB_STEP}
+                step={PRICE_PER_GIB_STEP}
                 min={0}
-                max={pricePerGbMax}
+                max={pricePerGiBMax}
                 disabled={false}
               />
               <div className="bottom-line">
                 <p>{displayMystLongNoDecimal(0)}</p>
-                <p>{displayMystLongNoDecimal(pricePerGbMax)}</p>
+                <p>{displayMystLongNoDecimal(pricePerGiBMax)}</p>
               </div>
             </div>
           </div>
@@ -138,7 +138,7 @@ const ServiceSettingsModal = ({
               isLoading={isLoading}
               onClick={() => {
                 setIsLoading(true)
-                setServicePrice(state.pricePerMinuteChosen, state.pricePerGbChosen, serviceType)
+                setServicePrice(state.pricePerHourChosen, state.pricePerGiBChosen, serviceType)
                   .then(() => restartService())
                   .then(() => onClose())
                   .catch((err) => {

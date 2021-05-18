@@ -51,7 +51,7 @@ const configByType = (type: ChartType): Config => {
     case 'data':
       return {
         dataFunction: sessionDailyStatsToData,
-        dataName: ' GB',
+        dataName: ' GiB',
       }
   }
 }

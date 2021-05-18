@@ -45,7 +45,7 @@ const WalletModal = ({ onClose, isOpen }: Props): JSX.Element => {
           <div className="settings">
             <div className="settings--slider">
               <MystSlider
-                label="Price per minute"
+                label="Price per hour"
                 value={state.stake}
                 handleChange={(e, v) => {
                   setState((cs) => ({ ...cs, stake: v }))
