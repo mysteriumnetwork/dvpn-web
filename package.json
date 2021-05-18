@@ -48,11 +48,9 @@
     "typescript": "^4.2.4"
   },
   "scripts": {
-    "postinstall": "yarn install-deps",
     "start": "yarn run clear_cache:eslint && react-scripts start",
     "build": "yarn run clear_cache:eslint && react-scripts build",
     "server": "./bin/run.sh",
-    "install-deps": "cd node_modules/mysterium-vpn-js && yarn && yarn build && cd ../..",
     "test": "yarn run clear_cache:eslint && react-scripts test",
     "eject": "react-scripts eject",
     "clear_cache:eslint": "rimraf node_modules/.cache/eslint-loader",
