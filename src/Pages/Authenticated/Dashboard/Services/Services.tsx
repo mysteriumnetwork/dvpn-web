@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react'
-import { ServiceInfo } from 'mysterium-vpn-js/src/provider/service-info'
+import { ServiceInfo } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 
 import { ServiceType } from '../../../../commons'
