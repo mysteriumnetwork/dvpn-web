@@ -13,12 +13,18 @@ export const seconds2ISOTime = (seconds: number): string => {
 }
 
 export const seconds2Time = (seconds: number): string => {
-  let days = Math.floor(seconds / 86400);
-  seconds %= 86400;
-  let hours = Math.floor(seconds / 3600).toString().padStart(2, "0");
-  seconds %= 3600;
-  let minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
-  let seconds_ = Math.floor(seconds % 60).toString().padStart(2, "0");
+  let days = Math.floor(seconds / 86400)
+  seconds %= 86400
+  let hours = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, '0')
+  seconds %= 3600
+  let minutes = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, '0')
+  let seconds_ = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, '0')
 
   return `${days}D ${hours}h ${minutes}m ${seconds_}s`
 }
