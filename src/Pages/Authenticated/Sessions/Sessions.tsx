@@ -13,7 +13,7 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import '../../../assets/styles/pages/sessionsList.scss'
 import formatBytes from '../../../commons/formatBytes'
 import { displayMyst } from '../../../commons/money.utils'
-import { seconds2ISOTime } from '../../../commons/date.utils'
+import { seconds2Time } from '../../../commons/date.utils'
 import Header from '../../../Components/Header'
 import Table, { TableRow } from '../../../Components/Table/Table'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
@@ -45,7 +45,7 @@ const row = (s: Session): TableRow => {
     },
     {
       className: 'w-10',
-      content: seconds2ISOTime(s.duration),
+      content: seconds2Time(s.duration),
     },
     {
       className: 'w-20',
