@@ -26,5 +26,9 @@ export const seconds2Time = (seconds: number): string => {
     .toString()
     .padStart(2, '0')
 
-  return `${days}D ${hours}h ${minutes}m ${seconds_}s`
+  let res = `${hours}:${minutes}:${seconds_}`
+  if (days > 0) {
+    res = `${days}d ${res}`
+  }
+  return res
 }
