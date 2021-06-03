@@ -26,11 +26,11 @@ export const isAccessPolicyEnabled = (c: Config): boolean => {
 }
 
 export const servicePricePerGiB = (c: Config, s: ServiceType): number => {
-  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-gib`) || 0
+  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-gib`) || defaultPricePerGiB(c)
 }
 
 export const servicePricePerHour = (c: Config, s: ServiceType): number => {
-  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-hour`) || 0
+  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-hour`) || defaultPricePerHour(c)
 }
 
 export const defaultPricePerGiB = (c: Config): number => {
