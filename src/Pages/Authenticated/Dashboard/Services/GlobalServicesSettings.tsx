@@ -7,9 +7,10 @@
 import React, { useEffect, useState } from 'react'
 import './GlobalServicesSettings.scss'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { isAccessPolicyEnabled, isTrafficShapingEnabled } from '../../../../commons/config'
+import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidth } from '../../../../commons/config'
 import { useSnackbar } from 'notistack'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
+import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import { ServiceInfo } from 'mysterium-vpn-js'
 import { setAccessPolicy, setTrafficShaping } from '../../../../api/TequilAPIWrapper'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
@@ -23,6 +24,7 @@ interface Props {
 interface State {
   isVerified: boolean
   isShaping: boolean
+  bandwidth: number
 }
 
 const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
@@ -48,13 +50,15 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
 
   const isVerified = isAccessPolicyEnabled(config) as boolean
   const isShaping = isTrafficShapingEnabled(config)
+  const bandwidth = trafficShapingBandwidth(config)
   const [state, setState] = useState<State>({
     isVerified: isVerified,
     isShaping: isShaping,
+    bandwidth: bandwidth,
   })
   useEffect(() => {
-    setState((cs) => ({ ...cs, isShaping: isShaping, isVerified: isVerified }))
-  }, [isShaping, isVerified])
+    setState((cs) => ({ ...cs, isShaping: isShaping, isVerified: isVerified, bandwidth: bandwidth }))
+  }, [isShaping, isVerified, bandwidth])
 
   return (
     <div className="services-footer">
@@ -79,16 +83,15 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
           </p>
         </div>
         <div className="limits-block">
-          <ConfirmationSwitch
+          <BandwidthControl
             message="This will restart all running services to take affect."
             turnedOn={state.isShaping}
-            onConfirm={() => {
-              const c = !state.isShaping
-              setState((cs) => ({ ...cs, isShaping: c }))
-              return restartServices(setTrafficShaping(c))
+            bandwidthExt={state.bandwidth}
+            onConfirm={(isShaping: boolean, bandwidth: number) => {
+              setState((cs) => ({ ...cs, isShaping: isShaping, bandwidth: bandwidth }))
+              return restartServices(setTrafficShaping(isShaping, bandwidth))
             }}
           />
-          <p className="text">Limit bandwidth to 5Mb/s</p>
         </div>
       </div>
     </div>
