@@ -38,11 +38,6 @@ const BandwidthControl = ({
     setBandwidth(bandwidthExt)
   }, [turnedOn])
 
-  const handleSliderChange = (event: any, newValue: number | number[]) => {
-    setBandwidth(newValue)
-    setShowConfirm(true)
-  }
-
   return (
     <>
       <Switch
