@@ -31,6 +31,8 @@ const BandwidthControl = ({
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [checked, setChecked] = useState<boolean>(turnedOn)
   const [bandwidth, setBandwidth] = React.useState<number | string | Array<number | string>>(bandwidthExt)
+  const maxLimitMbps = 200
+  const minLimitMbps = 5
 
   useEffect(() => {
     setChecked(turnedOn)
@@ -49,10 +51,6 @@ const BandwidthControl = ({
       />
 
       <div className="bandwidth-settings-modal--block">
-        {/*<Typography id="non-linear-slider" gutterBottom>*/}
-        {/*  Max bandwidth*/}
-        {/*</Typography>*/}
-
         <div className="settings">
           <div className="settings--slider">
             <MystSlider
@@ -66,18 +64,17 @@ const BandwidthControl = ({
                 setShowConfirm(true)
               }}
               step={5}
-              min={5}
-              max={200}
+              min={minLimitMbps}
+              max={maxLimitMbps}
               disabled={!turnedOn}
             />
             <div className="bottom-line">
-              <p>0</p>
-              <p>200 Mb/s</p>
+              <p>{minLimitMbps}</p>
+              <p>{maxLimitMbps} Mb/s</p>
             </div>
           </div>
         </div>
       </div>
-      {/*<p className="text">Limit bandwidth to {bandwidth}Mb/s</p>*/}
 
       <ConfirmationDialogue
         message={message}
