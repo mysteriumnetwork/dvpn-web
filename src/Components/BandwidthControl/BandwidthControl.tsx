@@ -7,11 +7,7 @@
 import React, { useEffect, useState } from 'react'
 import { Switch } from '../Switch'
 import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
-
-import Typography from '@material-ui/core/Typography'
-import Slider from '@material-ui/core/Slider'
 import MystSlider from '../MystSlider/MystSlider'
-import { displayMystLongNoDecimal } from '../../commons/money.utils'
 import './BandwidthSettings.scss'
 
 interface Props {
