@@ -10,6 +10,9 @@ import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
 
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
+import MystSlider from '../MystSlider/MystSlider'
+import { displayMystLongNoDecimal } from '../../commons/money.utils'
+import './BandwidthSettings.scss'
 
 interface Props {
   message?: string
@@ -49,26 +52,36 @@ const BandwidthControl = ({
         }}
       />
 
-      <div>
-        <Typography id="non-linear-slider" gutterBottom>
-          Max bandwidth
-        </Typography>
+      <div className="bandwidth-settings-modal--block">
+        {/*<Typography id="non-linear-slider" gutterBottom>*/}
+        {/*  Max bandwidth*/}
+        {/*</Typography>*/}
 
-        <Slider
-          value={typeof bandwidth === 'number' ? bandwidth : 0}
-          onChange={(event: any, newValue: number | number[]) => {
-            setBandwidth(newValue)
-            setShowConfirm(true)
-          }}
-          aria-labelledby="input-slider"
-          step={5}
-          min={5}
-          max={100}
-          disabled={!turnedOn}
-          valueLabelDisplay="auto"
-        />
+        <div className="settings">
+          <div className="settings--slider">
+            <MystSlider
+              label="Limit bandwidth to "
+              headerAmount={(v) => `${v} Mb/s`}
+              popover={(v) => `${v} Mb/s`}
+              myst={true}
+              value={typeof bandwidth === 'number' ? bandwidth : 0}
+              handleChange={(e, v) => {
+                setBandwidth(v)
+                setShowConfirm(true)
+              }}
+              step={5}
+              min={5}
+              max={200}
+              disabled={!turnedOn}
+            />
+            <div className="bottom-line">
+              <p>0</p>
+              <p>200 Mb/s</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <p className="text">Limit bandwidth to {bandwidth}Mb/s</p>
+      {/*<p className="text">Limit bandwidth to {bandwidth}Mb/s</p>*/}
 
       <ConfirmationDialogue
         message={message}
