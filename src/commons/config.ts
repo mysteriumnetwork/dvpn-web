@@ -21,6 +21,10 @@ export const isTrafficShapingEnabled = (c: Config): boolean => {
   return _.get<Config, any>(c, 'data.shaper.enabled')
 }
 
+export const trafficShapingBandwidth = (c: Config): number => {
+  return _.get<Config, any>(c, 'data.shaper.bandwidth')
+}
+
 export const isAccessPolicyEnabled = (c: Config): boolean => {
   return !!_.get<Config, any>(c, 'data.access-policy.list')
 }

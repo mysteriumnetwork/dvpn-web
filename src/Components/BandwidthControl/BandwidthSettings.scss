@@ -1,0 +1,104 @@
+@import "../../assets/styles/base/variables";
+
+.bandwidth-settings-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: 0;
+
+  &--block {
+    width: 80%;
+    padding: 0px 25px;
+    outline: 0;
+
+    .title {
+      font-weight: $medium-weight;
+      font-size: 18px;
+      line-height: 21px;
+      color: $main-text-color;
+      margin-bottom: 10px;
+    }
+
+    .settings {
+      margin-bottom: 10px;
+
+      &--slider {
+        width: 100%;
+
+        p {
+          font-weight: $bold-weight;
+          color: $inputs-labels-text-color;
+          font-size: 12px;
+          line-height: 14px;
+          font-family: Lato;
+        }
+
+        .bottom-line {
+          display: flex;
+          justify-content: space-between;
+
+          p {
+            font-style: normal;
+            font-weight: $lighter-weight;
+            font-size: 12px;
+            line-height: 14px;
+            color: $names-text-color;
+          }
+        }
+      }
+
+      .bottom-text {
+        margin: 35px 0;
+        font-style: normal;
+        font-weight: $lighter-weight;
+        font-size: 14px;
+        line-height: 21px;
+        color: $names-text-color;
+        width: 90%;
+      }
+    }
+
+    .line {
+      border-bottom: 1px solid #eee;
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
+    .buttons-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .additional-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    &__title {
+      font-family: Lato, sans-serif;
+      font-style: normal;
+      font-weight: $normal-weight;
+      font-size: 14px;
+      line-height: 21px;
+      color: $secondary-text-color;
+    }
+
+    &__text {
+
+    }
+  }
+
+  .settings--point {
+    font-family: Lato, sans-serif;
+    font-style: normal;
+    font-weight: $normal-weight;
+    font-size: 14px;
+    line-height: 21px;
+    color: $secondary-text-color;
+    margin-bottom: 6px;
+    margin-top: 20px;
+    text-align: left;
+  }
+}
