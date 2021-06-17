@@ -86,10 +86,10 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
           <BandwidthControl
             message="This will restart all running services to take affect."
             turnedOn={state.isShaping}
-            bandwidthExt={state.bandwidth}
+            bandwidthExt={state.bandwidth / 1000}
             onConfirm={(isShaping: boolean, bandwidth: number) => {
               setState((cs) => ({ ...cs, isShaping: isShaping, bandwidth: bandwidth }))
-              return restartServices(setTrafficShaping(isShaping, bandwidth))
+              return restartServices(setTrafficShaping(isShaping, bandwidth * 1000))
             }}
           />
         </div>
