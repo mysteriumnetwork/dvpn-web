@@ -7,7 +7,7 @@
 ### Prerequisits
   - NodeJS >= 12.0.0 (advise using [NVM tool](https://github.com/nvm-sh/nvm))
     ```shell
-    nvm install 12 && nvm use 12
+    nvm install 14 && nvm use 14
     ```
   - Yarn 
     ```shell 
