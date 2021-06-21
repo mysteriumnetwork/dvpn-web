@@ -10,11 +10,17 @@ import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index'
 import { isTestnet } from './config'
 import { store } from '../redux/store'
 
+export const ETHER_FRACTIONS = 18
+
 export const currentCurrency = (): Currency => {
   return isTestnet(store.getState()?.app?.config) ? Currency.MYSTTestToken : Currency.MYST
 }
 
-export const displayMyst = (amount?: number, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
+export const displayMyst = (amount: number = 0, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
+  const smallestDisplayableAmount = Math.pow(10, ETHER_FRACTIONS - (opts.fractionDigits || 0))
+  if (amount !== 0 && amount < smallestDisplayableAmount) {
+    return `< ${displayMoney({ amount: smallestDisplayableAmount, currency: currentCurrency() }, opts)}`
+  }
   return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
 }
 
