@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export default (a?: number, b = 2): string => {
+const format = (a?: number, b = 2): string => {
   if (!a || 0 === a) return '0 Bytes'
   const c = 0 > b ? 0 : b,
     d = Math.floor(Math.log(a) / Math.log(1024))
@@ -15,6 +15,8 @@ export default (a?: number, b = 2): string => {
     ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'][d]
   )
 }
+
+export default format
 
 export const add = (a?: number, b?: number): number => {
   return (a || 0) + (b || 0)
