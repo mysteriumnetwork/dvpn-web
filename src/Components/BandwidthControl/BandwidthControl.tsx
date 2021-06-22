@@ -18,6 +18,8 @@ interface Props {
   onConfirm: (isShaping: boolean, value: number) => void
   onCancel?: () => void
   confirmButton?: (onConfirm?: () => void) => JSX.Element
+  minLimitMbps?: number
+  maxLimitMbps?: number
 }
 
 const BandwidthControl = ({
@@ -27,12 +29,12 @@ const BandwidthControl = ({
   onConfirm,
   turnedOn,
   bandwidthExt,
+  minLimitMbps = 5,
+  maxLimitMbps = 200,
 }: Props) => {
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const [checked, setChecked] = useState<boolean>(turnedOn)
   const [bandwidth, setBandwidth] = React.useState<number | string | Array<number | string>>(bandwidthExt)
-  const maxLimitMbps = 200
-  const minLimitMbps = 5
 
   useEffect(() => {
     setChecked(turnedOn)
@@ -61,6 +63,8 @@ const BandwidthControl = ({
               value={typeof bandwidth === 'number' ? bandwidth : 0}
               handleChange={(e, v) => {
                 setBandwidth(v)
+              }}
+              onChangeCommitted={() => {
                 setShowConfirm(true)
               }}
               step={5}
