@@ -22,6 +22,7 @@ interface Props {
   marks?: Mark[]
   headerAmount?: (value: number, myst?: boolean) => string
   popover?: (value: number, myst?: boolean) => string
+  onChangeCommitted?: () => void
 }
 
 const MystSlider = ({
@@ -36,6 +37,7 @@ const MystSlider = ({
   marks,
   popover = (value: number, myst?: boolean) => `${value} ${myst ? currentCurrency() : ''}`,
   headerAmount = (value: number, myst?: boolean): string => `${value} ${myst ? currentCurrency() : ''}`,
+  onChangeCommitted,
 }: Props): JSX.Element => {
   return (
     <div className="slider">
@@ -58,6 +60,7 @@ const MystSlider = ({
           disabled={disabled}
           valueLabelFormat={(v) => popover(v, myst)}
           marks={marks}
+          onChangeCommitted={onChangeCommitted}
         />
       </div>
     </div>
