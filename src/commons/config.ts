@@ -14,7 +14,7 @@ export const L1ChainId = 5
 export const L2ChainId = 80001
 
 export const isFreeRegistration = (c: Config): boolean => {
-  return _.get<Config, any>(c, 'data.testnet2')
+  return isTestnet(c)
 }
 
 export const isTrafficShapingEnabled = (c: Config): boolean => {
@@ -118,17 +118,6 @@ export const isTestnet = (c?: Config): boolean => {
   }
   const isTestnet = _.get<Config, any>(c, 'data.testnet') as boolean
   const isTestnet2 = _.get<Config, any>(c, 'data.testnet2') as boolean
-  return isTestnet || isTestnet2
-}
-
-export const userConfigHasPrices = (c: Config): boolean => {
-  const allPricesSet: boolean =
-    [
-      _.get<Config, any>(c, 'data.openvpn.price-hour'),
-      _.get<Config, any>(c, 'data.openvpn.price-gib'),
-      _.get<Config, any>(c, 'data.wireguard.price-hour'),
-      _.get<Config, any>(c, 'data.wireguard.price-gib'),
-    ].filter((e) => e === undefined || e === null).length === 0
-
-  return allPricesSet
+  const isTestnet3 = _.get<Config, any>(c, 'data.testnet3') as boolean
+  return isTestnet || isTestnet2 || isTestnet3
 }
