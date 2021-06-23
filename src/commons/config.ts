@@ -6,9 +6,7 @@
  */
 
 import _ from 'lodash'
-import { DECIMAL_PART } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { ServiceType } from './index'
 
 export const L1ChainId = 5
 export const L2ChainId = 80001
@@ -27,34 +25,6 @@ export const trafficShapingBandwidth = (c: Config): number => {
 
 export const isAccessPolicyEnabled = (c: Config): boolean => {
   return !!_.get<Config, any>(c, 'data.access-policy.list')
-}
-
-export const servicePricePerGiB = (c: Config, s: ServiceType): number => {
-  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-gib`) || defaultPricePerGiB(c)
-}
-
-export const servicePricePerHour = (c: Config, s: ServiceType): number => {
-  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-hour`) || defaultPricePerHour(c)
-}
-
-export const defaultPricePerGiB = (c: Config): number => {
-  return _.get<Config, any>(c, `data.payment.price-gib`) || 0
-}
-
-export const defaultPricePerHour = (c: Config): number => {
-  return _.get<Config, any>(c, `data.payment.price-hour`) || 0
-}
-
-export const pricePerGiBMax = (c: Config): number => {
-  const max = _.get<Config, any>(c, `data.payments.consumer.price-gib-max`) || 0
-
-  return max / DECIMAL_PART
-}
-
-export const pricePerHourMax = (c: Config): number => {
-  const max = _.get<Config, any>(c, `data.payments.consumer.price-hour-max`) || 0
-
-  return max / DECIMAL_PART
 }
 
 export const chainId = (c: Config): number => {

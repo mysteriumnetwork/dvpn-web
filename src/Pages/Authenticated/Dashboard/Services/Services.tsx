@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react'
-import { ServiceInfo } from 'mysterium-vpn-js'
+import { CurrentPricesResponse, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 
 import { ServiceType } from '../../../../commons'
@@ -18,6 +18,7 @@ interface Props {
   servicesInfos?: ServiceInfo[]
   userConfig: Config
   disabled?: boolean
+  prices: CurrentPricesResponse
 }
 
 const availableServices = [ServiceType.OPENVPN, ServiceType.WIREGUARD]
@@ -34,25 +35,27 @@ const findServiceInfo = (type: string, servicesInfos?: ServiceInfo[]): ServiceIn
   return results[0]
 }
 
-const Services = ({ identityRef, servicesInfos, userConfig, disabled }: Props) => {
+const Services = ({ identityRef, servicesInfos, userConfig, disabled, prices }: Props) => {
   return (
-    <>
-      <div className="service-list">
-        {availableServices.map((serviceType) => {
-          const serviceInfo = findServiceInfo(serviceType.toLowerCase(), servicesInfos)
-          return (
-            <ServiceCard
-              key={serviceType}
-              identityRef={identityRef}
-              serviceInfo={serviceInfo}
-              serviceType={serviceType}
-              config={userConfig}
-              disabled={disabled}
-            />
-          )
-        })}
-      </div>
-    </>
+    <div className="service-list">
+      {availableServices.map((type) => {
+        const service = findServiceInfo(type.toLowerCase(), servicesInfos)
+        if (type === ServiceType.OPENVPN && service?.status !== ServiceStatus.RUNNING) {
+          return <></>
+        }
+        return (
+          <ServiceCard
+            key={type}
+            identityRef={identityRef}
+            serviceInfo={service}
+            serviceType={type}
+            config={userConfig}
+            disabled={disabled}
+            prices={prices}
+          />
+        )
+      })}
+    </div>
   )
 }
 

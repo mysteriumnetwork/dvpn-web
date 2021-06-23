@@ -8,7 +8,7 @@
 import React, { useEffect, useState } from 'react'
 import { CircularProgress } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
+import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
 import { docsAddress, isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
 
@@ -37,24 +37,31 @@ interface StateProps {
     [date: string]: SessionStats
   }
   historySessions: Session[]
+  currentPrices: CurrentPricesResponse
+}
+
+const defaultState = {
+  sessionStatsAllTime: {
+    count: 0,
+    countConsumers: 0,
+    sumBytesReceived: 0,
+    sumBytesSent: 0,
+    sumDuration: 0,
+    sumTokens: 0,
+  },
+  sessionStatsDaily: {},
+  historySessions: [],
+  currentPrices: {
+    pricePerHour: BigInt(0),
+    pricePerGib: BigInt(0),
+  },
 }
 
 const Dashboard = () => {
   const app = useSelector<RootState, AppState>(({ app }) => app)
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
 
-  const [state, setState] = useState<StateProps>({
-    sessionStatsAllTime: {
-      count: 0,
-      countConsumers: 0,
-      sumBytesReceived: 0,
-      sumBytesSent: 0,
-      sumDuration: 0,
-      sumTokens: 0,
-    },
-    sessionStatsDaily: {},
-    historySessions: [],
-  })
+  const [state, setState] = useState<StateProps>(defaultState)
 
   const { enqueueSnackbar } = useSnackbar()
   const { config } = app
@@ -75,14 +82,16 @@ const Dashboard = () => {
         pageSize: 10,
         status: SessionStatus.COMPLETED,
       }),
+      tequilapiClient.pricesCurrent(),
     ])
       .then((result) => {
-        const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }] = result
+        const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = result
         setState((cs) => ({
           ...cs,
           sessionStatsDaily: statsDaily,
           sessionStatsAllTime: allTimeStats,
           historySessions: sidebarSessions,
+          currentPrices: prices,
         }))
       })
       .catch((err) => {
@@ -126,6 +135,7 @@ const Dashboard = () => {
             servicesInfos={serviceInfos}
             userConfig={config}
             disabled={!isRegistered(identity)}
+            prices={state.currentPrices}
           />
           <GlobalServicesSettings config={config} servicesInfos={serviceInfos} />
         </div>
