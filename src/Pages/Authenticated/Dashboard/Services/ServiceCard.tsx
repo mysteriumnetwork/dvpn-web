@@ -6,27 +6,19 @@
  */
 
 import React, { useState } from 'react'
-import { ServiceInfo, ServiceStatus } from 'mysterium-vpn-js'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { CurrentPricesResponse, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js'
+import { Config } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
 
 import { ServiceType } from '../../../../commons'
-import {
-  isAccessPolicyEnabled,
-  pricePerGiBMax,
-  pricePerHourMax,
-  servicePricePerGiB,
-  servicePricePerHour,
-} from '../../../../commons/config'
+import { isAccessPolicyEnabled } from '../../../../commons/config'
 import { Switch } from '../../../../Components/Switch'
-import Button from '../../../../Components/Buttons/Button'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
 
 import ServiceHeader from './ServiceHeader'
 import ServiceDetail from './ServiceDetail'
-import ServiceSettingsModal from './ServiceSettingsModal'
-import { displayMystLongNoDecimal } from '../../../../commons/money.utils'
+import { displayMyst } from '../../../../commons/money.utils'
 
 const { RUNNING } = ServiceStatus
 
@@ -36,20 +28,16 @@ interface Props {
   serviceInfo?: ServiceInfo
   config: Config
   disabled?: boolean
+  prices: CurrentPricesResponse
 }
 
-interface ModalProps {
-  isOpen: boolean
-}
-
-const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled = false }: Props) => {
-  const [isTurnOnWorking, setTurnOnWorking] = useState<boolean>(false)
-  const [modalState, setModalState] = useState<ModalProps>({ isOpen: false })
+const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled = false, prices }: Props) => {
+  const [booting, setBooting] = useState<boolean>(false)
   const { status, id } = { ...serviceInfo }
   const { enqueueSnackbar } = useSnackbar()
 
   const startService = (serviceType: string) => {
-    setTurnOnWorking(true)
+    setBooting(true)
     tequilapiClient
       .serviceStart({
         providerId: identityRef,
@@ -61,11 +49,11 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
         })
         console.log(err)
       })
-      .finally(() => setTurnOnWorking(false))
+      .finally(() => setBooting(false))
   }
 
   const stopService = (serviceId: string) => {
-    setTurnOnWorking(true)
+    setBooting(true)
     tequilapiClient
       .serviceStop(serviceId)
       .catch((err) => {
@@ -74,41 +62,22 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
         })
         console.log(err)
       })
-      .finally(() => setTurnOnWorking(false))
+      .finally(() => setBooting(false))
   }
 
-  const openSettings = () => {
-    setModalState({ ...modalState, isOpen: true })
-  }
-
-  const closeSettings = () => {
-    setModalState({ ...modalState, isOpen: false })
-  }
-
-  const prices: {
-    pricePerHour: number
-    pricePerGiB: number
-    pricePerHourMax: number
-    pricePerGiBMax: number
-  } = {
-    pricePerGiBMax: pricePerGiBMax(config),
-    pricePerHourMax: pricePerHourMax(config),
-    pricePerHour: servicePricePerHour(config, serviceType),
-    pricePerGiB: servicePricePerGiB(config, serviceType),
-  }
   const accessPolicyEnabled = isAccessPolicyEnabled(config)
   return (
     <div className="service">
       <ServiceHeader whitelisted={accessPolicyEnabled} running={status === RUNNING} type={serviceType} />
 
       <div className="service__details">
-        <ServiceDetail label="Price per hour">{displayMystLongNoDecimal(prices.pricePerHour)}</ServiceDetail>
+        <ServiceDetail label="Price per hour">{displayMyst(Number(prices.pricePerHour))}</ServiceDetail>
 
-        <ServiceDetail label="Price per GiB">{displayMystLongNoDecimal(prices.pricePerGiB)}</ServiceDetail>
+        <ServiceDetail label="Price per GiB">{displayMyst(Number(prices.pricePerGib))}</ServiceDetail>
 
         <ServiceDetail label="Turned on" alignValueRight={true}>
           <Switch
-            disabled={isTurnOnWorking || disabled}
+            disabled={booting || disabled}
             turnedOn={!!serviceInfo}
             handleChange={() => {
               if (!id) {
@@ -120,24 +89,6 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
           />
         </ServiceDetail>
       </div>
-
-      <div className="service__options">
-        <Button disabled={disabled} onClick={openSettings} extraStyle="gray">
-          Settings
-        </Button>
-      </div>
-
-      <ServiceSettingsModal
-        isOpen={modalState.isOpen}
-        onClose={closeSettings}
-        serviceType={serviceType}
-        pricePerGiBMax={prices.pricePerGiBMax}
-        pricePerHourMax={prices.pricePerHourMax}
-        currentPricePerGiB={prices.pricePerGiB}
-        currentPricePerHour={prices.pricePerHour}
-        identityRef={identityRef}
-        serviceInfo={serviceInfo}
-      />
     </div>
   )
 }

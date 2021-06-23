@@ -8,7 +8,6 @@ import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { TequilapiError } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 
-import { ServiceType } from '../commons'
 import { store } from '../redux/store'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import { updateConfigStore, updateTermsStore } from '../redux/app.slice'
@@ -86,41 +85,6 @@ export const setTrafficShaping = async (enabled: boolean, bandwidthKbps: number)
         shaper: {
           enabled: enabled,
           bandwidth: bandwidthKbps,
-        },
-      },
-    })
-    .then(updateConfig)
-}
-
-export const setServicePrice = async (
-  pricePerHour: number,
-  pricePerGiB: number,
-  service: ServiceType,
-): Promise<Config> => {
-  const configServiceName = service === ServiceType.OPENVPN ? 'openvpn' : 'wireguard'
-  return await tequilapiClient
-    .updateUserConfig({
-      data: {
-        [configServiceName]: {
-          'price-hour': pricePerHour,
-          'price-gib': pricePerGiB,
-        },
-      },
-    })
-    .then(updateConfig)
-}
-
-export const setAllServicePrice = async (pricePerHour: number | null, pricePerGiB: number | null): Promise<Config> => {
-  return await tequilapiClient
-    .updateUserConfig({
-      data: {
-        openvpn: {
-          'price-hour': pricePerHour,
-          'price-gib': pricePerGiB,
-        },
-        wireguard: {
-          'price-hour': pricePerHour,
-          'price-gib': pricePerGiB,
         },
       },
     })

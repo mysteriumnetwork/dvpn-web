@@ -15,14 +15,24 @@ import { ServiceType } from '../../../../commons'
 
 import './ServiceHeader.scss'
 
-const icons = {
-  [ServiceType.OPENVPN]: <OpenVpnIcon />,
-  [ServiceType.WIREGUARD]: <WireGuardIcon />,
+const icons = (type: ServiceType): unknown => {
+  switch (type) {
+    case ServiceType.OPENVPN:
+      return <OpenVpnIcon />
+    case ServiceType.WIREGUARD:
+      return <WireGuardIcon />
+  }
+  return <WireGuardIcon />
 }
 
-const displayName = {
-  [ServiceType.OPENVPN]: 'OpenVPN',
-  [ServiceType.WIREGUARD]: 'WG',
+const displayName = (type: ServiceType): string => {
+  switch (type) {
+    case ServiceType.OPENVPN:
+      return ServiceType.OPENVPN
+    case ServiceType.WIREGUARD:
+      return 'WG' // copyright stuff
+  }
+  return 'Unknown'
 }
 
 interface Props {
@@ -35,11 +45,11 @@ const ServiceHeader = ({ type, running, whitelisted }: Props): JSX.Element => {
   return (
     <div className="service-header">
       <div className="service-header__logo">
-        {icons[type]}
+        {icons(type)}
         <div className={running ? 'status-dot on' : 'status-dot off'} />
       </div>
       <div className="service-header__name">
-        <p className="name">{displayName[type]}</p>
+        <p className="name">{displayName(type)}</p>
         <p className="type">VPN</p>
       </div>
       <div className="flex-grow" />
