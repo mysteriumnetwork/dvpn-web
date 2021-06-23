@@ -8731,10 +8731,9 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-mysterium-vpn-js@13.0.1:
+"mysterium-vpn-js@https://github.com/mysteriumnetwork/mysterium-vpn-js.git#testnet3":
   version "13.0.1"
-  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-13.0.1.tgz#afe3917e270f2527c5d5cafbadcc11d7d49910ca"
-  integrity sha512-WEasUFPT1c3gtBS2p68eOyAueyLTbHVatWnk7D6TUa5ykcJJYPzqF/AYV8+gHgzIZ30uWUsDiz2p9uFZ/N363g==
+  resolved "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#4e8f0ebcee94e45c141a6eb024224dae3e86f803"
   dependencies:
     axios "^0.21.1"
     camelcase-keys "^6.2.2"
