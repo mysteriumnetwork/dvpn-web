@@ -4,99 +4,46 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect, useState } from 'react'
-import { Switch } from '../Switch'
-import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
+import React from 'react'
 import MystSlider from '../MystSlider/MystSlider'
 import './BandwidthSettings.scss'
 
 interface Props {
-  message?: string
-  turnedOn: boolean
-  bandwidthExt: number
-  disabled?: boolean
-  onConfirm: (isShaping: boolean, value: number) => void
-  onCancel?: () => void
+  bandwidth: number
   confirmButton?: (onConfirm?: () => void) => JSX.Element
   minLimitMbps?: number
   maxLimitMbps?: number
+  onChange: (n: number) => void
 }
 
-const BandwidthControl = ({
-  message = 'Are you sure?',
-  disabled = false,
-  onCancel = () => {},
-  onConfirm,
-  turnedOn,
-  bandwidthExt,
-  minLimitMbps = 5,
-  maxLimitMbps = 200,
-}: Props) => {
-  const [showConfirm, setShowConfirm] = useState<boolean>(false)
-  const [checked, setChecked] = useState<boolean>(turnedOn)
-  const [bandwidth, setBandwidth] = React.useState<number | string | Array<number | string>>(bandwidthExt)
-
-  useEffect(() => {
-    setChecked(turnedOn)
-    setBandwidth(bandwidthExt)
-  }, [turnedOn])
+const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onChange }: Props) => {
+  const [value, setValue] = React.useState<number>(bandwidth)
 
   return (
-    <>
-      <Switch
-        disabled={disabled}
-        turnedOn={checked}
-        handleChange={(e, checked) => {
-          setChecked(checked)
-          setShowConfirm(true)
-        }}
-      />
-
-      <div className="bandwidth-settings-modal--block">
-        <div className="settings">
-          <div className="settings--slider">
-            <MystSlider
-              label="Limit bandwidth to "
-              headerAmount={(v) => `${v} Mb/s`}
-              popover={(v) => `${v} Mb/s`}
-              myst={true}
-              value={typeof bandwidth === 'number' ? bandwidth : 0}
-              handleChange={(e, v) => {
-                setBandwidth(v)
-              }}
-              onChangeCommitted={() => {
-                setShowConfirm(true)
-              }}
-              step={5}
-              min={minLimitMbps}
-              max={maxLimitMbps}
-              disabled={!turnedOn}
-            />
-            <div className="bottom-line">
-              <p>{minLimitMbps}</p>
-              <p>{maxLimitMbps} Mb/s</p>
-            </div>
+    <div className="bandwidth-settings-modal--block">
+      <div className="settings">
+        <div className="settings--slider">
+          <MystSlider
+            label="Limit bandwidth to "
+            headerAmount={(v) => `${v} Mb/s`}
+            popover={(v) => `${v} Mb/s`}
+            myst={true}
+            value={value}
+            handleChange={(e, v) => {
+              setValue(v)
+              onChange(v)
+            }}
+            step={5}
+            min={minLimitMbps}
+            max={maxLimitMbps}
+          />
+          <div className="bottom-line">
+            <p>{minLimitMbps}</p>
+            <p>{maxLimitMbps} Mb/s</p>
           </div>
         </div>
       </div>
-
-      <ConfirmationDialogue
-        message={message}
-        open={showConfirm}
-        onCancel={() => {
-          onCancel()
-          setShowConfirm(false)
-          setChecked(turnedOn)
-          setBandwidth(bandwidthExt)
-        }}
-        onConfirm={async () => {
-          if (typeof bandwidth === 'number') {
-            await onConfirm(checked, bandwidth)
-          }
-          setShowConfirm(false)
-        }}
-      />
-    </>
+    </div>
   )
 }
 

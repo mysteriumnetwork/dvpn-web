@@ -7,7 +7,7 @@
 import React, { useEffect, useState } from 'react'
 import './GlobalServicesSettings.scss'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidth } from '../../../../commons/config'
+import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthKbps } from '../../../../commons/config'
 import { useSnackbar } from 'notistack'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
@@ -15,6 +15,8 @@ import { ServiceInfo } from 'mysterium-vpn-js'
 import { setAccessPolicy, setTrafficShaping } from '../../../../api/TequilAPIWrapper'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
+import BandwidthControlModal from './BandwidthControlModal'
+import Button from '../../../../Components/Buttons/Button'
 
 interface Props {
   config: Config
@@ -24,7 +26,9 @@ interface Props {
 interface State {
   isVerified: boolean
   isShaping: boolean
-  bandwidth: number
+  bandwidthMbps: number
+  isBandwidthModalOpen: boolean
+  isBandwidthChangeInProgress: boolean
 }
 
 const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
@@ -39,8 +43,8 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
 
   const restartServices = (doBefore: Promise<any>): Promise<any> => {
     return doBefore
-      .then(() => Promise.all(stopServices.map((stop) => stop())))
-      .then(() => Promise.all(startServices.map((start) => start())))
+      .then(() => stopServices.map((stop) => stop()))
+      .then(() => startServices.map((start) => start()))
       .catch((err) => {
         enqueueSnackbar(parseError(err), { variant: 'error' })
       })
@@ -50,15 +54,32 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
 
   const isVerified = isAccessPolicyEnabled(config) as boolean
   const isShaping = isTrafficShapingEnabled(config)
-  const bandwidth = trafficShapingBandwidth(config)
+  const bandwidthMbps = trafficShapingBandwidthKbps(config) / 1000
   const [state, setState] = useState<State>({
     isVerified: isVerified,
     isShaping: isShaping,
-    bandwidth: bandwidth,
+    bandwidthMbps: bandwidthMbps,
+    isBandwidthModalOpen: false,
+    isBandwidthChangeInProgress: false,
   })
   useEffect(() => {
-    setState((cs) => ({ ...cs, isShaping: isShaping, isVerified: isVerified, bandwidth: bandwidth }))
-  }, [isShaping, isVerified, bandwidth])
+    setState((cs) => ({
+      ...cs,
+      isShaping: isShaping,
+      isVerified: isVerified,
+      bandwidth: bandwidthMbps,
+    }))
+  }, [isShaping, isVerified, bandwidthMbps])
+
+  const openBandwidthModal = () => {
+    setState((cs) => ({ ...cs, isBandwidthModalOpen: true }))
+  }
+
+  const closeBandwidthModal = () => {
+    setState((cs) => ({ ...cs, isBandwidthModalOpen: false }))
+  }
+
+  const isServiceRunning = services.length > 0
 
   return (
     <div className="services-footer">
@@ -83,15 +104,48 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
           </p>
         </div>
         <div className="limits-block">
-          <BandwidthControl
+          <ConfirmationSwitch
             message="This will restart all running services to take affect."
             turnedOn={state.isShaping}
-            bandwidthExt={state.bandwidth / 1000}
-            onConfirm={(isShaping: boolean, bandwidth: number) => {
-              setState((cs) => ({ ...cs, isShaping: isShaping, bandwidth: bandwidth }))
-              return restartServices(setTrafficShaping(isShaping, bandwidth * 1000))
+            onConfirm={() => {
+              return restartServices(setTrafficShaping(!state.isShaping, state.bandwidthMbps))
             }}
           />
+          <p className="text">
+            Limit bandwidth to:{' '}
+            <span style={{ display: 'inline-block', width: '70px', textAlign: 'right' }}>
+              {state.bandwidthMbps} Mb/s
+            </span>
+          </p>
+          <Button
+            className="change-button"
+            onClick={openBandwidthModal}
+            disabled={!state.isShaping}
+            extraStyle="outline-primary"
+          >
+            Change
+          </Button>
+          <BandwidthControlModal
+            isOpen={state.isBandwidthModalOpen}
+            onClose={() => closeBandwidthModal()}
+            onSave={() => {
+              Promise.resolve()
+                .then(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: true })))
+                .then(() => restartServices(setTrafficShaping(state.isShaping, state.bandwidthMbps * 1000)))
+                .then(closeBandwidthModal)
+                .finally(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: false })))
+            }}
+            saveText={isServiceRunning ? 'Save & Restart' : 'save'}
+            isLoading={state.isBandwidthChangeInProgress}
+            title="Limit bandwidth"
+            confirm={isServiceRunning}
+            confirmMessage="This will restart all running services to take affect."
+          >
+            <BandwidthControl
+              onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
+              bandwidth={state.bandwidthMbps}
+            />
+          </BandwidthControlModal>
         </div>
       </div>
     </div>
