@@ -21,7 +21,7 @@ export const isTrafficShapingEnabled = (c: Config): boolean => {
   return _.get<Config, any>(c, 'data.shaper.enabled')
 }
 
-export const trafficShapingBandwidth = (c: Config): number => {
+export const trafficShapingBandwidthKbps = (c: Config): number => {
   return _.get<Config, any>(c, 'data.shaper.bandwidth')
 }
 
