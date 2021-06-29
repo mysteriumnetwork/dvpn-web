@@ -11,100 +11,95 @@ import Button from '../../../../Components/Buttons/Button'
 import { useSnackbar } from 'notistack'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
-import { currentCurrency, displayMyst } from '../../../../commons/money.utils'
-import { BeneficiaryTxState, Fees, Identity } from 'mysterium-vpn-js'
+import { Identity } from 'mysterium-vpn-js'
 import './PayoutAddress.scss'
+import { currentCurrency } from '../../../../commons/money.utils'
+import { CircularProgress } from '@material-ui/core'
 
 interface Props {
   identity: Identity
-  beneficiary: string
-  hermesId: string
-  fees: Fees
 }
 
 interface State {
-  beneficiary: string
-  txInProgress: boolean
+  payoutAddress: string
+  initialPayoutAddress: string
+  txPending: boolean
   errorMessage: string
+  loading: boolean
 }
 
-const isSettleAllowed = (identity: Identity, fees: Fees): boolean => {
-  return identity?.earnings - fees?.settlement > 0
-}
-
-const PayoutAddress = ({ beneficiary, identity, hermesId, fees }: Props) => {
+const PayoutAddress = ({ identity }: Props) => {
   const [state, setState] = useState<State>({
-    beneficiary: beneficiary,
-    txInProgress: true,
+    initialPayoutAddress: '',
+    payoutAddress: '',
+    txPending: false,
     errorMessage: '',
+    loading: true,
   })
-  useEffect(() => {
-    tequilapiClient
-      .beneficiaryTxStatus(identity.id)
-      .then((resp) => {
-        setState((cs) => ({
-          ...cs,
-          txInProgress: resp.state === BeneficiaryTxState.PENDING,
-          errorMessage: resp.error,
-        }))
-      })
-      .catch(() => setState((cs) => ({ ...cs, txInProgress: false, errorMessage: '' })))
-  }, [])
-
-  const canSettle = isSettleAllowed(identity, fees)
-  const totalFees = fees.settlement + fees.hermes
 
   const { enqueueSnackbar } = useSnackbar()
+
+  useEffect(() => {
+    tequilapiClient
+      .payoutAddressGet(identity?.id || '')
+      .then(({ address }) => setState((cs) => ({ ...cs, payoutAddress: address, initialPayoutAddress: address })))
+      .finally(() => setState((cs) => ({ ...cs, loading: false })))
+  }, [identity.id])
+
+  if (state.loading) {
+    return <CircularProgress className="spinner" disableShrink />
+  }
+
   return (
     <>
       <div className="input-group">
         <div className="flex-row">
-          <div className="input-group__label m-t-5">Beneficiary wallet address</div>
-          <CopyToClipboard text={beneficiary} />
+          <div className="input-group__label m-t-5">Bounty Payout Address</div>
+          <CopyToClipboard text={state.payoutAddress} />
         </div>
         <TextField
-          stateName="beneficiary"
+          stateName="payoutAddress"
           placeholder="0x..."
-          disabled={!canSettle}
           handleChange={() => (e: React.ChangeEvent<HTMLInputElement>) => {
-            setState((cs) => ({ ...cs, beneficiary: e.target.value }))
+            const { value } = e.target
+            setState((cs) => ({ ...cs, payoutAddress: value }))
           }}
-          value={state.beneficiary}
+          value={state.payoutAddress}
         />
 
         <p className="input-group__help m-t-20" style={{ maxWidth: '100%' }}>
-          {`To change the beneficiary address you need to have earned some ${currentCurrency()} (approx. ${displayMyst(
-            totalFees,
-          )}) to be able to settle
-            your earnings. Please note that it can take up to 5 minutes to settle.`}
+          Make sure you enter ERC-20 compatible wallet or {currentCurrency()} compatible exchange wallet address.
         </p>
         {state.errorMessage && <p className="error">{state.errorMessage}</p>}
       </div>
       <div className="footer__buttons m-t-40">
-        {canSettle && (
-          <Button
-            isLoading={state.txInProgress}
-            onClick={() => {
-              tequilapiClient
-                .settleWithBeneficiary({
-                  providerId: identity.id,
-                  hermesId: hermesId,
-                  beneficiary: state.beneficiary,
-                })
-                .then(() => {
-                  enqueueSnackbar('Settlement with beneficiary change submitted!', { variant: 'success' })
-                  setState((cs) => ({ ...cs, txInProgress: true }))
-                })
-                .catch((errResponse) => {
-                  enqueueSnackbar(parseError(errResponse), {
-                    variant: 'error',
-                  })
-                })
-            }}
-          >
-            Save
-          </Button>
-        )}
+        <Button
+          isLoading={state.txPending}
+          disabled={
+            state.payoutAddress === state.initialPayoutAddress ||
+            state.payoutAddress === '' ||
+            state.payoutAddress.length < 42
+          }
+          onClick={() => {
+            Promise.resolve()
+              .then(() => setState((cs) => ({ ...cs, txPending: true })))
+              .then(() => tequilapiClient.payoutAddressSave(identity.id, state.payoutAddress))
+              .then(() => setState((cs) => ({ ...cs, txPending: false, initialPayoutAddress: cs.payoutAddress })))
+              .then(() =>
+                enqueueSnackbar('Bounty Payout Address updated', {
+                  variant: 'success',
+                }),
+              )
+              .catch((err) =>
+                enqueueSnackbar(parseError(err), {
+                  variant: 'error',
+                }),
+              )
+              .finally(() => setState((cs) => ({ ...cs, txPending: false })))
+          }}
+        >
+          Save
+        </Button>
       </div>
     </>
   )

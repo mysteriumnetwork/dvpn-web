@@ -38,15 +38,15 @@ const PasswordChange: React.FC = () => {
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    setValues({ ...values, [prop]: value })
+    setValues((cs) => ({ ...cs, [prop]: value }))
   }
 
   const handleSubmitPassword = () => {
-    setValues({ ...values, error: false })
+    setValues((cs) => ({ ...cs, error: false }))
 
     const isPasswordValid = validatePassword(values.newPassword, values.newPasswordConfirmation)
     if (!isPasswordValid.success) {
-      setValues({ ...values, error: true, errorMessage: isPasswordValid.errorMessage })
+      setValues((cs) => ({ ...cs, error: true, errorMessage: isPasswordValid.errorMessage }))
 
       return
     }

@@ -8733,7 +8733,7 @@ multicast-dns@^6.0.1:
 
 "mysterium-vpn-js@https://github.com/mysteriumnetwork/mysterium-vpn-js.git#testnet3":
   version "13.0.1"
-  resolved "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#4e8f0ebcee94e45c141a6eb024224dae3e86f803"
+  resolved "https://github.com/mysteriumnetwork/mysterium-vpn-js.git#afdd16ec7ffbfdd42e392fd5b039ec5f36a862a4"
   dependencies:
     axios "^0.21.1"
     camelcase-keys "^6.2.2"
