@@ -22,7 +22,7 @@ import IdentityBackup from './Components/IdentityBackup'
 import './Setings.scss'
 import * as config from '../../../commons/config'
 import PayoutAddress from './Components/PayoutAddress'
-import { Fees, Identity } from 'mysterium-vpn-js'
+import { Identity } from 'mysterium-vpn-js'
 import { CircularProgress } from '@material-ui/core'
 import Version from './Components/Version'
 
