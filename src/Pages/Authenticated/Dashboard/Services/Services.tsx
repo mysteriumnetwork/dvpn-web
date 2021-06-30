@@ -36,27 +36,27 @@ const findServiceInfo = (type: string, servicesInfos?: ServiceInfo[]): ServiceIn
 }
 
 const Services = ({ identityRef, servicesInfos, userConfig, disabled, prices }: Props) => {
-  return (
-    <div className="service-list">
-      {availableServices.map((type) => {
-        const service = findServiceInfo(type.toLowerCase(), servicesInfos)
-        if (type === ServiceType.OPENVPN && service?.status !== ServiceStatus.RUNNING) {
-          return <></>
-        }
-        return (
-          <ServiceCard
-            key={type}
-            identityRef={identityRef}
-            serviceInfo={service}
-            serviceType={type}
-            config={userConfig}
-            disabled={disabled}
-            prices={prices}
-          />
-        )
-      })}
-    </div>
-  )
+  const cards = availableServices
+    .filter((type) => {
+      const service = findServiceInfo(type.toLowerCase(), servicesInfos)
+      return !(type === ServiceType.OPENVPN && service?.status !== ServiceStatus.RUNNING)
+    })
+    .map((type, idx) => {
+      const service = findServiceInfo(type.toLowerCase(), servicesInfos)
+      return (
+        <ServiceCard
+          key={idx}
+          identityRef={identityRef}
+          serviceInfo={service}
+          serviceType={type}
+          config={userConfig}
+          disabled={disabled}
+          prices={prices}
+        />
+      )
+    })
+
+  return <div className="service-list">{cards}</div>
 }
 
 export default Services
