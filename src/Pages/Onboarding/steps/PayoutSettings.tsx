@@ -9,7 +9,6 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
 
 import { TextField } from '../../../Components/TextField'
-import MystSlider from '../../../Components/MystSlider/MystSlider'
 import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import Button from '../../../Components/Buttons/Button'
@@ -24,7 +23,7 @@ import { Radio } from '@material-ui/core'
 import { setChainId } from '../../../api/TequilAPIWrapper'
 import './SettlmentSettings.scss'
 import { chainId, L1ChainId, L2ChainId } from '../../../commons/config'
-import { currentCurrency, displayMystWholeOnly } from '../../../commons/money.utils'
+import { currentCurrency } from '../../../commons/money.utils'
 
 interface Props {
   callbacks: OnboardingChildProps
@@ -60,10 +59,6 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     setState((cs) => ({ ...cs, [prop]: value }))
-  }
-
-  const handleStakeChanged = (event: any, newValue: number) => {
-    setState((cs) => ({ ...cs, stake: newValue }))
   }
 
   const handleDone = () => {
@@ -103,8 +98,8 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
 
   return (
     <div className="step">
-      <h1 className="step__title">Payout settings</h1>
-      <p className="step__description">Fill in the following information to receive payments.</p>
+      <h1 className="step__title">Bounty Payout settings</h1>
+      <p className="step__description">Fill in the following information to receive bounty payments.</p>
       <div className="step__content m-t-20">
         <Collapse in={state.errors.length > 0}>
           <Alert severity="error">
@@ -115,37 +110,17 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
           </Alert>
         </Collapse>
         <div className="input-group">
-          <p className="input-group__label">Ethereum wallet address</p>
+          <p className="input-group__label">Bounty Payout Address</p>
           <TextField
             handleChange={handleTextFieldsChange}
             value={state.beneficiary}
             placeholder={'0x...'}
             stateName="beneficiary"
           />
-          <p className="input-group__help">Fill in the following information to receive payments.</p>
-        </div>
-        <div className="input-group m-t-50">
-          <p className="input-group__label m-b-15">Set your stake amount</p>
-          <MystSlider
-            headerAmount={(v) => `${displayMystWholeOnly(v)}`}
-            popover={(v) => `${displayMystWholeOnly(v)}`}
-            label="Stake amount"
-            disabled={state.hasReferralCode}
-            value={state.stake}
-            handleChange={handleStakeChanged}
-            step={1}
-            min={0}
-            max={50}
-            myst={true}
-          />
           <p className="input-group__help">
-            {`To start providing services and ensure smooth and secure payouts (settlements) in Mysterium Network, node
-            runners should stake a small amount of tokens. If you choose the default option, the initial stake amount
-            will be set to 0 and it will be automatically increased up to 10 ${currentCurrency()} by taking 10% of earnings during each
-            promise settlement (payout).`}
+            Make sure you enter ERC-20 compatible wallet or {currentCurrency()} compatible exchange wallet address.
           </p>
         </div>
-
         <div style={{ display: 'none' }}>
           <div className="chain-radio">
             <div className="input-group__label m-r-15">Select Chain</div>
@@ -192,7 +167,7 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
         </div>
 
         {state.chainId === L2ChainId && (
-          <div className="settlement-referral-block">
+          <div style={{ display: 'none' }} className="settlement-referral-block">
             <div className="input-group m-t-50 m-b-20">
               <Checkbox
                 label="I have referral code"
