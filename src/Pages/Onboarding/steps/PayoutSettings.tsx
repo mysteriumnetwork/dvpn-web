@@ -83,7 +83,7 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
   const register = (identity: string): Promise<void> => {
     return tequilapiClient.identityRegister(identity, {
       beneficiary: state.bountyPayoutAddress,
-      stake: 0,
+      stake: 10, // quadruple check mit Jaro
     })
   }
 
