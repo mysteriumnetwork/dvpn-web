@@ -68,7 +68,7 @@ const PayoutAddress = ({ identity }: Props) => {
         />
 
         <p className="input-group__help m-t-20" style={{ maxWidth: '100%' }}>
-          Make sure you enter ERC-20 compatible wallet or {currentCurrency()} compatible exchange wallet address.
+          Make sure you enter ERC-20 compatible wallet or MYST compatible exchange wallet address.
         </p>
         {state.errorMessage && <p className="error">{state.errorMessage}</p>}
       </div>
