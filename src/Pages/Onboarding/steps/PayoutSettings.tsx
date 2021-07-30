@@ -109,8 +109,8 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
             stateName="bountyPayoutAddress"
           />
           <p className="input-group__help">
-            Make sure you enter ERC-20 compatible wallet or MYST compatible exchange wallet address. You
-            can enter this address later in 'Settings' page.
+            Make sure you enter ERC-20 compatible wallet or MYST compatible exchange wallet address. You can enter this
+            address later in 'Settings' page.
           </p>
         </div>
         <div className="step__content-buttons step__content-buttons--center m-t-40">
