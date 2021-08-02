@@ -6,14 +6,34 @@
   justify-content: center;
   outline: 0;
 
-  &--block {
+  &__title {
+    font-weight: $medium-weight;
+    font-size: 18px;
+    line-height: 21px;
+    color: $main-text-color;
+    margin-bottom: 10px;
+  }
+
+  &__block {
+    margin-top: 10px;
     background: #FFFFFF;
     box-shadow: 0px 6px 16px rgba(153, 155, 168, 0.1);
     border-radius: 4px;
     transition: unset;
-    width: 40%;
+    width: 35%;
     padding: 30px 35px;
     outline: 0;
+  }
+
+  &__row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .title {

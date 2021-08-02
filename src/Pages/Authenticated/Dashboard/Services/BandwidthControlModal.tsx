@@ -46,10 +46,10 @@ const BandwidthControlModal = ({
       }}
     >
       <Fade in={isOpen}>
-        <div className="settings-modal--block">
-          <div className="title">{title}</div>
-          <div className="settings-row">{children}</div>
-          <div className="buttons-block">
+        <div className="settings-modal__block">
+          <div className="settings-modal__title">{title}</div>
+          <div className="settings-modal__row">{children}</div>
+          <div className="settings-modal__footer">
             <Button onClick={onClose} extraStyle="gray">
               Close
             </Button>
