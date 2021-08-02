@@ -6,15 +6,13 @@
  */
 
 import _ from 'lodash'
-import { DECIMAL_PART } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { ServiceType } from './index'
 
 export const L1ChainId = 5
 export const L2ChainId = 80001
 
 export const isFreeRegistration = (c: Config): boolean => {
-  return _.get<Config, any>(c, 'data.testnet2')
+  return isTestnet(c)
 }
 
 export const isTrafficShapingEnabled = (c: Config): boolean => {
@@ -27,34 +25,6 @@ export const trafficShapingBandwidthKbps = (c: Config): number => {
 
 export const isAccessPolicyEnabled = (c: Config): boolean => {
   return !!_.get<Config, any>(c, 'data.access-policy.list')
-}
-
-export const servicePricePerGiB = (c: Config, s: ServiceType): number => {
-  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-gib`) || defaultPricePerGiB(c)
-}
-
-export const servicePricePerHour = (c: Config, s: ServiceType): number => {
-  return _.get<Config, any>(c, `data.${s.toLowerCase()}.price-hour`) || defaultPricePerHour(c)
-}
-
-export const defaultPricePerGiB = (c: Config): number => {
-  return _.get<Config, any>(c, `data.payment.price-gib`) || 0
-}
-
-export const defaultPricePerHour = (c: Config): number => {
-  return _.get<Config, any>(c, `data.payment.price-hour`) || 0
-}
-
-export const pricePerGiBMax = (c: Config): number => {
-  const max = _.get<Config, any>(c, `data.payments.consumer.price-gib-max`) || 0
-
-  return max / DECIMAL_PART
-}
-
-export const pricePerHourMax = (c: Config): number => {
-  const max = _.get<Config, any>(c, `data.payments.consumer.price-hour-max`) || 0
-
-  return max / DECIMAL_PART
 }
 
 export const chainId = (c: Config): number => {
@@ -118,17 +88,6 @@ export const isTestnet = (c?: Config): boolean => {
   }
   const isTestnet = _.get<Config, any>(c, 'data.testnet') as boolean
   const isTestnet2 = _.get<Config, any>(c, 'data.testnet2') as boolean
-  return isTestnet || isTestnet2
-}
-
-export const userConfigHasPrices = (c: Config): boolean => {
-  const allPricesSet: boolean =
-    [
-      _.get<Config, any>(c, 'data.openvpn.price-hour'),
-      _.get<Config, any>(c, 'data.openvpn.price-gib'),
-      _.get<Config, any>(c, 'data.wireguard.price-hour'),
-      _.get<Config, any>(c, 'data.wireguard.price-gib'),
-    ].filter((e) => e === undefined || e === null).length === 0
-
-  return allPricesSet
+  const isTestnet3 = _.get<Config, any>(c, 'data.testnet3') as boolean
+  return isTestnet || isTestnet2 || isTestnet3
 }

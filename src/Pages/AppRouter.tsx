@@ -15,12 +15,7 @@ import '../assets/styles/App.scss'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
 import { Auth, Onboarding, isLoggedIn, currentIdentity, onboardingState } from '../redux/app.slice'
-import {
-  fetchConfigAsync,
-  fetchFeesAsync,
-  updateTermsStoreAsync,
-  fetcUserConfigAsync,
-} from '../redux/app.async.actions'
+import { fetchConfigAsync, fetchFeesAsync, updateTermsStoreAsync } from '../redux/app.async.actions'
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
 import { RootState } from '../redux/store'
 import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper'
@@ -48,7 +43,6 @@ interface Props {
   actions: {
     fetchIdentityAsync: () => void
     fetchConfigAsync: () => void
-    fetcUserConfigAsync: () => void
     updateTermsStoreAsync: () => void
     fetchFeesAsync: () => void
     updateAuthenticatedStore: (auth: Auth) => void
@@ -62,7 +56,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
     actions: {
       fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
       fetchConfigAsync: () => dispatch(fetchConfigAsync()),
-      fetcUserConfigAsync: () => dispatch(fetcUserConfigAsync()),
       updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
       fetchFeesAsync: () => dispatch(fetchFeesAsync()),
       updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
@@ -91,12 +84,7 @@ const AppRouter = ({ actions }: Props) => {
     currentIdentity(app.currentIdentityRef, sse.appState?.identities),
   )
   const onboarding = useSelector<RootState, Onboarding>(({ app, sse }) =>
-    onboardingState(
-      app.auth,
-      app.terms,
-      app.userConfigHasPrices,
-      currentIdentity(app.currentIdentityRef, sse.appState?.identities),
-    ),
+    onboardingState(app.auth, app.terms, currentIdentity(app.currentIdentityRef, sse.appState?.identities)),
   )
   const fees = useSelector<RootState, Fees | undefined>(({ app }) => app.fees)
 
@@ -107,7 +95,6 @@ const AppRouter = ({ actions }: Props) => {
     })
     await actions.fetchIdentityAsync()
     await actions.fetchConfigAsync()
-    await actions.fetcUserConfigAsync()
     await actions.fetchFeesAsync()
     await actions.updateTermsStoreAsync()
   }

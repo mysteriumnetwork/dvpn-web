@@ -22,98 +22,82 @@ import IdentityBackup from './Components/IdentityBackup'
 import './Setings.scss'
 import * as config from '../../../commons/config'
 import PayoutAddress from './Components/PayoutAddress'
-import { Fees, Identity } from 'mysterium-vpn-js'
+import { Identity } from 'mysterium-vpn-js'
 import { CircularProgress } from '@material-ui/core'
 import Version from './Components/Version'
 
 interface StateInterface {
   apiKey: string
-  beneficiary?: string
-  fees?: Fees
   nodeVersion?: string
+  loading: boolean
 }
 
 const Settings = (): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar()
 
-  const hermesId = useSelector<RootState, string | undefined>(({ app }) => config.hermesId(app.config))
   const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
     currentIdentity(app.currentIdentityRef, sse.appState?.identities),
   )
   const mmnWebAddress = useSelector<RootState, string>(({ app }) => config.mmnWebAddress(app.config))
 
-  const [loading, setLoading] = React.useState<boolean>(true)
   const [state, setState] = React.useState<StateInterface>({
     apiKey: '',
+    loading: true,
   })
 
   useEffect(() => {
-    Promise.all([
-      tequilapiClient.getMMNApiKey(),
-      tequilapiClient.transactorFees(),
-      tequilapiClient.healthCheck(15_000),
-      !identity ? Promise.reject() : tequilapiClient.identityBeneficiary(identity.id),
-    ])
-      .then(([mmn, fees, healthcheck, { beneficiary }]) =>
+    Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.healthCheck(15_000)])
+      .then(([mmn, healthcheck]) => {
         setState((cs) => ({
           ...cs,
           apiKey: mmn.apiKey,
-          fees: fees,
           nodeVersion: healthcheck.version,
-          beneficiary: beneficiary,
-        })),
-      )
+          loading: false,
+        }))
+      })
       .catch((err) => enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' }))
-      .finally(() => setLoading(false))
   }, [identity?.id])
 
-  if (loading) {
+  if (state.loading) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
   return (
-    <>
-      <div className="main">
-        <div className="main-block">
-          <div className="settings-header">
-            <Header logo={Logo} name="Settings" />
-            <Version nodeVersion={state.nodeVersion} />
+    <div className="main">
+      <div className="main-block">
+        <div className="settings-header">
+          <Header logo={Logo} name="Settings" />
+          <Version nodeVersion={state.nodeVersion} />
+        </div>
+        <div className="settings">
+          <div className="settings__block">
+            <p className="heading">Identity</p>
+            <div className="content">
+              <IdentityBackup identity={identity?.id || ''} />
+            </div>
+
+            <p className="heading m-t-20">Bounty Payout Address</p>
+            <div className="content">
+              <PayoutAddress identity={identity!} />
+            </div>
           </div>
-          <div className="settings">
-            <div className="settings__block">
-              <p className="heading">Identity</p>
-              <div className="content">
-                <IdentityBackup identity={identity?.id || ''} />
-              </div>
 
-              <p className="heading m-t-20">Beneficiary (payout address)</p>
-              <div className="content">
-                <PayoutAddress
-                  identity={identity!}
-                  beneficiary={state.beneficiary!}
-                  hermesId={hermesId!}
-                  fees={state.fees!}
-                />
-              </div>
+          <div className="settings__block">
+            <p className="heading">WebUI security</p>
+            <div className="content">
+              <PasswordChange />
             </div>
+          </div>
 
-            <div className="settings__block">
-              <p className="heading">WebUI security</p>
-              <div className="content">
-                <PasswordChange />
-              </div>
-            </div>
-
-            <div className="settings__block">
-              <p className="heading">MMN integration</p>
-              <div className="content">
-                <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
-              </div>
+          <div className="settings__block">
+            <p className="heading">MMN integration</p>
+            <div className="content">
+              <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

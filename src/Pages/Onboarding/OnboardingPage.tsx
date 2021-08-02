@@ -15,7 +15,6 @@ import PasswordChange from './steps/PasswordChange'
 import Welcome from './steps/Welcome'
 import StepCounter from './StepCounter'
 import TermsAndConditions from './steps/TermsAndConditions'
-import PriceSettings from './steps/PriceSettings'
 import PayoutSettings from './steps/PayoutSettings'
 
 import './Onboarding.scss'
@@ -31,7 +30,6 @@ interface Props {
 
 interface StateProps {
   needsAgreedTerms: boolean
-  needPriceConfiguration: boolean
   needsRegisteredIdentity: boolean
   needsPasswordChange: boolean
 }
@@ -45,7 +43,6 @@ const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
   const [currentStep, setCurrentStep] = useState(0)
   const [state] = useState<StateProps>({
     needsAgreedTerms: onboarding.needsAgreedTerms,
-    needPriceConfiguration: onboarding.needPriceConfiguration,
     needsRegisteredIdentity: onboarding.needsRegisteredIdentity,
     needsPasswordChange: onboarding.needsPasswordChange,
   })
@@ -64,10 +61,6 @@ const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
 
   if (state.needsAgreedTerms) {
     steps.push(<TermsAndConditions key="terms" callbacks={callbacks} />)
-  }
-
-  if (state.needPriceConfiguration) {
-    steps.push(<PriceSettings config={config} key="price" callbacks={callbacks} />)
   }
 
   if (state.needsRegisteredIdentity) {

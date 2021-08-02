@@ -10,7 +10,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { isUnregistered } from '../commons/identity.utils'
 import _ from 'lodash'
-import { userConfigHasPrices } from '../commons/config'
 
 export interface Auth {
   authenticated?: boolean
@@ -26,7 +25,6 @@ export interface Onboarding {
   needsPasswordChange: boolean
   needsRegisteredIdentity: boolean
   needsOnboarding: boolean
-  needPriceConfiguration: boolean
 }
 
 export interface AppState {
@@ -37,7 +35,6 @@ export interface AppState {
   terms: Terms
   config?: Config
   fees?: Fees
-  userConfigHasPrices: boolean
 }
 
 const INITIAL_STATE: AppState = {
@@ -49,7 +46,6 @@ const INITIAL_STATE: AppState = {
   terms: {
     acceptedVersion: undefined,
   },
-  userConfigHasPrices: false,
 }
 
 const slice = createSlice({
@@ -77,9 +73,6 @@ const slice = createSlice({
     updateFeesStore: (state, action) => {
       state.fees = action.payload
     },
-    updateUserConfigStore: (state, action) => {
-      state.userConfigHasPrices = userConfigHasPrices(action.payload)
-    },
   },
 })
 
@@ -89,17 +82,11 @@ const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]): Id
   return _.head(result)
 }
 
-const onboardingState = (
-  auth: Auth,
-  terms: Terms,
-  userConfigHasPrices: boolean,
-  currentIdentity?: Identity,
-): Onboarding => {
+const onboardingState = (auth: Auth, terms: Terms, currentIdentity?: Identity): Onboarding => {
   const onboarding = {
     needsAgreedTerms: !termsAccepted(terms),
     needsPasswordChange: !!auth.withDefaultCredentials,
     needsRegisteredIdentity: !currentIdentity || isUnregistered(currentIdentity),
-    needPriceConfiguration: !userConfigHasPrices,
   } as Onboarding
 
   onboarding.needsOnboarding =
@@ -124,7 +111,6 @@ export const {
   updateTermsStore,
   updateAuthFlowLoadingStore,
   updateConfigStore,
-  updateUserConfigStore,
   updateFeesStore,
 } = slice.actions
 export default slice.reducer
