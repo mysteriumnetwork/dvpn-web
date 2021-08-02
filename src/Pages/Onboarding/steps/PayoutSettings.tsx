@@ -19,7 +19,6 @@ import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import TopupModal from './TopupModal'
 import { isFreeRegistration } from '../../../commons/config'
 import './SettlmentSettings.scss'
-import { currentCurrency } from '../../../commons/money.utils'
 
 interface Props {
   callbacks: OnboardingChildProps

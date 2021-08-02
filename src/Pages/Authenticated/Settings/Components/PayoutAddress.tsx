@@ -13,7 +13,6 @@ import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
 import { Identity } from 'mysterium-vpn-js'
 import './PayoutAddress.scss'
-import { currentCurrency } from '../../../../commons/money.utils'
 import { CircularProgress } from '@material-ui/core'
 
 interface Props {
