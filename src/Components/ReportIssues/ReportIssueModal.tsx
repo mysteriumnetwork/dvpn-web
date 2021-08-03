@@ -73,7 +73,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
   }
 
   return (
-    <Dialog disableBackdropClick fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
+    <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose} disableBackdropClick>
       <DialogTitle>
         <div className="report-issue__header">
           <div className="title">

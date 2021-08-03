@@ -42,7 +42,7 @@ const SettlementModal = ({
 
   return (
     <>
-      <Modal className="settlement-modal" open={open} onClose={onClose} disableBackdropClick>
+      <Modal className="settlement-modal" open={open} onClose={onClose}>
         <Fade in={open}>
           <div className="settlement-modal__block">
             <div className="settlement-modal__title">Settle your earnings</div>
