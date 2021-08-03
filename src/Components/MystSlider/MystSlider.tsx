@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
 import { Mark, Slider as MUISlider } from '@material-ui/core'
 import './MystSlider.scss'
 import { currentCurrency } from '../../commons/money.utils'

@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { SnackbarProvider } from 'notistack'
-import React from 'react'
 import ReactDOM from 'react-dom'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
