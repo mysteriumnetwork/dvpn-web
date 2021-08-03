@@ -7,13 +7,14 @@
 import React from 'react'
 
 import './Bubble.scss'
+import { BubbleStatus } from './nat-status.utils'
 
 interface Props {
-  type?: string
+  status?: BubbleStatus
 }
 
-const Bubble = ({ type }: Props): JSX.Element => {
-  return <div className={`bubble bubble--${type}`} />
+const Bubble = ({ status }: Props): JSX.Element => {
+  return <div className={`bubble bubble--${status}`} />
 }
 
 export default Bubble

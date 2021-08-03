@@ -6,12 +6,33 @@
  */
 import React from 'react'
 
-import './Status.scss'
+import './NodeStatus.scss'
 import Bubble from './Bubble'
 import HelpIcon from '@material-ui/icons/Help'
 import { Tooltip } from '@material-ui/core'
+import { BubbleStatus } from './nat-status.utils'
 
-const a = (): React.ReactFragment => (
+const NodeStatus = () => {
+  return (
+    <div className="status-card">
+      <div className="status-card__status-text">Node status:</div>
+      <div className="status-card__status-icon">
+        <Bubble status={BubbleStatus.SUCCESS} />
+        Success
+      </div>
+      <div className="flex-grow" />
+      <div className="status-card__nat-text">NAT traversal method:</div>
+      <div className="status-card__nat-mode">hole punching</div>
+      <div className="status-card__nat-mode-help">
+        <Tooltip title={tooltipHTML()} placement="bottom-start">
+          <HelpIcon fontSize="small" />
+        </Tooltip>
+      </div>
+    </div>
+  )
+}
+
+const tooltipHTML = (): React.ReactFragment => (
   <div className="status-card__nat-mode-help__tooltip">
     <div className="status-card__nat-mode-help__tooltip-header">
       There are 4 traversal mechanisms possible. Node is trying to test each of them to become connectable for
@@ -42,25 +63,5 @@ const a = (): React.ReactFragment => (
     </div>
   </div>
 )
-
-const NodeStatus = () => {
-  return (
-    <div className="status-card">
-      <div className="status-card__status-text">Node status:</div>
-      <div className="status-card__status-icon">
-        <Bubble type="success" />
-        Success
-      </div>
-      <div className="flex-grow" />
-      <div className="status-card__nat-text">NAT traversal method:</div>
-      <div className="status-card__nat-mode">hole punching</div>
-      <div className="status-card__nat-mode-help">
-        <Tooltip title={a()} placement="bottom-start">
-          <HelpIcon fontSize="small" />
-        </Tooltip>
-      </div>
-    </div>
-  )
-}
 
 export default NodeStatus

@@ -10,7 +10,7 @@ import { CircularProgress } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
-import { docsAddress, isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
+import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import Header from '../../../Components/Header'
@@ -23,14 +23,12 @@ import { parseError } from '../../../commons/error.utils'
 
 import './Dashboard.scss'
 import Charts from './Charts/Charts'
-import NatStatus from './NatStatus/NatStatus'
 import Services from './Services/Services'
 import Statistics from './Statistics/Statistics'
 import { isRegistered } from '../../../commons/identity.utils'
 import BountyWidget from './Bounty/BountyWidget'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
-import { DOCS_NAT_FIX } from '../../../constants/urls'
-import NodeStatus from './NatStatus/NodeStatus'
+import NodeStatus from './NodeStatus/NodeStatus'
 
 interface StateProps {
   sessionStatsAllTime: SessionStats
@@ -124,12 +122,6 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="dashboard__services">
-          <div className="services-header">
-            <p className="services-header__title">Services</p>
-            <div className="services-header__status">
-              <NatStatus natFixUrl={`${docsAddress(config)}/${DOCS_NAT_FIX}`} status={status} />
-            </div>
-          </div>
           <div className="node-status">
             <NodeStatus />
           </div>

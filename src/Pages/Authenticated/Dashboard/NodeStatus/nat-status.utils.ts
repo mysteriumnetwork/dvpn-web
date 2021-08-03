@@ -5,6 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export enum BubbleStatus {
+  WARNING = 'warning',
+  SUCCESS = 'success',
+  FAILED = 'failed',
+}
+
 export const statusText = (status: string): string => {
   switch (status) {
     case 'not_finished':
@@ -18,15 +24,15 @@ export const statusText = (status: string): string => {
   }
 }
 
-export const statusColor = (status: string): string => {
+export const bubbleStatus = (status: string): BubbleStatus => {
   switch (status) {
     case 'not_finished':
-      return 'warning'
+      return BubbleStatus.WARNING
     case 'successful':
-      return 'success'
+      return BubbleStatus.SUCCESS
     case 'failed':
-      return 'failed'
+      return BubbleStatus.FAILED
     default:
-      return 'warning'
+      return BubbleStatus.WARNING
   }
 }
