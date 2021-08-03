@@ -30,6 +30,7 @@ import { isRegistered } from '../../../commons/identity.utils'
 import BountyWidget from './Bounty/BountyWidget'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import { DOCS_NAT_FIX } from '../../../constants/urls'
+import NodeStatus from './NatStatus/NodeStatus'
 
 interface StateProps {
   sessionStatsAllTime: SessionStats
@@ -40,7 +41,7 @@ interface StateProps {
   currentPrices: CurrentPricesResponse
 }
 
-const defaultState = {
+const initialState = {
   sessionStatsAllTime: {
     count: 0,
     countConsumers: 0,
@@ -58,14 +59,13 @@ const defaultState = {
 }
 
 const Dashboard = () => {
-  const app = useSelector<RootState, AppState>(({ app }) => app)
+  const { config, currentIdentityRef } = useSelector<RootState, AppState>(({ app }) => app)
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
 
-  const [state, setState] = useState<StateProps>(defaultState)
+  const [state, setState] = useState<StateProps>(initialState)
 
   const { enqueueSnackbar } = useSnackbar()
-  const { config } = app
-  const identity = currentIdentity(app.currentIdentityRef, sse.appState?.identities)
+  const identity = currentIdentity(currentIdentityRef, sse.appState?.identities)
 
   useEffect(() => {
     if (!identity) {
@@ -129,6 +129,9 @@ const Dashboard = () => {
             <div className="services-header__status">
               <NatStatus natFixUrl={`${docsAddress(config)}/${DOCS_NAT_FIX}`} status={status} />
             </div>
+          </div>
+          <div className="node-status">
+            <NodeStatus />
           </div>
           <Services
             identityRef={identity.id}

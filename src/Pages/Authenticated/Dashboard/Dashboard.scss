@@ -33,6 +33,10 @@
     &__services {
         margin-top: 50px;
 
+        .node-status {
+            margin-bottom: 20px;
+        }
+
         .services-header {
             display: flex;
             align-items: center;
