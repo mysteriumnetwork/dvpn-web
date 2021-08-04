@@ -1,8 +1,10 @@
 @import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
 
 .service-list {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 
   .service {
     background: #FFFFFF;
@@ -10,7 +12,17 @@
     box-sizing: border-box;
     border-radius: 12px;
     padding-top: 25px;
-    width: calc(50% - 11px);
+
+    @include respond-above(lg) {
+      width: calc(50% - 5px);
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    @include respond-below(lg) {
+      width: 100%;
+    }
 
     &__details {
       display: flex;
@@ -34,7 +46,7 @@
         border-radius: 8px;
         font-style: normal;
         font-weight: $medium-weight;
-        font-size: 14px;
+        font-size: $normal-size;
         line-height: 21px;
         color: rgba(101, 101, 101, 0.5);
         cursor: pointer;

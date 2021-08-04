@@ -7,6 +7,7 @@
     border-radius: 12px;
     position: relative;
     padding: 10px 20px;
+    width: 100%;
 
     .loader {
         margin-left: -20px;
@@ -20,11 +21,11 @@
         font-family: Lato;
         font-style: normal;
         font-weight: $normal-weight;
-        font-size: 18px;
+        font-size: $large-size;
         padding-top: 8px;
         margin-bottom: 35px;
         a {
-            font-size: 14px;
+            font-size: $normal-size;
         }
     }
 

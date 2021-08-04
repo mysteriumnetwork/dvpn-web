@@ -1,4 +1,5 @@
-@import 'src/assets/styles/base/variables';
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
 
 .status-card {
   padding: 22px 0 25px 28px;
@@ -7,11 +8,20 @@
   border-radius: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  &__block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   &__status-text {
     font-style: normal;
     font-weight: $normal-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     line-height: 21px;
     color: $names-text-color
   }
@@ -19,13 +29,21 @@
   &__status-icon {
     display: flex;
     align-items: center;
-    margin-left: 5px;
+    margin-left: 10px;
+  }
+
+  &__status-icon-description {
+    font-style: normal;
+    font-weight: $medium-weight;
+    font-size: $accent-size;
+    line-height: 24px;
+    color: $main-text-color;
   }
 
   &__nat-text {
     font-style: normal;
     font-weight: $normal-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     line-height: 21px;
     color: $names-text-color
   }
@@ -33,7 +51,7 @@
   &__nat-mode {
     font-style: normal;
     font-weight: $medium-weight;
-    font-size: 16px;
+    font-size: $accent-size;
     line-height: 24px;
     color: $main-text-color;
     margin-left: 5px;
@@ -44,6 +62,10 @@
     align-items: center;
     color: $names-text-color;
     margin-left: 5px;
+
+    @include respond-below(sm) {
+      display: none;
+    }
 
     &__tooltip {
       padding: 10px 10px 10px 10px;

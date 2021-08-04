@@ -13,18 +13,22 @@ import { BubbleStatus } from './nat-status.utils'
 const NodeStatus = () => {
   return (
     <div className="status-card">
-      <div className="status-card__status-text">Node status:</div>
-      <div className="status-card__status-icon">
-        <Bubble status={BubbleStatus.SUCCESS} />
-        Success
+      <div className="status-card__block">
+        <div className="status-card__status-text">Node status:</div>
+        <div className="status-card__status-icon">
+          <Bubble status={BubbleStatus.SUCCESS} />
+          <p className="status-card__status-icon-description">Success</p>
+        </div>
       </div>
-      <div className="flex-grow" />
-      <div className="status-card__nat-text">NAT traversal method:</div>
-      <div className="status-card__nat-mode">hole punching</div>
-      <div className="status-card__nat-mode-help">
-        <Tooltip title={tooltipHTML()} placement="bottom-start">
-          <HelpIcon fontSize="small" />
-        </Tooltip>
+
+      <div className="status-card__block">
+        <div className="status-card__nat-text">NAT traversal:</div>
+        <div className="status-card__nat-mode">hole punching</div>
+        <div className="status-card__nat-mode-help">
+          <Tooltip title={tooltipHTML()} placement="bottom-start">
+            <HelpIcon fontSize="small" />
+          </Tooltip>
+        </div>
       </div>
     </div>
   )

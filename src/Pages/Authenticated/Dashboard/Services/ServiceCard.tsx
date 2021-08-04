@@ -75,7 +75,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
 
         <ServiceDetail label="Price per GiB">{displayMyst(Number(prices.pricePerGib))}</ServiceDetail>
 
-        <ServiceDetail label="Turned on" alignValueRight={true}>
+        <ServiceDetail label="On" alignValueRight={true}>
           <Switch
             disabled={booting || disabled}
             turnedOn={!!serviceInfo}

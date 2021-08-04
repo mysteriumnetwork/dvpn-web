@@ -8,7 +8,7 @@
     &--label {
       font-weight: $bold-weight;
       color: $inputs-labels-text-color;
-      font-size: 12px;
+      font-size: $smaller-size;
       line-height: 14px;
       font-family: Lato;
       text-align: left;
@@ -17,7 +17,7 @@
     &--amount {
       font-weight: $bold-weight;
       color: $inputs-labels-text-color;
-      font-size: 12px;
+      font-size: $smaller-size;
       line-height: 14px;
       font-family: Lato;
       text-align: left;
@@ -65,7 +65,7 @@
         transform: none;
         color: #252631;
         font-style: normal;
-        font-size: 12px;
+        font-size: $smaller-size;
         line-height: 14px;
         font-family: Lato;
         font-weight: $bold-weight;

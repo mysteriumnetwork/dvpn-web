@@ -1,4 +1,5 @@
 @import '../../base/variables';
+@import '../../base/mixins/media';
 
 .page {
   display: flex;
@@ -8,7 +9,7 @@
   height: 100vh;
 
   &__menu {
-    height: 100%;
+    height: 100vh;
   }
 
   &__content {
@@ -31,14 +32,25 @@
         overflow-y: auto;
 
         &--split {
-          width: 70%;
+          @include respond-below(sm) {
+            width: 100%;
+          }
+          @include respond-above(sm) {
+            width: 70%;
+          }
           padding: 0 25px 100px 0;
         }
       }
 
       .sidebar-block {
-        width: 30%;
-        background: #FFFFFF;
+        @include respond-below(sm) {
+          display: none;
+          width: 0;
+        }
+        @include respond-above(sm) {
+          width: 30%;
+          background: #FFFFFF;
+        }
       }
     }
   }

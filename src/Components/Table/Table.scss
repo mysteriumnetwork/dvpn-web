@@ -16,7 +16,7 @@
     .cell {
       font-style: normal;
       font-weight: $medium-weight;
-      font-size: 12px;
+      font-size: $smaller-size;
       line-height: 18px;
       color: #AAAAAA;
     }
@@ -40,7 +40,7 @@
       .no-data {
         font-style: normal;
         font-weight: $normal-weight;
-        font-size: 18px;
+        font-size: $large-size;
         line-height: 21px;
         color: $names-text-color;
       }
@@ -60,7 +60,7 @@
       .cell {
         font-style: normal;
         font-weight: $medium-weight;
-        font-size: 16px;
+        font-size: $accent-size;
         line-height: 24px;
         color: $main-text-color;
       }
@@ -89,7 +89,7 @@
         font-family: Lato;
         font-style: normal;
         font-weight: $bold-weight;
-        font-size: 12px;
+        font-size: $smaller-size;
         line-height: 14px;
         text-transform: uppercase;
         color: $inputs-labels-text-color;

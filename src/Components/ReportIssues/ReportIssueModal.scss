@@ -1,3 +1,5 @@
+@import "../../assets/styles/base/variables";
+
 .report-issue {
   font-family: Lato, sans-serif;
   display: flex;
@@ -9,7 +11,7 @@
 
     .title {
       &__description {
-        font-size: 14px;
+        font-size: $normal-size;
         color: #8181A5;
       }
     }
@@ -21,7 +23,7 @@
       a {
         font-family: Lato, sans-serif;
         font-weight: 500;
-        font-size: 14px;
+        font-size: $normal-size;
       }
 
       &__icon {
@@ -48,7 +50,7 @@
 
     .agreement {
       color: #8181A5;
-      font-size: 13px;
+      font-size: $normal-size;
       width: 80%;
     }
   }

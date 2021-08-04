@@ -4,20 +4,20 @@
   display: flex;
   font-style: normal;
   font-weight: $medium-weight;
-  font-size: 14px;
+  font-size: $normal-size;
   margin-right: 10px;
 
   &__label {
     font-style: normal;
     font-weight: $medium-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     margin-right: 10px;
   }
 
   &__state {
     font-style: normal;
     font-weight: $medium-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     margin-right: 10px;
 
     &--failed {

@@ -16,7 +16,7 @@
 
     &__value {
       font-style: normal;
-      font-size: 28px;
+      font-size: $huge-size;
       line-height: 33px;
       font-weight: $bold-weight;
       color: #000000;
@@ -24,7 +24,7 @@
 
     &__label {
       font-style: normal;
-      font-size: 14px;
+      font-size: $normal-size;
       line-height: 21px;
       font-weight: $lighter-weight;
       color: $names-text-color;
@@ -59,7 +59,7 @@
       color: $main-text-color;
       font-style: normal;
       font-weight: $medium-weight;
-      font-size: 18px;
+      font-size: $large-size;
       line-height: 21px;
     }
 
@@ -79,7 +79,7 @@
         color: $main-text-color;
         font-style: normal;
         font-weight: $medium-weight;
-        font-size: 18px;
+        font-size: $large-size;
         line-height: 21px;
       }
 
@@ -87,7 +87,7 @@
         color: $secondary-text-color;
         font-style: normal;
         font-weight: $lighter-weight;
-        font-size: 14px;
+        font-size: $normal-size;
         line-height: 18px;
       }
 

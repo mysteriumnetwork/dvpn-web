@@ -1,4 +1,5 @@
 @import '../../../base/variables';
+@import '../../../base/mixins/media';
 
 .navigation {
   background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
@@ -28,19 +29,31 @@
   }
 
   &--issue {
-    //position: absolute;
     width: 48px;
     height: 48px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
     border-radius: 50%;
     background: #6C3AAB;
-    bottom: 10px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+    //margin-top: 100%;
+    //&:last-child {
+    //  flex-grow: 1;
+    //}
+
+    //@include respond-above(sm) {
+      left: 0;
+      right: 0;
+      bottom: 10px;
+      margin-left: auto;
+      margin-right: auto;
+    //}
+
+    @include respond-below(sm) {
+      //position: absolute;
+    }
+
   }
 
   &--chat-space {

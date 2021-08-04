@@ -12,14 +12,14 @@
 
   &__label {
     font-weight: $medium-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     line-height: 32px;
     color: $names-text-color;
   }
 
   &__value {
     font-weight: $medium-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     line-height: 32px;
     color: $main-text-color;
 

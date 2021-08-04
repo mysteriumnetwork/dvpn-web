@@ -16,7 +16,7 @@
     .title {
       font-style: normal;
       font-weight: $normal-weight;
-      font-size: 14px;
+      font-size: $normal-size;
       line-height: 21px;
       color: $main-text-color;
       padding-left: 0;
@@ -25,7 +25,7 @@
     .status {
       font-style: normal;
       font-weight: $bold-weight;
-      font-size: 12px;
+      font-size: $smaller-size;
       line-height: 21px;
 
       &--success {
@@ -41,7 +41,7 @@
   &__id {
     font-style: normal;
     font-weight: $normal-weight;
-    font-size: 12px;
+    font-size: $smaller-size;
     line-height: 18px;
     color: #A0A0A0;
   }
@@ -55,7 +55,7 @@
     .statistic {
       font-style: normal;
       font-weight: $medium-weight;
-      font-size: 14px;
+      font-size: $normal-size;
       line-height: 21px;
       color: $main-text-color;
     }
@@ -77,7 +77,7 @@
 
     .name {
       font-weight: $medium-weight;
-      font-size: 16px;
+      font-size: $accent-size;
       line-height: 24px;
       color: $main-text-color;
     }
@@ -85,7 +85,7 @@
     .explanation {
       font-style: normal;
       font-weight: $normal-weight;
-      font-size: 14px;
+      font-size: $normal-size;
       line-height: 21px;
       color: $names-text-color;
     }

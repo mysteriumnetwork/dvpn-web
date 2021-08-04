@@ -9,7 +9,7 @@
     padding: 20px 0 20px 25px;
     font-style: normal;
     font-weight: $medium-weight;
-    font-size: 16px;
+    font-size: $accent-size;
     line-height: 24px;
     color: $main-text-color;
     border-bottom: 1px solid #EEEEEE;
@@ -39,7 +39,7 @@
 
       .name {
         font-weight: $medium-weight;
-        font-size: 16px;
+        font-size: $accent-size;
         line-height: 24px;
         color: $main-text-color;
       }
@@ -47,7 +47,7 @@
       .explanation {
         font-style: normal;
         font-weight: $normal-weight;
-        font-size: 14px;
+        font-size: $normal-size;
         line-height: 21px;
         color: $names-text-color;
       }

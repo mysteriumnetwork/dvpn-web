@@ -1,4 +1,5 @@
 @import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
 
 // graph block
 .chart {
@@ -12,12 +13,17 @@
     justify-content: space-between;
 
     &-title {
-      font-family: Lato;
-      font-style: normal;
-      font-weight: $normal-weight;
-      font-size: 18px;
-      padding-left: 20px;
-      padding-top: 8px;
+      @include respond-below(sm) {
+        display: none;
+      }
+      @include respond-above(sm) {
+        font-family: Lato;
+        font-style: normal;
+        font-weight: $normal-weight;
+        font-size: $large-size;
+        padding-left: 20px;
+        padding-top: 8px;
+      }
     }
 
     &-buttons {
@@ -32,11 +38,10 @@
         font-family: Lato;
         font-style: normal;
         font-weight: $normal-weight;
-        font-size: 14px;
+        font-size: $normal-size;
         line-height: 17px;
         color: $names-text-color;
         padding: 10px 8px;
-        color: #9A9A9A;
         cursor: pointer;
         border: 1px solid transparent;
       }
@@ -87,7 +92,7 @@
     .recharts-text.recharts-cartesian-axis-tick-value {
       font-family: Ubuntu, sans-serif;
       font-style: normal !important;
-      font-size: 12px;
+      font-size: $smaller-size;
       line-height: 21px;
       fill: $names-text-color;
     }
@@ -103,7 +108,7 @@
       font-family: "Ubuntu", sans-serif;
       font-style: normal;
       font-weight: $normal-weight;
-      font-size: 14px;
+      font-size: $normal-size;
       line-height: 21px;
       color: $names-text-color;
     }

@@ -1,4 +1,5 @@
 @import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
 
 .settings-modal {
   display: flex;
@@ -8,7 +9,7 @@
 
   &__title {
     font-weight: $medium-weight;
-    font-size: 18px;
+    font-size: $large-size;
     line-height: 21px;
     color: $main-text-color;
     margin-bottom: 10px;
@@ -20,9 +21,16 @@
     box-shadow: 0px 6px 16px rgba(153, 155, 168, 0.1);
     border-radius: 4px;
     transition: unset;
-    width: 35%;
     padding: 30px 35px;
     outline: 0;
+
+    @include respond-above(sm) {
+      width: 35%;
+    }
+
+    @include respond-below(sm) {
+      width: 80%;
+    }
   }
 
   &__row {
@@ -38,7 +46,7 @@
 
   .title {
     font-weight: $medium-weight;
-    font-size: 18px;
+    font-size: $large-size;
     line-height: 21px;
     color: $main-text-color;
     margin-bottom: 10px;

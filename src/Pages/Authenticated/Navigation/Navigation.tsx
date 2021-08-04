@@ -49,7 +49,7 @@ const Navigation = ({ location }: Props): JSX.Element => {
       {/*<NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">*/}
       {/*    {pathname === WALLET ? <WalletActive /> : <Wallet />}*/}
       {/*</NavLink>*/}
-      <div className="flex-grow" />
+      {/*<div className="flex-grow" />*/}
       <div className="navigation--issue">
         <ReportIssue />
       </div>

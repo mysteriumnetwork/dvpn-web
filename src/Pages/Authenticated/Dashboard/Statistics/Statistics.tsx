@@ -8,9 +8,10 @@ import { SessionStats } from 'mysterium-vpn-js'
 
 import { seconds2Time } from '../../../../commons/date.utils'
 import formatBytes, { add } from '../../../../commons/formatBytes'
-import { displayMyst } from '../../../../commons/money.utils'
+import { currentCurrency, displayMyst } from '../../../../commons/money.utils'
 
 import Statistic from './Statistic'
+import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 
 interface Props {
   stats: SessionStats
@@ -22,9 +23,15 @@ const Statistics = ({ stats, unsettledEarnings, testnet }: Props) => {
   return (
     <>
       {testnet ? (
-        <Statistic stat={displayMyst(stats.sumTokens)} name="Total Earnings" />
+        <Statistic
+          stat={displayMyst(stats.sumTokens, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, showCurrency: false })}
+          name={`Total Earnings (${currentCurrency()})`}
+        />
       ) : (
-        <Statistic stat={displayMyst(unsettledEarnings)} name="Unsettled earnings" />
+        <Statistic
+          stat={displayMyst(unsettledEarnings, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, showCurrency: false })}
+          name={`Unsettled earnings (${currentCurrency()})`}
+        />
       )}
       <Statistic stat={seconds2Time(stats.sumDuration)} name="Sessions time" />
       <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />

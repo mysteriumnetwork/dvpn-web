@@ -4,7 +4,7 @@
   font-family: Lato;
   font-style: normal;
   font-weight: $normal-weight;
-  font-size: 14px;
+  font-size: $normal-size;
   line-height: 21px;
   color: $secondary-text-color;
   margin-bottom: 6px;
@@ -20,7 +20,7 @@
     font-family: Lato;
     font-style: normal;
     font-weight: $bold-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     line-height: 17px;
   }
 

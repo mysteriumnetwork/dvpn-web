@@ -121,10 +121,10 @@ const Dashboard = () => {
             <Charts statsDaily={state.sessionStatsDaily} />
           </div>
         </div>
+        <div className="dashboard__node-status">
+          <NodeStatus />
+        </div>
         <div className="dashboard__services">
-          <div className="node-status">
-            <NodeStatus />
-          </div>
           <Services
             identityRef={identity.id}
             servicesInfos={serviceInfos}
@@ -132,9 +132,13 @@ const Dashboard = () => {
             disabled={!isRegistered(identity)}
             prices={state.currentPrices}
           />
+        </div>
+
+        <div className="dashboard__services-settings">
           <GlobalServicesSettings config={config} servicesInfos={serviceInfos} />
         </div>
       </div>
+
       <div className="sidebar-block">
         <SessionSidebar
           liveSessions={sse.appState?.sessions}

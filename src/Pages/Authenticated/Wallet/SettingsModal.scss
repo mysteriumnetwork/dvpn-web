@@ -17,7 +17,7 @@
 
     .title {
       font-weight: $medium-weight;
-      font-size: 18px;
+      font-size: $large-size;
       line-height: 21px;
       color: $main-text-color;
       margin-bottom: 10px;
@@ -32,7 +32,7 @@
         p {
           font-weight: $bold-weight;
           color: $inputs-labels-text-color;
-          font-size: 12px;
+          font-size: $smaller-size;
           line-height: 14px;
           font-family: Lato;
         }
@@ -44,7 +44,7 @@
           p {
             font-style: normal;
             font-weight: $lighter-weight;
-            font-size: 12px;
+            font-size: $smaller-size;
             line-height: 14px;
             color: $names-text-color;
           }
@@ -55,7 +55,7 @@
         margin: 35px 0;
         font-style: normal;
         font-weight: $lighter-weight;
-        font-size: 14px;
+        font-size: $normal-size;
         line-height: 21px;
         color: $names-text-color;
         width: 90%;
@@ -84,7 +84,7 @@
       font-family: Lato, sans-serif;
       font-style: normal;
       font-weight: $normal-weight;
-      font-size: 14px;
+      font-size: $normal-size;
       line-height: 21px;
       color: $secondary-text-color;
     }
@@ -98,7 +98,7 @@
     font-family: Lato, sans-serif;
     font-style: normal;
     font-weight: $normal-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     line-height: 21px;
     color: $secondary-text-color;
     margin-bottom: 6px;
