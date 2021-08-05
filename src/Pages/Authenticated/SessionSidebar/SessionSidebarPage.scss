@@ -1,0 +1,56 @@
+@import '../../../assets/styles/base/variables';
+@import '../../../assets/styles/base/mixins/media';
+
+.sessions-sidebar-page {
+  &__statistics {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__widgets {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .widget {
+      @include respond-above(sm) {
+        &--bounty {
+          width: 30%;
+          align-self: stretch;
+        }
+        &--chart {
+          margin-left: 10px;
+          width: calc(70% - 10px);
+        }
+        &:last-child {
+          padding-left: 0;
+        }
+      }
+
+      @include respond-below(sm) {
+        width: 100%;
+        &--bounty {
+          margin-bottom: 25px;
+          align-self: stretch;
+        }
+      }
+    }
+  }
+
+  &__node-status {
+    margin-top: 25px;
+  }
+
+  &__services {
+    margin-top: 25px;
+  }
+
+  &__services-settings {
+    @include respond-below(sm) {
+      padding-bottom: 50px
+    }
+  }
+
+}

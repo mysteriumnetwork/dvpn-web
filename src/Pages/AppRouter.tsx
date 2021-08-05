@@ -29,6 +29,7 @@ import {
   SESSIONS,
   WALLET,
   SETTINGS,
+  SESSIONS_SIDE,
 } from '../constants/routes'
 import { fetchIdentityAsync } from '../redux/app.async.actions'
 
@@ -169,6 +170,12 @@ const AppRouter = ({ actions }: Props) => {
       />
       <ProtectedRoute
         path={SETTINGS}
+        needsOnboarding={onboarding.needsOnboarding}
+        loggedIn={loggedIn}
+        component={authenticatedPage}
+      />
+      <ProtectedRoute
+        path={SESSIONS_SIDE}
         needsOnboarding={onboarding.needsOnboarding}
         loggedIn={loggedIn}
         component={authenticatedPage}

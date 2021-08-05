@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Session, SessionStatus, SessionStats, SessionDirection } from 'mysterium-vpn-js'
-import { CircularProgress } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import './SessionSidebar.scss'
 
@@ -62,12 +61,10 @@ const SessionSidebar = ({
     <div className="latest-sessions">
       <p className="latest-sessions__heading">{headerText}</p>
       <div className="latest-sessions__content">
-        {!liveSessions ? (
-          <div className="spinner">
-            <CircularProgress disableShrink />
-          </div>
+        {latestSessionCards.length === 0 ? (
+          <div className="latest-sessions__no-sessions-text">No sessions</div>
         ) : (
-          <div>{latestSessionCards || <div>No sessions</div>}</div>
+          latestSessionCards
         )}
       </div>
       {displayNavigation && (

@@ -7,7 +7,7 @@
 import '../../assets/styles/pages/authenticated/main.scss'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
-import { DASHBOARD, NOT_FOUND, SESSIONS, SETTINGS, WALLET } from '../../constants/routes'
+import { DASHBOARD, NOT_FOUND, SESSIONS, SESSIONS_SIDE, SETTINGS, WALLET } from '../../constants/routes'
 
 import Dashboard from './Dashboard/Dashboard'
 import Sessions from './Sessions/Sessions'
@@ -19,6 +19,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { Identity } from 'mysterium-vpn-js'
 import { isRegistered } from '../../commons/identity.utils'
 import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard'
+import SessionSidebarPage from './SessionSidebar/SessionSidebarPage'
 
 const RegistrationOverlay = ({ identityRef }: { identityRef: string }) => {
   return (
@@ -78,6 +79,9 @@ const AuthenticatedPage = ({ identity }: Props) => {
           </Route>
           <Route exact={true} path={SETTINGS}>
             <Settings />
+          </Route>
+          <Route exact={true} path={SESSIONS_SIDE}>
+            <SessionSidebarPage />
           </Route>
           <Route exact={true} path={WALLET}>
             <Wallet />
