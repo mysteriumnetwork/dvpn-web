@@ -1,10 +1,40 @@
 @import '../../assets/styles/base/variables';
+@import '../../assets/styles/base/mixins/media';
 
 .table {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  &__desktop {
+    @include respond-below(sm) {
+      display: none;
+    }
+  }
+
+  &__mobile {
+    @include respond-above(sm) {
+      display: none;
+    }
+    @include respond-below(sm) {
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+    }
+  }
+
+  &__mobile-row {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: $small-size;
+    width: 100%;
+    margin-bottom: 5px;
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
 
   &__header {
     width: 100%;

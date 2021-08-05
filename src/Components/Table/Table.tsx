@@ -9,6 +9,7 @@ import PaginationMaterial from '@material-ui/lab/Pagination'
 
 import './Table.scss'
 import Button from '../Buttons/Button'
+import SessionCard from '../../Pages/Authenticated/Components/SessionCard/SessionCard'
 
 export interface TableHeader {
   name: string
@@ -58,7 +59,7 @@ const Table = ({
   handleNextPageButtonClick,
   loading = false,
 }: Props) => {
-  const mappedRows = rows.map((row) => {
+  const desktopRows = rows.map((row) => {
     return (
       <div className="row" key={row.key}>
         {row.cells.map((cell, idx) => {
@@ -71,10 +72,29 @@ const Table = ({
       </div>
     )
   })
+
+  const mobileRows = rows.map((row) => {
+    const cells = row.cells
+    return (
+      <div className="table__mobile-row" key={row.key}>
+        <SessionCard
+          country={cells[0].content as string}
+          status={false}
+          id={cells[5].content as string}
+          time={cells[1].content as string}
+          data={cells[4].content as string}
+          value={cells[3].content as string}
+        />
+      </div>
+    )
+  })
   return (
     <div className="table">
-      <div className="table__header">{headers.map(header)}</div>
-      <div className="table__body">{mappedRows.length ? mappedRows : noData}</div>
+      <div className="table__desktop">
+        <div className="table__header">{headers.map(header)}</div>
+        <div className="table__body">{desktopRows.length ? desktopRows : noData}</div>
+      </div>
+      <div className="table__mobile">{mobileRows}</div>
       <div className="table__footer">
         <Button
           disabled={currentPage === 1 || loading}

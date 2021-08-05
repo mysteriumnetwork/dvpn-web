@@ -14,7 +14,7 @@ import { seconds2Time } from '../../../commons/date.utils'
 import { displayMyst } from '../../../commons/money.utils'
 import { SESSIONS } from '../../../constants/routes'
 
-import SessionCard from './SessionCard'
+import SessionCard from '../Components/SessionCard/SessionCard'
 
 const sumBytes = (sessionStats?: SessionStats) => {
   return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0)

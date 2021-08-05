@@ -1,4 +1,4 @@
-@import "../../../assets/styles/base/variables";
+@import "src/assets/styles/base/variables";
 
 .session {
   background: #FCFCFC;
@@ -6,7 +6,7 @@
   box-sizing: border-box;
   border-radius: 12px;
   padding: 4px 12px;
-  margin-bottom: 20px;
+  width: 100%;
 
   &__header {
     display: flex;

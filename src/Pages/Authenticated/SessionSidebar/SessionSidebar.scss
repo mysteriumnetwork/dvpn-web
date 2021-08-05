@@ -22,6 +22,10 @@
     justify-content: space-between;
     height: calc(100% - 25px);
     padding: 20px 25px;
+
+    .session {
+      margin-bottom: 20px;
+    }
   }
 
   &__footer {

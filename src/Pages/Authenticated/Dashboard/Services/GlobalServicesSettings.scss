@@ -32,7 +32,7 @@
       color: $main-text-color;
 
       @include respond-below(sm) {
-        font-size: 0.7rem !important;
+        font-size: $small-size !important;
       }
     }
 
@@ -69,5 +69,10 @@
   .change-button {
     margin-left: 15px;
     width: 130px;
+
+    @include respond-below(sm) {
+      font-size: $small-size !important;
+      width: 80px !important;
+    }
   }
 }
