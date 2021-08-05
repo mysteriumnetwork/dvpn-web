@@ -76,16 +76,18 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
     <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose} disableBackdropClick>
       <DialogTitle>
         <div className="report-issue__header">
-          <div className="title">
-            Report issue
-            <p className="title__description">Describe your issue</p>
-          </div>
-          <div className="chat">
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a href="#" onClick={() => openChat()}>
-              <ChatIcon className="chat__icon" />
-              Talk to us via live chat
-            </a>
+          <div className="report-issue__header__flex">
+            <div className="title">
+              Report issue
+              <p className="title__description">Describe your issue</p>
+            </div>
+            <div className="chat">
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a href="#" onClick={() => openChat()}>
+                <ChatIcon className="chat__icon" />
+                Talk to us via live chat
+              </a>
+            </div>
           </div>
           <div className="close">
             <IconButton onClick={handleClose}>
@@ -123,12 +125,17 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
               />
               <div className="input-group__help m-t-5">Describe what went wrong (minimum 30 characters)</div>
             </div>
-            <div className="report-issue__footer m-t-50 p-b-15">
+            <div className="report-issue__footer p-b-15">
               <p className="agreement">
                 By submitting this form, agree to send to Mysterium Network some account information like IP, country
                 and system information which will be used to improve the services.
               </p>
-              <Button disabled={state.description.length < 30} isLoading={state.sending} onClick={reportIssue}>
+              <Button
+                className="report-issue__send_button"
+                disabled={state.description.length < 30}
+                isLoading={state.sending}
+                onClick={reportIssue}
+              >
                 Send
               </Button>
             </div>

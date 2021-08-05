@@ -3,13 +3,14 @@
 
 .page {
   display: flex;
-
   min-height: 100vh;
   width: 100%;
   height: 100vh;
 
   &__menu {
-    height: 100vh;
+    @include respond-above(sm) {
+      height: 100vh;
+    }
   }
 
   &__content {
@@ -18,6 +19,11 @@
     width: 100%;
     padding-left: 25px;
     display: flex;
+
+    @include respond-below(sm) {
+      margin-top: 78px;
+      background-size: cover;
+    }
 
     .main {
       display: flex;
@@ -29,7 +35,10 @@
         height: 100vh;
         width: 100%;
         padding: 0 25px 100px 0;
-        overflow-y: auto;
+
+        @include respond-above(sm) {
+          overflow-y: auto;
+        }
 
         &--split {
           @include respond-below(sm) {

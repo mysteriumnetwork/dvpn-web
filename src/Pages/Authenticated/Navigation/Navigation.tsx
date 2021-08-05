@@ -32,7 +32,7 @@ const Navigation = ({ location }: Props): JSX.Element => {
   }, [])
 
   return (
-    <div className="navigation wrapper">
+    <div className="navigation">
       <Link to={DASHBOARD} className="navigation--logo">
         <Logo />
       </Link>
@@ -49,7 +49,7 @@ const Navigation = ({ location }: Props): JSX.Element => {
       {/*<NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">*/}
       {/*    {pathname === WALLET ? <WalletActive /> : <Wallet />}*/}
       {/*</NavLink>*/}
-      {/*<div className="flex-grow" />*/}
+      <div className="flex-grow" />
       <div className="navigation--issue">
         <ReportIssue />
       </div>

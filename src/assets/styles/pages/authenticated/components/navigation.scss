@@ -4,14 +4,30 @@
 .navigation {
   background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
   padding: 15px;
-  position: relative;
   display: flex;
-  flex-direction: column;
-  height: 100%;
+
+  @include respond-above(sm) {
+    height: 100%;
+    position: relative;
+    flex-direction: column;
+  }
+  @include respond-below(sm) {
+    flex-direction: row;
+    width: 100%;
+    position: fixed;
+    height: 78px;
+    top: 0;
+    z-index: 9999;
+  }
 
   &--logo {
-    margin-bottom: 50px;
     display: block;
+    @include respond-above(sm) {
+      margin-bottom: 50px;
+    }
+    @include respond-below(sm) {
+      display: none;
+    }
   }
 
   &--item {
@@ -62,10 +78,24 @@
 }
 
 .intercom-launcher-frame {
-  left: 10px !important;
+  @include respond-above(sm) {
+    left: 10px !important;
+  }
+  @include respond-below(sm) {
+    left: calc(100% - 140px) !important;
+    top: 10px !important;
+    border: #ffffff 1px solid;
+  }
 }
 
 .intercom-lightweight-app-launcher {
-  left: 10px !important;
+  @include respond-above(sm) {
+    left: 10px !important;
+  }
+  @include respond-below(sm) {
+    left: calc(100% - 140px) !important;
+    top: 10px !important;
+    border: #ffffff 1px solid;
+  }
 }
 

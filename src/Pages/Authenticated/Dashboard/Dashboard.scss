@@ -48,6 +48,9 @@
   }
 
   &__services-settings {
-
+    @include respond-below(sm) {
+      padding-bottom: 50px
+    }
   }
+
 }

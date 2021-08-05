@@ -12,6 +12,9 @@
     }
     @include respond-below(sm) {
       width: 100%;
+      &:last-child {
+        padding-bottom: 50px
+      }
     }
 
     .heading {
