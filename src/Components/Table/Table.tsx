@@ -94,7 +94,7 @@ const Table = ({
         <div className="table__header">{headers.map(header)}</div>
         <div className="table__body">{desktopRows.length ? desktopRows : noData}</div>
       </div>
-      <div className="table__mobile">{mobileRows}</div>
+      <div className="table__mobile">{mobileRows.length === 0 ? <p>No Sessions</p> : mobileRows}</div>
       <div className="table__footer">
         <Button
           disabled={currentPage === 1 || loading}

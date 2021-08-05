@@ -22,6 +22,14 @@
       display: flex;
       flex-direction: column;
       background: #ffffff;
+      border-radius: 5px 5px 0 0;
+    }
+
+    p {
+      align-self: center;
+      font-size: $smaller-size;
+      padding: 5px 0 5px 0;
+      color: $secondary-text-color;
     }
   }
 

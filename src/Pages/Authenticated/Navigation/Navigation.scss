@@ -1,5 +1,5 @@
-@import '../../../base/variables';
-@import '../../../base/mixins/media';
+@import 'src/assets/styles/base/variables';
+@import 'src/assets/styles/base/mixins/media';
 
 .navigation {
   background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
@@ -17,7 +17,13 @@
     position: fixed;
     height: 78px;
     top: 0;
-    z-index: 9999;
+    z-index: 999;
+  }
+
+  .mobile {
+    @include respond-above(sm) {
+      display: none;
+    }
   }
 
   &--logo {

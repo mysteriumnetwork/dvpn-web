@@ -72,7 +72,6 @@
 
     @include respond-below(sm) {
       font-size: $small-size !important;
-      width: 80px !important;
     }
   }
 }

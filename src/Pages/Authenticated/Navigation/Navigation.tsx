@@ -7,7 +7,7 @@
 import React, { useEffect } from 'react'
 import { Link, withRouter, RouteComponentProps, NavLink } from 'react-router-dom'
 
-import '../../../assets/styles/pages/authenticated/components/navigation.scss'
+import './Navigation.scss'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/components/navigation/Logo.svg'
 import { ReactComponent as Dashboard } from '../../../assets/images/authenticated/components/navigation/Dashboard.svg'
 import { ReactComponent as DashboardActive } from '../../../assets/images/authenticated/components/navigation/DashboardActive.svg'
@@ -48,7 +48,7 @@ const Navigation = ({ location }: Props): JSX.Element => {
       <NavLink to={SETTINGS} className={'navigation--item '} activeClassName="navigation--item active">
         {pathname === SETTINGS ? <SettingsActive /> : <Settings />}
       </NavLink>
-      <NavLink to={SESSIONS_SIDE} className={'navigation--item '} activeClassName="navigation--item active">
+      <NavLink to={SESSIONS_SIDE} className={'mobile navigation--item '} activeClassName="navigation--item active">
         {pathname === SESSIONS_SIDE ? <WalletActive /> : <Wallet />}
       </NavLink>
       {/*<NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">*/}

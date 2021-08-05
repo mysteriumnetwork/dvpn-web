@@ -29,7 +29,7 @@
     }
 
     @include respond-below(sm) {
-      width: 80%;
+      width: 90%;
     }
   }
 
@@ -42,6 +42,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    @include respond-below(sm) {
+      button {
+        font-size: $smaller-size !important;
+      }
+    }
   }
 
   .title {
