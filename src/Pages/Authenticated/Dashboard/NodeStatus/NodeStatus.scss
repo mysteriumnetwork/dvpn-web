@@ -11,6 +11,13 @@
   justify-content: space-between;
   flex-wrap: wrap;
 
+  @include respond-below(sm) {
+    flex-direction: column;
+    &__block {
+      width: 100%;
+    }
+  }
+
   &__block {
     display: flex;
     flex-direction: row;
@@ -57,7 +64,7 @@
     margin-left: 5px;
   }
 
-  &__nat-mode-help {
+  &__tooltip {
     display: flex;
     align-items: center;
     color: $names-text-color;
@@ -66,17 +73,28 @@
     @include respond-below(sm) {
       display: none;
     }
-
-    &__tooltip {
-      padding: 10px 10px 10px 10px;
-    }
-
-    &__tooltip-content {
-      margin: 5px 0 5px 14px;
-    }
   }
 
   &:last-child {
     padding-right: 28px;
+  }
+}
+
+.tooltip {
+  padding: 10px 10px 10px 10px;
+
+  &__header {
+    margin-bottom: 5px;
+  }
+
+
+  &__content {
+    li {
+      margin-bottom: 5px;
+    }
+  }
+
+  &__footer {
+    margin-top: 5px;
   }
 }

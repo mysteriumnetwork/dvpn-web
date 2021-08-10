@@ -5,30 +5,38 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react'
 import { CircularProgress } from '@material-ui/core'
-import { useSelector } from 'react-redux'
-import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
+import {
+  CurrentPricesResponse,
+  NatStatusV2,
+  Session,
+  SessionDirection,
+  SessionStats,
+  SessionStatus,
+} from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
-import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { tequilapiClient } from '../../../api/TequilApiClient'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
+import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
+import { parseError } from '../../../commons/error.utils'
+import { isRegistered } from '../../../commons/identity.utils'
 import Header from '../../../Components/Header'
-import { RootState } from '../../../redux/store'
 import { AppState, currentIdentity } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
+import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
-import { tequilapiClient } from '../../../api/TequilApiClient'
-import { parseError } from '../../../commons/error.utils'
+import BountyWidget from './Bounty/BountyWidget'
+import Charts from './Charts/Charts'
 
 import './Dashboard.scss'
-import Charts from './Charts/Charts'
+import NodeStatus from './NodeStatus/NodeStatus'
+import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
 import Statistics from './Statistics/Statistics'
-import { isRegistered } from '../../../commons/identity.utils'
-import BountyWidget from './Bounty/BountyWidget'
-import GlobalServicesSettings from './Services/GlobalServicesSettings'
-import NodeStatus from './NodeStatus/NodeStatus'
+import { DOCS_NAT_FIX } from '../../../constants/urls'
 
 interface StateProps {
   sessionStatsAllTime: SessionStats
@@ -37,6 +45,11 @@ interface StateProps {
   }
   historySessions: Session[]
   currentPrices: CurrentPricesResponse
+  natType: {
+    loading: boolean
+    type: string
+    error?: string
+  }
 }
 
 const initialState = {
@@ -53,6 +66,10 @@ const initialState = {
   currentPrices: {
     pricePerHour: BigInt(0),
     pricePerGib: BigInt(0),
+  },
+  natType: {
+    loading: true,
+    type: '',
   },
 }
 
@@ -97,14 +114,26 @@ const Dashboard = () => {
       })
   }, [identity?.id])
 
+  const updateNATType = () => {
+    tequilapiClient
+      .natType()
+      .then((resp) => setState((cs) => ({ ...cs, natType: { loading: false, type: resp.type, error: resp.error } })))
+  }
+  useEffect(() => {
+    updateNATType()
+    const natPollInterval = setInterval(() => updateNATType(), 60_000 * 5)
+    return () => clearInterval(natPollInterval)
+  }, [])
+
   const { appState } = sse
   if (!identity || !appState || !config) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
-  const serviceInfos = appState.serviceInfo
-  const { status } = appState.natStatus
+  const { serviceInfo, nat } = appState
   const testnet = isTestnet(config)
+
+  const isServiceOn = (): boolean => serviceInfo && serviceInfo.length > 0
 
   return (
     <div className="main">
@@ -122,12 +151,18 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="dashboard__node-status">
-          <NodeStatus />
+          <NodeStatus
+            nodeStatus={isServiceOn() ? nat.status : { status: NatStatusV2.OFFLINE }}
+            natType={state.natType.type}
+            natTypeLoading={state.natType.loading}
+            natTypeError={state.natType.error}
+            nodeStatusFixUrl={DOCS_NAT_FIX}
+          />
         </div>
         <div className="dashboard__services">
           <Services
             identityRef={identity.id}
-            servicesInfos={serviceInfos}
+            servicesInfos={serviceInfo}
             userConfig={config}
             disabled={!isRegistered(identity)}
             prices={state.currentPrices}
@@ -135,7 +170,7 @@ const Dashboard = () => {
         </div>
 
         <div className="dashboard__services-settings">
-          <GlobalServicesSettings config={config} servicesInfos={serviceInfos} />
+          <GlobalServicesSettings config={config} servicesInfos={serviceInfo} />
         </div>
       </div>
 

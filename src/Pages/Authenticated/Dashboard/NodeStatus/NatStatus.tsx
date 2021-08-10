@@ -14,11 +14,11 @@ interface Props {
 }
 
 const NatStatus = ({ status, natFixUrl }: Props) => {
-  const bStatus = bubbleStatus(status)
+  // const bStatus = bubbleStatus(status)
   return (
     <div className="nat-status">
-      <Bubble status={bStatus} />
-      {statusText(status)}
+      {/*<Bubble status={bStatus} />*/}
+      {/*{statusText(status)}*/}
     </div>
   )
 }
