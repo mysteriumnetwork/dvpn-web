@@ -7,8 +7,8 @@
 
 import { Tooltip } from '@material-ui/core'
 import HelpIcon from '@material-ui/icons/Help'
-import { NatStatusV2, NatStatusV2Response } from 'mysterium-vpn-js/lib/nat/status'
 import React, { ReactFragment } from 'react'
+import { NatStatusV2Response, ServiceInfo } from 'mysterium-vpn-js'
 import Bubble from './Bubble'
 import { bubbleStatus, natType2Human, statusText } from './nat-status.utils'
 import './NodeStatus.scss'
@@ -18,27 +18,31 @@ interface Props {
   natTypeError?: string
   natTypeLoading: boolean
 
-  nodeStatus: NatStatusV2Response
+  natStatus: NatStatusV2Response
   nodeStatusFixUrl?: string
+
+  serviceInfos: ServiceInfo[]
 }
 
-const NodeStatus = ({ nodeStatus, natType, nodeStatusFixUrl }: Props) => {
-  const { status: natStatus } = nodeStatus
+const NodeStatus = ({ natStatus, natType, nodeStatusFixUrl, serviceInfos }: Props) => {
+  const online = serviceInfos && serviceInfos.length > 0
+
   return (
     <div className="status-card">
       <div className="status-card__block">
         <div className="status-card__status-text">Node status:</div>
         <div className="status-card__status-icon">
-          <Bubble status={bubbleStatus(natStatus)} />
-          <p className="status-card__status-icon-description">{statusText(natStatus)}</p>
+          <Bubble status={bubbleStatus(natStatus, online)} />
+          <p className="status-card__status-icon-description">{statusText(natStatus, online)}</p>
         </div>
-        {natStatus !== NatStatusV2.ONLINE && nodeStatusFixUrl && (
-          <div className="status-card__tooltip">
-            <Tooltip title={nodeStatusTooltip(natStatus)} placement="bottom-start" arrow interactive>
-              <HelpIcon fontSize="small" />
-            </Tooltip>
-          </div>
-        )}
+        {(online && natStatus.status === 'failed') ||
+          (!online && (
+            <div className="status-card__tooltip">
+              <Tooltip title={nodeStatusTooltip(natStatus, online)} placement="bottom-start" arrow interactive>
+                <HelpIcon fontSize="small" />
+              </Tooltip>
+            </div>
+          ))}
       </div>
 
       <div className="status-card__block">
@@ -65,15 +69,23 @@ const NodeStatus = ({ nodeStatus, natType, nodeStatusFixUrl }: Props) => {
   )
 }
 
-const nodeStatusTooltip = (status: NatStatusV2): ReactFragment => {
-  switch (status) {
-    case NatStatusV2.PENDING:
+const nodeStatusTooltip = (nat: NatStatusV2Response, online: boolean): ReactFragment => {
+  if (!online) {
+    return (
+      <>
+        <p>Your node does not appear to be on. Please make sure it's plugged in and connected to the internet.</p>
+        <p>Try restarting the node and checking that it's connected to the router by a cable.</p>
+      </>
+    )
+  }
+  switch (nat.status) {
+    case 'pending':
       return (
         <>
           <p>Node check pending, please be patient.</p>
         </>
       )
-    case NatStatusV2.FAILED:
+    case 'failed':
       return (
         <>
           <p>Our monitoring agent tried to connect to your node, but something went wrong.</p>
@@ -87,13 +99,6 @@ const nodeStatusTooltip = (status: NatStatusV2): ReactFragment => {
             </a>{' '}
             for further assistance.
           </p>
-        </>
-      )
-    case NatStatusV2.OFFLINE:
-      return (
-        <>
-          <p>Your node does not appear to be on. Please make sure it's plugged in and connected to the internet.</p>
-          <p>Try restarting the node and checking that it's connected to the router by a cable.</p>
         </>
       )
     default:

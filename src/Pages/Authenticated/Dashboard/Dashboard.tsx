@@ -6,14 +6,7 @@
  */
 
 import { CircularProgress } from '@material-ui/core'
-import {
-  CurrentPricesResponse,
-  NatStatusV2,
-  Session,
-  SessionDirection,
-  SessionStats,
-  SessionStatus,
-} from 'mysterium-vpn-js'
+import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -133,8 +126,6 @@ const Dashboard = () => {
   const { serviceInfo, nat } = appState
   const testnet = isTestnet(config)
 
-  const isServiceOn = (): boolean => serviceInfo && serviceInfo.length > 0
-
   return (
     <div className="main">
       <div className="main-block main-block--split">
@@ -152,7 +143,8 @@ const Dashboard = () => {
         </div>
         <div className="dashboard__node-status">
           <NodeStatus
-            nodeStatus={isServiceOn() ? nat.status : { status: NatStatusV2.OFFLINE }}
+            serviceInfos={serviceInfo}
+            natStatus={nat.status}
             natType={state.natType.type}
             natTypeLoading={state.natType.loading}
             natTypeError={state.natType.error}

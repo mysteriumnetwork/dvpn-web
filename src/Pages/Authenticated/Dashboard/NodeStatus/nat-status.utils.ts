@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { NatStatusV2 } from 'mysterium-vpn-js'
+import { NatStatusV2Response } from 'mysterium-vpn-js'
 import { NATType } from '../../../../constants/nat'
 
 export enum BubbleStatus {
@@ -14,32 +14,27 @@ export enum BubbleStatus {
   FAILED = 'failed',
 }
 
-export const statusText = (status: NatStatusV2): string => {
-  switch (status) {
-    case NatStatusV2.PENDING:
-      return 'Pending'
-    case NatStatusV2.ONLINE:
-      return 'Online'
-    case NatStatusV2.FAILED:
+export const statusText = (nat: NatStatusV2Response, online: boolean): string => {
+  if (!online) {
+    return 'All services offline'
+  }
+  switch (nat.status) {
+    case 'failed':
       return 'Test Failed'
-    case NatStatusV2.OFFLINE:
-      return 'All services offline'
     default:
-      return 'Unknown'
+      return 'Online'
   }
 }
 
-export const bubbleStatus = (status: NatStatusV2): BubbleStatus => {
-  switch (status) {
-    case NatStatusV2.PENDING:
+export const bubbleStatus = (status: NatStatusV2Response, online: boolean): BubbleStatus => {
+  if (!online) {
+    return BubbleStatus.FAILED
+  }
+  switch (status.status) {
+    case 'failed':
       return BubbleStatus.WARNING
-    case NatStatusV2.ONLINE:
-      return BubbleStatus.SUCCESS
-    case NatStatusV2.FAILED:
-    case NatStatusV2.OFFLINE:
-      return BubbleStatus.FAILED
     default:
-      return BubbleStatus.WARNING
+      return BubbleStatus.SUCCESS
   }
 }
 
