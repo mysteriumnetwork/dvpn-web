@@ -106,7 +106,7 @@ const nodeStatusTooltip = (nat: NatStatusV2Response, online: boolean): ReactFrag
   }
 }
 
-const traversalToolTip = (): ReactFragment => (
+/*const traversalToolTip = (): ReactFragment => (
   <div className="tooltip">
     <div className="tooltip__header">
       There are 4 traversal mechanisms possible. Node is trying to test each of them to become connectable for
@@ -136,6 +136,6 @@ const traversalToolTip = (): ReactFragment => (
       punching will serve best.
     </div>
   </div>
-)
+)*/
 
 export default NodeStatus
