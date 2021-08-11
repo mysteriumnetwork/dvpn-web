@@ -1,11 +1,17 @@
 @import '../../assets/styles/base/variables';
+@import '../../assets/styles/base/mixins/media';
 
 .onboarding {
   display: flex;
   min-height: 100vh;
 
   &__content {
-    width: 55%;
+    @include respond-above(sm) {
+      width: 55%;
+    }
+    @include respond-below(sm) {
+      width: 100%;
+    }
     margin-right: -5%;
     background: #ffffff;
     position: relative;
@@ -81,6 +87,9 @@
   }
 
   &__sidebar {
+    @include respond-below(sm) {
+      display: none;
+    }
     background: linear-gradient(214.77deg, #262262 0%, #9E1F63 100.08%);
     width: 50%;
     display: flex;
@@ -90,14 +99,6 @@
     img {
       max-width: 100%;
     }
-  }
-
-  .spinner {
-    position: fixed;
-    z-index: 999;
-    margin-right: 100%;
-    margin-top: 1%;
-    margin-left: 1%;
   }
 }
 

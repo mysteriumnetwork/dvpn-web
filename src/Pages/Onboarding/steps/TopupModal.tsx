@@ -33,7 +33,6 @@ const TopupModal = ({ identity, topupSum, onTopup, open, onClose }: Props) => {
     <Modal
       open={open}
       className="topup-modal"
-      disableBackdropClick
       disableAutoFocus={true}
       BackdropProps={{
         timeout: 500,

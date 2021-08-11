@@ -1,4 +1,5 @@
 @import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
 
 .service-detail {
   display: flex;
@@ -12,14 +13,23 @@
 
   &__label {
     font-weight: $medium-weight;
-    font-size: 14px;
+    font-size: $normal-size;
     line-height: 32px;
     color: $names-text-color;
+
+    @include respond-below(sm) {
+      font-size: $smaller-size !important;
+    }
   }
 
   &__value {
     font-weight: $medium-weight;
-    font-size: 14px;
+    font-size: $normal-size;
+
+    @include respond-below(sm) {
+      font-size: $smaller-size !important;
+    }
+
     line-height: 32px;
     color: $main-text-color;
 

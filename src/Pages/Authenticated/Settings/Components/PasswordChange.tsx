@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
 import { useSnackbar } from 'notistack'
 import { TequilapiError } from 'mysterium-vpn-js'
 import Button from '../../../../Components/Buttons/Button'
@@ -14,6 +13,7 @@ import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { validatePassword } from '../../../../commons/password'
 import { DEFAULT_USERNAME } from '../../../../constants/defaults'
 import { TextField } from '../../../../Components/TextField'
+import { useState } from 'react'
 
 interface StateInterface {
   newPasswordConfirmation: string
@@ -34,7 +34,7 @@ const defaultState = {
 const PasswordChange: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar()
 
-  const [values, setValues] = React.useState<StateInterface>(defaultState)
+  const [values, setValues] = useState<StateInterface>(defaultState)
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target

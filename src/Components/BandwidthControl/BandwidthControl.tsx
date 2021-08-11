@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
 import MystSlider from '../MystSlider/MystSlider'
 import './BandwidthSettings.scss'
+import { useState } from 'react'
 
 interface Props {
   bandwidth: number
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onChange }: Props) => {
-  const [value, setValue] = React.useState<number>(bandwidth)
+  const [value, setValue] = useState<number>(bandwidth)
 
   return (
     <div className="bandwidth-settings-modal--block">

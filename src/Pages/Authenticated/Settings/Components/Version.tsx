@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
 import packageJson from '../../../../../package.json'
 
 interface Props {
@@ -14,8 +13,8 @@ interface Props {
 const Version = ({ nodeVersion }: Props) => {
   return (
     <div>
-      <div>Node version {nodeVersion}</div>
-      <div>WebUI version {packageJson.version}</div>
+      <div>Node version: {nodeVersion}</div>
+      <div>WebUI version: {packageJson.version}</div>
     </div>
   )
 }

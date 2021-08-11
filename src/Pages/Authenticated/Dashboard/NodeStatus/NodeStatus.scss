@@ -1,0 +1,100 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.status-card {
+  padding: 22px 0 25px 28px;
+  box-shadow: 0 2px 5px rgba(99, 99, 99, 0.05);
+  background: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  @include respond-below(sm) {
+    flex-direction: column;
+    &__block {
+      width: 100%;
+    }
+  }
+
+  &__block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__status-text {
+    font-style: normal;
+    font-weight: $normal-weight;
+    font-size: $normal-size;
+    line-height: 21px;
+    color: $names-text-color
+  }
+
+  &__status-icon {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+
+  &__status-icon-description {
+    font-style: normal;
+    font-weight: $medium-weight;
+    font-size: $accent-size;
+    line-height: 24px;
+    color: $main-text-color;
+  }
+
+  &__nat-text {
+    font-style: normal;
+    font-weight: $normal-weight;
+    font-size: $normal-size;
+    line-height: 21px;
+    color: $names-text-color
+  }
+
+  &__nat-mode {
+    font-style: normal;
+    font-weight: $medium-weight;
+    font-size: $accent-size;
+    line-height: 24px;
+    color: $main-text-color;
+    margin-left: 5px;
+  }
+
+  &__tooltip {
+    display: flex;
+    align-items: center;
+    color: $names-text-color;
+    margin-left: 5px;
+
+    @include respond-below(sm) {
+      display: none;
+    }
+  }
+
+  &:last-child {
+    padding-right: 28px;
+  }
+}
+
+.tooltip {
+  padding: 10px 10px 10px 10px;
+
+  &__header {
+    margin-bottom: 5px;
+  }
+
+
+  &__content {
+    li {
+      margin-bottom: 5px;
+    }
+  }
+
+  &__footer {
+    margin-top: 5px;
+  }
+}

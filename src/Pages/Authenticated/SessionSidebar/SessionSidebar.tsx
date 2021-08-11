@@ -4,9 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
 import { Session, SessionStatus, SessionStats, SessionDirection } from 'mysterium-vpn-js'
-import { CircularProgress } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import './SessionSidebar.scss'
 
@@ -15,7 +13,7 @@ import { seconds2Time } from '../../../commons/date.utils'
 import { displayMyst } from '../../../commons/money.utils'
 import { SESSIONS } from '../../../constants/routes'
 
-import SessionCard from './SessionCard'
+import SessionCard from '../Components/SessionCard/SessionCard'
 
 const sumBytes = (sessionStats?: SessionStats) => {
   return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0)
@@ -63,12 +61,10 @@ const SessionSidebar = ({
     <div className="latest-sessions">
       <p className="latest-sessions__heading">{headerText}</p>
       <div className="latest-sessions__content">
-        {!liveSessions ? (
-          <div className="spinner">
-            <CircularProgress disableShrink />
-          </div>
+        {latestSessionCards.length === 0 ? (
+          <div className="latest-sessions__no-sessions-text">No sessions</div>
         ) : (
-          <div>{latestSessionCards || <div>No sessions</div>}</div>
+          latestSessionCards
         )}
       </div>
       {displayNavigation && (

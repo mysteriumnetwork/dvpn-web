@@ -76,7 +76,7 @@ const Settings = (): JSX.Element => {
               <IdentityBackup identity={identity?.id || ''} />
             </div>
 
-            <p className="heading m-t-20">Bounty Payout Address</p>
+            <p className="heading">Bounty Payout Address</p>
             <div className="content">
               <PayoutAddress identity={identity!} />
             </div>

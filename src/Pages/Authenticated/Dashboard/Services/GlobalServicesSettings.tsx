@@ -85,25 +85,23 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
     <div className="services-footer">
       <div className="services-footer__title">Global Service Settings</div>
       <div className="services-footer__content">
-        <div className="partners-block">
-          <div className="switch-row">
-            <ConfirmationSwitch
-              message="This will restart all running services to take affect."
-              turnedOn={state.isVerified}
-              onConfirm={() => {
-                const c = !state.isVerified
-                setState((cs) => ({ ...cs, isVerified: c }))
-                return restartServices(setAccessPolicy(c ? 'mysterium' : ''))
-              }}
-            />
-            <p className="text">Only Mysterium verified partner traffic</p>
-          </div>
+        <div className="switch-row">
+          <ConfirmationSwitch
+            message="This will restart all running services to take affect."
+            turnedOn={state.isVerified}
+            onConfirm={() => {
+              const c = !state.isVerified
+              setState((cs) => ({ ...cs, isVerified: c }))
+              return restartServices(setAccessPolicy(c ? 'mysterium' : ''))
+            }}
+          />
+          <p className="text">Only Mysterium verified partner traffic</p>
           <p className="under-text">
             Safe option: traffic vetted via business contracts, unavailable to the general public and limited to
             streaming. This option potentially will give less reward.
           </p>
         </div>
-        <div className="limits-block">
+        <div className="switch-row">
           <ConfirmationSwitch
             message="This will restart all running services to take affect."
             turnedOn={state.isShaping}
@@ -111,19 +109,14 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
               return restartServices(setTrafficShaping(!state.isShaping, state.bandwidthMbps))
             }}
           />
-          <p className="text">
-            Limit bandwidth to:{' '}
-            <span style={{ display: 'inline-block', width: '70px', textAlign: 'right' }}>
-              {state.bandwidthMbps} Mb/s
-            </span>
-          </p>
+          <p className="text">Limit bandwidth</p>
           <Button
             className="change-button"
             onClick={openBandwidthModal}
             disabled={!state.isShaping}
             extraStyle="outline-primary"
           >
-            Change
+            {state.bandwidthMbps} Mb/s
           </Button>
           <BandwidthControlModal
             isOpen={state.isBandwidthModalOpen}

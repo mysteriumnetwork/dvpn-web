@@ -5,30 +5,30 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react'
 import { CircularProgress } from '@material-ui/core'
-import { useSelector } from 'react-redux'
 import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
-import { docsAddress, isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { tequilapiClient } from '../../../api/TequilApiClient'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
+import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
+import { parseError } from '../../../commons/error.utils'
+import { isRegistered } from '../../../commons/identity.utils'
 import Header from '../../../Components/Header'
-import { RootState } from '../../../redux/store'
 import { AppState, currentIdentity } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
+import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
-import { tequilapiClient } from '../../../api/TequilApiClient'
-import { parseError } from '../../../commons/error.utils'
+import BountyWidget from './Bounty/BountyWidget'
+import Charts from './Charts/Charts'
 
 import './Dashboard.scss'
-import Charts from './Charts/Charts'
-import NatStatus from './NatStatus/NatStatus'
+import NodeStatus from './NodeStatus/NodeStatus'
+import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
 import Statistics from './Statistics/Statistics'
-import { isRegistered } from '../../../commons/identity.utils'
-import BountyWidget from './Bounty/BountyWidget'
-import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import { DOCS_NAT_FIX } from '../../../constants/urls'
 
 interface StateProps {
@@ -38,9 +38,14 @@ interface StateProps {
   }
   historySessions: Session[]
   currentPrices: CurrentPricesResponse
+  natType: {
+    loading: boolean
+    type: string
+    error?: string
+  }
 }
 
-const defaultState = {
+const initialState = {
   sessionStatsAllTime: {
     count: 0,
     countConsumers: 0,
@@ -55,17 +60,20 @@ const defaultState = {
     pricePerHour: BigInt(0),
     pricePerGib: BigInt(0),
   },
+  natType: {
+    loading: true,
+    type: '',
+  },
 }
 
 const Dashboard = () => {
-  const app = useSelector<RootState, AppState>(({ app }) => app)
+  const { config, currentIdentityRef } = useSelector<RootState, AppState>(({ app }) => app)
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
 
-  const [state, setState] = useState<StateProps>(defaultState)
+  const [state, setState] = useState<StateProps>(initialState)
 
   const { enqueueSnackbar } = useSnackbar()
-  const { config } = app
-  const identity = currentIdentity(app.currentIdentityRef, sse.appState?.identities)
+  const identity = currentIdentity(currentIdentityRef, sse.appState?.identities)
 
   useEffect(() => {
     if (!identity) {
@@ -99,13 +107,23 @@ const Dashboard = () => {
       })
   }, [identity?.id])
 
+  const updateNATType = () => {
+    tequilapiClient
+      .natType()
+      .then((resp) => setState((cs) => ({ ...cs, natType: { loading: false, type: resp.type, error: resp.error } })))
+  }
+  useEffect(() => {
+    updateNATType()
+    const natPollInterval = setInterval(() => updateNATType(), 60_000 * 5)
+    return () => clearInterval(natPollInterval)
+  }, [])
+
   const { appState } = sse
   if (!identity || !appState || !config) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
-  const serviceInfos = appState.serviceInfo
-  const { status } = appState.natStatus
+  const { serviceInfo, nat } = appState
   const testnet = isTestnet(config)
 
   return (
@@ -123,23 +141,31 @@ const Dashboard = () => {
             <Charts statsDaily={state.sessionStatsDaily} />
           </div>
         </div>
+        <div className="dashboard__node-status">
+          <NodeStatus
+            serviceInfos={serviceInfo}
+            natStatus={nat.status}
+            natType={state.natType.type}
+            natTypeLoading={state.natType.loading}
+            natTypeError={state.natType.error}
+            nodeStatusFixUrl={DOCS_NAT_FIX}
+          />
+        </div>
         <div className="dashboard__services">
-          <div className="services-header">
-            <p className="services-header__title">Services</p>
-            <div className="services-header__status">
-              <NatStatus natFixUrl={`${docsAddress(config)}/${DOCS_NAT_FIX}`} status={status} />
-            </div>
-          </div>
           <Services
             identityRef={identity.id}
-            servicesInfos={serviceInfos}
+            servicesInfos={serviceInfo}
             userConfig={config}
             disabled={!isRegistered(identity)}
             prices={state.currentPrices}
           />
-          <GlobalServicesSettings config={config} servicesInfos={serviceInfos} />
+        </div>
+
+        <div className="dashboard__services-settings">
+          <GlobalServicesSettings config={config} servicesInfos={serviceInfo} />
         </div>
       </div>
+
       <div className="sidebar-block">
         <SessionSidebar
           liveSessions={sse.appState?.sessions}

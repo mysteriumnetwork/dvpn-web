@@ -4,11 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
-import '../../assets/styles/pages/authenticated/main.scss'
+import './AuthenticatedPage.scss'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
-import { DASHBOARD, NOT_FOUND, SESSIONS, SETTINGS, WALLET } from '../../constants/routes'
+import { DASHBOARD, NOT_FOUND, SESSIONS, SESSIONS_SIDE, SETTINGS, WALLET } from '../../constants/routes'
 
 import Dashboard from './Dashboard/Dashboard'
 import Sessions from './Sessions/Sessions'
@@ -20,16 +19,17 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { Identity } from 'mysterium-vpn-js'
 import { isRegistered } from '../../commons/identity.utils'
 import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard'
+import SessionSidebarPage from './SessionSidebar/SessionSidebarPage'
 
 const RegistrationOverlay = ({ identityRef }: { identityRef: string }) => {
   return (
-    <div className="registration-overlay">
-      <div className="registration-overlay__content">
+    <div className="registration-status">
+      <div className="registration-status__content">
         <CircularProgress className="m-r-10" disableShrink />
         <h2>Your identity is being registered, please be patient...</h2>
       </div>
-      <div className="registration-overlay__footer">
-        <span className="registration-overlay__identity">{identityRef}</span>
+      <div className="registration-status__footer">
+        <span className="registration-status__identity">{identityRef}</span>
         <CopyToClipboard text={identityRef} />
       </div>
     </div>
@@ -38,10 +38,12 @@ const RegistrationOverlay = ({ identityRef }: { identityRef: string }) => {
 
 const HelpArrow = () => {
   return (
-    <div className="intercom-help-pointer">
-      <ArrowBackIcon className="intercom-help-pointer__arrow" fontSize="large" />
-      <h2>have questions? Talk to us!</h2>
-    </div>
+    <>
+      <div className="intercom-help-pointer">
+        <ArrowBackIcon className="intercom-help-pointer__arrow" fontSize="large" />
+        <h2>have questions? Talk to us!</h2>
+      </div>
+    </>
   )
 }
 
@@ -62,6 +64,7 @@ const AuthenticatedPage = ({ identity }: Props) => {
     <div className="page">
       {displayOverlay(identity) && (
         <>
+          <div className="registration-overlay" />
           <RegistrationOverlay identityRef={identity?.id || ''} />
           <HelpArrow />
         </>
@@ -79,6 +82,9 @@ const AuthenticatedPage = ({ identity }: Props) => {
           </Route>
           <Route exact={true} path={SETTINGS}>
             <Settings />
+          </Route>
+          <Route exact={true} path={SESSIONS_SIDE}>
+            <SessionSidebarPage />
           </Route>
           <Route exact={true} path={WALLET}>
             <Wallet />

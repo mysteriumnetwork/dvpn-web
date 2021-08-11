@@ -7,7 +7,7 @@
 import React, { useEffect } from 'react'
 import { Link, withRouter, RouteComponentProps, NavLink } from 'react-router-dom'
 
-import '../../../assets/styles/pages/authenticated/components/navigation.scss'
+import './Navigation.scss'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/components/navigation/Logo.svg'
 import { ReactComponent as Dashboard } from '../../../assets/images/authenticated/components/navigation/Dashboard.svg'
 import { ReactComponent as DashboardActive } from '../../../assets/images/authenticated/components/navigation/DashboardActive.svg'
@@ -15,7 +15,9 @@ import { ReactComponent as Sessions } from '../../../assets/images/authenticated
 import { ReactComponent as SessionsActive } from '../../../assets/images/authenticated/components/navigation/SessionsActive.svg'
 import { ReactComponent as Settings } from '../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { ReactComponent as SettingsActive } from '../../../assets/images/authenticated/components/navigation/SettingsActive.svg'
-import { DASHBOARD, SESSIONS, SETTINGS } from '../../../constants/routes'
+import { ReactComponent as Wallet } from '../../../assets/images/authenticated/components/navigation/Wallet.svg'
+import { ReactComponent as WalletActive } from '../../../assets/images/authenticated/components/navigation/WalletActive.svg'
+import { DASHBOARD, SESSIONS, SESSIONS_SIDE, SETTINGS } from '../../../constants/routes'
 import ReportIssue from '../../../Components/ReportIssues/ReportIssue'
 
 type Props = RouteComponentProps<any, any, any>
@@ -32,7 +34,7 @@ const Navigation = ({ location }: Props): JSX.Element => {
   }, [])
 
   return (
-    <div className="navigation wrapper">
+    <div className="navigation">
       <Link to={DASHBOARD} className="navigation--logo">
         <Logo />
       </Link>
@@ -45,6 +47,9 @@ const Navigation = ({ location }: Props): JSX.Element => {
       </NavLink>
       <NavLink to={SETTINGS} className={'navigation--item '} activeClassName="navigation--item active">
         {pathname === SETTINGS ? <SettingsActive /> : <Settings />}
+      </NavLink>
+      <NavLink to={SESSIONS_SIDE} className={'mobile navigation--item '} activeClassName="navigation--item active">
+        {pathname === SESSIONS_SIDE ? <WalletActive /> : <Wallet />}
       </NavLink>
       {/*<NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">*/}
       {/*    {pathname === WALLET ? <WalletActive /> : <Wallet />}*/}

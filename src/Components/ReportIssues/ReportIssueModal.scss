@@ -1,3 +1,6 @@
+@import "../../assets/styles/base/variables";
+@import "../../assets/styles/base/mixins/media";
+
 .report-issue {
   font-family: Lato, sans-serif;
   display: flex;
@@ -7,21 +10,31 @@
     display: flex;
     justify-content: space-between;
 
+    &__flex {
+      display: flex;
+      @include respond-below(sm) {
+        flex-direction: column;
+      }
+    }
+
     .title {
       &__description {
-        font-size: 14px;
+        font-size: $normal-size;
         color: #8181A5;
       }
     }
 
     .chat {
       flex: 1;
-      margin-left: 30px;
+
+      @include respond-above(sm) {
+        margin-left: 30px;
+      }
 
       a {
         font-family: Lato, sans-serif;
         font-weight: 500;
-        font-size: 14px;
+        font-size: $normal-size;
       }
 
       &__icon {
@@ -35,6 +48,9 @@
     }
 
     .close {
+      .MuiIconButton-root {
+        padding: 0;
+      }
     }
   }
 
@@ -46,10 +62,27 @@
     display: flex;
     justify-content: space-between;
 
+    @include respond-above(sm) {
+      margin-top: 50px;
+    }
+    @include respond-below(sm) {
+      margin-top: 10px;
+      flex-direction: column;
+    }
+
     .agreement {
       color: #8181A5;
-      font-size: 13px;
+      font-size: $normal-size;
       width: 80%;
+
+      @include respond-below(sm) {
+        font-size: $smaller-size !important;
+        margin-bottom: 5px;
+      }
     }
+  }
+
+  &__send_button {
+    height: 40px;
   }
 }

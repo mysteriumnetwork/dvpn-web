@@ -1,4 +1,5 @@
 @import '../../../assets/styles/base/variables';
+@import '../../../assets/styles/base/mixins/media';
 
 .settings {
   display: flex;
@@ -6,13 +7,21 @@
   justify-content: space-between;
 
   &__block {
-    width: 30%;
+    @include respond-above(sm) {
+      width: 30%;
+    }
+    @include respond-below(sm) {
+      width: 100%;
+      &:last-child {
+        padding-bottom: 50px
+      }
+    }
 
     .heading {
       color: $main-text-color;
       font-weight: $medium-weight;
       font-style: normal;
-      font-size: 18px;
+      font-size: $large-size;
       line-height: 32px;
       margin-bottom: 20px;
     }
@@ -31,15 +40,23 @@
 }
 
 .flex-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .settings-header {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
+
+  @include respond-above(sm) {
     justify-content: space-between;
     align-items: center;
+  }
+
+  @include respond-below(sm) {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
 }

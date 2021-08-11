@@ -4,16 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
-
 import './Bubble.scss'
+import { BubbleStatus } from './nat-status.utils'
 
 interface Props {
-  type?: string
+  status?: BubbleStatus
 }
 
-const Bubble = ({ type }: Props): JSX.Element => {
-  return <div className={`bubble bubble--${type}`} />
+const Bubble = ({ status }: Props): JSX.Element => {
+  return <div className={`bubble bubble--${status}`} />
 }
 
 export default Bubble

@@ -1,52 +1,56 @@
 @import '../../../assets/styles/base/variables';
+@import '../../../assets/styles/base/mixins/media';
 
 .dashboard {
-    &__statistics {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-bottom: 25px;
-    }
+  &__statistics {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
-    &__widgets {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: space-between;
+  &__widgets {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-        .widget {
-            margin: -10px;
-            padding: 10px;
-            &--bounty {
-                width: 30%;
-                align-self: stretch;
-            }
-            &--chart {
-                width: 70%;
-            }
-            &:last-child {
-                padding-left: 0;
-            }
+    .widget {
+      @include respond-above(sm) {
+        &--bounty {
+          width: 30%;
+          align-self: stretch;
         }
-    }
-
-    &__services {
-        margin-top: 50px;
-
-        .services-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            justify-content: space-between;
-
-            &__title {
-                font-style: normal;
-                font-weight: $medium-weight;
-                font-size: 18px;
-                line-height: 32px;
-                color: $main-text-color;
-                margin-right: 20px;
-            }
+        &--chart {
+          margin-left: 10px;
+          width: calc(70% - 10px);
         }
+        &:last-child {
+          padding-left: 0;
+        }
+      }
+
+      @include respond-below(sm) {
+        width: 100%;
+        &--bounty {
+          margin-bottom: 25px;
+          align-self: stretch;
+        }
+      }
     }
+  }
+
+  &__node-status {
+    margin-top: 25px;
+  }
+
+  &__services {
+    margin-top: 25px;
+  }
+
+  &__services-settings {
+    @include respond-below(sm) {
+      padding-bottom: 50px
+    }
+  }
+
 }

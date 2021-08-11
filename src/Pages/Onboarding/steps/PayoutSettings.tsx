@@ -18,7 +18,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import TopupModal from './TopupModal'
 import { isFreeRegistration } from '../../../commons/config'
-import './SettlmentSettings.scss'
+import './PayoutSettings.scss'
 
 interface Props {
   callbacks: OnboardingChildProps
