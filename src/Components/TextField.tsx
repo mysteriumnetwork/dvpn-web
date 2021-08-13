@@ -5,10 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TextField as MUITextField } from '@material-ui/core'
+import React from 'react'
 
 interface Props {
   password?: boolean
-  handleChange: Function
+  handleChange: (a: any) => (e: React.ChangeEvent<HTMLInputElement>) => void
   value?: string
   stateName: string
   disabled?: boolean
