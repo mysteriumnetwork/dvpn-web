@@ -4,27 +4,39 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { CircularProgress } from '@material-ui/core'
+import { Identity } from 'mysterium-vpn-js'
+import { useSnackbar } from 'notistack'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useSnackbar } from 'notistack'
 
 import { tequilapiClient } from '../../../api/TequilApiClient'
+import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
+import * as config from '../../../commons/config'
+import { parseError, parseMMNError } from '../../../commons/error.utils'
 import Header from '../../../Components/Header'
 import { currentIdentity } from '../../../redux/app.slice'
 import { RootState } from '../../../redux/store'
-import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
-import { parseError, parseMMNError } from '../../../commons/error.utils'
+import IdentityBackup from './Components/IdentityBackup'
 
 import MMN from './Components/MMN'
 import PasswordChange from './Components/PasswordChange'
-import IdentityBackup from './Components/IdentityBackup'
+import PayoutAddress from './Components/PayoutAddress'
+import Version from './Components/Version'
 
 import './Setings.scss'
-import * as config from '../../../commons/config'
-import PayoutAddress from './Components/PayoutAddress'
-import { Identity } from 'mysterium-vpn-js'
-import { CircularProgress } from '@material-ui/core'
-import Version from './Components/Version'
+
+interface CardProps {
+  title: string
+  children: any
+}
+
+const Card = ({ title, children }: CardProps) => (
+  <>
+    <p className="heading">{title}</p>
+    <div className="content">{children}</div>
+  </>
+)
 
 interface StateInterface {
   apiKey: string
@@ -32,7 +44,7 @@ interface StateInterface {
   loading: boolean
 }
 
-const Settings = (): JSX.Element => {
+const Settings = () => {
   const { enqueueSnackbar } = useSnackbar()
 
   const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
@@ -71,29 +83,25 @@ const Settings = (): JSX.Element => {
         </div>
         <div className="settings">
           <div className="settings__block">
-            <p className="heading">Identity</p>
-            <div className="content">
+            <Card title="Identity">
               <IdentityBackup identity={identity?.id || ''} />
-            </div>
+            </Card>
 
-            <p className="heading">Bounty Payout Address</p>
-            <div className="content">
-              <PayoutAddress identity={identity!} />
-            </div>
+            <Card title="Bounty Payout Address">
+              <PayoutAddress identity={identity} />
+            </Card>
           </div>
 
           <div className="settings__block">
-            <p className="heading">WebUI security</p>
-            <div className="content">
+            <Card title="WebUI security">
               <PasswordChange />
-            </div>
+            </Card>
           </div>
 
           <div className="settings__block">
-            <p className="heading">MMN integration</p>
-            <div className="content">
+            <Card title="MMN integration">
               <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
-            </div>
+            </Card>
           </div>
         </div>
       </div>
