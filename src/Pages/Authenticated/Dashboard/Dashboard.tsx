@@ -25,6 +25,7 @@ import BountyWidget from './Bounty/BountyWidget'
 import Charts from './Charts/Charts'
 
 import './Dashboard.scss'
+import { NatWarning } from './NodeStatus/NatWarning'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
@@ -151,6 +152,11 @@ const Dashboard = () => {
             nodeStatusFixUrl={DOCS_NAT_FIX}
           />
         </div>
+        {state.natType.type === 'prcone' && (
+          <div className="dashboard__nat-warning">
+            <NatWarning troubleshootUrl={DOCS_NAT_FIX} />
+          </div>
+        )}
         <div className="dashboard__services">
           <Services
             identityRef={identity.id}

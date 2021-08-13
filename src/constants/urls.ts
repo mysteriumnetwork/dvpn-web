@@ -5,4 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const DOCS_NAT_FIX = '/node-runners/troubleshooting/#nat-traversal'
+export const DOCS = 'https://docs.mysterium.network'
+export const DOCS_NAT_FIX = `${DOCS}/node-runners/troubleshooting/#nat-traversal`
