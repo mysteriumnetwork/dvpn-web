@@ -26,5 +26,14 @@
     color: $secondary-text-color;
     margin-bottom: 6px;
     text-align: justify;
+
+    &-warning {
+      font-family: Lato, sans-serif;
+      font-style: normal;
+      font-weight: $normal-weight;
+      font-size: $small-size;
+      color: red;
+      text-align: justify;
+    }
   }
 }

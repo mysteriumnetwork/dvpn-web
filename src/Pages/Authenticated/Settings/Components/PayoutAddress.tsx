@@ -42,6 +42,7 @@ const PayoutAddress = ({ identity }: Props) => {
     tequilapiClient
       .payoutAddressGet(identity?.id || '')
       .then(({ address }) => setState((cs) => ({ ...cs, payoutAddress: address, initialPayoutAddress: address })))
+      .catch(() => {}) // address may not exist
       .finally(() => setState((cs) => ({ ...cs, loading: false })))
   }, [identity?.id])
 

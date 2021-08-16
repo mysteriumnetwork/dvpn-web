@@ -40,6 +40,10 @@ export const natTraversals = (c: Config): string => {
   return _.get<Config, any>(c, 'data.traversal') || ''
 }
 
+export const rpcl2 = (c?: Config): string[] => {
+  return _.get<Config, any>(c, 'data.ether.client.rpcl2') || []
+}
+
 export const etherscanTxUrl = (c?: Config): string => {
   const etherscanTxUrl = 'https://etherscan.io/tx'
 
