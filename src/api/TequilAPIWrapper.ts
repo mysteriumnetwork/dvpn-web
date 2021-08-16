@@ -100,3 +100,7 @@ export const setChainId = async (chainId: number): Promise<Config> => {
     })
     .then(updateConfig)
 }
+
+export const setUserConfig = async (data: any): Promise<Config> => {
+  return await tequilapiClient.updateUserConfig({ data }).then(updateConfig)
+}

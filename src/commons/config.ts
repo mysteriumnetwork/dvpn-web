@@ -10,6 +10,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 
 export const L1ChainId = 5
 export const L2ChainId = 80001
+export const SUPPORTED_TRAVERSALS = ['manual', 'upnp', 'holepunching']
 
 export const isFreeRegistration = (c: Config): boolean => {
   return isTestnet(c)
@@ -29,6 +30,18 @@ export const isAccessPolicyEnabled = (c: Config): boolean => {
 
 export const chainId = (c: Config): number => {
   return _.get<Config, any>(c, 'data.chain-id')
+}
+
+export const udpPorts = (c: Config): string => {
+  return _.get<Config, any>(c, 'data.udp.ports')
+}
+
+export const natTraversals = (c: Config): string => {
+  return _.get<Config, any>(c, 'data.traversal') || ''
+}
+
+export const rpcl2 = (c?: Config): string[] => {
+  return _.get<Config, any>(c, 'data.ether.client.rpcl2') || []
 }
 
 export const etherscanTxUrl = (c?: Config): string => {
@@ -61,8 +74,11 @@ const dropLeadingSlash = (s: string): string => {
 }
 
 export const mmnWebAddress = (c?: Config): string => {
-  let url = _.get<Config, any>(c, 'data.mmn.web-address') || '#'
-  return dropLeadingSlash(url)
+  return dropLeadingSlash(_.get<Config, any>(c, 'data.mmn.web-address') || '#')
+}
+
+export const stunServers = (c?: Config): string[] => {
+  return _.get<Config, any>(c, 'data.stun-servers') || []
 }
 
 export const docsAddress = (c?: Config): string => {

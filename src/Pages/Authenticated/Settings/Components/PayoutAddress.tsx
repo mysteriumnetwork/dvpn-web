@@ -16,7 +16,7 @@ import './PayoutAddress.scss'
 import { CircularProgress } from '@material-ui/core'
 
 interface Props {
-  identity: Identity
+  identity?: Identity
 }
 
 interface State {
@@ -42,8 +42,9 @@ const PayoutAddress = ({ identity }: Props) => {
     tequilapiClient
       .payoutAddressGet(identity?.id || '')
       .then(({ address }) => setState((cs) => ({ ...cs, payoutAddress: address, initialPayoutAddress: address })))
+      .catch(() => {}) // address may not exist
       .finally(() => setState((cs) => ({ ...cs, loading: false })))
-  }, [identity.id])
+  }, [identity?.id])
 
   if (state.loading) {
     return <CircularProgress className="spinner" disableShrink />
@@ -82,7 +83,7 @@ const PayoutAddress = ({ identity }: Props) => {
           onClick={() => {
             Promise.resolve()
               .then(() => setState((cs) => ({ ...cs, txPending: true })))
-              .then(() => tequilapiClient.payoutAddressSave(identity.id, state.payoutAddress))
+              .then(() => tequilapiClient.payoutAddressSave(identity?.id || '', state.payoutAddress))
               .then(() => setState((cs) => ({ ...cs, txPending: false, initialPayoutAddress: cs.payoutAddress })))
               .then(() =>
                 enqueueSnackbar('Bounty Payout Address updated', {
