@@ -4,16 +4,18 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { Config } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
-import React, { useEffect, useState } from 'react'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
-import * as utils from '../../../../commons/config'
-import { SUPPORTED_TRAVERSALS } from '../../../../commons/config'
-import { parseError, parseMMNError } from '../../../../commons/error.utils'
-import Button from '../../../../Components/Buttons/Button'
-import { TextField } from '../../../../Components/TextField'
-import Errors from '../../../../Components/Validation/Errors'
+import React, { useEffect } from 'react'
+import { useImmer } from 'use-immer'
+import { tequilapiClient } from '../../../../../api/TequilApiClient'
+import * as utils from '../../../../../commons/config'
+import { SUPPORTED_TRAVERSALS } from '../../../../../commons/config'
+import { parseError, parseMMNError } from '../../../../../commons/error.utils'
+import Button from '../../../../../Components/Buttons/Button'
+import { TextField } from '../../../../../Components/TextField'
+import Errors from '../../../../../Components/Validation/Errors'
+import { ChipProp, NATTraversalOrder } from './NATTraversalOrder'
 
 interface Data {
   [key: string]: any
@@ -28,9 +30,9 @@ interface Props {
 interface State {
   stunServers: string
   udpPorts: string
-  natTraversals: string
   rpcl2: string
   saving: boolean
+  natTraversalSelected: ChipProp[]
 
   error: boolean
   errorMessage: string
@@ -39,7 +41,7 @@ interface State {
 const initialState: State = {
   udpPorts: '',
   stunServers: '',
-  natTraversals: '',
+  natTraversalSelected: [],
   rpcl2: '',
   saving: false,
 
@@ -47,24 +49,25 @@ const initialState: State = {
   errorMessage: '',
 }
 
+const mapTraversals = (config: Config): ChipProp[] => {
+  const traversalSetting = utils.natTraversals(config)
+  if (traversalSetting?.length === 0) {
+    return []
+  }
+  return traversalSetting.split(',').map((s) => ({ key: s, label: s }))
+}
+
 export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
   const { enqueueSnackbar } = useSnackbar()
-  const [state, setState] = useState<State>(initialState)
-
-  const rpcl2UrlsWithoutDefaults = (): string[] => {
-    const all = utils.rpcl2(config)
-    const defaults = utils.rpcl2(defaultConfig)
-    return all.filter((u) => defaults.indexOf(u) === -1)
-  }
+  const [state, setState] = useImmer<State>(initialState)
 
   useEffect(() => {
-    setState((p) => ({
-      ...p,
-      stunServers: utils.stunServers(config).join(','),
-      udpPorts: utils.udpPorts(config),
-      natTraversals: utils.natTraversals(config),
-      rpcl2: rpcl2UrlsWithoutDefaults().join(','),
-    }))
+    setState((d) => {
+      d.stunServers = utils.stunServers(config).join(',')
+      d.udpPorts = utils.udpPorts(config)
+      d.natTraversalSelected = mapTraversals(config)
+      d.rpcl2 = rpcl2UrlsWithoutDefaults().join(',')
+    })
   }, [config])
 
   const defaultData: Data = {
@@ -80,15 +83,23 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     return rpcl2
   }
 
+  const rpcl2UrlsWithoutDefaults = (): string[] => {
+    const all = utils.rpcl2(config)
+    const defaults = utils.rpcl2(defaultConfig)
+    return all.filter((u) => defaults.indexOf(u) === -1)
+  }
+
   const data: Data = {
     'stun-servers': state.stunServers.split(','),
     'udp.ports': state.udpPorts,
-    traversal: state.natTraversals,
+    traversal: state.natTraversalSelected.map((st) => st.key).join(','),
     'ether.client.rpcl2': rpcl2UrlsWithDefaults(),
   }
 
   const updateUserConfig = async (data: Data, successMessage: string) => {
-    setState((p) => ({ ...p, saving: true }))
+    setState((p) => {
+      p.saving = true
+    })
     try {
       await onSave(data)
       enqueueSnackbar(successMessage, {
@@ -97,45 +108,58 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     } catch (err) {
       enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' })
     } finally {
-      setState((p) => ({ ...p, saving: false }))
+      setState((p) => {
+        p.saving = false
+      })
     }
   }
 
   const validateData = async (): Promise<boolean> => {
-    setState((p) => ({ ...p, error: false, errorMessage: '' }))
+    setState((p) => {
+      p.error = false
+      p.errorMessage = ''
+    })
 
-    const { stunServers, udpPorts, natTraversals, rpcl2 } = state
+    const { stunServers, udpPorts, natTraversalSelected, rpcl2 } = state
     let isValid = true
     stunServers.split(',').forEach((url) => {
       try {
         new URL(`http://${url}`)
       } catch (_) {
-        setState((p) => ({ ...p, error: true, errorMessage: `Invalid stun server URL: ${url}` }))
+        setState((p) => {
+          p.error = true
+          p.errorMessage = `Invalid stun server URL: ${url}`
+        })
         isValid = false
       }
     })
 
-    natTraversals.split(',').forEach((t) => {
-      if (SUPPORTED_TRAVERSALS.indexOf(t) === -1) {
-        setState((p) => ({
-          ...p,
-          error: true,
-          errorMessage: `Unsupported NAT traversal: ${t}. Allowed: (${SUPPORTED_TRAVERSALS.join(',')}`,
-        }))
+    natTraversalSelected.forEach((t) => {
+      if (SUPPORTED_TRAVERSALS.indexOf(t.key) === -1) {
+        setState((p) => {
+          p.error = true
+          p.errorMessage = `Unsupported NAT traversal: ${t}. Allowed: (${SUPPORTED_TRAVERSALS.join(',')}`
+        })
         isValid = false
       }
     })
 
     const ranges = udpPorts.split(':')
     if (ranges.length !== 2) {
-      setState((p) => ({ ...p, error: true, errorMessage: `Invalid Port Range format '${udpPorts}'` }))
+      setState((p) => {
+        p.error = true
+        p.errorMessage = `Invalid Port Range format '${udpPorts}'`
+      })
       isValid = false
     }
     const lower = parseInt(ranges[0])
     const upper = parseInt(ranges[1])
 
     if (lower > upper || lower < 0 || lower > 65535 || upper < 0 || upper > 65535 || lower === upper) {
-      setState((p) => ({ ...p, error: true, errorMessage: `Invalid Port Range '${udpPorts}'` }))
+      setState((p) => {
+        p.error = true
+        p.errorMessage = `Invalid Port Range '${udpPorts}'`
+      })
       isValid = false
     }
 
@@ -144,7 +168,10 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
         try {
           new URL(url)
         } catch (e) {
-          setState((p) => ({ ...p, error: true, errorMessage: `Invalid L2 RPC URL: ${url}` }))
+          setState((p) => {
+            p.error = true
+            p.errorMessage = `Invalid L2 RPC URL: ${url}`
+          })
           isValid = false
         }
       })
@@ -156,13 +183,18 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
       try {
         await tequilapiClient.validateEthRPCL2(rpcl2.split(','))
       } catch (e) {
-        setState((p) => ({ ...p, error: true, errorMessage: e.message }))
+        setState((p) => {
+          p.error = true
+          p.errorMessage = e.message
+        })
         isValid = false
       }
     }
 
     return isValid ? Promise.resolve(true) : Promise.reject(false)
   }
+
+  const availableNATTraversals = mapTraversals(defaultConfig)
 
   return (
     <div>
@@ -173,7 +205,9 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
           stateName="udpPorts"
           handleChange={(s: keyof State) => (e) => {
             const { value } = e.target
-            setState((p) => ({ ...p, [s]: value }))
+            setState((p) => {
+              p.udpPorts = value
+            })
           }}
           value={state.udpPorts}
         />
@@ -184,20 +218,28 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
           stateName="stunServers"
           handleChange={(s: keyof State) => (e) => {
             const { value } = e.target
-            setState((p) => ({ ...p, [s]: value }))
+            setState((p) => {
+              p.stunServers = value
+            })
           }}
           value={state.stunServers}
         />
       </div>
       <div className="input-group">
         <div className="input-group__label">NAT Traversal Order</div>
-        <TextField
-          stateName="natTraversals"
-          handleChange={(s: keyof State) => (e) => {
-            const { value } = e.target
-            setState((p) => ({ ...p, [s]: value }))
+        <NATTraversalOrder
+          available={availableNATTraversals}
+          onAvailableClick={(c, selected) => {
+            setState((p) => {
+              p.natTraversalSelected = selected
+            })
           }}
-          value={state.natTraversals}
+          selected={state.natTraversalSelected}
+          onSelectedDelete={(c, selected) => {
+            setState((p) => {
+              p.natTraversalSelected = selected
+            })
+          }}
         />
       </div>
       <div className="input-group">
@@ -209,7 +251,9 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
           stateName="rpcl2"
           handleChange={(s: keyof State) => (e) => {
             const { value } = e.target
-            setState((p) => ({ ...p, [s]: value }))
+            setState((p) => {
+              p.rpcl2 = value
+            })
           }}
           value={state.rpcl2}
         />

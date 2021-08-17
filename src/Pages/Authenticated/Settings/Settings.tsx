@@ -19,7 +19,7 @@ import { parseError, parseMMNError } from '../../../commons/error.utils'
 import Header from '../../../Components/Header'
 import { currentIdentity } from '../../../redux/app.slice'
 import { RootState } from '../../../redux/store'
-import { Advanced } from './Components/Advanced'
+import { Advanced } from './Components/Advanced/Advanced'
 import IdentityBackup from './Components/IdentityBackup'
 
 import MMN from './Components/MMN'
