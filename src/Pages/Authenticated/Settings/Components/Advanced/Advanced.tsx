@@ -205,12 +205,10 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
         <div className="flex-grow" />
         <Button
           onClick={async () => {
-            try {
-              const valid = await isValid()
-              if (valid) {
-                await updateUserConfig(data, 'Settings updated')
-              }
-            } catch (_) {}
+            const valid = await isValid()
+            if (valid) {
+              await updateUserConfig(data, 'Settings updated')
+            }
           }}
           isLoading={state.saving}
         >
