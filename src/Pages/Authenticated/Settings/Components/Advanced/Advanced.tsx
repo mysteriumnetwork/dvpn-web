@@ -137,7 +137,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     <div>
       <Errors error={state.error} errorMessage={state.errorMessage} />
       <div className="input-group">
-        <div className="input-group__label">Part Range</div>
+        <div className="input-group__label">UDP Port Range</div>
         <TextField
           stateName="udpPorts"
           handleChange={(s: keyof State) => (e) => {
