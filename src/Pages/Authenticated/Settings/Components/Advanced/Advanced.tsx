@@ -8,13 +8,12 @@ import { Config } from 'mysterium-vpn-js'
 import { useSnackbar } from 'notistack'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../../../api/TequilApiClient'
 import * as utils from '../../../../../commons/config'
-import { SUPPORTED_TRAVERSALS } from '../../../../../commons/config'
 import { parseError, parseMMNError } from '../../../../../commons/error.utils'
 import Button from '../../../../../Components/Buttons/Button'
 import { TextField } from '../../../../../Components/TextField'
 import Errors from '../../../../../Components/Validation/Errors'
+import { validateData } from './advanced.utils'
 import { ChipProp, NATTraversalOrder } from './NATTraversalOrder'
 
 interface Data {
@@ -31,9 +30,9 @@ interface State {
   stunServers: string
   udpPorts: string
   rpcl2: string
-  saving: boolean
   natTraversalSelected: ChipProp[]
 
+  saving: boolean
   error: boolean
   errorMessage: string
 }
@@ -79,8 +78,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
 
   const rpcl2UrlsWithDefaults = (): string[] => {
     const rpcl2 = state.rpcl2.length > 0 ? state.rpcl2.split(',') : []
-    rpcl2.push(...defaultData['ether.client.rpcl2'])
-    return rpcl2
+    return [...rpcl2, defaultData['ether.client.rpcl2']]
   }
 
   const rpcl2UrlsWithoutDefaults = (): string[] => {
@@ -114,84 +112,23 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     }
   }
 
-  const validateData = async (): Promise<boolean> => {
+  const isValid = async (): Promise<boolean> => {
     setState((p) => {
       p.error = false
       p.errorMessage = ''
     })
 
-    const { stunServers, udpPorts, natTraversalSelected, rpcl2 } = state
-    let isValid = true
-    stunServers.split(',').forEach((url) => {
-      try {
-        new URL(`http://${url}`)
-      } catch (_) {
-        setState((p) => {
-          p.error = true
-          p.errorMessage = `Invalid stun server URL: ${url}`
-        })
-        isValid = false
-      }
-    })
+    const errors = await validateData(state)
 
-    natTraversalSelected.forEach((t) => {
-      if (SUPPORTED_TRAVERSALS.indexOf(t.key) === -1) {
-        setState((p) => {
-          p.error = true
-          p.errorMessage = `Unsupported NAT traversal: ${t}. Allowed: (${SUPPORTED_TRAVERSALS.join(',')}`
-        })
-        isValid = false
-      }
-    })
-
-    const ranges = udpPorts.split(':')
-    if (ranges.length !== 2) {
+    if (errors.length > 0) {
       setState((p) => {
         p.error = true
-        p.errorMessage = `Invalid Port Range format '${udpPorts}'`
+        p.errorMessage = errors[0] // TODO no support for multi error display
       })
-      isValid = false
-    }
-    const lower = parseInt(ranges[0])
-    const upper = parseInt(ranges[1])
-
-    if (lower > upper || lower < 0 || lower > 65535 || upper < 0 || upper > 65535 || lower === upper) {
-      setState((p) => {
-        p.error = true
-        p.errorMessage = `Invalid Port Range '${udpPorts}'`
-      })
-      isValid = false
+      return false
     }
 
-    if (rpcl2.length > 0) {
-      rpcl2.split(',').forEach((url) => {
-        try {
-          new URL(url)
-        } catch (e) {
-          setState((p) => {
-            p.error = true
-            p.errorMessage = `Invalid L2 RPC URL: ${url}`
-          })
-          isValid = false
-        }
-      })
-
-      if (!isValid) {
-        return Promise.reject(false)
-      }
-
-      try {
-        await tequilapiClient.validateEthRPCL2(rpcl2.split(','))
-      } catch (e) {
-        setState((p) => {
-          p.error = true
-          p.errorMessage = e.message
-        })
-        isValid = false
-      }
-    }
-
-    return isValid ? Promise.resolve(true) : Promise.reject(false)
+    return true
   }
 
   const availableNATTraversals = mapTraversals(defaultConfig)
@@ -271,7 +208,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
         <Button
           onClick={async () => {
             try {
-              const valid = await validateData()
+              const valid = await isValid()
               if (valid) {
                 await updateUserConfig(data, 'Settings updated')
               }
