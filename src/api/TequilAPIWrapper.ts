@@ -78,13 +78,13 @@ export const setAccessPolicy = async (policyName?: string | null): Promise<Confi
     .then(updateConfig)
 }
 
-export const setTrafficShaping = async (enabled: boolean, bandwidthKbps: number): Promise<Config> => {
+export const setTrafficShaping = async (enabled: boolean, bandwidthBps: number): Promise<Config> => {
   return await tequilapiClient
     .updateUserConfig({
       data: {
         shaper: {
           enabled: enabled,
-          bandwidth: bandwidthKbps,
+          bandwidth: bandwidthBps,
         },
       },
     })
