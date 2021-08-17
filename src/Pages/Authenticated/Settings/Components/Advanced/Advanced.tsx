@@ -78,7 +78,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
 
   const rpcl2UrlsWithDefaults = (): string[] => {
     const rpcl2 = state.rpcl2.length > 0 ? state.rpcl2.split(',') : []
-    return [...rpcl2, defaultData['ether.client.rpcl2']]
+    return [...rpcl2, ...defaultData['ether.client.rpcl2']]
   }
 
   const rpcl2UrlsWithoutDefaults = (): string[] => {
@@ -113,11 +113,6 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
   }
 
   const isValid = async (): Promise<boolean> => {
-    setState((p) => {
-      p.error = false
-      p.errorMessage = ''
-    })
-
     const errors = await validateData(state)
 
     if (errors.length > 0) {
@@ -127,6 +122,11 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
       })
       return false
     }
+
+    setState((p) => {
+      p.error = false
+      p.errorMessage = ''
+    })
 
     return true
   }

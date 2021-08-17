@@ -19,19 +19,27 @@ export const validateData = async (data: Data): Promise<string[]> => {
   const { stunServers, udpPorts, natTraversalSelected, rpcl2 } = data
   let errors: string[] = []
 
-  stunServers.split(',').forEach((url) => {
-    try {
-      new URL(`http://${url}`)
-    } catch (_) {
-      errors.push(`Invalid stun server URL: ${url}`)
-    }
-  })
+  if (stunServers.length !== 0) {
+    stunServers.split(',').forEach((url) => {
+      try {
+        new URL(`http://${url}`)
+      } catch (_) {
+        errors.push(`Invalid stun server URL: ${url}`)
+      }
+    })
+  } else {
+    errors.push('Stun server required')
+  }
 
-  natTraversalSelected.forEach((t) => {
-    if (SUPPORTED_TRAVERSALS.indexOf(t.key) === -1) {
-      errors.push(`Unsupported NAT traversal: ${t}. Allowed: (${SUPPORTED_TRAVERSALS.join(',')}`)
-    }
-  })
+  if (natTraversalSelected.length !== 0) {
+    natTraversalSelected.forEach((t) => {
+      if (SUPPORTED_TRAVERSALS.indexOf(t.key) === -1) {
+        errors.push(`Unsupported NAT traversal: ${t}. Allowed: (${SUPPORTED_TRAVERSALS.join(',')}`)
+      }
+    })
+  } else {
+    errors.push('NAT Traversal required')
+  }
 
   const ranges = udpPorts.split(':')
   if (ranges.length !== 2) {
