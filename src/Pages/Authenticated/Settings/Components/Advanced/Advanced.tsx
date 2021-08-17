@@ -180,9 +180,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
         />
       </div>
       <div className="input-group">
-        <div className="input-group__label">
-          L2 RPC URLS <span className="input-group__help-warning">*Requires NODE restart</span>
-        </div>
+        <div className="input-group__label">L2 RPC URLs (Requires NODE restart)</div>
         <TextField
           placeholder="http://rpc-1,http://rpc-2"
           stateName="rpcl2"
