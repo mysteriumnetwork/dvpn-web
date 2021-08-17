@@ -29,7 +29,7 @@ export const NATTraversalOrder = ({ available, onAvailableClick, selected, onSel
     .filter((a) => !selected.find((s) => s.key === a.key))
     .map((a) => {
       return (
-        <div key={a.key} className="nat-traversal-order__chip">
+        <div key={a.key} className="nat-traversal-order__row-options-chip">
           <Chip id={a.key} label={a.label} onClick={() => onAvailableClick(a, [...selected, a])} />
         </div>
       )
@@ -37,7 +37,7 @@ export const NATTraversalOrder = ({ available, onAvailableClick, selected, onSel
 
   const selectedMapped = selected.map((s) => {
     return (
-      <div key={s.key} className="nat-traversal-order__chip">
+      <div key={s.key} className="nat-traversal-order__row-options-chip">
         <Chip
           id={s.key}
           label={s.label}
