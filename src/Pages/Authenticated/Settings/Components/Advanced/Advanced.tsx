@@ -5,11 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Config } from 'mysterium-vpn-js'
-import { useSnackbar } from 'notistack'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import * as utils from '../../../../../commons/config'
-import { parseError, parseMMNError } from '../../../../../commons/error.utils'
+import { callWithSnack } from '../../../../../commons/promise.utils'
 import Button from '../../../../../Components/Buttons/Button'
 import { TextField } from '../../../../../Components/TextField'
 import Errors from '../../../../../Components/Validation/Errors'
@@ -57,7 +56,6 @@ const mapTraversals = (config: Config): ChipProp[] => {
 }
 
 export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
-  const { enqueueSnackbar } = useSnackbar()
   const [state, setState] = useImmer<State>(initialState)
 
   useEffect(() => {
@@ -98,13 +96,9 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     setState((p) => {
       p.saving = true
     })
+
     try {
-      await onSave(data)
-      enqueueSnackbar(successMessage, {
-        variant: 'success',
-      })
-    } catch (err) {
-      enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' })
+      await callWithSnack(() => onSave(data), { success: successMessage })
     } finally {
       setState((p) => {
         p.saving = false
