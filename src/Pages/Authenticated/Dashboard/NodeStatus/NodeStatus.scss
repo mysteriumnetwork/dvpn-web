@@ -88,14 +88,14 @@
   padding: 5px;
 
   &__header {
-    margin-bottom: 5px;
+    span {
+      color: $secondary-text-color !important;
+    }
   }
 
 
   &__content {
-    li {
-      margin-bottom: 5px;
-    }
+    margin-top: 5px;
   }
 
   &__footer {
