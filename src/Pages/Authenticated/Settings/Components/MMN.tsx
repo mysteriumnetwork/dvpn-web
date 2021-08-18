@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { TequilapiError } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 
 import Button from '../../../../Components/Buttons/Button'
@@ -39,10 +39,6 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
     setState((cs) => ({ ...cs, [prop]: value }))
   }
 
-  const getValidationMessage = (response: any): string => {
-    return response?.data?.errors['api_key'][0]?.message || 'Validation error'
-  }
-
   const handleSubmitToken = async () => {
     setState((cs) => ({ ...cs, error: false }))
 
@@ -52,12 +48,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
         setState((cs) => ({ ...cs, error: false, errorMessage: '' }))
         toastSuccess('MMN API key updated. Refresh the dashboard to view the bounty report.')
       })
-      .catch((error: Error) => {
-        if (error instanceof TequilapiError) {
-          const apiError = getValidationMessage(error._originalError.response)
-          setState((cs) => ({ ...cs, error: true, errorMessage: apiError }))
-        }
-      })
+      .catch((error) => setState((cs) => ({ ...cs, error: true, errorMessage: parseError(error, 'Validation Error') })))
   }
 
   const link = (

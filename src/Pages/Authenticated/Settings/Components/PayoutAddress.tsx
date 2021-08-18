@@ -4,16 +4,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { CircularProgress } from '@material-ui/core'
+import { Identity } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
-import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
-import { TextField } from '../../../../Components/TextField'
-import Button from '../../../../Components/Buttons/Button'
-import { useSnackbar } from 'notistack'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
-import { Identity } from 'mysterium-vpn-js'
+import { toastError, toastSuccess } from '../../../../commons/toast.utils'
+import Button from '../../../../Components/Buttons/Button'
+import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
+import { TextField } from '../../../../Components/TextField'
 import './PayoutAddress.scss'
-import { CircularProgress } from '@material-ui/core'
 
 interface Props {
   identity?: Identity
@@ -35,8 +35,6 @@ const PayoutAddress = ({ identity }: Props) => {
     errorMessage: '',
     loading: true,
   })
-
-  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     tequilapiClient
@@ -85,16 +83,8 @@ const PayoutAddress = ({ identity }: Props) => {
               .then(() => setState((cs) => ({ ...cs, txPending: true })))
               .then(() => tequilapiClient.payoutAddressSave(identity?.id || '', state.payoutAddress))
               .then(() => setState((cs) => ({ ...cs, txPending: false, initialPayoutAddress: cs.payoutAddress })))
-              .then(() =>
-                enqueueSnackbar('Bounty Payout Address updated', {
-                  variant: 'success',
-                }),
-              )
-              .catch((err) =>
-                enqueueSnackbar(parseError(err), {
-                  variant: 'error',
-                }),
-              )
+              .then(() => toastSuccess('Bounty Payout Address updated'))
+              .catch((err) => toastError(parseError(err)))
               .finally(() => setState((cs) => ({ ...cs, txPending: false })))
           }}
         >

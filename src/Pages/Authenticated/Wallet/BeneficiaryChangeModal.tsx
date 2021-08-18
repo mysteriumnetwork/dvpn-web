@@ -6,13 +6,10 @@
  */
 import React, { useEffect, useState } from 'react'
 import { Fade, Modal } from '@material-ui/core'
-import { useSnackbar } from 'notistack'
 import './WalletModel.scss'
 
 import Button from '../../../Components/Buttons/Button'
 import { TextField } from '../../../Components/TextField'
-import { tequilapiClient } from '../../../api/TequilApiClient'
-import { parseError } from '../../../commons/error.utils'
 
 interface Props {
   isOpen: boolean
@@ -30,8 +27,6 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
   const [state, setState] = useState<State>({
     beneficiary: '',
   })
-  const { enqueueSnackbar } = useSnackbar()
-
   useEffect(() => {
     setState((cs) => ({ ...cs, beneficiary: beneficiary || '' }))
   }, [beneficiary])

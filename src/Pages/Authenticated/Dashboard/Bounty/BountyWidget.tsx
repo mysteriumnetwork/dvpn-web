@@ -4,18 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { CircularProgress } from '@material-ui/core'
+import { MMNReport, MMNReportResponse } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { SETTINGS } from '../../../../constants/routes'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
-import { MMNReport, MMNReportResponse } from 'mysterium-vpn-js'
-import { CircularProgress } from '@material-ui/core'
+import { parseError } from '../../../../commons/error.utils'
+import { toastError } from '../../../../commons/toast.utils'
+import { SETTINGS } from '../../../../constants/routes'
 import './BountyWidget.scss'
-import { useSnackbar } from 'notistack'
-import { parseError, parseMMNError } from '../../../../commons/error.utils'
 
 const BountyWidget = ({ mmnUrl, apiKey }: { mmnUrl: string; apiKey: string }) => {
-  const { enqueueSnackbar } = useSnackbar()
   const [isLoading, setIsLoading] = useState(true)
   const [bountyReport, setBountyReport] = useState<MMNReport>({} as MMNReport)
   const [nodeInfo, setNodeInfo] = useState<MMNReportResponse>({} as MMNReportResponse)
@@ -28,10 +27,7 @@ const BountyWidget = ({ mmnUrl, apiKey }: { mmnUrl: string; apiKey: string }) =>
         setNodeInfo(response)
         setBountyReport(response.report as MMNReport)
       })
-      .catch((e) => {
-        enqueueSnackbar(parseError(e) || parseMMNError(e), { variant: 'error' })
-        console.log(e)
-      })
+      .catch((e) => toastError(parseError(e)))
       .finally(() => {
         setIsLoading(false)
       })

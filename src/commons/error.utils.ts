@@ -9,11 +9,15 @@ import _ from 'lodash'
 
 export const UNKNOWN_API_ERROR = 'Unknown API Error'
 
-export const parseError = (error: any): string | undefined => {
+export const parseError = (error: any, defaultMsg?: string) => {
+  return parseTequilApiError(error) || parseMMNError(error) || defaultMsg || error?.message || UNKNOWN_API_ERROR
+}
+
+export const parseTequilApiError = (error: any): string | undefined => {
   if (error instanceof TequilapiError) {
     const tqerr = error as TequilapiError
     const responseData = tqerr.originalResponseData
-    return responseData?.message || UNKNOWN_API_ERROR
+    return responseData?.message
   }
 }
 
@@ -31,6 +35,6 @@ export const parseMMNError = (error: any): string | undefined => {
 
     const allErrors = Object.keys(errors).map((k) => _.head(errors[k]))
     const firstError = _.head(allErrors)
-    return firstError ? firstError.message : UNKNOWN_API_ERROR
+    return firstError ? firstError.message : undefined
   }
 }

@@ -14,7 +14,7 @@ import { tequilapiClient } from '../../../api/TequilApiClient'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
-import { parseError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
+import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
 import { isRegistered } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
@@ -103,7 +103,7 @@ const Dashboard = () => {
           d.sessionStatsDaily = statsDaily
         })
       })
-      .catch((err) => toastError(parseError(err) || UNKNOWN_API_ERROR))
+      .catch((err) => toastError(parseTequilApiError(err) || UNKNOWN_API_ERROR))
   }, [identity?.id])
 
   const updateNATType = () => {

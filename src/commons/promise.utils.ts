@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { parseError, parseMMNError, UNKNOWN_API_ERROR } from './error.utils'
+import { parseTequilApiError, parseMMNError, UNKNOWN_API_ERROR } from './error.utils'
 import { toastError, toastSuccess } from './toast.utils'
 
 export interface Msg {
@@ -20,7 +20,11 @@ export const callWithToast = async <T>(fn: () => Promise<T>, msg?: Msg): Promise
     }
     return result
   } catch (err) {
-    toastError(parseMMNError(err) || parseError(err) || msg?.error || UNKNOWN_API_ERROR)
+    if (msg?.error && msg?.error.length > 0) {
+      toastError(msg.error)
+    } else {
+      toastError(parseMMNError(err) || parseTequilApiError(err) || msg?.error || UNKNOWN_API_ERROR)
+    }
     return err
   }
 }

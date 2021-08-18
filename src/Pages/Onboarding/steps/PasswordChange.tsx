@@ -16,7 +16,7 @@ import { validatePassword } from '../../../commons/password'
 import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import Button from '../../../Components/Buttons/Button'
-import { parseError, parseMMNError } from '../../../commons/error.utils'
+import { parseTequilApiError, parseMMNError } from '../../../commons/error.utils'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 
 interface State {
@@ -89,7 +89,7 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
       )
       .then(() => store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })))
       .catch((error) => {
-        setState((cs) => ({ ...cs, error: true, errorMessage: parseError(error) || API_CALL_FAILED }))
+        setState((cs) => ({ ...cs, error: true, errorMessage: parseTequilApiError(error) || API_CALL_FAILED }))
         console.log(error)
       })
   }

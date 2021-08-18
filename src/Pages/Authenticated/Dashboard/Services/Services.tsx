@@ -34,6 +34,7 @@ const findServiceInfo = (type: string, servicesInfos?: ServiceInfo[]): ServiceIn
   return results[0]
 }
 
+// TODO can be simplified after removal of OpenVPN
 const Services = ({ identityRef, servicesInfos, userConfig, disabled, prices }: Props) => {
   const cards = availableServices
     .filter((type) => {

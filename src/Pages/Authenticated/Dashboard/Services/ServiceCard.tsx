@@ -8,13 +8,12 @@
 import React, { useState } from 'react'
 import { CurrentPricesResponse, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js'
-import { useSnackbar } from 'notistack'
 
 import { ServiceType } from '../../../../commons'
 import { isAccessPolicyEnabled } from '../../../../commons/config'
+import { callWithToast } from '../../../../commons/promise.utils'
 import { Switch } from '../../../../Components/Switch'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
-import { parseError } from '../../../../commons/error.utils'
 
 import ServiceHeader from './ServiceHeader'
 import ServiceDetail from './ServiceDetail'
@@ -32,37 +31,24 @@ interface Props {
 }
 
 const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled = false, prices }: Props) => {
-  const [booting, setBooting] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const { status, id } = { ...serviceInfo }
-  const { enqueueSnackbar } = useSnackbar()
 
-  const startService = (serviceType: string) => {
-    setBooting(true)
-    tequilapiClient
-      .serviceStart({
+  const startService = async (serviceType: string) => {
+    setLoading(true)
+    await callWithToast(() =>
+      tequilapiClient.serviceStart({
         providerId: identityRef,
         type: serviceType,
-      })
-      .catch((err) => {
-        enqueueSnackbar(parseError(err) || `Service "${serviceType}" could not be started`, {
-          variant: 'error',
-        })
-        console.log(err)
-      })
-      .finally(() => setBooting(false))
+      }),
+    )
+    setLoading(false)
   }
 
-  const stopService = (serviceId: string) => {
-    setBooting(true)
-    tequilapiClient
-      .serviceStop(serviceId)
-      .catch((err) => {
-        enqueueSnackbar(parseError(err) || `Service "${serviceType}" could not be stopped`, {
-          variant: 'error',
-        })
-        console.log(err)
-      })
-      .finally(() => setBooting(false))
+  const stopService = async (serviceId: string) => {
+    setLoading(true)
+    await callWithToast(() => tequilapiClient.serviceStop(serviceId))
+    setLoading(false)
   }
 
   const accessPolicyEnabled = isAccessPolicyEnabled(config)
@@ -77,13 +63,13 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
 
         <ServiceDetail label="On" alignValueRight={true}>
           <Switch
-            disabled={booting || disabled}
+            disabled={loading || disabled}
             turnedOn={!!serviceInfo}
-            handleChange={() => {
+            handleChange={async () => {
               if (!id) {
-                startService(serviceType.toLowerCase())
+                await startService(serviceType.toLowerCase())
               } else {
-                stopService(id)
+                await stopService(id)
               }
             }}
           />

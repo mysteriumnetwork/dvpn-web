@@ -7,7 +7,6 @@
 import { CircularProgress } from '@material-ui/core'
 import { Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { useSnackbar } from 'notistack'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -15,7 +14,8 @@ import { tequilapiClient } from '../../../api/TequilApiClient'
 import { setUserConfig } from '../../../api/TequilAPIWrapper'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import * as config from '../../../commons/config'
-import { parseError, parseMMNError } from '../../../commons/error.utils'
+import { parseError } from '../../../commons/error.utils'
+import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
 import { currentIdentity } from '../../../redux/app.slice'
 import { RootState } from '../../../redux/store'
@@ -49,8 +49,6 @@ interface StateInterface {
 }
 
 const Settings = () => {
-  const { enqueueSnackbar } = useSnackbar()
-
   const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
     currentIdentity(app.currentIdentityRef, sse.appState?.identities),
   )
@@ -73,7 +71,7 @@ const Settings = () => {
           defaultConfig: defaultConfig,
         }))
       })
-      .catch((err) => enqueueSnackbar(parseMMNError(err) || parseError(err), { variant: 'error' }))
+      .catch((err) => toastError(parseError(err)))
   }, [identity?.id])
 
   if (state.loading || !cfg) {

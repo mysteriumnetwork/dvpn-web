@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useState } from 'react'
+import { toastSuccess } from '../../../commons/toast.utils'
 import Button from '../../../Components/Buttons/Button'
 import { Fees } from 'mysterium-vpn-js'
 import './SettlementModal.scss'
 import { displayMyst } from '../../../commons/money.utils'
 import { Fade, Modal } from '@material-ui/core'
 import ConfirmationDialogue from '../../../Components/ConfirmationDialogue/ConfirmationDialogue'
-import { useSnackbar } from 'notistack'
 
 interface Props {
   open?: boolean
@@ -31,8 +31,6 @@ const SettlementModal = ({
   beneficiary,
 }: Props) => {
   const [confirmation, setConfirmation] = useState<boolean>(false)
-
-  const { enqueueSnackbar } = useSnackbar()
 
   const calculateEstimatedEarnings = (): number => {
     const settlementFee = fees?.settlement || 0
@@ -92,7 +90,7 @@ const SettlementModal = ({
         open={confirmation}
         onCancel={() => setConfirmation(false)}
         onConfirm={() => {
-          enqueueSnackbar('Settlement submitted for processing', { variant: 'success' })
+          toastSuccess('Settlement submitted for processing')
           setConfirmation(false)
           onSettle()
           return Promise.resolve()

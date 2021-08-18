@@ -10,6 +10,7 @@ import { Fees, Identity } from 'mysterium-vpn-js'
 import { Settlement } from 'mysterium-vpn-js'
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
 import { CircularProgress } from '@material-ui/core'
+import { toastError } from '../../../commons/toast.utils'
 
 import Header from '../../../Components/Header'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
@@ -21,8 +22,7 @@ import { tequilapiClient } from '../../../api/TequilApiClient'
 import './Wallet.scss'
 import Button from '../../../Components/Buttons/Button'
 import SettlementModal from './SettlementModal'
-import { parseError } from '../../../commons/error.utils'
-import { useSnackbar } from 'notistack'
+import { parseTequilApiError, parseError } from '../../../commons/error.utils'
 import * as config from '../../../commons/config'
 import { date2human } from '../../../commons/date.utils'
 import { currentIdentity } from '../../../redux/app.slice'
@@ -81,7 +81,6 @@ const Wallet = () => {
   const hermesId = useSelector<RootState, string | undefined>(({ app }) => config.hermesId(app.config))
   const beneficiary = useSelector<RootState, string>(({ sse }) => sseSlice.beneficiary(sse))
 
-  const { enqueueSnackbar } = useSnackbar()
   const [state, setState] = useState<State>({
     unsettledEarnings: 0,
     isBeneficiaryModalOpen: false,
@@ -151,7 +150,7 @@ const Wallet = () => {
                     })
                   })
                   .catch((err) => {
-                    enqueueSnackbar('Error: ' + parseError(err), { variant: 'error' })
+                    toastError(parseError(err))
                     setSettlementState({ ...settlementState, loading: false })
                   })
               }}

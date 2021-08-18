@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect, useState } from 'react'
+import { toastError } from '../../../commons/toast.utils'
 import SettingsCard from './SettingsCard'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import { parseError } from '../../../commons/error.utils'
 import StakeEditModal from './StakeEditModal'
 import { currentCurrency, displayMyst } from '../../../commons/money.utils'
 import { Fees, Identity } from 'mysterium-vpn-js'
-import { useSnackbar } from 'notistack'
 import './Wallet.scss'
 import TotalMystCard from './TotalMystCard'
 
@@ -32,7 +32,6 @@ interface StakeEditState {
 }
 
 const WalletSidebar = ({ beneficiary, identity, hermesId }: Props) => {
-  const { enqueueSnackbar } = useSnackbar()
   const [stakeEditState, setStakeEditState] = useState<StakeEditState>({
     modalOpen: false,
     loading: false,
@@ -45,7 +44,7 @@ const WalletSidebar = ({ beneficiary, identity, hermesId }: Props) => {
     tequilapiClient
       .sessionStatsAggregated()
       .then((resp) => setState((cs) => ({ ...cs, totalMyst: resp.stats.sumTokens })))
-      .catch((err) => enqueueSnackbar(parseError(err), { variant: 'error' }))
+      .catch((err) => toastError(parseError(err)))
   }, [])
 
   const autoThresholdInfo = () => {
@@ -86,7 +85,7 @@ const WalletSidebar = ({ beneficiary, identity, hermesId }: Props) => {
                 }),
               )
               .catch((err) => {
-                enqueueSnackbar('Error: ' + parseError(err), { variant: 'error' })
+                toastError(parseError(err))
                 setStakeEditState({ ...stakeEditState, loading: false })
               })
           }}
