@@ -49,7 +49,6 @@ const NodeStatus = ({ natStatus, natType, nodeStatusFixUrl, serviceInfos }: Prop
         <div className="status-card__nat-text">NAT type:</div>
         <div className="status-card__nat-mode">{natType2Human(natType)}</div>
       </div>
-
       {/*<div className="status-card__block">
         <div className="status-card__nat-text">NAT traversal:</div>
         <div className="status-card__nat-mode">hole punching</div>
