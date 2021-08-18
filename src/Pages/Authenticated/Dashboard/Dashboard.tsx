@@ -25,7 +25,6 @@ import BountyWidget from './Bounty/BountyWidget'
 import Charts from './Charts/Charts'
 
 import './Dashboard.scss'
-import { NatWarning } from './NodeStatus/NatWarning'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
