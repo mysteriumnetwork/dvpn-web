@@ -63,7 +63,7 @@ export const NATTraversalOrder = ({ available, onAvailableClick, selected, onSel
       <div className="nat-traversal-order__row">
         <div className="nat-traversal-order__row-label">Available:</div>
         <div className="nat-traversal-order__row-options">
-          {availableMapped?.length ? availableMapped : <EmptyOptions text="None Available" />}
+          {availableMapped?.length ? availableMapped : <EmptyOptions text="All Selected" />}
         </div>
       </div>
     </div>

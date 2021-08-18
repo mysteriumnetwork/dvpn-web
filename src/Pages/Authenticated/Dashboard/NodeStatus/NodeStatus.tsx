@@ -11,7 +11,7 @@ import React, { ReactFragment } from 'react'
 import { NatStatusV2Response, ServiceInfo } from 'mysterium-vpn-js'
 import { NATType } from '../../../../constants/nat'
 import Bubble from './Bubble'
-import { nodeStatusBubble, natType2Human, statusText, natTypeStatusBubble, BubbleStatus } from './nat-status.utils'
+import { nodeStatusBubble, natType2Human, statusText, natTypeStatusBubble } from './nat-status.utils'
 import './NodeStatus.scss'
 
 interface Props {
