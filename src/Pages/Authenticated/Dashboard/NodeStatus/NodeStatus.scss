@@ -21,11 +21,14 @@
   &__block {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
   }
 
   &__status-text {
+    @include respond-below(sm) {
+      min-width: 85px;
+    }
+
     font-style: normal;
     font-weight: $normal-weight;
     font-size: $normal-size;
@@ -37,6 +40,7 @@
     display: flex;
     align-items: center;
     margin-left: 10px;
+    min-width: 9px;
   }
 
   &__status-icon-description {
@@ -81,17 +85,17 @@
 }
 
 .tooltip {
-  padding: 10px 10px 10px 10px;
+  padding: 5px;
 
   &__header {
-    margin-bottom: 5px;
+    span {
+      color: $secondary-text-color !important;
+    }
   }
 
 
   &__content {
-    li {
-      margin-bottom: 5px;
-    }
+    margin-top: 5px;
   }
 
   &__footer {

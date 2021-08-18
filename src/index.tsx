@@ -8,6 +8,7 @@ import { SnackbarProvider } from 'notistack'
 import ReactDOM from 'react-dom'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { SnackbarUtilsConfigurator } from './commons/toast.utils'
 
 import AppRouter from './Pages/AppRouter'
 import { store } from './redux/store'
@@ -23,6 +24,7 @@ ReactDOM.render(
         horizontal: 'right',
       }}
     >
+      <SnackbarUtilsConfigurator />
       <HashRouter>
         <AppRouter />
       </HashRouter>

@@ -25,7 +25,6 @@ import BountyWidget from './Bounty/BountyWidget'
 import Charts from './Charts/Charts'
 
 import './Dashboard.scss'
-import { NatWarning } from './NodeStatus/NatWarning'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
@@ -92,15 +91,21 @@ const Dashboard = () => {
         status: SessionStatus.COMPLETED,
       }),
       tequilapiClient.pricesCurrent(),
+      tequilapiClient.natType(),
     ])
       .then((result) => {
-        const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = result
+        const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices, natType] = result
         setState((cs) => ({
           ...cs,
           sessionStatsDaily: statsDaily,
           sessionStatsAllTime: allTimeStats,
           historySessions: sidebarSessions,
           currentPrices: prices,
+          natType: {
+            ...cs.natType,
+            type: natType.type,
+            error: natType.error,
+          },
         }))
       })
       .catch((err) => {
@@ -150,13 +155,9 @@ const Dashboard = () => {
             natTypeLoading={state.natType.loading}
             natTypeError={state.natType.error}
             nodeStatusFixUrl={DOCS_NAT_FIX}
+            natTypeFixUrl={DOCS_NAT_FIX}
           />
         </div>
-        {state.natType.type === 'prcone' && (
-          <div className="dashboard__nat-warning">
-            <NatWarning troubleshootUrl={DOCS_NAT_FIX} />
-          </div>
-        )}
         <div className="dashboard__services">
           <Services
             identityRef={identity.id}

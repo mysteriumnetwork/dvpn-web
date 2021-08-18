@@ -1,3 +1,5 @@
+@import '../../../../assets/styles/base/variables';
+
 .bubble {
   width: 18px;
   height: 18px;
@@ -16,5 +18,9 @@
   }
   &--success {
     border-color: #6DD230;
+  }
+
+  &--idle {
+    border-color: $names-text-color;
   }
 }

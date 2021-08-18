@@ -4,14 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect } from 'react'
-import { useSnackbar } from 'notistack'
 import { TequilapiError } from 'mysterium-vpn-js'
+import React, { useEffect } from 'react'
+import { tequilapiClient } from '../../../../api/TequilApiClient'
+import toast from '../../../../commons/toast.utils'
 
 import Button from '../../../../Components/Buttons/Button'
-import Errors from '../../../../Components/Validation/Errors'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { TextField } from '../../../../Components/TextField'
+import Errors from '../../../../Components/Validation/Errors'
 
 interface StateInterface {
   apiKey: string
@@ -25,7 +25,6 @@ interface Props {
 }
 
 const MMN = ({ apiKey, mmnUrl }: Props) => {
-  const { enqueueSnackbar } = useSnackbar()
   const [state, setState] = React.useState<StateInterface>({
     apiKey: '',
     error: false,
@@ -41,19 +40,17 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   }
 
   const getValidationMessage = (response: any): string => {
-    return response.data?.errors['api_key'][0]?.message || 'Validation error'
+    return response?.data?.errors['api_key'][0]?.message || 'Validation error'
   }
 
-  const handleSubmitToken = () => {
+  const handleSubmitToken = async () => {
     setState((cs) => ({ ...cs, error: false }))
 
     tequilapiClient
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState((cs) => ({ ...cs, error: false, errorMessage: '' }))
-        enqueueSnackbar('MMN API key updated. Refresh the dashboard to view the bounty report.', {
-          variant: 'success',
-        })
+        toast.success('MMN API key updated. Refresh the dashboard to view the bounty report.')
       })
       .catch((error: Error) => {
         if (error instanceof TequilapiError) {
