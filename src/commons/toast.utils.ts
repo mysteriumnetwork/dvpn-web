@@ -12,21 +12,19 @@ export const SnackbarUtilsConfigurator: React.FC = () => {
   return null
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default {
-  success(msg: string) {
-    this.toast(msg, 'success')
-  },
-  warning(msg: string) {
-    this.toast(msg, 'warning')
-  },
-  info(msg: string) {
-    this.toast(msg, 'info')
-  },
-  error(msg: string) {
-    this.toast(msg, 'error')
-  },
-  toast(msg: string, variant: VariantType = 'default') {
-    useSnackbarRef.enqueueSnackbar(msg, { variant })
-  },
+export const toast = (msg: string, variant: VariantType = 'default') => {
+  useSnackbarRef.enqueueSnackbar(msg, { variant })
+}
+
+export const toastSuccess = (msg: string) => {
+  toast(msg, 'success')
+}
+export const toastWarning = (msg: string) => {
+  toast(msg, 'warning')
+}
+export const toastInfo = (msg: string) => {
+  toast(msg, 'info')
+}
+export const toastError = (msg: string) => {
+  toast(msg, 'error')
 }

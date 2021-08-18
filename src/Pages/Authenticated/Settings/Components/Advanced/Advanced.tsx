@@ -8,7 +8,7 @@ import { Config } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import * as utils from '../../../../../commons/config'
-import { callWithSnack } from '../../../../../commons/promise.utils'
+import { callWithToast } from '../../../../../commons/promise.utils'
 import Button from '../../../../../Components/Buttons/Button'
 import { TextField } from '../../../../../Components/TextField'
 import Errors from '../../../../../Components/Validation/Errors'
@@ -98,7 +98,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     })
 
     try {
-      await callWithSnack(() => onSave(data), { success: successMessage })
+      await callWithToast(() => onSave(data), { success: successMessage })
     } finally {
       setState((p) => {
         p.saving = false

@@ -7,7 +7,7 @@
 import { TequilapiError } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
-import toast from '../../../../commons/toast.utils'
+import { toastSuccess } from '../../../../commons/toast.utils'
 
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField'
@@ -50,7 +50,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState((cs) => ({ ...cs, error: false, errorMessage: '' }))
-        toast.success('MMN API key updated. Refresh the dashboard to view the bounty report.')
+        toastSuccess('MMN API key updated. Refresh the dashboard to view the bounty report.')
       })
       .catch((error: Error) => {
         if (error instanceof TequilapiError) {
