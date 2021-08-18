@@ -9,6 +9,7 @@ import { NatStatusV2Response } from 'mysterium-vpn-js'
 import { NATType } from '../../../../constants/nat'
 
 export enum BubbleStatus {
+  IDLE = 'idle',
   WARNING = 'warning',
   SUCCESS = 'success',
   FAILED = 'failed',
@@ -26,7 +27,7 @@ export const statusText = (nat: NatStatusV2Response, online: boolean): string =>
   }
 }
 
-export const bubbleStatus = (status: NatStatusV2Response, online: boolean): BubbleStatus => {
+export const nodeStatusBubble = (status: NatStatusV2Response, online: boolean): BubbleStatus => {
   if (!online) {
     return BubbleStatus.FAILED
   }
@@ -38,8 +39,25 @@ export const bubbleStatus = (status: NatStatusV2Response, online: boolean): Bubb
   }
 }
 
-export const natType2Human = (type: string): string => {
+export const natTypeStatusBubble = (natType: string, loading: boolean): BubbleStatus => {
+  if (loading) {
+    return BubbleStatus.IDLE
+  }
+  switch (natType) {
+    case 'prcone':
+      return BubbleStatus.WARNING
+    case 'symmetric':
+      return BubbleStatus.WARNING
+    default:
+      return BubbleStatus.SUCCESS
+  }
+}
+
+export const natType2Human = (type: string, loading: boolean): string => {
   const humanReadable = NATType[type]
+  if (loading) {
+    return 'Checking...'
+  }
   if (!humanReadable) {
     return 'Unknown'
   }
