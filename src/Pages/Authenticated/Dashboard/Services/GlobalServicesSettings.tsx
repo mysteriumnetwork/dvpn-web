@@ -7,7 +7,7 @@
 import React, { useEffect, useState } from 'react'
 import './GlobalServicesSettings.scss'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthBps } from '../../../../commons/config'
+import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthKBps } from '../../../../commons/config'
 import { useSnackbar } from 'notistack'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
@@ -54,7 +54,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
 
   const isVerified = isAccessPolicyEnabled(config) as boolean
   const isShaping = isTrafficShapingEnabled(config)
-  const bandwidthMbps = trafficShapingBandwidthBps(config) / 1_000_000
+  const bandwidthMbps = trafficShapingBandwidthKBps(config) / 1_000
 
   const [state, setState] = useState<State>({
     isVerified: isVerified,
@@ -72,8 +72,8 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
     }))
   }, [isShaping, isVerified, bandwidthMbps])
 
-  const bandwidthBps = (): number => {
-    return state.bandwidthMbps * 1_000_000
+  const bandwidthKBps = (): number => {
+    return state.bandwidthMbps * 1_000
   }
 
   const openBandwidthModal = () => {
@@ -111,7 +111,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             message="This will restart all running services to take affect."
             turnedOn={state.isShaping}
             onConfirm={() => {
-              return restartServices(setTrafficShaping(!state.isShaping, bandwidthBps()))
+              return restartServices(setTrafficShaping(!state.isShaping, bandwidthKBps()))
             }}
           />
           <p className="text">Limit bandwidth</p>
@@ -129,7 +129,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             onSave={() => {
               Promise.resolve()
                 .then(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: true })))
-                .then(() => restartServices(setTrafficShaping(state.isShaping, bandwidthBps())))
+                .then(() => restartServices(setTrafficShaping(state.isShaping, bandwidthKBps())))
                 .then(closeBandwidthModal)
                 .finally(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: false })))
             }}
