@@ -4,17 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { ChangeEvent, useState } from 'react'
 import { Dialog, DialogContent, DialogTitle, IconButton } from '@material-ui/core'
-import { Issue } from 'mysterium-vpn-js/lib/feedback/issue'
 import ChatIcon from '@material-ui/icons/Chat'
 import CloseIcon from '@material-ui/icons/Close'
+import { Issue } from 'mysterium-vpn-js/lib/feedback/issue'
+import React, { ChangeEvent, useState } from 'react'
+import { tequilapiClient } from '../../api/TequilApiClient'
+import { parseError } from '../../commons/error.utils'
 import { toastError, toastSuccess } from '../../commons/toast.utils'
+import Button from '../Buttons/Button'
 
 import { TextField } from '../TextField'
-import Button from '../Buttons/Button'
-import { tequilapiClient } from '../../api/TequilApiClient'
-import { parseTequilApiError, parseError } from '../../commons/error.utils'
 
 import './ReportIssueModal.scss'
 
