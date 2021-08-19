@@ -11,7 +11,7 @@ import React, { Dispatch, useEffect, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { connect, useSelector } from 'react-redux'
 
-import '../assets/styles/App.scss'
+import './App.scss'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
 import { Auth, Onboarding, isLoggedIn, currentIdentity, onboardingState } from '../redux/app.slice'
