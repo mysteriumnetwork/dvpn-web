@@ -6,13 +6,13 @@
  */
 import { tequilapiClient } from '../../../../../api/TequilApiClient'
 import { SUPPORTED_TRAVERSALS } from '../../../../../commons/config'
-import { ChipProp } from './NATTraversalOrder'
+import { TraversalProp } from './NATTraversalOrder'
 
 export interface Data {
   stunServers: string
   udpPorts: string
   rpcl2: string
-  natTraversalSelected: ChipProp[]
+  natTraversalSelected: TraversalProp[]
 }
 
 export const validateData = async (data: Data): Promise<string[]> => {
