@@ -6,22 +6,21 @@
  */
 import { Session, SessionDirection, SessionListResponse, SessionStats } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
-import { useSnackbar } from 'notistack'
+import { useSelector } from 'react-redux'
 
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
 import '../../../assets/styles/pages/sessionsList.scss'
+import { date2human, seconds2Time } from '../../../commons/date.utils'
+import { parseError } from '../../../commons/error.utils'
 import formatBytes from '../../../commons/formatBytes'
 import { displayMyst } from '../../../commons/money.utils'
-import { seconds2Time } from '../../../commons/date.utils'
+import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
 import Table, { TableRow } from '../../../Components/Table/Table'
+import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import './Sessions.scss'
-import { parseError } from '../../../commons/error.utils'
-import { RootState } from '../../../redux/store'
-import { useSelector } from 'react-redux'
-import { date2human } from '../../../commons/date.utils'
 
 export interface Props {
   filterDirection?: SessionDirection
@@ -82,7 +81,6 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
   const liveSessions = useSelector<RootState, Session[] | undefined>(({ sse }) => sse.appState?.sessions)
   const liveSessionStats = useSelector<RootState, SessionStats | undefined>(({ sse }) => sse.appState?.sessionsStats)
 
-  const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
     tequilapiClient
       .sessions({
@@ -94,10 +92,7 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
       .then((resp) => {
         setState((cs) => ({ ...cs, isLoading: false, sessionListResponse: resp }))
       })
-      .catch((err) => {
-        enqueueSnackbar(parseError(err) || 'Fetching Sessions Failed!')
-        console.log(err)
-      })
+      .catch((err) => toastError(parseError(err, 'Fetching Sessions Failed!')))
   }, [state.pageSize, state.currentPage])
 
   const { items = [], totalPages = 0 } = { ...state.sessionListResponse }

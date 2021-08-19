@@ -12,7 +12,7 @@ import { TextField } from '../../../Components/TextField'
 import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import Button from '../../../Components/Buttons/Button'
-import { parseError } from '../../../commons/error.utils'
+import { parseTequilApiError } from '../../../commons/error.utils'
 import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
@@ -74,7 +74,7 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
         }
       })
       .catch((error) => {
-        errors(parseError(error) || 'API call failed')
+        errors(parseTequilApiError(error) || 'API call failed')
         setIsLoading(false)
       })
   }

@@ -4,29 +4,28 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { CircularProgress } from '@material-ui/core'
+import { Fees, Identity, Settlement } from 'mysterium-vpn-js'
+import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Fees, Identity } from 'mysterium-vpn-js'
-import { Settlement } from 'mysterium-vpn-js'
-import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
-import { CircularProgress } from '@material-ui/core'
-
-import Header from '../../../Components/Header'
-import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
-import Table, { TableRow } from '../../../Components/Table/Table'
-import { displayMyst } from '../../../commons/money.utils'
-import { RootState } from '../../../redux/store'
 import { tequilapiClient } from '../../../api/TequilApiClient'
-
-import './Wallet.scss'
-import Button from '../../../Components/Buttons/Button'
-import SettlementModal from './SettlementModal'
-import { parseError } from '../../../commons/error.utils'
-import { useSnackbar } from 'notistack'
+import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
 import * as config from '../../../commons/config'
 import { date2human } from '../../../commons/date.utils'
+import { parseError } from '../../../commons/error.utils'
+import { displayMyst } from '../../../commons/money.utils'
+import { toastError } from '../../../commons/toast.utils'
+import Button from '../../../Components/Buttons/Button'
+
+import Header from '../../../Components/Header'
+import Table, { TableRow } from '../../../Components/Table/Table'
 import { currentIdentity } from '../../../redux/app.slice'
 import * as sseSlice from '../../../redux/sse.slice'
+import { RootState } from '../../../redux/store'
+import SettlementModal from './SettlementModal'
+
+import './Wallet.scss'
 import WalletSidebar from './WalletSidebar'
 
 interface State {
@@ -81,7 +80,6 @@ const Wallet = () => {
   const hermesId = useSelector<RootState, string | undefined>(({ app }) => config.hermesId(app.config))
   const beneficiary = useSelector<RootState, string>(({ sse }) => sseSlice.beneficiary(sse))
 
-  const { enqueueSnackbar } = useSnackbar()
   const [state, setState] = useState<State>({
     unsettledEarnings: 0,
     isBeneficiaryModalOpen: false,
@@ -151,7 +149,7 @@ const Wallet = () => {
                     })
                   })
                   .catch((err) => {
-                    enqueueSnackbar('Error: ' + parseError(err), { variant: 'error' })
+                    toastError(parseError(err))
                     setSettlementState({ ...settlementState, loading: false })
                   })
               }}

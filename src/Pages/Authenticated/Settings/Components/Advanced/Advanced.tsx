@@ -8,12 +8,12 @@ import { Config } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import * as utils from '../../../../../commons/config'
-import { callWithSnack } from '../../../../../commons/promise.utils'
+import { callWithToast } from '../../../../../commons/promise.utils'
 import Button from '../../../../../Components/Buttons/Button'
 import { TextField } from '../../../../../Components/TextField'
 import Errors from '../../../../../Components/Validation/Errors'
 import { validateData } from './advanced.utils'
-import { ChipProp, NATTraversalOrder } from './NATTraversalOrder'
+import { TraversalProp, NATTraversalOrder } from './NATTraversalOrder'
 
 interface Data {
   [key: string]: any
@@ -29,7 +29,7 @@ interface State {
   stunServers: string
   udpPorts: string
   rpcl2: string
-  natTraversalSelected: ChipProp[]
+  natTraversalSelected: TraversalProp[]
 
   saving: boolean
   error: boolean
@@ -47,7 +47,7 @@ const initialState: State = {
   errorMessage: '',
 }
 
-const mapTraversals = (config: Config): ChipProp[] => {
+const mapTraversals = (config: Config): TraversalProp[] => {
   const traversalSetting = utils.natTraversals(config)
   if (traversalSetting?.length === 0) {
     return []
@@ -98,7 +98,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     })
 
     try {
-      await callWithSnack(() => onSave(data), { success: successMessage })
+      await callWithToast(() => onSave(data), { success: successMessage })
     } finally {
       setState((p) => {
         p.saving = false
@@ -125,7 +125,8 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     return true
   }
 
-  const availableNATTraversals = mapTraversals(defaultConfig)
+  const availableNATTraversals =
+    state.natTraversalSelected.length > 0 ? state.natTraversalSelected : mapTraversals(defaultConfig)
 
   return (
     <div>
@@ -159,16 +160,10 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
       <div className="input-group">
         <div className="input-group__label">NAT Traversal Order</div>
         <NATTraversalOrder
-          available={availableNATTraversals}
-          onAvailableClick={(c, selected) => {
+          items={availableNATTraversals}
+          onDrop={(items) => {
             setState((p) => {
-              p.natTraversalSelected = selected
-            })
-          }}
-          selected={state.natTraversalSelected}
-          onSelectedDelete={(c, selected) => {
-            setState((p) => {
-              p.natTraversalSelected = selected
+              p.natTraversalSelected = items
             })
           }}
         />

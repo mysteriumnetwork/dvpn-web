@@ -4,10 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { TequilapiError } from 'mysterium-vpn-js'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
-import toast from '../../../../commons/toast.utils'
+import { parseError } from '../../../../commons/error.utils'
+import { toastSuccess } from '../../../../commons/toast.utils'
 
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField'
@@ -25,39 +26,38 @@ interface Props {
 }
 
 const MMN = ({ apiKey, mmnUrl }: Props) => {
-  const [state, setState] = React.useState<StateInterface>({
+  const [state, setState] = useImmer<StateInterface>({
     apiKey: '',
     error: false,
     errorMessage: '',
   })
 
   useEffect(() => {
-    setState((cs) => ({ ...cs, apiKey: apiKey }))
+    setState((d) => {
+      d.apiKey = apiKey
+    })
   }, [apiKey])
-  const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setState((cs) => ({ ...cs, [prop]: value }))
-  }
-
-  const getValidationMessage = (response: any): string => {
-    return response?.data?.errors['api_key'][0]?.message || 'Validation error'
-  }
 
   const handleSubmitToken = async () => {
-    setState((cs) => ({ ...cs, error: false }))
+    setState((d) => {
+      d.error = false
+    })
 
     tequilapiClient
       .setMMNApiKey(state.apiKey)
       .then(() => {
-        setState((cs) => ({ ...cs, error: false, errorMessage: '' }))
-        toast.success('MMN API key updated. Refresh the dashboard to view the bounty report.')
+        setState((cs) => {
+          cs.error = false
+          cs.errorMessage = ''
+        })
+        toastSuccess('MMN API key updated. Refresh the dashboard to view the bounty report.')
       })
-      .catch((error: Error) => {
-        if (error instanceof TequilapiError) {
-          const apiError = getValidationMessage(error._originalError.response)
-          setState((cs) => ({ ...cs, error: true, errorMessage: apiError }))
-        }
-      })
+      .catch((error) =>
+        setState((d) => {
+          d.error = true
+          d.errorMessage = parseError(error, 'Validation Error')
+        }),
+      )
   }
 
   const link = (
@@ -71,7 +71,17 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
 
       <div className="input-group">
         <div className="input-group__label">API Key ({link})</div>
-        <TextField stateName={'apiKey'} id={'api_key'} handleChange={handleTextFieldsChange} value={state.apiKey} />
+        <TextField
+          stateName={'apiKey'}
+          id={'api_key'}
+          handleChange={(prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
+            const { value } = event.target
+            setState((d) => {
+              d.apiKey = value
+            })
+          }}
+          value={state.apiKey}
+        />
       </div>
       <div className="footer__buttons m-t-40">
         <Button onClick={handleSubmitToken}>Save</Button>

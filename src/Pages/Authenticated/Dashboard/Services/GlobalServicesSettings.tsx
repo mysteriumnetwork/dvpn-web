@@ -4,19 +4,19 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect, useState } from 'react'
-import './GlobalServicesSettings.scss'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthKBps } from '../../../../commons/config'
-import { useSnackbar } from 'notistack'
-import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
-import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import { ServiceInfo } from 'mysterium-vpn-js'
-import { setAccessPolicy, setTrafficShaping } from '../../../../api/TequilAPIWrapper'
+import { Config } from 'mysterium-vpn-js/lib/config/config'
+import React, { useEffect, useState } from 'react'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { setAccessPolicy, setTrafficShaping } from '../../../../api/TequilAPIWrapper'
+import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthKBps } from '../../../../commons/config'
 import { parseError } from '../../../../commons/error.utils'
-import BandwidthControlModal from './BandwidthControlModal'
+import { toastError } from '../../../../commons/toast.utils'
+import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import Button from '../../../../Components/Buttons/Button'
+import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
+import BandwidthControlModal from './BandwidthControlModal'
+import './GlobalServicesSettings.scss'
 
 interface Props {
   config: Config
@@ -46,11 +46,9 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
       .then(() => stopServices.map((stop) => stop()))
       .then(() => startServices.map((start) => start()))
       .catch((err) => {
-        enqueueSnackbar(parseError(err), { variant: 'error' })
+        toastError(parseError(err))
       })
   }
-
-  const { enqueueSnackbar } = useSnackbar()
 
   const isVerified = isAccessPolicyEnabled(config) as boolean
   const isShaping = isTrafficShapingEnabled(config)

@@ -7,16 +7,18 @@
 
 import { CircularProgress } from '@material-ui/core'
 import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
-import { useSnackbar } from 'notistack'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
-import { parseError } from '../../../commons/error.utils'
+import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
 import { isRegistered } from '../../../commons/identity.utils'
+import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
+import { DOCS_NAT_FIX } from '../../../constants/urls'
 import { AppState, currentIdentity } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
@@ -29,7 +31,6 @@ import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
 import Statistics from './Statistics/Statistics'
-import { DOCS_NAT_FIX } from '../../../constants/urls'
 
 interface StateProps {
   sessionStatsAllTime: SessionStats
@@ -70,9 +71,8 @@ const Dashboard = () => {
   const { config, currentIdentityRef } = useSelector<RootState, AppState>(({ app }) => app)
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
 
-  const [state, setState] = useState<StateProps>(initialState)
+  const [state, setState] = useImmer<StateProps>(initialState)
 
-  const { enqueueSnackbar } = useSnackbar()
   const identity = currentIdentity(currentIdentityRef, sse.appState?.identities)
 
   useEffect(() => {
@@ -91,32 +91,27 @@ const Dashboard = () => {
         status: SessionStatus.COMPLETED,
       }),
       tequilapiClient.pricesCurrent(),
-      tequilapiClient.natType(),
     ])
       .then((result) => {
-        const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices, natType] = result
-        setState((cs) => ({
-          ...cs,
-          sessionStatsDaily: statsDaily,
-          sessionStatsAllTime: allTimeStats,
-          historySessions: sidebarSessions,
-          currentPrices: prices,
-          natType: {
-            ...cs.natType,
-            type: natType.type,
-            error: natType.error,
-          },
-        }))
+        const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = result
+        setState((d) => {
+          d.sessionStatsDaily = statsDaily
+          d.sessionStatsAllTime = allTimeStats
+          d.historySessions = sidebarSessions
+          d.currentPrices = prices
+          d.sessionStatsDaily = statsDaily
+          d.sessionStatsDaily = statsDaily
+        })
       })
-      .catch((err) => {
-        enqueueSnackbar(parseError(err), { variant: 'error' })
-      })
+      .catch((err) => toastError(parseTequilApiError(err) || UNKNOWN_API_ERROR))
   }, [identity?.id])
 
   const updateNATType = () => {
-    tequilapiClient
-      .natType()
-      .then((resp) => setState((cs) => ({ ...cs, natType: { loading: false, type: resp.type, error: resp.error } })))
+    tequilapiClient.natType().then((resp) =>
+      setState((d) => {
+        d.natType = { loading: false, type: resp.type, error: resp.error }
+      }),
+    )
   }
   useEffect(() => {
     updateNATType()

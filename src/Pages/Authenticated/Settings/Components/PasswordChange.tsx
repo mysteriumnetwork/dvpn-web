@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useSnackbar } from 'notistack'
 import { TequilapiError } from 'mysterium-vpn-js'
+import { toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import Errors from '../../../../Components/Validation/Errors'
 
@@ -31,9 +31,7 @@ const defaultState = {
   errorMessage: '',
 }
 
-const PasswordChange: React.FC = () => {
-  const { enqueueSnackbar } = useSnackbar()
-
+const PasswordChange = () => {
   const [values, setValues] = useState<StateInterface>(defaultState)
 
   const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +57,7 @@ const PasswordChange: React.FC = () => {
       })
       .then(() => {
         setValues(defaultState)
-        enqueueSnackbar('Password changed.', { variant: 'success' })
+        toastSuccess('Password changed.')
       })
       .catch((error: Error) => {
         if (error instanceof TequilapiError) {
