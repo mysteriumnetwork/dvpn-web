@@ -10,7 +10,7 @@ import { useImmer } from 'use-immer'
 import * as utils from '../../../../../commons/config'
 import { callWithToast } from '../../../../../commons/promise.utils'
 import Button from '../../../../../Components/Buttons/Button'
-import { TextField } from '../../../../../Components/TextField'
+import { TextField } from '../../../../../Components/TextField/TextField'
 import Errors from '../../../../../Components/Validation/Errors'
 import { validateData } from './advanced.utils'
 import { TraversalProp, NATTraversalOrder } from './NATTraversalOrder'
@@ -67,13 +67,6 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     })
   }, [config])
 
-  const defaultData: Data = {
-    'stun-servers': utils.stunServers(defaultConfig),
-    'udp.ports': utils.udpPorts(defaultConfig),
-    traversal: utils.natTraversals(defaultConfig),
-    'ether.client.rpcl2': utils.rpcl2(defaultConfig),
-  }
-
   const rpcl2UrlsWithDefaults = (): string[] => {
     const rpcl2 = state.rpcl2.length > 0 ? state.rpcl2.split(',') : []
     return [...rpcl2, ...defaultData['ether.client.rpcl2']]
@@ -83,6 +76,13 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     const all = utils.rpcl2(config)
     const defaults = utils.rpcl2(defaultConfig)
     return all.filter((u) => defaults.indexOf(u) === -1)
+  }
+
+  const defaultData: Data = {
+    'stun-servers': utils.stunServers(defaultConfig),
+    'udp.ports': utils.udpPorts(defaultConfig),
+    traversal: utils.natTraversals(defaultConfig),
+    'ether.client.rpcl2': utils.rpcl2(defaultConfig),
   }
 
   const data: Data = {
@@ -134,9 +134,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
       <div className="input-group">
         <div className="input-group__label">UDP Port Range</div>
         <TextField
-          stateName="udpPorts"
-          handleChange={(s: keyof State) => (e) => {
-            const { value } = e.target
+          onChange={(value) => {
             setState((p) => {
               p.udpPorts = value
             })
@@ -147,9 +145,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
       <div className="input-group">
         <div className="input-group__label">STUN Servers</div>
         <TextField
-          stateName="stunServers"
-          handleChange={(s: keyof State) => (e) => {
-            const { value } = e.target
+          onChange={(value) => {
             setState((p) => {
               p.stunServers = value
             })
@@ -172,9 +168,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
         <div className="input-group__label">L2 RPC URLs (Requires NODE restart)</div>
         <TextField
           placeholder="http://rpc-1,http://rpc-2"
-          stateName="rpcl2"
-          handleChange={(s: keyof State) => (e) => {
-            const { value } = e.target
+          onChange={(value) => {
             setState((p) => {
               p.rpcl2 = value
             })

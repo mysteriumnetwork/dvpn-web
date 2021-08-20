@@ -7,6 +7,7 @@
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { updateConfig } from '../../../../api/TequilAPIWrapper'
 import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 
@@ -52,6 +53,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
         })
         toastSuccess('MMN API key updated. Refresh the dashboard to view the bounty report.')
       })
+      .then(() => updateConfig())
       .catch((error) =>
         setState((d) => {
           d.error = true

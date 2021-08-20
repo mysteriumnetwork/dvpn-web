@@ -94,10 +94,10 @@ const AppRouter = ({ actions }: Props) => {
       authenticated: true,
       withDefaultCredentials: await loginWithDefaultCredentials(),
     })
+    await actions.updateTermsStoreAsync()
     await actions.fetchIdentityAsync()
     await actions.fetchConfigAsync()
     await actions.fetchFeesAsync()
-    await actions.updateTermsStoreAsync()
   }
 
   useLayoutEffect(() => {
