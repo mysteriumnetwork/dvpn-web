@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { TextField } from '../../../../Components/TextField'
+import { TextField } from '../../../../Components/TextField/TextField'
 import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
 
 interface Props {
@@ -18,7 +18,7 @@ const IdentityBackup = ({ identity }: Props): JSX.Element => {
         <div className="input-group__label m-t-5">Your identity</div>
         <CopyToClipboard text={identity} />
       </div>
-      <TextField stateName={'identity'} handleChange={() => () => {}} disabled={true} value={identity} />
+      <TextField onChange={() => () => {}} disabled={true} value={identity} />
     </div>
   )
 }

@@ -4,21 +4,21 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
+import { tequilapiClient } from '../../../api/TequilApiClient'
 import { mmnDomainName, mmnWebAddress } from '../../../commons/config'
+import { parseError } from '../../../commons/error.utils'
+import { validatePassword } from '../../../commons/password'
+import Button from '../../../Components/Buttons/Button'
+import { Checkbox } from '../../../Components/Checkbox/Checkbox'
+import { TextField } from '../../../Components/TextField/TextField'
 import Errors from '../../../Components/Validation/Errors'
+import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
+import { updateAuthenticatedStore } from '../../../redux/app.slice'
 
 import { store } from '../../../redux/store'
-import { updateAuthenticatedStore } from '../../../redux/app.slice'
-import { TextField } from '../../../Components/TextField/TextField'
-import { Checkbox } from '../../../Components/Checkbox/Checkbox'
-import { validatePassword } from '../../../commons/password'
-import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults'
-import { tequilapiClient } from '../../../api/TequilApiClient'
-import Button from '../../../Components/Buttons/Button'
-import { parseError } from '../../../commons/error.utils'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
 
 interface State {
   passwordRepeat?: string

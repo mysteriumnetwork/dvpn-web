@@ -5,15 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TequilapiError } from 'mysterium-vpn-js'
-import { toastSuccess } from '../../../../commons/toast.utils'
-import Button from '../../../../Components/Buttons/Button'
-import Errors from '../../../../Components/Validation/Errors'
+import { useImmer } from 'use-immer'
 
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { validatePassword } from '../../../../commons/password'
+import { toastSuccess } from '../../../../commons/toast.utils'
+import Button from '../../../../Components/Buttons/Button'
+import { TextField } from '../../../../Components/TextField/TextField'
+import Errors from '../../../../Components/Validation/Errors'
 import { DEFAULT_USERNAME } from '../../../../constants/defaults'
-import { TextField } from '../../../../Components/TextField'
-import { useState } from 'react'
 
 interface StateInterface {
   newPasswordConfirmation: string
@@ -32,19 +32,19 @@ const defaultState = {
 }
 
 const PasswordChange = () => {
-  const [values, setValues] = useState<StateInterface>(defaultState)
-
-  const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setValues((cs) => ({ ...cs, [prop]: value }))
-  }
+  const [values, setValues] = useImmer<StateInterface>(defaultState)
 
   const handleSubmitPassword = () => {
-    setValues((cs) => ({ ...cs, error: false }))
+    setValues((d) => {
+      d.error = false
+    })
 
     const isPasswordValid = validatePassword(values.newPassword, values.newPasswordConfirmation)
     if (!isPasswordValid.success) {
-      setValues((cs) => ({ ...cs, error: true, errorMessage: isPasswordValid.errorMessage }))
+      setValues((d) => {
+        d.error = true
+        d.errorMessage = isPasswordValid.errorMessage
+      })
 
       return
     }
@@ -74,31 +74,40 @@ const PasswordChange = () => {
       <div className="input-group">
         <div className="text-field-label">Current password</div>
         <TextField
-          handleChange={handleTextFieldsChange}
+          onChange={(value) => {
+            setValues((d) => {
+              d.currentPassword = value
+            })
+          }}
           password={true}
           placeholder={'*********'}
           value={values.currentPassword}
-          stateName="currentPassword"
         />
       </div>
       <div className="input-group">
         <div className="input-group__label">New password</div>
         <TextField
-          handleChange={handleTextFieldsChange}
+          onChange={(value) => {
+            setValues((d) => {
+              d.newPassword = value
+            })
+          }}
           password={true}
           placeholder={'*********'}
           value={values.newPassword}
-          stateName="newPassword"
         />
       </div>
       <div className="input-group">
         <div className="input-group__label">Repeat password</div>
         <TextField
-          handleChange={handleTextFieldsChange}
+          onChange={(value) => {
+            setValues((d) => {
+              d.newPasswordConfirmation = value
+            })
+          }}
           password={true}
           placeholder={'*********'}
           value={values.newPasswordConfirmation}
-          stateName="newPasswordConfirmation"
         />
       </div>
       <div className="footer__buttons m-t-40">
