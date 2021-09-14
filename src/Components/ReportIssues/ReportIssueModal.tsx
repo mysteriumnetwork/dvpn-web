@@ -8,13 +8,14 @@ import { Dialog, DialogContent, DialogTitle, IconButton } from '@material-ui/cor
 import ChatIcon from '@material-ui/icons/Chat'
 import CloseIcon from '@material-ui/icons/Close'
 import { Issue } from 'mysterium-vpn-js/lib/feedback/issue'
-import React, { ChangeEvent, useState } from 'react'
+import React from 'react'
+import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../api/TequilApiClient'
 import { parseError } from '../../commons/error.utils'
 import { toastError, toastSuccess } from '../../commons/toast.utils'
 import Button from '../Buttons/Button'
 
-import { TextField } from '../TextField'
+import { TextField } from '../TextField/TextField'
 
 import './ReportIssueModal.scss'
 
@@ -28,19 +29,18 @@ interface StateProps extends Issue {
 }
 
 const ReportIssueModal = ({ open, onClose }: Props) => {
-  const [state, setState] = useState<StateProps>({
+  const [state, setState] = useImmer<StateProps>({
     description: '',
     email: '',
     sending: false,
   })
 
-  const handleTextFieldsChange = (prop: keyof StateProps) => (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setState((cs) => ({ ...cs, [prop]: value }))
-  }
-
   const resetState = () => {
-    setState((cs) => ({ ...cs, description: '', email: '', sending: false }))
+    setState((d) => {
+      d.description = ''
+      d.email = ''
+      d.sending = false
+    })
   }
 
   const handleClose = () => {
@@ -49,10 +49,11 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
   }
 
   const reportIssue = () => {
-    Promise.resolve(setState((cs) => ({ ...cs, sending: true })))
-      .then(() => {
-        return tequilapiClient.reportIssue(state, 60000)
-      })
+    setState((d) => {
+      d.sending = true
+    })
+    return tequilapiClient
+      .reportIssue(state, 60000)
       .then(() => {
         toastSuccess('Thank you! Your report has been sent.')
       })
@@ -113,18 +114,23 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
               <div className="input-group__label">Email address (optional)</div>
               <TextField
                 placeholder="node@runner.com"
-                handleChange={handleTextFieldsChange}
+                onChange={(value) => {
+                  setState((d) => {
+                    d.email = value
+                  })
+                }}
                 value={state.email || ''}
-                stateName="email"
               />
             </div>
             <div className="input-group">
               <div className="input-group__label">Your message</div>
               <TextField
-                placeholder=""
-                handleChange={handleTextFieldsChange}
+                onChange={(value) => {
+                  setState((d) => {
+                    d.description = value
+                  })
+                }}
                 value={state.description}
-                stateName="description"
                 rows={4}
                 multiline
               />

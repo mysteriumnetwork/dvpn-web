@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux'
 
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
-import '../../../assets/styles/pages/sessionsList.scss'
 import { date2human, seconds2Time } from '../../../commons/date.utils'
 import { parseError } from '../../../commons/error.utils'
 import formatBytes from '../../../commons/formatBytes'

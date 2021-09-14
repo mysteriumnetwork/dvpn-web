@@ -6,13 +6,14 @@
  */
 import { CircularProgress } from '@material-ui/core'
 import { Identity } from 'mysterium-vpn-js'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { parseError } from '../../../../commons/error.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
-import { TextField } from '../../../../Components/TextField'
+import { TextField } from '../../../../Components/TextField/TextField'
 import './PayoutAddress.scss'
 
 interface Props {
@@ -28,7 +29,7 @@ interface State {
 }
 
 const PayoutAddress = ({ identity }: Props) => {
-  const [state, setState] = useState<State>({
+  const [state, setState] = useImmer<State>({
     initialPayoutAddress: '',
     payoutAddress: '',
     txPending: false,
@@ -39,9 +40,18 @@ const PayoutAddress = ({ identity }: Props) => {
   useEffect(() => {
     tequilapiClient
       .payoutAddressGet(identity?.id || '')
-      .then(({ address }) => setState((cs) => ({ ...cs, payoutAddress: address, initialPayoutAddress: address })))
+      .then(({ address }) =>
+        setState((d) => {
+          d.payoutAddress = address
+          d.initialPayoutAddress = address
+        }),
+      )
       .catch(() => {}) // address may not exist
-      .finally(() => setState((cs) => ({ ...cs, loading: false })))
+      .finally(() =>
+        setState((d) => {
+          d.loading = false
+        }),
+      )
   }, [identity?.id])
 
   if (state.loading) {
@@ -56,11 +66,11 @@ const PayoutAddress = ({ identity }: Props) => {
           <CopyToClipboard text={state.payoutAddress} />
         </div>
         <TextField
-          stateName="payoutAddress"
           placeholder="0x..."
-          handleChange={() => (e: React.ChangeEvent<HTMLInputElement>) => {
-            const { value } = e.target
-            setState((cs) => ({ ...cs, payoutAddress: value }))
+          onChange={(value) => {
+            setState((d) => {
+              d.payoutAddress = value
+            })
           }}
           value={state.payoutAddress}
         />
@@ -80,12 +90,25 @@ const PayoutAddress = ({ identity }: Props) => {
           }
           onClick={() => {
             Promise.resolve()
-              .then(() => setState((cs) => ({ ...cs, txPending: true })))
+              .then(() =>
+                setState((d) => {
+                  d.txPending = true
+                }),
+              )
               .then(() => tequilapiClient.payoutAddressSave(identity?.id || '', state.payoutAddress))
-              .then(() => setState((cs) => ({ ...cs, txPending: false, initialPayoutAddress: cs.payoutAddress })))
+              .then(() =>
+                setState((d) => {
+                  d.txPending = false
+                  d.initialPayoutAddress = d.payoutAddress
+                }),
+              )
               .then(() => toastSuccess('Bounty Payout Address updated'))
               .catch((err) => toastError(parseError(err)))
-              .finally(() => setState((cs) => ({ ...cs, txPending: false })))
+              .finally(() =>
+                setState((d) => {
+                  d.txPending = false
+                }),
+              )
           }}
         >
           Save

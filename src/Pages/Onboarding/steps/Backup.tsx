@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import '../../../assets/styles/pages/onboarding/steps/backup.scss'
+import './backup.scss'
 import Button from '../../../Components/Buttons/Button'
 
 const Backup = ({ callbacks }: { callbacks: OnboardingChildProps }): JSX.Element => {

@@ -4,18 +4,19 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { FormEvent } from 'react'
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
+import React, { FormEvent } from 'react'
+import { useImmer } from 'use-immer'
+import { login } from '../../api/TequilAPIWrapper'
+import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png'
+import Button from '../../Components/Buttons/Button'
+import { TextField } from '../../Components/TextField/TextField'
+import { DEFAULT_USERNAME } from '../../constants/defaults'
 
 import { updateAuthenticatedStore } from '../../redux/app.slice'
 import { store } from '../../redux/store'
-import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png'
 import './LoginPage.scss'
-import { TextField } from '../../Components/TextField'
-import { DEFAULT_USERNAME } from '../../constants/defaults'
-import Button from '../../Components/Buttons/Button'
-import { login } from '../../api/TequilAPIWrapper'
 
 interface Props {
   onSuccessLogin: () => void
@@ -30,24 +31,38 @@ interface StateProps {
 const DOCS_URL = 'https://docs.mysterium.network/node-runners/troubleshooting/#forgot-password'
 
 const LoginPage = ({ onSuccessLogin }: Props) => {
-  const [state, setState] = React.useState<StateProps>({
+  const [state, setState] = useImmer<StateProps>({
     password: '',
     error: false,
     isLoading: false,
   })
 
-  const handleTextFieldsChange = (prop: keyof StateProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setState((cs) => ({ ...cs, [prop]: value }))
+  const handleTextFieldsChange = (value: string) => {
+    setState((d) => {
+      d.password = value
+    })
   }
 
-  const handleLogin = (e: FormEvent<any>) => {
+  const handleLogin = async (e: FormEvent<any>) => {
     e.preventDefault()
-    setState((cs) => ({ ...cs, error: false, isLoading: true }))
-    login(DEFAULT_USERNAME, state.password)
-      .then(() => store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })))
-      .then(() => onSuccessLogin())
-      .catch(() => setState((cs) => ({ ...cs, error: true, isLoading: false })))
+    setState((d) => {
+      d.error = false
+      d.isLoading = true
+    })
+
+    try {
+      await login(DEFAULT_USERNAME, state.password)
+      await onSuccessLogin()
+      store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
+    } catch (_) {
+      setState((d) => {
+        d.error = true
+      })
+    } finally {
+      setState((d) => {
+        d.isLoading = false
+      })
+    }
   }
   return (
     <div className="login wrapper">
@@ -65,12 +80,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
             <form onSubmit={handleLogin}>
               <div className="password-input-block">
                 <p className="text-field-label">Web UI password</p>
-                <TextField
-                  handleChange={handleTextFieldsChange}
-                  password={true}
-                  value={state.password}
-                  stateName="password"
-                />
+                <TextField onChange={handleTextFieldsChange} password={true} value={state.password} />
               </div>
 
               <div className="password-actions-block">

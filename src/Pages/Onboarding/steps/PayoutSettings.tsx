@@ -7,8 +7,9 @@
 import React, { useState } from 'react'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
+import { useImmer } from 'use-immer'
 
-import { TextField } from '../../../Components/TextField'
+import { TextField } from '../../../Components/TextField/TextField'
 import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import Button from '../../../Components/Buttons/Button'
@@ -34,7 +35,7 @@ interface StateInterface {
 }
 
 const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
-  const [state, setState] = useState<StateInterface>({
+  const [state, setState] = useImmer<StateInterface>({
     bountyPayoutAddress: '',
     stake: DEFAULT_STAKE_AMOUNT,
     errors: [],
@@ -43,40 +44,41 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
   const [topupOpen, setTopupOpen] = useState<boolean>(false)
 
   const errors = (...messages: string[]): void => {
-    setState((cs) => ({ ...cs, errors: messages }))
+    setState((d) => {
+      d.errors = messages
+    })
   }
 
-  const handleTextFieldsChange = (prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setState((cs) => ({ ...cs, [prop]: value }))
+  const handleTextFieldsChange = (value: string) => {
+    setState((d) => {
+      d.bountyPayoutAddress = value
+    })
   }
 
-  const handleDone = () => {
+  const handleDone = async () => {
     if (state.bountyPayoutAddress && !isValidEthereumAddress(state.bountyPayoutAddress)) {
       errors('Invalid Ethereum wallet address')
       return
     }
-    Promise.resolve()
-      .then(() => setIsLoading(true))
-      .then(() =>
-        state.bountyPayoutAddress
-          ? tequilapiClient.payoutAddressSave(identity.id, state.bountyPayoutAddress)
-          : Promise.resolve({}),
-      )
-      .then(() => register(identity.id))
-      .then(() => {
-        if (isFreeRegistration(config)) {
-          setIsLoading(false)
-          callbacks.nextStep()
-          return
-        } else {
-          setTopupOpen(true)
-        }
-      })
-      .catch((error) => {
-        errors(parseTequilApiError(error) || 'API call failed')
+    setIsLoading(true)
+
+    try {
+      if (state.bountyPayoutAddress) {
+        await tequilapiClient.payoutAddressSave(identity.id, state.bountyPayoutAddress)
+      }
+      await register(identity.id)
+      if (isFreeRegistration(config)) {
         setIsLoading(false)
-      })
+        callbacks.nextStep()
+        return
+      } else {
+        setTopupOpen(true)
+      }
+    } catch (error) {
+      errors(parseTequilApiError(error) || 'API call failed')
+    }
+
+    setIsLoading(false)
   }
 
   const register = (identity: string): Promise<void> => {
@@ -101,12 +103,7 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
         </Collapse>
         <div className="input-group">
           <p className="input-group__label">Bounty Payout Address</p>
-          <TextField
-            handleChange={handleTextFieldsChange}
-            value={state.bountyPayoutAddress}
-            placeholder={'0x...'}
-            stateName="bountyPayoutAddress"
-          />
+          <TextField onChange={handleTextFieldsChange} value={state.bountyPayoutAddress} placeholder={'0x...'} />
           <p className="input-group__help">
             Make sure you enter ERC-20 compatible wallet or MYST compatible exchange wallet address. You can enter this
             address later in 'Settings' page.

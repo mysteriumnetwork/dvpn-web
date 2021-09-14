@@ -7,11 +7,12 @@
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { updateConfig } from '../../../../api/TequilAPIWrapper'
 import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 
 import Button from '../../../../Components/Buttons/Button'
-import { TextField } from '../../../../Components/TextField'
+import { TextField } from '../../../../Components/TextField/TextField'
 import Errors from '../../../../Components/Validation/Errors'
 
 interface StateInterface {
@@ -52,6 +53,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
         })
         toastSuccess('MMN API key updated. Refresh the dashboard to view the bounty report.')
       })
+      .then(() => updateConfig())
       .catch((error) =>
         setState((d) => {
           d.error = true
@@ -72,10 +74,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       <div className="input-group">
         <div className="input-group__label">API Key ({link})</div>
         <TextField
-          stateName={'apiKey'}
-          id={'api_key'}
-          handleChange={(prop: keyof StateInterface) => (event: React.ChangeEvent<HTMLInputElement>) => {
-            const { value } = event.target
+          onChange={(value: string) => {
             setState((d) => {
               d.apiKey = value
             })

@@ -9,7 +9,7 @@ import { Fade, Modal } from '@material-ui/core'
 import './WalletModel.scss'
 
 import Button from '../../../Components/Buttons/Button'
-import { TextField } from '../../../Components/TextField'
+import { TextField } from '../../../Components/TextField/TextField'
 
 interface Props {
   isOpen: boolean
@@ -31,9 +31,8 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
     setState((cs) => ({ ...cs, beneficiary: beneficiary || '' }))
   }, [beneficiary])
 
-  const handleTextFieldsChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setState((cs) => ({ ...cs, [prop]: value }))
+  const handleTextFieldsChange = (value: string) => {
+    setState((cs) => ({ ...cs, value: value }))
   }
 
   const updateBeneficiary = () => {
@@ -67,12 +66,7 @@ const BeneficiaryChangeModal = ({ isOpen, onClose, beneficiary, identityId }: Pr
         <div className="wallet-modal--block">
           <div className="title">Update beneficiary address</div>
           <div className="settings">
-            <TextField
-              handleChange={handleTextFieldsChange}
-              value={state.beneficiary}
-              defaultValue={{}}
-              stateName="beneficiary"
-            />
+            <TextField onChange={handleTextFieldsChange} value={state.beneficiary} defaultValue={{}} />
           </div>
           <div className="buttons-block">
             <Button

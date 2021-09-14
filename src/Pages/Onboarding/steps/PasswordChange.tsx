@@ -4,32 +4,32 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
+import { useImmer } from 'use-immer'
+import { tequilapiClient } from '../../../api/TequilApiClient'
 import { mmnDomainName, mmnWebAddress } from '../../../commons/config'
+import { parseError } from '../../../commons/error.utils'
+import { validatePassword } from '../../../commons/password'
+import Button from '../../../Components/Buttons/Button'
+import { Checkbox } from '../../../Components/Checkbox/Checkbox'
+import { TextField } from '../../../Components/TextField/TextField'
 import Errors from '../../../Components/Validation/Errors'
+import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
+import { updateAuthenticatedStore } from '../../../redux/app.slice'
 
 import { store } from '../../../redux/store'
-import { updateAuthenticatedStore } from '../../../redux/app.slice'
-import { TextField } from '../../../Components/TextField'
-import { Checkbox } from '../../../Components/Checkbox/Checkbox'
-import { validatePassword } from '../../../commons/password'
-import { DEFAULT_USERNAME, DEFAULT_PASSWORD } from '../../../constants/defaults'
-import { tequilapiClient } from '../../../api/TequilApiClient'
-import Button from '../../../Components/Buttons/Button'
-import { parseTequilApiError, parseMMNError } from '../../../commons/error.utils'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
 
 interface State {
   passwordRepeat?: string
   password?: string
   apiKey: string
-  checked: boolean
+  useApiKey: boolean
+  loading: boolean
   error: boolean
   errorMessage: string
   nodeClaimed: boolean
 }
-
-const API_CALL_FAILED = 'API Call failed.'
 
 interface Props {
   config?: Config
@@ -37,61 +37,98 @@ interface Props {
 }
 
 const PasswordChange = ({ config }: Props): JSX.Element => {
-  const [state, setState] = React.useState<State>({
+  const [state, setState] = useImmer<State>({
     passwordRepeat: '',
     password: '',
     apiKey: '',
-    checked: false,
+    useApiKey: false,
     error: false,
     errorMessage: '',
     nodeClaimed: false,
+    loading: false,
   })
 
   useEffect(() => {
     tequilapiClient.getMMNApiKey().then((resp) => {
-      setState((cs) => ({ ...cs, apiKey: resp.apiKey }))
+      setState((d) => {
+        d.apiKey = resp.apiKey
+      })
     })
   }, [])
 
-  const handleTextFieldsChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setState((cs) => ({ ...cs, [prop]: value }))
+  const onPasswordChange = (value: string) => {
+    setState((d) => {
+      d.password = value
+    })
+  }
+
+  const onPasswordRepeatChange = (value: string) => {
+    setState((d) => {
+      d.passwordRepeat = value
+    })
+  }
+
+  const onApiKeyChange = (value: string) => {
+    setState((d) => {
+      d.apiKey = value
+    })
   }
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState((cs) => ({ ...cs, checked: event.target.checked }))
+    setState((d) => {
+      d.useApiKey = event.target.checked
+    })
   }
 
   const handleSubmitPassword = async () => {
-    setState((cs) => ({ ...cs, error: false }))
+    setState((d) => {
+      d.loading = true
+      d.error = false
+    })
 
-    if (state.checked && !state.apiKey) {
-      setState((cs) => ({ ...cs, error: true, errorMessage: 'Please enter MMN ApiKey' }))
+    if (state.useApiKey && !state.apiKey) {
+      setState((d) => {
+        d.error = true
+        d.errorMessage = 'Please enter MMN ApiKey'
+        d.loading = false
+      })
       return
     }
 
     const isPasswordValid = validatePassword(state.password, state.passwordRepeat)
     if (!isPasswordValid.success) {
-      setState((cs) => ({ ...cs, error: true, errorMessage: isPasswordValid.errorMessage }))
+      setState((d) => {
+        d.error = true
+        d.errorMessage = isPasswordValid.errorMessage
+        d.loading = false
+      })
+
       return
     }
 
-    ;(state.checked ? tequilapiClient.setMMNApiKey(state.apiKey) : Promise.resolve())
-      .then(
-        () =>
-          tequilapiClient.authChangePassword({
-            username: DEFAULT_USERNAME,
-            oldPassword: DEFAULT_PASSWORD,
-            newPassword: state.password || '',
-          }),
-        (mmnError) =>
-          setState((cs) => ({ ...cs, error: true, errorMessage: parseMMNError(mmnError) || API_CALL_FAILED })),
-      )
-      .then(() => store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false })))
-      .catch((error) => {
-        setState((cs) => ({ ...cs, error: true, errorMessage: parseTequilApiError(error) || API_CALL_FAILED }))
-        console.log(error)
+    try {
+      if (state.useApiKey) {
+        await tequilapiClient.setMMNApiKey(state.apiKey)
+      }
+
+      await tequilapiClient.authChangePassword({
+        username: DEFAULT_USERNAME,
+        oldPassword: DEFAULT_PASSWORD,
+        newPassword: state.password || '',
       })
+
+      store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
+    } catch (err) {
+      const msg = parseError(err)
+      setState((d) => {
+        d.error = true
+        d.errorMessage = msg
+      })
+    } finally {
+      setState((d) => {
+        d.loading = false
+      })
+    }
   }
 
   return (
@@ -105,32 +142,25 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
         <Errors error={state.error} errorMessage={state.errorMessage} />
         <div className="input-group">
           <p className="input-group__label">Web UI password</p>
-          <TextField
-            handleChange={handleTextFieldsChange}
-            password={true}
-            placeholder={'*********'}
-            value={state.password}
-            stateName="password"
-          />
+          <TextField onChange={onPasswordChange} password={true} placeholder={'*********'} value={state.password} />
         </div>
         <div className="input-group">
           <p className="input-group__label">Repeat password</p>
           <TextField
-            handleChange={handleTextFieldsChange}
+            onChange={onPasswordRepeatChange}
             password={true}
             placeholder={'*********'}
             value={state.passwordRepeat}
-            stateName="passwordRepeat"
           />
         </div>
         <div className="input-group m-t-50 m-b-20">
           <Checkbox
-            checked={state.checked}
+            checked={state.useApiKey}
             handleCheckboxChange={handleCheckboxChange}
             label={'Claim this node in ' + mmnDomainName(config)}
           />
         </div>
-        {state.checked ? (
+        {state.useApiKey ? (
           <div className="input-group m-t-20">
             <p className="input-group__label">
               API Key (
@@ -139,16 +169,13 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
               </a>
               )
             </p>
-            <TextField
-              handleChange={handleTextFieldsChange}
-              value={state.apiKey}
-              placeholder={'Your API token'}
-              stateName="apiKey"
-            />
+            <TextField onChange={onApiKeyChange} value={state.apiKey} placeholder={'Your API token'} />
           </div>
         ) : null}
         <div className="step__content-buttons step__content-buttons--center m-t-30">
-          <Button onClick={handleSubmitPassword}>Save & Continue</Button>
+          <Button isLoading={state.loading} onClick={handleSubmitPassword}>
+            Save & Continue
+          </Button>
         </div>
       </div>
     </div>
