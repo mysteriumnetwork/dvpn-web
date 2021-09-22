@@ -79,7 +79,7 @@ const PasswordChange = () => {
               d.currentPassword = value
             })
           }}
-          password={true}
+          type="password"
           placeholder={'*********'}
           value={values.currentPassword}
         />
@@ -92,7 +92,7 @@ const PasswordChange = () => {
               d.newPassword = value
             })
           }}
-          password={true}
+          type="password"
           placeholder={'*********'}
           value={values.newPassword}
         />
@@ -105,7 +105,7 @@ const PasswordChange = () => {
               d.newPasswordConfirmation = value
             })
           }}
-          password={true}
+          type="password"
           placeholder={'*********'}
           value={values.newPasswordConfirmation}
         />
