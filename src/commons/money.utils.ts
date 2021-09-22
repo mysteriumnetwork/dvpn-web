@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Currency, displayMoney, DisplayMoneyOptions } from 'mysterium-vpn-js'
+import { Currency, DECIMAL_PART, displayMoney, DisplayMoneyOptions } from 'mysterium-vpn-js'
 
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index'
 import { isTestnet } from './config'
@@ -14,6 +14,10 @@ export const ETHER_FRACTIONS = 18
 
 export const currentCurrency = (): Currency => {
   return isTestnet(store.getState()?.app?.config) ? Currency.MYSTTestToken : Currency.MYST
+}
+
+export const toMyst = (amountWei: number, precision?: number): number => {
+  return Number((amountWei / DECIMAL_PART).toFixed(precision || DEFAULT_MONEY_DISPLAY_OPTIONS.fractionDigits))
 }
 
 export const displayMyst = (amount: number = 0, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
