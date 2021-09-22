@@ -6,7 +6,15 @@
  */
 
 import { CircularProgress } from '@material-ui/core'
-import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
+import {
+  ChainSummary,
+  CurrentPricesResponse,
+  Fees,
+  Session,
+  SessionDirection,
+  SessionStats,
+  SessionStatus,
+} from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -32,6 +40,7 @@ import Services from './Services/Services'
 import Statistics from './Statistics/Statistics'
 
 interface StateProps {
+  loading: boolean
   sessionStatsAllTime: SessionStats
   sessionStatsDaily: {
     [date: string]: SessionStats
@@ -40,7 +49,8 @@ interface StateProps {
   currentPrices: CurrentPricesResponse
 }
 
-const initialState = {
+const initialState: StateProps = {
+  loading: true,
   sessionStatsAllTime: {
     count: 0,
     countConsumers: 0,
@@ -81,6 +91,7 @@ const Dashboard = () => {
         status: SessionStatus.COMPLETED,
       }),
       tequilapiClient.pricesCurrent(),
+      tequilapiClient.identityBalanceRefresh(identity.id),
     ])
       .then((result) => {
         const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = result
@@ -91,13 +102,14 @@ const Dashboard = () => {
           d.currentPrices = prices
           d.sessionStatsDaily = statsDaily
           d.sessionStatsDaily = statsDaily
+          d.loading = false
         })
       })
       .catch((err) => toastError(parseTequilApiError(err) || UNKNOWN_API_ERROR))
   }, [identity?.id])
 
   const { appState } = sse
-  if (!identity || !appState || !config) {
+  if (!identity || !appState || !config || state.loading) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
@@ -109,7 +121,7 @@ const Dashboard = () => {
       <div className="main-block main-block--split">
         <Header logo={Logo} name="Dashboard" />
         <div className="dashboard__statistics">
-          <Statistics testnet={testnet} stats={state.sessionStatsAllTime} unsettledEarnings={identity.earnings} />
+          <Statistics testnet={testnet} stats={state.sessionStatsAllTime} identity={identity} />
         </div>
         <div className="dashboard__widgets">
           <div className="widget widget--bounty">
