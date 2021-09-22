@@ -1,0 +1,117 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.withdrawal-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: 0;
+
+  &__title {
+    font-weight: $medium-weight;
+    font-size: $large-size;
+    line-height: 21px;
+    color: $main-text-color;
+    margin-bottom: 10px;
+  }
+
+  &__block {
+    margin-top: 10px;
+    background: #FFFFFF;
+    box-shadow: 0px 6px 16px rgba(153, 155, 168, 0.1);
+    border-radius: 4px;
+    transition: unset;
+    padding: 30px 35px;
+    outline: 0;
+
+    @include respond-above(sm) {
+      width: 60%;
+    }
+
+    @include respond-below(sm) {
+      width: 90%;
+    }
+  }
+
+  &__rows {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &__row-disclaimer {
+    font-style: normal;
+    font-weight: normal;
+    font-size: $smaller-size;
+    color: #9090BB;
+    line-height: 18px;
+    text-align: center;
+  }
+
+  &__row-hermes_warning {
+    margin-top: 36px;
+    text-align: center;
+    color: #ff5454;
+  }
+
+  &__row-withdraw-info {
+  }
+
+  &__row-withdraw-loading {
+    margin: 36px;
+  }
+
+  &__row-withdraw-erro {
+    width: 100%;
+  }
+
+  &__row-withdraw-fees {
+    background: rgba(#ED5BAC, 0.05);
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 29px;
+    margin-top: 20px;
+
+    @include respond-below(sm) {
+      align-items: center;
+      gap: 15px;
+      flex-direction: column;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    @include respond-below(sm) {
+      button {
+        font-size: $smaller-size !important;
+      }
+    }
+  }
+
+  .title {
+    font-weight: $medium-weight;
+    font-size: $large-size;
+    line-height: 21px;
+    color: $main-text-color;
+    margin-bottom: 10px;
+  }
+}
+
+.modal-card {
+
+  &__info {
+    font-size: $smaller-size;
+    font-weight: $lighter-weight;
+  }
+
+  &__value {
+    font-size: $larger-size;
+  }
+
+  &__important {
+    color: #D61F85 !important;
+  }
+}
