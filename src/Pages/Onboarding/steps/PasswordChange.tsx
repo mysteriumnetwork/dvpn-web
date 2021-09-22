@@ -146,13 +146,13 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
         <Errors error={state.error} errorMessage={state.errorMessage} />
         <div className="input-group">
           <p className="input-group__label">Web UI password</p>
-          <TextField onChange={onPasswordChange} password={true} placeholder={'*********'} value={state.password} />
+          <TextField onChange={onPasswordChange} type="password" placeholder={'*********'} value={state.password} />
         </div>
         <div className="input-group">
           <p className="input-group__label">Repeat password</p>
           <TextField
             onChange={onPasswordRepeatChange}
-            password={true}
+            type="password"
             placeholder={'*********'}
             value={state.passwordRepeat}
           />
