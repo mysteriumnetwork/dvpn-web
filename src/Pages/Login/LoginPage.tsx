@@ -80,7 +80,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
             <form onSubmit={handleLogin}>
               <div className="password-input-block">
                 <p className="text-field-label">Web UI password</p>
-                <TextField onChange={handleTextFieldsChange} password={true} value={state.password} />
+                <TextField onChange={handleTextFieldsChange} type="password" value={state.password} />
               </div>
 
               <div className="password-actions-block">
