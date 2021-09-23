@@ -7,29 +7,66 @@
 
 import { Tooltip } from '@material-ui/core'
 import HelpIcon from '@material-ui/icons/Help'
-import React, { ReactFragment } from 'react'
-import { NatStatusV2Response, ServiceInfo } from 'mysterium-vpn-js'
+import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vpn-js'
+import React, { ReactFragment, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { toastParseError } from '../../../../commons/toast.utils'
 import { NATType } from '../../../../constants/nat'
+import { DOCS_NAT_FIX } from '../../../../constants/urls'
+import { SSEState } from '../../../../redux/sse.slice'
+import { RootState } from '../../../../redux/store'
 import Bubble from './Bubble'
-import { nodeStatusBubble, natType2Human, statusText, natTypeStatusBubble } from './nat-status.utils'
+import { natType2Human, natTypeStatusBubble, nodeStatusBubble, statusText } from './nat-status.utils'
 import './NodeStatus.scss'
 
-interface Props {
-  natType: string
-  natTypeError?: string
-  natTypeLoading: boolean
-
-  natStatus: NatStatusV2Response
-  nodeStatusFixUrl?: string
-  natTypeFixUrl: string
-
-  serviceInfos: ServiceInfo[]
+interface State {
+  natStatus: NodeMonitoringStatusResponse
+  nat: {
+    loading: boolean
+    type: string
+    error?: string
+  }
 }
 
-const NodeStatus = ({ natStatus, natType, natTypeFixUrl, serviceInfos, natTypeLoading }: Props) => {
-  const online = serviceInfos && serviceInfos.length > 0
+const initialState: State = {
+  natStatus: {
+    status: NodeMonitoringStatus.PASSED,
+  },
+  nat: {
+    loading: true,
+    type: '',
+  },
+}
+
+const NodeStatus = () => {
+  const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
+  const [state, setState] = useImmer<State>(initialState)
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const status = await tequilapiClient.nodeMonitoringStatus()
+        const natType = await tequilapiClient.natType()
+        setState((d) => {
+          d.natStatus = status
+          d.nat.type = natType.type
+          d.nat.error = natType.error
+          d.nat.loading = false
+        })
+      } catch (e) {
+        toastParseError(e)
+      }
+    }
+    init()
+  }, [])
+
+  const serviceInfo = sse.appState?.serviceInfo
+  const { natStatus, nat } = state
+  const online = !!(serviceInfo && serviceInfo.length > 0)
   const nodeStatus = nodeStatusBubble(natStatus, online)
-  const natTypeStatus = natTypeStatusBubble(natType, natTypeLoading)
+  const natTypeStatus = natTypeStatusBubble(nat.type, nat.loading)
 
   return (
     <div className="status-card">
@@ -53,11 +90,11 @@ const NodeStatus = ({ natStatus, natType, natTypeFixUrl, serviceInfos, natTypeLo
         <div className="status-card__status-text">Accepting Connections:</div>
         <div className="status-card__status-icon">
           <Bubble status={natTypeStatus} />
-          <p className="status-card__status-icon-description">{natType2Human(natType, natTypeLoading)}</p>
+          <p className="status-card__status-icon-description">{natType2Human(nat.type, nat.loading)}</p>
         </div>
         <div className="status-card__tooltip">
           <Tooltip
-            title={<div>{natTypeTooltip(natType, natTypeFixUrl)}</div>}
+            title={<div>{natTypeTooltip(nat.type, DOCS_NAT_FIX)}</div>}
             style={{ backgroundColor: '#FFFFFF !important' }}
             placement="bottom-start"
             arrow
@@ -71,7 +108,7 @@ const NodeStatus = ({ natStatus, natType, natTypeFixUrl, serviceInfos, natTypeLo
   )
 }
 
-const nodeStatusTooltip = (nat: NatStatusV2Response, online: boolean): ReactFragment => {
+const nodeStatusTooltip = (node: NodeMonitoringStatusResponse, online: boolean): ReactFragment => {
   const content = (): ReactFragment => {
     if (!online) {
       return (
@@ -81,7 +118,7 @@ const nodeStatusTooltip = (nat: NatStatusV2Response, online: boolean): ReactFrag
         </>
       )
     }
-    switch (nat.status) {
+    switch (node.status) {
       case 'pending':
         return <p>Node check pending, please be patient.</p>
       case 'failed':

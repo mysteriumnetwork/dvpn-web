@@ -18,7 +18,6 @@ import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.u
 import { isRegistered } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
-import { DOCS_NAT_FIX } from '../../../constants/urls'
 import { AppState, currentIdentity } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
@@ -39,11 +38,6 @@ interface StateProps {
   }
   historySessions: Session[]
   currentPrices: CurrentPricesResponse
-  natType: {
-    loading: boolean
-    type: string
-    error?: string
-  }
 }
 
 const initialState = {
@@ -60,10 +54,6 @@ const initialState = {
   currentPrices: {
     pricePerHour: BigInt(0),
     pricePerGib: BigInt(0),
-  },
-  natType: {
-    loading: true,
-    type: '',
   },
 }
 
@@ -106,25 +96,12 @@ const Dashboard = () => {
       .catch((err) => toastError(parseTequilApiError(err) || UNKNOWN_API_ERROR))
   }, [identity?.id])
 
-  const updateNATType = () => {
-    tequilapiClient.natType().then((resp) =>
-      setState((d) => {
-        d.natType = { loading: false, type: resp.type, error: resp.error }
-      }),
-    )
-  }
-  useEffect(() => {
-    updateNATType()
-    const natPollInterval = setInterval(() => updateNATType(), 60_000 * 5)
-    return () => clearInterval(natPollInterval)
-  }, [])
-
   const { appState } = sse
   if (!identity || !appState || !config) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
-  const { serviceInfo, nat } = appState
+  const { serviceInfo } = appState
   const testnet = isTestnet(config)
 
   return (
@@ -143,15 +120,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="dashboard__node-status">
-          <NodeStatus
-            serviceInfos={serviceInfo}
-            natStatus={nat.status}
-            natType={state.natType.type}
-            natTypeLoading={state.natType.loading}
-            natTypeError={state.natType.error}
-            nodeStatusFixUrl={DOCS_NAT_FIX}
-            natTypeFixUrl={DOCS_NAT_FIX}
-          />
+          <NodeStatus />
         </div>
         <div className="dashboard__services">
           <Services
