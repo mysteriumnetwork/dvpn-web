@@ -6,15 +6,7 @@
  */
 
 import { CircularProgress } from '@material-ui/core'
-import {
-  ChainSummary,
-  CurrentPricesResponse,
-  Fees,
-  Session,
-  SessionDirection,
-  SessionStats,
-  SessionStatus,
-} from 'mysterium-vpn-js'
+import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
