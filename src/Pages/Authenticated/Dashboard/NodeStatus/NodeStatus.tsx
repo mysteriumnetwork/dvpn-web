@@ -5,14 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Tooltip } from '@material-ui/core'
-import HelpIcon from '@material-ui/icons/Help'
 import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vpn-js'
 import React, { ReactFragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { toastParseError } from '../../../../commons/toast.utils'
+import HelpTooltip from '../../../../Components/HelpTooltip/HelpTooltip'
 import { NATType } from '../../../../constants/nat'
 import { DOCS_NAT_FIX } from '../../../../constants/urls'
 import { SSEState } from '../../../../redux/sse.slice'
@@ -79,9 +78,7 @@ const NodeStatus = () => {
         {(online && natStatus.status === 'failed') ||
           (!online && (
             <div className="status-card__tooltip">
-              <Tooltip title={nodeStatusTooltip(natStatus, online)} placement="bottom-start" arrow interactive>
-                <HelpIcon fontSize="small" />
-              </Tooltip>
+              <HelpTooltip title={nodeStatusTooltip(natStatus, online)} placement="bottom-start" />
             </div>
           ))}
       </div>
@@ -93,15 +90,7 @@ const NodeStatus = () => {
           <p className="status-card__status-icon-description">{natType2Human(nat.type, nat.loading)}</p>
         </div>
         <div className="status-card__tooltip">
-          <Tooltip
-            title={<div>{natTypeTooltip(nat.type, DOCS_NAT_FIX)}</div>}
-            style={{ backgroundColor: '#FFFFFF !important' }}
-            placement="bottom-start"
-            arrow
-            interactive
-          >
-            <HelpIcon fontSize="small" />
-          </Tooltip>
+          <HelpTooltip title={<div>{natTypeTooltip(nat.type, DOCS_NAT_FIX)}</div>} />
         </div>
       </div>
     </div>

@@ -14,10 +14,12 @@ import { parseError } from '../../../commons/error.utils'
 import { validatePassword } from '../../../commons/password'
 import Button from '../../../Components/Buttons/Button'
 import { Checkbox } from '../../../Components/Checkbox/Checkbox'
+import HelpTooltip from '../../../Components/HelpTooltip/HelpTooltip'
 import { TextField } from '../../../Components/TextField/TextField'
 import Errors from '../../../Components/Validation/Errors'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
 import { updateAuthenticatedStore } from '../../../redux/app.slice'
+import './PasswordChange.scss'
 
 import { store } from '../../../redux/store'
 
@@ -187,11 +189,16 @@ const MMNClaim = ({
 }) => {
   return (
     <>
-      <div className="input-group m-t-50 m-b-20">
+      <div className="claim-row input-group m-t-50 m-b-20">
         <Checkbox
           checked={state.useApiKey}
           handleCheckboxChange={handleCheckboxChange}
           label={'Claim this node in ' + mmnDomainName(config)}
+        />
+        <HelpTooltip
+          title={
+            'If you claim your node you will be able to manage and see statistics for all your nodes in my.mysterium.network'
+          }
         />
       </div>
       {state.useApiKey ? (
