@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 
 import { tequilapiClient } from '../../../api/TequilApiClient'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
+import { countryName } from '../../../commons/country'
 import { date2human, seconds2Time } from '../../../commons/date.utils'
 import { parseError } from '../../../commons/error.utils'
 import formatBytes from '../../../commons/formatBytes'
@@ -39,7 +40,7 @@ const row = (s: Session): TableRow => {
   const cells = [
     {
       className: 'w-10',
-      content: s.consumerCountry,
+      content: countryName(s.consumerCountry),
     },
     {
       className: 'w-10',
