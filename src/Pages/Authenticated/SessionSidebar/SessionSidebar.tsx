@@ -7,6 +7,7 @@
 import { Session, SessionStatus, SessionStats, SessionDirection } from 'mysterium-vpn-js'
 import { Link } from 'react-router-dom'
 import './SessionSidebar.scss'
+import { countryName } from '../../../commons/country'
 
 import formatBytes, { add } from '../../../commons/formatBytes'
 import { seconds2Time } from '../../../commons/date.utils'
@@ -26,7 +27,7 @@ const toSessionCard = (
   return (
     <SessionCard
       key={key}
-      country={consumerCountry}
+      country={countryName(consumerCountry)}
       status={status === SessionStatus.NEW}
       id={id}
       time={seconds2Time(duration)}
