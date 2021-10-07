@@ -69,6 +69,8 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
     handleClose()
   }
 
+  const typedIn = state.description?.length || 0
+
   return (
     <Dialog
       fullWidth={true}
@@ -123,7 +125,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
               />
             </div>
             <div className="input-group">
-              <div className="input-group__label">Your message</div>
+              <div className="input-group__label">Your message ({typedIn})</div>
               <TextField
                 onChange={(value) => {
                   setState((d) => {
