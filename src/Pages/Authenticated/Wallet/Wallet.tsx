@@ -19,7 +19,7 @@ import { toastError } from '../../../commons/toast.utils'
 import Button from '../../../Components/Buttons/Button'
 
 import Header from '../../../Components/Header'
-import Table, { TableRow } from '../../../Components/Table/Table'
+import Table, { TableRow } from '../../../Components/Table/TableLegacy'
 import { currentIdentity } from '../../../redux/app.slice'
 import * as sseSlice from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
