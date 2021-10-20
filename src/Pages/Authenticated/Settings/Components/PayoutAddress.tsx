@@ -54,12 +54,33 @@ const PayoutAddress = ({ identity }: Props) => {
       )
   }, [identity?.id])
 
+  const handlePayoutAddressChange = () => {
+    setState((d) => {
+      d.txPending = true
+    })
+    tequilapiClient
+      .payoutAddressSave(identity?.id || '', state.payoutAddress)
+      .then((res) => {
+        setState((d) => {
+          d.txPending = false
+          d.initialPayoutAddress = res.address
+        })
+        toastSuccess('Bounty Payout Address updated')
+      })
+      .catch((err) => {
+        setState((d) => {
+          d.txPending = false
+        })
+        toastError(parseError(err))
+      })
+  }
+
   if (state.loading) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
   return (
-    <>
+    <form onSubmit={handlePayoutAddressChange}>
       <div className="input-group">
         <div className="flex-row">
           <div className="input-group__label m-t-5">Bounty Payout Address</div>
@@ -86,35 +107,14 @@ const PayoutAddress = ({ identity }: Props) => {
           disabled={
             state.payoutAddress === state.initialPayoutAddress ||
             state.payoutAddress === '' ||
-            state.payoutAddress.length < 42
+            state.payoutAddress.length !== 42
           }
-          onClick={() => {
-            Promise.resolve()
-              .then(() =>
-                setState((d) => {
-                  d.txPending = true
-                }),
-              )
-              .then(() => tequilapiClient.payoutAddressSave(identity?.id || '', state.payoutAddress))
-              .then(() =>
-                setState((d) => {
-                  d.txPending = false
-                  d.initialPayoutAddress = d.payoutAddress
-                }),
-              )
-              .then(() => toastSuccess('Bounty Payout Address updated'))
-              .catch((err) => toastError(parseError(err)))
-              .finally(() =>
-                setState((d) => {
-                  d.txPending = false
-                }),
-              )
-          }}
+          type="submit"
         >
           Save
         </Button>
       </div>
-    </>
+    </form>
   )
 }
 

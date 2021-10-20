@@ -21,6 +21,7 @@ interface StateInterface {
   currentPassword: string
   error: boolean
   errorMessage: string
+  loading: boolean
 }
 
 const defaultState = {
@@ -29,6 +30,7 @@ const defaultState = {
   currentPassword: '',
   error: false,
   errorMessage: '',
+  loading: false,
 }
 
 const PasswordChange = () => {
@@ -48,7 +50,9 @@ const PasswordChange = () => {
 
       return
     }
-
+    setValues((d) => {
+      d.loading = true
+    })
     tequilapiClient
       .authChangePassword({
         username: DEFAULT_USERNAME,
@@ -62,13 +66,13 @@ const PasswordChange = () => {
       .catch((error: Error) => {
         if (error instanceof TequilapiError) {
           const apiError = error as TequilapiError
-          setValues({ ...values, error: true, errorMessage: apiError.message })
+          setValues({ ...values, error: true, errorMessage: apiError.message, loading: false })
         }
       })
   }
 
   return (
-    <div>
+    <form onSubmit={handleSubmitPassword}>
       <Errors error={values.error} errorMessage={values.errorMessage} />
 
       <div className="input-group">
@@ -111,9 +115,11 @@ const PasswordChange = () => {
         />
       </div>
       <div className="footer__buttons m-t-40">
-        <Button onClick={handleSubmitPassword}>Save</Button>
+        <Button type="submit" isLoading={values.loading}>
+          Save
+        </Button>
       </div>
-    </div>
+    </form>
   )
 }
 

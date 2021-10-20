@@ -19,6 +19,7 @@ interface StateInterface {
   apiKey: string
   error: boolean
   errorMessage: string
+  loading: boolean
 }
 
 interface Props {
@@ -31,6 +32,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
     apiKey: '',
     error: false,
     errorMessage: '',
+    loading: false,
   })
 
   useEffect(() => {
@@ -42,6 +44,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   const handleSubmitToken = async () => {
     setState((d) => {
       d.error = false
+      d.loading = true
     })
 
     tequilapiClient
@@ -50,6 +53,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
         setState((cs) => {
           cs.error = false
           cs.errorMessage = ''
+          cs.loading = false
         })
         toastSuccess('MMN API key updated. Refresh the dashboard to view the bounty report.')
       })
@@ -58,6 +62,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
         setState((d) => {
           d.error = true
           d.errorMessage = parseError(error, 'Validation Error')
+          d.loading = false
         }),
       )
   }
@@ -68,7 +73,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
     </a>
   )
   return (
-    <div>
+    <form onSubmit={handleSubmitToken}>
       <Errors error={state.error} errorMessage={state.errorMessage} />
 
       <div className="input-group">
@@ -83,9 +88,11 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
         />
       </div>
       <div className="footer__buttons m-t-40">
-        <Button onClick={handleSubmitToken}>Save</Button>
+        <Button type="submit" isLoading={state.loading}>
+          Save
+        </Button>
       </div>
-    </div>
+    </form>
   )
 }
 
