@@ -57,6 +57,9 @@
       font-size: $smaller-size;
       line-height: 18px;
       color: #AAAAAA;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 
@@ -96,11 +99,15 @@
       margin-bottom: 15px;
 
       .cell {
+        padding-right: 0.2em;
         font-style: normal;
         font-weight: $medium-weight;
         font-size: $accent-size;
         line-height: 24px;
         color: $main-text-color;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
   }

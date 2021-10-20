@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Session, SessionDirection, SessionListResponse, SessionStats } from 'mysterium-vpn-js'
+import { Session, SessionDirection, SessionStats } from 'mysterium-vpn-js'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -31,7 +31,8 @@ export interface Props {
 
 interface StateProps {
   isLoading: boolean
-  sessionListResponse?: SessionListResponse
+  sessionList: SessionRow[]
+  sessionListPages: number
 }
 
 interface SessionRow {
@@ -57,6 +58,8 @@ const row = (s: Session): SessionRow => {
 const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
   const [state, setState] = useState<StateProps>({
     isLoading: true,
+    sessionList: [],
+    sessionListPages: 0,
   })
 
   const fetchIdRef = React.useRef(0)
@@ -82,15 +85,14 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
           page: pageIndex,
         })
         .then((resp) => {
-          setState((cs) => ({ ...cs, isLoading: false, sessionListResponse: resp }))
+          let { items = [], totalPages = 0 } = { ...resp }
+          setState((cs) => ({ ...cs, isLoading: false, sessionList: items.map(row), sessionListPages: totalPages }))
         })
         .catch((err) => {
           toastError(parseError(err, 'Fetching Sessions Failed!'))
         })
     }
   }, [])
-
-  const { items = [], totalPages = 0 } = { ...state.sessionListResponse }
 
   return (
     <div className="main">
@@ -129,9 +131,9 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
               width: 20,
             },
           ]}
-          data={items.map(row)}
+          data={state.sessionList}
           fetchData={fetchData}
-          lastPage={totalPages}
+          lastPage={state.sessionListPages}
           loading={state.isLoading}
         />
       </div>

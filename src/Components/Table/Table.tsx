@@ -89,9 +89,11 @@ const Table = ({ columns, data, lastPage, loading = false, fetchData }: Props) =
       <div className="table__desktop">
         <div>
           {headerGroups.map((headerGroup) => (
-            <div className="table__header">
+            <div className="table__header" {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <div className={'cell ' + (column.width ? 'w-' + column.width : '')}>{column.render('Header')}</div>
+                <div {...column.getHeaderProps()} className={'cell ' + (column.width ? 'w-' + column.width : '')}>
+                  {column.render('Header')}
+                </div>
               ))}
             </div>
           ))}
