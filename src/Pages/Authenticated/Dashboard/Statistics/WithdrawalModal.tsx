@@ -7,21 +7,21 @@
 import { CircularProgress, Fade, Modal } from '@material-ui/core'
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
-import { Fees, Identity } from 'mysterium-vpn-js'
+import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
-import { displayMyst, toMyst } from '../../../../commons/money.utils'
+import { currentCurrency, displayMyst, toMyst } from '../../../../commons/money.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
 import { Select, SelectItem } from '../../../../Components/Select/Select'
 import { TextField } from '../../../../Components/TextField/TextField'
-import './WithdrawalModal.scss'
 import { SSEState } from '../../../../redux/sse.slice'
 import { RootState } from '../../../../redux/store'
+import './WithdrawalModal.scss'
 
 interface Props {
   isOpen: boolean
@@ -44,6 +44,7 @@ interface State {
   withdrawalAddress: string
   withdrawalAmountMYST: number
   withdrawalAmountWei: number
+  balanceTotalWei: number
   chainOptions: SelectItem[]
   toChain: number
   isLoading: boolean
@@ -51,6 +52,9 @@ interface State {
   withdrawalCompleted: boolean
   fees: Fees
   error?: string
+  isInsaneWithdrawal: boolean
+  isWithdrawDisabled: boolean
+  overBalance: boolean
 }
 
 const initialState: State = {
@@ -59,6 +63,7 @@ const initialState: State = {
   chainOptions: [],
   withdrawalAmountMYST: 0,
   withdrawalAmountWei: 0,
+  balanceTotalWei: 0,
   toChain: 0,
   isLoading: true,
   withdrawalInProgress: false,
@@ -69,6 +74,9 @@ const initialState: State = {
     hermes: 0,
     decreaseStake: 0,
   },
+  isInsaneWithdrawal: false,
+  isWithdrawDisabled: false,
+  overBalance: false,
 }
 
 const MINIMAL_WITHDRAWAL_AMOUNT = 10_000_000_000_000_000 // 0.01 MYST
@@ -86,7 +94,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   useEffect(() => {
     const init = async () => {
       setState(initialState)
-      const { address } = await tequilapiClient.payoutAddressGet(identity.id)
+      const { address } = await tequilapiClient.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
       const chainSummary = await tequilapiClient.chainSummary()
       const { chains, currentChain } = chainSummary
       const chainOptions = Object.keys(chains)
@@ -107,9 +115,14 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         d.chainOptions = chainOptions
         d.withdrawalAmountMYST = Number(toMyst(identity.balance))
         d.withdrawalAmountWei = identity.balance
+        d.balanceTotalWei = identity.balance
         d.toChain = firstChain || 0
         d.fees = fees
         d.isLoading = false
+        d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
+        d.overBalance = d.withdrawalAmountWei > identity.balance
+        d.isWithdrawDisabled =
+          d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
       })
     }
     if (isOpen) {
@@ -125,23 +138,40 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
     fees: { settlement },
   } = state
 
-  const isInsaneWithdrawal = state.withdrawalAmountWei - settlement < MINIMAL_WITHDRAWAL_AMOUNT
-  const isWithdrawDisabled =
-    state.withdrawalInProgress || state.isLoading || isInsaneWithdrawal || state.withdrawalCompleted
   const clearErrors = () =>
     setState((d) => {
       d.error = undefined
     })
+
+  useEffect(() => {
+    const myst = state.withdrawalAmountMYST
+    const wei = myst * DECIMAL_PART
+    setState((d) => {
+      d.withdrawalAmountWei = wei
+      d.isInsaneWithdrawal = d.withdrawalAmountWei - settlement < MINIMAL_WITHDRAWAL_AMOUNT
+      d.overBalance = d.withdrawalAmountWei > identity.balance
+      d.isWithdrawDisabled =
+        d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
+    })
+  }, [state.withdrawalAmountMYST])
+
   const validateForm = (): string | undefined => {
     const { withdrawalAddress } = state
     if (!withdrawalAddress || withdrawalAddress === '') {
       return 'Withdrawal address is required'
     }
 
-    if (isInsaneWithdrawal) {
-      return 'Withdrawal amount is below minimal 0.01 MYST'
+    if (state.isInsaneWithdrawal) {
+      return 'Withdrawal amount after fees is below minimal 0.01 MYST'
+    }
+
+    if (state.overBalance) {
+      return 'Your withdraw amount exceeds your balance'
     }
   }
+
+  const errors = validateForm()
+
   return (
     <Modal
       className="settings-modal"
@@ -168,10 +198,10 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
             ) : (
               <>
                 <div className="withdrawal-modal__row-withdraw-error">
-                  <Collapse in={!!state.error}>
+                  <Collapse in={!!errors}>
                     <Alert severity="error">
                       <AlertTitle>Error</AlertTitle>
-                      {state.error}
+                      {errors}
                     </Alert>
                   </Collapse>
                 </div>
@@ -188,9 +218,10 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                     />
                   </div>
                   <div className="input-group">
-                    <div className="input-group__label">Amount (MYST)</div>
+                    <div className="input-group__label">
+                      Amount ({currentCurrency()}) / Your Balance: {toMyst(state.balanceTotalWei)}
+                    </div>
                     <TextField
-                      disabled
                       type="number"
                       value={state.withdrawalAmountMYST}
                       onChange={(value) => {
@@ -253,7 +284,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
             </Button>
             <Button
               isLoading={state.isLoading}
-              disabled={isWithdrawDisabled}
+              disabled={state.isWithdrawDisabled}
               onClick={() => {
                 const error = validateForm()
                 if (error) {
@@ -282,6 +313,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                   providerId: identity.id,
                   beneficiary: state.withdrawalAddress,
                   toChainId: state.toChain,
+                  amount: String(state.withdrawalAmountWei),
                 })
                 setState((d) => {
                   d.withdrawalCompleted = true
