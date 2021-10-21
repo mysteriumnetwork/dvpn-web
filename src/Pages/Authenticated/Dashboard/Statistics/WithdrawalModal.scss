@@ -79,6 +79,14 @@
     }
   }
 
+  &__settlement-info {
+    font-size: $smaller-size;
+    font-weight: $normal-weight;
+    color: $secondary-text-color !important;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
   &__footer {
     display: flex;
     flex-direction: row;
