@@ -7,7 +7,7 @@
 import { CircularProgress, Fade, Modal } from '@material-ui/core'
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
-import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
+import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -55,6 +55,7 @@ interface State {
   isInsaneWithdrawal: boolean
   isWithdrawDisabled: boolean
   overBalance: boolean
+  latestWithdrawal?: Settlement
 }
 
 const initialState: State = {
@@ -96,6 +97,10 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       setState(initialState)
       const { address } = await tequilapiClient.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
       const chainSummary = await tequilapiClient.chainSummary()
+      const latestWithdrawal = await tequilapiClient
+        .settlementHistory()
+        .then((resp) => resp.items.find((s) => s.isWithdrawal))
+
       const { chains, currentChain } = chainSummary
       const chainOptions = Object.keys(chains)
         .map(Number)
@@ -123,6 +128,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         d.overBalance = d.withdrawalAmountWei > identity.balance
         d.isWithdrawDisabled =
           d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
+        d.latestWithdrawal = latestWithdrawal
       })
     }
     if (isOpen) {
@@ -171,6 +177,8 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   }
 
   const errors = validateForm()
+
+  const { latestWithdrawal } = state
 
   return (
     <Modal
@@ -272,6 +280,14 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
               </>
             )}
           </div>
+          {latestWithdrawal && (
+            <div className="withdrawal-modal__settlement-info">
+              Your last transaction:{' '}
+              <a href="#" target="_blank">
+                {latestWithdrawal.txHash}
+              </a>
+            </div>
+          )}
           <div className="withdrawal-modal__footer">
             <Button
               onClick={() => {
