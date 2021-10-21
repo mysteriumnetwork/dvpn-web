@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Fees, Identity } from 'mysterium-vpn-js'
 import { CircularProgress } from '@material-ui/core'
 
@@ -20,18 +20,21 @@ import PayoutSettings from './steps/PayoutSettings'
 import './Onboarding.scss'
 import { Onboarding } from '../../redux/app.slice'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
 
 interface Props {
   onboarding: Onboarding
   identity?: Identity
   config?: Config
-  fees?: Fees
+  fetchFees: () => void
 }
 
 interface StateProps {
   needsAgreedTerms: boolean
   needsRegisteredIdentity: boolean
   needsPasswordChange: boolean
+  fees?: Fees
 }
 
 export interface SettlementProps {
@@ -39,13 +42,19 @@ export interface SettlementProps {
   beneficiary: string
 }
 
-const OnboardingPage = ({ onboarding, identity, config, fees }: Props) => {
+const OnboardingPage = ({ onboarding, identity, config, fetchFees }: Props) => {
   const [currentStep, setCurrentStep] = useState(0)
   const [state] = useState<StateProps>({
     needsAgreedTerms: onboarding.needsAgreedTerms,
     needsRegisteredIdentity: onboarding.needsRegisteredIdentity,
     needsPasswordChange: onboarding.needsPasswordChange,
   })
+
+  const fees = useSelector<RootState, Fees | undefined>(({ app }) => app.fees)
+
+  useEffect(() => {
+    fetchFees()
+  }, [])
 
   const callbacks: OnboardingChildProps = {
     nextStep: (): void => {

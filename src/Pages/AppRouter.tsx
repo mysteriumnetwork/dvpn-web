@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core'
-import { AppState, Fees, Identity } from 'mysterium-vpn-js'
+import { AppState, Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
@@ -87,26 +87,30 @@ const AppRouter = ({ actions }: Props) => {
   const onboarding = useSelector<RootState, Onboarding>(({ app, sse }) =>
     onboardingState(app.auth, app.terms, currentIdentity(app.currentIdentityRef, sse.appState?.identities)),
   )
-  const fees = useSelector<RootState, Fees | undefined>(({ app }) => app.fees)
 
-  const loginActions = async () => {
+  const loadFees = () => {
+    actions.fetchFeesAsync()
+  }
+
+  const loginActions = async (defaultCredentials: boolean) => {
     await actions.updateAuthenticatedStore({
       authenticated: true,
-      withDefaultCredentials: await loginWithDefaultCredentials(),
+      withDefaultCredentials: defaultCredentials,
     })
     await actions.updateTermsStoreAsync()
     await actions.fetchIdentityAsync()
     await actions.fetchConfigAsync()
-    await actions.fetchFeesAsync()
   }
 
   useLayoutEffect(() => {
     const blockingCheck = async () => {
-      await loginWithDefaultCredentials()
-      const authenticated = await isUserAuthenticated()
+      let defaultPass = await loginWithDefaultCredentials()
+      let authenticated = defaultPass
+      //check if there is a token cookie saved
+      if (!authenticated) authenticated = await isUserAuthenticated()
 
       if (authenticated) {
-        await loginActions()
+        await loginActions(defaultPass)
       }
 
       await actions.updateAuthFlowLoadingStore(false)
@@ -139,7 +143,7 @@ const AppRouter = ({ actions }: Props) => {
         exact
         path={LOGIN}
         render={() => {
-          return !loggedIn ? <LoginPage onSuccessLogin={loginActions} /> : <Redirect to={DASHBOARD} />
+          return !loggedIn ? <LoginPage onSuccessLogin={() => loginActions(false)} /> : <Redirect to={DASHBOARD} />
         }}
       />
       <Route
@@ -147,7 +151,13 @@ const AppRouter = ({ actions }: Props) => {
         path={ONBOARDING_HOME}
         render={(props) => {
           return onboarding.needsOnboarding ? (
-            <OnboardingPage {...props} onboarding={onboarding} config={config} fees={fees} identity={identity} />
+            <OnboardingPage
+              {...props}
+              onboarding={onboarding}
+              config={config}
+              identity={identity}
+              fetchFees={loadFees}
+            />
           ) : (
             <Redirect to={DASHBOARD} />
           )
