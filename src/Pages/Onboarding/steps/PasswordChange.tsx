@@ -139,7 +139,7 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
     <div className="step">
       <h1 className="step__title">Node settings</h1>
       <p className="step__description">Fill in the following information to finish setting up your node.</p>
-      <div className="step__content m-t-100">
+      <form className="step__content m-t-100" onSubmit={handleSubmitPassword}>
         <p className="step__description m-b-20">
           <strong>Please change the default WebUI password. At least 10 characters are required.</strong>
         </p>
@@ -167,11 +167,11 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
         )}
 
         <div className="step__content-buttons step__content-buttons--center m-t-30">
-          <Button isLoading={state.loading} onClick={handleSubmitPassword} autoFocus>
+          <Button isLoading={state.loading} type="submit" autoFocus>
             Save & Continue
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }

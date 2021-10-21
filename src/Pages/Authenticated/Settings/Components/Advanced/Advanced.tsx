@@ -125,11 +125,18 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
     return true
   }
 
+  const handleSave = async () => {
+    const valid = await isValid()
+    if (valid) {
+      await updateUserConfig(data, 'Settings updated')
+    }
+  }
+
   const availableNATTraversals =
     state.natTraversalSelected.length > 0 ? state.natTraversalSelected : mapTraversals(defaultConfig)
 
   return (
-    <div>
+    <form onSubmit={handleSave}>
       <Errors error={state.error} errorMessage={state.errorMessage} />
       <div className="input-group">
         <div className="input-group__label">UDP Port Range</div>
@@ -182,22 +189,15 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
           onClick={() => updateUserConfig(defaultData, 'Settings reset')}
           isLoading={state.saving}
           extraStyle="gray"
+          type="reset"
         >
           Restore Default
         </Button>
         <div className="flex-grow" />
-        <Button
-          onClick={async () => {
-            const valid = await isValid()
-            if (valid) {
-              await updateUserConfig(data, 'Settings updated')
-            }
-          }}
-          isLoading={state.saving}
-        >
+        <Button type="submit" isLoading={state.saving}>
           Save
         </Button>
       </div>
-    </div>
+    </form>
   )
 }
