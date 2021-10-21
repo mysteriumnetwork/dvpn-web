@@ -282,7 +282,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           </div>
           {latestWithdrawal && (
             <div className="withdrawal-modal__settlement-info">
-              Your last transaction:{' '}
+              Your last transaction: {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a href="#" target="_blank">
                 {latestWithdrawal.txHash}
               </a>
