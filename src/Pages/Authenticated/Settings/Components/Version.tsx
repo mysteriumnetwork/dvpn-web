@@ -14,7 +14,7 @@ const Version = ({ nodeVersion }: Props) => {
   return (
     <div>
       <div>Node version: {nodeVersion}</div>
-      <div>WebUI version: {packageJson.version}</div>
+      <div>NodeUI version: {packageJson.version}</div>
     </div>
   )
 }
