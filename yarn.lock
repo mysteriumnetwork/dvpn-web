@@ -8778,10 +8778,10 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-mysterium-vpn-js@17.1.0:
-  version "17.1.0"
-  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-17.1.0.tgz#35534837d6ddac77d2242a947e85073256f3ac28"
-  integrity sha512-DPrLjVGa0JVRPjxh2Xy0Pigh1TpnmeqQsanZCm2XjOgT5+rIsCkd9bMqjkXptp+eMwYp23bj9u+bjKm9SA0BHQ==
+mysterium-vpn-js@17.2.0:
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-17.2.0.tgz#107fa1758022c0e285b1370c6867ee64cabc353c"
+  integrity sha512-4mUsnmdAKCdAdevXgJOeQCmqyiywGAUgofeHO3945mYeFZRILEDrEo486NH1freMyNRa6h+A/HLcrjy2iQWHtg==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     axios "^0.21.1"
