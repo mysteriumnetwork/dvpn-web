@@ -9,7 +9,6 @@ import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../../api/TequilApiClient'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
@@ -19,8 +18,6 @@ import Button from '../../../../Components/Buttons/Button'
 import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
 import { Select, SelectItem } from '../../../../Components/Select/Select'
 import { TextField } from '../../../../Components/TextField/TextField'
-import { SSEState } from '../../../../redux/sse.slice'
-import { RootState } from '../../../../redux/store'
 import './WithdrawalModal.scss'
 
 interface Props {
@@ -56,6 +53,7 @@ interface State {
   isWithdrawDisabled: boolean
   overBalance: boolean
   latestWithdrawal?: Settlement
+  hermesId: string
 }
 
 const initialState: State = {
@@ -78,14 +76,13 @@ const initialState: State = {
   isInsaneWithdrawal: false,
   isWithdrawDisabled: false,
   overBalance: false,
+  hermesId: '',
 }
 
 const MINIMAL_WITHDRAWAL_AMOUNT = 10_000_000_000_000_000 // 0.01 MYST
 
 const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   const [state, setState] = useImmer<State>(initialState)
-  const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
-  const hermesId = sse?.appState?.channels[0].hermesId
 
   const showConfirm = (b: boolean) =>
     setState((d) => {
@@ -113,7 +110,6 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           }
         })
       const firstChain = chainOptions?.find((i) => i)?.value
-
       const fees = await tequilapiClient.transactorFees(firstChain)
       setState((d) => {
         d.withdrawalAddress = address
@@ -129,6 +125,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         d.isWithdrawDisabled =
           d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
         d.latestWithdrawal = latestWithdrawal
+        d.hermesId = identity.hermesId
       })
     }
     if (isOpen) {
@@ -198,8 +195,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
             <div className="withdrawal-modal__row-disclaimer">
               You can withdraw your collected earnings into own Ethereum or Polygon wallet address at any time.
             </div>
-            {!hermesId && <div className="withdrawal-modal__row-hermes_warning">Could not resolve hermesId</div>}
-            {state.isLoading || !hermesId ? (
+            {state.isLoading ? (
               <div className="withdrawal-modal__row-withdraw-loading">
                 <CircularProgress className="spinner-relative" disableShrink />
               </div>
@@ -325,7 +321,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
             onConfirm={async () => {
               try {
                 await tequilapiClient.withdraw({
-                  hermesId: hermesId!,
+                  hermesId: state.hermesId,
                   providerId: identity.id,
                   beneficiary: state.withdrawalAddress,
                   toChainId: state.toChain,
