@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 
 interface Props {
   currentStep: number

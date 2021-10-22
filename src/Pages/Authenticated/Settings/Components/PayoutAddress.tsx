@@ -44,14 +44,14 @@ const PayoutAddress = ({ identity }: Props) => {
         setState((d) => {
           d.payoutAddress = address
           d.initialPayoutAddress = address
-        }),
-      )
-      .catch(() => {}) // address may not exist
-      .finally(() =>
-        setState((d) => {
           d.loading = false
         }),
       )
+      .catch(() => {
+        setState((d) => {
+          d.loading = false
+        })
+      }) // address may not exist
   }, [identity?.id])
 
   const handlePayoutAddressChange = () => {
