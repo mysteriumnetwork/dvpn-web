@@ -29,14 +29,14 @@ interface Props {
 }
 
 interface StateInterface {
-  bountyPayoutAddress: string
+  defaultWithdrawalAddress: string
   stake: number
   errors: string[]
 }
 
 const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
   const [state, setState] = useImmer<StateInterface>({
-    bountyPayoutAddress: '',
+    defaultWithdrawalAddress: '',
     stake: DEFAULT_STAKE_AMOUNT,
     errors: [],
   })
@@ -51,20 +51,20 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
 
   const handleTextFieldsChange = (value: string) => {
     setState((d) => {
-      d.bountyPayoutAddress = value
+      d.defaultWithdrawalAddress = value
     })
   }
 
   const handleDone = async () => {
-    if (state.bountyPayoutAddress && !isValidEthereumAddress(state.bountyPayoutAddress)) {
+    if (state.defaultWithdrawalAddress && !isValidEthereumAddress(state.defaultWithdrawalAddress)) {
       errors('Invalid Ethereum wallet address')
       return
     }
     setIsLoading(true)
 
     try {
-      if (state.bountyPayoutAddress) {
-        await tequilapiClient.payoutAddressSave(identity.id, state.bountyPayoutAddress)
+      if (state.defaultWithdrawalAddress) {
+        await tequilapiClient.payoutAddressSave(identity.id, state.defaultWithdrawalAddress)
       }
       await register(identity.id)
       if (isFreeRegistration(config)) {
@@ -83,15 +83,17 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
 
   const register = (identity: string): Promise<void> => {
     return tequilapiClient.identityRegister(identity, {
-      beneficiary: state.bountyPayoutAddress,
+      beneficiary: state.defaultWithdrawalAddress,
       stake: 10, // quadruple check mit Jaro
     })
   }
 
   return (
     <div className="step">
-      <h1 className="step__title">Bounty Payout settings</h1>
-      <p className="step__description">Fill in the following information to receive bounty payments.</p>
+      <h1 className="step__title">Default Withdrawal settings</h1>
+      <p className="step__description">
+        Fill in the following information to add a default withdrawal address for payments.
+      </p>
       <div className="step__content m-t-20">
         <Collapse in={state.errors.length > 0}>
           <Alert severity="error">
@@ -102,8 +104,8 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
           </Alert>
         </Collapse>
         <div className="input-group">
-          <p className="input-group__label">Bounty Payout Address</p>
-          <TextField onChange={handleTextFieldsChange} value={state.bountyPayoutAddress} placeholder={'0x...'} />
+          <p className="input-group__label">Default Withdrawal Address</p>
+          <TextField onChange={handleTextFieldsChange} value={state.defaultWithdrawalAddress} placeholder={'0x...'} />
           <p className="input-group__help">
             Make sure you enter ERC-20 compatible wallet or MYST compatible exchange wallet address. You can enter this
             address later in 'Settings' page.
