@@ -113,7 +113,9 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
             }}
           >
             <div className="input-group">
-              <div className="input-group__label">Email address (optional)</div>
+              <div className="input-group__label">
+                Email address (optional - enter your email if you would like to receive follow up on your issue)
+              </div>
               <TextField
                 placeholder="node@runner.com"
                 onChange={(value) => {
