@@ -55,7 +55,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
           cs.errorMessage = ''
           cs.loading = false
         })
-        toastSuccess('MMN API key updated. Refresh the dashboard to view the bounty report.')
+        toastSuccess('MMN API key updated.')
       })
       .then(() => updateConfig())
       .catch((error) =>

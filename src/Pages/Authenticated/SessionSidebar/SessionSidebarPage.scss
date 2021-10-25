@@ -16,10 +16,6 @@
 
     .widget {
       @include respond-above(sm) {
-        &--bounty {
-          width: 30%;
-          align-self: stretch;
-        }
         &--chart {
           margin-left: 10px;
           width: calc(70% - 10px);
@@ -31,10 +27,6 @@
 
       @include respond-below(sm) {
         width: 100%;
-        &--bounty {
-          margin-bottom: 25px;
-          align-self: stretch;
-        }
       }
     }
   }
