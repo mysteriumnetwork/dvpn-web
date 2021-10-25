@@ -65,7 +65,7 @@ const PayoutAddress = ({ identity }: Props) => {
           d.txPending = false
           d.initialPayoutAddress = res.address
         })
-        toastSuccess('Bounty Payout Address updated')
+        toastSuccess('Default Withdrawal Address updated')
       })
       .catch((err) => {
         setState((d) => {
@@ -83,7 +83,7 @@ const PayoutAddress = ({ identity }: Props) => {
     <form onSubmit={handlePayoutAddressChange}>
       <div className="input-group">
         <div className="flex-row">
-          <div className="input-group__label m-t-5">Bounty Payout Address</div>
+          <div className="input-group__label m-t-5">Default Withdrawal Address</div>
           <CopyToClipboard text={state.payoutAddress} />
         </div>
         <TextField

@@ -93,7 +93,7 @@ const Settings = () => {
               <IdentityBackup identity={identity?.id || ''} />
             </Card>
 
-            <Card title="Bounty Payout Address">
+            <Card title="Default Withdrawal Address">
               <PayoutAddress identity={identity} />
             </Card>
           </div>

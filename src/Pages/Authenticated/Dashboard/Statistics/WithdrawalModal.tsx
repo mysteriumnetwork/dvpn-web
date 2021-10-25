@@ -332,7 +332,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                 })
                 toastSuccess('Withdrawal completed successfully!')
                 onClose()
-              } catch (e) {
+              } catch (e: any) {
                 setState((d) => {
                   d.error = e?.message || 'API Error'
                 })
