@@ -23,16 +23,30 @@ interface Props {
 const Statistics = ({ stats, identity, testnet }: Props) => {
   return (
     <>
+      <Statistic
+        stat={displayMyst(identity.earningsTotal, {
+          ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+          fractionDigits: 2,
+        })}
+        name="Total Earnings"
+      />
       <Statistic stat={seconds2Time(stats.sumDuration)} name="Sessions time" />
       <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
       <Statistic stat={'' + stats.count} name="Sessions" />
       <Statistic stat={'' + stats.countConsumers} name="Unique clients" />
+      <Statistic
+        stat={displayMyst(identity.earnings, {
+          ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+          fractionDigits: 2,
+        })}
+        name="Unsettled earnings"
+      />
       <EarningsStatCard
         stat={displayMyst(identity.balance, {
           ...DEFAULT_MONEY_DISPLAY_OPTIONS,
           fractionDigits: 2,
         })}
-        name={`Total Earnings`}
+        name={`Balance`}
         identity={identity}
       />
       {/*{testnet ? (

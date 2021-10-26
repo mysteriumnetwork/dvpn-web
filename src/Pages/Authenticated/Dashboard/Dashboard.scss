@@ -5,6 +5,7 @@
   &__statistics {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 25px;
     margin-bottom: 25px;
 
@@ -21,13 +22,8 @@
 
     .widget {
       @include respond-above(sm) {
-        &--bounty {
-          width: 30%;
-          align-self: stretch;
-        }
         &--chart {
-          margin-left: 10px;
-          width: calc(70% - 10px);
+          width: 100%;
         }
         &:last-child {
           padding-left: 0;
@@ -36,10 +32,6 @@
 
       @include respond-below(sm) {
         width: 100%;
-        &--bounty {
-          margin-bottom: 25px;
-          align-self: stretch;
-        }
       }
     }
   }

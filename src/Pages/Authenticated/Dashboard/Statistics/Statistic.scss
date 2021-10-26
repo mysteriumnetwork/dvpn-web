@@ -2,13 +2,14 @@
 @import '../../../../assets/styles/base/mixins/media';
 
 .dashboard-statistic {
-  padding: 22px 0 25px 28px;
+  padding: 22px 28px 25px 28px;
   box-shadow: 0 2px 5px rgba(99,99,99, 0.05);
   background: #ffffff;
   text-align: left;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: start;
   //min-width: 180px;
   border-radius: 10px;
   height: 120px;
@@ -24,6 +25,7 @@
     line-height: 32px;
     font-weight: $medium-weight;
     color: $main-text-color;
+    white-space: nowrap;
   }
 
   &__label {
@@ -32,6 +34,7 @@
     line-height: 21px;
     font-weight: $lighter-weight;
     color: $names-text-color;
+    white-space: nowrap;
   }
 }
 
@@ -41,11 +44,13 @@
   box-shadow: 0 2px 5px rgba(99,99,99, 0.05);
   text-align: left;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   border-radius: 10px;
-  height: 120px;
+  min-height: 120px;
   flex-grow: 2;
+  flex-wrap: wrap;
+  row-gap: 30px;
 
   @include respond-below(sm) {
     margin-right: 0;
