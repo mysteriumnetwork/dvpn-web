@@ -34,8 +34,9 @@ export const sessionDailyStatsToData = (statsDaily: { [name: string]: SessionSta
   let accum = 0
   return Object.keys(statsDaily).map<Pair>((dateKey) => ({
     x: formatDate(dateKey),
-    y: (accum +=
-      add(statsDaily[dateKey].sumBytesReceived, statsDaily[dateKey].sumBytesSent) / (1024 * 1024 * 1024)).toFixed(2),
+    y: (accum += add(statsDaily[dateKey].sumBytesReceived, statsDaily[dateKey].sumBytesSent) / 1_000_000_000).toFixed(
+      2,
+    ),
   }))
 }
 

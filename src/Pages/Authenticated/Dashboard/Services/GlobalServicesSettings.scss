@@ -49,6 +49,14 @@
         display: none;
       }
     }
+
+    .switch-limit-enabled path {
+      stroke: black;
+    }
+
+    .switch-limit-disabled path {
+      stroke: gray;
+    }
   }
 
   .limits-block {
@@ -68,10 +76,7 @@
 
   .change-button {
     margin-left: 15px;
-    width: 130px;
-
-    @include respond-below(sm) {
-      font-size: $small-size !important;
-    }
+    padding: 6px !important;
+    line-height: 0;
   }
 }
