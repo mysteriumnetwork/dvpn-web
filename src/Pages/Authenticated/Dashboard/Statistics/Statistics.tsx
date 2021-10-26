@@ -34,6 +34,13 @@ const Statistics = ({ stats, identity, testnet }: Props) => {
       <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
       <Statistic stat={'' + stats.count} name="Sessions" />
       <Statistic stat={'' + stats.countConsumers} name="Unique clients" />
+      <Statistic
+        stat={displayMyst(identity.earnings, {
+          ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+          fractionDigits: 2,
+        })}
+        name="Unsettled earnings"
+      />
       <EarningsStatCard
         stat={displayMyst(identity.balance, {
           ...DEFAULT_MONEY_DISPLAY_OPTIONS,

@@ -23,7 +23,6 @@
     .widget {
       @include respond-above(sm) {
         &--chart {
-          margin-left: 10px;
           width: 100%;
         }
         &:last-child {
