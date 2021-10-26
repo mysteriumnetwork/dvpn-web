@@ -59,7 +59,9 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
       <div className="service__details">
         <ServiceDetail label="Price per hour">{displayMyst(Number(prices.pricePerHour))}</ServiceDetail>
 
-        <ServiceDetail label="Price per GiB">{displayMyst(Number(prices.pricePerGib))}</ServiceDetail>
+        <ServiceDetail label="Price per GB">
+          {displayMyst(Number((BigInt(prices.pricePerGib) * BigInt(1000000000)) / BigInt(1073741824)))}
+        </ServiceDetail>
 
         <ServiceDetail label="On" alignValueRight={true}>
           <Switch
