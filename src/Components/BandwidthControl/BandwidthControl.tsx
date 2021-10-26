@@ -16,8 +16,8 @@ interface Props {
   onChange: (n: number) => void
 }
 
-const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onChange }: Props) => {
-  const [value, setValue] = useState<number>(bandwidth)
+const BandwidthControl = ({ bandwidth, minLimitMbps = 6.25 * 8, maxLimitMbps = 200 * 8, onChange }: Props) => {
+  const [value, setValue] = useState<number>(bandwidth * 8)
 
   return (
     <div className="bandwidth-settings-modal--block">
@@ -25,8 +25,8 @@ const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onC
         <div className="settings--slider">
           <MystSlider
             label="Limit bandwidth to "
-            headerAmount={(v) => `${v} Mb/s`}
-            popover={(v) => `${v} Mb/s`}
+            headerAmount={(v) => `${v} Mbps`}
+            popover={(v) => `${v} Mbps`}
             myst={true}
             value={value}
             handleChange={(e, v) => {
@@ -39,7 +39,7 @@ const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onC
           />
           <div className="bottom-line">
             <p>{minLimitMbps}</p>
-            <p>{maxLimitMbps} Mb/s</p>
+            <p>{maxLimitMbps} Mbps</p>
           </div>
         </div>
       </div>
