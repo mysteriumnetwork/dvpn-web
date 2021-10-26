@@ -17,6 +17,7 @@ import Button from '../../../../Components/Buttons/Button'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
 import BandwidthControlModal from './BandwidthControlModal'
 import './GlobalServicesSettings.scss'
+import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 
 interface Props {
   config: Config
@@ -112,18 +113,21 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
               return restartServices(setTrafficShaping(!state.isShaping, bandwidthKBps()))
             }}
           />
-          <p className="text">Limit bandwidth</p>
+          <p className="text">Limit bandwidth to {state.bandwidthMbps * 8} Mbps</p>
           <Button
             className="change-button"
             onClick={openBandwidthModal}
             disabled={!state.isShaping}
             extraStyle="outline-primary"
           >
-            {state.bandwidthMbps} Mb/s
+            <Settings className={state.isShaping ? 'switch-limit-enabled' : 'switch-limit-disabled'} />
           </Button>
           <BandwidthControlModal
             isOpen={state.isBandwidthModalOpen}
-            onClose={() => closeBandwidthModal()}
+            onClose={() => {
+              closeBandwidthModal()
+              setState((cs) => ({ ...cs, bandwidthMbps: trafficShapingBandwidthKBps(config) / 1_000 }))
+            }}
             onSave={() => {
               Promise.resolve()
                 .then(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: true })))
@@ -138,7 +142,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             confirmMessage="This will restart all running services to take affect."
           >
             <BandwidthControl
-              onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
+              onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth / 8 }))}
               bandwidth={state.bandwidthMbps}
             />
           </BandwidthControlModal>
