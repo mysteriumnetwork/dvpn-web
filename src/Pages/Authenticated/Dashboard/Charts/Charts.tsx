@@ -111,7 +111,7 @@ const Charts = ({ statsDaily }: Props) => {
   return (
     <div className="chart">
       <div className="chart__header">
-        <div className="chart__header-title">Monthly report</div>
+        <div className="chart__header-title">Last 30 days report</div>
         <div className="chart__header-buttons">
           {Object.keys(types).map((type) => {
             return (
