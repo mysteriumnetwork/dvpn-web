@@ -46,6 +46,7 @@ interface StateInterface {
   nodeVersion?: string
   defaultConfig: Config
   loading: boolean
+  nodeCommit?: string
 }
 
 const Settings = () => {
@@ -69,6 +70,7 @@ const Settings = () => {
           nodeVersion: healthcheck.version,
           loading: false,
           defaultConfig: defaultConfig,
+          nodeCommit: healthcheck.buildInfo.commit,
         }))
       })
       .catch((err) => toastError(parseError(err)))
@@ -85,7 +87,7 @@ const Settings = () => {
       <div className="main-block">
         <div className="settings-header">
           <Header logo={Logo} name="Settings" />
-          <Version nodeVersion={state.nodeVersion} />
+          <Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />
         </div>
         <div className="settings">
           <div className="settings__block">
