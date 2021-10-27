@@ -32,6 +32,7 @@ interface State {
   error: boolean
   errorMessage: string
   nodeClaimed: boolean
+  mmnDomain: string
 }
 
 interface Props {
@@ -49,9 +50,13 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
     errorMessage: '',
     nodeClaimed: false,
     loading: false,
+    mmnDomain: '',
   })
 
   useEffect(() => {
+    setState((d) => {
+      d.mmnDomain = mmnDomainName(config)
+    })
     tequilapiClient.getMMNApiKey().then((resp) => {
       setState((d) => {
         d.apiKey = resp.apiKey
@@ -187,13 +192,13 @@ const MMNClaim = ({
   onApiKeyChange: (value: string) => void
   handleCheckboxChange: SwitchBaseProps['onChange']
 }) => {
-  return (
+  return state.mmnDomain !== 'error' ? (
     <>
       <div className="claim-row input-group m-t-50 m-b-20">
         <Checkbox
           checked={state.useApiKey}
           handleCheckboxChange={handleCheckboxChange}
-          label={'Claim this node in ' + mmnDomainName(config)}
+          label={'Claim this node in ' + state.mmnDomain}
         />
         <HelpTooltip
           title={
@@ -214,6 +219,8 @@ const MMNClaim = ({
         </div>
       ) : null}
     </>
+  ) : (
+    <></>
   )
 }
 
