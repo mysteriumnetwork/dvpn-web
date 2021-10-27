@@ -187,13 +187,19 @@ const MMNClaim = ({
   onApiKeyChange: (value: string) => void
   handleCheckboxChange: SwitchBaseProps['onChange']
 }) => {
+  let mmnDomain
+  try {
+    mmnDomain = mmnDomainName(config)
+  } catch {
+    mmnDomain = mmnWebAddress(config)
+  }
   return (
     <>
       <div className="claim-row input-group m-t-50 m-b-20">
         <Checkbox
           checked={state.useApiKey}
           handleCheckboxChange={handleCheckboxChange}
-          label={'Claim this node in ' + mmnDomainName(config)}
+          label={'Claim this node in ' + mmnDomain}
         />
         <HelpTooltip
           title={
