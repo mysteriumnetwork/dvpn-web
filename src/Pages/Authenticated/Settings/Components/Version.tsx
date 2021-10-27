@@ -8,12 +8,16 @@ import packageJson from '../../../../../package.json'
 
 interface Props {
   nodeVersion?: string
+  nodeCommit?: string
 }
 
-const Version = ({ nodeVersion }: Props) => {
+const Version = ({ nodeVersion, nodeCommit }: Props) => {
   return (
     <div>
-      <div>Node version: {nodeVersion}</div>
+      <div>
+        Node version: mainnet ({nodeVersion}
+        {nodeCommit ? '-' + nodeCommit : ''})
+      </div>
       <div>NodeUI version: {packageJson.version}</div>
     </div>
   )
