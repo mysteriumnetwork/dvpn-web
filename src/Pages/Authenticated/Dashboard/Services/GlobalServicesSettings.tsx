@@ -54,7 +54,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
 
   const isVerified = isAccessPolicyEnabled(config) as boolean
   const isShaping = isTrafficShapingEnabled(config)
-  const bandwidthMbps = trafficShapingBandwidthKBps(config) / 1_000
+  const bandwidthMbps = (trafficShapingBandwidthKBps(config) / 1_000) * 8
 
   const [state, setState] = useState<State>({
     isVerified: isVerified,
@@ -68,12 +68,12 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
       ...cs,
       isShaping: isShaping,
       isVerified: isVerified,
-      bandwidth: bandwidthMbps,
+      bandwidthMbps: bandwidthMbps,
     }))
   }, [isShaping, isVerified, bandwidthMbps])
 
   const bandwidthKBps = (): number => {
-    return state.bandwidthMbps * 1_000
+    return (state.bandwidthMbps * 1_000) / 8
   }
 
   const openBandwidthModal = () => {
@@ -114,7 +114,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
               return restartServices(setTrafficShaping(!state.isShaping, bandwidthKBps()))
             }}
           />
-          <p className="text">Limit bandwidth to {state.bandwidthMbps * 8} Mbps</p>
+          <p className="text">Limit bandwidth to {state.bandwidthMbps} Mbps</p>
           <Button
             className="change-button"
             onClick={openBandwidthModal}
@@ -127,7 +127,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             isOpen={state.isBandwidthModalOpen}
             onClose={() => {
               closeBandwidthModal()
-              setState((cs) => ({ ...cs, bandwidthMbps: trafficShapingBandwidthKBps(config) / 1_000 }))
+              setState((cs) => ({ ...cs, bandwidthMbps: bandwidthMbps }))
             }}
             onSave={() => {
               Promise.resolve()
@@ -143,8 +143,8 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             confirmMessage="This will restart all running services to take affect."
           >
             <BandwidthControl
-              onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth / 8 }))}
-              bandwidth={state.bandwidthMbps}
+              onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
+              bandwidthMbps={state.bandwidthMbps}
             />
           </BandwidthControlModal>
         </div>

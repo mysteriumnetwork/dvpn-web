@@ -9,15 +9,15 @@ import './BandwidthSettings.scss'
 import { useState } from 'react'
 
 interface Props {
-  bandwidth: number
+  bandwidthMbps: number
   confirmButton?: (onConfirm?: () => void) => JSX.Element
   minLimitMbps?: number
   maxLimitMbps?: number
   onChange: (n: number) => void
 }
 
-const BandwidthControl = ({ bandwidth, minLimitMbps = 6.25 * 8, maxLimitMbps = 200 * 8, onChange }: Props) => {
-  const [value, setValue] = useState<number>(bandwidth * 8)
+const BandwidthControl = ({ bandwidthMbps, minLimitMbps = 50, maxLimitMbps = 1000, onChange }: Props) => {
+  const [value, setValue] = useState<number>(bandwidthMbps)
 
   return (
     <div className="bandwidth-settings-modal--block">
