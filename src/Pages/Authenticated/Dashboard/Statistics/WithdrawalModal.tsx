@@ -98,10 +98,9 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         .settlementHistory()
         .then((resp) => resp.items.find((s) => s.isWithdrawal))
 
-      const { chains, currentChain } = chainSummary
+      const { chains } = chainSummary
       const chainOptions = Object.keys(chains)
         .map(Number)
-        .filter((k) => k !== currentChain)
         .map((k) => {
           const chainName = chains[k]
           return {
