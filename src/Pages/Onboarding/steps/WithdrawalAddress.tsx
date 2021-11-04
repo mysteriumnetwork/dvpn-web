@@ -19,7 +19,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import TopupModal from './TopupModal'
 import { isFreeRegistration } from '../../../commons/config'
-import './PayoutSettings.scss'
+import './WithdrawalAddress.scss'
 
 interface Props {
   callbacks: OnboardingChildProps
@@ -34,7 +34,7 @@ interface StateInterface {
   errors: string[]
 }
 
-const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
+const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
   const [state, setState] = useImmer<StateInterface>({
     defaultWithdrawalAddress: '',
     stake: DEFAULT_STAKE_AMOUNT,
@@ -135,4 +135,4 @@ const PayoutSettings = ({ callbacks, identity, config, fees }: Props) => {
   )
 }
 
-export default PayoutSettings
+export default WithdrawalAddress

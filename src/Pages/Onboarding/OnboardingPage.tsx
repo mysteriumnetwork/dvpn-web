@@ -15,7 +15,7 @@ import PasswordChange from './steps/PasswordChange'
 import Welcome from './steps/Welcome'
 import StepCounter from './StepCounter'
 import TermsAndConditions from './steps/TermsAndConditions'
-import PayoutSettings from './steps/PayoutSettings'
+import WithdrawalAddress from './steps/WithdrawalAddress'
 
 import './Onboarding.scss'
 import { Onboarding } from '../../redux/app.slice'
@@ -73,7 +73,7 @@ const OnboardingPage = ({ onboarding, identity, config, fetchFees }: Props) => {
   }
 
   if (state.needsRegisteredIdentity) {
-    steps.push(<PayoutSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} config={config} />)
+    steps.push(<WithdrawalAddress key="payout" identity={identity} callbacks={callbacks} fees={fees} config={config} />)
   }
 
   if (state.needsPasswordChange) {
