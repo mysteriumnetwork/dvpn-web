@@ -10,8 +10,8 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { tequilapiClient } from '../../../api/TequilApiClient'
-import { setUserConfig } from '../../../api/TequilAPIWrapper'
+import { api } from '../../../api/Api'
+import { setUserConfig } from '../../../api/ApiWrapper'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import * as config from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
@@ -62,7 +62,7 @@ const Settings = () => {
   })
 
   useEffect(() => {
-    Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.healthCheck(15_000), tequilapiClient.defaultConfig()])
+    Promise.all([api.getMMNApiKey(), api.healthCheck(15_000), api.defaultConfig()])
       .then(([mmn, healthcheck, defaultConfig]) => {
         setState((cs) => ({
           ...cs,

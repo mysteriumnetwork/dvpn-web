@@ -7,8 +7,8 @@
 import { ServiceInfo } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect, useState } from 'react'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
-import { setAccessPolicy, setTrafficShaping } from '../../../../api/TequilAPIWrapper'
+import { api } from '../../../../api/Api'
+import { setAccessPolicy, setTrafficShaping } from '../../../../api/ApiWrapper'
 import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthKBps } from '../../../../commons/config'
 import { parseError } from '../../../../commons/error.utils'
 import { toastError } from '../../../../commons/toast.utils'
@@ -34,9 +34,9 @@ interface State {
 
 const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
   const services = servicesInfos || []
-  const stopServices = services.map((s) => (): Promise<void> => tequilapiClient.serviceStop(s.id))
+  const stopServices = services.map((s) => (): Promise<void> => api.serviceStop(s.id))
   const startServices = services.map((s) => (): Promise<ServiceInfo> =>
-    tequilapiClient.serviceStart({
+    api.serviceStart({
       providerId: s.providerId,
       type: s.type,
     }),

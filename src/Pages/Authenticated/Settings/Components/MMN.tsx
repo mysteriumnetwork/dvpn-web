@@ -6,8 +6,8 @@
  */
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
-import { updateConfig } from '../../../../api/TequilAPIWrapper'
+import { api } from '../../../../api/Api'
+import { updateConfig } from '../../../../api/ApiWrapper'
 import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 
@@ -47,7 +47,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       d.loading = true
     })
 
-    tequilapiClient
+    api
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState((cs) => {

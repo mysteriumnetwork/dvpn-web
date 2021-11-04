@@ -6,7 +6,7 @@
  */
 import { Dispatch } from 'react'
 
-import { tequilapiClient } from '../api/TequilApiClient'
+import { api } from '../api/Api'
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
 import {
@@ -19,7 +19,7 @@ import {
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const terms = await tequilapiClient.terms()
+    const terms = await api.terms()
     dispatch(
       updateTermsStore({
         acceptedVersion: terms.agreedVersion,
@@ -30,24 +30,24 @@ export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => 
 
 export const fetchIdentityAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const identityRef = await tequilapiClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
+    const identityRef = await api.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
     dispatch(updateIdentityRefStore(identityRef))
 
-    const identity = await tequilapiClient.identity(identityRef.id)
+    const identity = await api.identity(identityRef.id)
     dispatch(updateIdentityStore(identity))
   }
 }
 
 export const fetchConfigAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const config = await tequilapiClient.config()
+    const config = await api.config()
     dispatch(updateConfigStore(config))
   }
 }
 
 export const fetchFeesAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const config = await tequilapiClient.transactorFees()
+    const config = await api.transactorFees()
     dispatch(updateFeesStore(config))
   }
 }

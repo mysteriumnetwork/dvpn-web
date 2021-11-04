@@ -11,7 +11,7 @@ import { useImmer } from 'use-immer'
 
 import { TextField } from '../../../Components/TextField/TextField'
 import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults'
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 import Button from '../../../Components/Buttons/Button'
 import { parseTequilApiError } from '../../../commons/error.utils'
 import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
@@ -64,7 +64,7 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
 
     try {
       if (state.defaultWithdrawalAddress) {
-        await tequilapiClient.payoutAddressSave(identity.id, state.defaultWithdrawalAddress)
+        await api.payoutAddressSave(identity.id, state.defaultWithdrawalAddress)
       }
       await register(identity.id)
       if (isFreeRegistration(config)) {
@@ -82,7 +82,7 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
   }
 
   const register = (identity: string): Promise<void> => {
-    return tequilapiClient.identityRegister(identity, {
+    return api.identityRegister(identity, {
       beneficiary: state.defaultWithdrawalAddress,
       stake: 10, // quadruple check mit Jaro
     })

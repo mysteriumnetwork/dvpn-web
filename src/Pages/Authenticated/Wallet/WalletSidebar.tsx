@@ -7,7 +7,7 @@
 import React, { useEffect, useState } from 'react'
 import { toastError } from '../../../commons/toast.utils'
 import SettingsCard from './SettingsCard'
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 import { parseError } from '../../../commons/error.utils'
 import StakeEditModal from './StakeEditModal'
 import { currentCurrency, displayMyst } from '../../../commons/money.utils'
@@ -41,7 +41,7 @@ const WalletSidebar = ({ beneficiary, identity, hermesId }: Props) => {
   })
 
   useEffect(() => {
-    tequilapiClient
+    api
       .sessionStatsAggregated()
       .then((resp) => setState((cs) => ({ ...cs, totalMyst: resp.stats.sumTokens })))
       .catch((err) => toastError(parseError(err)))
@@ -75,7 +75,7 @@ const WalletSidebar = ({ beneficiary, identity, hermesId }: Props) => {
           isButtonLoading={stakeEditState.loading}
           onEdit={() => {
             Promise.all([setStakeEditState({ ...stakeEditState, loading: true })])
-              .then(() => tequilapiClient.transactorFees())
+              .then(() => api.transactorFees())
               .then((resp) =>
                 setStakeEditState({
                   ...stakeEditState,
@@ -103,13 +103,13 @@ const WalletSidebar = ({ beneficiary, identity, hermesId }: Props) => {
       </div>
       <StakeEditModal
         onDecreaseStake={(amount) => {
-          return tequilapiClient.decreaseStake({
+          return api.decreaseStake({
             amount: amount,
             id: identity.id,
           })
         }}
         onIncreaseStake={() => {
-          return tequilapiClient.settleIntoStakeAsync({
+          return api.settleIntoStakeAsync({
             hermesId: hermesId,
             providerId: identity.id,
           })

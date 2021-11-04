@@ -8,7 +8,7 @@ import React, { useEffect } from 'react'
 import { QRCode } from 'react-qr-svg'
 import Button from '../../../Components/Buttons/Button'
 import { currentCurrency, displayMyst } from '../../../commons/money.utils'
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 import { Fees, Identity } from 'mysterium-vpn-js'
 
 interface Props {
@@ -23,7 +23,7 @@ interface Props {
 const Topup = ({ callbacks, channelAddress, fees, identity, stake, beneficiary }: Props) => {
   useEffect(() => {
     if (identity.balance >= fees.registration + stake) {
-      tequilapiClient
+      api
         .identityRegister(identity.id, {
           beneficiary,
           stake,
