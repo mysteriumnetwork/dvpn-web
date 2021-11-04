@@ -10,4 +10,4 @@ const factory = new TequilapiClientFactory(
   `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`,
   10_000,
 )
-export const tequilapiClient: TequilapiClient = factory.build()
+export const api: TequilapiClient = factory.build()

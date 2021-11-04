@@ -9,7 +9,7 @@ import showdown from 'showdown'
 // @ts-ignore
 import { TermsExitNode } from '@mysteriumnetwork/terms'
 
-import { acceptWithTermsAndConditions } from '../../../api/TequilAPIWrapper'
+import { acceptWithTermsAndConditions } from '../../../api/ApiWrapper'
 import Button from '../../../Components/Buttons/Button'
 import './TermsAndConditions.scss'
 

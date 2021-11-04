@@ -8,7 +8,7 @@ import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 import { mmnDomainName, mmnWebAddress } from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { validatePassword } from '../../../commons/password'
@@ -57,7 +57,7 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
     setState((d) => {
       d.mmnDomain = mmnDomainName(config)
     })
-    tequilapiClient.getMMNApiKey().then((resp) => {
+    api.getMMNApiKey().then((resp) => {
       setState((d) => {
         d.apiKey = resp.apiKey
         d.nodeClaimed = d.apiKey !== undefined && d.apiKey.length > 0
@@ -117,10 +117,10 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
 
     try {
       if (state.useApiKey) {
-        await tequilapiClient.setMMNApiKey(state.apiKey)
+        await api.setMMNApiKey(state.apiKey)
       }
 
-      await tequilapiClient.authChangePassword({
+      await api.authChangePassword({
         username: DEFAULT_USERNAME,
         oldPassword: DEFAULT_PASSWORD,
         newPassword: state.password || '',

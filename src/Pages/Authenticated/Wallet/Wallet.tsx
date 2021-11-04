@@ -9,7 +9,7 @@ import { Fees, Identity, Settlement } from 'mysterium-vpn-js'
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
 import * as config from '../../../commons/config'
 import { date2human } from '../../../commons/date.utils'
@@ -92,14 +92,12 @@ const Wallet = () => {
   })
 
   useEffect(() => {
-    tequilapiClient
-      .settlementHistory({ pageSize: state.pageSize, page: state.currentPage })
-      .then((settlementResponse) => {
-        setState((cs) => ({
-          ...cs,
-          settlementResponse: settlementResponse,
-        }))
-      })
+    api.settlementHistory({ pageSize: state.pageSize, page: state.currentPage }).then((settlementResponse) => {
+      setState((cs) => ({
+        ...cs,
+        settlementResponse: settlementResponse,
+      }))
+    })
   }, [state.pageSize, state.currentPage])
 
   if (!identity || !hermesId) {
@@ -139,7 +137,7 @@ const Wallet = () => {
               isLoading={settlementState.loading}
               onClick={() => {
                 Promise.all([setSettlementState({ ...settlementState, loading: true })])
-                  .then(() => tequilapiClient.transactorFees())
+                  .then(() => api.transactorFees())
                   .then((fees) => {
                     setSettlementState({
                       ...settlementState,
@@ -186,7 +184,7 @@ const Wallet = () => {
         }}
         onSettle={() => {
           setSettlementState({ ...settlementState, modalOpen: false })
-          tequilapiClient.settleAsync({ providerId: identity.id, hermesId: hermesId })
+          api.settleAsync({ providerId: identity.id, hermesId: hermesId })
         }}
       />
 

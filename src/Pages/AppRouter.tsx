@@ -18,7 +18,7 @@ import { Auth, Onboarding, isLoggedIn, currentIdentity, onboardingState } from '
 import { fetchConfigAsync, fetchFeesAsync, updateTermsStoreAsync } from '../redux/app.async.actions'
 import { updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
 import { RootState } from '../redux/store'
-import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/TequilAPIWrapper'
+import { loginWithDefaultCredentials, isUserAuthenticated } from '../api/ApiWrapper'
 import {
   ERROR,
   HOME,
