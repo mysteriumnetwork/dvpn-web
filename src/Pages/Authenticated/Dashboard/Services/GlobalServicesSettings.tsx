@@ -42,13 +42,14 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
     }),
   )
 
-  const restartServices = (doBefore: Promise<any>): Promise<any> => {
-    return doBefore
-      .then(() => stopServices.map((stop) => stop()))
-      .then(() => startServices.map((start) => start()))
-      .catch((err) => {
-        toastError(parseError(err))
-      })
+  const restartServices = async (doBefore: Promise<any>): Promise<any> => {
+    try {
+      await doBefore
+      await Promise.all(stopServices.map((stop) => stop()))
+      await Promise.all(startServices.map((start) => start()))
+    } catch (err: any) {
+      toastError(parseError(err))
+    }
   }
 
   const isVerified = isAccessPolicyEnabled(config) as boolean
