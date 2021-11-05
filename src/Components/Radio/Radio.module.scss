@@ -9,10 +9,17 @@
 .group {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .label {
   margin-left: 5px;
   font-weight: $lighter-weight;
-  font-size: $normal-size;
+  font-size: $larger-size;
+}
+
+.input {
+  border: 0;
+  width: 1.5rem;
+  height: 1.5em;
 }

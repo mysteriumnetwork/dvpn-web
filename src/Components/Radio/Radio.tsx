@@ -37,6 +37,7 @@ export const Radio = ({ options = [], checked, onChange = () => {} }: Props) => 
       {options?.map((o) => (
         <div key={o.value} className={styles.group}>
           <input
+            className={styles.input}
             type="radio"
             checked={o.value === checkedValue}
             id={o.value}
