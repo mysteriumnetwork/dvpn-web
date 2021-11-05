@@ -16,8 +16,10 @@ export const currentCurrency = (): Currency => {
   return isTestnet(store.getState()?.app?.config) ? Currency.MYSTTestToken : Currency.MYST
 }
 
-export const toMyst = (amountWei: number, precision?: number): number => {
-  return Number((amountWei / DECIMAL_PART).toFixed(precision || DEFAULT_MONEY_DISPLAY_OPTIONS.fractionDigits))
+export const toMyst = (amountWei: number, precision: number = 7): number => {
+  const m = Math.pow(10, precision)
+  const amountMyst = amountWei / DECIMAL_PART
+  return Math.floor(amountMyst * m) / m
 }
 
 export const displayMyst = (amount: number = 0, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
