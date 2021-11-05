@@ -153,7 +153,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       d.isWithdrawDisabled =
         d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
     })
-  }, [state.withdrawalAmountMYST])
+  }, [state.withdrawalAmountMYST, state.toChain])
 
   const validateForm = (): string | undefined => {
     const { withdrawalAddress } = state
@@ -238,9 +238,14 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                     <Select
                       items={state.chainOptions}
                       value={state.toChain}
-                      onChange={(value) => {
+                      onChange={async (value) => {
+                        const chainId = value as number
+                        const fees = await api.transactorFees(chainId)
+
                         setState((d) => {
-                          d.toChain = value as number
+                          d.toChain = chainId
+                          d.fees = fees
+                          d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
                         })
                       }}
                     />
