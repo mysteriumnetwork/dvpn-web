@@ -9,7 +9,7 @@ import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vp
 import React, { ReactFragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { api } from '../../../../api/Api'
 import { toastParseError } from '../../../../commons/toast.utils'
 import HelpTooltip from '../../../../Components/HelpTooltip/HelpTooltip'
 import { NATType } from '../../../../constants/nat'
@@ -46,8 +46,8 @@ const NodeStatus = () => {
   useEffect(() => {
     const init = async () => {
       try {
-        const status = await tequilapiClient.nodeMonitoringStatus()
-        const natType = await tequilapiClient.natType()
+        const status = await api.nodeMonitoringStatus()
+        const natType = await api.natType()
         setState((d) => {
           d.natStatus = status
           d.nat.type = natType.type

@@ -10,7 +10,7 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { api } from '../../../../api/Api'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import { currentCurrency, displayMyst, toMyst } from '../../../../commons/money.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
@@ -92,11 +92,9 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   useEffect(() => {
     const init = async () => {
       setState(initialState)
-      const { address } = await tequilapiClient.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
-      const chainSummary = await tequilapiClient.chainSummary()
-      const latestWithdrawal = await tequilapiClient
-        .settlementHistory()
-        .then((resp) => resp.items.find((s) => s.isWithdrawal))
+      const { address } = await api.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
+      const chainSummary = await api.chainSummary()
+      const latestWithdrawal = await api.settlementHistory().then((resp) => resp.items.find((s) => s.isWithdrawal))
 
       const { chains } = chainSummary
       const chainOptions = Object.keys(chains)
@@ -109,7 +107,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           }
         })
       const firstChain = chainOptions?.find((i) => i)?.value
-      const fees = await tequilapiClient.transactorFees(firstChain)
+      const fees = await api.transactorFees(firstChain)
       setState((d) => {
         d.withdrawalAddress = address
         d.chainOptions = chainOptions
@@ -319,7 +317,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
             }}
             onConfirm={async () => {
               try {
-                await tequilapiClient.withdraw({
+                await api.withdraw({
                   hermesId: state.hermesId,
                   providerId: identity.id,
                   beneficiary: state.withdrawalAddress,

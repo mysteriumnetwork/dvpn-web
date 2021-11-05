@@ -8,7 +8,7 @@ import { Session, SessionDirection, SessionStats } from 'mysterium-vpn-js'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
 import { countryName } from '../../../commons/country'
 import { date2human, seconds2Time } from '../../../commons/date.utils'
@@ -77,7 +77,7 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
 
     // Only update the data if this is the latest fetch
     if (fetchId === fetchIdRef.current) {
-      tequilapiClient
+      api
         .sessions({
           direction: filterDirection,
           providerId: filterProviderId,

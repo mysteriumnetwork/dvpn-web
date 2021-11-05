@@ -13,7 +13,7 @@ import { ServiceType } from '../../../../commons'
 import { isAccessPolicyEnabled } from '../../../../commons/config'
 import { callWithToast } from '../../../../commons/promise.utils'
 import { Switch } from '../../../../Components/Switch'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { api } from '../../../../api/Api'
 
 import ServiceHeader from './ServiceHeader'
 import ServiceDetail from './ServiceDetail'
@@ -37,7 +37,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
   const startService = async (serviceType: string) => {
     setLoading(true)
     await callWithToast(() =>
-      tequilapiClient.serviceStart({
+      api.serviceStart({
         providerId: identityRef,
         type: serviceType,
       }),
@@ -47,7 +47,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
 
   const stopService = async (serviceId: string) => {
     setLoading(true)
-    await callWithToast(() => tequilapiClient.serviceStop(serviceId))
+    await callWithToast(() => api.serviceStop(serviceId))
     setLoading(false)
   }
 

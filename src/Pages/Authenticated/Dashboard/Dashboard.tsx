@@ -10,7 +10,7 @@ import { CurrentPricesResponse, Session, SessionDirection, SessionStats, Session
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { isTestnet } from '../../../commons/config'
@@ -73,16 +73,16 @@ const Dashboard = () => {
 
     const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
     Promise.all([
-      tequilapiClient.sessionStatsDaily(sessionFilter),
-      tequilapiClient.sessionStatsAggregated(sessionFilter),
-      tequilapiClient.sessions({
+      api.sessionStatsDaily(sessionFilter),
+      api.sessionStatsAggregated(sessionFilter),
+      api.sessions({
         direction: SessionDirection.PROVIDED,
         providerId: identity.id,
         pageSize: 10,
         status: SessionStatus.COMPLETED,
       }),
-      tequilapiClient.pricesCurrent(),
-      tequilapiClient.identityBalanceRefresh(identity.id),
+      api.pricesCurrent(),
+      api.identityBalanceRefresh(identity.id),
     ])
       .then((result) => {
         const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = result
