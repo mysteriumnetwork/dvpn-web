@@ -4,21 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
 import { useImmer } from 'use-immer'
+import { Identity, Fees, DECIMAL_PART } from 'mysterium-vpn-js'
 
 import { TextField } from '../../../Components/TextField/TextField'
 import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults'
 import { api } from '../../../api/Api'
 import Button from '../../../Components/Buttons/Button'
 import { parseTequilApiError } from '../../../commons/error.utils'
-import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import TopupModal from './TopupModal'
-import { isFreeRegistration } from '../../../commons/config'
 import './WithdrawalAddress.scss'
 
 interface Props {
@@ -41,7 +40,19 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
     errors: [],
   })
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [topupOpen, setTopupOpen] = useState<boolean>(false)
+  const [isTopupOpen, setIsTopupOpen] = useState<boolean>(false)
+  const [isFreeRegistrationEligible, setIsFreeRegistrationEligible] = useState<boolean>(false)
+  const [currentChainName, setCurrentChainName] = useState<string>()
+  useEffect(() => {
+    const init = async () => {
+      const eligibility = await api.freeRegistrationEligibility(identity.id)
+      // const eligibility: EligibilityResponse = { eligible: true }
+      setIsFreeRegistrationEligible(eligibility.eligible)
+      const summary = await api.chainSummary()
+      setCurrentChainName(summary.chains[summary.currentChain])
+    }
+    init()
+  }, [identity.id, isTopupOpen])
 
   const errors = (...messages: string[]): void => {
     setState((d) => {
@@ -66,14 +77,7 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
       if (state.defaultWithdrawalAddress) {
         await api.payoutAddressSave(identity.id, state.defaultWithdrawalAddress)
       }
-      await register(identity.id)
-      if (isFreeRegistration(config)) {
-        setIsLoading(false)
-        callbacks.nextStep()
-        return
-      } else {
-        setTopupOpen(true)
-      }
+      setIsTopupOpen(true)
     } catch (error) {
       errors(parseTequilApiError(error) || 'API call failed')
     }
@@ -81,7 +85,7 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
     setIsLoading(false)
   }
 
-  const register = (identity: string): Promise<void> => {
+  const register = async (identity: string): Promise<void> => {
     return api.identityRegister(identity, {
       beneficiary: state.defaultWithdrawalAddress,
       stake: 10, // quadruple check mit Jaro
@@ -112,24 +116,27 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
           </p>
         </div>
         <div className="step__content-buttons step__content-buttons--center m-t-40">
-          <Button onClick={handleDone} isLoading={isLoading}>
+          <Button onClick={handleDone} isLoading={isLoading || isTopupOpen}>
             Next
           </Button>
         </div>
       </div>
       <TopupModal
-        open={topupOpen}
+        open={isTopupOpen}
+        currentChainName={currentChainName}
         identity={identity}
-        topupSum={fees.registration + state.stake * DECIMAL_PART}
+        topupAmount={DECIMAL_PART / 10}
         onClose={() => {
-          setTopupOpen(false)
+          setIsTopupOpen(false)
           setIsLoading(false)
         }}
-        onTopup={() => {
-          setTopupOpen(false)
+        onTopup={async () => {
+          setIsTopupOpen(false)
           setIsLoading(false)
+          await register(identity.id)
           callbacks.nextStep()
         }}
+        isFreeRegistrationEligible={isFreeRegistrationEligible}
       />
     </div>
   )
