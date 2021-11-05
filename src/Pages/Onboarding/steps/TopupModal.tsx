@@ -124,6 +124,7 @@ const TopupModal = ({
                 <div className={styles.topupQR}>
                   <QRCode value={identity.channelAddress} />
                 </div>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a>
                   <Tooltip
                     title={howToGetMyst()}
