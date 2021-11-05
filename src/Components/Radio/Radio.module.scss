@@ -1,0 +1,18 @@
+@import "../../assets/styles/base/variables";
+
+.radio {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  margin-left: 5px;
+  font-weight: $lighter-weight;
+  font-size: $normal-size;
+}
