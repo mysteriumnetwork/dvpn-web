@@ -25,8 +25,8 @@ const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onC
         <div className="settings--slider">
           <MystSlider
             label="Limit bandwidth to "
-            headerAmount={(v) => `${v} Mb/s`}
-            popover={(v) => `${v} Mb/s`}
+            headerAmount={(v) => `${v} MB/s`}
+            popover={(v) => `${v} MB/s`}
             myst={true}
             value={value}
             handleChange={(e, v) => {
