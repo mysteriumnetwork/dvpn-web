@@ -7,6 +7,7 @@
 import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useImmer } from 'use-immer'
 import { api } from '../../../api/Api'
 import { mmnDomainName, mmnWebAddress } from '../../../commons/config'
@@ -27,11 +28,12 @@ interface State {
   passwordRepeat?: string
   password?: string
   apiKey: string
+  urlApiKey: boolean
   useApiKey: boolean
   loading: boolean
   error: boolean
   errorMessage: string
-  nodeClaimed: boolean
+  showClaim: boolean
   mmnDomain: string
 }
 
@@ -40,15 +42,23 @@ interface Props {
   callbacks: OnboardingChildProps
 }
 
+const useQuery = () => {
+  const { search } = useLocation()
+  return React.useMemo(() => new URLSearchParams(search), [search])
+}
+
 const PasswordChange = ({ config }: Props): JSX.Element => {
+  const query = useQuery()
+
   const [state, setState] = useImmer<State>({
     passwordRepeat: '',
     password: '',
     apiKey: '',
+    urlApiKey: false,
     useApiKey: false,
     error: false,
     errorMessage: '',
-    nodeClaimed: false,
+    showClaim: false,
     loading: false,
     mmnDomain: '',
   })
@@ -57,12 +67,23 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
     setState((d) => {
       d.mmnDomain = mmnDomainName(config)
     })
-    api.getMMNApiKey().then((resp) => {
+
+    const urlApiKey = query.get('mmnApiKey')
+    if (urlApiKey !== null && urlApiKey.length > 0) {
       setState((d) => {
-        d.apiKey = resp.apiKey
-        d.nodeClaimed = d.apiKey !== undefined && d.apiKey.length > 0
+        d.apiKey = urlApiKey
+        d.useApiKey = true
+        d.urlApiKey = true
+        d.showClaim = true
       })
-    })
+    } else {
+      api.getMMNApiKey().then((resp) => {
+        setState((d) => {
+          d.apiKey = resp.apiKey
+          d.showClaim = d.apiKey === undefined || d.apiKey.length === 0 || state.mmnDomain !== 'error'
+        })
+      })
+    }
   }, [])
 
   const onPasswordChange = (value: string) => {
@@ -162,7 +183,7 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
             value={state.passwordRepeat}
           />
         </div>
-        {!state.nodeClaimed && (
+        {state.showClaim && (
           <MMNClaim
             config={config}
             state={state}
@@ -192,13 +213,14 @@ const MMNClaim = ({
   onApiKeyChange: (value: string) => void
   handleCheckboxChange: SwitchBaseProps['onChange']
 }) => {
-  return state.mmnDomain !== 'error' ? (
+  return (
     <>
       <div className="claim-row input-group m-t-50 m-b-20">
         <Checkbox
           checked={state.useApiKey}
           handleCheckboxChange={handleCheckboxChange}
           label={'Claim this node in ' + state.mmnDomain}
+          disabled={state.urlApiKey}
         />
         <HelpTooltip
           title={
@@ -208,19 +230,19 @@ const MMNClaim = ({
       </div>
       {state.useApiKey ? (
         <div className="input-group m-t-20">
-          <p className="input-group__label">
-            API Key (
-            <a href={`${mmnWebAddress(config)}/user/profile`} target="_blank" rel="noopener noreferrer">
-              Get it here
-            </a>
-            )
-          </p>
+          {!state.urlApiKey && (
+            <p className="input-group__label">
+              API Key (
+              <a href={`${mmnWebAddress(config)}/user/profile`} target="_blank" rel="noopener noreferrer">
+                Get it here
+              </a>
+              )
+            </p>
+          )}
           <TextField onChange={onApiKeyChange} value={state.apiKey} placeholder={'Your API token'} />
         </div>
       ) : null}
     </>
-  ) : (
-    <></>
   )
 }
 

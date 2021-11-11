@@ -87,16 +87,24 @@ export const docsAddress = (c?: Config): string => {
   return dropLeadingSlash(url)
 }
 
-export const mmnDomainName = (c?: Config): string => {
-  const address = _.get<Config, any>(c, 'data.mmn.web-address') || '#'
+const valueOrError = (c?: Config, path?: string): string => {
+  const address = _.get<Config, any>(c, path) || '#'
 
   try {
     const url = new URL(address)
     return url.hostname
   } catch {
-    toastError('mmn url is not valid')
+    toastError(`${path} - not valid`)
     return 'error'
   }
+}
+
+export const mmnDomainName = (c?: Config): string => {
+  return valueOrError(c, 'data.mmn.web-address')
+}
+
+export const mmnApiUrl = (c?: Config): string => {
+  return valueOrError(c, 'data.mmn.api-address')
 }
 
 export const mmnApiKey = (c?: Config): string => {
