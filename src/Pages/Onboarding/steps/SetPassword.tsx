@@ -20,7 +20,7 @@ import { TextField } from '../../../Components/TextField/TextField'
 import Errors from '../../../Components/Validation/Errors'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
 import { updateAuthenticatedStore } from '../../../redux/app.slice'
-import './PasswordChange.scss'
+import './SetPassword.scss'
 
 import { store } from '../../../redux/store'
 
@@ -47,7 +47,7 @@ const useQuery = () => {
   return React.useMemo(() => new URLSearchParams(search), [search])
 }
 
-const PasswordChange = ({ config }: Props): JSX.Element => {
+const SetPassword = ({ config }: Props): JSX.Element => {
   const query = useQuery()
 
   const [state, setState] = useImmer<State>({
@@ -167,7 +167,7 @@ const PasswordChange = ({ config }: Props): JSX.Element => {
       <p className="step__description">Fill in the following information to finish setting up your node.</p>
       <form className="step__content m-t-100" onSubmit={handleSubmitPassword}>
         <p className="step__description m-b-20">
-          <strong>Please change the default WebUI password. At least 10 characters are required.</strong>
+          <strong>Please create default WebUI password. At least 10 characters are required.</strong>
         </p>
         <Errors error={state.error} errorMessage={state.errorMessage} />
         <div className="input-group">
@@ -246,4 +246,4 @@ const MMNClaim = ({
   )
 }
 
-export default PasswordChange
+export default SetPassword

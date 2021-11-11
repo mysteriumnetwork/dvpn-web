@@ -11,7 +11,7 @@ import { CircularProgress } from '@material-ui/core'
 
 import sideImage from '../../assets/images/onboarding/SideImage.png'
 
-import PasswordChange from './steps/PasswordChange'
+import SetPassword from './steps/SetPassword'
 import Welcome from './steps/Welcome'
 import StepCounter from './StepCounter'
 import TermsAndConditions from './steps/TermsAndConditions'
@@ -77,7 +77,7 @@ const OnboardingPage = ({ onboarding, identity, config, fetchFees }: Props) => {
   }
 
   if (state.needsPasswordChange) {
-    steps.push(<PasswordChange key="password" config={config} callbacks={callbacks} />)
+    steps.push(<SetPassword key="password" config={config} callbacks={callbacks} />)
   }
 
   const totalStepCount = steps.length
