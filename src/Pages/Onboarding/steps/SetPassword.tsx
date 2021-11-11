@@ -80,7 +80,7 @@ const SetPassword = ({ config }: Props): JSX.Element => {
       api.getMMNApiKey().then((resp) => {
         setState((d) => {
           d.apiKey = resp.apiKey
-          d.showClaim = d.apiKey === undefined || d.apiKey.length === 0 || state.mmnDomain !== 'error'
+          d.showClaim = d.apiKey === undefined || d.apiKey?.length === 0 || state.mmnDomain === 'error'
         })
       })
     }
