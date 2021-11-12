@@ -34,7 +34,7 @@ export const loginWithDefaultCredentials = async (): Promise<boolean> => {
 
 export const isUserAuthenticated = async (): Promise<boolean> => {
   try {
-    await api.healthCheck()
+    await api.identityList()
   } catch (e) {
     if (e instanceof TequilapiError && e.isUnauthorizedError) {
       return false
