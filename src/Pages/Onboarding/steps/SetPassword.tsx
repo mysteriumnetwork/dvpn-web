@@ -224,7 +224,7 @@ const MMNClaim = ({
         />
         <HelpTooltip
           title={
-            'If you claim your node you will be able to manage and see statistics for all your nodes in my.mysterium.network'
+            'If you claim your node you will be able to manage and see statistics for all your nodes in mystnodes.com'
           }
         />
       </div>
@@ -233,7 +233,7 @@ const MMNClaim = ({
           {!state.urlApiKey && (
             <p className="input-group__label">
               API Key (
-              <a href={`${mmnWebAddress(config)}/user/profile`} target="_blank" rel="noopener noreferrer">
+              <a href={`${mmnWebAddress(config)}/me`} target="_blank" rel="noopener noreferrer">
                 Get it here
               </a>
               )
