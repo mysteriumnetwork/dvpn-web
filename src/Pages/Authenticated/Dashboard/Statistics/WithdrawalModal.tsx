@@ -96,7 +96,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       const chainSummary = await api.chainSummary()
       const latestWithdrawal = await api.settlementHistory().then((resp) => resp.items.find((s) => s.isWithdrawal))
 
-      const { chains } = chainSummary
+      const { chains, currentChain } = chainSummary
       const chainOptions = Object.keys(chains)
         .map(Number)
         .map((k) => {
@@ -106,15 +106,15 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
             name: chainName,
           }
         })
-      const firstChain = chainOptions?.find((i) => i)?.value
-      const fees = await api.transactorFees(firstChain)
+      const initialChain = chainOptions?.find((i) => i.value === currentChain)?.value
+      const fees = await api.transactorFees(initialChain)
       setState((d) => {
         d.withdrawalAddress = address
         d.chainOptions = chainOptions
         d.withdrawalAmountMYST = Number(toMyst(identity.balance))
         d.withdrawalAmountWei = identity.balance
         d.balanceTotalWei = identity.balance
-        d.toChain = firstChain || 0
+        d.toChain = initialChain || 0
         d.fees = fees
         d.isLoading = false
         d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
