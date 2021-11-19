@@ -107,7 +107,7 @@ const Settings = () => {
           </div>
 
           <div className="settings__block">
-            <Card title="MMN integration">
+            <Card title="Mystnodes.com integration">
               <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
             </Card>
             <Card title="Advanced Settings">
