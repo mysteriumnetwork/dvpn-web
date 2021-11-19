@@ -173,6 +173,9 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   const errors = validateForm()
 
   const { latestWithdrawal } = state
+  const withdrawalContainsTXLink = (): boolean => {
+    return latestWithdrawal !== undefined && latestWithdrawal.blockExplorerUrl !== ''
+  }
 
   return (
     <Modal
@@ -280,10 +283,14 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           </div>
           {latestWithdrawal && (
             <div className="withdrawal-modal__settlement-info">
-              Your last transaction: {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a href="#" target="_blank">
-                {latestWithdrawal.txHash}
-              </a>
+              Your last transaction:{' '}
+              {withdrawalContainsTXLink() ? (
+                <a href={latestWithdrawal.blockExplorerUrl} rel="noreferrer" target="_blank">
+                  {latestWithdrawal.txHash}
+                </a>
+              ) : (
+                <span style={{ color: '#000' }}>{latestWithdrawal.txHash}</span>
+              )}
             </div>
           )}
           <div className="withdrawal-modal__footer">
