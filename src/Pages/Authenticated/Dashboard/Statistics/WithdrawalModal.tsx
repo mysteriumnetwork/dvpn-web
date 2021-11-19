@@ -13,7 +13,7 @@ import { useImmer } from 'use-immer'
 import { api } from '../../../../api/Api'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import { currentCurrency, displayMyst, toMyst } from '../../../../commons/money.utils'
-import { toastSuccess } from '../../../../commons/toast.utils'
+import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
 import { Select, SelectItem } from '../../../../Components/Select/Select'
@@ -353,9 +353,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                 toastSuccess('Withdrawal completed successfully!')
                 onClose()
               } catch (e: any) {
-                setState((d) => {
-                  d.error = 'There was an error processing your withdrawal. Please try again later.'
-                })
+                toastError('There was an error processing your withdrawal. Please try again later.')
               }
               showConfirm(false)
             }}

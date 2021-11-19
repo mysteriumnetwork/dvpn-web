@@ -9,6 +9,7 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
 import { useImmer } from 'use-immer'
 import { Identity, Fees, DECIMAL_PART } from 'mysterium-vpn-js'
+import { toastError } from '../../../commons/toast.utils'
 
 import { TextField } from '../../../Components/TextField/TextField'
 import { DEFAULT_STAKE_AMOUNT } from '../../../constants/defaults'
@@ -131,10 +132,16 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
           setIsLoading(false)
         }}
         onTopup={async () => {
-          setIsTopupOpen(false)
-          setIsLoading(false)
-          await register(identity.id)
-          callbacks.nextStep()
+          try {
+            await register(identity.id)
+            setIsTopupOpen(false)
+            setIsLoading(false)
+            callbacks.nextStep()
+            return Promise.resolve()
+          } catch (e) {
+            toastError('Registration failed.')
+            return Promise.reject()
+          }
         }}
         isFreeRegistrationEligible={isFreeRegistrationEligible}
       />

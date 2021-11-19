@@ -8,5 +8,5 @@ import { TequilapiClient, TequilapiClientFactory } from 'mysterium-vpn-js'
 
 export const api: TequilapiClient = new TequilapiClientFactory(
   `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`,
-  10_000,
+  20_000,
 ).build()

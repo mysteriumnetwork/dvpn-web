@@ -17,7 +17,7 @@ import { Radio } from '../../../Components/Radio/Radio'
 import styles from './TopupModal.module.scss'
 
 interface Props {
-  onTopup: () => void
+  onTopup: () => Promise<void>
   onClose: () => void
   topupAmount: number
   identity: Identity
@@ -77,6 +77,7 @@ const TopupModal = ({
   currentChainName,
 }: Props) => {
   const [isFree, setIsFree] = useState<boolean>(isFreeRegistrationEligible)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -169,7 +170,15 @@ const TopupModal = ({
             <Button onClick={onClose} extraStyle="gray">
               Back
             </Button>
-            <Button onClick={onTopup} disabled={isMYSTReceived}>
+            <Button
+              onClick={async () => {
+                setIsLoading(true)
+                await onTopup()
+                setIsLoading(false)
+              }}
+              isLoading={isLoading}
+              disabled={isMYSTReceived}
+            >
               Next
             </Button>
           </div>
