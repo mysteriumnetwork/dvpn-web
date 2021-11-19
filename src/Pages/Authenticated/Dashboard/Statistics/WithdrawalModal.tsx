@@ -80,6 +80,7 @@ const initialState: State = {
 }
 
 const MINIMAL_WITHDRAWAL_AMOUNT = 10_000_000_000_000_000 // 0.01 MYST
+const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
 
 const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   const [state, setState] = useImmer<State>(initialState)
@@ -106,7 +107,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
             name: chainName,
           }
         })
-      const initialChain = chainOptions?.find((i) => i.value === currentChain)?.value
+      const initialChain = chainOptions?.find((i) => i.value === POLYGON_MATIC_MAINNET_CHAIN_ID)?.value
       const fees = await api.transactorFees(initialChain)
       setState((d) => {
         d.withdrawalAddress = address
@@ -114,7 +115,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         d.withdrawalAmountMYST = Number(toMyst(identity.balance))
         d.withdrawalAmountWei = identity.balance
         d.balanceTotalWei = identity.balance
-        d.toChain = initialChain || 0
+        d.toChain = initialChain || currentChain
         d.fees = fees
         d.isLoading = false
         d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
@@ -208,6 +209,14 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                     <Alert severity="error">
                       <AlertTitle>Error</AlertTitle>
                       {errors}
+                    </Alert>
+                  </Collapse>
+                  <Collapse in={state.toChain === POLYGON_MATIC_MAINNET_CHAIN_ID}>
+                    <Alert severity="warning">
+                      <AlertTitle>Warning</AlertTitle>
+                      Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet)
+                      supporting Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not
+                      supported for Polygon network withdrawals and your tokens might be lost.
                     </Alert>
                   </Collapse>
                 </div>
@@ -320,11 +329,11 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                 showConfirm(true)
               }}
             >
-              Withdrawal
+              Withdraw
             </Button>
           </div>
           <ConfirmationDialogue
-            message="Are you sure?"
+            message="Please click OK to proceed with your withdrawal request."
             open={state.showConfirm}
             onCancel={() => {
               showConfirm(false)
@@ -345,7 +354,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                 onClose()
               } catch (e: any) {
                 setState((d) => {
-                  d.error = e?.message || 'API Error'
+                  d.error = 'There was an error processing your withdrawal. Please try again later.'
                 })
               }
               showConfirm(false)
