@@ -37,6 +37,8 @@ export const TextField = ({
 }: Props) => {
   return (
     <MUITextField
+      // @ts-ignore
+      onWheel={(e) => e.target.blur()}
       id={id}
       name={name}
       type={type}
