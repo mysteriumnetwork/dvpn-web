@@ -1796,10 +1796,10 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
-"@mysteriumnetwork/terms@0.0.27":
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/@mysteriumnetwork/terms/-/terms-0.0.27.tgz#235d9f1a74d564d4611b14bf8df4e547bdd4836e"
-  integrity sha512-b72gadNlCCwWR1pQqnthUCFJSr4P/YuV0hskXgmgeBzYLJBbSvEGzxBpmFTm3296CA7KyMoCVIgauSvBW5bGUA==
+"@mysteriumnetwork/terms@0.0.34":
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/@mysteriumnetwork/terms/-/terms-0.0.34.tgz#615201fb175ecf5c23074ca74259c05a2b2e0d89"
+  integrity sha512-mRtX1+MXTByIW2DwesPSDyMlsIzn5GMFB5pub1BdZ3niotb3YwuHAnub/vXc96qJKxmK9FXIDqDuP5/rMfjdgg==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
