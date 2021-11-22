@@ -68,7 +68,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   }
 
   const link = (
-    <a href={`${mmnUrl}/user/profile`} target="_blank" rel="noopener noreferrer">
+    <a href={`${mmnUrl}/me`} target="_blank" rel="noopener noreferrer">
       Get it here
     </a>
   )
