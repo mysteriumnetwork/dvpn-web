@@ -114,7 +114,7 @@ const Dashboard = () => {
           You are running Node in TestNet which will be deprecated soon. There are no rewards for running a node in
           TestNet after the 1st of December, 2021 despite what amount might be shown in this UI. Please upgrade your
           node to MainNet to continue earning. Read more about migration{' '}
-          <a href="https://docs.mysterium.network/" rel="noreferrer" target="_blank">
+          <a href="https://docs.mysterium.network/node-runners/mainnet-migration/" rel="noreferrer" target="_blank">
             here
           </a>
           .
