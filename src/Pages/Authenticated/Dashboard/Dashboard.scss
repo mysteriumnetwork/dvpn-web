@@ -8,6 +8,15 @@
     flex-wrap: wrap;
   }
 
+  &__mainnet-warning {
+    padding: 22px 28px 25px 28px;
+    box-shadow: 0 2px 5px rgba(99, 99, 99, 0.05);
+    background: #ffffff;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    color: #e83400
+  }
+
   &__widgets {
     display: flex;
     align-items: center;
@@ -15,27 +24,7 @@
     justify-content: space-between;
 
     .widget {
-      @include respond-above(sm) {
-        &--bounty {
-          width: 30%;
-          align-self: stretch;
-        }
-        &--chart {
-          margin-left: 10px;
-          width: calc(70% - 10px);
-        }
-        &:last-child {
-          padding-left: 0;
-        }
-      }
-
-      @include respond-below(sm) {
-        width: 100%;
-        &--bounty {
-          margin-bottom: 25px;
-          align-self: stretch;
-        }
-      }
+      width: 100%;
     }
   }
 

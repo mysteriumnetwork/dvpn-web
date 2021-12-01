@@ -13,7 +13,7 @@ import { useImmer } from 'use-immer'
 import { tequilapiClient } from '../../../api/TequilApiClient'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
-import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
+import { isTestnet } from '../../../commons/config'
 import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
 import { isRegistered } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
@@ -22,7 +22,6 @@ import { AppState, currentIdentity } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
-import BountyWidget from './Bounty/BountyWidget'
 import Charts from './Charts/Charts'
 
 import './Dashboard.scss'
@@ -111,10 +110,16 @@ const Dashboard = () => {
         <div className="dashboard__statistics">
           <Statistics testnet={testnet} stats={state.sessionStatsAllTime} unsettledEarnings={identity.earnings} />
         </div>
+        <div className="dashboard__mainnet-warning">
+          You are running Node in TestNet which will be deprecated soon. There are no rewards for running a node in
+          TestNet after the 1st of December, 2021 despite what amount might be shown in this UI. Please upgrade your
+          node to MainNet to continue earning. Read more about migration{' '}
+          <a href="https://docs.mysterium.network/" rel="noreferrer" target="_blank">
+            here
+          </a>
+          .
+        </div>
         <div className="dashboard__widgets">
-          <div className="widget widget--bounty">
-            <BountyWidget mmnUrl={mmnWebAddress(config)} apiKey={mmnApiKey(config)} />
-          </div>
           <div className="widget widget--chart">
             <Charts statsDaily={state.sessionStatsDaily} />
           </div>
