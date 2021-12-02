@@ -4,17 +4,40 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Fees } from 'mysterium-vpn-js'
-import { AppState, currentIdentity, onboardingState } from './app.slice'
+import { AppState, currentIdentity, onBoarding } from './app.slice'
 import { SSEState } from './sse.slice'
-import { RootState } from './store'
+import { IdentityRegistrationStatus } from 'mysterium-vpn-js/lib/identity/identity'
+import { Fees, Identity } from 'mysterium-vpn-js'
+import { Config } from 'mysterium-vpn-js/lib/config/config'
 
-export const currentIdentitySelector = ({ app, sse }: { app: AppState; sse: SSEState }) =>
-  currentIdentity(app.currentIdentityRef, sse.appState?.identities)
+export const EMPTY_IDENTITY: Identity = {
+  id: '0x',
+  registrationStatus: IdentityRegistrationStatus.RegistrationError,
+  channelAddress: '0x',
+  balance: 0,
+  earnings: 0,
+  earningsTotal: 0,
+  stake: 0,
+  hermesId: '0x',
+}
 
-export const onBoardingStateSelector = ({ app, sse }: { app: AppState; sse: SSEState }) =>
-  onboardingState(app.auth, app.terms, currentIdentitySelector({ app, sse }))
+interface RootState {
+  app: AppState
+  sse: SSEState
+}
+
+export const currentIdentitySelector = ({ app, sse }: RootState): Identity => {
+  const identity = currentIdentity(app.currentIdentityRef, sse.appState?.identities)
+  return identity || EMPTY_IDENTITY
+}
 
 export const feesSelector = ({ app }: RootState): Fees => {
   return app.fees
 }
+
+export const configSelector = ({ app }: RootState): Config => {
+  return app.config
+}
+
+export const onBoardingStateSelector = ({ app, sse }: { app: AppState; sse: SSEState }) =>
+  onBoarding(app.auth, app.terms, currentIdentitySelector({ app, sse }))
