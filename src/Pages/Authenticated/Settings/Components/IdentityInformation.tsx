@@ -18,7 +18,7 @@ const IdentityInformation = ({ identity }: Props): JSX.Element => {
         <div className="input-group__label m-t-5">Your identity</div>
         <CopyToClipboard text={identity} />
       </div>
-      <TextField onChange={() => () => {}} disabled={true} value={identity} />
+      <TextField disabled={true} value={identity} />
     </div>
   )
 }
