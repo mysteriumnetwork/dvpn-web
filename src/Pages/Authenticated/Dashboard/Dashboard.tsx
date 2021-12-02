@@ -18,7 +18,7 @@ import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.u
 import { isRegistered } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
-import { AppState, currentIdentity } from '../../../redux/app.slice'
+import { AppState } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
@@ -29,6 +29,7 @@ import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
 import Statistics from './Statistics/Statistics'
+import { currentIdentitySelector } from '../../../redux/selectors'
 
 interface StateProps {
   loading: boolean
@@ -59,12 +60,11 @@ const initialState: StateProps = {
 }
 
 const Dashboard = () => {
-  const { config, currentIdentityRef } = useSelector<RootState, AppState>(({ app }) => app)
+  const identity = useSelector(currentIdentitySelector)
+  const { config } = useSelector<RootState, AppState>(({ app }) => app)
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
 
   const [state, setState] = useImmer<StateProps>(initialState)
-
-  const identity = currentIdentity(currentIdentityRef, sse.appState?.identities)
 
   useEffect(() => {
     if (!identity) {
