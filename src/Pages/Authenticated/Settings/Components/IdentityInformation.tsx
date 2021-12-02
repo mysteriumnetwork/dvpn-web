@@ -11,7 +11,7 @@ interface Props {
   identity: string
 }
 
-const IdentityBackup = ({ identity }: Props): JSX.Element => {
+const IdentityInformation = ({ identity }: Props): JSX.Element => {
   return (
     <div className="input-group">
       <div className="flex-row">
@@ -23,4 +23,4 @@ const IdentityBackup = ({ identity }: Props): JSX.Element => {
   )
 }
 
-export default IdentityBackup
+export default IdentityInformation

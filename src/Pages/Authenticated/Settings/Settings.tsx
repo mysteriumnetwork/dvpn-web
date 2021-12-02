@@ -20,7 +20,7 @@ import Header from '../../../Components/Header'
 import { currentIdentity } from '../../../redux/app.slice'
 import { RootState } from '../../../redux/store'
 import { Advanced } from './Components/Advanced/Advanced'
-import IdentityBackup from './Components/IdentityBackup'
+import IdentityInformation from './Components/IdentityInformation'
 
 import MMN from './Components/MMN'
 import PasswordChange from './Components/PasswordChange'
@@ -92,7 +92,7 @@ const Settings = () => {
         <div className="settings">
           <div className="settings__block">
             <Card title="Identity">
-              <IdentityBackup identity={identity?.id || ''} />
+              <IdentityInformation identity={identity?.id || ''} />
             </Card>
 
             <Card title="Default Withdrawal Address">
