@@ -6,20 +6,21 @@
  */
 import { CircularProgress, Fade, Modal, Tooltip } from '@material-ui/core'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
-import { Identity } from 'mysterium-vpn-js'
+import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
 import React, { ReactFragment, useEffect, useState } from 'react'
 import { QRCode } from 'react-qr-svg'
+import { useSelector } from 'react-redux'
 import { api } from '../../../api/Api'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../commons'
 import { displayMyst } from '../../../commons/money.utils'
 import Button from '../../../Components/Buttons/Button'
 import { Radio } from '../../../Components/Radio/Radio'
+import { RootState } from '../../../redux/store'
 import styles from './TopupModal.module.scss'
 
 interface Props {
   onTopup: () => Promise<void>
   onClose: () => void
-  topupAmount: number
   identity: Identity
   open: boolean
   currentChainName?: string
@@ -67,17 +68,10 @@ const howToGetMyst = (): ReactFragment => {
     </div>
   )
 }
-const TopupModal = ({
-  identity,
-  topupAmount,
-  onTopup,
-  open,
-  onClose,
-  isFreeRegistrationEligible,
-  currentChainName,
-}: Props) => {
+const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligible, currentChainName }: Props) => {
   const [isFree, setIsFree] = useState<boolean>(isFreeRegistrationEligible)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const fees = useSelector<RootState, Fees | undefined>(({ app }) => app.fees)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -90,7 +84,10 @@ const TopupModal = ({
     setIsFree(isFreeRegistrationEligible)
   }, [isFreeRegistrationEligible])
 
-  const isMYSTReceived = isFree ? false : identity.balance < topupAmount
+  // use 2x registration fee for insurance
+  const registrationFee = fees ? fees.registration * 2 : DECIMAL_PART / 10
+
+  const isMYSTReceived = isFree ? false : identity.balance < registrationFee
 
   return (
     <Modal
@@ -132,8 +129,8 @@ const TopupModal = ({
               <div className={styles.topup}>
                 <div>
                   1. Send not less than{' '}
-                  {displayMyst(topupAmount, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 1 })} to your identity
-                  balance on {currentChainName}
+                  {displayMyst(registrationFee, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 3 })} to your
+                  identity balance on {currentChainName}
                 </div>
                 <div className={styles.topupChannelAddress}>{identity.channelAddress}</div>
                 <div className={styles.topupQR}>
