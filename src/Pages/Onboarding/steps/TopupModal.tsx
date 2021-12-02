@@ -27,6 +27,13 @@ interface Props {
   isFreeRegistrationEligible: boolean
 }
 
+const REGISTRATION_FEE_KEY = 'registration_fee'
+
+interface RegistrationFee {
+  timestamp: number
+  fee: number
+}
+
 const howToGetMyst = (): ReactFragment => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -85,9 +92,28 @@ const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligib
   }, [isFreeRegistrationEligible])
 
   // use 2x registration fee for insurance
-  const registrationFee = fees ? fees.registration * 2 : DECIMAL_PART / 10
+  const registrationFee = () => {
+    const storedFeeString = localStorage.getItem(REGISTRATION_FEE_KEY)
+    if (storedFeeString) {
+      let storedFee = JSON.parse(storedFeeString)
+      if (storedFee.timestamp && storedFee.fee && Date.now() + 60 * 60 * 1000 < storedFee.timestamp) {
+        if (!fees || fees.registration * 1.2 < storedFee.fee * 2) {
+          return storedFee.fee * 2
+        }
+      }
+    }
+    if (fees) {
+      let registrationFee: RegistrationFee = {
+        timestamp: Date.now(),
+        fee: fees.registration,
+      }
+      localStorage.setItem(REGISTRATION_FEE_KEY, JSON.stringify(registrationFee))
+      return registrationFee.fee * 2
+    }
+    return DECIMAL_PART / 10
+  }
 
-  const isMYSTReceived = isFree ? false : identity.balance < registrationFee
+  const isMYSTReceived = isFree ? false : identity.balance < registrationFee()
 
   return (
     <Modal
@@ -129,7 +155,7 @@ const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligib
               <div className={styles.topup}>
                 <div>
                   1. Send not less than{' '}
-                  {displayMyst(registrationFee, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 3 })} to your
+                  {displayMyst(registrationFee(), { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 3 })} to your
                   identity balance on {currentChainName}
                 </div>
                 <div className={styles.topupChannelAddress}>{identity.channelAddress}</div>
