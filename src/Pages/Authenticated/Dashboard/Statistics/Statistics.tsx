@@ -40,6 +40,7 @@ const Statistics = ({ stats, identity, testnet }: Props) => {
           fractionDigits: 2,
         })}
         name="Unsettled earnings"
+        helpText="These are confirmed earnings which are not settled to Balance yet. Settlement to Balance is done automatically when 0.3 MYST is reached."
       />
       <EarningsStatCard
         stat={displayMyst(identity.balance, {
