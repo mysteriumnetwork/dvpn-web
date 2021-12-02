@@ -16,7 +16,7 @@ interface Props {
   onChange: (n: number) => void
 }
 
-const BandwidthControl = ({ bandwidthMbps, minLimitMbps = 50, maxLimitMbps = 1000, onChange }: Props) => {
+const BandwidthControl = ({ bandwidthMbps, minLimitMbps = 15, maxLimitMbps = 1000, onChange }: Props) => {
   const [value, setValue] = useState<number>(bandwidthMbps)
 
   return (
