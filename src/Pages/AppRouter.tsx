@@ -6,7 +6,6 @@
  */
 import { CircularProgress } from '@material-ui/core'
 import { AppState } from 'mysterium-vpn-js'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { connect, useSelector } from 'react-redux'
@@ -33,11 +32,11 @@ import {
 
 import ProtectedRoute from './ProtectedRoute'
 import LoginPage from './Login/LoginPage'
-import OnboardingPage from './Onboarding/OnboardingPage'
 import RestartNode from './Error/RestartNode'
 import PageNotFound from './Error/PageNotFound'
 import AuthenticatedPage from './Authenticated/AuthenticatedPage'
 import { currentIdentitySelector, onBoardingStateSelector } from '../redux/selectors'
+import OnBoardingPage from './Onboarding2/OnBoardingPage'
 
 interface Props {
   actions: {
@@ -77,15 +76,10 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
 }
 
 const AppRouter = ({ actions }: Props) => {
-  const config = useSelector<RootState, Config | undefined>(({ app }) => app.config)
   const loading = useSelector<RootState, boolean>(({ app }) => app.loading)
   const loggedIn = useSelector<RootState, boolean>(({ app }) => isLoggedIn(app.auth))
   const identity = useSelector(currentIdentitySelector)
   const onBoarding = useSelector(onBoardingStateSelector)
-
-  const loadFees = () => {
-    actions.fetchFeesAsync()
-  }
 
   const loginActions = async (defaultCredentials: boolean) => {
     await actions.updateAuthenticatedStore({
@@ -95,6 +89,7 @@ const AppRouter = ({ actions }: Props) => {
     await actions.updateTermsStoreAsync()
     await actions.fetchIdentityAsync()
     await actions.fetchConfigAsync()
+    await actions.fetchFeesAsync()
   }
 
   useLayoutEffect(() => {
@@ -142,20 +137,9 @@ const AppRouter = ({ actions }: Props) => {
         }}
       />
       <Route
-        exact
         path={ONBOARDING_HOME}
         render={(props) => {
-          return onBoarding.needsOnboarding ? (
-            <OnboardingPage
-              {...props}
-              onboarding={onBoarding}
-              config={config}
-              identity={identity}
-              fetchFees={loadFees}
-            />
-          ) : (
-            <Redirect to={DASHBOARD} />
-          )
+          return onBoarding.needsOnboarding ? <OnBoardingPage /> : <Redirect to={DASHBOARD} />
         }}
       />
       <Route exact path={ERROR} component={RestartNode} />

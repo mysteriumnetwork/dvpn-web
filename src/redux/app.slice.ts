@@ -91,11 +91,11 @@ const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]): Id
   return _.head(result)
 }
 
-const onBoarding = (auth: Auth, terms: Terms, currentIdentity?: Identity): Onboarding => {
+const onBoarding = (auth: Auth, terms: Terms, currentIdentity: Identity): Onboarding => {
   const onBoarding = {
     needsAgreedTerms: !termsAccepted(terms),
-    needsPasswordChange: !!auth.withDefaultCredentials,
-    needsRegisteredIdentity: !currentIdentity || isUnregistered(currentIdentity),
+    needsPasswordChange: auth.withDefaultCredentials,
+    needsRegisteredIdentity: isUnregistered(currentIdentity),
   } as Onboarding
 
   onBoarding.needsOnboarding =
