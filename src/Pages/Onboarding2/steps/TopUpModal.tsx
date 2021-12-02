@@ -6,10 +6,9 @@
  */
 import { CircularProgress, Fade, Modal, Tooltip } from '@material-ui/core'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
-import { DECIMAL_PART, Identity } from 'mysterium-vpn-js'
 import React, { ReactFragment, useEffect, useState } from 'react'
 import { QRCode } from 'react-qr-svg'
-import { useSelector } from 'react-redux'
+import storage from '../../../commons/localStorage.utils'
 import { api } from '../../../api/Api'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../commons'
 import { displayMyst } from '../../../commons/money.utils'
@@ -17,6 +16,10 @@ import Button from '../../../Components/Buttons/Button'
 import { Radio } from '../../../Components/Radio/Radio'
 import styles from './TopUpModal.module.scss'
 import { feesSelector } from '../../../redux/selectors'
+import { Identity } from 'mysterium-vpn-js'
+import { useSelector } from 'react-redux'
+
+const _60_MINUTES = 60 * 60 * 1000
 
 interface Props {
   onTopUp: () => Promise<void>
@@ -32,6 +35,10 @@ const REGISTRATION_FEE_KEY = 'registration_fee'
 interface RegistrationFee {
   timestamp: number
   fee: number
+}
+
+const isStale = (rf: RegistrationFee) => {
+  return rf.timestamp + _60_MINUTES < Date.now()
 }
 
 const howToGetMyst = (): ReactFragment => {
@@ -78,7 +85,18 @@ const howToGetMyst = (): ReactFragment => {
 const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligible, currentChainName }: Props) => {
   const [isFree, setIsFree] = useState<boolean>(isFreeRegistrationEligible)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const fees = useSelector(feesSelector)
+  const storedOrNewFee = (): RegistrationFee => {
+    const stored = storage.get<RegistrationFee>(REGISTRATION_FEE_KEY)
+    return stored && !isStale(stored)
+      ? stored
+      : storage.put<RegistrationFee>(REGISTRATION_FEE_KEY, {
+          timestamp: Date.now(),
+          fee: fees.registration * 2, // double amount - tx prises are unstable
+        })
+  }
+  const [registrationFee] = useState<number>(storedOrNewFee().fee)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -91,29 +109,7 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
     setIsFree(isFreeRegistrationEligible)
   }, [isFreeRegistrationEligible])
 
-  // use 2x registration fee for insurance
-  const registrationFee = () => {
-    const storedFeeString = localStorage.getItem(REGISTRATION_FEE_KEY)
-    if (storedFeeString) {
-      let storedFee = JSON.parse(storedFeeString)
-      if (storedFee.timestamp && storedFee.fee && Date.now() + 60 * 60 * 1000 < storedFee.timestamp) {
-        if (!fees || fees.registration * 1.2 < storedFee.fee * 2) {
-          return storedFee.fee * 2
-        }
-      }
-    }
-    if (fees) {
-      let registrationFee: RegistrationFee = {
-        timestamp: Date.now(),
-        fee: fees.registration,
-      }
-      localStorage.setItem(REGISTRATION_FEE_KEY, JSON.stringify(registrationFee))
-      return registrationFee.fee * 2
-    }
-    return DECIMAL_PART / 10
-  }
-
-  const isMYSTReceived = isFree ? false : identity.balance < registrationFee()
+  const isMYSTReceived = isFree ? false : identity.balance < registrationFee
 
   return (
     <Modal
@@ -155,7 +151,7 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
               <div className={styles.topup}>
                 <div>
                   1. Send not less than{' '}
-                  {displayMyst(registrationFee(), { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 3 })} to your
+                  {displayMyst(registrationFee, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 3 })} to your
                   identity balance on {currentChainName}
                 </div>
                 <div className={styles.topupChannelAddress}>{identity.channelAddress}</div>

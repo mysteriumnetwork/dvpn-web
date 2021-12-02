@@ -6,7 +6,6 @@
  */
 import styles from './Steps.module.scss'
 import Button from '../../../Components/Buttons/Button'
-import { NavLink } from 'react-router-dom'
 
 const Greeting = ({ nextStep }: StepProps) => {
   return (

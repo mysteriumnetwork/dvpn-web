@@ -47,7 +47,7 @@ const OnBoardingPage = () => {
   }
 
   const nextApplicableStep = (step: number): number => {
-    if (steps.length + 1 === step) {
+    if (steps.length === step + 1) {
       return step // last step
     }
 
