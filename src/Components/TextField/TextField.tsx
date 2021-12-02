@@ -9,7 +9,7 @@ import './TextField.scss'
 
 interface Props {
   password?: boolean
-  onChange: (value: string) => void
+  onChange?: (value: string) => void
   value?: string | number
   name?: string
   disabled?: boolean
@@ -25,7 +25,7 @@ interface Props {
 export const TextField = ({
   id,
   placeholder,
-  onChange: handleChange,
+  onChange: handleChange = () => {},
   value,
   disabled,
   defaultValue,
