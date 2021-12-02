@@ -51,19 +51,15 @@ const configByType = (type: ChartType): Config => {
     case 'data':
       return {
         dataFunction: sessionDailyStatsToData,
-        dataName: ' GiB',
+        dataName: ' GB',
       }
   }
 }
 
-const round = (n: number): number => {
-  return Math.ceil(n / 10) * 10
-}
-
 // calculates ticks by the taking the largest number from pairs, rounding it to the nearest
-// multiple of 10 (i.e.: 8 -> 10, 48 -> 50, 74 -> 80) and converting into 3 ticks: [0, n/2, n] where n is nearest multiple of 10
+// multiple of 2 (i.e.: 1 -> 2, 5 -> 6, 2.1 -> 4) and converting into 3 ticks: [0, n/2, n] where n is nearest ceiling of 2
 const ticks = (allPairs: Pair[]): number[] => {
-  const defaultTicks = [0, 5, 10]
+  const defaultTicks = [0, 1, 2]
 
   if (allPairs.length === 0) {
     return defaultTicks
@@ -71,13 +67,17 @@ const ticks = (allPairs: Pair[]): number[] => {
 
   const lastPair = allPairs[allPairs.length - 1]
   const maxValue = lastPair.y as number
-  if (maxValue < 10) {
+  if (maxValue < defaultTicks[2]) {
     return defaultTicks
   }
 
-  const maxTick = round(maxValue)
+  const maxTick = ceilingOf2(maxValue)
   const midTick = maxTick / 2
   return [0, midTick, maxTick]
+}
+
+const ceilingOf2 = (n: number): number => {
+  return Math.ceil(n / 2) * 2
 }
 
 const Charts = ({ statsDaily }: Props) => {

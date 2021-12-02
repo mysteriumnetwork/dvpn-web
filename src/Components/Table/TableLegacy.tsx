@@ -79,7 +79,7 @@ const Table = ({
       <div className="table__mobile-row" key={row.key}>
         <SessionCard
           country={cells[0].content as string}
-          status={false}
+          onGoing={false}
           id={cells[5].content as string}
           time={cells[1].content as string}
           data={cells[4].content as string}

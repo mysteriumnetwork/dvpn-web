@@ -10,19 +10,18 @@ import { CurrentPricesResponse, Session, SessionDirection, SessionStats, Session
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
-import { isTestnet, mmnApiKey, mmnWebAddress } from '../../../commons/config'
+import { isTestnet } from '../../../commons/config'
 import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
 import { isRegistered } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
-import { AppState, currentIdentity } from '../../../redux/app.slice'
+import { AppState } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
-import BountyWidget from './Bounty/BountyWidget'
 import Charts from './Charts/Charts'
 
 import './Dashboard.scss'
@@ -30,8 +29,10 @@ import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
 import Statistics from './Statistics/Statistics'
+import { currentIdentitySelector } from '../../../redux/selectors'
 
 interface StateProps {
+  loading: boolean
   sessionStatsAllTime: SessionStats
   sessionStatsDaily: {
     [date: string]: SessionStats
@@ -40,7 +41,8 @@ interface StateProps {
   currentPrices: CurrentPricesResponse
 }
 
-const initialState = {
+const initialState: StateProps = {
+  loading: true,
   sessionStatsAllTime: {
     count: 0,
     countConsumers: 0,
@@ -58,12 +60,11 @@ const initialState = {
 }
 
 const Dashboard = () => {
-  const { config, currentIdentityRef } = useSelector<RootState, AppState>(({ app }) => app)
+  const identity = useSelector(currentIdentitySelector)
+  const { config } = useSelector<RootState, AppState>(({ app }) => app)
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
 
   const [state, setState] = useImmer<StateProps>(initialState)
-
-  const identity = currentIdentity(currentIdentityRef, sse.appState?.identities)
 
   useEffect(() => {
     if (!identity) {
@@ -72,15 +73,16 @@ const Dashboard = () => {
 
     const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
     Promise.all([
-      tequilapiClient.sessionStatsDaily(sessionFilter),
-      tequilapiClient.sessionStatsAggregated(sessionFilter),
-      tequilapiClient.sessions({
+      api.sessionStatsDaily(sessionFilter),
+      api.sessionStatsAggregated(sessionFilter),
+      api.sessions({
         direction: SessionDirection.PROVIDED,
         providerId: identity.id,
         pageSize: 10,
         status: SessionStatus.COMPLETED,
       }),
-      tequilapiClient.pricesCurrent(),
+      api.pricesCurrent(),
+      api.identityBalanceRefresh(identity.id),
     ])
       .then((result) => {
         const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = result
@@ -91,13 +93,14 @@ const Dashboard = () => {
           d.currentPrices = prices
           d.sessionStatsDaily = statsDaily
           d.sessionStatsDaily = statsDaily
+          d.loading = false
         })
       })
       .catch((err) => toastError(parseTequilApiError(err) || UNKNOWN_API_ERROR))
   }, [identity?.id])
 
   const { appState } = sse
-  if (!identity || !appState || !config) {
+  if (!identity || !appState || !config || state.loading) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
@@ -109,12 +112,9 @@ const Dashboard = () => {
       <div className="main-block main-block--split">
         <Header logo={Logo} name="Dashboard" />
         <div className="dashboard__statistics">
-          <Statistics testnet={testnet} stats={state.sessionStatsAllTime} unsettledEarnings={identity.earnings} />
+          <Statistics testnet={testnet} stats={state.sessionStatsAllTime} identity={identity} />
         </div>
         <div className="dashboard__widgets">
-          <div className="widget widget--bounty">
-            <BountyWidget mmnUrl={mmnWebAddress(config)} apiKey={mmnApiKey(config)} />
-          </div>
           <div className="widget widget--chart">
             <Charts statsDaily={state.sessionStatsDaily} />
           </div>

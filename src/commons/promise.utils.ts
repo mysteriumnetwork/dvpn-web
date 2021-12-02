@@ -23,7 +23,7 @@ export const callWithToast = async <T>(fn: () => Promise<T>, msg?: Msg): Promise
     if (msg?.error && msg?.error.length > 0) {
       toastError(msg.error)
     } else {
-      toastError(parseMMNError(err) || parseTequilApiError(err) || msg?.error || UNKNOWN_API_ERROR)
+      toastError(parseMMNError(err) || parseTequilApiError(err) || err?.message || msg?.error || UNKNOWN_API_ERROR)
     }
     return err
   }

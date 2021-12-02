@@ -1,45 +1,56 @@
 @import '../../../../assets/styles/base/variables';
 @import '../../../../assets/styles/base/mixins/media';
 
-.dashboard-statistic {
-  padding: 22px 0 25px 28px;
+.dashboard-statistic-hero {
+  background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
+  padding: 22px 28px 25px 28px;
   box-shadow: 0 2px 5px rgba(99,99,99, 0.05);
-  background: #ffffff;
   text-align: left;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 180px;
+  justify-content: space-around;
+  align-items: center;
   border-radius: 10px;
-  margin-bottom: 25px;
-  height: 120px;
+  min-height: 120px;
+  flex-grow: 2;
+  flex-wrap: wrap;
+  row-gap: 30px;
 
   @include respond-below(sm) {
-    margin-right: 0px;
+    margin-right: 0;
     width: 100%;
   }
 
-  @include respond-above(sm) {
-    margin-right: 25px;
-    width: calc(20% - 20px);
-    &:last-child {
-      margin-right: 0;
-    }
+  &__stat {
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
   }
 
-  &__value {
+  &__icon {
+    background: $light-key-color;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 14px;
+  }
+
+  &__value-hero {
+    color: #FFFFFF;
     font-style: normal;
     font-size: $larger-size;
     line-height: 32px;
     font-weight: $medium-weight;
-    color: $main-text-color;
   }
 
-  &__label {
+  &__label-hero {
     font-style: normal;
     font-size: $normal-size;
     line-height: 21px;
     font-weight: $lighter-weight;
-    color: $names-text-color;
+    color: #FFFFFF;
   }
+
 }

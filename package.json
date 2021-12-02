@@ -1,7 +1,7 @@
 {
   "name": "dvpn-web",
   "productName": "Mysterium WebUI",
-  "version": "0.4.7",
+  "version": "0.0.0-snapshot",
   "description": "Mysterium WebUI is a web application for accessing Mysterium Network - decentralized VPN built on blockchain.",
   "license": "MIT",
   "repository": {
@@ -54,13 +54,14 @@
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.60",
-    "@mysteriumnetwork/terms": "0.0.27",
+    "@mysteriumnetwork/terms": "0.0.34",
     "@reduxjs/toolkit": "1.6.1",
     "array-move": "^4.0.0",
-    "clipboard": "^2.0.6",
+    "classnames": "^2.3.1",
+    "clipboard": "^2.0.8",
     "immer": "^9.0.5",
     "lodash": "^4.17.21",
-    "mysterium-vpn-js": "16.0.0",
+    "mysterium-vpn-js": "18.2.0",
     "notistack": "1.0.10",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -87,6 +88,7 @@
     "@types/react-html-parser": "^2.0.1",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-table": "^7.7.6",
     "@types/react-toast-notifications": "^2.4.0",
     "@types/recharts": "^1.8.14",
     "@types/showdown": "^1.9.3",
@@ -96,7 +98,6 @@
     "eslint-plugin-prettier": "^3.1.4",
     "node-sass": "^4.14.1",
     "prettier": "^2.1.2",
-    "rimraf": "^3.0.2",
-    "@types/react-table": "^7.7.6"
+    "rimraf": "^3.0.2"
   }
 }

@@ -13,7 +13,7 @@ import { ServiceType } from '../../../../commons'
 import { isAccessPolicyEnabled } from '../../../../commons/config'
 import { callWithToast } from '../../../../commons/promise.utils'
 import { Switch } from '../../../../Components/Switch'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { api } from '../../../../api/Api'
 
 import ServiceHeader from './ServiceHeader'
 import ServiceDetail from './ServiceDetail'
@@ -37,7 +37,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
   const startService = async (serviceType: string) => {
     setLoading(true)
     await callWithToast(() =>
-      tequilapiClient.serviceStart({
+      api.serviceStart({
         providerId: identityRef,
         type: serviceType,
       }),
@@ -47,7 +47,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
 
   const stopService = async (serviceId: string) => {
     setLoading(true)
-    await callWithToast(() => tequilapiClient.serviceStop(serviceId))
+    await callWithToast(() => api.serviceStop(serviceId))
     setLoading(false)
   }
 
@@ -59,7 +59,9 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
       <div className="service__details">
         <ServiceDetail label="Price per hour">{displayMyst(Number(prices.pricePerHour))}</ServiceDetail>
 
-        <ServiceDetail label="Price per GiB">{displayMyst(Number(prices.pricePerGib))}</ServiceDetail>
+        <ServiceDetail label="Price per GB">
+          {displayMyst(Number((BigInt(prices.pricePerGib) * BigInt(1000000000)) / BigInt(1073741824)))}
+        </ServiceDetail>
 
         <ServiceDetail label="On" alignValueRight={true}>
           <Switch

@@ -9,15 +9,15 @@ import './BandwidthSettings.scss'
 import { useState } from 'react'
 
 interface Props {
-  bandwidth: number
+  bandwidthMbps: number
   confirmButton?: (onConfirm?: () => void) => JSX.Element
   minLimitMbps?: number
   maxLimitMbps?: number
   onChange: (n: number) => void
 }
 
-const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onChange }: Props) => {
-  const [value, setValue] = useState<number>(bandwidth)
+const BandwidthControl = ({ bandwidthMbps, minLimitMbps = 15, maxLimitMbps = 1000, onChange }: Props) => {
+  const [value, setValue] = useState<number>(bandwidthMbps)
 
   return (
     <div className="bandwidth-settings-modal--block">
@@ -25,8 +25,8 @@ const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onC
         <div className="settings--slider">
           <MystSlider
             label="Limit bandwidth to "
-            headerAmount={(v) => `${v} MB/s`}
-            popover={(v) => `${v} MB/s`}
+            headerAmount={(v) => `${v} Mbps`}
+            popover={(v) => `${v} Mbps`}
             myst={true}
             value={value}
             handleChange={(e, v) => {
@@ -39,7 +39,7 @@ const BandwidthControl = ({ bandwidth, minLimitMbps = 5, maxLimitMbps = 200, onC
           />
           <div className="bottom-line">
             <p>{minLimitMbps}</p>
-            <p>{maxLimitMbps} Mb/s</p>
+            <p>{maxLimitMbps} Mbps</p>
           </div>
         </div>
       </div>

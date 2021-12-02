@@ -8,7 +8,7 @@ import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { FormEvent } from 'react'
 import { useImmer } from 'use-immer'
-import { login } from '../../api/TequilAPIWrapper'
+import { login } from '../../api/ApiWrapper'
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png'
 import Button from '../../Components/Buttons/Button'
 import { TextField } from '../../Components/TextField/TextField'
@@ -80,7 +80,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
             <form onSubmit={handleLogin}>
               <div className="password-input-block">
                 <p className="text-field-label">Web UI password</p>
-                <TextField onChange={handleTextFieldsChange} password={true} value={state.password} />
+                <TextField onChange={handleTextFieldsChange} type="password" value={state.password} />
               </div>
 
               <div className="password-actions-block">

@@ -12,15 +12,15 @@ import { store } from '../redux/store'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import { updateConfigStore, updateTermsStore } from '../redux/app.slice'
 
-import { tequilapiClient } from './TequilApiClient'
+import { api } from './Api'
 
 export const login = async (username: string, password: string): Promise<void> => {
-  return await tequilapiClient.authLogin({ username, password }).then(() => Promise.resolve())
+  return await api.authLogin({ username, password }).then(() => Promise.resolve())
 }
 
 export const loginWithDefaultCredentials = async (): Promise<boolean> => {
   try {
-    await tequilapiClient.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD })
+    await api.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD })
 
     return true
   } catch (e) {
@@ -34,7 +34,7 @@ export const loginWithDefaultCredentials = async (): Promise<boolean> => {
 
 export const isUserAuthenticated = async (): Promise<boolean> => {
   try {
-    await tequilapiClient.healthCheck()
+    await api.identityList()
   } catch (e) {
     if (e instanceof TequilapiError && e.isUnauthorizedError) {
       return false
@@ -45,7 +45,7 @@ export const isUserAuthenticated = async (): Promise<boolean> => {
 }
 
 export const acceptWithTermsAndConditions = async () => {
-  return await tequilapiClient
+  return await api
     .termsUpdate({
       agreedProvider: true,
       agreedVersion: termsPackageJson.version,
@@ -54,20 +54,20 @@ export const acceptWithTermsAndConditions = async () => {
 }
 
 export const updateConfig = async (): Promise<Config> => {
-  return await tequilapiClient.config().then((config) => {
+  return await api.config().then((config) => {
     store.dispatch(updateConfigStore(config))
     return config
   })
 }
 
 export const updateUserConfig = async (): Promise<Config> => {
-  return await tequilapiClient.userConfig().then((config) => {
+  return await api.userConfig().then((config) => {
     return config
   })
 }
 
 export const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
-  return await tequilapiClient
+  return await api
     .updateUserConfig({
       data: {
         'access-policy': {
@@ -79,7 +79,7 @@ export const setAccessPolicy = async (policyName?: string | null): Promise<Confi
 }
 
 export const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promise<Config> => {
-  return await tequilapiClient
+  return await api
     .updateUserConfig({
       data: {
         shaper: {
@@ -92,7 +92,7 @@ export const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number)
 }
 
 export const setChainId = async (chainId: number): Promise<Config> => {
-  return await tequilapiClient
+  return await api
     .updateUserConfig({
       data: {
         'chain-id': chainId,
@@ -102,5 +102,5 @@ export const setChainId = async (chainId: number): Promise<Config> => {
 }
 
 export const setUserConfig = async (data: any): Promise<Config> => {
-  return await tequilapiClient.updateUserConfig({ data }).then(updateConfig)
+  return await api.updateUserConfig({ data }).then(updateConfig)
 }

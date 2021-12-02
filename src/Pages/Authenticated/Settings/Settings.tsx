@@ -5,22 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core'
-import { Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { tequilapiClient } from '../../../api/TequilApiClient'
-import { setUserConfig } from '../../../api/TequilAPIWrapper'
+import { api } from '../../../api/Api'
+import { setUserConfig } from '../../../api/ApiWrapper'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import * as config from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
-import { currentIdentity } from '../../../redux/app.slice'
 import { RootState } from '../../../redux/store'
 import { Advanced } from './Components/Advanced/Advanced'
-import IdentityBackup from './Components/IdentityBackup'
+import IdentityInformation from './Components/IdentityInformation'
 
 import MMN from './Components/MMN'
 import PasswordChange from './Components/PasswordChange'
@@ -28,6 +26,7 @@ import PayoutAddress from './Components/PayoutAddress'
 import Version from './Components/Version'
 
 import './Setings.scss'
+import { currentIdentitySelector } from '../../../redux/selectors'
 
 interface CardProps {
   title: string
@@ -46,12 +45,11 @@ interface StateInterface {
   nodeVersion?: string
   defaultConfig: Config
   loading: boolean
+  nodeCommit?: string
 }
 
 const Settings = () => {
-  const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
-    currentIdentity(app.currentIdentityRef, sse.appState?.identities),
-  )
+  const identity = useSelector(currentIdentitySelector)
   const cfg = useSelector<RootState, Config | undefined>(({ app }) => app.config)
 
   const [state, setState] = React.useState<StateInterface>({
@@ -61,7 +59,7 @@ const Settings = () => {
   })
 
   useEffect(() => {
-    Promise.all([tequilapiClient.getMMNApiKey(), tequilapiClient.healthCheck(15_000), tequilapiClient.defaultConfig()])
+    Promise.all([api.getMMNApiKey(), api.healthCheck(15_000), api.defaultConfig()])
       .then(([mmn, healthcheck, defaultConfig]) => {
         setState((cs) => ({
           ...cs,
@@ -69,6 +67,7 @@ const Settings = () => {
           nodeVersion: healthcheck.version,
           loading: false,
           defaultConfig: defaultConfig,
+          nodeCommit: healthcheck.buildInfo.commit,
         }))
       })
       .catch((err) => toastError(parseError(err)))
@@ -85,15 +84,15 @@ const Settings = () => {
       <div className="main-block">
         <div className="settings-header">
           <Header logo={Logo} name="Settings" />
-          <Version nodeVersion={state.nodeVersion} />
+          <Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />
         </div>
         <div className="settings">
           <div className="settings__block">
             <Card title="Identity">
-              <IdentityBackup identity={identity?.id || ''} />
+              <IdentityInformation identity={identity} />
             </Card>
 
-            <Card title="Bounty Payout Address">
+            <Card title="Default Withdrawal Address">
               <PayoutAddress identity={identity} />
             </Card>
           </div>
@@ -105,7 +104,7 @@ const Settings = () => {
           </div>
 
           <div className="settings__block">
-            <Card title="MMN integration">
+            <Card title="Mystnodes.com integration">
               <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
             </Card>
             <Card title="Advanced Settings">

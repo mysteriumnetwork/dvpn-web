@@ -6,9 +6,9 @@
  */
 import React, { useState } from 'react'
 import { Fade, Modal } from '@material-ui/core'
-import './BandwidthControlModal.scss'
-import Button from '../../../../Components/Buttons/Button'
-import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
+import './GenericModal.scss'
+import Button from '../Buttons/Button'
+import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
 
 interface Props {
   isOpen: boolean
@@ -22,7 +22,7 @@ interface Props {
   confirmMessage?: string
 }
 
-const BandwidthControlModal = ({
+const GenericModal = ({
   isOpen,
   onClose,
   title,
@@ -73,4 +73,4 @@ const BandwidthControlModal = ({
     </Modal>
   )
 }
-export default BandwidthControlModal
+export default GenericModal

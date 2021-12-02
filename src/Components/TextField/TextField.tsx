@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { TextField as MUITextField } from '@material-ui/core'
+import './TextField.scss'
 
 interface Props {
   password?: boolean
-  onChange: (value: string) => void
-  value?: string
+  onChange?: (value: string) => void
+  value?: string | number
   name?: string
   disabled?: boolean
   id?: string
@@ -18,13 +19,13 @@ interface Props {
   multiline?: boolean
   rows?: number
   className?: string
+  type?: 'text' | 'number' | 'password'
 }
 
 export const TextField = ({
   id,
   placeholder,
-  password,
-  onChange: handleChange,
+  onChange: handleChange = () => {},
   value,
   disabled,
   defaultValue,
@@ -32,12 +33,15 @@ export const TextField = ({
   rows = 1,
   name,
   className,
+  type = 'text',
 }: Props) => {
   return (
     <MUITextField
+      // @ts-ignore
+      onWheel={(e) => e.target.blur()}
       id={id}
       name={name}
-      type={password ? 'password' : 'text'}
+      type={type}
       disabled={disabled}
       onChange={(e) => {
         const { value } = e.target
@@ -47,7 +51,7 @@ export const TextField = ({
       defaultValue={defaultValue}
       placeholder={placeholder}
       rows={rows}
-      autoComplete={password ? '' : 'off'}
+      autoComplete={type === 'password' ? '' : 'off'}
       className={className || 'default-text-field'}
       multiline={multiline}
     />

@@ -6,8 +6,8 @@
  */
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
-import { updateConfig } from '../../../../api/TequilAPIWrapper'
+import { api } from '../../../../api/Api'
+import { updateConfig } from '../../../../api/ApiWrapper'
 import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 
@@ -47,7 +47,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       d.loading = true
     })
 
-    tequilapiClient
+    api
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState((cs) => {
@@ -55,7 +55,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
           cs.errorMessage = ''
           cs.loading = false
         })
-        toastSuccess('MMN API key updated. Refresh the dashboard to view the bounty report.')
+        toastSuccess('MMN API key updated.')
       })
       .then(() => updateConfig())
       .catch((error) =>
@@ -68,7 +68,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   }
 
   const link = (
-    <a href={`${mmnUrl}/user/profile`} target="_blank" rel="noopener noreferrer">
+    <a href={`${mmnUrl}/me`} target="_blank" rel="noopener noreferrer">
       Get it here
     </a>
   )

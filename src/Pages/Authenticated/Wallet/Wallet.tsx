@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core'
-import { Fees, Identity, Settlement } from 'mysterium-vpn-js'
+import { Fees, Settlement } from 'mysterium-vpn-js'
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { tequilapiClient } from '../../../api/TequilApiClient'
+import { api } from '../../../api/Api'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
 import * as config from '../../../commons/config'
 import { date2human } from '../../../commons/date.utils'
@@ -20,13 +20,13 @@ import Button from '../../../Components/Buttons/Button'
 
 import Header from '../../../Components/Header'
 import Table, { TableRow } from '../../../Components/Table/TableLegacy'
-import { currentIdentity } from '../../../redux/app.slice'
 import * as sseSlice from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
 import SettlementModal from './SettlementModal'
 
 import './Wallet.scss'
 import WalletSidebar from './WalletSidebar'
+import { currentIdentitySelector } from '../../../redux/selectors'
 
 interface State {
   unsettledEarnings: number
@@ -73,9 +73,7 @@ const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
 }
 
 const Wallet = () => {
-  const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
-    currentIdentity(app.currentIdentityRef, sse.appState?.identities),
-  )
+  const identity = useSelector(currentIdentitySelector)
   const etherscanTxUrl = useSelector<RootState, string>(({ app }) => config.etherscanTxUrl(app.config))
   const hermesId = useSelector<RootState, string | undefined>(({ app }) => config.hermesId(app.config))
   const beneficiary = useSelector<RootState, string>(({ sse }) => sseSlice.beneficiary(sse))
@@ -92,14 +90,12 @@ const Wallet = () => {
   })
 
   useEffect(() => {
-    tequilapiClient
-      .settlementHistory({ pageSize: state.pageSize, page: state.currentPage })
-      .then((settlementResponse) => {
-        setState((cs) => ({
-          ...cs,
-          settlementResponse: settlementResponse,
-        }))
-      })
+    api.settlementHistory({ pageSize: state.pageSize, page: state.currentPage }).then((settlementResponse) => {
+      setState((cs) => ({
+        ...cs,
+        settlementResponse: settlementResponse,
+      }))
+    })
   }, [state.pageSize, state.currentPage])
 
   if (!identity || !hermesId) {
@@ -139,7 +135,7 @@ const Wallet = () => {
               isLoading={settlementState.loading}
               onClick={() => {
                 Promise.all([setSettlementState({ ...settlementState, loading: true })])
-                  .then(() => tequilapiClient.transactorFees())
+                  .then(() => api.transactorFees())
                   .then((fees) => {
                     setSettlementState({
                       ...settlementState,
@@ -186,7 +182,7 @@ const Wallet = () => {
         }}
         onSettle={() => {
           setSettlementState({ ...settlementState, modalOpen: false })
-          tequilapiClient.settleAsync({ providerId: identity.id, hermesId: hermesId })
+          api.settleAsync({ providerId: identity.id, hermesId: hermesId })
         }}
       />
 

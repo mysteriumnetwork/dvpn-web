@@ -48,7 +48,7 @@ const Table = ({ columns, data, lastPage, loading = false, fetchData }: Props) =
       <div className="table__mobile-row" key={index}>
         <SessionCard
           country={cells[0].value as string}
-          status={false}
+          onGoing={false}
           id={cells[5].value as string}
           time={cells[1].value as string}
           data={cells[4].value as string}

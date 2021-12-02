@@ -8,7 +8,7 @@ import { CircularProgress } from '@material-ui/core'
 import { Identity } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
+import { api } from '../../../../api/Api'
 import { parseError } from '../../../../commons/error.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
@@ -38,7 +38,7 @@ const PayoutAddress = ({ identity }: Props) => {
   })
 
   useEffect(() => {
-    tequilapiClient
+    api
       .payoutAddressGet(identity?.id || '')
       .then(({ address }) =>
         setState((d) => {
@@ -58,14 +58,14 @@ const PayoutAddress = ({ identity }: Props) => {
     setState((d) => {
       d.txPending = true
     })
-    tequilapiClient
+    api
       .payoutAddressSave(identity?.id || '', state.payoutAddress)
       .then((res) => {
         setState((d) => {
           d.txPending = false
           d.initialPayoutAddress = res.address
         })
-        toastSuccess('Bounty Payout Address updated')
+        toastSuccess('Default Withdrawal Address updated')
       })
       .catch((err) => {
         setState((d) => {
@@ -83,7 +83,7 @@ const PayoutAddress = ({ identity }: Props) => {
     <form onSubmit={handlePayoutAddressChange}>
       <div className="input-group">
         <div className="flex-row">
-          <div className="input-group__label m-t-5">Bounty Payout Address</div>
+          <div className="input-group__label m-t-5">Default Withdrawal Address</div>
           <CopyToClipboard text={state.payoutAddress} />
         </div>
         <TextField

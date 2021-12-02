@@ -7,6 +7,7 @@
 
 import _ from 'lodash'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { toastError } from './toast.utils'
 
 export const L1ChainId = 5
 export const L2ChainId = 80001
@@ -86,12 +87,24 @@ export const docsAddress = (c?: Config): string => {
   return dropLeadingSlash(url)
 }
 
+const valueOrError = (c?: Config, path?: string): string => {
+  const address = _.get<Config, any>(c, path) || '#'
+
+  try {
+    const url = new URL(address)
+    return url.hostname
+  } catch {
+    toastError(`${path} - not valid`)
+    return 'error'
+  }
+}
+
 export const mmnDomainName = (c?: Config): string => {
-  const address = _.get<Config, any>(c, 'data.mmn.web-address') || '#'
+  return valueOrError(c, 'data.mmn.web-address')
+}
 
-  const url = new URL(address)
-
-  return url.hostname
+export const mmnApiUrl = (c?: Config): string => {
+  return valueOrError(c, 'data.mmn.api-address')
 }
 
 export const mmnApiKey = (c?: Config): string => {

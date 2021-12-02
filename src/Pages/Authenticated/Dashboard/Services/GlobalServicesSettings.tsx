@@ -7,16 +7,17 @@
 import { ServiceInfo } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect, useState } from 'react'
-import { tequilapiClient } from '../../../../api/TequilApiClient'
-import { setAccessPolicy, setTrafficShaping } from '../../../../api/TequilAPIWrapper'
+import { api } from '../../../../api/Api'
+import { setAccessPolicy, setTrafficShaping } from '../../../../api/ApiWrapper'
 import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthKBps } from '../../../../commons/config'
 import { parseError } from '../../../../commons/error.utils'
 import { toastError } from '../../../../commons/toast.utils'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
-import BandwidthControlModal from './BandwidthControlModal'
+import GenericModal from '../../../../Components/GenericModal/GenericModal'
 import './GlobalServicesSettings.scss'
+import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 
 interface Props {
   config: Config
@@ -33,9 +34,9 @@ interface State {
 
 const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
   const services = servicesInfos || []
-  const stopServices = services.map((s) => (): Promise<void> => tequilapiClient.serviceStop(s.id))
+  const stopServices = services.map((s) => (): Promise<void> => api.serviceStop(s.id))
   const startServices = services.map((s) => (): Promise<ServiceInfo> =>
-    tequilapiClient.serviceStart({
+    api.serviceStart({
       providerId: s.providerId,
       type: s.type,
     }),
@@ -53,7 +54,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
 
   const isVerified = isAccessPolicyEnabled(config) as boolean
   const isShaping = isTrafficShapingEnabled(config)
-  const bandwidthMbps = trafficShapingBandwidthKBps(config) / 1_000
+  const bandwidthMbps = (trafficShapingBandwidthKBps(config) / 1_000) * 8
 
   const [state, setState] = useState<State>({
     isVerified: isVerified,
@@ -67,12 +68,12 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
       ...cs,
       isShaping: isShaping,
       isVerified: isVerified,
-      bandwidth: bandwidthMbps,
+      bandwidthMbps: bandwidthMbps,
     }))
   }, [isShaping, isVerified, bandwidthMbps])
 
   const bandwidthKBps = (): number => {
-    return state.bandwidthMbps * 1_000
+    return (state.bandwidthMbps * 1_000) / 8
   }
 
   const openBandwidthModal = () => {
@@ -113,18 +114,21 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
               return restartServices(setTrafficShaping(!state.isShaping, bandwidthKBps()))
             }}
           />
-          <p className="text">Limit bandwidth</p>
+          <p className="text">Limit bandwidth to {state.bandwidthMbps} Mbps</p>
           <Button
             className="change-button"
             onClick={openBandwidthModal}
             disabled={!state.isShaping}
             extraStyle="outline-primary"
           >
-            {state.bandwidthMbps} Mb/s
+            <Settings className={state.isShaping ? 'switch-limit-enabled' : 'switch-limit-disabled'} />
           </Button>
-          <BandwidthControlModal
+          <GenericModal
             isOpen={state.isBandwidthModalOpen}
-            onClose={() => closeBandwidthModal()}
+            onClose={() => {
+              closeBandwidthModal()
+              setState((cs) => ({ ...cs, bandwidthMbps: bandwidthMbps }))
+            }}
             onSave={() => {
               Promise.resolve()
                 .then(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: true })))
@@ -140,9 +144,9 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
           >
             <BandwidthControl
               onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
-              bandwidth={state.bandwidthMbps}
+              bandwidthMbps={state.bandwidthMbps}
             />
-          </BandwidthControlModal>
+          </GenericModal>
         </div>
       </div>
     </div>

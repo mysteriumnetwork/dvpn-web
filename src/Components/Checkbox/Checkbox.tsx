@@ -11,15 +11,17 @@ import { UncheckedIcon } from './CustomIcons'
 
 interface Props {
   checked: boolean
+  disabled?: boolean
   handleCheckboxChange: SwitchBaseProps['onChange']
   label?: string
 }
 
-export const Checkbox = ({ checked, handleCheckboxChange, label }: Props): JSX.Element => {
+export const Checkbox = ({ checked, handleCheckboxChange, label, disabled }: Props): JSX.Element => {
   return (
     <div className="checkbox-block">
       <MUICheckbox
         id={'checkbox-' + label}
+        disabled={disabled}
         checked={checked}
         onChange={handleCheckboxChange}
         color="primary"

@@ -11,11 +11,11 @@ import { CircularProgress } from '@material-ui/core'
 
 import sideImage from '../../assets/images/onboarding/SideImage.png'
 
-import PasswordChange from './steps/PasswordChange'
+import SetPassword from './steps/SetPassword'
 import Welcome from './steps/Welcome'
 import StepCounter from './StepCounter'
 import TermsAndConditions from './steps/TermsAndConditions'
-import PayoutSettings from './steps/PayoutSettings'
+import WithdrawalAddress from './steps/WithdrawalAddress'
 
 import './Onboarding.scss'
 import { Onboarding } from '../../redux/app.slice'
@@ -73,11 +73,11 @@ const OnboardingPage = ({ onboarding, identity, config, fetchFees }: Props) => {
   }
 
   if (state.needsRegisteredIdentity) {
-    steps.push(<PayoutSettings key="payout" identity={identity} callbacks={callbacks} fees={fees} config={config} />)
+    steps.push(<WithdrawalAddress key="payout" identity={identity} callbacks={callbacks} fees={fees} config={config} />)
   }
 
   if (state.needsPasswordChange) {
-    steps.push(<PasswordChange key="password" config={config} callbacks={callbacks} />)
+    steps.push(<SetPassword key="password" config={config} callbacks={callbacks} />)
   }
 
   const totalStepCount = steps.length
