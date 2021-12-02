@@ -15,7 +15,7 @@ import { toastError } from '../../../../commons/toast.utils'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
-import BandwidthControlModal from './BandwidthControlModal'
+import GenericModal from '../../../../Components/GenericModal/GenericModal'
 import './GlobalServicesSettings.scss'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 
@@ -123,7 +123,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
           >
             <Settings className={state.isShaping ? 'switch-limit-enabled' : 'switch-limit-disabled'} />
           </Button>
-          <BandwidthControlModal
+          <GenericModal
             isOpen={state.isBandwidthModalOpen}
             onClose={() => {
               closeBandwidthModal()
@@ -146,7 +146,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
               onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
               bandwidthMbps={state.bandwidthMbps}
             />
-          </BandwidthControlModal>
+          </GenericModal>
         </div>
       </div>
     </div>
