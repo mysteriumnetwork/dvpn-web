@@ -50,21 +50,6 @@ const Statistics = ({ stats, identity, testnet }: Props) => {
         name={`Balance`}
         identity={identity}
       />
-      {/*{testnet ? (
-        <EarningsStatCard
-          stat={displayMyst(stats.sumTokens, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, showCurrency: false })}
-          name={`Total Earnings (${currentCurrency()})`}
-        />
-      ) : (
-        <EarningsStatCard
-          stat={displayMyst(balance, {
-            ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-            showCurrency: true,
-            fractionDigits: 2,
-          })}
-          name={`Unsettled earnings (${currentCurrency()})`}
-        />
-      )}*/}
     </>
   )
 }
