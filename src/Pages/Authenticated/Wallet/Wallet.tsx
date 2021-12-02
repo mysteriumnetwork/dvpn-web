@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core'
-import { Fees, Identity, Settlement } from 'mysterium-vpn-js'
+import { Fees, Settlement } from 'mysterium-vpn-js'
 import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -20,13 +20,13 @@ import Button from '../../../Components/Buttons/Button'
 
 import Header from '../../../Components/Header'
 import Table, { TableRow } from '../../../Components/Table/TableLegacy'
-import { currentIdentity } from '../../../redux/app.slice'
 import * as sseSlice from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
 import SettlementModal from './SettlementModal'
 
 import './Wallet.scss'
 import WalletSidebar from './WalletSidebar'
+import { currentIdentitySelector } from '../../../redux/selectors'
 
 interface State {
   unsettledEarnings: number
@@ -73,9 +73,7 @@ const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
 }
 
 const Wallet = () => {
-  const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
-    currentIdentity(app.currentIdentityRef, sse.appState?.identities),
-  )
+  const identity = useSelector(currentIdentitySelector)
   const etherscanTxUrl = useSelector<RootState, string>(({ app }) => config.etherscanTxUrl(app.config))
   const hermesId = useSelector<RootState, string | undefined>(({ app }) => config.hermesId(app.config))
   const beneficiary = useSelector<RootState, string>(({ sse }) => sseSlice.beneficiary(sse))

@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core'
-import { Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -17,7 +16,6 @@ import * as config from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
-import { currentIdentity } from '../../../redux/app.slice'
 import { RootState } from '../../../redux/store'
 import { Advanced } from './Components/Advanced/Advanced'
 import IdentityInformation from './Components/IdentityInformation'
@@ -28,6 +26,7 @@ import PayoutAddress from './Components/PayoutAddress'
 import Version from './Components/Version'
 
 import './Setings.scss'
+import { currentIdentitySelector } from '../../../redux/selectors'
 
 interface CardProps {
   title: string
@@ -50,9 +49,7 @@ interface StateInterface {
 }
 
 const Settings = () => {
-  const identity = useSelector<RootState, Identity | undefined>(({ app, sse }) =>
-    currentIdentity(app.currentIdentityRef, sse.appState?.identities),
-  )
+  const identity = useSelector(currentIdentitySelector)
   const cfg = useSelector<RootState, Config | undefined>(({ app }) => app.config)
 
   const [state, setState] = React.useState<StateInterface>({
