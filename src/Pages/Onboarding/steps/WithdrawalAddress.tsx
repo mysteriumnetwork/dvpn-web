@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
 import { useImmer } from 'use-immer'
-import { Identity, Fees, DECIMAL_PART } from 'mysterium-vpn-js'
+import { Fees, Identity } from 'mysterium-vpn-js'
 import { toastError } from '../../../commons/toast.utils'
 
 import { TextField } from '../../../Components/TextField/TextField'
@@ -20,6 +20,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import TopupModal from './TopupModal'
 import './WithdrawalAddress.scss'
+import { isUnregistered } from '../../../commons/identity.utils'
 
 interface Props {
   callbacks: OnboardingChildProps
@@ -34,7 +35,7 @@ interface StateInterface {
   errors: string[]
 }
 
-const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
+const WithdrawalAddress = ({ callbacks, identity }: Props) => {
   const [state, setState] = useImmer<StateInterface>({
     defaultWithdrawalAddress: '',
     stake: DEFAULT_STAKE_AMOUNT,
@@ -47,7 +48,6 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
   useEffect(() => {
     const init = async () => {
       const eligibility = await api.freeRegistrationEligibility(identity.id)
-      // const eligibility: EligibilityResponse = { eligible: true }
       setIsFreeRegistrationEligible(eligibility.eligible)
       const summary = await api.chainSummary()
       setCurrentChainName(summary.chains[summary.currentChain])
@@ -78,7 +78,11 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
       if (state.defaultWithdrawalAddress) {
         await api.payoutAddressSave(identity.id, state.defaultWithdrawalAddress)
       }
-      setIsTopupOpen(true)
+      if (isUnregistered(identity)) {
+        setIsTopupOpen(true)
+      } else {
+        callbacks.nextStep()
+      }
     } catch (error) {
       errors(parseTequilApiError(error) || 'API call failed')
     }
@@ -126,7 +130,6 @@ const WithdrawalAddress = ({ callbacks, identity, config, fees }: Props) => {
         open={isTopupOpen}
         currentChainName={currentChainName}
         identity={identity}
-        topupAmount={DECIMAL_PART / 10}
         onClose={() => {
           setIsTopupOpen(false)
           setIsLoading(false)

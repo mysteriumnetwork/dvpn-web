@@ -6,24 +6,32 @@
  */
 import { CircularProgress, Fade, Modal, Tooltip } from '@material-ui/core'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
-import { Identity } from 'mysterium-vpn-js'
+import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
 import React, { ReactFragment, useEffect, useState } from 'react'
 import { QRCode } from 'react-qr-svg'
+import { useSelector } from 'react-redux'
 import { api } from '../../../api/Api'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../commons'
 import { displayMyst } from '../../../commons/money.utils'
 import Button from '../../../Components/Buttons/Button'
 import { Radio } from '../../../Components/Radio/Radio'
+import { RootState } from '../../../redux/store'
 import styles from './TopupModal.module.scss'
 
 interface Props {
   onTopup: () => Promise<void>
   onClose: () => void
-  topupAmount: number
   identity: Identity
   open: boolean
   currentChainName?: string
   isFreeRegistrationEligible: boolean
+}
+
+const REGISTRATION_FEE_KEY = 'registration_fee'
+
+interface RegistrationFee {
+  timestamp: number
+  fee: number
 }
 
 const howToGetMyst = (): ReactFragment => {
@@ -67,17 +75,10 @@ const howToGetMyst = (): ReactFragment => {
     </div>
   )
 }
-const TopupModal = ({
-  identity,
-  topupAmount,
-  onTopup,
-  open,
-  onClose,
-  isFreeRegistrationEligible,
-  currentChainName,
-}: Props) => {
+const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligible, currentChainName }: Props) => {
   const [isFree, setIsFree] = useState<boolean>(isFreeRegistrationEligible)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const fees = useSelector<RootState, Fees | undefined>(({ app }) => app.fees)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -90,7 +91,29 @@ const TopupModal = ({
     setIsFree(isFreeRegistrationEligible)
   }, [isFreeRegistrationEligible])
 
-  const isMYSTReceived = isFree ? false : identity.balance < topupAmount
+  // use 2x registration fee for insurance
+  const registrationFee = () => {
+    const storedFeeString = localStorage.getItem(REGISTRATION_FEE_KEY)
+    if (storedFeeString) {
+      let storedFee = JSON.parse(storedFeeString)
+      if (storedFee.timestamp && storedFee.fee && Date.now() + 60 * 60 * 1000 < storedFee.timestamp) {
+        if (!fees || fees.registration * 1.2 < storedFee.fee * 2) {
+          return storedFee.fee * 2
+        }
+      }
+    }
+    if (fees) {
+      let registrationFee: RegistrationFee = {
+        timestamp: Date.now(),
+        fee: fees.registration,
+      }
+      localStorage.setItem(REGISTRATION_FEE_KEY, JSON.stringify(registrationFee))
+      return registrationFee.fee * 2
+    }
+    return DECIMAL_PART / 10
+  }
+
+  const isMYSTReceived = isFree ? false : identity.balance < registrationFee()
 
   return (
     <Modal
@@ -132,8 +155,8 @@ const TopupModal = ({
               <div className={styles.topup}>
                 <div>
                   1. Send not less than{' '}
-                  {displayMyst(topupAmount, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 1 })} to your identity
-                  balance on {currentChainName}
+                  {displayMyst(registrationFee(), { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 3 })} to your
+                  identity balance on {currentChainName}
                 </div>
                 <div className={styles.topupChannelAddress}>{identity.channelAddress}</div>
                 <div className={styles.topupQR}>
