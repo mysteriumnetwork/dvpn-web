@@ -10,7 +10,7 @@ import './SessionSidebar.scss'
 import { countryName } from '../../../commons/country'
 
 import formatBytes, { add } from '../../../commons/formatBytes'
-import { seconds2Time } from '../../../commons/date.utils'
+import { date2human, seconds2Time } from '../../../commons/date.utils'
 import { displayMyst } from '../../../commons/money.utils'
 import { SESSIONS } from '../../../constants/routes'
 
@@ -22,18 +22,21 @@ const sumBytes = (sessionStats?: SessionStats) => {
 
 const toSessionCard = (
   key: string,
-  { id, consumerCountry, status, duration, bytesSent, bytesReceived, tokens }: Session,
+  { id, consumerCountry, status, duration, bytesSent, bytesReceived, tokens, createdAt }: Session,
 ): JSX.Element => {
   return (
-    <SessionCard
-      key={key}
-      country={countryName(consumerCountry)}
-      status={status === SessionStatus.NEW}
-      id={id}
-      time={seconds2Time(duration)}
-      data={formatBytes(add(bytesSent, bytesReceived))}
-      value={displayMyst(tokens)}
-    />
+    <div className="session">
+      <SessionCard
+        key={key}
+        country={countryName(consumerCountry)}
+        onGoing={status === SessionStatus.NEW}
+        id={id}
+        time={seconds2Time(duration)}
+        data={formatBytes(add(bytesSent, bytesReceived))}
+        value={displayMyst(tokens)}
+        createdAt={date2human(createdAt)}
+      />
+    </div>
   )
 }
 
