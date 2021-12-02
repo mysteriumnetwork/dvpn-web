@@ -92,7 +92,7 @@ const Settings = () => {
         <div className="settings">
           <div className="settings__block">
             <Card title="Identity">
-              <IdentityInformation identity={identity?.id || ''} />
+              <IdentityInformation identity={identity} />
             </Card>
 
             <Card title="Default Withdrawal Address">
