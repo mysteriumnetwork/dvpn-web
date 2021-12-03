@@ -24,8 +24,8 @@ export const toMyst = (amountWei: number, precision: number = 7): number => {
 
 export const toFixedMoney = (amount: number, precision: number = 7): number => {
   const m = Math.pow(10, precision)
-  const amountMyst = amount
-  return Math.floor(amountMyst * m) / m
+  const amountCurrency = amount
+  return Math.floor(amountCurrency * m) / m
 }
 
 export const displayMyst = (amount: number = 0, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
