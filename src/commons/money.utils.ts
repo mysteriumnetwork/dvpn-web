@@ -22,6 +22,12 @@ export const toMyst = (amountWei: number, precision: number = 7): number => {
   return Math.floor(amountMyst * m) / m
 }
 
+export const toFixedMoney = (amount: number, precision: number = 7): number => {
+  const m = Math.pow(10, precision)
+  const amountMyst = amount
+  return Math.floor(amountMyst * m) / m
+}
+
 export const displayMyst = (amount: number = 0, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
   const smallestDisplayableAmount = Math.pow(10, ETHER_FRACTIONS - (opts.fractionDigits || 0))
   if (amount !== 0 && amount < smallestDisplayableAmount) {
