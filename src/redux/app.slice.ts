@@ -34,7 +34,7 @@ export interface AppState {
   auth: Auth
   terms: Terms
   config?: Config
-  fees?: Fees
+  fees: Fees
 }
 
 const INITIAL_STATE: AppState = {
@@ -45,6 +45,12 @@ const INITIAL_STATE: AppState = {
   },
   terms: {
     acceptedVersion: undefined,
+  },
+  fees: {
+    registration: 0,
+    settlement: 0,
+    hermes: 0,
+    decreaseStake: 0,
   },
 }
 
