@@ -36,7 +36,7 @@ import RestartNode from './Error/RestartNode'
 import PageNotFound from './Error/PageNotFound'
 import AuthenticatedPage from './Authenticated/AuthenticatedPage'
 import { currentIdentitySelector, onBoardingStateSelector } from '../redux/selectors'
-import OnBoardingPage from './Onboarding2/OnBoardingPage'
+import OnBoardingPage from './Onboarding/OnBoardingPage'
 
 interface Props {
   actions: {

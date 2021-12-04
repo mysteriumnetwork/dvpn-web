@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-interface OnboardingChildProps {
+interface StepProps {
   nextStep: () => void
 }
