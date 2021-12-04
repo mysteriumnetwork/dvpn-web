@@ -12,7 +12,7 @@ import { QRCode } from 'react-qr-svg'
 import { useSelector } from 'react-redux'
 import { api } from '../../../api/Api'
 import storage from '../../../commons/localStorage.utils'
-import { displayMyst, toFixedMoney, toMyst } from '../../../commons/money.utils'
+import { displayMyst, flooredAmount, toMyst } from '../../../commons/money.utils'
 import Button from '../../../Components/Buttons/Button'
 import { Radio } from '../../../Components/Radio/Radio'
 import { feesSelector } from '../../../redux/selectors'
@@ -105,7 +105,7 @@ const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligib
       ? stored
       : storage.put<RegistrationFee>(REGISTRATION_FEE_KEY, {
           timestamp: Date.now(),
-          fee: registrationFee > 0.15 ? toFixedMoney(registrationFee * 1.5, 3) : 0.2, // double amount - tx prises are unstable
+          fee: registrationFee > 0.15 ? flooredAmount(registrationFee * 1.5, 3) : 0.2, // double amount - tx prises are unstable
         })
   }, [fees])
 

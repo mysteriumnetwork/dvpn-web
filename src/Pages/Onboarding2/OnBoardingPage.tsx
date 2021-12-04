@@ -32,7 +32,7 @@ const steps: Step[] = [
   },
   {
     component: 'Password',
-    isApplicable: (onBoarding) => !onBoarding.needsRegisteredIdentity && !onBoarding.needsAgreedTerms,
+    isApplicable: (onBoarding) => onBoarding.needsOnBoarding,
   },
 ]
 

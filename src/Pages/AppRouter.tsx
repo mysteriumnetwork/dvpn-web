@@ -127,7 +127,7 @@ const AppRouter = ({ actions }: Props) => {
   return (
     <Switch>
       <Route exact path={HOME}>
-        {redirectTo(onBoarding.needsOnboarding, loggedIn)}
+        {redirectTo(onBoarding.needsOnBoarding, loggedIn)}
       </Route>
       <Route
         exact
@@ -139,7 +139,7 @@ const AppRouter = ({ actions }: Props) => {
       <Route
         path={ONBOARDING_HOME}
         render={(props) => {
-          return onBoarding.needsOnboarding ? <OnBoardingPage /> : <Redirect to={DASHBOARD} />
+          return onBoarding.needsOnBoarding ? <OnBoardingPage /> : <Redirect to={DASHBOARD} />
         }}
       />
       <Route exact path={ERROR} component={RestartNode} />
@@ -147,31 +147,31 @@ const AppRouter = ({ actions }: Props) => {
 
       <ProtectedRoute
         path={DASHBOARD}
-        needsOnboarding={onBoarding.needsOnboarding}
+        needsOnboarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
       <ProtectedRoute
         path={SESSIONS}
-        needsOnboarding={onBoarding.needsOnboarding}
+        needsOnboarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
       <ProtectedRoute
         path={SETTINGS}
-        needsOnboarding={onBoarding.needsOnboarding}
+        needsOnboarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
       <ProtectedRoute
         path={SESSIONS_SIDE}
-        needsOnboarding={onBoarding.needsOnboarding}
+        needsOnboarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
       <ProtectedRoute
         path={WALLET}
-        needsOnboarding={onBoarding.needsOnboarding}
+        needsOnboarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />

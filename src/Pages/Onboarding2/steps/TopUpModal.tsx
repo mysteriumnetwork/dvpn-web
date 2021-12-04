@@ -6,12 +6,11 @@
  */
 import { CircularProgress, Fade, Modal, Tooltip } from '@material-ui/core'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
-import React, { ReactFragment, useEffect, useState } from 'react'
+import React, { ReactFragment, useEffect, useMemo, useState } from 'react'
 import { QRCode } from 'react-qr-svg'
 import storage from '../../../commons/localStorage.utils'
 import { api } from '../../../api/Api'
-import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../commons'
-import { displayMyst } from '../../../commons/money.utils'
+import { currentCurrency, displayMyst, flooredAmount, toMyst } from '../../../commons/money.utils'
 import Button from '../../../Components/Buttons/Button'
 import { Radio } from '../../../Components/Radio/Radio'
 import styles from './TopUpModal.module.scss'
@@ -34,7 +33,7 @@ const REGISTRATION_FEE_KEY = 'registration_fee'
 
 interface RegistrationFee {
   timestamp: number
-  fee: number
+  flooredFee: number
 }
 
 const isStale = (rf: RegistrationFee) => {
@@ -87,16 +86,18 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const fees = useSelector(feesSelector)
-  const storedOrNewFee = (): RegistrationFee => {
+
+  // use 2x registration fee for insurance
+  const lockedFee = useMemo((): RegistrationFee => {
     const stored = storage.get<RegistrationFee>(REGISTRATION_FEE_KEY)
+    const registrationFee = toMyst(fees.registration, 3)
     return stored && !isStale(stored)
       ? stored
       : storage.put<RegistrationFee>(REGISTRATION_FEE_KEY, {
           timestamp: Date.now(),
-          fee: fees.registration * 2, // double amount - tx prises are unstable
+          flooredFee: registrationFee > 0.15 ? flooredAmount(registrationFee, 3) * 1.5 : 0.2, // double amount - tx prises are unstable
         })
-  }
-  const [registrationFee] = useState<number>(storedOrNewFee().fee)
+  }, [fees])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,11 +106,7 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    setIsFree(isFreeRegistrationEligible)
-  }, [isFreeRegistrationEligible])
-
-  const isMYSTReceived = isFree ? false : identity.balance < registrationFee
+  const isMYSTReceived = isFree ? false : flooredAmount(identity.balance, 3) < lockedFee.flooredFee
 
   return (
     <Modal
@@ -150,9 +147,8 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
             <>
               <div className={styles.topup}>
                 <div>
-                  1. Send not less than{' '}
-                  {displayMyst(registrationFee, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 3 })} to your
-                  identity balance on {currentChainName}
+                  1. Send not less than {`${lockedFee.flooredFee} ${currentCurrency()}`} to your identity balance on{' '}
+                  {currentChainName}
                 </div>
                 <div className={styles.topupChannelAddress}>{identity.channelAddress}</div>
                 <div className={styles.topupQR}>

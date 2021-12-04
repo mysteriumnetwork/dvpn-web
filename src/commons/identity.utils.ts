@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js'
-const { Registered, InProgress, Unregistered } = IdentityRegistrationStatus
+import { EMPTY_IDENTITY } from '../redux/selectors'
+const { Registered, InProgress, Unregistered, RegistrationError } = IdentityRegistrationStatus
 
 export const isRegistered = (identity: Identity): boolean => {
   return identity.registrationStatus === Registered
@@ -17,4 +18,12 @@ export const isInProgress = (identity: Identity): boolean => {
 
 export const isUnregistered = (identity: Identity): boolean => {
   return identity.registrationStatus === Unregistered
+}
+
+export const isRegistrationError = (identity: Identity): boolean => {
+  return identity.registrationStatus === RegistrationError
+}
+
+export const isEmpty = (identity: Identity): boolean => {
+  return identity.id === EMPTY_IDENTITY.id
 }

@@ -24,7 +24,7 @@ export interface Onboarding {
   needsAgreedTerms: boolean
   needsPasswordChange: boolean
   needsRegisteredIdentity: boolean
-  needsOnboarding: boolean
+  needsOnBoarding: boolean
 }
 
 export interface AppState {
@@ -98,8 +98,7 @@ const onBoarding = (auth: Auth, terms: Terms, currentIdentity: Identity): Onboar
     needsRegisteredIdentity: isUnregistered(currentIdentity),
   } as Onboarding
 
-  onBoarding.needsOnboarding =
-    onBoarding.needsAgreedTerms || onBoarding.needsPasswordChange || onBoarding.needsRegisteredIdentity
+  onBoarding.needsOnBoarding = onBoarding.needsPasswordChange
   return onBoarding
 }
 
