@@ -85,6 +85,10 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
   const [isFree, setIsFree] = useState<boolean>(isFreeRegistrationEligible)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  useEffect(() => {
+    if (isFreeRegistrationEligible) setIsFree(isFreeRegistrationEligible)
+  }, [isFreeRegistrationEligible])
+
   const fees = useSelector(feesSelector)
 
   // use 2x registration fee for insurance
@@ -133,7 +137,7 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
                 { value: 'free', label: 'Register for free', disabled: !isFreeRegistrationEligible },
                 { value: 'paid', label: 'Deposit MYST token' },
               ]}
-              checked={isFreeRegistrationEligible ? 'free' : 'paid'}
+              checked={isFree ? 'free' : 'paid'}
               onChange={(value) => {
                 if (value === 'free') {
                   setIsFree(true)
