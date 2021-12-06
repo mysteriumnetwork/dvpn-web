@@ -56,13 +56,14 @@ const Registration = ({ nextStep }: StepProps) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const [eligibility, summary] = await Promise.all([
+        const [migrationEligibility, providerEligibility, summary] = await Promise.all([
           api.freeRegistrationEligibility(identity.id),
+          api.freeProviderRegistrationEligibility(),
           api.chainSummary(),
         ])
         setState((d) => {
           d.currentChainName = summary.chains[summary.currentChain]
-          d.isFreeRegistrationEligible = eligibility.eligible
+          d.isFreeRegistrationEligible = migrationEligibility.eligible || providerEligibility.eligible
         })
       } catch (err) {
         toastError(parseError(err))

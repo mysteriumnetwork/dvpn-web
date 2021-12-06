@@ -81,6 +81,7 @@ const howToGetMyst = (): ReactFragment => {
     </div>
   )
 }
+
 const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligible, currentChainName }: Props) => {
   const [isFree, setIsFree] = useState<boolean>(isFreeRegistrationEligible)
   const [isLoading, setIsLoading] = useState<boolean>(false)
