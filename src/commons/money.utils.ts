@@ -22,7 +22,7 @@ export const toMyst = (amountWei: number, precision: number = 7): number => {
   return Math.floor(amountMyst * m) / m
 }
 
-export const toFixedMoney = (amount: number, precision: number = 7): number => {
+export const flooredAmount = (amount: number, precision: number = 7): number => {
   const m = Math.pow(10, precision)
   const amountCurrency = amount
   return Math.floor(amountCurrency * m) / m

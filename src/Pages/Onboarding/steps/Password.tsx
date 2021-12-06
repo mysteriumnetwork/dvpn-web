@@ -20,9 +20,13 @@ import { TextField } from '../../../Components/TextField/TextField'
 import Errors from '../../../Components/Validation/Errors'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
 import { updateAuthenticatedStore } from '../../../redux/app.slice'
-import './SetPassword.scss'
+import styles from './Steps.module.scss'
 
 import { store } from '../../../redux/store'
+import { useSelector } from 'react-redux'
+import { configSelector } from '../../../redux/selectors'
+import classNames from 'classnames'
+import { InputGroup } from '../../../Components/InputGroups/InputGroup'
 
 interface State {
   passwordRepeat?: string
@@ -37,18 +41,15 @@ interface State {
   mmnDomain: string
 }
 
-interface Props {
-  config?: Config
-  callbacks: OnboardingChildProps
-}
-
 const useQuery = () => {
   const { search } = useLocation()
   return React.useMemo(() => new URLSearchParams(search), [search])
 }
 
-const SetPassword = ({ config }: Props): JSX.Element => {
+const SetPassword = (_: StepProps): JSX.Element => {
   const query = useQuery()
+
+  const config = useSelector(configSelector)
 
   const [state, setState] = useImmer<State>({
     passwordRepeat: '',
@@ -162,27 +163,27 @@ const SetPassword = ({ config }: Props): JSX.Element => {
   }
 
   return (
-    <div className="step">
-      <h1 className="step__title">Node settings</h1>
-      <p className="step__description">Fill in the following information to finish setting up your node.</p>
-      <form className="step__content m-t-100" onSubmit={handleSubmitPassword}>
-        <p className="step__description m-b-20">
+    <div className={styles.step}>
+      <h1 className={styles.title}>Node settings</h1>
+      <p className={classNames(styles.description, 'm-t-100')}>
+        Fill in the following information to finish setting up your node.
+      </p>
+      <form className={styles.content} onSubmit={handleSubmitPassword}>
+        <p className={classNames(styles.passwordContentDescription, 'm-b-20')}>
           <strong>Please create default WebUI password. At least 10 characters are required.</strong>
         </p>
         <Errors error={state.error} errorMessage={state.errorMessage} />
-        <div className="input-group">
-          <p className="input-group__label">Web UI password</p>
+        <InputGroup label="Node UI password">
           <TextField onChange={onPasswordChange} type="password" placeholder={'*********'} value={state.password} />
-        </div>
-        <div className="input-group">
-          <p className="input-group__label">Repeat password</p>
+        </InputGroup>
+        <InputGroup label="Repeat password">
           <TextField
             onChange={onPasswordRepeatChange}
             type="password"
             placeholder={'*********'}
             value={state.passwordRepeat}
           />
-        </div>
+        </InputGroup>
         {state.showClaim && (
           <MMNClaim
             config={config}
@@ -192,7 +193,7 @@ const SetPassword = ({ config }: Props): JSX.Element => {
           />
         )}
 
-        <div className="step__content-buttons step__content-buttons--center m-t-30">
+        <div className={classNames(styles.controls, styles.controlsCentered, 'm-t-30')}>
           <Button isLoading={state.loading} type="submit" autoFocus>
             Save & Continue
           </Button>

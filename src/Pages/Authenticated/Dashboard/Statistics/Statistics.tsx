@@ -17,10 +17,9 @@ import Statistic from './StatCard'
 interface Props {
   stats: SessionStats
   identity: Identity
-  testnet?: boolean
 }
 
-const Statistics = ({ stats, identity, testnet }: Props) => {
+const Statistics = ({ stats, identity }: Props) => {
   return (
     <>
       <Statistic

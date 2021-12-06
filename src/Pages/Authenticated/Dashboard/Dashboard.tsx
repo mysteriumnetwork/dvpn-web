@@ -13,9 +13,8 @@ import { useImmer } from 'use-immer'
 import { api } from '../../../api/Api'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
-import { isTestnet } from '../../../commons/config'
 import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
-import { isRegistered } from '../../../commons/identity.utils'
+import { isRegistered, isEmpty } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
 import Header from '../../../Components/Header'
 import { AppState } from '../../../redux/app.slice'
@@ -67,10 +66,6 @@ const Dashboard = () => {
   const [state, setState] = useImmer<StateProps>(initialState)
 
   useEffect(() => {
-    if (!identity) {
-      return
-    }
-
     const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
     Promise.all([
       api.sessionStatsDaily(sessionFilter),
@@ -97,22 +92,21 @@ const Dashboard = () => {
         })
       })
       .catch((err) => toastError(parseTequilApiError(err) || UNKNOWN_API_ERROR))
-  }, [identity?.id])
+  }, [identity.id])
 
   const { appState } = sse
-  if (!identity || !appState || !config || state.loading) {
+  if (isEmpty(identity) || !appState || !config || state.loading) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
   const { serviceInfo } = appState
-  const testnet = isTestnet(config)
 
   return (
     <div className="main">
       <div className="main-block main-block--split">
         <Header logo={Logo} name="Dashboard" />
         <div className="dashboard__statistics">
-          <Statistics testnet={testnet} stats={state.sessionStatsAllTime} identity={identity} />
+          <Statistics stats={state.sessionStatsAllTime} identity={identity} />
         </div>
         <div className="dashboard__widgets">
           <div className="widget widget--chart">

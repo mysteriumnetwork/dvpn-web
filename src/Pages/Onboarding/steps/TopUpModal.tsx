@@ -1,25 +1,27 @@
 /**
- * Copyright (c) 2020 BlockDev AG
+ * Copyright (c) 2021 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress, Fade, Modal, Tooltip } from '@material-ui/core'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
-import { Identity } from 'mysterium-vpn-js'
 import React, { ReactFragment, useEffect, useMemo, useState } from 'react'
 import { QRCode } from 'react-qr-svg'
-import { useSelector } from 'react-redux'
-import { api } from '../../../api/Api'
 import storage from '../../../commons/localStorage.utils'
-import { displayMyst, toFixedMoney, toMyst } from '../../../commons/money.utils'
+import { api } from '../../../api/Api'
+import { currentCurrency, displayMyst, flooredAmount, toMyst } from '../../../commons/money.utils'
 import Button from '../../../Components/Buttons/Button'
 import { Radio } from '../../../Components/Radio/Radio'
+import styles from './TopUpModal.module.scss'
 import { feesSelector } from '../../../redux/selectors'
-import styles from './TopupModal.module.scss'
+import { Identity } from 'mysterium-vpn-js'
+import { useSelector } from 'react-redux'
+
+const _60_MINUTES = 60 * 60 * 1000
 
 interface Props {
-  onTopup: () => Promise<void>
+  onTopUp: () => Promise<void>
   onClose: () => void
   identity: Identity
   open: boolean
@@ -31,10 +33,8 @@ const REGISTRATION_FEE_KEY = 'registration_fee'
 
 interface RegistrationFee {
   timestamp: number
-  fee: number
+  flooredFee: number
 }
-
-const _60_MINUTES = 60 * 60 * 1000
 
 const isStale = (rf: RegistrationFee) => {
   return rf.timestamp + _60_MINUTES < Date.now()
@@ -81,10 +81,23 @@ const howToGetMyst = (): ReactFragment => {
     </div>
   )
 }
-const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligible, currentChainName }: Props) => {
+const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligible, currentChainName }: Props) => {
   const [isFree, setIsFree] = useState<boolean>(isFreeRegistrationEligible)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const fees = useSelector(feesSelector)
+
+  // use 2x registration fee for insurance
+  const lockedFee = useMemo((): RegistrationFee => {
+    const stored = storage.get<RegistrationFee>(REGISTRATION_FEE_KEY)
+    const registrationFee = toMyst(fees.registration, 3)
+    return stored && !isStale(stored)
+      ? stored
+      : storage.put<RegistrationFee>(REGISTRATION_FEE_KEY, {
+          timestamp: Date.now(),
+          flooredFee: registrationFee > 0.15 ? flooredAmount(registrationFee, 3) * 1.5 : 0.2, // double amount - tx prises are unstable
+        })
+  }, [fees])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -93,27 +106,7 @@ const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligib
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    setIsFree(isFreeRegistrationEligible)
-  }, [isFreeRegistrationEligible])
-
-  // use 2x registration fee for insurance
-  const storedOrNewFee = useMemo((): RegistrationFee => {
-    const stored = storage.get<RegistrationFee>(REGISTRATION_FEE_KEY)
-    const registrationFee = toMyst(fees.registration, 3)
-    return stored && !isStale(stored)
-      ? stored
-      : storage.put<RegistrationFee>(REGISTRATION_FEE_KEY, {
-          timestamp: Date.now(),
-          fee: registrationFee > 0.15 ? toFixedMoney(registrationFee * 1.5, 3) : 0.2, // double amount - tx prises are unstable
-        })
-  }, [fees])
-
-  const isMYSTReceived = useMemo(() => (isFree ? false : toMyst(identity.balance, 3) < storedOrNewFee.fee), [
-    isFree,
-    identity,
-    storedOrNewFee,
-  ])
+  const isMYSTReceived = isFree ? false : flooredAmount(identity.balance, 3) < lockedFee.flooredFee
 
   return (
     <Modal
@@ -154,7 +147,8 @@ const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligib
             <>
               <div className={styles.topup}>
                 <div>
-                  1. Send not less than {storedOrNewFee.fee} MYST to your identity balance on {currentChainName}
+                  1. Send not less than {`${lockedFee.flooredFee} ${currentCurrency()}`} to your identity balance on{' '}
+                  {currentChainName}
                 </div>
                 <div className={styles.topupChannelAddress}>{identity.channelAddress}</div>
                 <div className={styles.topupQR}>
@@ -194,7 +188,7 @@ const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligib
             <Button
               onClick={async () => {
                 setIsLoading(true)
-                await onTopup()
+                await onTopUp()
                 setIsLoading(false)
               }}
               isLoading={isLoading}
@@ -209,4 +203,4 @@ const TopupModal = ({ identity, onTopup, open, onClose, isFreeRegistrationEligib
   )
 }
 
-export default TopupModal
+export default TopUpModal

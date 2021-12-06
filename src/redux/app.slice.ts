@@ -24,7 +24,7 @@ export interface Onboarding {
   needsAgreedTerms: boolean
   needsPasswordChange: boolean
   needsRegisteredIdentity: boolean
-  needsOnboarding: boolean
+  needsOnBoarding: boolean
 }
 
 export interface AppState {
@@ -33,7 +33,7 @@ export interface AppState {
   currentIdentity?: Identity
   auth: Auth
   terms: Terms
-  config?: Config
+  config: Config
   fees: Fees
 }
 
@@ -51,6 +51,9 @@ const INITIAL_STATE: AppState = {
     settlement: 0,
     hermes: 0,
     decreaseStake: 0,
+  },
+  config: {
+    data: {},
   },
 }
 
@@ -88,16 +91,15 @@ const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]): Id
   return _.head(result)
 }
 
-const onboardingState = (auth: Auth, terms: Terms, currentIdentity?: Identity): Onboarding => {
-  const onboarding = {
+const onBoarding = (auth: Auth, terms: Terms, currentIdentity: Identity): Onboarding => {
+  const onBoarding = {
     needsAgreedTerms: !termsAccepted(terms),
-    needsPasswordChange: !!auth.withDefaultCredentials,
-    needsRegisteredIdentity: !currentIdentity || isUnregistered(currentIdentity),
+    needsPasswordChange: auth.withDefaultCredentials,
+    needsRegisteredIdentity: isUnregistered(currentIdentity),
   } as Onboarding
 
-  onboarding.needsOnboarding =
-    onboarding.needsAgreedTerms || onboarding.needsPasswordChange || onboarding.needsRegisteredIdentity
-  return onboarding
+  onBoarding.needsOnBoarding = onBoarding.needsPasswordChange
+  return onBoarding
 }
 
 const isLoggedIn = (auth: Auth): boolean => {
@@ -108,7 +110,7 @@ const termsAccepted = (terms: Terms): boolean => {
   return !!terms.acceptedVersion && terms.acceptedVersion === termsPackageJson.version
 }
 
-export { currentIdentity, onboardingState, isLoggedIn, termsAccepted }
+export { currentIdentity, onBoarding, isLoggedIn, termsAccepted }
 
 export const {
   updateAuthenticatedStore,

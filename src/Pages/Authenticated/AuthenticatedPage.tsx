@@ -17,7 +17,7 @@ import Navigation from './Navigation/Navigation'
 import { CircularProgress } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { Identity } from 'mysterium-vpn-js'
-import { isRegistered } from '../../commons/identity.utils'
+import { isEmpty, isRegistered, isRegistrationError } from '../../commons/identity.utils'
 import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard'
 import SessionSidebarPage from './SessionSidebar/SessionSidebarPage'
 
@@ -48,15 +48,19 @@ const HelpArrow = () => {
 }
 
 interface Props {
-  identity?: Identity
+  identity: Identity
 }
 
-const displayOverlay = (identity?: Identity): boolean => {
-  if (!identity) {
+const displayOverlay = (identity: Identity): boolean => {
+  if (isEmpty(identity)) {
     return false
   }
 
   return !isRegistered(identity)
+}
+
+const displayRegistrationFailed = (identity: Identity): boolean => {
+  return isRegistrationError(identity)
 }
 
 const AuthenticatedPage = ({ identity }: Props) => {
@@ -65,8 +69,9 @@ const AuthenticatedPage = ({ identity }: Props) => {
       {displayOverlay(identity) && (
         <>
           <div className="registration-overlay" />
-          <RegistrationOverlay identityRef={identity?.id || ''} />
+          <RegistrationOverlay identityRef={identity.id} />
           <HelpArrow />
+          {displayRegistrationFailed(identity) && <div>It seems identity registration Failed on blockchain.</div>}
         </>
       )}
       <div className="page__menu">

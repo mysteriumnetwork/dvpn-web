@@ -1,0 +1,144 @@
+@import '../../../assets/styles/base/variables';
+@import '../../../assets/styles/base/mixins/media';
+
+.settlement-referral-block {
+    height: 150px;
+}
+
+.step {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  max-width: 450px;
+}
+
+.title {
+  color: $main-text-color;
+  font-weight: $lighter-weight;
+  font-size: 32px;
+  line-height: 42px;
+}
+
+
+.description {
+  color: $secondary-text-color;
+  font-weight: $lighter-weight;
+  margin-top: 10px;
+}
+
+.content {
+  text-align: left;
+  &-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &--center, &:only-child {
+      justify-content: center;
+    }
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &Centered, &:only-child {
+    justify-content: center;
+  }
+}
+
+.tos {
+  max-height: 57vh;
+  overflow: auto;
+
+  @include respond-below(sm) {
+    padding: 0 20px 0 20px;
+  }
+
+  p, li {
+    font-weight: $normal-weight;
+    font-size: $smaller-size;
+    line-height: 25px;
+    text-align: left;
+    color: $main-text-color;
+  }
+
+  li {
+    padding-left: 15px;
+  }
+}
+
+.password {
+  &ContentDescription {
+    color: $secondary-text-color;
+    font-weight: $lighter-weight;
+    margin-top: 10px;
+  }
+}
+
+//.steps {
+//  display: flex;
+//  flex-direction: column;
+//  justify-content: space-between;
+//  align-items: center;
+//  width: 100%;
+//  height: 100%;
+//  padding-top: 50px;
+//
+//  .step {
+//    text-align: center;
+//    display: flex;
+//    flex-direction: column;
+//    justify-content: center;
+//    height: 100%;
+//    max-width: 450px;
+//
+//    &Title {
+//      color: $main-text-color;
+//      font-weight: $lighter-weight;
+//      font-size: 32px;
+//      line-height: 42px;
+//    }
+//
+//    &__description {
+//      color: $secondary-text-color;
+//      font-weight: $lighter-weight;
+//      margin-top: 10px;
+//    }
+//
+//    &__content {
+//      text-align: left;
+//      &-buttons {
+//        display: flex;
+//        justify-content: space-between;
+//        align-items: center;
+//        &--center, &:only-child {
+//          justify-content: center;
+//        }
+//      }
+//    }
+//  }
+//
+//  &__counter {
+//    display: flex;
+//    text-align: center;
+//    justify-content: center;
+//    align-items: center;
+//    margin-top: 50px;
+//    padding-bottom: 25px;
+//
+//    .circle {
+//      width: 15px;
+//      height: 15px;
+//      background: rgba(156, 32, 100, 0.2);
+//      margin-right: 18px;
+//      border-radius: 10px;
+//
+//      &--active {
+//        background: #9C2064;
+//      }
+//    }
+//  }
+//}
