@@ -39,7 +39,7 @@ const Statistics = ({ stats, identity }: Props) => {
           fractionDigits: 2,
         })}
         name="Unsettled earnings"
-        helpText="These are confirmed earnings which are not settled to Balance yet. Settlement to Balance is done automatically when 0.3 MYST is reached."
+        helpText="These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done automatically when 0.3 MYST is reached. Please note that settlement fee is 20% plus blockchain fees, so Balance will be lower than Total earnings."
       />
       <EarningsStatCard
         stat={displayMyst(identity.balance, {
