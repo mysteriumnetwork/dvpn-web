@@ -134,7 +134,7 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
                 { value: 'free', label: 'Register for free', disabled: !isFreeRegistrationEligible },
                 { value: 'paid', label: 'Deposit MYST token' },
               ]}
-              checked={isFreeRegistrationEligible ? 'free' : 'paid'}
+              checked={isFree ? 'free' : 'paid'}
               onChange={(value) => {
                 if (value === 'free') {
                   setIsFree(true)
