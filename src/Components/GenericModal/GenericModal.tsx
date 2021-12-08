@@ -13,7 +13,7 @@ import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
 interface Props {
   isOpen: boolean
   onClose: () => void
-  onSave: () => void
+  onSave?: () => void
   hideSave?: boolean
   hideClose?: boolean
   saveText?: string
@@ -32,7 +32,7 @@ const GenericModal = ({
   isLoading = false,
   hideSave = false,
   hideClose = false,
-  onSave,
+  onSave = () => {},
   saveText = 'Save',
   confirm = false,
   confirmMessage = 'Are you sure?',

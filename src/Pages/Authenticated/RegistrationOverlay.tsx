@@ -67,13 +67,7 @@ export const RegistrationOverlay = ({ identity }: Props) => {
           <CopyToClipboard text={identity.id} />
         </div>
         <HelpArrow />
-        <GenericModal
-          isOpen={state.isRegistrationOpen}
-          onClose={() => showRegistration(false)}
-          onSave={() => {}}
-          hideSave
-          hideClose
-        >
+        <GenericModal isOpen={state.isRegistrationOpen} onClose={() => showRegistration(false)} hideSave hideClose>
           <div className={styles.registrationModalContent}>
             <Registration nextStep={() => showRegistration(false)} />
           </div>
