@@ -6,19 +6,15 @@
  */
 import { CircularProgress, Fade, Modal, Tooltip } from '@material-ui/core'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
-import React, { ReactFragment, useEffect, useMemo, useState } from 'react'
+import React, { ReactFragment, useEffect, useState } from 'react'
 import { QRCode } from 'react-qr-svg'
-import storage from '../../../commons/localStorage.utils'
 import { api } from '../../../api/Api'
-import { currentCurrency, displayMyst, flooredAmount, toMyst } from '../../../commons/money.utils'
+import { currentCurrency, displayMyst, flooredAmount } from '../../../commons/money.utils'
 import Button from '../../../Components/Buttons/Button'
 import { Radio } from '../../../Components/Radio/Radio'
 import styles from './TopUpModal.module.scss'
-import { feesSelector } from '../../../redux/selectors'
 import { Identity } from 'mysterium-vpn-js'
-import { useSelector } from 'react-redux'
-
-const _60_MINUTES = 60 * 60 * 1000
+import { RegistrationInfo } from './Registration'
 
 interface Props {
   onTopUp: () => Promise<void>
@@ -27,17 +23,7 @@ interface Props {
   open: boolean
   currentChainName?: string
   isFreeRegistrationEligible: boolean
-}
-
-const REGISTRATION_FEE_KEY = 'registration_fee'
-
-interface RegistrationFee {
-  timestamp: number
-  flooredFee: number
-}
-
-const isStale = (rf: RegistrationFee) => {
-  return rf.timestamp + _60_MINUTES < Date.now()
+  registrationInfo: RegistrationInfo
 }
 
 const howToGetMyst = (): ReactFragment => {
@@ -82,23 +68,17 @@ const howToGetMyst = (): ReactFragment => {
   )
 }
 
-const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligible, currentChainName }: Props) => {
+const TopUpModal = ({
+  identity,
+  onTopUp,
+  open,
+  onClose,
+  isFreeRegistrationEligible,
+  currentChainName,
+  registrationInfo,
+}: Props) => {
   const [isFree, setIsFree] = useState<boolean>(isFreeRegistrationEligible)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
-  const fees = useSelector(feesSelector)
-
-  // use 2x registration fee for insurance
-  const lockedFee = useMemo((): RegistrationFee => {
-    const stored = storage.get<RegistrationFee>(REGISTRATION_FEE_KEY)
-    const registrationFee = toMyst(fees.registration, 3)
-    return stored && !isStale(stored)
-      ? stored
-      : storage.put<RegistrationFee>(REGISTRATION_FEE_KEY, {
-          timestamp: Date.now(),
-          flooredFee: registrationFee > 0.15 ? flooredAmount(registrationFee, 3) * 1.5 : 0.2, // double amount - tx prises are unstable
-        })
-  }, [fees])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -107,7 +87,7 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
     return () => clearInterval(interval)
   }, [])
 
-  const isMYSTReceived = isFree ? false : flooredAmount(identity.balance, 3) < lockedFee.flooredFee
+  const isMYSTReceived = isFree ? false : flooredAmount(identity.balance, 3) < registrationInfo.flooredFee
 
   return (
     <Modal
@@ -148,8 +128,8 @@ const TopUpModal = ({ identity, onTopUp, open, onClose, isFreeRegistrationEligib
             <>
               <div className={styles.topup}>
                 <div>
-                  1. Send not less than {`${lockedFee.flooredFee} ${currentCurrency()}`} to your identity balance on{' '}
-                  {currentChainName}
+                  1. Send not less than {`${registrationInfo.flooredFee} ${currentCurrency()}`} to your identity balance
+                  on {currentChainName}
                 </div>
                 <div className={styles.topupChannelAddress}>{identity.channelAddress}</div>
                 <div className={styles.topupQR}>

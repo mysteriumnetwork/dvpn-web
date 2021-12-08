@@ -9,18 +9,20 @@ import Button from '../../../Components/Buttons/Button'
 import { useImmer } from 'use-immer'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import classNames from 'classnames'
 import TopUpModal from './TopUpModal'
 import { api } from '../../../api/Api'
 import { useSelector } from 'react-redux'
-import { currentIdentitySelector } from '../../../redux/selectors'
+import { currentIdentitySelector, feesSelector } from '../../../redux/selectors'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
 import { TextField } from '../../../Components/TextField/TextField'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import { parseError } from '../../../commons/error.utils'
 import { toastError } from '../../../commons/toast.utils'
-import { isUnregistered } from '../../../commons/identity.utils'
+import { isRegistrationError, isUnregistered } from '../../../commons/identity.utils'
+import storage from '../../../commons/localStorage.utils'
+import { flooredAmount, toMyst } from '../../../commons/money.utils'
 
 interface State {
   isLoading: boolean
@@ -42,6 +44,18 @@ const Errors = ({ errors }: State) => (
   </Collapse>
 )
 
+export type RegistrationInfo = {
+  timestamp: number
+  flooredFee: number
+  withdrawalAddress?: string
+}
+
+const _60_MINUTES = 60 * 60 * 1000
+
+const isStale = (rf: RegistrationInfo) => {
+  return rf.timestamp + _60_MINUTES < Date.now()
+}
+
 const Registration = ({ nextStep }: StepProps) => {
   const identity = useSelector(currentIdentitySelector)
   const [state, setState] = useImmer<State>({
@@ -52,6 +66,42 @@ const Registration = ({ nextStep }: StepProps) => {
     currentChainName: '',
     errors: [],
   })
+
+  const fees = useSelector(feesSelector)
+  // use 2x registration fee for insurance
+  const registrationInfo = useMemo((): RegistrationInfo => {
+    const stored = storage.get<RegistrationInfo>(identity.id)
+    const registrationFee = toMyst(fees.registration, 3)
+
+    if (stored && !isStale(stored)) {
+      return stored
+    }
+
+    if (stored && isStale(stored)) {
+      return storage.put<RegistrationInfo>(identity.id, {
+        ...stored,
+        timestamp: Date.now(),
+        flooredFee: registrationFee > 0.15 ? flooredAmount(registrationFee, 3) * 1.5 : 0.2, // double amount - tx prises are unstable
+      })
+    }
+
+    return storage.put<RegistrationInfo>(identity.id, {
+      timestamp: Date.now(),
+      flooredFee: registrationFee > 0.15 ? flooredAmount(registrationFee, 3) * 1.5 : 0.2,
+      withdrawalAddress: '',
+    })
+  }, [fees, identity])
+
+  useEffect(() => {
+    const stored = storage.get<RegistrationInfo>(identity.id)
+    if (!stored || stored?.withdrawalAddress === undefined) {
+      return
+    }
+    setState((d) => {
+      // @ts-ignore
+      d.withdrawalAddress = stored.withdrawalAddress
+    })
+  }, [identity.id])
 
   useEffect(() => {
     const init = async () => {
@@ -82,6 +132,8 @@ const Registration = ({ nextStep }: StepProps) => {
     setState((d) => {
       d.withdrawalAddress = value
     })
+    const stored = storage.get<RegistrationInfo>(identity.id)
+    storage.put(identity.id, { ...stored, withdrawalAddress: value })
   }
 
   const errors = (...messages: string[]): void => {
@@ -118,7 +170,7 @@ const Registration = ({ nextStep }: StepProps) => {
       if (state.withdrawalAddress) {
         await api.payoutAddressSave(identity.id, state.withdrawalAddress)
       }
-      if (isUnregistered(identity)) {
+      if (isUnregistered(identity) || isRegistrationError(identity)) {
         setIsTopUpOpen(true)
       } else {
         nextStep()
@@ -156,6 +208,7 @@ const Registration = ({ nextStep }: StepProps) => {
         open={state.isTopUpOpen}
         currentChainName={state.currentChainName}
         identity={identity}
+        registrationInfo={registrationInfo}
         onClose={() => {
           setIsTopUpOpen(false)
           setIsLoading(false)
