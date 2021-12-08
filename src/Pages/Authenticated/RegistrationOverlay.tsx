@@ -7,7 +7,7 @@
 import { Identity } from 'mysterium-vpn-js'
 import { CircularProgress } from '@material-ui/core'
 import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard'
-import { isInProgress, isRegistrationError } from '../../commons/identity.utils'
+import { isInProgress, isRegistrationError, isUnregistered } from '../../commons/identity.utils'
 import styles from './RegistrationOverslay.module.scss'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { useMemo } from 'react'
@@ -19,23 +19,30 @@ interface Props {
 
 export const RegistrationOverlay = ({ identity }: Props) => {
   const isError = useMemo(() => isRegistrationError(identity), [identity])
-  const inProgress = useMemo(() => isInProgress(identity), [identity])
+  const isProgress = useMemo(() => isInProgress(identity), [identity])
+  const isNotRegistered = useMemo(() => isUnregistered(identity), [identity])
 
   return (
     <>
       <div className={styles.overlay} />
       <div className={styles.registration}>
         <div className={styles.registrationContent}>
-          {inProgress && (
-            <>
-              <CircularProgress className="m-r-10" disableShrink />
+          {isProgress && (
+            <div className={styles.registrationContentRow}>
+              <CircularProgress disableShrink />
               <h2>Your identity is being registered, please be patient...</h2>
-            </>
+            </div>
           )}
           {isError && (
-            <div className={styles.registrationContentError}>
+            <div className={styles.registrationContentRow}>
               <h2>It seems your identity registration failed on blockchain...</h2>
               <Button extraStyle="outline-primary">Retry</Button>
+            </div>
+          )}
+          {isNotRegistered && (
+            <div className={styles.registrationContentRow}>
+              <h2>Your identity needs to be registered...</h2>
+              <Button extraStyle="outline-primary">Register</Button>
             </div>
           )}
         </div>
@@ -51,11 +58,9 @@ export const RegistrationOverlay = ({ identity }: Props) => {
 
 const HelpArrow = () => {
   return (
-    <>
-      <div className={styles.intercomHelpPointer}>
-        <ArrowBackIcon className={styles.intercomHelpPointerArrow} fontSize="large" />
-        <h2>have questions? Talk to us!</h2>
-      </div>
-    </>
+    <div className={styles.intercomHelpPointer}>
+      <ArrowBackIcon className={styles.intercomHelpPointerArrow} fontSize="large" />
+      <h2>have questions? Talk to us!</h2>
+    </div>
   )
 }
