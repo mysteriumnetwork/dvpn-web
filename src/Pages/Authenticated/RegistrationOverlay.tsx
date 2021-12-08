@@ -24,7 +24,7 @@ interface State {
 }
 
 export const RegistrationOverlay = ({ identity }: Props) => {
-  const [state, setState] = useState<State>({ isRegistrationOpen: true })
+  const [state, setState] = useState<State>({ isRegistrationOpen: false })
 
   const isError = useMemo(() => isRegistrationError(identity), [identity])
   const isProgress = useMemo(() => isInProgress(identity), [identity])
