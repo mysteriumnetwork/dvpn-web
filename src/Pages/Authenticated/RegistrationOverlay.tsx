@@ -24,7 +24,7 @@ interface State {
 }
 
 export const RegistrationOverlay = ({ identity }: Props) => {
-  const [state, setState] = useState<State>({ isRegistrationOpen: false })
+  const [state, setState] = useState<State>({ isRegistrationOpen: true })
 
   const isError = useMemo(() => isRegistrationError(identity), [identity])
   const isProgress = useMemo(() => isInProgress(identity), [identity])
@@ -47,7 +47,7 @@ export const RegistrationOverlay = ({ identity }: Props) => {
           )}
           {isError && (
             <div className={styles.registrationContentRow}>
-              <h2>It seems your identity registration failed on blockchain...</h2>
+              <h2>Unfortunately, node identity registration failed. Please click RETRY button to try again.</h2>
               <Button onClick={() => showRegistration()} extraStyle="outline-primary">
                 Retry
               </Button>
@@ -55,7 +55,7 @@ export const RegistrationOverlay = ({ identity }: Props) => {
           )}
           {isNotRegistered && (
             <div className={styles.registrationContentRow}>
-              <h2>Your identity needs to be registered...</h2>
+              <h2>Node identity needs to be registered. Please click REGISTER button to continue.</h2>
               <Button onClick={() => showRegistration()} extraStyle="outline-primary">
                 Register
               </Button>
