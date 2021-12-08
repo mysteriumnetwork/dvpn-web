@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react'
+import styles from './InputGroup.module.scss'
 
 interface Props {
   label?: string
@@ -14,10 +15,10 @@ interface Props {
 
 export const InputGroup = ({ label, help, children }: Props) => {
   return (
-    <div className="input-group">
-      <p className="input-group__label">{label}</p>
+    <div className={styles.group}>
+      <p className={styles.label}>{label}</p>
       {children}
-      {help && <p className="input-group__help">{help}</p>}
+      {help && <p className={styles.help}>{help}</p>}
     </div>
   )
 }
