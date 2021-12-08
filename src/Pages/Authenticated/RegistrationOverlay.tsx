@@ -74,7 +74,9 @@ export const RegistrationOverlay = ({ identity }: Props) => {
           hideSave
           hideClose
         >
-          <Registration nextStep={() => showRegistration(false)} />
+          <div className={styles.registrationModalContent}>
+            <Registration nextStep={() => showRegistration(false)} />
+          </div>
         </GenericModal>
       </div>
     </>
