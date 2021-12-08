@@ -10,17 +10,29 @@ import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard'
 import { isInProgress, isRegistrationError, isUnregistered } from '../../commons/identity.utils'
 import styles from './RegistrationOverslay.module.scss'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Button from '../../Components/Buttons/Button'
+import GenericModal from '../../Components/GenericModal/GenericModal'
+import Registration from '../Onboarding/steps/Registration'
 
 interface Props {
   identity: Identity
 }
 
+interface State {
+  isRegistrationOpen: boolean
+}
+
 export const RegistrationOverlay = ({ identity }: Props) => {
+  const [state, setState] = useState<State>({ isRegistrationOpen: false })
+
   const isError = useMemo(() => isRegistrationError(identity), [identity])
   const isProgress = useMemo(() => isInProgress(identity), [identity])
   const isNotRegistered = useMemo(() => isUnregistered(identity), [identity])
+
+  const showRegistration = (b: boolean = true) => {
+    setState((cs) => ({ ...cs, isRegistrationOpen: b }))
+  }
 
   return (
     <>
@@ -36,13 +48,17 @@ export const RegistrationOverlay = ({ identity }: Props) => {
           {isError && (
             <div className={styles.registrationContentRow}>
               <h2>It seems your identity registration failed on blockchain...</h2>
-              <Button extraStyle="outline-primary">Retry</Button>
+              <Button onClick={() => showRegistration()} extraStyle="outline-primary">
+                Retry
+              </Button>
             </div>
           )}
           {isNotRegistered && (
             <div className={styles.registrationContentRow}>
               <h2>Your identity needs to be registered...</h2>
-              <Button extraStyle="outline-primary">Register</Button>
+              <Button onClick={() => showRegistration()} extraStyle="outline-primary">
+                Register
+              </Button>
             </div>
           )}
         </div>
@@ -51,6 +67,15 @@ export const RegistrationOverlay = ({ identity }: Props) => {
           <CopyToClipboard text={identity.id} />
         </div>
         <HelpArrow />
+        <GenericModal
+          isOpen={state.isRegistrationOpen}
+          onClose={() => showRegistration(false)}
+          onSave={() => {}}
+          hideSave
+          hideClose
+        >
+          <Registration nextStep={() => showRegistration(false)} />
+        </GenericModal>
       </div>
     </>
   )

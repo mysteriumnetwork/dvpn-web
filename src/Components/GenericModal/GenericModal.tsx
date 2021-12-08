@@ -14,9 +14,11 @@ interface Props {
   isOpen: boolean
   onClose: () => void
   onSave: () => void
+  hideSave?: boolean
+  hideClose?: boolean
   saveText?: string
   isLoading?: boolean
-  title: string
+  title?: string
   children: any
   confirm?: boolean
   confirmMessage?: string
@@ -28,6 +30,8 @@ const GenericModal = ({
   title,
   children,
   isLoading = false,
+  hideSave = false,
+  hideClose = false,
   onSave,
   saveText = 'Save',
   confirm = false,
@@ -50,12 +54,16 @@ const GenericModal = ({
           <div className="settings-modal__title">{title}</div>
           <div className="settings-modal__row">{children}</div>
           <div className="settings-modal__footer">
-            <Button onClick={onClose} extraStyle="gray">
-              Close
-            </Button>
-            <Button isLoading={isLoading} onClick={() => (confirm ? setShowConfirm(true) : onSave())}>
-              {saveText}
-            </Button>
+            {!hideClose && (
+              <Button onClick={onClose} extraStyle="gray">
+                Close
+              </Button>
+            )}
+            {!hideSave && (
+              <Button isLoading={isLoading} onClick={() => (confirm ? setShowConfirm(true) : onSave())}>
+                {saveText}
+              </Button>
+            )}
           </div>
           <ConfirmationDialogue
             message={confirmMessage}
