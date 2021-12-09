@@ -216,13 +216,14 @@ const MMNClaim = ({
 }) => {
   return (
     <>
-      <div className="claim-row input-group m-t-50 m-b-20">
+      <div className={classNames(styles.claimRow, 'input-group', 'm-t-50', 'm-b-20')}>
         <Checkbox
           checked={state.useApiKey}
           handleCheckboxChange={handleCheckboxChange}
           label={'Claim this node in ' + state.mmnDomain}
           disabled={state.urlApiKey}
         />
+        <div className="m-l-15" />
         <HelpTooltip
           title={
             'If you claim your node you will be able to manage and see statistics for all your nodes in mystnodes.com'
