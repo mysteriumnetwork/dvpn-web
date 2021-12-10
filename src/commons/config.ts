@@ -82,6 +82,10 @@ export const stunServers = (c?: Config): string[] => {
   return _.get<Config, any>(c, 'data.stun-servers') || []
 }
 
+export const zeroStakeSettlementThreshold = (c?: Config): number => {
+  return _.get<Config, any>(c, 'data.payments.zero-stake-unsettled-amount') || []
+}
+
 export const docsAddress = (c?: Config): string => {
   let url = _.get<Config, any>(c, 'data.docs-url') || '#'
   return dropLeadingSlash(url)
