@@ -6,6 +6,7 @@
  */
 import { Identity, SessionStats } from 'mysterium-vpn-js'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
+import { zeroStakeSettlementThreshold } from '../../../../commons/config'
 
 import { seconds2Time } from '../../../../commons/date.utils'
 import formatBytes, { add } from '../../../../commons/formatBytes'
@@ -13,6 +14,8 @@ import { displayMyst } from '../../../../commons/money.utils'
 import EarningsStatCard from './EarningsStatCard'
 
 import Statistic from './StatCard'
+import { useSelector } from 'react-redux'
+import { configSelector } from '../../../../redux/selectors'
 
 interface Props {
   stats: SessionStats
@@ -20,6 +23,7 @@ interface Props {
 }
 
 const Statistics = ({ stats, identity }: Props) => {
+  const config = useSelector(configSelector)
   return (
     <>
       <Statistic
@@ -39,7 +43,9 @@ const Statistics = ({ stats, identity }: Props) => {
           fractionDigits: 2,
         })}
         name="Unsettled earnings"
-        helpText="These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done automatically when 0.3 MYST is reached. Please note that settlement fee is 20% plus blockchain fees, so Balance will be lower than Total earnings."
+        helpText={`These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done automatically when ${zeroStakeSettlementThreshold(
+          config,
+        )} MYST is reached. Please note that settlement fee is 20% plus blockchain fees, so Balance will be lower than Total earnings.`}
       />
       <EarningsStatCard
         stat={displayMyst(identity.balance, {
