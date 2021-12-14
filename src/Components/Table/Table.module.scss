@@ -17,13 +17,12 @@
       flex-direction: column;
       background: #ffffff;
       border-radius: 5px 5px 0 0;
-    }
-
-    p {
-      align-self: center;
-      font-size: $smaller-size;
-      padding: 5px 0 5px 0;
-      color: $secondary-text-color;
+      > * {
+        margin-bottom: 15px;
+      }
+      > :last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -33,6 +32,7 @@
     font-size: $small-size;
     width: 100%;
     margin-bottom: 5px;
+
     &:last-child {
       margin-bottom: 0px;
     }
@@ -78,6 +78,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
       .noData {
         font-style: normal;
         font-weight: $normal-weight;

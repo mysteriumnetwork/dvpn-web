@@ -17,6 +17,9 @@ import { Column, Row } from 'react-table'
 import { date2human } from '../../../commons/date.utils'
 import { displayMyst } from '../../../commons/money.utils'
 import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
+import { MobileRow } from '../../../Components/Table/MobileRow'
+import { beneficiary } from '../../../redux/sse.slice'
+import { strings } from '../../../commons/strings.utils'
 
 interface State {
   isLoading: boolean
@@ -116,6 +119,18 @@ const Wallet = () => {
           loading={state.isLoading}
           fetchData={fetchData}
           columns={columns}
+          mobileRow={(row: Row<Settlement>, index) => {
+            const { settledAt, txHash, fees, amount, beneficiary } = row.original
+            return (
+              <MobileRow
+                topLeft={date2human(settledAt)}
+                topLeftSub={strings.truncateHash(txHash)}
+                topRightSub={strings.truncateHash(beneficiary)}
+                bottomLeft={displayMyst(fees)}
+                bottomRight={displayMyst(amount)}
+              />
+            )
+          }}
         />
       }
     />

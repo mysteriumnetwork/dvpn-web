@@ -12,10 +12,11 @@ import './Pagination.mui.scss'
 import Button from '../Buttons/Button'
 import { Column, Row, usePagination, useTable } from 'react-table'
 import classNames from 'classnames'
+import { MobileRow } from './MobileRow'
 
 interface Props {
   columns: Column[]
-  mobileMap?: (row: Row, index: number) => JSX.Element
+  mobileRow?: (row: Row<any>, index: number) => JSX.Element
   data: any[]
   fetchData: ({ pageSize, page }: { pageSize: number; page: number }) => void
   lastPage: number
@@ -29,7 +30,17 @@ const Table = ({
   lastPage,
   loading = false,
   fetchData,
-  mobileMap = (row: Row, index: number) => <></>,
+  mobileRow = (row: Row, index: number) => (
+    <MobileRow
+      topLeftSub="topLeftSub"
+      topLeft="topLeft"
+      topRight="topRight"
+      bottomLeft="bottomLeft"
+      bottomMiddle="bottomMiddle"
+      bottomRight="bottomRight"
+      topRightSub="topRightSub"
+    />
+  ),
   noData = (
     <div className={styles.empty}>
       <div className={styles.noData}>No Data</div>
@@ -104,7 +115,7 @@ const Table = ({
         </div>
         <div className={styles.tableBody}>{page.length > 0 ? preparedMap(page, desktopMap) : noData}</div>
       </div>
-      <div className={styles.tableMobile}>{page.length > 0 ? preparedMap(page, mobileMap) : noData}</div>
+      <div className={styles.tableMobile}>{page.length > 0 ? preparedMap(page, mobileRow) : noData}</div>
       <div className={styles.footer}>
         <Button className={styles.footerButton} onClick={() => previousPage()} disabled={!canPreviousPage}>
           <p>Prev</p>
