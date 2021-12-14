@@ -1,0 +1,40 @@
+@import 'src/assets/styles/base/variables';
+@import 'src/assets/styles/base/mixins/media';
+
+.main {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+
+  .mainBlock {
+    height: 100vh;
+    width: 100%;
+    padding: 0 25px 100px 0;
+
+    @include respond-above(sm) {
+      overflow-y: auto;
+    }
+
+    &Split {
+      @include respond-below(sm) {
+        width: 100%;
+      }
+      @include respond-above(sm) {
+        width: 70%;
+      }
+      padding: 0 25px 100px 0;
+    }
+  }
+
+  .sidebarBlock {
+    @include respond-below(sm) {
+      display: none;
+      width: 0;
+    }
+    @include respond-above(sm) {
+      width: 30%;
+      background: #FFFFFF;
+    }
+  }
+}

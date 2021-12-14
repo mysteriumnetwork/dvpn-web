@@ -8,7 +8,7 @@ import './styles/header.scss'
 
 interface Props {
   logo: React.ComponentProps<any>
-  name: string
+  name?: string
 }
 
 const Header = (props: Props): JSX.Element => {
