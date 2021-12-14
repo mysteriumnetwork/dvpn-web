@@ -15,7 +15,7 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import * as config from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { toastError } from '../../../commons/toast.utils'
-import Header from '../../../Components/Header'
+import Header from '../../../Components/Header/Header'
 import { RootState } from '../../../redux/store'
 import { Advanced } from './Components/Advanced/Advanced'
 import IdentityInformation from './Components/IdentityInformation'

@@ -16,7 +16,7 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
 import { isRegistered, isEmpty } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
-import Header from '../../../Components/Header'
+import Header from '../../../Components/Header/Header'
 import { AppState } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'

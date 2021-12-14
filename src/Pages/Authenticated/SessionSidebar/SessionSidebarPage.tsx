@@ -6,7 +6,7 @@
  */
 import './SessionSidebar.scss'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
-import Header from '../../../Components/Header'
+import Header from '../../../Components/Header/Header'
 import React from 'react'
 import SessionSidebar from './SessionSidebar'
 import { useSelector } from 'react-redux'

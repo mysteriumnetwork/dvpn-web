@@ -6,7 +6,7 @@
  */
 import styles from './Layout.module.scss'
 import classNames from 'classnames'
-import Header from '../../Components/Header'
+import Header from '../../Components/Header/Header'
 import React from 'react'
 
 interface Props {

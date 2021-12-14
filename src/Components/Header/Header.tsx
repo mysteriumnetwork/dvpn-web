@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import './styles/header.scss'
+import styles from './Header.module.scss'
 
 interface Props {
   logo: React.ComponentProps<any>
@@ -13,11 +13,11 @@ interface Props {
 
 const Header = (props: Props): JSX.Element => {
   return (
-    <div className="header">
-      <div className="logo">
+    <div className={styles.header}>
+      <div className={styles.logo}>
         <props.logo />
       </div>
-      <div className="name">{props.name}</div>
+      <div className={styles.name}>{props.name}</div>
     </div>
   )
 }
