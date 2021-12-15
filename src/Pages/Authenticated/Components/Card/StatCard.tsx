@@ -14,7 +14,7 @@ interface Props {
   helpText?: string
 }
 
-const StatCard = ({ stat, name, helpText }: Props) => {
+export const StatCard = ({ stat, name, helpText }: Props) => {
   return (
     <div className={styles.card}>
       <p className={styles.cardValue}>{stat}</p>
@@ -25,5 +25,3 @@ const StatCard = ({ stat, name, helpText }: Props) => {
     </div>
   )
 }
-
-export default StatCard

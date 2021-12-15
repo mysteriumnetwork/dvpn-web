@@ -13,7 +13,7 @@ import formatBytes, { add } from '../../../../commons/formatBytes'
 import { displayMyst } from '../../../../commons/money.utils'
 import EarningsStatCard from './EarningsStatCard'
 
-import Statistic from './StatCard'
+import { StatCard } from '../../Components/Card/StatCard'
 import { useSelector } from 'react-redux'
 import { configSelector } from '../../../../redux/selectors'
 
@@ -26,18 +26,18 @@ const Statistics = ({ stats, identity }: Props) => {
   const config = useSelector(configSelector)
   return (
     <>
-      <Statistic
+      <StatCard
         stat={displayMyst(identity.earningsTotal, {
           ...DEFAULT_MONEY_DISPLAY_OPTIONS,
           fractionDigits: 2,
         })}
         name="Total Earnings"
       />
-      <Statistic stat={seconds2Time(stats.sumDuration)} name="Sessions time" />
-      <Statistic stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
-      <Statistic stat={'' + stats.count} name="Sessions" />
-      <Statistic stat={'' + stats.countConsumers} name="Unique clients" />
-      <Statistic
+      <StatCard stat={seconds2Time(stats.sumDuration)} name="Sessions time" />
+      <StatCard stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
+      <StatCard stat={'' + stats.count} name="Sessions" />
+      <StatCard stat={'' + stats.countConsumers} name="Unique clients" />
+      <StatCard
         stat={displayMyst(identity.earnings, {
           ...DEFAULT_MONEY_DISPLAY_OPTIONS,
           fractionDigits: 2,

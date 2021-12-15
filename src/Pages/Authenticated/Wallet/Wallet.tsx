@@ -19,6 +19,8 @@ import { displayMyst } from '../../../commons/money.utils'
 import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
 import { MobileRow } from '../../../Components/Table/MobileRow'
 import { strings } from '../../../commons/strings.utils'
+import { CardLayout } from '../Components/Card/CardLayout'
+import { TotalWithdrawn, UnsettledEarning } from '../Components/Card/PreparedCards'
 
 interface State {
   isLoading: boolean
@@ -40,8 +42,7 @@ const Wallet = () => {
       d.isLoading = b
     })
   }
-  const { items } = state.settlementResponse
-
+  const { items, withdrawalTotal } = state.settlementResponse
   const fetchData = async ({ pageSize, page }: { pageSize: number; page: number }) => {
     try {
       setLoading()
@@ -111,26 +112,32 @@ const Wallet = () => {
       title="Wallet"
       logo={Logo}
       main={
-        <TableV3
-          data={items}
-          lastPage={state.lastPage}
-          loading={state.isLoading}
-          fetchData={fetchData}
-          columns={columns}
-          mobileRow={(row: Row<Settlement>, index) => {
-            const { settledAt, txHash, fees, amount, beneficiary } = row.original
-            return (
-              <MobileRow
-                key={index}
-                topLeft={date2human(settledAt)}
-                topLeftSub={strings.truncateHash(txHash)}
-                topRightSub={strings.truncateHash(beneficiary)}
-                bottomLeft={displayMyst(fees)}
-                bottomRight={displayMyst(amount)}
-              />
-            )
-          }}
-        />
+        <>
+          <CardLayout>
+            <UnsettledEarning />
+            <TotalWithdrawn amount={withdrawalTotal} />
+          </CardLayout>
+          <TableV3
+            data={items}
+            lastPage={state.lastPage}
+            loading={state.isLoading}
+            fetchData={fetchData}
+            columns={columns}
+            mobileRow={(row: Row<Settlement>, index) => {
+              const { settledAt, txHash, fees, amount, beneficiary } = row.original
+              return (
+                <MobileRow
+                  key={index}
+                  topLeft={date2human(settledAt)}
+                  topLeftSub={strings.truncateHash(txHash)}
+                  topRightSub={strings.truncateHash(beneficiary)}
+                  bottomLeft={displayMyst(fees)}
+                  bottomRight={displayMyst(amount)}
+                />
+              )
+            }}
+          />
+        </>
       }
     />
   )
