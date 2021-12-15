@@ -6,7 +6,31 @@
  */
 
 import styles from './HeroStatCard.module.scss'
+import Button from '../../../../Components/Buttons/Button'
 
-export const HeroStatCard = () => {
-  return <>Amma hero</>
+interface Props {
+  value?: string
+  label?: string
+  icon?: React.ComponentProps<any>
+  buttonName?: string
+  onClick?: () => void
+}
+
+export const HeroStatCard = ({ value, label, icon, onClick, buttonName }: Props) => {
+  return (
+    <div className={styles.card}>
+      <div className={styles.cardIcon}>{icon}</div>
+      <div className={styles.cardStat}>
+        <p className={styles.cardStatValue}>{value}</p>
+        <p className={styles.cardStatLabel}>{label}</p>
+      </div>
+      <div>
+        {buttonName && (
+          <Button onClick={onClick} extraStyle="gray">
+            {buttonName}
+          </Button>
+        )}
+      </div>
+    </div>
+  )
 }

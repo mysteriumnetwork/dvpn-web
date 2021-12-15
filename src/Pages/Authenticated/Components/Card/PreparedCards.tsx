@@ -10,6 +10,10 @@ import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import { zeroStakeSettlementThreshold } from '../../../../commons/config'
 import { StatCard } from './StatCard'
 import { myst } from '../../../../commons/myst.utils'
+import { HeroStatCard } from './HeroStatCard'
+import { ReactComponent as WalletIcon } from '../../../../assets/icons/WithdrawalWallet.svg'
+import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
+import { useState } from 'react'
 
 export const UnsettledEarning = () => {
   const identity = useSelector(currentIdentitySelector)
@@ -30,4 +34,21 @@ export const UnsettledEarning = () => {
 
 export const TotalWithdrawn = ({ amount }: { amount?: string }) => {
   return <StatCard stat={myst.displayMYST(amount)} name="Total Withdrawn" />
+}
+
+export const BalanceCard = () => {
+  const identity = useSelector(currentIdentitySelector)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  return (
+    <>
+      <HeroStatCard
+        buttonName="withdraw"
+        value={myst.displayMYST(identity.balance)}
+        icon={<WalletIcon />}
+        label="Balance"
+        onClick={() => setIsOpen(true)}
+      />
+      <WithdrawalModal isOpen={isOpen} onClose={() => setIsOpen(false)} identity={identity} />
+    </>
+  )
 }

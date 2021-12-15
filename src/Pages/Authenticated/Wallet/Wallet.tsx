@@ -20,7 +20,7 @@ import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
 import { MobileRow } from '../../../Components/Table/MobileRow'
 import { strings } from '../../../commons/strings.utils'
 import { CardLayout } from '../Components/Card/CardLayout'
-import { TotalWithdrawn, UnsettledEarning } from '../Components/Card/PreparedCards'
+import { TotalWithdrawn, UnsettledEarning, BalanceCard } from '../Components/Card/PreparedCards'
 
 interface State {
   isLoading: boolean
@@ -114,6 +114,7 @@ const Wallet = () => {
       main={
         <>
           <CardLayout>
+            <BalanceCard />
             <UnsettledEarning />
             <TotalWithdrawn amount={withdrawalTotal} />
           </CardLayout>

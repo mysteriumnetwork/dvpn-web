@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { ReactComponent as Wallet } from '../../../../assets/icons/WithdrawalWallet.svg'
 import Button from '../../../../Components/Buttons/Button'
 import './Statistic.scss'
-import WithdrawalModal from './WithdrawalModal'
+import WithdrawalModal from '../../Components/WithdrawalModal/WithdrawalModal'
 
 interface Props {
   stat: string
