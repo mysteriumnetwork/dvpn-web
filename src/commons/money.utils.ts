@@ -28,18 +28,14 @@ export const flooredAmount = (amount: number, precision: number = 7): number => 
   return Math.floor(amountCurrency * m) / m
 }
 
+/**
+ * @deprecated use myst.utils.ts
+ */
 export const displayMyst = (amount: number = 0, opts: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
   const smallestDisplayableAmount = Math.pow(10, ETHER_FRACTIONS - (opts.fractionDigits || 0))
   if (amount !== 0 && amount < smallestDisplayableAmount) {
     return `< ${displayMoney({ amount: smallestDisplayableAmount, currency: currentCurrency() }, opts)}`
   }
-  return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
-}
-
-export const displayMystLongNoDecimal = (
-  amount?: number,
-  opts: DisplayMoneyOptions = { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 5, decimalPart: 1 },
-): string => {
   return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
 }
 
