@@ -22,6 +22,9 @@ interface Props {
   lastPage: number
   loading: boolean
   noData?: JSX.Element
+  pagination?: {
+    pageSize?: number
+  }
 }
 
 const Table = ({
@@ -46,6 +49,7 @@ const Table = ({
       <div className={styles.noData}>No Data</div>
     </div>
   ),
+  pagination = { pageSize: 10 },
 }: Props) => {
   const preparedMap = (page: Row<object>[], mapper: (row: Row, index: number) => JSX.Element) => {
     return page.map((row, index) => {
@@ -90,7 +94,7 @@ const Table = ({
       data: data,
       manualPagination: true,
       pageCount: lastPage,
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0, pageSize: pagination?.pageSize || 10 },
     },
     usePagination,
   )

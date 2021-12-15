@@ -18,7 +18,6 @@ import { date2human } from '../../../commons/date.utils'
 import { displayMyst } from '../../../commons/money.utils'
 import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
 import { MobileRow } from '../../../Components/Table/MobileRow'
-import { beneficiary } from '../../../redux/sse.slice'
 import { strings } from '../../../commons/strings.utils'
 
 interface State {
@@ -75,7 +74,6 @@ const Wallet = () => {
       },
       {
         Header: 'Transaction ID',
-        // accessor: 'txHash',
         width: 40,
         Cell: ({ row }: { row: Row<Settlement> }) => {
           const { txHash, blockExplorerUrl } = row.original
@@ -123,6 +121,7 @@ const Wallet = () => {
             const { settledAt, txHash, fees, amount, beneficiary } = row.original
             return (
               <MobileRow
+                key={index}
                 topLeft={date2human(settledAt)}
                 topLeftSub={strings.truncateHash(txHash)}
                 topRightSub={strings.truncateHash(beneficiary)}
