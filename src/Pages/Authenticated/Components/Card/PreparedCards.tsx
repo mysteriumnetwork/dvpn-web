@@ -14,8 +14,11 @@ import { HeroStatCard } from './HeroStatCard'
 import { ReactComponent as WalletIcon } from '../../../../assets/icons/WithdrawalWallet.svg'
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
 import { useState } from 'react'
+import { seconds2Time } from '../../../../commons/date.utils'
+import { SessionStats } from '../../../../../../mysterium-vpn-js'
+import formatBytes, { add } from '../../../../commons/formatBytes'
 
-export const UnsettledEarning = () => {
+const UnsettledEarnings = () => {
   const identity = useSelector(currentIdentitySelector)
   const config = useSelector(configSelector)
   return (
@@ -32,11 +35,11 @@ export const UnsettledEarning = () => {
   )
 }
 
-export const TotalWithdrawn = ({ amount }: { amount?: string }) => {
+const TotalWithdrawn = ({ amount }: { amount?: string }) => {
   return <StatCard stat={myst.displayMYST(amount)} name="Total Withdrawn" />
 }
 
-export const BalanceCard = () => {
+const Balance = () => {
   const identity = useSelector(currentIdentitySelector)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   return (
@@ -51,4 +54,42 @@ export const BalanceCard = () => {
       <WithdrawalModal isOpen={isOpen} onClose={() => setIsOpen(false)} identity={identity} />
     </>
   )
+}
+
+const TotalEarnings = () => {
+  const identity = useSelector(currentIdentitySelector)
+  return (
+    <StatCard
+      stat={myst.displayMYST(identity.earningsTotal, {
+        ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+        fractionDigits: 2,
+      })}
+      name="Total Earnings"
+    />
+  )
+}
+
+const SessionTime = ({ stats }: { stats: SessionStats }) => (
+  <StatCard stat={seconds2Time(stats.sumDuration)} name="Sessions time" />
+)
+
+const Transferred = ({ stats }: { stats: SessionStats }) => (
+  <StatCard stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
+)
+
+const Sessions = ({ stats }: { stats: SessionStats }) => <StatCard stat={'' + stats.count} name="Sessions" />
+
+const UniqueClients = ({ stats }: { stats: SessionStats }) => (
+  <StatCard stat={'' + stats.countConsumers} name="Unique clients" />
+)
+
+export const Cards = {
+  UnsettledEarnings,
+  TotalWithdrawn,
+  Balance,
+  TotalEarnings,
+  SessionTime,
+  Transferred,
+  Sessions,
+  UniqueClients,
 }

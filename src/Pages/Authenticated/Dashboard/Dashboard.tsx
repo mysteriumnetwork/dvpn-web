@@ -27,8 +27,9 @@ import './Dashboard.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
-import Statistics from './Statistics/Statistics'
 import { currentIdentitySelector } from '../../../redux/selectors'
+import { Cards } from '../Components/Card/PreparedCards'
+import { CardLayout } from '../Components/Card/CardLayout'
 
 interface StateProps {
   loading: boolean
@@ -105,9 +106,15 @@ const Dashboard = () => {
     <div className="main">
       <div className="main-block main-block--split">
         <Header logo={Logo} name="Dashboard" />
-        <div className="dashboard__statistics">
-          <Statistics stats={state.sessionStatsAllTime} identity={identity} />
-        </div>
+        <CardLayout>
+          <Cards.TotalEarnings />
+          <Cards.SessionTime stats={state.sessionStatsAllTime} />
+          <Cards.Transferred stats={state.sessionStatsAllTime} />
+          <Cards.Sessions stats={state.sessionStatsAllTime} />
+          <Cards.UniqueClients stats={state.sessionStatsAllTime} />
+          <Cards.UnsettledEarnings />
+          <Cards.Balance />
+        </CardLayout>
         <div className="dashboard__widgets">
           <div className="widget widget--chart">
             <Charts statsDaily={state.sessionStatsDaily} />
