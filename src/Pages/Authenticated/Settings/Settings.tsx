@@ -15,7 +15,6 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import * as config from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { toastError } from '../../../commons/toast.utils'
-import Header from '../../../Components/Header/Header'
 import { RootState } from '../../../redux/store'
 import { Advanced } from './Components/Advanced/Advanced'
 import IdentityInformation from './Components/IdentityInformation'
@@ -23,10 +22,11 @@ import IdentityInformation from './Components/IdentityInformation'
 import MMN from './Components/MMN'
 import PasswordChange from './Components/PasswordChange'
 import PayoutAddress from './Components/PayoutAddress'
-import Version from './Components/Version'
 
 import './Setings.scss'
 import { currentIdentitySelector } from '../../../redux/selectors'
+import { Layout } from '../Layout'
+import Version from './Components/Version'
 
 interface CardProps {
   title: string
@@ -80,12 +80,11 @@ const Settings = () => {
   const mmnWebAddress = config.mmnWebAddress(cfg)
 
   return (
-    <div className="main">
-      <div className="main-block">
-        <div className="settings-header">
-          <Header logo={Logo} name="Settings" />
-          <Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />
-        </div>
+    <Layout
+      title="Settings"
+      logo={Logo}
+      topRight={<Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />}
+      main={
         <div className="settings">
           <div className="settings__block">
             <Card title="Identity">
@@ -112,8 +111,8 @@ const Settings = () => {
             </Card>
           </div>
         </div>
-      </div>
-    </div>
+      }
+    />
   )
 }
 

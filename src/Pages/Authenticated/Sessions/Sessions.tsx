@@ -16,11 +16,11 @@ import { parseError } from '../../../commons/error.utils'
 import formatBytes from '../../../commons/formatBytes'
 import { displayMyst } from '../../../commons/money.utils'
 import { toastError } from '../../../commons/toast.utils'
-import Header from '../../../Components/Header/Header'
 import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import './Sessions.scss'
 import Table from '../../../Components/Table/Table'
+import { Layout } from '../Layout'
 
 export interface Props {
   filterDirection?: SessionDirection
@@ -95,9 +95,10 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
   }, [])
 
   return (
-    <div className="main">
-      <div className="main-block main-block--split">
-        <Header logo={Logo} name="Sessions" />
+    <Layout
+      title="Sessions"
+      logo={Logo}
+      main={
         <Table
           columns={[
             {
@@ -136,11 +137,12 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
           lastPage={state.sessionListPages}
           loading={state.isLoading}
         />
-      </div>
-      <div className="sidebar-block">
+      }
+      sidebar={
         <SessionSidebar liveSessions={liveSessions} liveSessionStats={liveSessionStats} headerText="Live Sessions" />
-      </div>
-    </div>
+      }
+      showSideBar
+    />
   )
 }
 

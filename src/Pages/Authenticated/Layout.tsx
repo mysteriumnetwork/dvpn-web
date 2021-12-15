@@ -12,16 +12,20 @@ import React from 'react'
 interface Props {
   title?: string
   logo?: any
-  main?: any
+  topRight?: JSX.Element
+  main?: JSX.Element
   showSideBar?: boolean
-  sidebar?: any
+  sidebar?: JSX.Element
 }
 
-export const Layout = ({ logo, title, main, showSideBar, sidebar }: Props) => {
+export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight }: Props) => {
   return (
     <main className={styles.main}>
       <div className={classNames(styles.mainBlock, showSideBar && styles.mainBlockSplit)}>
-        <Header logo={logo} name={title} />
+        <div className={styles.header}>
+          <Header logo={logo} name={title} />
+          {topRight}
+        </div>
         {main}
       </div>
       {showSideBar && <div className={styles.sidebarBlock}>{sidebar}</div>}
