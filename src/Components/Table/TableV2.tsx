@@ -86,7 +86,6 @@ const Table = ({
     gotoPage,
     nextPage,
     previousPage,
-    rows,
     state: { pageIndex, pageSize },
   } = useTable(
     {
