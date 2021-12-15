@@ -11,13 +11,11 @@ interface Props {
   name?: string
 }
 
-const Header = (props: Props): JSX.Element => {
+const Header = ({ logo, name }: Props): JSX.Element => {
   return (
     <div className={styles.header}>
-      <div className={styles.logo}>
-        <props.logo />
-      </div>
-      <div className={styles.name}>{props.name}</div>
+      <div className={styles.logo}>{logo}</div>
+      <div className={styles.name}>{name}</div>
     </div>
   )
 }

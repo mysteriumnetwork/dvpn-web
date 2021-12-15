@@ -105,7 +105,7 @@ const Dashboard = () => {
   return (
     <Layout
       title="Dashboard"
-      logo={Logo}
+      logo={<Logo />}
       main={
         <>
           <CardLayout>

@@ -11,7 +11,7 @@ import React from 'react'
 
 interface Props {
   title?: string
-  logo?: any
+  logo?: JSX.Element
   topRight?: JSX.Element
   main?: JSX.Element
   showSideBar?: boolean

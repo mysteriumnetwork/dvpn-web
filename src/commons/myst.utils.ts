@@ -18,10 +18,8 @@ const displayMYST = (
     return `0${symbol}`
   }
 
-  const DM = Decimal.clone({ precision: options?.fractionDigits || 7 })
-  const d = new DM(amount)
-
-  return `${d.div(DECIMAL_PART).toString()}${symbol}`
+  const decimal = Decimal.clone({ precision: options?.fractionDigits || 7 })
+  return `${new decimal(amount).div(DECIMAL_PART).toString()}${symbol}`
 }
 
 export const myst = {

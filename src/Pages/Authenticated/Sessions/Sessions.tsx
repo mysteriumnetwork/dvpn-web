@@ -97,7 +97,7 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
   return (
     <Layout
       title="Sessions"
-      logo={Logo}
+      logo={<Logo />}
       main={
         <Table
           columns={[

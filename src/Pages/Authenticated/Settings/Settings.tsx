@@ -82,7 +82,7 @@ const Settings = () => {
   return (
     <Layout
       title="Settings"
-      logo={Logo}
+      logo={<Logo />}
       topRight={<Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />}
       main={
         <div className="settings">

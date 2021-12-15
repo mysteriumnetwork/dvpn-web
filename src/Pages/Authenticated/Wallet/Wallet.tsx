@@ -110,7 +110,7 @@ const Wallet = () => {
   return (
     <Layout
       title="Wallet"
-      logo={Logo}
+      logo={<Logo />}
       main={
         <>
           <CardLayout>
