@@ -12,7 +12,7 @@ import { useImmer } from 'use-immer'
 import { api } from '../../../api/Api'
 import { toastError } from '../../../commons/toast.utils'
 import { parseError } from '../../../commons/error.utils'
-import TableV3 from '../../../Components/Table/TableV2'
+import Table from '../../../Components/Table/Table'
 import { Column, Row } from 'react-table'
 import { date2human } from '../../../commons/date.utils'
 import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
@@ -118,7 +118,7 @@ const Wallet = () => {
             <Cards.UnsettledEarnings />
             <Cards.TotalWithdrawn amount={withdrawalTotal} />
           </CardLayout>
-          <TableV3
+          <Table
             data={items}
             lastPage={state.lastPage}
             loading={state.isLoading}

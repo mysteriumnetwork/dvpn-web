@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 BlockDev AG
+ * Copyright (c) 2021 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -7,53 +7,71 @@
 import React from 'react'
 import PaginationMaterial from '@material-ui/lab/Pagination'
 
-import './Table.scss'
+import styles from './Table.module.scss'
+import './Pagination.mui.scss'
 import Button from '../Buttons/Button'
-import SessionCard from '../../Pages/Authenticated/Components/SessionCard/SessionCard'
 import { Column, Row, usePagination, useTable } from 'react-table'
+import classNames from 'classnames'
+import { MobileRow } from './MobileRow'
 
 interface Props {
   columns: Column[]
+  mobileRow?: (row: Row<any>, index: number) => JSX.Element
   data: any[]
-  fetchData: ({ pageSize, pageIndex }: { pageSize: number; pageIndex: number }) => void
+  fetchData: ({ pageSize, page }: { pageSize: number; page: number }) => void
   lastPage: number
   loading: boolean
+  noData?: JSX.Element
+  pagination?: {
+    pageSize?: number
+  }
 }
 
-const noData = (
-  <div className="empty">
-    <div className="no-data">No Data</div>
-  </div>
-)
+const Table = ({
+  columns,
+  data,
+  lastPage,
+  loading = false,
+  fetchData,
+  mobileRow = (row: Row, index: number) => (
+    <MobileRow
+      topLeftSub="topLeftSub"
+      topLeft="topLeft"
+      topRight="topRight"
+      bottomLeft="bottomLeft"
+      bottomMiddle="bottomMiddle"
+      bottomRight="bottomRight"
+      topRightSub="topRightSub"
+    />
+  ),
+  noData = (
+    <div className={styles.empty}>
+      <div className={styles.noData}>No Data</div>
+    </div>
+  ),
+  pagination = { pageSize: 10 },
+}: Props) => {
+  const preparedMap = (page: Row<object>[], mapper: (row: Row, index: number) => JSX.Element) => {
+    return page.map((row, index) => {
+      prepareRow(row)
+      return mapper(row, index)
+    })
+  }
 
-const Table = ({ columns, data, lastPage, loading = false, fetchData }: Props) => {
-  const desktopRows = (row: Row, index: number): JSX.Element => {
+  const desktopMap = (row: Row, index: number): JSX.Element => {
     prepareRow(row)
     return (
-      <div className="row" key={index}>
+      <div className={styles.tableBodyRow} key={index}>
         {row.cells.map((cell) => {
           return (
-            <div {...cell.getCellProps()} className={'cell ' + (cell.column.width ? 'w-' + cell.column.width : '')}>
+            <div
+              {...cell.getCellProps()}
+              className={classNames(styles.tableBodyRowCell, cell.column.width ? 'w-' + cell.column.width : '')}
+            >
               {cell.render('Cell')}
             </div>
           )
         })}
-      </div>
-    )
-  }
-
-  const mobileRows = (row: Row, index: number): JSX.Element => {
-    const cells = row.cells
-    return (
-      <div className="table__mobile-row" key={index}>
-        <SessionCard
-          country={cells[0].value as string}
-          onGoing={false}
-          id={cells[5].value as string}
-          time={cells[1].value as string}
-          data={cells[4].value as string}
-          value={cells[3].value as string}
-        />
       </div>
     )
   }
@@ -75,41 +93,37 @@ const Table = ({ columns, data, lastPage, loading = false, fetchData }: Props) =
       data: data,
       manualPagination: true,
       pageCount: lastPage,
-      initialState: { pageIndex: 0 },
+      initialState: { pageIndex: 0, pageSize: pagination?.pageSize || 10 },
     },
     usePagination,
   )
 
   React.useEffect(() => {
-    fetchData({ pageIndex: pageIndex + 1, pageSize })
-  }, [fetchData, pageIndex, pageSize])
+    fetchData({ pageSize, page: pageIndex + 1 })
+  }, [pageIndex, pageSize])
 
   return (
-    <div className="table">
-      <div className="table__desktop">
+    <div className={styles.table}>
+      <div className={styles.tableDesktop}>
         <div>
           {headerGroups.map((headerGroup) => (
-            <div className="table__header" {...headerGroup.getHeaderGroupProps()}>
+            <div className={styles.tableHeader} {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <div {...column.getHeaderProps()} className={'cell ' + (column.width ? 'w-' + column.width : '')}>
+                <div {...column.getHeaderProps()} className={classNames(styles.tableHeaderCell, `w-${column.width}`)}>
                   {column.render('Header')}
                 </div>
               ))}
             </div>
           ))}
         </div>
-        <div className="table__body">{page.length > 0 ? page.map(desktopRows) : noData}</div>
+        <div className={styles.tableBody}>{page.length > 0 ? preparedMap(page, desktopMap) : noData}</div>
       </div>
-      <div className="table__mobile">{page.length > 0 ? page.map(mobileRows) : <p>No Sessions</p>}</div>
-      <div className="table__footer">
-        <Button
-          className="prev table__footer__button prev pagination-button"
-          onClick={() => previousPage()}
-          disabled={!canPreviousPage}
-        >
+      <div className={styles.tableMobile}>{page.length > 0 ? preparedMap(page, mobileRow) : noData}</div>
+      <div className={styles.footer}>
+        <Button className={styles.footerButton} onClick={() => previousPage()} disabled={!canPreviousPage}>
           <p>Prev</p>
         </Button>
-        <div className="table__footer__pagination">
+        <div>
           <PaginationMaterial
             page={pageIndex + 1}
             disabled={loading}
@@ -121,7 +135,7 @@ const Table = ({ columns, data, lastPage, loading = false, fetchData }: Props) =
             onChange={(_, page) => gotoPage(page - 1)}
           />
         </div>
-        <Button disabled={!canNextPage} className="next table__footer__button" onClick={() => nextPage()}>
+        <Button disabled={!canNextPage} className={styles.footerButton} onClick={() => nextPage()}>
           <p>Next</p>
         </Button>
       </div>
