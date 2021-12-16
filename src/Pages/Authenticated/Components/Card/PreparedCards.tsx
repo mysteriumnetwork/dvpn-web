@@ -15,7 +15,7 @@ import { ReactComponent as WalletIcon } from '../../../../assets/icons/Withdrawa
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
 import { useState } from 'react'
 import { seconds2Time } from '../../../../commons/date.utils'
-import { SessionStats } from '../../../../../../mysterium-vpn-js'
+import { SessionStats } from 'mysterium-vpn-js'
 import formatBytes, { add } from '../../../../commons/formatBytes'
 
 const UnsettledEarnings = () => {
