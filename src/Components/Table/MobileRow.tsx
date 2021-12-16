@@ -7,7 +7,6 @@
 
 import styles from './MobileRow.module.scss'
 import classNames from 'classnames'
-import { Key } from 'react'
 
 interface Props {
   topLeft?: string
@@ -17,7 +16,6 @@ interface Props {
   bottomLeft?: string
   bottomMiddle?: string
   bottomRight?: string
-  key?: Key
 }
 
 export const MobileRow = ({
@@ -28,10 +26,9 @@ export const MobileRow = ({
   bottomRight,
   bottomMiddle,
   topRightSub,
-  key,
 }: Props) => {
   return (
-    <div key={key} className={styles.row}>
+    <div className={styles.row}>
       <div className={styles.rowHeader}>
         <div className={styles.rowHeaderTitle}>{topLeft}</div>
         <div

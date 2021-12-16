@@ -15,12 +15,12 @@ import { parseError } from '../../../commons/error.utils'
 import TableV3 from '../../../Components/Table/TableV2'
 import { Column, Row } from 'react-table'
 import { date2human } from '../../../commons/date.utils'
-import { displayMyst } from '../../../commons/money.utils'
 import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
 import { MobileRow } from '../../../Components/Table/MobileRow'
 import { strings } from '../../../commons/strings.utils'
 import { CardLayout } from '../Components/Card/CardLayout'
 import { Cards } from '../Components/Card/PreparedCards'
+import { myst } from '../../../commons/myst.utils'
 
 interface State {
   isLoading: boolean
@@ -92,7 +92,7 @@ const Wallet = () => {
         accessor: 'fees',
         width: 10,
         Cell: ({ value }) => {
-          return displayMyst(value)
+          return myst.displayMYST(value)
         },
       },
       {
@@ -100,7 +100,7 @@ const Wallet = () => {
         accessor: 'amount',
         width: 10,
         Cell: ({ value }) => {
-          return displayMyst(value)
+          return myst.displayMYST(value)
         },
       },
     ],
@@ -132,8 +132,8 @@ const Wallet = () => {
                   topLeft={date2human(settledAt)}
                   topLeftSub={strings.truncateHash(txHash)}
                   topRightSub={strings.truncateHash(beneficiary)}
-                  bottomLeft={displayMyst(fees)}
-                  bottomRight={displayMyst(amount)}
+                  bottomLeft={myst.displayMYST(fees)}
+                  bottomRight={myst.displayMYST(amount)}
                 />
               )
             }}
