@@ -9,12 +9,12 @@ import HelpTooltip from '../../../../Components/HelpTooltip/HelpTooltip'
 import React from 'react'
 
 interface Props {
-  stat: string
+  stat: string | number
   name: string
   helpText?: string
 }
 
-const StatCard = ({ stat, name, helpText }: Props) => {
+export const StatCard = ({ stat, name, helpText }: Props) => {
   return (
     <div className={styles.card}>
       <p className={styles.cardValue}>{stat}</p>
@@ -25,5 +25,3 @@ const StatCard = ({ stat, name, helpText }: Props) => {
     </div>
   )
 }
-
-export default StatCard

@@ -32,7 +32,7 @@ const SessionCard = ({ country, onGoing, id, time, data, value, createdAt }: Pro
       </div>
       <div className={styles.sessionMeta}>
         <div>{id}</div>
-        <div>({createdAt})</div>
+        {createdAt && <div>({createdAt})</div>}
       </div>
       <div className={styles.sessionStatistics}>
         <div className={styles.statistic}>{time}</div>

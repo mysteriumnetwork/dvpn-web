@@ -14,9 +14,8 @@ import { api } from '../../../api/Api'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
-import { isRegistered, isEmpty } from '../../../commons/identity.utils'
+import { isEmpty, isRegistered } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
-import Header from '../../../Components/Header'
 import { AppState } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
@@ -27,8 +26,10 @@ import './Dashboard.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
-import Statistics from './Statistics/Statistics'
 import { currentIdentitySelector } from '../../../redux/selectors'
+import { Cards } from '../Components/Card/PreparedCards'
+import { CardLayout } from '../Components/Card/CardLayout'
+import { Layout } from '../Layout'
 
 interface StateProps {
   loading: boolean
@@ -102,36 +103,44 @@ const Dashboard = () => {
   const { serviceInfo } = appState
 
   return (
-    <div className="main">
-      <div className="main-block main-block--split">
-        <Header logo={Logo} name="Dashboard" />
-        <div className="dashboard__statistics">
-          <Statistics stats={state.sessionStatsAllTime} identity={identity} />
-        </div>
-        <div className="dashboard__widgets">
-          <div className="widget widget--chart">
-            <Charts statsDaily={state.sessionStatsDaily} />
+    <Layout
+      title="Dashboard"
+      logo={<Logo />}
+      main={
+        <>
+          <CardLayout>
+            <Cards.TotalEarnings />
+            <Cards.SessionTime stats={state.sessionStatsAllTime} />
+            <Cards.Transferred stats={state.sessionStatsAllTime} />
+            <Cards.Sessions stats={state.sessionStatsAllTime} />
+            <Cards.UniqueClients stats={state.sessionStatsAllTime} />
+            <Cards.UnsettledEarnings />
+            <Cards.Balance />
+          </CardLayout>
+          <div className="dashboard__widgets">
+            <div className="widget widget--chart">
+              <Charts statsDaily={state.sessionStatsDaily} />
+            </div>
           </div>
-        </div>
-        <div className="dashboard__node-status">
-          <NodeStatus />
-        </div>
-        <div className="dashboard__services">
-          <Services
-            identityRef={identity.id}
-            servicesInfos={serviceInfo}
-            userConfig={config}
-            disabled={!isRegistered(identity)}
-            prices={state.currentPrices}
-          />
-        </div>
+          <div className="dashboard__node-status">
+            <NodeStatus />
+          </div>
+          <div className="dashboard__services">
+            <Services
+              identityRef={identity.id}
+              servicesInfos={serviceInfo}
+              userConfig={config}
+              disabled={!isRegistered(identity)}
+              prices={state.currentPrices}
+            />
+          </div>
 
-        <div className="dashboard__services-settings">
-          <GlobalServicesSettings config={config} servicesInfos={serviceInfo} />
-        </div>
-      </div>
-
-      <div className="sidebar-block">
+          <div className="dashboard__services-settings">
+            <GlobalServicesSettings config={config} servicesInfos={serviceInfo} />
+          </div>
+        </>
+      }
+      sidebar={
         <SessionSidebar
           liveSessions={sse.appState?.sessions}
           liveSessionStats={sse.appState?.sessionsStats}
@@ -139,8 +148,9 @@ const Dashboard = () => {
           headerText="Latest Sessions"
           displayNavigation
         />
-      </div>
-    </div>
+      }
+      showSideBar
+    />
   )
 }
 

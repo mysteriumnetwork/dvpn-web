@@ -1,195 +1,146 @@
 /**
- * Copyright (c) 2020 BlockDev AG
+ * Copyright (c) 2021 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress } from '@material-ui/core'
-import { Fees, Settlement } from 'mysterium-vpn-js'
-import { SettlementListResponse } from 'mysterium-vpn-js/lib/transactor/settlement'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { api } from '../../../api/Api'
+import React, { useMemo } from 'react'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
-import * as config from '../../../commons/config'
-import { date2human } from '../../../commons/date.utils'
-import { parseError } from '../../../commons/error.utils'
-import { displayMyst } from '../../../commons/money.utils'
+import { Layout } from '../Layout'
+import { SettlementListResponse } from 'mysterium-vpn-js'
+import { useImmer } from 'use-immer'
+import { api } from '../../../api/Api'
 import { toastError } from '../../../commons/toast.utils'
-import Button from '../../../Components/Buttons/Button'
-
-import Header from '../../../Components/Header'
-import Table, { TableRow } from '../../../Components/Table/TableLegacy'
-import * as sseSlice from '../../../redux/sse.slice'
-import { RootState } from '../../../redux/store'
-import SettlementModal from './SettlementModal'
-
-import './Wallet.scss'
-import WalletSidebar from './WalletSidebar'
-import { currentIdentitySelector } from '../../../redux/selectors'
+import { parseError } from '../../../commons/error.utils'
+import Table from '../../../Components/Table/Table'
+import { Column, Row } from 'react-table'
+import { date2human } from '../../../commons/date.utils'
+import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
+import { MobileRow } from '../../../Components/Table/MobileRow'
+import { strings } from '../../../commons/strings.utils'
+import { CardLayout } from '../Components/Card/CardLayout'
+import { Cards } from '../Components/Card/PreparedCards'
+import { myst } from '../../../commons/myst.utils'
 
 interface State {
-  unsettledEarnings: number
-  isBeneficiaryModalOpen: boolean
-  settlementResponse?: SettlementListResponse
-  pageSize: number
-  currentPage: number
+  isLoading: boolean
+  lastPage: number
+  settlementResponse: SettlementListResponse
 }
 
-interface SettlementState {
-  loading: boolean
-  modalOpen: boolean
-  fees?: Fees
-}
-
-const row = (s: Settlement, etherscanTxUrl: string): TableRow => {
-  const cells = [
-    {
-      className: 'w-20',
-      content: date2human(s.settledAt),
-    },
-    {
-      className: 'w-40',
-      content: s.beneficiary,
-    },
-    {
-      className: 'w-10',
-      content: <a href={`${etherscanTxUrl}/${s.txHash}`}>{s.txHash.substr(s.txHash.length - 8)}</a>,
-    },
-    {
-      className: 'w-15',
-      content: displayMyst(s.fees),
-    },
-    {
-      className: 'w-15',
-      content: displayMyst(s.amount),
-    },
-  ]
-
-  return {
-    key: s.txHash,
-    cells: cells,
-  }
-}
+const EMPTY_RESPONSE = { items: [], totalPages: 0, page: 1, pageSize: 50, totalItems: 0 }
 
 const Wallet = () => {
-  const identity = useSelector(currentIdentitySelector)
-  const etherscanTxUrl = useSelector<RootState, string>(({ app }) => config.etherscanTxUrl(app.config))
-  const hermesId = useSelector<RootState, string | undefined>(({ app }) => config.hermesId(app.config))
-  const beneficiary = useSelector<RootState, string>(({ sse }) => sseSlice.beneficiary(sse))
-
-  const [state, setState] = useState<State>({
-    unsettledEarnings: 0,
-    isBeneficiaryModalOpen: false,
-    pageSize: 10,
-    currentPage: 1,
-  })
-  const [settlementState, setSettlementState] = useState<SettlementState>({
-    loading: false,
-    modalOpen: false,
+  const [state, setState] = useImmer<State>({
+    isLoading: true,
+    lastPage: 1,
+    settlementResponse: EMPTY_RESPONSE,
   })
 
-  useEffect(() => {
-    api.settlementHistory({ pageSize: state.pageSize, page: state.currentPage }).then((settlementResponse) => {
-      setState((cs) => ({
-        ...cs,
-        settlementResponse: settlementResponse,
-      }))
+  const setLoading = (b: boolean = true) => {
+    setState((d) => {
+      d.isLoading = b
     })
-  }, [state.pageSize, state.currentPage])
-
-  if (!identity || !hermesId) {
-    return <CircularProgress className="spinner" disableShrink />
+  }
+  const { items, withdrawalTotal } = state.settlementResponse
+  const fetchData = async ({ pageSize, page }: { pageSize: number; page: number }) => {
+    try {
+      setLoading()
+      const settlements = await api.settlementHistory({ pageSize, page })
+      setState((d) => {
+        d.lastPage = settlements.totalPages
+        d.settlementResponse = settlements
+      })
+    } catch (err) {
+      toastError(parseError(err))
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const handlePrevPageButtonClick = () => {
-    setState((cs) => ({ ...cs, currentPage: state.currentPage - 1 }))
-  }
-
-  const handleNextPageButtonClick = () => {
-    setState((cs) => ({
-      ...cs,
-      currentPage: state.currentPage + 1,
-    }))
-  }
-
-  const onPageClicked = (event: React.ChangeEvent<unknown>, pageNumber: number) => {
-    setState((cs) => ({ ...cs, currentPage: pageNumber }))
-  }
-
-  const { items = [], totalPages = 0 } = { ...state?.settlementResponse }
+  const columns: Column[] = useMemo(
+    () => [
+      {
+        Header: 'Date',
+        accessor: 'settledAt',
+        width: 15,
+        Cell: ({ value }) => {
+          return date2human(value)
+        },
+      },
+      {
+        Header: 'Beneficiary',
+        accessor: 'beneficiary',
+        width: 25,
+      },
+      {
+        Header: 'Transaction ID',
+        width: 40,
+        Cell: ({ row }: { row: Row<Settlement> }) => {
+          const { txHash, blockExplorerUrl } = row.original
+          return blockExplorerUrl ? (
+            <a href={blockExplorerUrl} target="_blank" rel="noopener noreferrer">
+              {txHash}
+            </a>
+          ) : (
+            txHash
+          )
+        },
+      },
+      {
+        Header: 'Fee',
+        accessor: 'fees',
+        width: 10,
+        Cell: ({ value }) => {
+          return myst.displayMYST(value)
+        },
+      },
+      {
+        Header: 'Received Amount',
+        accessor: 'amount',
+        width: 10,
+        Cell: ({ value }) => {
+          return myst.displayMYST(value)
+        },
+      },
+    ],
+    [],
+  )
 
   return (
-    <div className="main">
-      <div className="main-block main-block--split">
-        <Header logo={Logo} name="Wallet" />
-
-        <div className="wallet__earnings">
-          <div className="earnings">
-            <p className="earnings__value">{displayMyst(identity.earnings)}</p>
-            <p className="earnings__label">Unsettled Earnings</p>
-          </div>
-          <div>
-            <Button
-              className="wallet-settle-button"
-              isLoading={settlementState.loading}
-              onClick={() => {
-                Promise.all([setSettlementState({ ...settlementState, loading: true })])
-                  .then(() => api.transactorFees())
-                  .then((fees) => {
-                    setSettlementState({
-                      ...settlementState,
-                      modalOpen: true,
-                      loading: false,
-                      fees: fees,
-                    })
-                  })
-                  .catch((err) => {
-                    toastError(parseError(err))
-                    setSettlementState({ ...settlementState, loading: false })
-                  })
-              }}
-            >
-              Settle Now
-            </Button>
-          </div>
-        </div>
-
-        <Table
-          headers={[
-            { name: 'Date', className: 'w-20' },
-            { name: 'Beneficiary', className: 'w-40' },
-            { name: 'Transaction ID', className: 'w-10' },
-            { name: 'Fee', className: 'w-15' },
-            { name: 'Received Amount', className: 'w-15' },
-          ]}
-          rows={(items || []).map((i) => row(i, etherscanTxUrl))}
-          currentPage={state.currentPage}
-          lastPage={totalPages}
-          handlePrevPageButtonClick={handlePrevPageButtonClick}
-          handleNextPageButtonClick={handleNextPageButtonClick}
-          onPageClick={onPageClicked}
-        />
-      </div>
-
-      <SettlementModal
-        unsettledEarnings={identity.earnings}
-        fees={settlementState.fees}
-        open={settlementState.modalOpen}
-        beneficiary={beneficiary}
-        onClose={() => {
-          setSettlementState({ ...settlementState, modalOpen: false })
-        }}
-        onSettle={() => {
-          setSettlementState({ ...settlementState, modalOpen: false })
-          api.settleAsync({ providerId: identity.id, hermesId: hermesId })
-        }}
-      />
-
-      <div className="sidebar-block">
-        <WalletSidebar beneficiary={beneficiary} identity={identity} hermesId={hermesId} />
-      </div>
-    </div>
+    <Layout
+      title="Wallet"
+      logo={<Logo />}
+      main={
+        <>
+          <CardLayout>
+            <Cards.Balance />
+            <Cards.UnsettledEarnings />
+            <Cards.TotalWithdrawn amount={withdrawalTotal} />
+          </CardLayout>
+          <Table
+            data={items}
+            lastPage={state.lastPage}
+            loading={state.isLoading}
+            fetchData={fetchData}
+            columns={columns}
+            mobileRow={(row: Row<Settlement>, index) => {
+              const { settledAt, txHash, fees, amount, beneficiary } = row.original
+              return (
+                <MobileRow
+                  key={index}
+                  topLeft={date2human(settledAt)}
+                  topLeftSub={strings.truncateHash(txHash)}
+                  topRightSub={strings.truncateHash(beneficiary)}
+                  bottomLeft={myst.displayMYST(fees)}
+                  bottomRight={myst.displayMYST(amount)}
+                />
+              )
+            }}
+          />
+        </>
+      }
+    />
   )
 }
 

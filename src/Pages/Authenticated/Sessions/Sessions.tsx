@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Session, SessionDirection, SessionStats } from 'mysterium-vpn-js'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { api } from '../../../api/Api'
@@ -14,13 +14,15 @@ import { countryName } from '../../../commons/country'
 import { date2human, seconds2Time } from '../../../commons/date.utils'
 import { parseError } from '../../../commons/error.utils'
 import formatBytes from '../../../commons/formatBytes'
-import { displayMyst } from '../../../commons/money.utils'
 import { toastError } from '../../../commons/toast.utils'
-import Header from '../../../Components/Header'
 import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import './Sessions.scss'
+import { Layout } from '../Layout'
 import Table from '../../../Components/Table/Table'
+import { MobileRow } from '../../../Components/Table/MobileRow'
+import { Row } from 'react-table'
+import { myst } from '../../../commons/myst.utils'
 
 export interface Props {
   filterDirection?: SessionDirection
@@ -41,7 +43,7 @@ interface SessionRow {
   started: string
   earnings: string
   transferred: string
-  session_id: string
+  sessionId: string
 }
 
 const row = (s: Session): SessionRow => {
@@ -49,9 +51,9 @@ const row = (s: Session): SessionRow => {
     country: countryName(s.consumerCountry),
     duration: seconds2Time(s.duration),
     started: date2human(s.createdAt),
-    earnings: displayMyst(s.tokens),
+    earnings: myst.displayMYST(s.tokens),
     transferred: formatBytes(s.bytesReceived + s.bytesSent),
-    session_id: s.id.split('-')[0],
+    sessionId: s.id.split('-')[0],
   }
 }
 
@@ -94,53 +96,72 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
     }
   }, [])
 
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Country',
+        accessor: 'country',
+        width: 10,
+      },
+      {
+        Header: 'Duration',
+        accessor: 'duration',
+        width: 10,
+      },
+      {
+        Header: 'Started',
+        accessor: 'started',
+        width: 20,
+      },
+      {
+        Header: 'Earnings',
+        accessor: 'earnings',
+        width: 20,
+      },
+      {
+        Header: 'Transferred',
+        accessor: 'transferred',
+        width: 20,
+      },
+      {
+        Header: 'Session ID',
+        accessor: 'sessionId',
+        width: 20,
+      },
+    ],
+    [],
+  )
+
   return (
-    <div className="main">
-      <div className="main-block main-block--split">
-        <Header logo={Logo} name="Sessions" />
+    <Layout
+      title="Sessions"
+      logo={<Logo />}
+      main={
         <Table
-          columns={[
-            {
-              Header: 'Country',
-              accessor: 'country',
-              width: 10,
-            },
-            {
-              Header: 'Duration',
-              accessor: 'duration',
-              width: 10,
-            },
-            {
-              Header: 'Started',
-              accessor: 'started',
-              width: 20,
-            },
-            {
-              Header: 'Earnings',
-              accessor: 'earnings',
-              width: 20,
-            },
-            {
-              Header: 'Transferred',
-              accessor: 'transferred',
-              width: 20,
-            },
-            {
-              Header: 'Session ID',
-              accessor: 'session_id',
-              width: 20,
-            },
-          ]}
+          columns={columns}
           data={state.sessionList}
           fetchData={fetchData}
           lastPage={state.sessionListPages}
           loading={state.isLoading}
+          mobileRow={({ original }: Row<SessionRow>, index) => {
+            const { country, duration, transferred, earnings, sessionId } = original
+            return (
+              <MobileRow
+                topLeft={country}
+                topLeftSub={sessionId}
+                bottomLeft={duration}
+                bottomMiddle={transferred}
+                bottomRight={earnings}
+              />
+            )
+          }}
         />
-      </div>
-      <div className="sidebar-block">
+      }
+      sidebar={
         <SessionSidebar liveSessions={liveSessions} liveSessionStats={liveSessionStats} headerText="Live Sessions" />
-      </div>
-    </div>
+      }
+      showSideBar
+    />
   )
 }
 

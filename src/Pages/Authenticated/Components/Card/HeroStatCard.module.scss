@@ -1,7 +1,7 @@
 @import '../../../../assets/styles/base/variables';
 @import '../../../../assets/styles/base/mixins/media';
 
-.dashboard-statistic-hero {
+.card {
   background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
   padding: 22px 28px 25px 28px;
   box-shadow: 0 2px 5px rgba(99,99,99, 0.05);
@@ -20,13 +20,7 @@
     width: 100%;
   }
 
-  &__stat {
-    min-width: 120px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  &__icon {
+  &Icon {
     background: $light-key-color;
     width: 50px;
     height: 50px;
@@ -37,20 +31,26 @@
     margin-right: 14px;
   }
 
-  &__value-hero {
-    color: #FFFFFF;
-    font-style: normal;
-    font-size: $larger-size;
-    line-height: 32px;
-    font-weight: $medium-weight;
-  }
+  &Stat {
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
 
-  &__label-hero {
-    font-style: normal;
-    font-size: $normal-size;
-    line-height: 21px;
-    font-weight: $lighter-weight;
-    color: #FFFFFF;
+    &Value {
+      color: #FFFFFF;
+      font-style: normal;
+      font-size: $larger-size;
+      line-height: 32px;
+      font-weight: $medium-weight;
+    }
+
+    &Label {
+      font-style: normal;
+      font-size: $normal-size;
+      line-height: 21px;
+      font-weight: $lighter-weight;
+      color: #FFFFFF;
+    }
   }
 
 }

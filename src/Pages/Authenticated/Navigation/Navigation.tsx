@@ -11,13 +11,15 @@ import './Navigation.scss'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/components/navigation/Logo.svg'
 import { ReactComponent as Dashboard } from '../../../assets/images/authenticated/components/navigation/Dashboard.svg'
 import { ReactComponent as DashboardActive } from '../../../assets/images/authenticated/components/navigation/DashboardActive.svg'
-import { ReactComponent as Sessions } from '../../../assets/images/authenticated/components/navigation/Sessiongs.svg'
+import { ReactComponent as Sessions } from '../../../assets/images/authenticated/components/navigation/Sessions.svg'
 import { ReactComponent as SessionsActive } from '../../../assets/images/authenticated/components/navigation/SessionsActive.svg'
+import { ReactComponent as SessionsSidebar } from '../../../assets/images/authenticated/components/navigation/SessionsSidebar.svg'
+import { ReactComponent as SessionsSidebarActive } from '../../../assets/images/authenticated/components/navigation/SessionsSidebarActive.svg'
 import { ReactComponent as Settings } from '../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { ReactComponent as SettingsActive } from '../../../assets/images/authenticated/components/navigation/SettingsActive.svg'
 import { ReactComponent as Wallet } from '../../../assets/images/authenticated/components/navigation/Wallet.svg'
 import { ReactComponent as WalletActive } from '../../../assets/images/authenticated/components/navigation/WalletActive.svg'
-import { DASHBOARD, SESSIONS, SESSIONS_SIDE, SETTINGS } from '../../../constants/routes'
+import { DASHBOARD, SESSIONS, SESSIONS_SIDE, SETTINGS, WALLET } from '../../../constants/routes'
 import ReportIssue from '../../../Components/ReportIssues/ReportIssue'
 
 type Props = RouteComponentProps<any, any, any>
@@ -49,11 +51,11 @@ const Navigation = ({ location }: Props): JSX.Element => {
         {pathname === SETTINGS ? <SettingsActive /> : <Settings />}
       </NavLink>
       <NavLink to={SESSIONS_SIDE} className={'mobile navigation--item '} activeClassName="navigation--item active">
-        {pathname === SESSIONS_SIDE ? <WalletActive /> : <Wallet />}
+        {pathname === SESSIONS_SIDE ? <SessionsSidebarActive /> : <SessionsSidebar />}
       </NavLink>
-      {/*<NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">*/}
-      {/*    {pathname === WALLET ? <WalletActive /> : <Wallet />}*/}
-      {/*</NavLink>*/}
+      <NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">
+        {pathname === WALLET ? <WalletActive /> : <Wallet />}
+      </NavLink>
       <div className="flex-grow" />
       <div className="navigation--issue">
         <ReportIssue />
