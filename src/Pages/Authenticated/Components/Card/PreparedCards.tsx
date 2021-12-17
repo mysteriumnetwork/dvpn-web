@@ -85,10 +85,10 @@ const Transferred = ({ stats }: { stats: SessionStats }) => (
   <StatCard stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
 )
 
-const Sessions = ({ stats }: { stats: SessionStats }) => <StatCard stat={'' + stats.count} name="Sessions" />
+const Sessions = ({ stats }: { stats: SessionStats }) => <StatCard stat={stats.count} name="Sessions" />
 
 const UniqueClients = ({ stats }: { stats: SessionStats }) => (
-  <StatCard stat={'' + stats.countConsumers} name="Unique clients" />
+  <StatCard stat={stats.countConsumers} name="Unique clients" />
 )
 
 export const Cards = {

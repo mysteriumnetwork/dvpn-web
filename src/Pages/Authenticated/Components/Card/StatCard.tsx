@@ -9,7 +9,7 @@ import HelpTooltip from '../../../../Components/HelpTooltip/HelpTooltip'
 import React from 'react'
 
 interface Props {
-  stat: string
+  stat: string | number
   name: string
   helpText?: string
 }

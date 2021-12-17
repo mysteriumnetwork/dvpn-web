@@ -66,7 +66,7 @@ const Table = ({
           return (
             <div
               {...cell.getCellProps()}
-              className={classNames(styles.tableBodyRowCell, cell.column.width ? 'w-' + cell.column.width : '')}
+              className={classNames(styles.tableBodyRowCell, cell.column.width ? `w-${cell.column.width}` : '')}
             >
               {cell.render('Cell')}
             </div>

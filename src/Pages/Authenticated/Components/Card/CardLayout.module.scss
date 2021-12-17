@@ -7,8 +7,4 @@
   flex-wrap: wrap;
   gap: 25px;
   margin-bottom: 25px;
-
-  @include respond-below(xlg) {
-    flex-wrap: wrap;
-  }
 }

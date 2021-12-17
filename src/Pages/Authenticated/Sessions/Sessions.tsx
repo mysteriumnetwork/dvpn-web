@@ -137,27 +137,25 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
       title="Sessions"
       logo={<Logo />}
       main={
-        <>
-          <Table
-            columns={columns}
-            data={state.sessionList}
-            fetchData={fetchData}
-            lastPage={state.sessionListPages}
-            loading={state.isLoading}
-            mobileRow={({ original }: Row<SessionRow>, index) => {
-              const { country, duration, transferred, earnings, sessionId } = original
-              return (
-                <MobileRow
-                  topLeft={country}
-                  topLeftSub={sessionId}
-                  bottomLeft={duration}
-                  bottomMiddle={transferred}
-                  bottomRight={earnings}
-                />
-              )
-            }}
-          />
-        </>
+        <Table
+          columns={columns}
+          data={state.sessionList}
+          fetchData={fetchData}
+          lastPage={state.sessionListPages}
+          loading={state.isLoading}
+          mobileRow={({ original }: Row<SessionRow>, index) => {
+            const { country, duration, transferred, earnings, sessionId } = original
+            return (
+              <MobileRow
+                topLeft={country}
+                topLeftSub={sessionId}
+                bottomLeft={duration}
+                bottomMiddle={transferred}
+                bottomRight={earnings}
+              />
+            )
+          }}
+        />
       }
       sidebar={
         <SessionSidebar liveSessions={liveSessions} liveSessionStats={liveSessionStats} headerText="Live Sessions" />
