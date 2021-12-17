@@ -18,8 +18,15 @@ const displayMYST = (
     return `0${symbol}`
   }
 
-  const decimal = Decimal.clone({ precision: options?.fractionDigits || 7 })
-  return `${new decimal(amount).div(DECIMAL_PART).toString()}${symbol}`
+  const requiredPrecision = options?.fractionDigits || 18
+
+  const decimal = Decimal.clone({ precision: requiredPrecision })
+  const humanAmount = new decimal(amount).div(DECIMAL_PART)
+
+  if (-1 * humanAmount.e > requiredPrecision) {
+    return `< ${new decimal('1').div(Math.pow(10, requiredPrecision)).toFixed()}${symbol}`
+  }
+  return `${new decimal(amount).div(DECIMAL_PART).toFixed()}${symbol}`
 }
 
 export const myst = {

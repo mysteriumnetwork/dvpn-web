@@ -36,7 +36,15 @@ const UnsettledEarnings = () => {
 }
 
 const TotalWithdrawn = ({ amount }: { amount?: string }) => {
-  return <StatCard stat={myst.displayMYST(amount)} name="Total Withdrawn" />
+  return (
+    <StatCard
+      stat={myst.displayMYST(amount, {
+        ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+        fractionDigits: 2,
+      })}
+      name="Total Withdrawn"
+    />
+  )
 }
 
 const Balance = () => {
