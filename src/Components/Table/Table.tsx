@@ -13,6 +13,7 @@ import Button from '../Buttons/Button'
 import { Column, Row, usePagination, useTable } from 'react-table'
 import classNames from 'classnames'
 import { MobileRow } from './MobileRow'
+import { Media } from '../../commons/media.utils'
 
 interface Props {
   columns: Column[]
@@ -116,9 +117,13 @@ const Table = ({
             </div>
           ))}
         </div>
-        <div className={styles.tableBody}>{page.length > 0 ? preparedMap(page, desktopMap) : noData}</div>
+        <Media.Desktop>
+          <div className={styles.tableBody}>{page.length > 0 ? preparedMap(page, desktopMap) : noData}</div>
+        </Media.Desktop>
       </div>
-      <div className={styles.tableMobile}>{page.length > 0 ? preparedMap(page, mobileRow) : noData}</div>
+      <Media.Mobile>
+        <div className={styles.tableMobile}>{page.length > 0 ? preparedMap(page, mobileRow) : noData}</div>
+      </Media.Mobile>
       <div className={styles.footer}>
         <Button className={styles.footerButton} onClick={() => previousPage()} disabled={!canPreviousPage}>
           <p>Prev</p>
