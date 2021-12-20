@@ -26,7 +26,7 @@ import './Dashboard.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
-import { currentIdentitySelector } from '../../../redux/selectors'
+import { selectors } from '../../../redux/selectors'
 import { Cards } from '../Components/Card/PreparedCards'
 import { CardLayout } from '../Components/Card/CardLayout'
 import { Layout } from '../Layout'
@@ -60,7 +60,7 @@ const initialState: StateProps = {
 }
 
 const Dashboard = () => {
-  const identity = useSelector(currentIdentitySelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
   const { config } = useSelector<RootState, AppState>(({ app }) => app)
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
 

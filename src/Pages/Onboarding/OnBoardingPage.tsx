@@ -9,7 +9,7 @@ import { CircularProgress } from '@material-ui/core'
 import styles from './Onboarding.module.scss'
 import sideImage from '../../assets/images/onboarding/SideImage.png'
 import { useSelector } from 'react-redux'
-import { onBoardingStateSelector } from '../../redux/selectors'
+import { selectors } from '../../redux/selectors'
 import { Onboarding } from '../../redux/app.slice'
 
 interface Step {
@@ -37,7 +37,7 @@ const steps: Step[] = [
 ]
 
 const OnBoardingPage = () => {
-  const onBoarding = useSelector(onBoardingStateSelector)
+  const onBoarding = useSelector(selectors.onBoardingStateSelector)
 
   const [step, setStep] = useState<number>(0)
   const Step = useMemo(() => React.lazy(() => import(`./steps/${steps[step].component}`)), [step])
