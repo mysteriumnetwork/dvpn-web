@@ -24,7 +24,7 @@ import PasswordChange from './Components/PasswordChange'
 import PayoutAddress from './Components/PayoutAddress'
 
 import './Setings.scss'
-import { currentIdentitySelector } from '../../../redux/selectors'
+import { selectors } from '../../../redux/selectors'
 import { Layout } from '../Layout'
 import Version from './Components/Version'
 
@@ -49,7 +49,7 @@ interface StateInterface {
 }
 
 const Settings = () => {
-  const identity = useSelector(currentIdentitySelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
   const cfg = useSelector<RootState, Config | undefined>(({ app }) => app.config)
 
   const [state, setState] = React.useState<StateInterface>({

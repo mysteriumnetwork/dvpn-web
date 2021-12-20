@@ -35,7 +35,7 @@ import LoginPage from './Login/LoginPage'
 import RestartNode from './Error/RestartNode'
 import PageNotFound from './Error/PageNotFound'
 import AuthenticatedPage from './Authenticated/AuthenticatedPage'
-import { currentIdentitySelector, onBoardingStateSelector } from '../redux/selectors'
+import { selectors } from '../redux/selectors'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
 
 interface Props {
@@ -78,10 +78,10 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
 const AppRouter = ({ actions }: Props) => {
   const loading = useSelector<RootState, boolean>(({ app }) => app.loading)
   const loggedIn = useSelector<RootState, boolean>(({ app }) => isLoggedIn(app.auth))
-  const identity = useSelector(currentIdentitySelector)
-  const onBoarding = useSelector(onBoardingStateSelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
+  const onBoarding = useSelector(selectors.onBoardingStateSelector)
 
-  const loginActions = async (defaultCredentials: boolean) => {
+  const authenticatedActions = async (defaultCredentials: boolean) => {
     await actions.updateAuthenticatedStore({
       authenticated: true,
       withDefaultCredentials: defaultCredentials,
@@ -97,10 +97,12 @@ const AppRouter = ({ actions }: Props) => {
       let defaultPass = await tequila.loginWithDefaultCredentials()
       let authenticated = defaultPass
       //check if there is a token cookie saved
-      if (!authenticated) authenticated = await tequila.isUserAuthenticated()
+      if (!authenticated) {
+        authenticated = await tequila.isUserAuthenticated()
+      }
 
       if (authenticated) {
-        await loginActions(defaultPass)
+        await authenticatedActions(defaultPass)
       }
 
       await actions.updateAuthFlowLoadingStore(false)
@@ -133,7 +135,11 @@ const AppRouter = ({ actions }: Props) => {
         exact
         path={LOGIN}
         render={() => {
-          return !loggedIn ? <LoginPage onSuccessLogin={() => loginActions(false)} /> : <Redirect to={DASHBOARD} />
+          return !loggedIn ? (
+            <LoginPage onSuccessLogin={() => authenticatedActions(false)} />
+          ) : (
+            <Redirect to={DASHBOARD} />
+          )
         }}
       />
       <Route

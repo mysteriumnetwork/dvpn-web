@@ -14,7 +14,7 @@ import classNames from 'classnames'
 import TopUpModal from './TopUpModal/TopUpModal'
 import { api } from '../../../api/Api'
 import { useSelector } from 'react-redux'
-import { currentIdentitySelector, feesSelector } from '../../../redux/selectors'
+import { selectors } from '../../../redux/selectors'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
 import { TextField } from '../../../Components/TextField/TextField'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
@@ -58,7 +58,7 @@ const isStale = (rf: RegistrationInfo) => {
 }
 
 const Registration = ({ nextStep }: StepProps) => {
-  const identity = useSelector(currentIdentitySelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
   const [state, setState] = useImmer<State>({
     isLoading: true,
     isLoadingEligibility: true,
@@ -69,7 +69,7 @@ const Registration = ({ nextStep }: StepProps) => {
     errors: [],
   })
 
-  const fees = useSelector(feesSelector)
+  const fees = useSelector(selectors.feesSelector)
   // use 2x registration fee for insurance
   const registrationInfo = useMemo((): RegistrationInfo => {
     const stored = storage.get<RegistrationInfo>(identity.id)
