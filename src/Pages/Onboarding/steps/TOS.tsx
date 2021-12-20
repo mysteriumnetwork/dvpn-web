@@ -9,7 +9,7 @@ import showdown from 'showdown'
 // @ts-ignore
 import { TermsExitNode } from '@mysteriumnetwork/terms'
 
-import { acceptWithTermsAndConditions } from '../../../api/ApiWrapper'
+import { tequila } from '../../../api/ApiWrapper'
 import Button from '../../../Components/Buttons/Button'
 import styles from './Steps.module.scss'
 import classNames from 'classnames'
@@ -18,7 +18,7 @@ const md = new showdown.Converter()
 
 const TOS = ({ nextStep }: StepProps): JSX.Element => {
   const agree = async () => {
-    await acceptWithTermsAndConditions()
+    await tequila.acceptWithTermsAndConditions()
     nextStep()
   }
 

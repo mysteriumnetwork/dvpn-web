@@ -8,7 +8,7 @@ import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { FormEvent } from 'react'
 import { useImmer } from 'use-immer'
-import { login } from '../../api/ApiWrapper'
+import { tequila } from '../../api/ApiWrapper'
 import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png'
 import Button from '../../Components/Buttons/Button'
 import { TextField } from '../../Components/TextField/TextField'
@@ -51,7 +51,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
     })
 
     try {
-      await login(DEFAULT_USERNAME, state.password)
+      await tequila.login(DEFAULT_USERNAME, state.password)
       await onSuccessLogin()
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
     } catch (_) {

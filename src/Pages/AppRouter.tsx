@@ -16,7 +16,7 @@ import ConnectToSSE from '../sse/server-sent-events'
 import { Auth, isLoggedIn, updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
 import { fetchConfigAsync, fetchFeesAsync, fetchIdentityAsync, updateTermsStoreAsync } from '../redux/app.async.actions'
 import { RootState } from '../redux/store'
-import { isUserAuthenticated, loginWithDefaultCredentials } from '../api/ApiWrapper'
+import { tequila } from '../api/ApiWrapper'
 import {
   DASHBOARD,
   ERROR,
@@ -94,10 +94,10 @@ const AppRouter = ({ actions }: Props) => {
 
   useLayoutEffect(() => {
     const blockingCheck = async () => {
-      let defaultPass = await loginWithDefaultCredentials()
+      let defaultPass = await tequila.loginWithDefaultCredentials()
       let authenticated = defaultPass
       //check if there is a token cookie saved
-      if (!authenticated) authenticated = await isUserAuthenticated()
+      if (!authenticated) authenticated = await tequila.isUserAuthenticated()
 
       if (authenticated) {
         await loginActions(defaultPass)

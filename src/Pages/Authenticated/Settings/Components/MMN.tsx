@@ -7,7 +7,7 @@
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { api } from '../../../../api/Api'
-import { refreshStoreConfig } from '../../../../api/ApiWrapper'
+import { tequila } from '../../../../api/ApiWrapper'
 import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 
@@ -57,7 +57,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
         })
         toastSuccess('MMN API key updated.')
       })
-      .then(() => refreshStoreConfig())
+      .then(() => tequila.refreshStoreConfig())
       .catch((error) =>
         setState((d) => {
           d.error = true
