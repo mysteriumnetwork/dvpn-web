@@ -30,7 +30,7 @@ import { InputGroup } from '../../../Components/InputGroups/InputGroup'
 
 interface State {
   passwordRepeat?: string
-  password?: string
+  password: string
   apiKey: string
   urlApiKey: boolean
   useApiKey: boolean
@@ -145,7 +145,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
       await api.authChangePassword({
         username: DEFAULT_USERNAME,
         oldPassword: DEFAULT_PASSWORD,
-        newPassword: state.password || '',
+        newPassword: state.password,
       })
 
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
