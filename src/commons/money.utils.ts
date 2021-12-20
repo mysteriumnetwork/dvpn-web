@@ -7,13 +7,11 @@
 import { Currency, DECIMAL_PART, displayMoney, DisplayMoneyOptions } from 'mysterium-vpn-js'
 
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index'
-import { isTestnet } from './config'
-import { store } from '../redux/store'
 
 export const ETHER_FRACTIONS = 18
 
 export const currentCurrency = (): Currency => {
-  return isTestnet(store.getState()?.app?.config) ? Currency.MYSTTestToken : Currency.MYST
+  return Currency.MYST
 }
 
 export const toMyst = (amountWei: number, precision: number = 7): number => {
