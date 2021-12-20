@@ -21,7 +21,6 @@ export const login = async (username: string, password: string): Promise<void> =
 export const loginWithDefaultCredentials = async (): Promise<boolean> => {
   try {
     await api.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD })
-
     return true
   } catch (e) {
     if (e instanceof TequilapiError && e.isUnauthorizedError) {
@@ -53,15 +52,9 @@ export const acceptWithTermsAndConditions = async () => {
     .then(() => store.dispatch(updateTermsStore({ acceptedVersion: termsPackageJson.version })))
 }
 
-export const updateConfig = async (): Promise<Config> => {
+export const refreshStoreConfig = async (): Promise<Config> => {
   return await api.config().then((config) => {
     store.dispatch(updateConfigStore(config))
-    return config
-  })
-}
-
-export const updateUserConfig = async (): Promise<Config> => {
-  return await api.userConfig().then((config) => {
     return config
   })
 }
@@ -75,7 +68,7 @@ export const setAccessPolicy = async (policyName?: string | null): Promise<Confi
         },
       },
     })
-    .then(updateConfig)
+    .then(refreshStoreConfig)
 }
 
 export const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promise<Config> => {
@@ -88,7 +81,7 @@ export const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number)
         },
       },
     })
-    .then(updateConfig)
+    .then(refreshStoreConfig)
 }
 
 export const setChainId = async (chainId: number): Promise<Config> => {
@@ -98,9 +91,9 @@ export const setChainId = async (chainId: number): Promise<Config> => {
         'chain-id': chainId,
       },
     })
-    .then(updateConfig)
+    .then(refreshStoreConfig)
 }
 
 export const setUserConfig = async (data: any): Promise<Config> => {
-  return await api.updateUserConfig({ data }).then(updateConfig)
+  return await api.updateUserConfig({ data }).then(refreshStoreConfig)
 }
