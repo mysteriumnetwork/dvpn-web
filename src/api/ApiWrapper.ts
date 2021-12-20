@@ -14,11 +14,11 @@ import { updateConfigStore, updateTermsStore } from '../redux/app.slice'
 
 import { api } from './Api'
 
-export const login = async (username: string, password: string): Promise<void> => {
+const login = async (username: string, password: string): Promise<void> => {
   return await api.authLogin({ username, password }).then(() => Promise.resolve())
 }
 
-export const loginWithDefaultCredentials = async (): Promise<boolean> => {
+const loginWithDefaultCredentials = async (): Promise<boolean> => {
   try {
     await api.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD })
     return true
@@ -31,7 +31,7 @@ export const loginWithDefaultCredentials = async (): Promise<boolean> => {
   return false
 }
 
-export const isUserAuthenticated = async (): Promise<boolean> => {
+const isUserAuthenticated = async (): Promise<boolean> => {
   try {
     await api.identityList()
   } catch (e) {
@@ -43,7 +43,7 @@ export const isUserAuthenticated = async (): Promise<boolean> => {
   return true
 }
 
-export const acceptWithTermsAndConditions = async () => {
+const acceptWithTermsAndConditions = async () => {
   return await api
     .termsUpdate({
       agreedProvider: true,
@@ -52,14 +52,14 @@ export const acceptWithTermsAndConditions = async () => {
     .then(() => store.dispatch(updateTermsStore({ acceptedVersion: termsPackageJson.version })))
 }
 
-export const refreshStoreConfig = async (): Promise<Config> => {
+const refreshStoreConfig = async (): Promise<Config> => {
   return await api.config().then((config) => {
     store.dispatch(updateConfigStore(config))
     return config
   })
 }
 
-export const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
+const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
   return await api
     .updateUserConfig({
       data: {
@@ -71,7 +71,7 @@ export const setAccessPolicy = async (policyName?: string | null): Promise<Confi
     .then(refreshStoreConfig)
 }
 
-export const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promise<Config> => {
+const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promise<Config> => {
   return await api
     .updateUserConfig({
       data: {
@@ -84,7 +84,7 @@ export const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number)
     .then(refreshStoreConfig)
 }
 
-export const setChainId = async (chainId: number): Promise<Config> => {
+const setChainId = async (chainId: number): Promise<Config> => {
   return await api
     .updateUserConfig({
       data: {
@@ -96,4 +96,17 @@ export const setChainId = async (chainId: number): Promise<Config> => {
 
 export const setUserConfig = async (data: any): Promise<Config> => {
   return await api.updateUserConfig({ data }).then(refreshStoreConfig)
+}
+
+export const tequila = {
+  api,
+  login,
+  loginWithDefaultCredentials,
+  isUserAuthenticated,
+  acceptWithTermsAndConditions,
+  refreshStoreConfig,
+  setAccessPolicy,
+  setTrafficShaping,
+  setChainId,
+  setUserConfig,
 }

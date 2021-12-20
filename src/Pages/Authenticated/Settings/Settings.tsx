@@ -10,7 +10,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import { api } from '../../../api/Api'
-import { setUserConfig } from '../../../api/ApiWrapper'
+import { tequila } from '../../../api/ApiWrapper'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import * as config from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
@@ -107,7 +107,7 @@ const Settings = () => {
               <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
             </Card>
             <Card title="Advanced Settings">
-              <Advanced config={cfg} defaultConfig={state.defaultConfig} onSave={setUserConfig} />
+              <Advanced config={cfg} defaultConfig={state.defaultConfig} onSave={tequila.setUserConfig} />
             </Card>
           </div>
         </div>

@@ -8,7 +8,7 @@ import { ServiceInfo } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect, useState } from 'react'
 import { api } from '../../../../api/Api'
-import { setAccessPolicy, setTrafficShaping } from '../../../../api/ApiWrapper'
+import { tequila } from '../../../../api/ApiWrapper'
 import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthKBps } from '../../../../commons/config'
 import { parseError } from '../../../../commons/error.utils'
 import { toastError } from '../../../../commons/toast.utils'
@@ -97,7 +97,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             onConfirm={() => {
               const c = !state.isVerified
               setState((cs) => ({ ...cs, isVerified: c }))
-              return restartServices(setAccessPolicy(c ? 'mysterium' : ''))
+              return restartServices(tequila.setAccessPolicy(c ? 'mysterium' : ''))
             }}
           />
           <p className="text">Only Mysterium verified partner traffic</p>
@@ -111,7 +111,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             message="This will restart all running services to take affect."
             turnedOn={state.isShaping}
             onConfirm={() => {
-              return restartServices(setTrafficShaping(!state.isShaping, bandwidthKBps()))
+              return restartServices(tequila.setTrafficShaping(!state.isShaping, bandwidthKBps()))
             }}
           />
           <p className="text">Limit bandwidth to {state.bandwidthMbps} Mbps</p>
@@ -132,7 +132,7 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
             onSave={() => {
               Promise.resolve()
                 .then(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: true })))
-                .then(() => restartServices(setTrafficShaping(state.isShaping, bandwidthKBps())))
+                .then(() => restartServices(tequila.setTrafficShaping(state.isShaping, bandwidthKBps())))
                 .then(closeBandwidthModal)
                 .finally(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: false })))
             }}
