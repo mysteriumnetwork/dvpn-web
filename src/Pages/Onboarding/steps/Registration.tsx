@@ -11,7 +11,7 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
 import React, { useEffect, useMemo } from 'react'
 import classNames from 'classnames'
-import TopUpModal from './TopUpModal'
+import TopUpModal from './TopUpModal/TopUpModal'
 import { api } from '../../../api/Api'
 import { useSelector } from 'react-redux'
 import { currentIdentitySelector, feesSelector } from '../../../redux/selectors'
@@ -27,6 +27,7 @@ import { flooredAmount, toMyst } from '../../../commons/money.utils'
 interface State {
   isLoading: boolean
   isFreeRegistrationEligible: boolean
+  isLoadingEligibility: boolean
   isTopUpOpen: boolean
   withdrawalAddress: string
   currentChainName: string
@@ -60,6 +61,7 @@ const Registration = ({ nextStep }: StepProps) => {
   const identity = useSelector(currentIdentitySelector)
   const [state, setState] = useImmer<State>({
     isLoading: true,
+    isLoadingEligibility: true,
     isFreeRegistrationEligible: false,
     isTopUpOpen: false,
     withdrawalAddress: '',
@@ -114,6 +116,7 @@ const Registration = ({ nextStep }: StepProps) => {
         setState((d) => {
           d.currentChainName = summary.chains[summary.currentChain]
           d.isFreeRegistrationEligible = migrationEligibility.eligible || providerEligibility.eligible
+          d.isLoadingEligibility = false
         })
       } catch (err) {
         toastError(parseError(err))
@@ -204,29 +207,31 @@ const Registration = ({ nextStep }: StepProps) => {
           </Button>
         </div>
       </div>
-      <TopUpModal
-        open={state.isTopUpOpen}
-        currentChainName={state.currentChainName}
-        identity={identity}
-        registrationInfo={registrationInfo}
-        onClose={() => {
-          setIsTopUpOpen(false)
-          setIsLoading(false)
-        }}
-        onTopUp={async () => {
-          try {
-            await registerIdentity(identity.id)
+      {!state.isLoadingEligibility && (
+        <TopUpModal
+          open={state.isTopUpOpen}
+          currentChainName={state.currentChainName}
+          identity={identity}
+          registrationInfo={registrationInfo}
+          onClose={() => {
             setIsTopUpOpen(false)
             setIsLoading(false)
-            nextStep()
-            return Promise.resolve()
-          } catch (e) {
-            toastError('Registration failed.')
-            return Promise.reject()
-          }
-        }}
-        isFreeRegistrationEligible={state.isFreeRegistrationEligible}
-      />
+          }}
+          onNext={async () => {
+            try {
+              await registerIdentity(identity.id)
+              setIsTopUpOpen(false)
+              setIsLoading(false)
+              nextStep()
+              return Promise.resolve()
+            } catch (e) {
+              toastError('Registration failed.')
+              return Promise.reject()
+            }
+          }}
+          isFreeRegistrationEligible={state.isFreeRegistrationEligible}
+        />
+      )}
     </div>
   )
 }
