@@ -33,6 +33,7 @@ export const fetchIdentityAsync = (): ((dispatch: Dispatch<any>) => void) => {
     const identityRef = await api.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
     dispatch(updateIdentityRefStore(identityRef))
 
+    await api.identityBalanceRefresh(identityRef.id)
     const identity = await api.identity(identityRef.id)
     dispatch(updateIdentityStore(identity))
   }
