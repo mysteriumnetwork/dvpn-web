@@ -20,7 +20,7 @@ export const toMyst = (amountWei: number, precision: number = 7): number => {
   return Math.floor(amountMyst * m) / m
 }
 
-export const flooredAmount = (amount: number, precision: number = 7): number => {
+const flooredAmount = (amount: number, precision: number = 7): number => {
   const m = Math.pow(10, precision)
   const amountCurrency = amount
   return Math.floor(amountCurrency * m) / m
@@ -42,4 +42,8 @@ export const displayMystWholeOnly = (
   opts: DisplayMoneyOptions = { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 0, decimalPart: 1 },
 ): string => {
   return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
+}
+
+export const money = {
+  flooredAmount,
 }

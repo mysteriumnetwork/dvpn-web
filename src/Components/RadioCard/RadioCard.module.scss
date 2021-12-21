@@ -17,10 +17,11 @@
 }
 
 .item:hover {
-  background: $names-text-color;
+  background: $third-color;
   color: #FFFFFF;
 }
 
 .active {
-  background: $names-text-color;
+  background: $light-key-color;
+  color: #FFFFFF;
 }

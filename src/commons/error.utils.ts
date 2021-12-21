@@ -6,11 +6,16 @@
  */
 import { TequilapiError } from 'mysterium-vpn-js'
 import _ from 'lodash'
+import { toastError } from './toast.utils'
 
 export const UNKNOWN_API_ERROR = 'Unknown API Error'
 
 export const parseError = (error: any, defaultMsg?: string) => {
   return parseTequilApiError(error) || parseMMNError(error) || defaultMsg || error?.message || UNKNOWN_API_ERROR
+}
+
+export const parseAndToastError = (error: any) => {
+  toastError(parseError(error))
 }
 
 export const parseTequilApiError = (error: any): string | undefined => {
