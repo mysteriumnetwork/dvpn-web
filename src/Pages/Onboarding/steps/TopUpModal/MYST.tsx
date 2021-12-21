@@ -8,21 +8,21 @@
 import styles from './TopUpModal.module.scss'
 import { currentCurrency } from '../../../../commons/money.utils'
 import { QRCode } from 'react-qr-svg'
-import { CircularProgress, Tooltip } from '@material-ui/core'
+import { Tooltip } from '@material-ui/core'
 import { HowToGetMyst } from './howto'
-import { myst } from '../../../../commons/myst.utils'
-import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
 import React from 'react'
-import { Identity } from 'mysterium-vpn-js'
+import { useSelector } from 'react-redux'
+import { selectors } from '../../../../redux/selectors'
 
-interface MYSTProps {
-  identity: Identity
+interface Props {
   registrationFee: number
   chainName: string
-  isMYSTReceived: boolean
+  mystReceived?: JSX.Element
+  controls?: JSX.Element
 }
 
-export const MYST = ({ identity, registrationFee, chainName, isMYSTReceived }: MYSTProps) => {
+export const MYST = ({ registrationFee, chainName, controls, mystReceived }: Props) => {
+  const identity = useSelector(selectors.currentIdentitySelector)
   return (
     <>
       <div>
@@ -44,21 +44,8 @@ export const MYST = ({ identity, registrationFee, chainName, isMYSTReceived }: M
         />
       </a>
       <div>2. Wait for the confirmation (might take a couple of minutes)</div>
-      <div className={styles.topupReceived}>
-        {myst.displayMYST(identity.balance)}{' '}
-        {!isMYSTReceived ? (
-          <>
-            received...
-            <CircularProgress disableShrink />
-          </>
-        ) : (
-          <CheckCircleOutline fontSize="large" />
-        )}
-      </div>
+      {mystReceived}
+      {controls}
     </>
   )
-}
-
-export const RegistrationOptions = {
-  MYST,
 }

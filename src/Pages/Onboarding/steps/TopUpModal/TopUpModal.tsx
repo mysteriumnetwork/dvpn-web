@@ -6,14 +6,18 @@
  */
 import React, { useEffect, useMemo, useState } from 'react'
 import { api } from '../../../../api/Api'
-import { flooredAmount } from '../../../../commons/money.utils'
+import { money } from '../../../../commons/money.utils'
 import Button from '../../../../Components/Buttons/Button'
 import { Option, Radio } from '../../../../Components/Radio/Radio'
 import styles from './TopUpModal.module.scss'
 import { Identity } from 'mysterium-vpn-js'
 import { RegistrationInfo } from '../Registration'
 import { Modal } from '../../../../Components/Modal/Modal'
-import { RegistrationOptions } from './RegistrationOptions'
+import { MYST } from './MYST'
+import { Fiat } from './Fiat/Fiat'
+import { myst } from '../../../../commons/myst.utils'
+import { CircularProgress } from '@material-ui/core'
+import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
 
 interface Props {
   onNext: () => Promise<void>
@@ -49,7 +53,9 @@ const TopUpModal = ({
   }, [])
 
   const isFree = () => registrationOption === 'free'
-  const isMYSTReceived = isFree() ? true : flooredAmount(identity.balance, 3) >= registrationInfo.flooredFee
+  const isRegistrationFeeReceived = isFree()
+    ? true
+    : money.flooredAmount(identity.balance, 3) >= registrationInfo.flooredFee
   const registrationOptions: Option[] = useMemo(
     () => [
       { value: 'free', label: 'Register for free', disabled: !isFreeRegistrationEligible },
@@ -65,22 +71,31 @@ const TopUpModal = ({
     setIsLoading(false)
   }
 
-  const CMP = ({ o }: { o: RegistrationType }) => {
-    switch (o) {
-      case 'myst':
-        return (
-          <RegistrationOptions.MYST
-            identity={identity}
-            registrationFee={registrationInfo.flooredFee}
-            isMYSTReceived={isMYSTReceived}
-            chainName={currentChainName}
-          />
-        )
-      case 'free':
-        return <></>
-      default:
-        return <>Work in progress...</>
-    }
+  const Controls = () => (
+    <div className={styles.footer}>
+      <Button onClick={onClose} extraStyle="gray">
+        Back
+      </Button>
+      <Button onClick={handleNext} isLoading={isLoading} disabled={!isRegistrationFeeReceived}>
+        Next
+      </Button>
+    </div>
+  )
+
+  const MystReceived = () => {
+    return (
+      <div className={styles.topupReceived}>
+        {myst.displayMYST(identity.balance)}{' '}
+        {!isRegistrationFeeReceived ? (
+          <>
+            received...
+            <CircularProgress disableShrink />
+          </>
+        ) : (
+          <CheckCircleOutline fontSize="large" />
+        )}
+      </div>
+    )
   }
 
   return (
@@ -90,19 +105,36 @@ const TopUpModal = ({
         <div className={styles.options}>
           <Radio options={registrationOptions} checked={registrationOption} onChange={setRegistrationOption} />
         </div>
-        <div className={styles.topup}>
-          <CMP o={registrationOption} />
-        </div>
-        <div className={styles.footer}>
-          <Button onClick={onClose} extraStyle="gray">
-            Back
-          </Button>
-          <Button onClick={handleNext} isLoading={isLoading} disabled={!isMYSTReceived}>
-            Next
-          </Button>
-        </div>
+        <Conditional visible={registrationOption === 'fiat'}>
+          <Fiat
+            onClose={onClose}
+            isRegistrationFeeReceived={isRegistrationFeeReceived}
+            mystReceived={<MystReceived />}
+            controls={<Controls />}
+          />
+        </Conditional>
+        <Conditional visible={registrationOption === 'myst'}>
+          <MYST
+            registrationFee={registrationInfo.flooredFee}
+            chainName={currentChainName}
+            mystReceived={<MystReceived />}
+            controls={<Controls />}
+          />
+        </Conditional>
+        <Conditional visible={registrationOption === 'free'}>
+          <Controls />
+        </Conditional>
       </div>
     </Modal>
+  )
+}
+
+const Conditional = ({ visible, children }: { visible: boolean; children: any }) => {
+  const style: React.CSSProperties | undefined = visible ? undefined : { display: 'none' }
+  return (
+    <div style={style} className={styles.topup}>
+      {children}
+    </div>
   )
 }
 

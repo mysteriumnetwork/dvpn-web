@@ -22,7 +22,7 @@ import { parseError } from '../../../commons/error.utils'
 import { toastError } from '../../../commons/toast.utils'
 import { isRegistrationError, isUnregistered } from '../../../commons/identity.utils'
 import storage from '../../../commons/localStorage.utils'
-import { flooredAmount, toMyst } from '../../../commons/money.utils'
+import { money, toMyst } from '../../../commons/money.utils'
 
 interface State {
   isLoading: boolean
@@ -83,13 +83,13 @@ const Registration = ({ nextStep }: StepProps) => {
       return storage.put<RegistrationInfo>(identity.id, {
         ...stored,
         timestamp: Date.now(),
-        flooredFee: registrationFee > 0.15 ? flooredAmount(registrationFee, 3) * 1.5 : 0.2, // double amount - tx prises are unstable
+        flooredFee: registrationFee > 0.15 ? money.flooredAmount(registrationFee, 3) * 1.5 : 0.2, // double amount - tx prises are unstable
       })
     }
 
     return storage.put<RegistrationInfo>(identity.id, {
       timestamp: Date.now(),
-      flooredFee: registrationFee > 0.15 ? flooredAmount(registrationFee, 3) * 1.5 : 0.2,
+      flooredFee: registrationFee > 0.15 ? money.flooredAmount(registrationFee, 3) * 1.5 : 0.2,
       withdrawalAddress: '',
     })
   }, [fees, identity])

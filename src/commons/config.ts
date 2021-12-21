@@ -93,3 +93,26 @@ export const mmnApiUrl = (c?: Config): string => {
 export const mmnApiKey = (c?: Config): string => {
   return _.get<Config, any>(c, 'data.mmn.api-key')
 }
+
+const defaultFiatAmount = (c?: Config): number => {
+  return _.get<Config, any>(c, 'data.nodeui.default-fiat-amount') || 1
+}
+
+export const configParser = {
+  isTrafficShapingEnabled,
+  trafficShapingBandwidthKBps,
+  isAccessPolicyEnabled,
+  chainId,
+  udpPorts,
+  natTraversals,
+  rpcl2,
+  hermesId,
+  mmnWebAddress,
+  stunServers,
+  zeroStakeSettlementThreshold,
+  docsAddress,
+  mmnDomainName,
+  mmnApiUrl,
+  mmnApiKey,
+  defaultFiatAmount,
+}
