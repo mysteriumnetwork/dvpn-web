@@ -6,15 +6,15 @@
  */
 import { Session, SessionStatus, SessionStats, SessionDirection } from 'mysterium-vpn-js'
 import { Link } from 'react-router-dom'
-import './SessionSidebar.scss'
+import styles from './SessionSidebar.module.scss'
 import { countryName } from '../../../commons/country'
 
 import formatBytes, { add } from '../../../commons/formatBytes'
 import { date2human, seconds2Time } from '../../../commons/date.utils'
-import { displayMyst } from '../../../commons/money.utils'
 import { SESSIONS } from '../../../constants/routes'
 
 import SessionCard from '../Components/SessionCard/SessionCard'
+import { myst } from '../../../commons/myst.utils'
 
 const sumBytes = (sessionStats?: SessionStats) => {
   return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0)
@@ -25,15 +25,14 @@ const toSessionCard = (
   { id, consumerCountry, status, duration, bytesSent, bytesReceived, tokens, createdAt }: Session,
 ): JSX.Element => {
   return (
-    <div className="session">
+    <div key={key} className={styles.session}>
       <SessionCard
-        key={key}
         country={countryName(consumerCountry)}
         onGoing={status === SessionStatus.NEW}
         id={id}
         time={seconds2Time(duration)}
         data={formatBytes(add(bytesSent, bytesReceived))}
-        value={displayMyst(tokens)}
+        value={myst.displayMYST(tokens)}
         createdAt={date2human(createdAt)}
       />
     </div>
@@ -58,34 +57,30 @@ const SessionSidebar = ({
   headerText,
   historySessions = [],
 }: Props) => {
-  const historyCards = historySessions.map((hs, idx) => toSessionCard(`${idx}h`, hs))
-  const latestSessionCards = liveSessions.map((ls, idx) => toSessionCard(`${idx}l`, ls)).concat(historyCards)
+  const historyCards = historySessions.map((hs, idx) => toSessionCard(hs.id, hs))
+  const latestSessionCards = liveSessions.map((ls, idx) => toSessionCard(ls.id, ls)).concat(historyCards)
 
   return (
-    <div className="latest-sessions">
-      <p className="latest-sessions__heading">{headerText}</p>
-      <div className="latest-sessions__content">
-        {latestSessionCards.length === 0 ? (
-          <div className="latest-sessions__no-sessions-text">No sessions</div>
-        ) : (
-          latestSessionCards
-        )}
+    <div className={styles.sessions}>
+      <p className={styles.header}>{headerText}</p>
+      <div className={styles.content}>
+        {latestSessionCards.length === 0 ? <div className={styles.empty}>No sessions</div> : latestSessionCards}
       </div>
       {displayNavigation && (
-        <div className="latest-sessions__button-block">
+        <div className={styles.controls}>
           <Link to={SESSIONS} className="btn btn--outline-primary">
             <span className="btn-text">View all sessions</span>
           </Link>
         </div>
       )}
-      <div className="latest-sessions__footer">
-        <div className="latest-sessions__footer__sum-block">
-          <div className="name">{displayMyst(liveSessionStats?.sumTokens)}</div>
-          <div className="explanation">Live earnings</div>
+      <div className={styles.footer}>
+        <div className={styles.footerSumBlock}>
+          <div className={styles.name}>{myst.displayMYST(liveSessionStats?.sumTokens)}</div>
+          <div className={styles.explanation}>Live earnings</div>
         </div>
-        <div className="latest-sessions__footer__sum-block">
-          <div className="name">{formatBytes(sumBytes(liveSessionStats))}</div>
-          <div className="explanation">Live data</div>
+        <div className={styles.footerSumBlock}>
+          <div className={styles.name}>{formatBytes(sumBytes(liveSessionStats))}</div>
+          <div className={styles.explanation}>Live data</div>
         </div>
       </div>
     </div>
