@@ -4,14 +4,28 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styles from '../../Pages/Onboarding/steps/TopUpModal/TopUpModal.module.scss'
+import styles from './Modal.module.scss'
 import { Fade, Modal as MUIModal } from '@material-ui/core'
 
-export const Modal = ({ open, children }: { open: boolean; children: any }) => (
+interface Props {
+  open: boolean
+  children: any
+  onClose?: () => void
+  closeAfterTransition?: boolean
+  disableAutoFocus?: boolean
+}
+
+export const Modal = ({ open, children, onClose = () => {}, closeAfterTransition, disableAutoFocus }: Props) => (
   <MUIModal
     open={open}
     className={styles.modal}
-    disableAutoFocus={true}
+    disableAutoFocus={disableAutoFocus}
+    onClose={(_, reason) => {
+      if (reason !== 'backdropClick') {
+        onClose()
+      }
+    }}
+    closeAfterTransition={closeAfterTransition}
     BackdropProps={{
       timeout: 500,
     }}

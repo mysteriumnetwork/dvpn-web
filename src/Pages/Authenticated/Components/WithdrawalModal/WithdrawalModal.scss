@@ -2,11 +2,6 @@
 @import '../../../../assets/styles/base/mixins/media';
 
 .withdrawal-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: 0;
-
   &__title {
     font-weight: $medium-weight;
     font-size: $large-size;
