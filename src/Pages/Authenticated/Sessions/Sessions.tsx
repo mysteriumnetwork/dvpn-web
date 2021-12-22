@@ -147,6 +147,7 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
             const { country, duration, transferred, earnings, sessionId } = original
             return (
               <MobileRow
+                key={index}
                 topLeft={country}
                 topLeftSub={sessionId}
                 bottomLeft={duration}
