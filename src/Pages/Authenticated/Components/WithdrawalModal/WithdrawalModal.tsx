@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress, Fade, Modal } from '@material-ui/core'
+import { CircularProgress } from '@material-ui/core'
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
@@ -19,6 +19,7 @@ import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/Co
 import { Select, SelectItem } from '../../../../Components/Select/Select'
 import { TextField } from '../../../../Components/TextField/TextField'
 import './WithdrawalModal.scss'
+import { Modal } from '../../../../Components/Modal/Modal'
 
 interface Props {
   isOpen: boolean
@@ -179,187 +180,176 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   }
 
   return (
-    <Modal
-      className="settings-modal"
-      open={isOpen}
-      onClose={onClose}
-      closeAfterTransition
-      disableAutoFocus={true}
-      BackdropProps={{
-        timeout: 500,
-      }}
-    >
-      <Fade in={isOpen}>
-        <div className="withdrawal-modal__block">
-          <div className="withdrawal-modal__title">Withdrawal</div>
-          <div className="withdrawal-modal__rows">
-            <div className="withdrawal-modal__row-disclaimer">
-              You can withdraw your collected earnings into own Ethereum or Polygon wallet address at any time. Please
-              allow some time (usually a few minutes) for withdrawal transaction to be processed. Your balance will
-              update once transaction was executed.
+    <Modal open={isOpen} onClose={onClose} closeAfterTransition>
+      <div className="withdrawal-modal__block">
+        <div className="withdrawal-modal__title">Withdrawal</div>
+        <div className="withdrawal-modal__rows">
+          <div className="withdrawal-modal__row-disclaimer">
+            You can withdraw your collected earnings into own Ethereum or Polygon wallet address at any time. Please
+            allow some time (usually a few minutes) for withdrawal transaction to be processed. Your balance will update
+            once transaction was executed.
+          </div>
+          {state.isLoading ? (
+            <div className="withdrawal-modal__row-withdraw-loading">
+              <CircularProgress className="spinner-relative" disableShrink />
             </div>
-            {state.isLoading ? (
-              <div className="withdrawal-modal__row-withdraw-loading">
-                <CircularProgress className="spinner-relative" disableShrink />
+          ) : (
+            <>
+              <div className="withdrawal-modal__row-withdraw-error">
+                <Collapse in={!!errors}>
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    {errors}
+                  </Alert>
+                </Collapse>
+                <Collapse in={state.toChain === POLYGON_MATIC_MAINNET_CHAIN_ID}>
+                  <Alert severity="warning">
+                    <AlertTitle>Warning</AlertTitle>
+                    Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet)
+                    supporting Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not
+                    supported for Polygon network withdrawals and your tokens might be lost.
+                  </Alert>
+                </Collapse>
               </div>
-            ) : (
-              <>
-                <div className="withdrawal-modal__row-withdraw-error">
-                  <Collapse in={!!errors}>
-                    <Alert severity="error">
-                      <AlertTitle>Error</AlertTitle>
-                      {errors}
-                    </Alert>
-                  </Collapse>
-                  <Collapse in={state.toChain === POLYGON_MATIC_MAINNET_CHAIN_ID}>
-                    <Alert severity="warning">
-                      <AlertTitle>Warning</AlertTitle>
-                      Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet)
-                      supporting Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not
-                      supported for Polygon network withdrawals and your tokens might be lost.
-                    </Alert>
-                  </Collapse>
+              <div className="withdrawal-modal__row-withdraw-info">
+                <div className="input-group">
+                  <div className="input-group__label">Withdrawal Address</div>
+                  <TextField
+                    value={state.withdrawalAddress}
+                    onChange={(value) => {
+                      setState((d) => {
+                        d.withdrawalAddress = value
+                      })
+                    }}
+                  />
                 </div>
-                <div className="withdrawal-modal__row-withdraw-info">
-                  <div className="input-group">
-                    <div className="input-group__label">Withdrawal Address</div>
-                    <TextField
-                      value={state.withdrawalAddress}
-                      onChange={(value) => {
-                        setState((d) => {
-                          d.withdrawalAddress = value
-                        })
-                      }}
-                    />
+                <div className="input-group">
+                  <div className="input-group__label">
+                    Amount ({currentCurrency()}) / Your Balance: {toMyst(state.balanceTotalWei)}
                   </div>
-                  <div className="input-group">
-                    <div className="input-group__label">
-                      Amount ({currentCurrency()}) / Your Balance: {toMyst(state.balanceTotalWei)}
-                    </div>
-                    <TextField
-                      type="number"
-                      value={state.withdrawalAmountMYST}
-                      onChange={(value) => {
-                        const n = Number(value)
-                        setState((d) => {
-                          d.withdrawalAmountMYST = n
-                        })
-                      }}
-                    />
-                  </div>
-                  <div className="input-group">
-                    <div className="input-group__label">Select chain</div>
-                    <Select
-                      items={state.chainOptions}
-                      value={state.toChain}
-                      onChange={async (value) => {
-                        const chainId = value as number
-                        const fees = await api.transactorFees(chainId)
+                  <TextField
+                    type="number"
+                    value={state.withdrawalAmountMYST}
+                    onChange={(value) => {
+                      const n = Number(value)
+                      setState((d) => {
+                        d.withdrawalAmountMYST = n
+                      })
+                    }}
+                  />
+                </div>
+                <div className="input-group">
+                  <div className="input-group__label">Select chain</div>
+                  <Select
+                    items={state.chainOptions}
+                    value={state.toChain}
+                    onChange={async (value) => {
+                      const chainId = value as number
+                      const fees = await api.transactorFees(chainId)
 
-                        setState((d) => {
-                          d.toChain = chainId
-                          d.fees = fees
-                          d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
-                        })
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="withdrawal-modal__row-withdraw-fees">
-                  <Card
-                    info="Amount"
-                    value={displayMyst(state.withdrawalAmountWei, {
-                      ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                      showCurrency: false,
-                    })}
-                  />
-                  <Card
-                    info="Fee"
-                    value={displayMyst(settlement, {
-                      ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                      showCurrency: false,
-                    })}
-                  />
-                  <Card
-                    info="You will get"
-                    value={displayMyst(state.withdrawalAmountWei - settlement, {
-                      ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                      showCurrency: false,
-                    })}
-                    important
+                      setState((d) => {
+                        d.toChain = chainId
+                        d.fees = fees
+                        d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
+                      })
+                    }}
                   />
                 </div>
-              </>
+              </div>
+              <div className="withdrawal-modal__row-withdraw-fees">
+                <Card
+                  info="Amount"
+                  value={displayMyst(state.withdrawalAmountWei, {
+                    ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+                    showCurrency: false,
+                  })}
+                />
+                <Card
+                  info="Fee"
+                  value={displayMyst(settlement, {
+                    ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+                    showCurrency: false,
+                  })}
+                />
+                <Card
+                  info="You will get"
+                  value={displayMyst(state.withdrawalAmountWei - settlement, {
+                    ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+                    showCurrency: false,
+                  })}
+                  important
+                />
+              </div>
+            </>
+          )}
+        </div>
+        {latestWithdrawal && (
+          <div className="withdrawal-modal__settlement-info">
+            Your last transaction:{' '}
+            {withdrawalContainsTXLink() ? (
+              <a href={latestWithdrawal.blockExplorerUrl} rel="noreferrer" target="_blank">
+                {latestWithdrawal.txHash}
+              </a>
+            ) : (
+              <span style={{ color: '#000' }}>{latestWithdrawal.txHash}</span>
             )}
           </div>
-          {latestWithdrawal && (
-            <div className="withdrawal-modal__settlement-info">
-              Your last transaction:{' '}
-              {withdrawalContainsTXLink() ? (
-                <a href={latestWithdrawal.blockExplorerUrl} rel="noreferrer" target="_blank">
-                  {latestWithdrawal.txHash}
-                </a>
-              ) : (
-                <span style={{ color: '#000' }}>{latestWithdrawal.txHash}</span>
-              )}
-            </div>
-          )}
-          <div className="withdrawal-modal__footer">
-            <Button
-              onClick={() => {
-                onClose()
-                clearErrors()
-              }}
-              extraStyle="gray"
-            >
-              Close
-            </Button>
-            <Button
-              isLoading={state.isLoading}
-              disabled={state.isWithdrawDisabled}
-              onClick={() => {
-                const error = validateForm()
-                if (error) {
-                  setState((d) => {
-                    d.error = error
-                  })
-                  return
-                }
-                clearErrors()
-                showConfirm(true)
-              }}
-            >
-              Withdraw
-            </Button>
-          </div>
-          <ConfirmationDialogue
-            message="Please click OK to proceed with your withdrawal request."
-            open={state.showConfirm}
-            onCancel={() => {
-              showConfirm(false)
+        )}
+        <div className="withdrawal-modal__footer">
+          <Button
+            onClick={() => {
+              onClose()
+              clearErrors()
             }}
-            onConfirm={async () => {
-              try {
-                await api.withdraw({
-                  hermesId: state.hermesId,
-                  providerId: identity.id,
-                  beneficiary: state.withdrawalAddress,
-                  toChainId: state.toChain,
-                  amount: String(state.withdrawalAmountWei),
-                })
+            extraStyle="gray"
+          >
+            Close
+          </Button>
+          <Button
+            isLoading={state.isLoading}
+            disabled={state.isWithdrawDisabled}
+            onClick={() => {
+              const error = validateForm()
+              if (error) {
                 setState((d) => {
-                  d.withdrawalCompleted = true
+                  d.error = error
                 })
-                toastSuccess('Withdrawal completed successfully!')
-                onClose()
-              } catch (e: any) {
-                toastError('There was an error processing your withdrawal. Please try again later.')
+                return
               }
-              showConfirm(false)
+              clearErrors()
+              showConfirm(true)
             }}
-          />
+          >
+            Withdraw
+          </Button>
         </div>
-      </Fade>
+        <ConfirmationDialogue
+          message="Please click OK to proceed with your withdrawal request."
+          open={state.showConfirm}
+          onCancel={() => {
+            showConfirm(false)
+          }}
+          onConfirm={async () => {
+            try {
+              await api.withdraw({
+                hermesId: state.hermesId,
+                providerId: identity.id,
+                beneficiary: state.withdrawalAddress,
+                toChainId: state.toChain,
+                amount: String(state.withdrawalAmountWei),
+              })
+              setState((d) => {
+                d.withdrawalCompleted = true
+              })
+              toastSuccess('Withdrawal completed successfully!')
+              onClose()
+            } catch (e: any) {
+              toastError('There was an error processing your withdrawal. Please try again later.')
+            }
+            showConfirm(false)
+          }}
+        />
+      </div>
     </Modal>
   )
 }
