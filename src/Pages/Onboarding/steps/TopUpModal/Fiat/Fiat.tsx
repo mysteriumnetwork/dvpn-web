@@ -110,7 +110,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
       }
     }
     init()
-  }, [state.currency])
+  }, [])
 
   const redirected = () => {
     setState((d) => {
