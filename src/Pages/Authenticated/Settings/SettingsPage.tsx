@@ -23,7 +23,7 @@ import MMN from './Components/MMN'
 import PasswordChange from './Components/PasswordChange'
 import PayoutAddress from './Components/PayoutAddress'
 
-import './Setings.scss'
+import './SetingsPage.scss'
 import { selectors } from '../../../redux/selectors'
 import { Layout } from '../Layout'
 import Version from './Components/Version'
@@ -48,7 +48,7 @@ interface StateInterface {
   nodeCommit?: string
 }
 
-const Settings = () => {
+const SettingsPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const cfg = useSelector<RootState, Config | undefined>(({ app }) => app.config)
 
@@ -116,4 +116,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default SettingsPage

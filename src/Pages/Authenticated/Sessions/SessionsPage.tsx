@@ -17,7 +17,7 @@ import formatBytes from '../../../commons/formatBytes'
 import { toastError } from '../../../commons/toast.utils'
 import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
-import './Sessions.scss'
+import './SessionsPage.scss'
 import { Layout } from '../Layout'
 import Table from '../../../Components/Table/Table'
 import { MobileRow } from '../../../Components/Table/MobileRow'
@@ -57,7 +57,7 @@ const row = (s: Session): SessionRow => {
   }
 }
 
-const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
+const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
   const [state, setState] = useState<StateProps>({
     isLoading: true,
     sessionList: [],
@@ -166,4 +166,4 @@ const Sessions = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
   )
 }
 
-export default Sessions
+export default SessionsPage

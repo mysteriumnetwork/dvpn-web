@@ -22,7 +22,7 @@ import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import Charts from './Charts/Charts'
 
-import './Dashboard.scss'
+import './DashboardPage.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
@@ -59,7 +59,7 @@ const initialState: StateProps = {
   },
 }
 
-const Dashboard = () => {
+const DashboardPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const { config } = useSelector<RootState, AppState>(({ app }) => app)
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
@@ -154,4 +154,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default DashboardPage
