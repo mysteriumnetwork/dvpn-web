@@ -3,6 +3,7 @@ image: node:14.18.1-alpine3.14
 stages:
   - build
   - publish
+  - trigger
 
 build:
   stage: build
@@ -26,11 +27,12 @@ publish-assets:
     - tar -zcvf dist.tar.gz build/
     - RELEASE_ID=$(curl -s -H "Authorization:token $GITHUB_API_TOKEN" https://api.github.com/repos/mysteriumnetwork/dvpn-web/releases/tags/$CI_COMMIT_TAG | jq -r .id)
     - curl --data-binary @dist.tar.gz -H "Authorization:token $GITHUB_API_TOKEN" -H "Content-Type:application/octet-stream" https://uploads.github.com/repos/mysteriumnetwork/dvpn-web/releases/$RELEASE_ID/assets?name=dist.tar.gz
+    - curl --data-binary @compatibility.json -H "Authorization:token $GITHUB_API_TOKEN" -H "Content-Type:application/octet-stream" https://uploads.github.com/repos/mysteriumnetwork/dvpn-web/releases/$RELEASE_ID/assets?name=compatibility.json
   only:
     - tags
 
 trigger-go-dvpn-web:
-  stage: publish
+  stage: trigger
   tags: [docker]
   script:
     - apk add curl
