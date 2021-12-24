@@ -6,7 +6,7 @@
  */
 import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import React, { useEffect } from 'react'
+import React, { FormEvent, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useImmer } from 'use-immer'
 import { api } from '../../../api/Api'
@@ -111,7 +111,9 @@ const SetPassword = (_: StepProps): JSX.Element => {
     })
   }
 
-  const handleSubmitPassword = async () => {
+  const handleSubmitPassword = async (e: FormEvent<any>) => {
+    e.preventDefault()
+
     setState((d) => {
       d.loading = true
       d.error = false
