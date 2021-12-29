@@ -8,6 +8,7 @@ import styles from './Layout.module.scss'
 import classNames from 'classnames'
 import Header from '../../Components/Header/Header'
 import React from 'react'
+import { media } from '../../commons/media.utils'
 
 interface Props {
   title?: string
@@ -19,16 +20,17 @@ interface Props {
 }
 
 export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight }: Props) => {
+  const showSideBarAdjusted = showSideBar && media.isDesktopQuery
   return (
     <main className={styles.main}>
-      <div className={classNames(styles.mainBlock, showSideBar && styles.mainBlockSplit)}>
+      <div className={classNames(styles.mainBlock, showSideBarAdjusted && styles.mainBlockSplit)}>
         <div className={styles.header}>
           <Header logo={logo} name={title} />
           {topRight}
         </div>
         {main}
       </div>
-      {showSideBar && <div className={styles.sidebarBlock}>{sidebar}</div>}
+      {showSideBarAdjusted && <div className={styles.sidebarBlock}>{sidebar}</div>}
     </main>
   )
 }

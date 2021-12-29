@@ -8,15 +8,15 @@ import { useEffect, useState } from 'react'
 import styles from './Radio.module.scss'
 
 export interface Option {
-  value: string
+  value: any
   label: string
   disabled?: boolean
 }
 
 interface Props {
-  checked?: string
+  checked?: any
   options?: Option[]
-  onChange?: (value: string) => void
+  onChange?: (value: any) => void
 }
 
 export const Radio = ({ options = [], checked, onChange = () => {} }: Props) => {

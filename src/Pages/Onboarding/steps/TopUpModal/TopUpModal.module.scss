@@ -1,5 +1,5 @@
-@import "../../../assets/styles/base/variables";
-@import '../../../assets/styles/base/mixins/media';
+@import "../../../../assets/styles/base/variables";
+@import '../../../../assets/styles/base/mixins/media';
 
 .modal {
   display: flex;
@@ -79,6 +79,7 @@
 }
 
 .footer {
+  width: 100%;
   margin-top: 15px;
   display: flex;
   justify-content: space-between;

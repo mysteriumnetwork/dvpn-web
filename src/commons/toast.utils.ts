@@ -29,6 +29,6 @@ export const toastInfo = (msg: string) => {
 export const toastError = (msg: string) => {
   toast(msg, 'error')
 }
-export const toastParseError = (err: any) => {
+export const parseToastError = (err: any) => {
   toast(parseError(err), 'error')
 }

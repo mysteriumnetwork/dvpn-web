@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useSelector } from 'react-redux'
-import { configSelector, currentIdentitySelector } from '../../../../redux/selectors'
+import { selectors } from '../../../../redux/selectors'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import { zeroStakeSettlementThreshold } from '../../../../commons/config'
 import { StatCard } from './StatCard'
@@ -19,8 +19,8 @@ import { SessionStats } from 'mysterium-vpn-js'
 import formatBytes, { add } from '../../../../commons/formatBytes'
 
 const UnsettledEarnings = () => {
-  const identity = useSelector(currentIdentitySelector)
-  const config = useSelector(configSelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
+  const config = useSelector(selectors.configSelector)
   return (
     <StatCard
       stat={myst.displayMYST(identity.earnings, {
@@ -48,7 +48,7 @@ const TotalWithdrawn = ({ amount }: { amount?: string }) => {
 }
 
 const Balance = () => {
-  const identity = useSelector(currentIdentitySelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   return (
     <>
@@ -65,7 +65,7 @@ const Balance = () => {
 }
 
 const TotalEarnings = () => {
-  const identity = useSelector(currentIdentitySelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
   return (
     <StatCard
       stat={myst.displayMYST(identity.earningsTotal, {

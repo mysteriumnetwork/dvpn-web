@@ -30,7 +30,7 @@ interface State {
 
 const EMPTY_RESPONSE = { items: [], totalPages: 0, page: 1, pageSize: 50, totalItems: 0 }
 
-const Wallet = () => {
+const WalletPage = () => {
   const [state, setState] = useImmer<State>({
     isLoading: true,
     lastPage: 1,
@@ -144,4 +144,4 @@ const Wallet = () => {
   )
 }
 
-export default Wallet
+export default WalletPage

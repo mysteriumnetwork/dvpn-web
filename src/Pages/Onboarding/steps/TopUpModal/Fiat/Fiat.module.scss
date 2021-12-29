@@ -1,0 +1,43 @@
+@import "../../../../../assets/styles/base/variables";
+@import '../../../../../assets/styles/base/mixins/media';
+
+.fiat {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.note {
+  margin-top: 15px;
+  font-weight: $medium-weight;
+  font-size: $normal-size;
+}
+
+.currency {
+  margin-top: 15px;
+  width: 80%;
+}
+
+.country {
+  margin-top: 15px;
+  width: 60%;
+}
+
+.received {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.controls {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.invoice {
+  margin-top: 15px;
+}

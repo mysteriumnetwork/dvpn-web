@@ -1,10 +1,12 @@
 # Node WebUI
 
-> NOTE: Issues should be created in [node](https://github.com/mysteriumnetwork/node/issues) repo
+> NOTE: Issues should be created in [node](https://github.com/mysteriumnetwork/node/issues) repo  
+> 
+[![pipeline status](https://gitlab.com/mysteriumnetwork/dvpn-web/badges/master/pipeline.svg)](https://gitlab.com/mysteriumneam/dvpn-web/-/commits/master)
 
 ## Running
 
-### Prerequisits
+### Prerequisites
   - NodeJS >= 12.0.0 (advise using [NVM tool](https://github.com/nvm-sh/nvm))
     ```shell
     nvm install 14 && nvm use 14

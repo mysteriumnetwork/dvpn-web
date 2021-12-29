@@ -6,7 +6,7 @@
  */
 import React, { useState } from 'react'
 import { Fade, Modal } from '@material-ui/core'
-import './GenericModal.scss'
+import styles from './GenericModal.module.scss'
 import Button from '../Buttons/Button'
 import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
 
@@ -40,7 +40,7 @@ const GenericModal = ({
   const [showConfirm, setShowConfirm] = useState<boolean>()
   return (
     <Modal
-      className="settings-modal"
+      className={styles.modal}
       open={isOpen}
       onClose={onClose}
       closeAfterTransition
@@ -50,10 +50,10 @@ const GenericModal = ({
       }}
     >
       <Fade in={isOpen}>
-        <div className="settings-modal__block">
-          <div className="settings-modal__title">{title}</div>
-          <div className="settings-modal__row">{children}</div>
-          <div className="settings-modal__footer">
+        <div className={styles.modalBlock}>
+          <div className={styles.modalTitle}>{title}</div>
+          <div className={styles.modalRow}>{children}</div>
+          <div className={styles.modalFooter}>
             {!hideClose && (
               <Button onClick={onClose} extraStyle="gray">
                 Close

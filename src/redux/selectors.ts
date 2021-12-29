@@ -26,18 +26,25 @@ interface RootState {
   sse: SSEState
 }
 
-export const currentIdentitySelector = ({ app, sse }: RootState): Identity => {
+const currentIdentitySelector = ({ app, sse }: RootState): Identity => {
   const identity = currentIdentity(app.currentIdentityRef, sse.appState?.identities)
   return identity || EMPTY_IDENTITY
 }
 
-export const feesSelector = ({ app }: RootState): Fees => {
+const feesSelector = ({ app }: RootState): Fees => {
   return app.fees
 }
 
-export const configSelector = ({ app }: RootState): Config => {
+const configSelector = ({ app }: RootState): Config => {
   return app.config
 }
 
-export const onBoardingStateSelector = ({ app, sse }: { app: AppState; sse: SSEState }) =>
+const onBoardingStateSelector = ({ app, sse }: { app: AppState; sse: SSEState }) =>
   onBoarding(app.auth, app.terms, currentIdentitySelector({ app, sse }))
+
+export const selectors = {
+  currentIdentitySelector,
+  feesSelector,
+  configSelector,
+  onBoardingStateSelector,
+}

@@ -10,7 +10,7 @@ import React, { ReactFragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { api } from '../../../../api/Api'
-import { toastParseError } from '../../../../commons/toast.utils'
+import { parseToastError } from '../../../../commons/toast.utils'
 import HelpTooltip from '../../../../Components/HelpTooltip/HelpTooltip'
 import { NATType } from '../../../../constants/nat'
 import { DOCS_NAT_FIX } from '../../../../constants/urls'
@@ -55,7 +55,7 @@ const NodeStatus = () => {
           d.nat.loading = false
         })
       } catch (e) {
-        toastParseError(e)
+        parseToastError(e)
       }
     }
     init()

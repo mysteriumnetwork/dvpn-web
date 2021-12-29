@@ -9,13 +9,7 @@ import _ from 'lodash'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { toastError } from './toast.utils'
 
-export const L1ChainId = 5
-export const L2ChainId = 80001
 export const SUPPORTED_TRAVERSALS = ['manual', 'upnp', 'holepunching']
-
-export const isFreeRegistration = (c: Config): boolean => {
-  return isTestnet(c)
-}
 
 export const isTrafficShapingEnabled = (c: Config): boolean => {
   return _.get<Config, any>(c, 'data.shaper.enabled')
@@ -43,21 +37,6 @@ export const natTraversals = (c: Config): string => {
 
 export const rpcl2 = (c?: Config): string[] => {
   return _.get<Config, any>(c, 'data.ether.client.rpcl2') || []
-}
-
-export const etherscanTxUrl = (c?: Config): string => {
-  const etherscanTxUrl = 'https://etherscan.io/tx'
-
-  if (!c) {
-    return etherscanTxUrl
-  }
-
-  switch (chainId(c)) {
-    case 5:
-      return 'https://goerli.etherscan.io/tx'
-    default:
-      return etherscanTxUrl
-  }
 }
 
 export const hermesId = (c?: Config): string | undefined => {
@@ -115,12 +94,30 @@ export const mmnApiKey = (c?: Config): string => {
   return _.get<Config, any>(c, 'data.mmn.api-key')
 }
 
-export const isTestnet = (c?: Config): boolean => {
-  if (!c) {
-    return true
-  }
-  const isTestnet = _.get<Config, any>(c, 'data.testnet') as boolean
-  const isTestnet2 = _.get<Config, any>(c, 'data.testnet2') as boolean
-  const isTestnet3 = _.get<Config, any>(c, 'data.testnet3') as boolean
-  return isTestnet || isTestnet2 || isTestnet3
+const defaultFiatAmount = (c?: Config): number => {
+  return _.get<Config, any>(c, 'data.nodeui.default-fiat-amount') || 1
+}
+
+const pilvytisUrl = (c?: Config): string => {
+  return valueOrError(c, 'data.pilvytis.address')
+}
+
+export const configParser = {
+  isTrafficShapingEnabled,
+  trafficShapingBandwidthKBps,
+  isAccessPolicyEnabled,
+  chainId,
+  udpPorts,
+  natTraversals,
+  rpcl2,
+  hermesId,
+  mmnWebAddress,
+  stunServers,
+  zeroStakeSettlementThreshold,
+  docsAddress,
+  mmnDomainName,
+  mmnApiUrl,
+  mmnApiKey,
+  defaultFiatAmount,
+  pilvytisUrl,
 }

@@ -1,13 +1,13 @@
 @import '../../assets/styles/base/variables';
 @import '../../assets/styles/base/mixins/media';
 
-.settings-modal {
+.modal {
   display: flex;
   align-items: center;
   justify-content: center;
   outline: 0;
 
-  &__title {
+  &Title {
     font-weight: $medium-weight;
     font-size: $large-size;
     line-height: 21px;
@@ -15,10 +15,10 @@
     margin-bottom: 10px;
   }
 
-  &__block {
+  &Block {
     margin-top: 10px;
     background: #FFFFFF;
-    box-shadow: 0px 6px 16px rgba(153, 155, 168, 0.1);
+    box-shadow: 0 6px 16px rgba(153, 155, 168, 0.1);
     border-radius: 4px;
     transition: unset;
     padding: 30px 35px;
@@ -33,12 +33,12 @@
     }
   }
 
-  &__row {
+  &Row {
     margin-top: 20px;
     margin-bottom: 20px;
   }
 
-  &__footer {
+  &Footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

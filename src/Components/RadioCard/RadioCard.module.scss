@@ -1,0 +1,27 @@
+@import "../../assets/styles/base/variables";
+
+.radio {
+  display: flex;
+  justify-content: space-around;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $names-text-color;
+  min-width: 60px;
+  height: 30px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: $third-color;
+  color: #FFFFFF;
+}
+
+.active {
+  background: $light-key-color;
+  color: #FFFFFF;
+}

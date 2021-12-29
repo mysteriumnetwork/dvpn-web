@@ -24,13 +24,13 @@ import styles from './Steps.module.scss'
 
 import { store } from '../../../redux/store'
 import { useSelector } from 'react-redux'
-import { configSelector } from '../../../redux/selectors'
+import { selectors } from '../../../redux/selectors'
 import classNames from 'classnames'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
 
 interface State {
   passwordRepeat?: string
-  password?: string
+  password: string
   apiKey: string
   urlApiKey: boolean
   useApiKey: boolean
@@ -49,7 +49,7 @@ const useQuery = () => {
 const SetPassword = (_: StepProps): JSX.Element => {
   const query = useQuery()
 
-  const config = useSelector(configSelector)
+  const config = useSelector(selectors.configSelector)
 
   const [state, setState] = useImmer<State>({
     passwordRepeat: '',
@@ -147,7 +147,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
       await api.authChangePassword({
         username: DEFAULT_USERNAME,
         oldPassword: DEFAULT_PASSWORD,
-        newPassword: state.password || '',
+        newPassword: state.password,
       })
 
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
