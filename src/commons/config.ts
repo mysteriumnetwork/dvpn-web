@@ -70,12 +70,25 @@ export const docsAddress = (c?: Config): string => {
   return dropLeadingSlash(url)
 }
 
+// TODO strange behaviour investigate
 const valueOrError = (c?: Config, path?: string): string => {
   const address = _.get<Config, any>(c, path) || '#'
 
   try {
     const url = new URL(address)
     return url.hostname
+  } catch {
+    toastError(`${path} - not valid`)
+    return 'error'
+  }
+}
+
+const urlAddressOrError = (c?: Config, path?: string): string => {
+  const address = _.get<Config, any>(c, path) || '#'
+
+  try {
+    new URL(address)
+    return address
   } catch {
     toastError(`${path} - not valid`)
     return 'error'
@@ -99,7 +112,7 @@ const defaultFiatAmount = (c?: Config): number => {
 }
 
 const pilvytisUrl = (c?: Config): string => {
-  return valueOrError(c, 'data.pilvytis.address')
+  return urlAddressOrError(c, 'data.pilvytis.address')
 }
 
 export const configParser = {
