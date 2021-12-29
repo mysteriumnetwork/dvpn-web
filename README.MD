@@ -2,7 +2,8 @@
 
 > NOTE: Issues should be created in [node](https://github.com/mysteriumnetwork/node/issues) repo  
 > 
-[![pipeline status](https://gitlab.com/mysteriumnetwork/dvpn-web/badges/master/pipeline.svg)](https://gitlab.com/mysteriumneam/dvpn-web/-/commits/master)
+[![pipeline status](https://gitlab.com/mysteriumnetwork/dvpn-web/badges/master/pipeline.svg)](https://gitlab.com/mysteriumneam/dvpn-web/-/commits/master)  
+[link to pipelines](https://gitlab.com/mysteriumnetwork/dvpn-web/-/pipelines)
 
 ## Running
 

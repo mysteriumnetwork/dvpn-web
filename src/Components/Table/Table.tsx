@@ -12,16 +12,17 @@ import './Pagination.mui.scss'
 import Button from '../Buttons/Button'
 import { Column, Row, usePagination, useTable } from 'react-table'
 import classNames from 'classnames'
-import { MobileRow } from './MobileRow'
 import { Media } from '../../commons/media.utils'
+import { CircularProgress } from '@material-ui/core'
 
 interface Props {
   columns: Column[]
   mobileRow?: (row: Row<any>, index: number) => JSX.Element
   data: any[]
-  fetchData: ({ pageSize, page }: { pageSize: number; page: number }) => void
-  lastPage: number
+  fetchData?: ({ pageSize, page }: { pageSize: number; page: number }) => void
+  lastPage?: number
   loading: boolean
+  noPagination?: boolean
   noData?: JSX.Element
   pagination?: {
     pageSize?: number
@@ -33,18 +34,9 @@ const Table = ({
   data,
   lastPage,
   loading = false,
-  fetchData,
-  mobileRow = (row: Row, index: number) => (
-    <MobileRow
-      topLeftSub="topLeftSub"
-      topLeft="topLeft"
-      topRight="topRight"
-      bottomLeft="bottomLeft"
-      bottomMiddle="bottomMiddle"
-      bottomRight="bottomRight"
-      topRightSub="topRightSub"
-    />
-  ),
+  fetchData = () => {},
+  noPagination,
+  mobileRow,
   noData = (
     <div className={styles.empty}>
       <div className={styles.noData}>No Data</div>
@@ -105,45 +97,56 @@ const Table = ({
 
   return (
     <div className={styles.table}>
-      <div className={styles.tableDesktop}>
-        <div>
-          {headerGroups.map((headerGroup) => (
-            <div className={styles.tableHeader} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <div {...column.getHeaderProps()} className={classNames(styles.tableHeaderCell, `w-${column.width}`)}>
-                  {column.render('Header')}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-        <Media.Desktop>
+      {loading && <CircularProgress className="spinner" disableShrink />}
+      <Media.Desktop>
+        <div className={styles.tableDesktop}>
+          <div>
+            {headerGroups.map((headerGroup) => (
+              <div className={styles.tableHeader} {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <div {...column.getHeaderProps()} className={classNames(styles.tableHeaderCell, `w-${column.width}`)}>
+                    {column.render('Header')}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
           <div className={styles.tableBody}>{page.length > 0 ? preparedMap(page, desktopMap) : noData}</div>
-        </Media.Desktop>
-      </div>
-      <Media.Mobile>
-        <div className={styles.tableMobile}>{page.length > 0 ? preparedMap(page, mobileRow) : noData}</div>
-      </Media.Mobile>
-      <div className={styles.footer}>
-        <Button className={styles.footerButton} onClick={() => previousPage()} disabled={!canPreviousPage}>
-          <p>Prev</p>
-        </Button>
-        <div>
-          <PaginationMaterial
-            page={pageIndex + 1}
-            disabled={loading}
-            hideNextButton={true}
-            hidePrevButton={true}
-            count={pageCount}
-            variant="outlined"
-            shape="rounded"
-            onChange={(_, page) => gotoPage(page - 1)}
-          />
         </div>
-        <Button disabled={!canNextPage} className={styles.footerButton} onClick={() => nextPage()}>
-          <p>Next</p>
-        </Button>
-      </div>
+      </Media.Desktop>
+      {mobileRow && (
+        <Media.Mobile>
+          <div className={styles.tableMobile}>{page.length > 0 ? preparedMap(page, mobileRow) : noData}</div>
+        </Media.Mobile>
+      )}
+      {!mobileRow && (
+        <Media.Mobile>
+          <div>No Mobile View</div>
+        </Media.Mobile>
+      )}
+      {!noPagination && (
+        <div className={styles.footer}>
+          <Button className={styles.footerButton} onClick={() => previousPage()} disabled={!canPreviousPage}>
+            <p>Prev</p>
+          </Button>
+          <div>
+            <PaginationMaterial
+              page={pageIndex + 1}
+              disabled={loading}
+              hideNextButton={true}
+              hidePrevButton={true}
+              count={pageCount}
+              variant="outlined"
+              shape="rounded"
+              onChange={(_, page) => gotoPage(page - 1)}
+            />
+          </div>
+          <Button disabled={!canNextPage} className={styles.footerButton} onClick={() => nextPage()}>
+            <p>Next</p>
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

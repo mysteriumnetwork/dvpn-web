@@ -23,10 +23,11 @@ import {
   HOME,
   LOGIN,
   NOT_FOUND,
-  ONBOARDING_HOME,
+  ON_BOARDING_HOME,
   SESSIONS,
   SESSIONS_SIDE,
   SETTINGS,
+  VERSION_MANAGEMENT,
   WALLET,
 } from '../constants/routes'
 
@@ -69,7 +70,7 @@ const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element =>
     return <Redirect to={LOGIN} />
   }
   if (needsOnboarding) {
-    return <Redirect to={ONBOARDING_HOME} />
+    return <Redirect to={ON_BOARDING_HOME} />
   }
 
   return <Redirect to={DASHBOARD} />
@@ -143,7 +144,7 @@ const AppRouter = ({ actions }: Props) => {
         }}
       />
       <Route
-        path={ONBOARDING_HOME}
+        path={ON_BOARDING_HOME}
         render={(props) => {
           return onBoarding.needsOnBoarding ? <OnBoardingPage /> : <Redirect to={DASHBOARD} />
         }}
@@ -153,34 +154,35 @@ const AppRouter = ({ actions }: Props) => {
 
       <ProtectedRoute
         path={DASHBOARD}
-        needsOnboarding={onBoarding.needsOnBoarding}
+        needsOnBoarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
       <ProtectedRoute
         path={SESSIONS}
-        needsOnboarding={onBoarding.needsOnBoarding}
+        needsOnBoarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
       <ProtectedRoute
         path={SETTINGS}
-        needsOnboarding={onBoarding.needsOnBoarding}
+        needsOnBoarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
       <ProtectedRoute
         path={SESSIONS_SIDE}
-        needsOnboarding={onBoarding.needsOnBoarding}
+        needsOnBoarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
       <ProtectedRoute
         path={WALLET}
-        needsOnboarding={onBoarding.needsOnBoarding}
+        needsOnBoarding={onBoarding.needsOnBoarding}
         loggedIn={loggedIn}
         component={authenticatedPage}
       />
+      <ProtectedRoute path={VERSION_MANAGEMENT} loggedIn={loggedIn} component={authenticatedPage} />
 
       <Redirect from="*" to={NOT_FOUND} />
     </Switch>

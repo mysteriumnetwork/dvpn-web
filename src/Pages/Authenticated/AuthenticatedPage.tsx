@@ -7,7 +7,15 @@
 import './AuthenticatedPage.scss'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
-import { DASHBOARD, NOT_FOUND, SESSIONS, SESSIONS_SIDE, SETTINGS, WALLET } from '../../constants/routes'
+import {
+  DASHBOARD,
+  NOT_FOUND,
+  SESSIONS,
+  SESSIONS_SIDE,
+  SETTINGS,
+  VERSION_MANAGEMENT,
+  WALLET,
+} from '../../constants/routes'
 
 import DashboardPage from './Dashboard/DashboardPage'
 import SessionsPage from './Sessions/SessionsPage'
@@ -18,6 +26,7 @@ import { Identity } from 'mysterium-vpn-js'
 import { isEmpty, isRegistered } from '../../commons/identity.utils'
 import SessionSidebarPage from './SessionSidebar/SessionSidebarPage'
 import { RegistrationOverlay } from './RegistrationOverlay'
+import { VersionManagementPage } from './VersionManagement/VersionManagementPage'
 
 interface Props {
   identity: Identity
@@ -54,6 +63,9 @@ const AuthenticatedPage = ({ identity }: Props) => {
           </Route>
           <Route exact={true} path={WALLET}>
             <WalletPage />
+          </Route>
+          <Route exact={true} path={VERSION_MANAGEMENT}>
+            <VersionManagementPage />
           </Route>
           <Route path="*">
             <Redirect to={NOT_FOUND} />
