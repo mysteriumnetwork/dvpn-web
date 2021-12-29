@@ -187,7 +187,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           <div className="withdrawal-modal__row-disclaimer">
             You can withdraw your collected earnings into own Ethereum or Polygon wallet address at any time. Please
             allow some time (usually a few minutes) for withdrawal transaction to be processed. Your balance will update
-            once transaction was executed.
+            once transaction is executed.
           </div>
           {state.isLoading ? (
             <div className="withdrawal-modal__row-withdraw-loading">

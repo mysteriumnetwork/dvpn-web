@@ -11,8 +11,11 @@ import '@formatjs/intl-displaynames/locale-data/en'
 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
 
 export const countryName = (countryCode: string): string => {
-  if (countryCode !== '') return regionNames.of(countryCode)
-  else return 'Unknown'
+  if (countryCode !== '') {
+    return regionNames.of(countryCode)
+  } else {
+    return 'Unknown'
+  }
 }
 
 export const countryNames: { [key: string]: string } = Object.freeze({

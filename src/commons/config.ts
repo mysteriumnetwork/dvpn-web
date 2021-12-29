@@ -98,6 +98,10 @@ const defaultFiatAmount = (c?: Config): number => {
   return _.get<Config, any>(c, 'data.nodeui.default-fiat-amount') || 1
 }
 
+const pilvytisUrl = (c?: Config): string => {
+  return valueOrError(c, 'data.pilvytis.address')
+}
+
 export const configParser = {
   isTrafficShapingEnabled,
   trafficShapingBandwidthKBps,
@@ -115,4 +119,5 @@ export const configParser = {
   mmnApiUrl,
   mmnApiKey,
   defaultFiatAmount,
+  pilvytisUrl,
 }

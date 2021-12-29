@@ -21,6 +21,7 @@ import { buildFormData, CARDINITY_GATEWAY, validateOrderAndReturnSecureForm } fr
 import { CircularProgress } from '@material-ui/core'
 import { money } from '../../../../../commons/money.utils'
 import _ from 'lodash'
+import { configParser } from '../../../../../commons/config'
 
 interface Props {
   mystReceived?: JSX.Element
@@ -55,11 +56,13 @@ const initialState: State = {
 export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistrationFeeReceived }: Props) => {
   const { api } = tequila
 
+  const config = useSelector(selectors.configSelector)
   const identity = useSelector(selectors.currentIdentitySelector)
   const [redirectRef, setRedirectRef] = useState<any>()
 
   const [state, setState] = useImmer<State>(initialState)
 
+  const pilvytisUrl = configParser.pilvytisUrl(config)
   const currencyOptions: Item[] = state.gateway.currencies.map((c) => ({ value: c, label: c }))
   const countryOptions = useMemo(
     () =>
@@ -147,7 +150,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
       if (!data) {
         throw new Error('Cardinity secure form not provided')
       }
-      await api.payment.invoice(identity.id, order.id)
+
       setState((d) => {
         d.paymentOrder = order
         d.formData = data
@@ -223,11 +226,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
         <input type="hidden" name="currency" value={state.formData['currency']} />
         <input type="hidden" name="order_id" value={state.formData['order_id']} />
         <input type="hidden" name="project_id" value={state.formData['project_id']} />
-        <input
-          type="hidden"
-          name="return_url"
-          value="https://pilvytis-sandbox.mysterium.network/api/v2/payment/cardinity/redirect"
-        />
+        <input type="hidden" name="return_url" value={`${pilvytisUrl}/api/v2/payment/cardinity/redirect`} />
         <input type="hidden" name="signature" value={state.formData['signature']} />
       </form>
     </div>
