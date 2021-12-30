@@ -34,7 +34,14 @@ const Button = ({
 
   return (
     <button disabled={disabled || isLoading} type={type} onClick={onClick} className={classNames} autoFocus={autoFocus}>
-      {isLoading ? <CircularProgress className="loader" disableShrink /> : children}
+      {isLoading ? (
+        <CircularProgress
+          className={['outline', 'outline-primary'].includes(`${extraStyle}`) ? 'loader-outline' : 'loader'}
+          disableShrink
+        />
+      ) : (
+        children
+      )}
     </button>
   )
 }

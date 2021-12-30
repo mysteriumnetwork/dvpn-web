@@ -9,6 +9,7 @@ import classNames from 'classnames'
 import Header from '../../Components/Header/Header'
 import React from 'react'
 import { media } from '../../commons/media.utils'
+import { CircularProgress } from '@material-ui/core'
 
 interface Props {
   title?: string
@@ -17,9 +18,10 @@ interface Props {
   main?: JSX.Element
   showSideBar?: boolean
   sidebar?: JSX.Element
+  isLoading?: boolean
 }
 
-export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight }: Props) => {
+export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight, isLoading }: Props) => {
   const showSideBarAdjusted = showSideBar && media.isDesktopQuery
   return (
     <main className={styles.main}>
@@ -28,7 +30,7 @@ export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight }: Pr
           <Header logo={logo} name={title} />
           {topRight}
         </div>
-        {main}
+        {isLoading ? <CircularProgress className="spinner" disableShrink /> : main}
       </div>
       {showSideBarAdjusted && <div className={styles.sidebarBlock}>{sidebar}</div>}
     </main>

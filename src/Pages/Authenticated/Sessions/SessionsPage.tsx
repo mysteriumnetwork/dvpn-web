@@ -87,7 +87,7 @@ const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) =>
           page: pageIndex,
         })
         .then((resp) => {
-          let { items = [], totalPages = 0 } = { ...resp }
+          const { items = [], totalPages = 0 } = { ...resp }
           setState((cs) => ({ ...cs, isLoading: false, sessionList: items.map(row), sessionListPages: totalPages }))
         })
         .catch((err) => {
