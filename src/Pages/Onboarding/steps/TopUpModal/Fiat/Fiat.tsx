@@ -168,7 +168,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
   return (
     <div className={styles.fiat}>
       <p className={styles.note}>
-        <PriceInfo rates={state.rates} mystAmounts={state.mystAmounts} />=
+        <PriceInfo rates={state.rates} mystAmounts={state.mystAmounts} />
       </p>
       <p className={styles.note}>
         <UsageTip />
