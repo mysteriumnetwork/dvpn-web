@@ -168,7 +168,10 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
   return (
     <div className={styles.fiat}>
       <p className={styles.note}>
-        <PriceInfo rates={state.rates} mystAmounts={state.mystAmounts} />
+        <PriceInfo rates={state.rates} mystAmounts={state.mystAmounts} />=
+      </p>
+      <p className={styles.note}>
+        <UsageTip />
       </p>
       {!showRegistrationControls && (
         <>
@@ -272,3 +275,11 @@ const PriceInfo = ({ rates, mystAmounts }: { rates: Money[]; mystAmounts: { [key
   const amounts = rates.map((r) => `1 ${r.currency} (${mystAmounts[r.currency]} MYST)`).join(' / ')
   return <>Minimum amount {amounts} plus applicable VAT. Unused MYST will be credited into your node's balance.</>
 }
+
+const UsageTip = () => (
+  <>
+    Note: After clicking NEXT below, new tab/window will be opened and you will be redirected to the 3rd party payment
+    processor to complete transaction. Please be patient, it might take a few minutes for MYST to arrive after a
+    successful payment card transaction.
+  </>
+)
