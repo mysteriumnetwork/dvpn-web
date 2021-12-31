@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import './AuthenticatedPage.scss'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
 
 import {
   DASHBOARD,
@@ -32,8 +32,12 @@ interface Props {
   identity: Identity
 }
 
-const displayOverlay = (identity: Identity): boolean => {
+const displayOverlay = (identity: Identity, currentLocation: string): boolean => {
   if (isEmpty(identity)) {
+    return false
+  }
+
+  if ([VERSION_MANAGEMENT].includes(currentLocation)) {
     return false
   }
 
@@ -41,9 +45,10 @@ const displayOverlay = (identity: Identity): boolean => {
 }
 
 const AuthenticatedPage = ({ identity }: Props) => {
+  const history = useHistory()
   return (
     <div className="page">
-      {displayOverlay(identity) && <RegistrationOverlay identity={identity} />}
+      {displayOverlay(identity, history.location.pathname) && <RegistrationOverlay identity={identity} />}
       <div className="page__menu">
         <Navigation />
       </div>
