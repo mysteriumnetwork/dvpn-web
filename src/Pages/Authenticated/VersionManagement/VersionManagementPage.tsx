@@ -77,13 +77,13 @@ export const VersionManagementPage = () => {
     return () => clearInterval(interval)
   }, [state.isDownloadInProgress])
 
-  const init = async () => {
+  const init = async (flushCache: boolean = false) => {
     try {
       setIsLoading()
       const [uiInfo, local, remote, dlStatus] = await Promise.all([
         info(),
         localVersions(),
-        remoteVersions(),
+        remoteVersions({ flushCache }),
         downloadStatus(),
       ])
       setState((d) => {
@@ -190,6 +190,11 @@ export const VersionManagementPage = () => {
                   <Button onClick={() => switchVersion('bundled')}>Switch Back</Button>
                 </div>
               )}
+            </div>
+            <div>
+              <Button onClick={() => init(true)} extraStyle="outline">
+                Flush Cache
+              </Button>
             </div>
           </div>
           <div className={styles.progress}>
