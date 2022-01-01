@@ -132,48 +132,46 @@ export const VersionManagementPage = () => {
     }
   }
 
-  const mmm = () => {
-    return state.remote.versions
-      .filter((rv) => rv.compatibilityUrl)
-      .map((rv) => {
-        const local = findLocal(rv.name)
+  const versionList = state.remote.versions
+    .filter((rv) => rv.compatibilityUrl)
+    .map((rv) => {
+      const local = findLocal(rv.name)
 
-        return (
-          <div key={rv.name} className={styles.row}>
-            <div>
-              <div className={styles.versionBlock}>
-                <div className={styles.name}>{rv.name}</div>
-                {rv.name === state.ui.bundledVersion && <div className={styles.preRelease}>(bundled)</div>}
-                {rv.isPreRelease && <div className={styles.preRelease}>(pre-release)</div>}
-              </div>
-              <div className={styles.released}>({date2human(rv.releasedAt)})</div>
+      return (
+        <div key={rv.name} className={styles.row}>
+          <div>
+            <div className={styles.versionBlock}>
+              <div className={styles.name}>{rv.name}</div>
+              {rv.name === state.ui.bundledVersion && <div className={styles.preRelease}>(bundled)</div>}
+              {rv.isPreRelease && <div className={styles.preRelease}>(pre-release)</div>}
             </div>
-            <div>
-              {!local && (
-                <Button
-                  className={styles.control}
-                  onClick={() => download(rv.name)}
-                  disabled={state.isDownloadInProgress}
-                  extraStyle="outline"
-                >
-                  Download
-                </Button>
-              )}
-              {local && !isInUse(local) && (
-                <Button
-                  className={styles.control}
-                  onClick={() => switchVersion(rv.name)}
-                  disabled={state.isDownloadInProgress}
-                  extraStyle="outline-primary"
-                >
-                  Switch
-                </Button>
-              )}
-            </div>
+            <div className={styles.released}>({date2human(rv.releasedAt)})</div>
           </div>
-        )
-      })
-  }
+          <div>
+            {!local && (
+              <Button
+                className={styles.control}
+                onClick={() => download(rv.name)}
+                disabled={state.isDownloadInProgress}
+                extraStyle="outline"
+              >
+                Download
+              </Button>
+            )}
+            {local && !isInUse(local) && (
+              <Button
+                className={styles.control}
+                onClick={() => switchVersion(rv.name)}
+                disabled={state.isDownloadInProgress}
+                extraStyle="outline-primary"
+              >
+                Switch
+              </Button>
+            )}
+          </div>
+        </div>
+      )
+    })
 
   return (
     <Layout
@@ -185,16 +183,14 @@ export const VersionManagementPage = () => {
             <div className={styles.infoCard}>
               {infoRow('Bundled:', state.ui.bundledVersion)}
               {infoRow('Used:', state.ui.usedVersion)}
-              {state.ui.usedVersion !== 'bundled' && (
-                <div className={styles.switchBack}>
-                  <Button onClick={() => switchVersion('bundled')}>Switch Back</Button>
-                </div>
-              )}
             </div>
-            <div>
+            <div className={styles.controls}>
               <Button onClick={() => init(true)} extraStyle="outline">
                 Flush Cache
               </Button>
+              {state.ui.usedVersion !== 'bundled' && (
+                <Button onClick={() => switchVersion('bundled')}>Switch Back</Button>
+              )}
             </div>
           </div>
           <div className={styles.progress}>
@@ -203,7 +199,7 @@ export const VersionManagementPage = () => {
               value={state.downloadProgress / 100}
             />
           </div>
-          <div className={styles.versions}>{mmm()}</div>
+          <div className={styles.versions}>{versionList}</div>
         </div>
       }
     />

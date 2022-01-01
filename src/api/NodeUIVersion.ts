@@ -81,8 +81,9 @@ export interface LocalVersion {
 export interface RemoteVersion {
   name: string
   releasedAt: string
-  compatibilityUrl: string
+  compatibilityUrl?: string
   isPreRelease: boolean
+  releaseNotes?: string
 }
 
 export interface UI {

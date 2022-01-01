@@ -20,9 +20,18 @@
 .info {
   display: flex;
   width: 100%;
-  align-items: center;
+  height: 6rem;
   justify-content: center;
   gap: 25px;
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    height: 100%;
+    width: 10rem;
+  }
 }
 
 .infoCard {
