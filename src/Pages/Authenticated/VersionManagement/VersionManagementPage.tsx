@@ -13,6 +13,7 @@ import styles from './VersionManagementPage.module.scss'
 import { date2human } from '../../../commons/date.utils'
 import Button from '../../../Components/Buttons/Button'
 import classNames from 'classnames'
+import HelpTooltip from '../../../Components/HelpTooltip/HelpTooltip'
 
 interface State {
   isLoading: boolean
@@ -132,6 +133,16 @@ export const VersionManagementPage = () => {
     }
   }
 
+  const notes = (notes: string): JSX.Element => {
+    return (
+      <div className={styles.releaseNotes}>
+        {notes.split('\r\n').map((it) => (
+          <p>{it}</p>
+        ))}
+      </div>
+    )
+  }
+
   const versionList = state.remote.versions
     .filter((rv) => rv.compatibilityUrl)
     .map((rv) => {
@@ -145,7 +156,10 @@ export const VersionManagementPage = () => {
               {rv.name === state.ui.bundledVersion && <div className={styles.preRelease}>(bundled)</div>}
               {rv.isPreRelease && <div className={styles.preRelease}>(pre-release)</div>}
             </div>
-            <div className={styles.released}>({date2human(rv.releasedAt)})</div>
+            <div className={styles.releaseBlock}>
+              <div className={styles.released}>({date2human(rv.releasedAt)})</div>
+              {rv.releaseNotes && <HelpTooltip title={notes(rv.releaseNotes)} />}
+            </div>
           </div>
           <div>
             {!local && (
