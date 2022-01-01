@@ -111,6 +111,7 @@ const WalletPage = () => {
     <Layout
       title="Wallet"
       logo={<Logo />}
+      isLoading={state.isLoading}
       main={
         <>
           <CardLayout>

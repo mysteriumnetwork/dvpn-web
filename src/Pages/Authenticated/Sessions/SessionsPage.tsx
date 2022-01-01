@@ -136,6 +136,7 @@ const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) =>
     <Layout
       title="Sessions"
       logo={<Logo />}
+      isLoading={state.isLoading}
       main={
         <Table
           columns={columns}

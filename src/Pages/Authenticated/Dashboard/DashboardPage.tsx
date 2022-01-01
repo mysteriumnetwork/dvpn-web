@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { CircularProgress } from '@material-ui/core'
 import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -14,7 +13,7 @@ import { api } from '../../../api/Api'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
-import { isEmpty, isRegistered } from '../../../commons/identity.utils'
+import { isRegistered } from '../../../commons/identity.utils'
 import { toastError } from '../../../commons/toast.utils'
 import { AppState } from '../../../redux/app.slice'
 import { SSEState } from '../../../redux/sse.slice'
@@ -96,16 +95,13 @@ const DashboardPage = () => {
   }, [identity.id])
 
   const { appState } = sse
-  if (isEmpty(identity) || !appState || !config || state.loading) {
-    return <CircularProgress className="spinner" disableShrink />
-  }
-
   const { serviceInfo } = appState
 
   return (
     <Layout
       title="Dashboard"
       logo={<Logo />}
+      isLoading={state.loading}
       main={
         <>
           <CardLayout>

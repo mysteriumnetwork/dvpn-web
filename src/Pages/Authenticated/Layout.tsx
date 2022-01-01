@@ -9,7 +9,7 @@ import classNames from 'classnames'
 import Header from '../../Components/Header/Header'
 import React from 'react'
 import { media } from '../../commons/media.utils'
-import { CircularProgress } from '@material-ui/core'
+import { Spinner } from './Components/Spinner/Spinner'
 
 interface Props {
   title?: string
@@ -30,7 +30,8 @@ export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight, isLo
           <Header logo={logo} name={title} />
           {topRight}
         </div>
-        {isLoading ? <CircularProgress className="spinner" disableShrink /> : main}
+        {isLoading && <Spinner />}
+        {main}
       </div>
       {showSideBarAdjusted && <div className={styles.sidebarBlock}>{sidebar}</div>}
     </main>
