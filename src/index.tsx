@@ -14,6 +14,7 @@ import AppRouter from './Pages/AppRouter'
 import { store } from './redux/store'
 
 import { unregister } from './serviceWorker'
+import { Hotkeys } from './Pages/Authenticated/Components/Hotkeys/Hotkeys'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -26,7 +27,9 @@ ReactDOM.render(
     >
       <SnackbarUtilsConfigurator />
       <HashRouter>
-        <AppRouter />
+        <Hotkeys>
+          <AppRouter />
+        </Hotkeys>
       </HashRouter>
     </SnackbarProvider>
   </Provider>,

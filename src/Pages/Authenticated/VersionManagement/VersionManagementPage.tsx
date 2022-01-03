@@ -13,6 +13,7 @@ import styles from './VersionManagementPage.module.scss'
 import { date2human } from '../../../commons/date.utils'
 import Button from '../../../Components/Buttons/Button'
 import classNames from 'classnames'
+import HelpTooltip from '../../../Components/HelpTooltip/HelpTooltip'
 
 interface State {
   isLoading: boolean
@@ -77,13 +78,13 @@ export const VersionManagementPage = () => {
     return () => clearInterval(interval)
   }, [state.isDownloadInProgress])
 
-  const init = async () => {
+  const init = async (flushCache: boolean = false) => {
     try {
       setIsLoading()
       const [uiInfo, local, remote, dlStatus] = await Promise.all([
         info(),
         localVersions(),
-        remoteVersions(),
+        remoteVersions({ flushCache }),
         downloadStatus(),
       ])
       setState((d) => {
@@ -132,48 +133,59 @@ export const VersionManagementPage = () => {
     }
   }
 
-  const mmm = () => {
-    return state.remote.versions
-      .filter((rv) => rv.compatibilityUrl)
-      .map((rv) => {
-        const local = findLocal(rv.name)
+  const notes = (notes: string): JSX.Element => {
+    return (
+      <div className={styles.releaseNotes}>
+        {notes.split('\r\n').map((it, index) => (
+          <p key={index}>{it}</p>
+        ))}
+      </div>
+    )
+  }
 
-        return (
-          <div key={rv.name} className={styles.row}>
-            <div>
-              <div className={styles.versionBlock}>
-                <div className={styles.name}>{rv.name}</div>
-                {rv.name === state.ui.bundledVersion && <div className={styles.preRelease}>(bundled)</div>}
-                {rv.isPreRelease && <div className={styles.preRelease}>(pre-release)</div>}
-              </div>
-              <div className={styles.released}>({date2human(rv.releasedAt)})</div>
+  const versionList = state.remote.versions
+    .filter((rv) => rv.compatibilityUrl)
+    .map((rv) => {
+      const local = findLocal(rv.name)
+
+      return (
+        <div key={rv.name} className={styles.row}>
+          <div>
+            <div className={styles.versionBlock}>
+              <div className={styles.name}>{rv.name}</div>
+              {rv.name === state.ui.bundledVersion && <div className={styles.preRelease}>(bundled)</div>}
+              {rv.isPreRelease && <div className={styles.preRelease}>(pre-release)</div>}
             </div>
-            <div>
-              {!local && (
-                <Button
-                  className={styles.control}
-                  onClick={() => download(rv.name)}
-                  disabled={state.isDownloadInProgress}
-                  extraStyle="outline"
-                >
-                  Download
-                </Button>
-              )}
-              {local && !isInUse(local) && (
-                <Button
-                  className={styles.control}
-                  onClick={() => switchVersion(rv.name)}
-                  disabled={state.isDownloadInProgress}
-                  extraStyle="outline-primary"
-                >
-                  Switch
-                </Button>
-              )}
+            <div className={styles.releaseBlock}>
+              <div className={styles.released}>({date2human(rv.releasedAt)})</div>
+              {rv.releaseNotes && <HelpTooltip title={notes(rv.releaseNotes)} />}
             </div>
           </div>
-        )
-      })
-  }
+          <div>
+            {!local && (
+              <Button
+                className={styles.control}
+                onClick={() => download(rv.name)}
+                disabled={state.isDownloadInProgress}
+                extraStyle="outline"
+              >
+                Download
+              </Button>
+            )}
+            {local && !isInUse(local) && (
+              <Button
+                className={styles.control}
+                onClick={() => switchVersion(rv.name)}
+                disabled={state.isDownloadInProgress}
+                extraStyle="outline-primary"
+              >
+                Switch
+              </Button>
+            )}
+          </div>
+        </div>
+      )
+    })
 
   return (
     <Layout
@@ -185,10 +197,13 @@ export const VersionManagementPage = () => {
             <div className={styles.infoCard}>
               {infoRow('Bundled:', state.ui.bundledVersion)}
               {infoRow('Used:', state.ui.usedVersion)}
+            </div>
+            <div className={styles.controls}>
+              <Button onClick={() => init(true)} extraStyle="outline">
+                Flush Cache
+              </Button>
               {state.ui.usedVersion !== 'bundled' && (
-                <div className={styles.switchBack}>
-                  <Button onClick={() => switchVersion('bundled')}>Switch Back</Button>
-                </div>
+                <Button onClick={() => switchVersion('bundled')}>Switch Back</Button>
               )}
             </div>
           </div>
@@ -198,7 +213,7 @@ export const VersionManagementPage = () => {
               value={state.downloadProgress / 100}
             />
           </div>
-          <div className={styles.versions}>{mmm()}</div>
+          <div className={styles.versions}>{versionList}</div>
         </div>
       }
     />

@@ -97,7 +97,12 @@ const Table = ({
 
   return (
     <div className={styles.table}>
-      {loading && <CircularProgress className="spinner" disableShrink />}
+      {loading && (
+        <>
+          <div className={styles.tableOverlay} />
+          <CircularProgress className={styles.tableSpinner} disableShrink />
+        </>
+      )}
       <Media.Desktop>
         <div className={styles.tableDesktop}>
           <div>

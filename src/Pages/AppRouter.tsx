@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress } from '@material-ui/core'
 import { AppState } from 'mysterium-vpn-js'
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
@@ -124,7 +123,7 @@ const AppRouter = ({ actions }: Props) => {
   }
 
   if (loading) {
-    return <CircularProgress className="spinner" disableShrink />
+    return <></>
   }
 
   return (

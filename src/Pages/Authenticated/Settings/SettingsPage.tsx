@@ -44,7 +44,7 @@ interface StateInterface {
   apiKey: string
   nodeVersion?: string
   defaultConfig: Config
-  loading: boolean
+  isLoading: boolean
   nodeCommit?: string
 }
 
@@ -54,7 +54,7 @@ const SettingsPage = () => {
 
   const [state, setState] = React.useState<StateInterface>({
     apiKey: '',
-    loading: true,
+    isLoading: true,
     defaultConfig: { data: {} },
   })
 
@@ -65,7 +65,7 @@ const SettingsPage = () => {
           ...cs,
           apiKey: mmn.apiKey,
           nodeVersion: healthcheck.version,
-          loading: false,
+          isLoading: false,
           defaultConfig: defaultConfig,
           nodeCommit: healthcheck.buildInfo.commit,
         }))
@@ -73,7 +73,7 @@ const SettingsPage = () => {
       .catch((err) => toastError(parseError(err)))
   }, [identity?.id])
 
-  if (state.loading || !cfg) {
+  if (state.isLoading || !cfg) {
     return <CircularProgress className="spinner" disableShrink />
   }
 
@@ -84,6 +84,7 @@ const SettingsPage = () => {
       title="Settings"
       logo={<Logo />}
       topRight={<Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />}
+      isLoading={state.isLoading}
       main={
         <div className="settings">
           <div className="settings__block">
