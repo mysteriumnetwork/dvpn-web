@@ -70,7 +70,7 @@ const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) =>
   const liveSessions = useSelector<RootState, Session[] | undefined>(({ sse }) => sse.appState?.sessions)
   const liveSessionStats = useSelector<RootState, SessionStats | undefined>(({ sse }) => sse.appState?.sessionsStats)
 
-  const fetchData = React.useCallback(({ pageSize, pageIndex }) => {
+  const fetchData = React.useCallback(({ pageSize, page }) => {
     // Give this fetch an ID
     const fetchId = ++fetchIdRef.current
 
@@ -83,8 +83,8 @@ const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) =>
         .sessions({
           direction: filterDirection,
           providerId: filterProviderId,
-          pageSize: pageSize,
-          page: pageIndex,
+          pageSize,
+          page,
         })
         .then((resp) => {
           const { items = [], totalPages = 0 } = { ...resp }
