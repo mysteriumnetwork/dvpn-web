@@ -10,10 +10,9 @@ import { useImmer } from 'use-immer'
 import { parseToastError, toastError } from '../../../commons/toast.utils'
 import { LocalVersion, LocalVersionsResponse, RemoteVersion, UI, uiVersionManager } from '../../../api/NodeUIVersion'
 import styles from './VersionManagementPage.module.scss'
-import { date2human } from '../../../commons/date.utils'
 import Button from '../../../Components/Buttons/Button'
 import classNames from 'classnames'
-import HelpTooltip from '../../../Components/HelpTooltip/HelpTooltip'
+import { VersionCard } from './VersionCard'
 
 interface State {
   isLoading: boolean
@@ -133,7 +132,10 @@ export const VersionManagementPage = () => {
     }
   }
 
-  const notes = (notes: string): JSX.Element => {
+  const notes = (notes?: string): JSX.Element | undefined => {
+    if (!notes) {
+      return undefined
+    }
     return (
       <div className={styles.releaseNotes}>
         {notes.split('\r\n').map((it, index) => (
@@ -144,49 +146,37 @@ export const VersionManagementPage = () => {
   }
 
   const versionList = state.remote.versions
-    .filter((rv) => rv.compatibilityUrl)
-    .map((rv) => {
-      const local = findLocal(rv.name)
+    .filter((remote) => remote.compatibilityUrl)
+    .map((remote) => {
+      const local = findLocal(remote.name)
 
       return (
-        <div key={rv.name} className={styles.row}>
-          <div>
-            <div className={styles.versionBlock}>
-              <div className={styles.name}>{rv.name}</div>
-              {rv.name === state.ui.bundledVersion && <div className={styles.preRelease}>(bundled)</div>}
-              {rv.isPreRelease && <div className={styles.preRelease}>(pre-release)</div>}
-            </div>
-            <div className={styles.releaseBlock}>
-              <div className={styles.released}>({date2human(rv.releasedAt)})</div>
-              {rv.releaseNotes && <HelpTooltip title={notes(rv.releaseNotes)} />}
-            </div>
-          </div>
-          <div>
-            {!local && (
-              <Button
-                className={styles.control}
-                onClick={() => download(rv.name)}
-                disabled={state.isDownloadInProgress}
-                extraStyle="outline"
-              >
-                Download
-              </Button>
-            )}
-            {local && !isInUse(local) && (
-              <Button
-                className={styles.control}
-                onClick={() => switchVersion(rv.name)}
-                disabled={state.isDownloadInProgress}
-                extraStyle="outline-primary"
-              >
-                Switch
-              </Button>
-            )}
-          </div>
-        </div>
+        <VersionCard
+          remote={remote}
+          local={local}
+          bundledVersion={state.ui.bundledVersion}
+          onDownload={() => download(remote.name)}
+          onSwitchVersion={() => switchVersion(remote.name)}
+          isDownloadInProgress={state.isDownloadInProgress}
+          isInUse={isInUse(local)}
+          releaseNotes={notes(remote.releaseNotes)}
+        />
       )
     })
 
+  const local = findLocal('local')
+  if (local) {
+    versionList.unshift(
+      <VersionCard
+        remote={{ name: 'local', releasedAt: new Date().toDateString(), isPreRelease: false }}
+        local={local}
+        bundledVersion={state.ui.bundledVersion}
+        onSwitchVersion={() => switchVersion('local')}
+        isDownloadInProgress={state.isDownloadInProgress}
+        isInUse={isInUse(local)}
+      />,
+    )
+  }
   return (
     <Layout
       title="Version Management"
