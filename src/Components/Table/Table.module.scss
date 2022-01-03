@@ -2,9 +2,26 @@
 @import '../../assets/styles/base/mixins/media';
 
 .table {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  &Spinner {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+  }
+
+  &Overlay {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background: #dfdfdfd1;
+    opacity: 50%;
+  }
 
   &Mobile {
     @include respond-above(sm) {

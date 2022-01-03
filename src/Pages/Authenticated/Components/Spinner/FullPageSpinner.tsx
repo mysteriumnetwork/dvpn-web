@@ -9,7 +9,7 @@ import { CircularProgress } from '@material-ui/core'
 import React from 'react'
 import styles from './Spinner.module.scss'
 
-export const Spinner = () => {
+export const FullPageSpinner = () => {
   return (
     <>
       <div className={styles.overlay} />
