@@ -136,8 +136,8 @@ export const VersionManagementPage = () => {
   const notes = (notes: string): JSX.Element => {
     return (
       <div className={styles.releaseNotes}>
-        {notes.split('\r\n').map((it) => (
-          <p>{it}</p>
+        {notes.split('\r\n').map((it, index) => (
+          <p key={index}>{it}</p>
         ))}
       </div>
     )
