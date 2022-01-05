@@ -16,10 +16,19 @@ interface Props {
   onCancel?: () => void
   onConfirm?: () => void
   message?: string
+  isConfirmDisabled?: boolean
+  content?: JSX.Element
   confirmButton?: (onConfirm?: () => void) => JSX.Element
 }
 
-const ConfirmationDialogue = ({ open = false, onCancel, onConfirm = () => {}, message = 'Are you sure?' }: Props) => {
+const ConfirmationDialogue = ({
+  open = false,
+  onCancel,
+  onConfirm = () => {},
+  isConfirmDisabled,
+  message = 'Are you sure?',
+  content,
+}: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   return (
     <Dialog
@@ -27,9 +36,11 @@ const ConfirmationDialogue = ({ open = false, onCancel, onConfirm = () => {}, me
       onClose={onCancel}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      maxWidth="xl"
     >
       <DialogContent>
         <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
+        {content && content}
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel} extraStyle="gray">
@@ -44,6 +55,7 @@ const ConfirmationDialogue = ({ open = false, onCancel, onConfirm = () => {}, me
           }}
           isLoading={loading}
           autoFocus
+          disabled={isConfirmDisabled}
         >
           Ok
         </Button>

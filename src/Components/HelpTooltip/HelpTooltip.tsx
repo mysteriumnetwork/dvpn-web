@@ -7,6 +7,7 @@
 import { Tooltip } from '@material-ui/core'
 import HelpIcon from '@material-ui/icons/Help'
 import React from 'react'
+import { Media } from '../../commons/media.utils'
 
 interface Props {
   title: NonNullable<React.ReactNode>
@@ -27,15 +28,17 @@ interface Props {
 
 const HelpTooltip = ({ title, placement = 'bottom' }: Props) => {
   return (
-    <Tooltip
-      title={title}
-      style={{ backgroundColor: '#FFFFFF !important', fill: '#9D9D9D' }}
-      placement={placement}
-      arrow
-      interactive
-    >
-      <HelpIcon fontSize="small" />
-    </Tooltip>
+    <Media.Desktop>
+      <Tooltip
+        title={title}
+        style={{ backgroundColor: '#FFFFFF !important', fill: '#9D9D9D' }}
+        placement={placement}
+        arrow
+        interactive
+      >
+        <HelpIcon fontSize="small" />
+      </Tooltip>
+    </Media.Desktop>
   )
 }
 

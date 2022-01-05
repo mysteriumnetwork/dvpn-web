@@ -13,7 +13,13 @@ import './App.scss'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
 import { Auth, isLoggedIn, updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
-import { fetchConfigAsync, fetchFeesAsync, fetchIdentityAsync, updateTermsStoreAsync } from '../redux/app.async.actions'
+import {
+  fetchConfigAsync,
+  fetchFeesAsync,
+  fetchChainSummaryAsync,
+  fetchIdentityAsync,
+  updateTermsStoreAsync,
+} from '../redux/app.async.actions'
 import { RootState } from '../redux/store'
 import { tequila } from '../api/ApiWrapper'
 import {
@@ -44,6 +50,7 @@ interface Props {
     fetchConfigAsync: () => void
     updateTermsStoreAsync: () => void
     fetchFeesAsync: () => void
+    fetchChainSummaryAsync: () => void
     updateAuthenticatedStore: (auth: Auth) => void
     updateAuthFlowLoadingStore: (loading: boolean) => void
     sseAppStateStateChanged: (state: AppState) => void
@@ -57,6 +64,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => {
       fetchConfigAsync: () => dispatch(fetchConfigAsync()),
       updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
       fetchFeesAsync: () => dispatch(fetchFeesAsync()),
+      fetchChainSummaryAsync: () => dispatch(fetchChainSummaryAsync()),
       updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
       updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
       sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
@@ -90,6 +98,7 @@ const AppRouter = ({ actions }: Props) => {
     await actions.fetchIdentityAsync()
     await actions.fetchConfigAsync()
     await actions.fetchFeesAsync()
+    await actions.fetchChainSummaryAsync()
   }
 
   useLayoutEffect(() => {

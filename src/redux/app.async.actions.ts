@@ -15,6 +15,7 @@ import {
   updateIdentityRefStore,
   updateIdentityStore,
   updateFeesStore,
+  updateChainSummaryStore,
 } from './app.slice'
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
@@ -48,7 +49,14 @@ export const fetchConfigAsync = (): ((dispatch: Dispatch<any>) => void) => {
 
 export const fetchFeesAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const config = await api.transactorFees()
-    dispatch(updateFeesStore(config))
+    const fees = await api.transactorFees()
+    dispatch(updateFeesStore(fees))
+  }
+}
+
+export const fetchChainSummaryAsync = (): ((dispatch: Dispatch<any>) => void) => {
+  return async (dispatch) => {
+    const chainSummary = await api.chainSummary()
+    dispatch(updateChainSummaryStore(chainSummary))
   }
 }
