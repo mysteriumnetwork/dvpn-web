@@ -13,25 +13,68 @@ import { myst } from '../../../../commons/myst.utils'
 import { HeroStatCard } from './HeroStatCard'
 import { ReactComponent as WalletIcon } from '../../../../assets/icons/WithdrawalWallet.svg'
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { seconds2Time } from '../../../../commons/date.utils'
 import { SessionStats } from 'mysterium-vpn-js'
 import formatBytes, { add } from '../../../../commons/formatBytes'
+import { tequila } from '../../../../api/ApiWrapper'
+import { toastError, toastSuccess } from '../../../../commons/toast.utils'
+import { parseError } from '../../../../commons/error.utils'
+import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
 
 const UnsettledEarnings = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
-  return (
-    <StatCard
-      stat={myst.displayMYST(identity.earnings, {
-        ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-        fractionDigits: 2,
-      })}
-      name="Unsettled earnings"
-      helpText={`These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done automatically when ${zeroStakeSettlementThreshold(
+  const fees = useSelector(selectors.feesSelector)
+
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false)
+
+  const tooltipText = useMemo(
+    () =>
+      `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${zeroStakeSettlementThreshold(
         config,
-      )} MYST is reached. Please note that settlement fee is 20% plus blockchain fees, so Balance will be lower than Total earnings.`}
-    />
+      )} MYST is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus blockchain fees (${myst.displayMYST(
+        fees.settlement,
+      )}), so Balance will be lower than Total earnings.`,
+    [fees.settlement, config],
+  )
+
+  const confirmationText = useMemo(
+    () =>
+      `Please click OK to proceed with settlement to Balance. Note: 20% network fee plus blockchain transaction fees (${myst.displayMYST(
+        fees.settlement,
+      )}) will be applied.`,
+    [fees.settlement],
+  )
+
+  return (
+    <>
+      <StatCard
+        stat={myst.displayMYST(identity.earnings, {
+          ...DEFAULT_MONEY_DISPLAY_OPTIONS,
+          fractionDigits: 2,
+        })}
+        name="Unsettled earnings"
+        helpText={tooltipText}
+        action="Settle"
+        onAction={() => setShowConfirmation(true)}
+      />
+      <ConfirmationDialogue
+        open={showConfirmation}
+        onCancel={() => setShowConfirmation(false)}
+        message={confirmationText}
+        onConfirm={async () => {
+          try {
+            await tequila.api.settleAsync({ providerId: identity.id, hermesId: identity.hermesId })
+            toastSuccess('Settlement was executed successfully!')
+            setShowConfirmation(false)
+          } catch (err) {
+            toastError('Unfortunately, settlement failed. Please try again.')
+            console.error(parseError(err))
+          }
+        }}
+      />
+    </>
   )
 }
 
