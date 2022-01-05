@@ -15,6 +15,7 @@ interface Props {
   open?: boolean
   onCancel?: () => void
   onConfirm?: () => void
+  confirmText?: string
   message?: string
   isConfirmDisabled?: boolean
   content?: JSX.Element
@@ -25,6 +26,7 @@ const ConfirmationDialogue = ({
   open = false,
   onCancel,
   onConfirm = () => {},
+  confirmText,
   isConfirmDisabled,
   message = 'Are you sure?',
   content,
@@ -36,7 +38,7 @@ const ConfirmationDialogue = ({
       onClose={onCancel}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
-      maxWidth="xl"
+      maxWidth="sm"
     >
       <DialogContent>
         <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
@@ -57,7 +59,7 @@ const ConfirmationDialogue = ({
           autoFocus
           disabled={isConfirmDisabled}
         >
-          Ok
+          {confirmText || 'OK'}
         </Button>
       </DialogActions>
     </Dialog>

@@ -65,9 +65,10 @@ const UnsettledEarnings = () => {
       <ConfirmationDialogue
         open={showConfirmation}
         onCancel={() => setShowConfirmation(false)}
-        message="Please click SETTLE to proceed with settlement to Balance:"
+        message="Please click SETTLE to proceed with settlement to Balance. Note: Settlement transaction may take a few minutes to complete."
         content={<FeesTable earnings={identity.earnings} chainSummary={chainSummary} calculatedFees={calculatedFees} />}
         isConfirmDisabled={isConfirmDisables}
+        confirmText="SETTLE"
         onConfirm={async () => {
           try {
             await tequila.api.settleAsync({ providerId: identity.id, hermesId: identity.hermesId })
