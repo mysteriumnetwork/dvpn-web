@@ -17,13 +17,13 @@ export interface CalculatedFees {
 const calculateEarnings = (earnings: number, fees: Fees): CalculatedFees => {
   const hermesCutPercent = fees.hermes / 10000
   const hermesCutMyst = earnings * hermesCutPercent
-  const bottomLineProfit = earnings - hermesCutPercent - fees.settlement
+  const profitsMyst = earnings - hermesCutMyst - fees.settlement
   return {
     earningsMyst: earnings,
     hermesCutMyst,
     hermesCutPercent,
     blockchainFee: fees.settlement,
-    profitsMyst: bottomLineProfit,
+    profitsMyst,
   }
 }
 
