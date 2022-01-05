@@ -21,11 +21,14 @@ import { tequila } from '../../../../api/ApiWrapper'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import { parseError } from '../../../../commons/error.utils'
 import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
+import { FeesTable } from '../Fees/FeesTable'
+import { feeCalculator } from '../../../../commons/fees'
 
 const UnsettledEarnings = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const fees = useSelector(selectors.feesSelector)
+  const chainSummary = useSelector(selectors.chainSummarySelector)
 
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false)
 
@@ -39,13 +42,13 @@ const UnsettledEarnings = () => {
     [fees.settlement, config],
   )
 
-  const confirmationText = useMemo(
-    () =>
-      `Please click OK to proceed with settlement to Balance. Note: 20% network fee plus blockchain transaction fees (${myst.displayMYST(
-        fees.settlement,
-      )}) will be applied.`,
-    [fees.settlement],
-  )
+  const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earnings, fees), [
+    fees.hermes,
+    fees.settlement,
+    identity.earnings,
+  ])
+
+  const isConfirmDisables = calculatedFees.profitsMyst <= 0
 
   return (
     <>
@@ -62,7 +65,9 @@ const UnsettledEarnings = () => {
       <ConfirmationDialogue
         open={showConfirmation}
         onCancel={() => setShowConfirmation(false)}
-        message={confirmationText}
+        message="Please click SETTLE to proceed with settlement to Balance:"
+        content={<FeesTable earnings={identity.earnings} chainSummary={chainSummary} calculatedFees={calculatedFees} />}
+        isConfirmDisabled={isConfirmDisables}
         onConfirm={async () => {
           try {
             await tequila.api.settleAsync({ providerId: identity.id, hermesId: identity.hermesId })

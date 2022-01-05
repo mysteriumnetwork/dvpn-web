@@ -26,7 +26,7 @@ const displayMYST = (
   if (-1 * humanAmount.e > requiredPrecision) {
     return `< ${new decimal('1').div(Math.pow(10, requiredPrecision)).toFixed()}${symbol}`
   }
-  return `${new decimal(amount).div(DECIMAL_PART).toFixed()}${symbol}`
+  return `${new decimal(amount).div(DECIMAL_PART).toFixed(requiredPrecision)}${symbol}`
 }
 
 export const myst = {
