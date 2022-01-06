@@ -24,7 +24,6 @@ interface Props {
    * @param pageSize
    * @param page
    */
-  fetchData?: ({ pageSize, page }: { pageSize: number; page: number }) => void
   onPaginationChange?: ({ pageSize, page }: { pageSize: number; page: number }) => void
   lastPage?: number
   loading: boolean
@@ -45,7 +44,6 @@ const Table = ({
   data,
   lastPage,
   loading = false,
-  fetchData = () => {},
   noPagination,
   mobileRow,
   noData = (
@@ -104,9 +102,7 @@ const Table = ({
   )
 
   React.useEffect(() => {
-    const pagination = { pageSize, page: pageIndex + 1 }
-    fetchData({ pageSize, page: pageIndex + 1 })
-    onPaginationChange(pagination)
+    onPaginationChange({ pageSize, page: pageIndex + 1 })
   }, [pageIndex, pageSize])
 
   return (

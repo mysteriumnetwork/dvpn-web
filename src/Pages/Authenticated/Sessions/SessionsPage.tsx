@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Session, SessionDirection, SessionStats } from 'mysterium-vpn-js'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { api } from '../../../api/Api'
@@ -19,7 +19,7 @@ import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import './SessionsPage.scss'
 import { Layout } from '../Layout'
-import Table from '../../../Components/Table/Table'
+import Table, { PagingProps } from '../../../Components/Table/Table'
 import { MobileRow } from '../../../Components/Table/MobileRow'
 import { Row } from 'react-table'
 import { myst } from '../../../commons/myst.utils'
@@ -31,10 +31,14 @@ export interface Props {
   liveSessionStats?: SessionStats
 }
 
-interface StateProps {
+interface State {
   isLoading: boolean
   sessionList: SessionRow[]
   sessionListPages: number
+
+  page: number
+  pageSize: number
+  lastPage: number
 }
 
 interface SessionRow {
@@ -58,43 +62,43 @@ const row = (s: Session): SessionRow => {
 }
 
 const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) => {
-  const [state, setState] = useState<StateProps>({
+  const [state, setState] = useState<State>({
     isLoading: true,
     sessionList: [],
     sessionListPages: 0,
+    page: 1,
+    pageSize: 10,
+    lastPage: 1,
   })
-
-  const fetchIdRef = React.useRef(0)
 
   const filterProviderId = useSelector<RootState, string | undefined>(({ app }) => app.currentIdentity?.id)
   const liveSessions = useSelector<RootState, Session[] | undefined>(({ sse }) => sse.appState?.sessions)
   const liveSessionStats = useSelector<RootState, SessionStats | undefined>(({ sse }) => sse.appState?.sessionsStats)
 
-  const fetchData = React.useCallback(({ pageSize, page }) => {
-    // Give this fetch an ID
-    const fetchId = ++fetchIdRef.current
+  useEffect(() => {
+    fetchData()
+  }, [state.page])
 
-    // Set the loading state
-    setState((cs) => ({ ...cs, isLoading: true }))
+  const fetchData = () => {
+    api
+      .sessions({
+        direction: filterDirection,
+        providerId: filterProviderId,
+        pageSize: state.pageSize,
+        page: state.page,
+      })
+      .then((resp) => {
+        const { items = [], totalPages = 0 } = { ...resp }
+        setState((cs) => ({ ...cs, isLoading: false, sessionList: items.map(row), sessionListPages: totalPages }))
+      })
+      .catch((err) => {
+        toastError(parseError(err, 'Fetching Sessions Failed!'))
+      })
+  }
 
-    // Only update the data if this is the latest fetch
-    if (fetchId === fetchIdRef.current) {
-      api
-        .sessions({
-          direction: filterDirection,
-          providerId: filterProviderId,
-          pageSize,
-          page,
-        })
-        .then((resp) => {
-          const { items = [], totalPages = 0 } = { ...resp }
-          setState((cs) => ({ ...cs, isLoading: false, sessionList: items.map(row), sessionListPages: totalPages }))
-        })
-        .catch((err) => {
-          toastError(parseError(err, 'Fetching Sessions Failed!'))
-        })
-    }
-  }, [])
+  const handlePageChange = ({ pageSize, page }: PagingProps) => {
+    setState((cs) => ({ ...cs, page, pageSize }))
+  }
 
   const columns = useMemo(
     () => [
@@ -141,7 +145,8 @@ const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) =>
         <Table
           columns={columns}
           data={state.sessionList}
-          fetchData={fetchData}
+          onPaginationChange={handlePageChange}
+          pagination={{ pageSize: state.pageSize }}
           lastPage={state.sessionListPages}
           loading={state.isLoading}
           mobileRow={({ original }: Row<SessionRow>, index) => {
