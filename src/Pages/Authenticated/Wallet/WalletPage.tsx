@@ -69,6 +69,14 @@ const WalletPage = () => {
         },
       },
       {
+        Header: 'Type',
+        accessor: 'isWithdrawal',
+        width: 10,
+        Cell: ({ value }) => {
+          return value ? 'Withdrawal' : 'Settlement'
+        },
+      },
+      {
         Header: 'Beneficiary',
         accessor: 'beneficiary',
         width: 25,
