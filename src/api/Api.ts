@@ -4,9 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { TequilapiClient, TequilapiClientFactory } from 'mysterium-vpn-js'
+import { AxiosAdapter, TequilapiClient } from 'mysterium-vpn-js'
+import { http } from './Client'
 
-export const api: TequilapiClient = new TequilapiClientFactory(
-  `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`,
-  20_000,
-).build()
+export const api: TequilapiClient = new TequilapiClient(new AxiosAdapter(http, 20_000))
