@@ -19,7 +19,13 @@ interface Props {
   columns: Column[]
   mobileRow?: (row: Row<any>, index: number) => JSX.Element
   data: any[]
+  /**
+   * @deprecated
+   * @param pageSize
+   * @param page
+   */
   fetchData?: ({ pageSize, page }: { pageSize: number; page: number }) => void
+  onPaginationChange?: ({ pageSize, page }: { pageSize: number; page: number }) => void
   lastPage?: number
   loading: boolean
   noPagination?: boolean
@@ -27,6 +33,11 @@ interface Props {
   pagination?: {
     pageSize?: number
   }
+}
+
+export interface PagingProps {
+  pageSize: number
+  page: number
 }
 
 const Table = ({
@@ -43,6 +54,7 @@ const Table = ({
     </div>
   ),
   pagination = { pageSize: 10 },
+  onPaginationChange = () => {},
 }: Props) => {
   const preparedMap = (page: Row<object>[], mapper: (row: Row, index: number) => JSX.Element) => {
     return page.map((row, index) => {
@@ -92,7 +104,9 @@ const Table = ({
   )
 
   React.useEffect(() => {
+    const pagination = { pageSize, page: pageIndex + 1 }
     fetchData({ pageSize, page: pageIndex + 1 })
+    onPaginationChange(pagination)
   }, [pageIndex, pageSize])
 
   return (
