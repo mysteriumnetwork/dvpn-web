@@ -109,6 +109,9 @@ const WalletPage = () => {
         Header: 'Beneficiary',
         accessor: 'beneficiary',
         width: 25,
+        Cell: ({ value }) => {
+          return value === '0x0000000000000000000000000000000000000000' ? '-' : value
+        },
       },
       {
         Header: 'Transaction ID',
