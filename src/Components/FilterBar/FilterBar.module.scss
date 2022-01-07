@@ -4,11 +4,16 @@
 .bar {
   width: 100%;
   display: flex;
+  align-items: center;
   gap: 5px;
 
   background: #FFFFFF;
   padding: 10px;
   box-shadow: 0 2px 5px rgba(99,99,99, 0.05);
+
+  &Right {
+    margin-right: 40px;
+  }
 }
 
 .item {
