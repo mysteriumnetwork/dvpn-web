@@ -22,8 +22,15 @@ export const FilterItem = ({ label, component }: FilterItemProps) => {
 
 interface FilterBarProps {
   children?: JSX.Element | JSX.Element[]
+  right?: JSX.Element | JSX.Element[]
 }
 
-export const FilterBar = ({ children }: FilterBarProps) => {
-  return <div className={styles.bar}>{children}</div>
+export const FilterBar = ({ children, right }: FilterBarProps) => {
+  return (
+    <div className={styles.bar}>
+      {children}
+      {right && <div className="flex-grow" />}
+      <div className={styles.barRight}>{right}</div>
+    </div>
+  )
 }

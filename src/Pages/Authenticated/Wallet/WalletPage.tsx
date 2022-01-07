@@ -9,7 +9,6 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import { Layout } from '../Layout'
 import { SettlementListResponse, SettlementType } from 'mysterium-vpn-js'
 import { useImmer } from 'use-immer'
-import { api } from '../../../api/Api'
 import { toastError } from '../../../commons/toast.utils'
 import { parseError } from '../../../commons/error.utils'
 import Table, { PagingProps } from '../../../Components/Table/Table'
@@ -24,6 +23,8 @@ import { myst } from '../../../commons/myst.utils'
 import { FilterBar, FilterItem } from '../../../Components/FilterBar/FilterBar'
 import { Option, SelectV3 } from '../../../Components/Select/SelectV3'
 import { Header } from '../../../Components/Table/TableComponents'
+import { DownloadCSV } from '../../../Components/Download/DownloadCSV'
+import { tequila } from '../../../api/ApiWrapper'
 
 interface State {
   isTableLoading: boolean
@@ -39,6 +40,8 @@ const EMPTY_RESPONSE = { items: [], totalPages: 0, page: 1, pageSize: 10, totalI
 const settlementTypeItems: Option[] = Object.entries(SettlementType).map(([k, v]) => ({ label: k, value: v }))
 
 const WalletPage = () => {
+  const { api } = tequila
+
   const [state, setState] = useImmer<State>({
     isTableLoading: true,
     lastPage: 1,
@@ -182,7 +185,16 @@ const WalletPage = () => {
             <Cards.UnsettledEarnings />
             <Cards.TotalWithdrawn amount={withdrawalTotal} />
           </CardLayout>
-          <FilterBar>
+          <FilterBar
+            right={
+              <DownloadCSV<SettlementListResponse>
+                fetchData={async () => api.settlementHistory({ pageSize: state.settlementResponse.totalItems })}
+                mapper={(data) => {
+                  return 'test'
+                }}
+              />
+            }
+          >
             <FilterItem
               label="Type"
               component={

@@ -18,22 +18,21 @@ interface Props {
   extraStyle?: 'outline' | 'filled' | 'gray' | 'outline-primary'
   type?: 'button' | 'submit' | 'reset' | undefined
   autoFocus?: boolean
+  icon?: JSX.Element
 }
 
-const Button = ({
-  isLoading,
-  extraStyle,
-  className,
-  children,
-  onClick,
-  type,
-  disabled,
-  autoFocus,
-}: Props): JSX.Element => {
+const Button = ({ isLoading, extraStyle, className, children, onClick, type, disabled, autoFocus, icon }: Props) => {
   const classNames = `btn p-r-30 p-l-30 ${className || ''} btn--${extraStyle || 'filled'}`
 
   return (
-    <button disabled={disabled || isLoading} type={type} onClick={onClick} className={classNames} autoFocus={autoFocus}>
+    <button
+      disabled={disabled || isLoading}
+      type={type}
+      onClick={onClick}
+      className={classNames}
+      autoFocus={autoFocus}
+      style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+    >
       {isLoading ? (
         <CircularProgress
           className={['outline', 'outline-primary'].includes(`${extraStyle}`) ? 'loader-outline' : 'loader'}
@@ -42,6 +41,7 @@ const Button = ({
       ) : (
         children
       )}
+      {icon && icon}
     </button>
   )
 }
