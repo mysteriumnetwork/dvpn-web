@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import PaginationMaterial from '@material-ui/lab/Pagination'
 
 import styles from './Table.module.scss'
@@ -101,7 +101,7 @@ const Table = ({
     usePagination,
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     onPaginationChange({ pageSize, page: pageIndex + 1 })
   }, [pageIndex, pageSize])
 

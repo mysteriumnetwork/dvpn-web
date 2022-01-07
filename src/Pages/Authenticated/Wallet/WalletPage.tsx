@@ -22,7 +22,8 @@ import { CardLayout } from '../Components/Card/CardLayout'
 import { Cards } from '../Components/Card/PreparedCards'
 import { myst } from '../../../commons/myst.utils'
 import { FilterBar, FilterItem } from '../../../Components/FilterBar/FilterBar'
-import { SelectV3, Option } from '../../../Components/Select/SelectV3'
+import { Option, SelectV3 } from '../../../Components/Select/SelectV3'
+import { Header } from '../../../Components/Table/TableComponents'
 
 interface State {
   isTableLoading: boolean
@@ -98,7 +99,20 @@ const WalletPage = () => {
         },
       },
       {
-        Header: 'Type',
+        Header: (
+          <Header
+            name="Type"
+            tooltip={
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <p>
+                  Settlement - internal transaction for settling earnings to node's payment channel (withdrawable
+                  Balance).
+                </p>
+                <p> Withdrawal - transfer from Balance to external wallet.</p>
+              </div>
+            }
+          />
+        ),
         accessor: 'isWithdrawal',
         width: 10,
         Cell: ({ value }) => {
@@ -128,7 +142,17 @@ const WalletPage = () => {
         },
       },
       {
-        Header: 'Fee',
+        Header: (
+          <Header
+            name="Fee"
+            tooltip={
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <p>For settlement transactions this fee includes 20% network fee plus blockchain transaction fees.</p>
+                <p>For withdrawal transactions this fee includes blockchain transaction fees.</p>
+              </div>
+            }
+          />
+        ),
         accessor: 'fees',
         width: 10,
         Cell: ({ value }) => {
