@@ -21,7 +21,7 @@ import { CardLayout } from '../Components/Card/CardLayout'
 import { Cards } from '../Components/Card/PreparedCards'
 import { myst } from '../../../commons/myst.utils'
 import { FilterBar, FilterItem } from '../../../Components/FilterBar/FilterBar'
-import { Option, SelectV3 } from '../../../Components/Select/SelectV3'
+import { Option, Select } from '../../../Components/Select/Select'
 import { Header } from '../../../Components/Table/TableComponents'
 import { DownloadCSV } from '../../../Components/Download/DownloadCSV'
 import { tequila } from '../../../api/wrapped-calls'
@@ -198,7 +198,7 @@ const WalletPage = () => {
             <FilterItem
               label="Type"
               component={
-                <SelectV3
+                <Select
                   value={state.filterTypes}
                   options={settlementTypeItems}
                   onChange={typeChange}
