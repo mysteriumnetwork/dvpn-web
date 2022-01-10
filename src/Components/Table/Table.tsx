@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import PaginationMaterial from '@material-ui/lab/Pagination'
 
 import styles from './Table.module.scss'
@@ -19,7 +19,12 @@ interface Props {
   columns: Column[]
   mobileRow?: (row: Row<any>, index: number) => JSX.Element
   data: any[]
-  fetchData?: ({ pageSize, page }: { pageSize: number; page: number }) => void
+  /**
+   * @deprecated
+   * @param pageSize
+   * @param page
+   */
+  onPaginationChange?: ({ pageSize, page }: { pageSize: number; page: number }) => void
   lastPage?: number
   loading: boolean
   noPagination?: boolean
@@ -29,12 +34,16 @@ interface Props {
   }
 }
 
+export interface PagingProps {
+  pageSize: number
+  page: number
+}
+
 const Table = ({
   columns,
   data,
   lastPage,
   loading = false,
-  fetchData = () => {},
   noPagination,
   mobileRow,
   noData = (
@@ -43,6 +52,7 @@ const Table = ({
     </div>
   ),
   pagination = { pageSize: 10 },
+  onPaginationChange = () => {},
 }: Props) => {
   const preparedMap = (page: Row<object>[], mapper: (row: Row, index: number) => JSX.Element) => {
     return page.map((row, index) => {
@@ -91,8 +101,8 @@ const Table = ({
     usePagination,
   )
 
-  React.useEffect(() => {
-    fetchData({ pageSize, page: pageIndex + 1 })
+  useEffect(() => {
+    onPaginationChange({ pageSize, page: pageIndex + 1 })
   }, [pageIndex, pageSize])
 
   return (

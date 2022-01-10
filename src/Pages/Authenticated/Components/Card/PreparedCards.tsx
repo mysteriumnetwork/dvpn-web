@@ -92,6 +92,7 @@ const TotalWithdrawn = ({ amount }: { amount?: string }) => {
         fractionDigits: 2,
       })}
       name="Total Withdrawn"
+      helpText="Total amount transferred to external wallet after all applicable fees."
     />
   )
 }
