@@ -46,10 +46,16 @@ const configSelector = ({ app }: RootState): Config => {
 const onBoardingStateSelector = ({ app, sse }: { app: AppState; sse: SSEState }) =>
   onBoarding(app.auth, app.terms, currentIdentitySelector({ app, sse }))
 
+const ongoingSessionsSelector = ({ sse }: { sse: SSEState }) => sse.appState?.sessions || []
+
+const ongoingSessionStatsSelector = ({ sse }: { sse: SSEState }) => sse.appState?.sessionsStats || {}
+
 export const selectors = {
   currentIdentitySelector,
   feesSelector,
   configSelector,
   onBoardingStateSelector,
   chainSummarySelector,
+  ongoingSessionsSelector,
+  ongoingSessionStatsSelector,
 }

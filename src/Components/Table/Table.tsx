@@ -18,11 +18,6 @@ interface Props {
   columns: Column[]
   mobileRow?: (row: Row<any>, index: number) => JSX.Element
   data: any[]
-  /**
-   * @deprecated
-   * @param pageSize
-   * @param page
-   */
   onPaginationChange?: ({ pageSize, page }: { pageSize: number; page: number }) => void
   lastPage?: number
   loading: boolean
