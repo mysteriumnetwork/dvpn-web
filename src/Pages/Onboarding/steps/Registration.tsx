@@ -12,7 +12,7 @@ import Collapse from '@material-ui/core/Collapse'
 import React, { useEffect, useMemo } from 'react'
 import classNames from 'classnames'
 import TopUpModal from './TopUpModal/TopUpModal'
-import { api } from '../../../api/Api'
+import { tequilaClient } from '../../../api/tequila-client'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../redux/selectors'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
@@ -109,9 +109,9 @@ const Registration = ({ nextStep }: StepProps) => {
     const init = async () => {
       try {
         const [migrationEligibility, providerEligibility, summary] = await Promise.all([
-          api.freeRegistrationEligibility(identity.id),
-          api.freeProviderRegistrationEligibility(),
-          api.chainSummary(),
+          tequilaClient.freeRegistrationEligibility(identity.id),
+          tequilaClient.freeProviderRegistrationEligibility(),
+          tequilaClient.chainSummary(),
         ])
         setState((d) => {
           d.currentChainName = summary.chains[summary.currentChain]
@@ -152,7 +152,7 @@ const Registration = ({ nextStep }: StepProps) => {
   }
 
   const registerIdentity = async (identity: string): Promise<void> => {
-    return api.identityRegister(identity, {
+    return tequilaClient.identityRegister(identity, {
       beneficiary: state.withdrawalAddress,
       stake: 10, // quadruple check mit Jaro
     })
@@ -171,7 +171,7 @@ const Registration = ({ nextStep }: StepProps) => {
 
       setIsLoading(true)
       if (state.withdrawalAddress) {
-        await api.payoutAddressSave(identity.id, state.withdrawalAddress)
+        await tequilaClient.payoutAddressSave(identity.id, state.withdrawalAddress)
       }
       if (isUnregistered(identity) || isRegistrationError(identity)) {
         setIsTopUpOpen(true)

@@ -24,7 +24,7 @@ import { FilterBar, FilterItem } from '../../../Components/FilterBar/FilterBar'
 import { Option, SelectV3 } from '../../../Components/Select/SelectV3'
 import { Header } from '../../../Components/Table/TableComponents'
 import { DownloadCSV } from '../../../Components/Download/DownloadCSV'
-import { tequila } from '../../../api/ApiWrapper'
+import { tequila } from '../../../api/wrapped-calls'
 import { toCsv } from './settlement.mapper'
 
 interface State {

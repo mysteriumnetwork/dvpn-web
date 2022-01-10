@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import { Issue } from 'mysterium-vpn-js/lib/feedback/issue'
 import React from 'react'
 import { useImmer } from 'use-immer'
-import { api } from '../../api/Api'
+import { tequilaClient } from '../../api/tequila-client'
 import { parseError } from '../../commons/error.utils'
 import { toastError, toastSuccess } from '../../commons/toast.utils'
 import Button from '../Buttons/Button'
@@ -52,7 +52,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
     setState((d) => {
       d.sending = true
     })
-    return api
+    return tequilaClient
       .reportIssue(state, 60000)
       .then(() => {
         toastSuccess('Thank you! Your report has been sent.')

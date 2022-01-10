@@ -8,7 +8,7 @@ import { CircularProgress } from '@material-ui/core'
 import { Identity } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { api } from '../../../../api/Api'
+import { tequilaClient } from '../../../../api/tequila-client'
 import { parseError } from '../../../../commons/error.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
@@ -38,7 +38,7 @@ const PayoutAddress = ({ identity }: Props) => {
   })
 
   useEffect(() => {
-    api
+    tequilaClient
       .payoutAddressGet(identity?.id || '')
       .then(({ address }) =>
         setState((d) => {
@@ -58,7 +58,7 @@ const PayoutAddress = ({ identity }: Props) => {
     setState((d) => {
       d.txPending = true
     })
-    api
+    tequilaClient
       .payoutAddressSave(identity?.id || '', state.payoutAddress)
       .then((res) => {
         setState((d) => {

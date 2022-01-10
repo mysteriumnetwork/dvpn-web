@@ -9,7 +9,7 @@ import { CurrentPricesResponse, Session, SessionDirection, SessionStats, Session
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { api } from '../../../api/Api'
+import { tequilaClient } from '../../../api/tequila-client'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { parseTequilApiError, UNKNOWN_API_ERROR } from '../../../commons/error.utils'
@@ -68,16 +68,16 @@ const DashboardPage = () => {
   useEffect(() => {
     const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
     Promise.all([
-      api.sessionStatsDaily(sessionFilter),
-      api.sessionStatsAggregated(sessionFilter),
-      api.sessions({
+      tequilaClient.sessionStatsDaily(sessionFilter),
+      tequilaClient.sessionStatsAggregated(sessionFilter),
+      tequilaClient.sessions({
         direction: SessionDirection.PROVIDED,
         providerId: identity.id,
         pageSize: 10,
         status: SessionStatus.COMPLETED,
       }),
-      api.pricesCurrent(),
-      api.identityBalanceRefresh(identity.id),
+      tequilaClient.pricesCurrent(),
+      tequilaClient.identityBalanceRefresh(identity.id),
     ])
       .then((result) => {
         const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = result

@@ -8,7 +8,7 @@ import { Session, SessionDirection, SessionStats } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { api } from '../../../api/Api'
+import { tequilaClient } from '../../../api/tequila-client'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
 import { countryName } from '../../../commons/country'
 import { date2human, seconds2Time } from '../../../commons/date.utils'
@@ -80,7 +80,7 @@ const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) =>
   }, [state.page])
 
   const fetchData = () => {
-    api
+    tequilaClient
       .sessions({
         direction: filterDirection,
         providerId: filterProviderId,

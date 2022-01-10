@@ -9,8 +9,8 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { api } from '../../../api/Api'
-import { tequila } from '../../../api/ApiWrapper'
+import { tequilaClient } from '../../../api/tequila-client'
+import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import * as config from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
@@ -59,7 +59,7 @@ const SettingsPage = () => {
   })
 
   useEffect(() => {
-    Promise.all([api.getMMNApiKey(), api.healthCheck(15_000), api.defaultConfig()])
+    Promise.all([tequilaClient.getMMNApiKey(), tequilaClient.healthCheck(15_000), tequilaClient.defaultConfig()])
       .then(([mmn, healthcheck, defaultConfig]) => {
         setState((cs) => ({
           ...cs,

@@ -9,7 +9,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { FormEvent, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useImmer } from 'use-immer'
-import { api } from '../../../api/Api'
+import { tequilaClient } from '../../../api/tequila-client'
 import { mmnDomainName, mmnWebAddress } from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { validatePassword } from '../../../commons/password'
@@ -78,7 +78,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
         d.showClaim = true
       })
     } else {
-      api.getMMNApiKey().then((resp) => {
+      tequilaClient.getMMNApiKey().then((resp) => {
         setState((d) => {
           d.apiKey = resp.apiKey
           d.showClaim = d.apiKey === undefined || d.apiKey?.length === 0 || state.mmnDomain === 'error'
@@ -141,10 +141,10 @@ const SetPassword = (_: StepProps): JSX.Element => {
 
     try {
       if (state.useApiKey) {
-        await api.setMMNApiKey(state.apiKey)
+        await tequilaClient.setMMNApiKey(state.apiKey)
       }
 
-      await api.authChangePassword({
+      await tequilaClient.authChangePassword({
         username: DEFAULT_USERNAME,
         oldPassword: DEFAULT_PASSWORD,
         newPassword: state.password,

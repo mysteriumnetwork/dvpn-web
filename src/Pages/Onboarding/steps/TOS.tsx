@@ -9,7 +9,7 @@ import showdown from 'showdown'
 // @ts-ignore
 import { TermsExitNode } from '@mysteriumnetwork/terms'
 
-import { tequila } from '../../../api/ApiWrapper'
+import { tequila } from '../../../api/wrapped-calls'
 import Button from '../../../Components/Buttons/Button'
 import styles from './Steps.module.scss'
 import classNames from 'classnames'

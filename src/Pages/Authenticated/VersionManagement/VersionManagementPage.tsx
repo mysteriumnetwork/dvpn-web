@@ -8,7 +8,13 @@ import { Layout } from '../Layout'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { parseToastError, toastError } from '../../../commons/toast.utils'
-import { LocalVersion, LocalVersionsResponse, RemoteVersion, UI, uiVersionManager } from '../../../api/NodeUIVersion'
+import {
+  LocalVersion,
+  LocalVersionsResponse,
+  RemoteVersion,
+  UI,
+  uiVersionManager,
+} from '../../../api/ui-version-management'
 import styles from './VersionManagementPage.module.scss'
 import Button from '../../../Components/Buttons/Button'
 import classNames from 'classnames'

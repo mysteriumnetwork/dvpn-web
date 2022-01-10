@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { AxiosAdapter, TequilapiClient } from 'mysterium-vpn-js'
-import { http } from './Client'
+import { http } from './axios'
 
-export const api: TequilapiClient = new TequilapiClient(new AxiosAdapter(http, 20_000))
+export const tequilaClient: TequilapiClient = new TequilapiClient(new AxiosAdapter(http, 20_000))

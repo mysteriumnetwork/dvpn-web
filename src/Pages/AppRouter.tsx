@@ -21,7 +21,7 @@ import {
   updateTermsStoreAsync,
 } from '../redux/app.async.actions'
 import { RootState } from '../redux/store'
-import { tequila } from '../api/ApiWrapper'
+import { tequila } from '../api/wrapped-calls'
 import {
   DASHBOARD,
   ERROR,

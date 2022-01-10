@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect, useMemo, useState } from 'react'
-import { api } from '../../../../api/Api'
+import { tequilaClient } from '../../../../api/tequila-client'
 import { money } from '../../../../commons/money.utils'
 import Button from '../../../../Components/Buttons/Button'
 import { Option, Radio } from '../../../../Components/Radio/Radio'
@@ -47,7 +47,7 @@ const TopUpModal = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      api.identityBalanceRefresh(identity.id)
+      tequilaClient.identityBalanceRefresh(identity.id)
     }, 5 * 1000)
     return () => clearInterval(interval)
   }, [])

@@ -6,8 +6,8 @@
  */
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { api } from '../../../../api/Api'
-import { tequila } from '../../../../api/ApiWrapper'
+import { tequilaClient } from '../../../../api/tequila-client'
+import { tequila } from '../../../../api/wrapped-calls'
 import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 
@@ -47,7 +47,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       d.loading = true
     })
 
-    api
+    tequilaClient
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState((cs) => {
