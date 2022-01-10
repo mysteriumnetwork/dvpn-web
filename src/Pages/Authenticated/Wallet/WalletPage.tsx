@@ -215,6 +215,7 @@ const WalletPage = () => {
             columns={columns}
             pagination={{ pageSize: state.pageSize }}
             onPaginationChange={handlePageChange}
+            responsivePaging
             mobileRow={(row: Row<Settlement>, index) => {
               const { settledAt, txHash, fees, amount, beneficiary } = row.original
               return (

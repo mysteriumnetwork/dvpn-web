@@ -149,6 +149,7 @@ const SessionsPage = ({ filterDirection = SessionDirection.PROVIDED }: Props) =>
           pagination={{ pageSize: state.pageSize }}
           lastPage={state.sessionListPages}
           loading={state.isLoading}
+          responsivePaging
           mobileRow={({ original }: Row<SessionRow>, index) => {
             const { country, duration, transferred, earnings, sessionId } = original
             return (

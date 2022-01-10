@@ -5,15 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect } from 'react'
-import PaginationMaterial from '@material-ui/lab/Pagination'
 
 import styles from './Table.module.scss'
 import './Pagination.mui.scss'
-import Button from '../Buttons/Button'
 import { Column, Row, usePagination, useTable } from 'react-table'
 import classNames from 'classnames'
 import { Media } from '../../commons/media.utils'
 import { CircularProgress } from '@material-ui/core'
+import { Pagination } from './TableComponents'
 
 interface Props {
   columns: Column[]
@@ -28,6 +27,7 @@ interface Props {
   lastPage?: number
   loading: boolean
   noPagination?: boolean
+  responsivePaging?: boolean
   noData?: JSX.Element
   pagination?: {
     pageSize?: number
@@ -46,6 +46,7 @@ const Table = ({
   loading = false,
   noPagination,
   mobileRow,
+  responsivePaging,
   noData = (
     <div className={styles.empty}>
       <div className={styles.noData}>No Data</div>
@@ -141,26 +142,16 @@ const Table = ({
         </Media.Mobile>
       )}
       {!noPagination && (
-        <div className={styles.footer}>
-          <Button className={styles.footerButton} onClick={() => previousPage()} disabled={!canPreviousPage}>
-            <p>Prev</p>
-          </Button>
-          <div>
-            <PaginationMaterial
-              page={pageIndex + 1}
-              disabled={loading}
-              hideNextButton={true}
-              hidePrevButton={true}
-              count={pageCount}
-              variant="outlined"
-              shape="rounded"
-              onChange={(_, page) => gotoPage(page - 1)}
-            />
-          </div>
-          <Button disabled={!canNextPage} className={styles.footerButton} onClick={() => nextPage()}>
-            <p>Next</p>
-          </Button>
-        </div>
+        <Pagination
+          page={pageIndex + 1}
+          pageCount={pageCount}
+          onChange={(page) => gotoPage(page - 1)}
+          canNext={canNextPage}
+          onNext={nextPage}
+          canPrevious={canPreviousPage}
+          onPrevious={previousPage}
+          responsive={responsivePaging}
+        />
       )}
     </div>
   )
