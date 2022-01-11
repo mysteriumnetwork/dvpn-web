@@ -61,8 +61,9 @@ const initialState: StateProps = {
 const DashboardPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const { config } = useSelector<RootState, AppState>(({ app }) => app)
-  const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
-  const ongoingSessionStats = useSelector(selectors.ongoingSessionStatsSelector)
+  const liveSessionStats = useSelector(selectors.liveSessionStatsSelector)
+  const liveSessions = useSelector(selectors.liveSessionsSelector)
+  const serviceInfo = useSelector(selectors.serviceInfoSelector)
 
   const [state, setState] = useImmer<StateProps>(initialState)
 
@@ -88,7 +89,7 @@ const DashboardPage = () => {
 
       setState((d) => {
         d.sessionStatsDaily = statsDaily
-        d.sessionStatsAllTime = tequilUtils.addStats(allTimeStats, ongoingSessionStats)
+        d.sessionStatsAllTime = tequilUtils.addStats(allTimeStats, liveSessionStats)
         d.historySessions = sidebarSessions
         d.currentPrices = prices
         d.loading = false
@@ -98,9 +99,6 @@ const DashboardPage = () => {
     }
   }
 
-  const { appState } = sse
-  const { serviceInfo } = appState
-
   return (
     <Layout
       title="Dashboard"
@@ -108,15 +106,17 @@ const DashboardPage = () => {
       isLoading={state.loading}
       main={
         <>
-          <CardLayout>
-            <Cards.TotalEarnings />
-            <Cards.SessionTime stats={state.sessionStatsAllTime} />
-            <Cards.Transferred stats={state.sessionStatsAllTime} />
-            <Cards.Sessions stats={state.sessionStatsAllTime} />
-            <Cards.UniqueClients stats={state.sessionStatsAllTime} />
-            <Cards.UnsettledEarnings />
-            <Cards.Balance />
-          </CardLayout>
+          <div className={styles.statistics}>
+            <CardLayout>
+              <Cards.TotalEarnings />
+              <Cards.SessionTime stats={state.sessionStatsAllTime} />
+              <Cards.Transferred stats={state.sessionStatsAllTime} />
+              <Cards.Sessions stats={state.sessionStatsAllTime} />
+              <Cards.UniqueClients stats={state.sessionStatsAllTime} />
+              <Cards.UnsettledEarnings />
+              <Cards.Balance />
+            </CardLayout>
+          </div>
           <div className={styles.widgets}>
             <div className={styles.widget}>
               <Charts statsDaily={state.sessionStatsDaily} />
@@ -142,8 +142,8 @@ const DashboardPage = () => {
       }
       sidebar={
         <SessionSidebar
-          liveSessions={sse.appState?.sessions}
-          liveSessionStats={sse.appState?.sessionsStats}
+          liveSessions={liveSessions}
+          liveSessionStats={liveSessionStats}
           historySessions={state.historySessions}
           headerText="Latest Sessions"
           displayNavigation

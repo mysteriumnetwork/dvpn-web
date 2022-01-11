@@ -2,15 +2,7 @@
 @import '../../../assets/styles/base/mixins/media';
 
 .statistics {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 25px;
   margin-bottom: 25px;
-
-  @include respond-below(xlg) {
-    flex-wrap: wrap;
-  }
 }
 
 .widgets {
@@ -21,12 +13,7 @@
 
   .widget {
     @include respond-above(sm) {
-      &--chart {
-        width: 100%;
-      }
-      &:last-child {
-        padding-left: 0;
-      }
+      width: 100%;
     }
 
     @include respond-below(sm) {

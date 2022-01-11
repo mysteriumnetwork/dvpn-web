@@ -64,8 +64,8 @@ const SessionsPage = () => {
   })
 
   const { id } = useSelector(selectors.currentIdentitySelector)
-  const liveSessions = useSelector(selectors.ongoingSessionsSelector)
-  const liveSessionStats = useSelector(selectors.ongoingSessionStatsSelector)
+  const liveSessions = useSelector(selectors.liveSessionsSelector)
+  const liveSessionStats = useSelector(selectors.liveSessionStatsSelector)
 
   useEffect(() => {
     fetchData()
