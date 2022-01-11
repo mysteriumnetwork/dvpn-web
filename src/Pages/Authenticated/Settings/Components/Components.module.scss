@@ -1,0 +1,13 @@
+@import '../../../../assets/styles/base/variables';
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}

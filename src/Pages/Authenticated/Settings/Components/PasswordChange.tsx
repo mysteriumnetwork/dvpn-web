@@ -14,6 +14,8 @@ import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'
 import Errors from '../../../../Components/Validation/Errors'
 import { DEFAULT_USERNAME } from '../../../../constants/defaults'
+import styles from './Components.module.scss'
+import classNames from 'classnames'
 
 interface StateInterface {
   newPasswordConfirmation: string
@@ -114,7 +116,7 @@ const PasswordChange = () => {
           value={values.newPasswordConfirmation}
         />
       </div>
-      <div className="footer__buttons m-t-40">
+      <div className={classNames(styles.buttons, 'm-t-40')}>
         <Button type="submit" isLoading={values.loading}>
           Save
         </Button>

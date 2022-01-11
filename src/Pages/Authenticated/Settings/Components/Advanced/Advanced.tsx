@@ -14,6 +14,8 @@ import { TextField } from '../../../../../Components/TextField/TextField'
 import Errors from '../../../../../Components/Validation/Errors'
 import { validateData } from './advanced.utils'
 import { TraversalProp, NATTraversalOrder } from './NATTraversalOrder'
+import styles from './Advanced.module.scss'
+import classNames from 'classnames'
 
 interface Data {
   [key: string]: any
@@ -184,7 +186,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
         />
       </div>
 
-      <div className="footer__buttons m-t-40">
+      <div className={classNames(styles.buttons, 'm-t-40')}>
         <Button
           onClick={() => updateUserConfig(defaultData, 'Settings reset')}
           isLoading={state.saving}

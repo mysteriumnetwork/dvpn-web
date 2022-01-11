@@ -1,0 +1,22 @@
+@import 'src/assets/styles/base/variables';
+@import 'src/assets/styles/base/mixins/media';
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.settings-header {
+  display: flex;
+  flex-direction: row;
+
+  @include respond-above(sm) {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @include respond-below(sm) {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+}

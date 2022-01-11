@@ -14,6 +14,8 @@ import { toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'
 import Errors from '../../../../Components/Validation/Errors'
+import styles from './Components.module.scss'
+import classNames from 'classnames'
 
 interface StateInterface {
   apiKey: string
@@ -87,7 +89,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
           value={state.apiKey}
         />
       </div>
-      <div className="footer__buttons m-t-40">
+      <div className={classNames(styles.buttons, 'm-t-40')}>
         <Button type="submit" isLoading={state.loading}>
           Save
         </Button>

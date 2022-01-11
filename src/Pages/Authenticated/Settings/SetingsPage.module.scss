@@ -6,7 +6,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
-  &__block {
+  &Card {
     @include respond-above(sm) {
       width: 30%;
     }
