@@ -5,6 +5,12 @@
   justify-content: flex-end;
 }
 
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .row {
   display: flex;
   flex-direction: row;

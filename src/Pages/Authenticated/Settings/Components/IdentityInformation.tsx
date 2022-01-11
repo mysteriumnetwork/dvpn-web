@@ -24,25 +24,23 @@ const IdentityInformation = ({ identity }: Props): JSX.Element => {
   const QR = useMemo(() => <QRCode value={identity.channelAddress} />, [identity.channelAddress])
 
   return (
-    <>
-      <InputGroup>
-        <div className={styles.row}>
-          <div className="input-group__label m-t-5">Your identity</div>
-          <CopyToClipboard text={id} />
-        </div>
+    <div className={styles.inputs}>
+      <InputGroup label="Your identity" topRight={<CopyToClipboard text={id} />}>
         <TextField disabled={true} value={id} />
       </InputGroup>
-      <InputGroup help="Channel address is an internal wallet of your node. This address can be used to top up MYST.">
-        <div className={styles.row}>
-          <div className="input-group__label m-t-5">Your Payment Channel</div>
+      <InputGroup
+        label="Your Payment Channel"
+        help="Channel address is an internal wallet of your node. This address can be used to top up MYST."
+        topRight={
           <div className={styles.row}>
             <Tooltip icon={<CropFreeIcon />} title={<div className={styles.qr}>{QR}</div>} />
             <CopyToClipboard text={channelAddress} />
           </div>
-        </div>
+        }
+      >
         <TextField disabled={true} value={channelAddress} />
       </InputGroup>
-    </>
+    </div>
   )
 }
 
