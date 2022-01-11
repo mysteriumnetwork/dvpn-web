@@ -26,6 +26,7 @@ import { Header } from '../../../Components/Table/TableComponents'
 import { DownloadCSV } from '../../../Components/Download/DownloadCSV'
 import { tequila } from '../../../api/wrapped-calls'
 import { toCsv } from './settlement.mapper'
+import styles from './WalletPage.module.scss'
 
 interface State {
   isTableLoading: boolean
@@ -181,11 +182,13 @@ const WalletPage = () => {
       logo={<Logo />}
       main={
         <>
-          <CardLayout>
-            <Cards.Balance />
-            <Cards.UnsettledEarnings />
-            <Cards.TotalWithdrawn amount={withdrawalTotal} />
-          </CardLayout>
+          <div className={styles.cards}>
+            <CardLayout>
+              <Cards.Balance />
+              <Cards.UnsettledEarnings />
+              <Cards.TotalWithdrawn amount={withdrawalTotal} />
+            </CardLayout>
+          </div>
           <FilterBar
             right={
               <DownloadCSV<SettlementListResponse>
