@@ -36,14 +36,7 @@ const IdentityInformation = ({ identity }: Props): JSX.Element => {
         <div className={styles.row}>
           <div className="input-group__label m-t-5">Your Payment Channel</div>
           <div className={styles.row}>
-            <Tooltip
-              icon={<CropFreeIcon />}
-              title={
-                <div className={styles.qr}>
-                  <QRCode value={identity.channelAddress} />
-                </div>
-              }
-            />
+            <Tooltip icon={<CropFreeIcon />} title={<div className={styles.qr}>{QR}</div>} />
             <CopyToClipboard text={channelAddress} />
           </div>
         </div>

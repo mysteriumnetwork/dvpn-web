@@ -15,7 +15,6 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import { isRegistered } from '../../../commons/identity.utils'
 import { parseToastError } from '../../../commons/toast.utils'
 import { AppState } from '../../../redux/app.slice'
-import { SSEState } from '../../../redux/sse.slice'
 import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import Charts from './Charts/Charts'

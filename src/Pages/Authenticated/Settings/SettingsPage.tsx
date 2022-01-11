@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress } from '@material-ui/core'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -15,7 +14,6 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import { configParser } from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { toastError } from '../../../commons/toast.utils'
-import { RootState } from '../../../redux/store'
 import { Advanced } from './Components/Advanced/Advanced'
 import IdentityInformation from './Components/IdentityInformation'
 
