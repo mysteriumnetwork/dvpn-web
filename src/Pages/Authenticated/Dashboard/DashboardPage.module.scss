@@ -1,0 +1,50 @@
+@import '../../../assets/styles/base/variables';
+@import '../../../assets/styles/base/mixins/media';
+
+.statistics {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-bottom: 25px;
+
+  @include respond-below(xlg) {
+    flex-wrap: wrap;
+  }
+}
+
+.widgets {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .widget {
+    @include respond-above(sm) {
+      &--chart {
+        width: 100%;
+      }
+      &:last-child {
+        padding-left: 0;
+      }
+    }
+
+    @include respond-below(sm) {
+      width: 100%;
+    }
+  }
+}
+
+.nodeStatus {
+  margin-top: 25px;
+}
+
+.services {
+  margin-top: 25px;
+}
+
+.servicesSettings {
+  @include respond-below(sm) {
+    padding-bottom: 50px
+  }
+}
