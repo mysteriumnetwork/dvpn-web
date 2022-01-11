@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Tooltip } from '@material-ui/core'
+import { Tooltip as MUIToolTip } from '@material-ui/core'
 import HelpIcon from '@material-ui/icons/Help'
 import React from 'react'
 import { Media } from '../../commons/media.utils'
@@ -24,22 +24,23 @@ interface Props {
     | 'top-end'
     | 'top-start'
     | 'top'
+  icon?: JSX.Element
 }
 
-const HelpTooltip = ({ title, placement = 'bottom' }: Props) => {
+const Tooltip = ({ title, icon, placement = 'bottom' }: Props) => {
   return (
     <Media.Desktop>
-      <Tooltip
+      <MUIToolTip
         title={title}
         style={{ backgroundColor: '#FFFFFF !important', fill: '#9D9D9D' }}
         placement={placement}
         arrow
         interactive
       >
-        <HelpIcon fontSize="small" />
-      </Tooltip>
+        {icon ? icon : <HelpIcon fontSize="small" />}
+      </MUIToolTip>
     </Media.Desktop>
   )
 }
 
-export default HelpTooltip
+export default Tooltip

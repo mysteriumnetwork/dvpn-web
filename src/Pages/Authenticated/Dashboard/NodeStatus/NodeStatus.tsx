@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
 import { parseToastError } from '../../../../commons/toast.utils'
-import HelpTooltip from '../../../../Components/HelpTooltip/HelpTooltip'
+import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import { NATType } from '../../../../constants/nat'
 import { DOCS_NAT_FIX } from '../../../../constants/urls'
 import { SSEState } from '../../../../redux/sse.slice'
@@ -78,7 +78,7 @@ const NodeStatus = () => {
         {(online && natStatus.status === 'failed') ||
           (!online && (
             <div className="status-card__tooltip">
-              <HelpTooltip title={nodeStatusTooltip(natStatus, online)} placement="bottom-start" />
+              <Tooltip title={nodeStatusTooltip(natStatus, online)} placement="bottom-start" />
             </div>
           ))}
       </div>
@@ -90,7 +90,7 @@ const NodeStatus = () => {
           <p className="status-card__status-icon-description">{natType2Human(nat.type, nat.loading)}</p>
         </div>
         <div className="status-card__tooltip">
-          <HelpTooltip title={<div>{natTypeTooltip(nat.type, DOCS_NAT_FIX)}</div>} />
+          <Tooltip title={<div>{natTypeTooltip(nat.type, DOCS_NAT_FIX)}</div>} />
         </div>
       </div>
     </div>

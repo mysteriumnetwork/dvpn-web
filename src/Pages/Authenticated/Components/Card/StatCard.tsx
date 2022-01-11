@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styles from './StatCard.module.scss'
-import HelpTooltip from '../../../../Components/HelpTooltip/HelpTooltip'
+import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import React from 'react'
 import Button from '../../../../Components/Buttons/Button'
 
@@ -25,7 +25,7 @@ export const StatCard = ({ stat, name, helpText, action, onAction }: Props) => {
       <p className={styles.cardValue}>{stat}</p>
       <p className={styles.cardLabel}>
         {name}
-        {helpText && <HelpTooltip title={helpText} />}
+        {helpText && <Tooltip title={helpText} />}
       </p>
       {hasAction && (
         <Button onClick={onAction} extraStyle="gray">

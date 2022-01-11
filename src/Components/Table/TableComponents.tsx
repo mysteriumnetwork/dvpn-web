@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styles from './TableComponents.module.scss'
-import HelpTooltip from '../HelpTooltip/HelpTooltip'
+import Tooltip from '../Tooltip/Tooltip'
 import Button from '../Buttons/Button'
 import _ from 'lodash'
 import classNames from 'classnames'
@@ -23,7 +23,7 @@ export const Header = ({ name, tooltip }: HeaderProps) => {
   return (
     <div className={styles.header}>
       {name}
-      {tooltip && <HelpTooltip title={tooltip} />}
+      {tooltip && <Tooltip title={tooltip} />}
     </div>
   )
 }

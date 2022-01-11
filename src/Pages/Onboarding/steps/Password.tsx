@@ -15,7 +15,7 @@ import { parseError } from '../../../commons/error.utils'
 import { validatePassword } from '../../../commons/password'
 import Button from '../../../Components/Buttons/Button'
 import { Checkbox } from '../../../Components/Checkbox/Checkbox'
-import HelpTooltip from '../../../Components/HelpTooltip/HelpTooltip'
+import Tooltip from '../../../Components/Tooltip/Tooltip'
 import { TextField } from '../../../Components/TextField/TextField'
 import Errors from '../../../Components/Validation/Errors'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
@@ -226,7 +226,7 @@ const MMNClaim = ({
           disabled={state.urlApiKey}
         />
         <div className="m-l-15" />
-        <HelpTooltip
+        <Tooltip
           title={
             'If you claim your node you will be able to manage and see statistics for all your nodes in mystnodes.com'
           }
