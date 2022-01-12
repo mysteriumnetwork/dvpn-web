@@ -14,8 +14,6 @@ import { tequilaClient } from '../../../api/tequila-client'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { isRegistered } from '../../../commons/identity.utils'
 import { parseToastError } from '../../../commons/toast.utils'
-import { AppState } from '../../../redux/app.slice'
-import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import Charts from './Charts/Charts'
 
