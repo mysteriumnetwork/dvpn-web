@@ -59,7 +59,7 @@ const initialState: StateProps = {
 
 const DashboardPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
-  const { config } = useSelector<RootState, AppState>(({ app }) => app)
+  const config = useSelector(selectors.configSelector)
   const liveSessionStats = useSelector(selectors.liveSessionStatsSelector)
   const liveSessions = useSelector(selectors.liveSessionsSelector)
   const serviceInfo = useSelector(selectors.serviceInfoSelector)
@@ -135,7 +135,7 @@ const DashboardPage = () => {
           </div>
 
           <div className={styles.servicesSettings}>
-            <GlobalServicesSettings config={config} servicesInfos={serviceInfo} />
+            <GlobalServicesSettings />
           </div>
         </>
       }

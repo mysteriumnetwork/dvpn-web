@@ -5,11 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { ServiceInfo } from 'mysterium-vpn-js'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect, useState } from 'react'
 import { tequilaClient } from '../../../../api/tequila-client'
 import { tequila } from '../../../../api/wrapped-calls'
-import { isAccessPolicyEnabled, isTrafficShapingEnabled, trafficShapingBandwidthKBps } from '../../../../commons/config'
+import { configParser } from '../../../../commons/config'
 import { parseError } from '../../../../commons/error.utils'
 import { toastError } from '../../../../commons/toast.utils'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
@@ -18,11 +17,8 @@ import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/Confir
 import GenericModal from '../../../../Components/GenericModal/GenericModal'
 import './GlobalServicesSettings.scss'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
-
-interface Props {
-  config: Config
-  servicesInfos?: ServiceInfo[]
-}
+import { useSelector } from 'react-redux'
+import { selectors } from '../../../../redux/selectors'
 
 interface State {
   isVerified: boolean
@@ -32,8 +28,10 @@ interface State {
   isBandwidthChangeInProgress: boolean
 }
 
-const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
-  const services = servicesInfos || []
+const GlobalServicesSettings = () => {
+  const services = useSelector(selectors.serviceInfoSelector)
+  const config = useSelector(selectors.configSelector)
+
   const stopServices = services.map((s) => (): Promise<void> => tequilaClient.serviceStop(s.id))
   const startServices = services.map((s) => (): Promise<ServiceInfo> =>
     tequilaClient.serviceStart({
@@ -52,9 +50,9 @@ const GlobalServicesSettings = ({ config, servicesInfos }: Props) => {
     }
   }
 
-  const isVerified = isAccessPolicyEnabled(config) as boolean
-  const isShaping = isTrafficShapingEnabled(config)
-  const bandwidthMbps = (trafficShapingBandwidthKBps(config) / 1_000) * 8
+  const isVerified = configParser.isAccessPolicyEnabled(config) as boolean
+  const isShaping = configParser.isTrafficShapingEnabled(config)
+  const bandwidthMbps = (configParser.trafficShapingBandwidthKBps(config) / 1_000) * 8
 
   const [state, setState] = useState<State>({
     isVerified: isVerified,
