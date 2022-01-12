@@ -10,7 +10,7 @@ import React, { FormEvent, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../api/tequila-client'
-import { mmnDomainName, mmnWebAddress } from '../../../commons/config'
+import { configParser } from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { validatePassword } from '../../../commons/password'
 import Button from '../../../Components/Buttons/Button'
@@ -66,7 +66,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
 
   useEffect(() => {
     setState((d) => {
-      d.mmnDomain = mmnDomainName(config)
+      d.mmnDomain = configParser.mmnDomainName(config)
     })
 
     const urlApiKey = query.get('mmnApiKey')
@@ -237,7 +237,7 @@ const MMNClaim = ({
           {!state.urlApiKey && (
             <p className="input-group__label">
               API Key (
-              <a href={`${mmnWebAddress(config)}/me`} target="_blank" rel="noopener noreferrer">
+              <a href={`${configParser.mmnWebAddress(config)}/me`} target="_blank" rel="noopener noreferrer">
                 Get it here
               </a>
               )
