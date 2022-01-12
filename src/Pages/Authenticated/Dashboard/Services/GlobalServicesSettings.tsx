@@ -10,15 +10,15 @@ import { tequilaClient } from '../../../../api/tequila-client'
 import { tequila } from '../../../../api/wrapped-calls'
 import { configParser } from '../../../../commons/config'
 import { parseError } from '../../../../commons/error.utils'
-import { toastError } from '../../../../commons/toast.utils'
+import { parseToastError, toastError } from '../../../../commons/toast.utils'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
-import GenericModal from '../../../../Components/GenericModal/GenericModal'
 import styles from './GlobalServicesSettings.module.scss'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../../redux/selectors'
+import { ModalV2 } from '../../../../Components/Modal/ModalV2'
 
 interface State {
   isVerified: boolean
@@ -70,19 +70,29 @@ const GlobalServicesSettings = () => {
     }))
   }, [isShaping, isVerified, bandwidthMbps])
 
+  const isBandwidthChangeLoading = (b: boolean = true) => {
+    setState((cs) => ({ ...cs, isBandwidthChangeInProgress: b }))
+  }
+
   const bandwidthKBps = (): number => {
     return (state.bandwidthMbps * 1_000) / 8
   }
 
-  const openBandwidthModal = () => {
-    setState((cs) => ({ ...cs, isBandwidthModalOpen: true }))
+  const openBandwidthModal = (b: boolean = true) => {
+    setState((cs) => ({ ...cs, isBandwidthModalOpen: b }))
   }
 
-  const closeBandwidthModal = () => {
-    setState((cs) => ({ ...cs, isBandwidthModalOpen: false }))
+  const onBandwidthSave = async () => {
+    isBandwidthChangeLoading()
+    try {
+      await restartServices(tequila.setTrafficShaping(state.isShaping, bandwidthKBps()))
+      openBandwidthModal(false)
+    } catch (err) {
+      parseToastError(err)
+    } finally {
+      isBandwidthChangeLoading(false)
+    }
   }
-
-  const isServiceRunning = services.length > 0
 
   return (
     <div className={styles.settings}>
@@ -114,36 +124,33 @@ const GlobalServicesSettings = () => {
         <p className={styles.text}>Limit bandwidth to {state.bandwidthMbps} Mbps</p>
         <Button
           className={styles.cobButton}
-          onClick={openBandwidthModal}
+          onClick={() => openBandwidthModal()}
           disabled={!state.isShaping}
           extraStyle="outline-primary"
         >
           <Settings className={state.isShaping ? styles.cogEnabled : styles.cogDisabled} />
         </Button>
-        <GenericModal
-          isOpen={state.isBandwidthModalOpen}
+        <ModalV2
+          open={state.isBandwidthModalOpen}
+          title="Limit bandwidth"
+          isLoading={state.isBandwidthChangeInProgress}
           onClose={() => {
-            closeBandwidthModal()
+            openBandwidthModal(false)
             setState((cs) => ({ ...cs, bandwidthMbps: bandwidthMbps }))
           }}
-          onSave={() => {
-            Promise.resolve()
-              .then(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: true })))
-              .then(() => restartServices(tequila.setTrafficShaping(state.isShaping, bandwidthKBps())))
-              .then(closeBandwidthModal)
-              .finally(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: false })))
+          controls={{
+            onSave: onBandwidthSave,
+            onClose: () => openBandwidthModal(false),
+            onSaveLabel: 'Save & Restart',
           }}
-          saveText={isServiceRunning ? 'Save & Restart' : 'save'}
-          isLoading={state.isBandwidthChangeInProgress}
-          title="Limit bandwidth"
-          confirm={isServiceRunning}
-          confirmMessage="This will restart all running services to take affect."
+          confirmationMessage="This will restart all running services to take affect."
+          withConfirmation
         >
           <BandwidthControl
             onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
             bandwidthMbps={state.bandwidthMbps}
           />
-        </GenericModal>
+        </ModalV2>
       </div>
     </div>
   )

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import MystSlider from '../MystSlider/MystSlider'
-import './BandwidthSettings.scss'
+import styles from './BandwidthSettings.module.scss'
 import { useState } from 'react'
 
 interface Props {
@@ -20,9 +20,9 @@ const BandwidthControl = ({ bandwidthMbps, minLimitMbps = 15, maxLimitMbps = 100
   const [value, setValue] = useState<number>(bandwidthMbps)
 
   return (
-    <div className="bandwidth-settings-modal--block">
-      <div className="settings">
-        <div className="settings--slider">
+    <div className={styles.bandwidth}>
+      <div className={styles.settings}>
+        <div className={styles.slider}>
           <MystSlider
             label="Limit bandwidth to "
             headerAmount={(v) => `${v} Mbps`}
@@ -37,7 +37,7 @@ const BandwidthControl = ({ bandwidthMbps, minLimitMbps = 15, maxLimitMbps = 100
             min={minLimitMbps}
             max={maxLimitMbps}
           />
-          <div className="bottom-line">
+          <div className={styles.line}>
             <p>{minLimitMbps}</p>
             <p>{maxLimitMbps} Mbps</p>
           </div>
