@@ -18,7 +18,7 @@ import styles from './GlobalServicesSettings.module.scss'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../../redux/selectors'
-import { ModalV2 } from '../../../../Components/Modal/ModalV2'
+import { Modal } from '../../../../Components/Modal/Modal'
 
 interface State {
   isVerified: boolean
@@ -130,17 +130,16 @@ const GlobalServicesSettings = () => {
         >
           <Settings className={state.isShaping ? styles.cogEnabled : styles.cogDisabled} />
         </Button>
-        <ModalV2
+        <Modal
           open={state.isBandwidthModalOpen}
           title="Limit bandwidth"
           isLoading={state.isBandwidthChangeInProgress}
-          onClose={() => {
-            openBandwidthModal(false)
-            setState((cs) => ({ ...cs, bandwidthMbps: bandwidthMbps }))
-          }}
           controls={{
             onSave: onBandwidthSave,
-            onClose: () => openBandwidthModal(false),
+            onClose: () => {
+              openBandwidthModal(false)
+              setState((cs) => ({ ...cs, bandwidthMbps: bandwidthMbps }))
+            },
             onSaveLabel: 'Save & Restart',
           }}
           confirmationMessage="This will restart all running services to take affect."
@@ -150,7 +149,7 @@ const GlobalServicesSettings = () => {
             onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
             bandwidthMbps={state.bandwidthMbps}
           />
-        </ModalV2>
+        </Modal>
       </div>
     </div>
   )

@@ -9,24 +9,6 @@
   outline: 0;
 }
 
-.content {
-  background: #FFFFFF;
-  box-shadow: 0 6px 16px rgba(153, 155, 168, 0.1);
-  border-radius: 4px;
-  transition: unset;
-  @include respond-above(sm) {
-    width: 40%;
-  }
-  @include respond-below(sm) {
-    height: 100%;
-    width: 100%;
-  }
-  padding: 30px 35px;
-
-  display: flex;
-  flex-direction: column;
-}
-
 .title {
   display: flex;
   justify-content: center;

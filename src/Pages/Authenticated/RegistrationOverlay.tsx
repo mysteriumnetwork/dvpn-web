@@ -13,7 +13,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { useMemo, useState } from 'react'
 import Button from '../../Components/Buttons/Button'
 import Registration from '../Onboarding/steps/Registration'
-import { ModalV2 } from '../../Components/Modal/ModalV2'
+import { Modal } from '../../Components/Modal/Modal'
 
 interface Props {
   identity: Identity
@@ -68,11 +68,11 @@ export const RegistrationOverlay = ({ identity }: Props) => {
         </div>
         <HelpArrow />
 
-        <ModalV2 open={state.isRegistrationOpen}>
+        <Modal open={state.isRegistrationOpen}>
           <div className={styles.registrationModalContent}>
             <Registration nextStep={() => showRegistration(false)} />
           </div>
-        </ModalV2>
+        </Modal>
       </div>
     </>
   )
