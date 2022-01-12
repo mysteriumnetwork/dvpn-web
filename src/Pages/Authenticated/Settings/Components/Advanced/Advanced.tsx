@@ -7,7 +7,7 @@
 import { Config } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import * as utils from '../../../../../commons/config'
+import { configParser } from '../../../../../commons/config'
 import { callWithToast } from '../../../../../commons/promise.utils'
 import Button from '../../../../../Components/Buttons/Button'
 import { TextField } from '../../../../../Components/TextField/TextField'
@@ -50,7 +50,7 @@ const initialState: State = {
 }
 
 const mapTraversals = (config: Config): TraversalProp[] => {
-  const traversalSetting = utils.natTraversals(config)
+  const traversalSetting = configParser.natTraversals(config)
   if (traversalSetting?.length === 0) {
     return []
   }
@@ -62,8 +62,8 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
 
   useEffect(() => {
     setState((d) => {
-      d.stunServers = utils.stunServers(config).join(',')
-      d.udpPorts = utils.udpPorts(config)
+      d.stunServers = configParser.stunServers(config).join(',')
+      d.udpPorts = configParser.udpPorts(config)
       d.natTraversalSelected = mapTraversals(config)
       d.rpcl2 = rpcl2UrlsWithoutDefaults().join(',')
     })
@@ -75,16 +75,16 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
   }
 
   const rpcl2UrlsWithoutDefaults = (): string[] => {
-    const all = utils.rpcl2(config)
-    const defaults = utils.rpcl2(defaultConfig)
+    const all = configParser.rpcl2(config)
+    const defaults = configParser.rpcl2(defaultConfig)
     return all.filter((u) => defaults.indexOf(u) === -1)
   }
 
   const defaultData: Data = {
-    'stun-servers': utils.stunServers(defaultConfig),
-    'udp.ports': utils.udpPorts(defaultConfig),
-    traversal: utils.natTraversals(defaultConfig),
-    'ether.client.rpcl2': utils.rpcl2(defaultConfig),
+    'stun-servers': configParser.stunServers(defaultConfig),
+    'udp.ports': configParser.udpPorts(defaultConfig),
+    traversal: configParser.natTraversals(defaultConfig),
+    'ether.client.rpcl2': configParser.rpcl2(defaultConfig),
   }
 
   const data: Data = {

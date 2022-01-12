@@ -1,7 +1,50 @@
+@import 'src/assets/styles/base/variables';
+@import 'src/assets/styles/base/mixins/media';
+
 .modal {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   outline: 0;
+
+  .block {
+    position: relative;
+    margin-top: 10px;
+    background: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(153, 155, 168, 0.1);
+    border-radius: 4px;
+    transition: unset;
+    padding: 30px 35px;
+    outline: 0;
+
+    @include respond-above(sm) {
+      width: 60%;
+    }
+
+    @include respond-below(sm) {
+      width: 90%;
+    }
+  }
+
+  .title {
+    font-weight: $medium-weight;
+    font-size: $large-size;
+    line-height: 21px;
+    color: $main-text-color;
+    margin-bottom: 10px;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+
+    @include respond-below(sm) {
+      button {
+        font-size: $smaller-size !important;
+      }
+    }
+  }
 }

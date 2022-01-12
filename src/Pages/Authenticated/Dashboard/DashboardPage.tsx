@@ -12,10 +12,7 @@ import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../api/tequila-client'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
-import { isRegistered } from '../../../commons/identity.utils'
 import { parseToastError } from '../../../commons/toast.utils'
-import { AppState } from '../../../redux/app.slice'
-import { RootState } from '../../../redux/store'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import Charts from './Charts/Charts'
 
@@ -59,10 +56,8 @@ const initialState: StateProps = {
 
 const DashboardPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
-  const { config } = useSelector<RootState, AppState>(({ app }) => app)
   const liveSessionStats = useSelector(selectors.liveSessionStatsSelector)
   const liveSessions = useSelector(selectors.liveSessionsSelector)
-  const serviceInfo = useSelector(selectors.serviceInfoSelector)
 
   const [state, setState] = useImmer<StateProps>(initialState)
 
@@ -125,17 +120,11 @@ const DashboardPage = () => {
             <NodeStatus />
           </div>
           <div className={styles.services}>
-            <Services
-              identityRef={identity.id}
-              servicesInfos={serviceInfo}
-              userConfig={config}
-              disabled={!isRegistered(identity)}
-              prices={state.currentPrices}
-            />
+            <Services prices={state.currentPrices} />
           </div>
 
           <div className={styles.servicesSettings}>
-            <GlobalServicesSettings config={config} servicesInfos={serviceInfo} />
+            <GlobalServicesSettings />
           </div>
         </>
       }

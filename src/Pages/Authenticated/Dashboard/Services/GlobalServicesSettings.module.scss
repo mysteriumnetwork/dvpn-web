@@ -1,0 +1,66 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.settings {
+  background: #FFFFFF;
+  border: 1px solid #ECECF2;
+  box-sizing: border-box;
+  border-radius: 12px;
+  margin-top: 20px;
+
+  padding: 20px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .text {
+    font-style: normal;
+    font-weight: $bold-weight;
+    font-size: $normal-size;
+    line-height: 17px;
+    color: $main-text-color;
+
+    @include respond-below(sm) {
+      font-size: $small-size !important;
+    }
+  }
+
+  .subText {
+    @include respond-above(sm) {
+      font-style: normal;
+      font-weight: $lighter-weight;
+      font-size: $normal-size;
+      line-height: 21px;
+      color: $names-text-color;
+      width: 80%;
+    }
+    @include respond-below(sm) {
+      display: none;
+    }
+  }
+}
+
+.cobButton {
+  margin-left: 15px;
+  padding: 6px !important;
+  line-height: 0;
+
+  .cogEnabled path {
+    stroke: black;
+  }
+
+  .cogDisabled path {
+    stroke: gray;
+  }
+}
+
+

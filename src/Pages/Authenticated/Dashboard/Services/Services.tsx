@@ -5,18 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CurrentPricesResponse, ServiceInfo, ServiceStatus } from 'mysterium-vpn-js'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
 
 import { ServiceType } from '../../../../commons'
 import './Services.scss'
 
 import ServiceCard from './ServiceCard'
+import { useSelector } from 'react-redux'
+import { selectors } from '../../../../redux/selectors'
+import { isRegistered } from '../../../../commons/identity.utils'
 
 interface Props {
-  identityRef: string
-  servicesInfos?: ServiceInfo[]
-  userConfig: Config
-  disabled?: boolean
   prices: CurrentPricesResponse
 }
 
@@ -35,7 +33,11 @@ const findServiceInfo = (type: string, servicesInfos?: ServiceInfo[]): ServiceIn
 }
 
 // TODO can be simplified after removal of OpenVPN
-const Services = ({ identityRef, servicesInfos, userConfig, disabled, prices }: Props) => {
+const Services = ({ prices }: Props) => {
+  const identity = useSelector(selectors.currentIdentitySelector)
+  const config = useSelector(selectors.configSelector)
+  const servicesInfos = useSelector(selectors.serviceInfoSelector)
+
   const cards = availableServices
     .filter((type) => {
       const service = findServiceInfo(type.toLowerCase(), servicesInfos)
@@ -46,11 +48,11 @@ const Services = ({ identityRef, servicesInfos, userConfig, disabled, prices }: 
       return (
         <ServiceCard
           key={idx}
-          identityRef={identityRef}
+          identityRef={identity.id}
           serviceInfo={service}
           serviceType={type}
-          config={userConfig}
-          disabled={disabled}
+          config={config}
+          disabled={!isRegistered(identity)}
           prices={prices}
         />
       )

@@ -12,12 +12,12 @@ import { Option, Radio } from '../../../../Components/Radio/Radio'
 import styles from './TopUpModal.module.scss'
 import { Identity } from 'mysterium-vpn-js'
 import { RegistrationInfo } from '../Registration'
-import { Modal } from '../../../../Components/Modal/Modal'
 import { MYST } from './MYST'
 import { Fiat } from './Fiat/Fiat'
 import { myst } from '../../../../commons/myst.utils'
 import { CircularProgress } from '@material-ui/core'
 import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
+import { Modal } from '../../../../Components/Modal/Modal'
 
 interface Props {
   onNext: () => Promise<void>
@@ -100,31 +100,29 @@ const TopUpModal = ({
 
   return (
     <Modal open={open}>
-      <div className={styles.content}>
-        <TopUpInfo />
-        <div className={styles.options}>
-          <Radio options={registrationOptions} checked={registrationOption} onChange={setRegistrationOption} />
-        </div>
-        <Conditional visible={registrationOption === 'fiat'}>
-          <Fiat
-            onClose={onClose}
-            isRegistrationFeeReceived={isRegistrationFeeReceived}
-            mystReceived={<MystReceived />}
-            controls={<Controls />}
-          />
-        </Conditional>
-        <Conditional visible={registrationOption === 'myst'}>
-          <MYST
-            registrationFee={registrationInfo.flooredFee}
-            chainName={currentChainName}
-            mystReceived={<MystReceived />}
-            controls={<Controls />}
-          />
-        </Conditional>
-        <Conditional visible={registrationOption === 'free'}>
-          <Controls />
-        </Conditional>
+      <TopUpInfo />
+      <div className={styles.options}>
+        <Radio options={registrationOptions} checked={registrationOption} onChange={setRegistrationOption} />
       </div>
+      <Conditional visible={registrationOption === 'fiat'}>
+        <Fiat
+          onClose={onClose}
+          isRegistrationFeeReceived={isRegistrationFeeReceived}
+          mystReceived={<MystReceived />}
+          controls={<Controls />}
+        />
+      </Conditional>
+      <Conditional visible={registrationOption === 'myst'}>
+        <MYST
+          registrationFee={registrationInfo.flooredFee}
+          chainName={currentChainName}
+          mystReceived={<MystReceived />}
+          controls={<Controls />}
+        />
+      </Conditional>
+      <Conditional visible={registrationOption === 'free'}>
+        <Controls />
+      </Conditional>
     </Modal>
   )
 }

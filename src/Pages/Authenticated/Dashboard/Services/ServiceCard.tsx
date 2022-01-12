@@ -10,7 +10,7 @@ import { CurrentPricesResponse, ServiceInfo, ServiceStatus } from 'mysterium-vpn
 import { Config } from 'mysterium-vpn-js'
 
 import { ServiceType } from '../../../../commons'
-import { isAccessPolicyEnabled } from '../../../../commons/config'
+import { configParser } from '../../../../commons/config'
 import { callWithToast } from '../../../../commons/promise.utils'
 import { Switch } from '../../../../Components/Switch'
 import { tequilaClient } from '../../../../api/tequila-client'
@@ -51,7 +51,7 @@ const ServiceCard = ({ serviceType, serviceInfo, identityRef, config, disabled =
     setLoading(false)
   }
 
-  const accessPolicyEnabled = isAccessPolicyEnabled(config)
+  const accessPolicyEnabled = configParser.isAccessPolicyEnabled(config)
   return (
     <div className="service">
       <ServiceHeader whitelisted={accessPolicyEnabled} running={status === RUNNING} type={serviceType} />

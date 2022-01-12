@@ -7,7 +7,7 @@
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../../redux/selectors'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
-import { zeroStakeSettlementThreshold } from '../../../../commons/config'
+import { configParser } from '../../../../commons/config'
 import { StatCard } from './StatCard'
 import { myst } from '../../../../commons/myst.utils'
 import { HeroStatCard } from './HeroStatCard'
@@ -34,7 +34,7 @@ const UnsettledEarnings = () => {
 
   const tooltipText = useMemo(
     () =>
-      `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${zeroStakeSettlementThreshold(
+      `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${configParser.zeroStakeSettlementThreshold(
         config,
       )} MYST is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus blockchain fees (${myst.displayMYST(
         fees.settlement,
