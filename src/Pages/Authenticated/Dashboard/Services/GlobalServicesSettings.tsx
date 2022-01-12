@@ -15,7 +15,7 @@ import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthC
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
 import GenericModal from '../../../../Components/GenericModal/GenericModal'
-import './GlobalServicesSettings.scss'
+import styles from './GlobalServicesSettings.module.scss'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../../redux/selectors'
@@ -85,67 +85,65 @@ const GlobalServicesSettings = () => {
   const isServiceRunning = services.length > 0
 
   return (
-    <div className="services-footer">
-      <div className="services-footer__title">Global Service Settings</div>
-      <div className="services-footer__content">
-        <div className="switch-row">
-          <ConfirmationSwitch
-            message="This will restart all running services to take affect."
-            turnedOn={state.isVerified}
-            onConfirm={() => {
-              const c = !state.isVerified
-              setState((cs) => ({ ...cs, isVerified: c }))
-              return restartServices(tequila.setAccessPolicy(c ? 'mysterium' : ''))
-            }}
+    <div className={styles.settings}>
+      <div className={styles.title}>Global Service Settings</div>
+      <div className={styles.row}>
+        <ConfirmationSwitch
+          message="This will restart all running services to take affect."
+          turnedOn={state.isVerified}
+          onConfirm={() => {
+            const c = !state.isVerified
+            setState((cs) => ({ ...cs, isVerified: c }))
+            return restartServices(tequila.setAccessPolicy(c ? 'mysterium' : ''))
+          }}
+        />
+        <p className={styles.text}>Only Mysterium verified partner traffic</p>
+        <p className={styles.subText}>
+          Safe option: traffic vetted via business contracts, unavailable to the general public and limited to
+          streaming. This option potentially will give less reward.
+        </p>
+      </div>
+      <div className={styles.row}>
+        <ConfirmationSwitch
+          message="This will restart all running services to take affect."
+          turnedOn={state.isShaping}
+          onConfirm={() => {
+            return restartServices(tequila.setTrafficShaping(!state.isShaping, bandwidthKBps()))
+          }}
+        />
+        <p className={styles.text}>Limit bandwidth to {state.bandwidthMbps} Mbps</p>
+        <Button
+          className={styles.cobButton}
+          onClick={openBandwidthModal}
+          disabled={!state.isShaping}
+          extraStyle="outline-primary"
+        >
+          <Settings className={state.isShaping ? styles.cogEnabled : styles.cogDisabled} />
+        </Button>
+        <GenericModal
+          isOpen={state.isBandwidthModalOpen}
+          onClose={() => {
+            closeBandwidthModal()
+            setState((cs) => ({ ...cs, bandwidthMbps: bandwidthMbps }))
+          }}
+          onSave={() => {
+            Promise.resolve()
+              .then(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: true })))
+              .then(() => restartServices(tequila.setTrafficShaping(state.isShaping, bandwidthKBps())))
+              .then(closeBandwidthModal)
+              .finally(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: false })))
+          }}
+          saveText={isServiceRunning ? 'Save & Restart' : 'save'}
+          isLoading={state.isBandwidthChangeInProgress}
+          title="Limit bandwidth"
+          confirm={isServiceRunning}
+          confirmMessage="This will restart all running services to take affect."
+        >
+          <BandwidthControl
+            onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
+            bandwidthMbps={state.bandwidthMbps}
           />
-          <p className="text">Only Mysterium verified partner traffic</p>
-          <p className="under-text">
-            Safe option: traffic vetted via business contracts, unavailable to the general public and limited to
-            streaming. This option potentially will give less reward.
-          </p>
-        </div>
-        <div className="switch-row">
-          <ConfirmationSwitch
-            message="This will restart all running services to take affect."
-            turnedOn={state.isShaping}
-            onConfirm={() => {
-              return restartServices(tequila.setTrafficShaping(!state.isShaping, bandwidthKBps()))
-            }}
-          />
-          <p className="text">Limit bandwidth to {state.bandwidthMbps} Mbps</p>
-          <Button
-            className="change-button"
-            onClick={openBandwidthModal}
-            disabled={!state.isShaping}
-            extraStyle="outline-primary"
-          >
-            <Settings className={state.isShaping ? 'switch-limit-enabled' : 'switch-limit-disabled'} />
-          </Button>
-          <GenericModal
-            isOpen={state.isBandwidthModalOpen}
-            onClose={() => {
-              closeBandwidthModal()
-              setState((cs) => ({ ...cs, bandwidthMbps: bandwidthMbps }))
-            }}
-            onSave={() => {
-              Promise.resolve()
-                .then(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: true })))
-                .then(() => restartServices(tequila.setTrafficShaping(state.isShaping, bandwidthKBps())))
-                .then(closeBandwidthModal)
-                .finally(() => setState((cs) => ({ ...cs, isBandwidthChangeInProgress: false })))
-            }}
-            saveText={isServiceRunning ? 'Save & Restart' : 'save'}
-            isLoading={state.isBandwidthChangeInProgress}
-            title="Limit bandwidth"
-            confirm={isServiceRunning}
-            confirmMessage="This will restart all running services to take affect."
-          >
-            <BandwidthControl
-              onChange={(bandwidth) => setState((cs) => ({ ...cs, bandwidthMbps: bandwidth }))}
-              bandwidthMbps={state.bandwidthMbps}
-            />
-          </GenericModal>
-        </div>
+        </GenericModal>
       </div>
     </div>
   )
