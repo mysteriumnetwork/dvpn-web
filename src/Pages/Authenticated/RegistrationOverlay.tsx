@@ -12,8 +12,8 @@ import styles from './RegistrationOverslay.module.scss'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { useMemo, useState } from 'react'
 import Button from '../../Components/Buttons/Button'
-import GenericModal from '../../Components/GenericModal/GenericModal'
 import Registration from '../Onboarding/steps/Registration'
+import { ModalV2 } from '../../Components/Modal/ModalV2'
 
 interface Props {
   identity: Identity
@@ -67,11 +67,12 @@ export const RegistrationOverlay = ({ identity }: Props) => {
           <CopyToClipboard text={identity.id} />
         </div>
         <HelpArrow />
-        <GenericModal isOpen={state.isRegistrationOpen} onClose={() => showRegistration(false)} hideSave hideClose>
+
+        <ModalV2 open={state.isRegistrationOpen}>
           <div className={styles.registrationModalContent}>
             <Registration nextStep={() => showRegistration(false)} />
           </div>
-        </GenericModal>
+        </ModalV2>
       </div>
     </>
   )
