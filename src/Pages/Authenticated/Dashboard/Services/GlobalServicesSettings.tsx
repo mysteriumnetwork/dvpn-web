@@ -21,8 +21,6 @@ import { selectors } from '../../../../redux/selectors'
 import { Modal } from '../../../../Components/Modal/Modal'
 
 interface State {
-  isVerified: boolean
-  isShaping: boolean
   bandwidthMbps: number
   isBandwidthModalOpen: boolean
   isBandwidthChangeInProgress: boolean
@@ -55,8 +53,6 @@ const GlobalServicesSettings = () => {
   const bandwidthMbps = (configParser.trafficShapingBandwidthKBps(config) / 1_000) * 8
 
   const [state, setState] = useState<State>({
-    isVerified: isVerified,
-    isShaping: isShaping,
     bandwidthMbps: bandwidthMbps,
     isBandwidthModalOpen: false,
     isBandwidthChangeInProgress: false,
@@ -64,11 +60,9 @@ const GlobalServicesSettings = () => {
   useEffect(() => {
     setState((cs) => ({
       ...cs,
-      isShaping: isShaping,
-      isVerified: isVerified,
       bandwidthMbps: bandwidthMbps,
     }))
-  }, [isShaping, isVerified, bandwidthMbps])
+  }, [isShaping, bandwidthMbps])
 
   const isBandwidthChangeLoading = (b: boolean = true) => {
     setState((cs) => ({ ...cs, isBandwidthChangeInProgress: b }))
@@ -85,7 +79,7 @@ const GlobalServicesSettings = () => {
   const onBandwidthSave = async () => {
     isBandwidthChangeLoading()
     try {
-      await restartServices(tequila.setTrafficShaping(state.isShaping, bandwidthKBps()))
+      await restartServices(tequila.setTrafficShaping(isShaping, bandwidthKBps()))
       openBandwidthModal(false)
     } catch (err) {
       parseToastError(err)
@@ -100,11 +94,9 @@ const GlobalServicesSettings = () => {
       <div className={styles.row}>
         <ConfirmationSwitch
           message="This will restart all running services to take affect."
-          turnedOn={state.isVerified}
+          turnedOn={isVerified}
           onConfirm={() => {
-            const c = !state.isVerified
-            setState((cs) => ({ ...cs, isVerified: c }))
-            return restartServices(tequila.setAccessPolicy(c ? 'mysterium' : ''))
+            return restartServices(tequila.setAccessPolicy(!isVerified ? 'mysterium' : ''))
           }}
         />
         <p className={styles.text}>Only Mysterium verified partner traffic</p>
@@ -116,19 +108,19 @@ const GlobalServicesSettings = () => {
       <div className={styles.row}>
         <ConfirmationSwitch
           message="This will restart all running services to take affect."
-          turnedOn={state.isShaping}
+          turnedOn={isShaping}
           onConfirm={() => {
-            return restartServices(tequila.setTrafficShaping(!state.isShaping, bandwidthKBps()))
+            return restartServices(tequila.setTrafficShaping(!isShaping, bandwidthKBps()))
           }}
         />
-        <p className={styles.text}>Limit bandwidth to {state.bandwidthMbps} Mbps</p>
+        <p className={styles.text}>Limit bandwidth to {bandwidthMbps} Mbps</p>
         <Button
           className={styles.cobButton}
           onClick={() => openBandwidthModal()}
-          disabled={!state.isShaping}
+          disabled={!isShaping}
           extraStyle="outline-primary"
         >
-          <Settings className={state.isShaping ? styles.cogEnabled : styles.cogDisabled} />
+          <Settings className={isShaping ? styles.cogEnabled : styles.cogDisabled} />
         </Button>
         <Modal
           open={state.isBandwidthModalOpen}

@@ -19,6 +19,9 @@ const convertOptions = {
 
 http.interceptors.response.use(
   (config) => {
+    if (config.config.url && isRawPath(config.config.url)) {
+      return config
+    }
     if (config?.data) {
       config.data = camelcaseKeys(config.data, convertOptions)
     }
@@ -37,6 +40,9 @@ http.interceptors.request.use((config) => {
     return qs.stringify(params, { arrayFormat: 'repeat' }) // arrays will be serialized as: ?types=1&types=2...
   }
 
+  if (config.url && isRawPath(config.url)) {
+    return config
+  }
   if (config?.params) {
     config.params = snakecaseKeys(config.params, convertOptions)
   }
@@ -45,3 +51,18 @@ http.interceptors.request.use((config) => {
   }
   return config
 })
+
+const pathConfig = 'config'
+const pathConfigUser = 'config/user'
+const pathConfigDefault = 'config/default'
+const pathInvoice = '/invoice'
+
+const isRawPath = (path: string): boolean => {
+  const rawPaths = [pathConfig, pathConfigDefault, pathConfigUser, pathInvoice]
+  for (const rawPath of rawPaths) {
+    if (path.includes(rawPath)) {
+      return true
+    }
+  }
+  return false
+}
