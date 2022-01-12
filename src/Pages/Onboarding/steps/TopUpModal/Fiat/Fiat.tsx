@@ -11,17 +11,17 @@ import { selectors } from '../../../../../redux/selectors'
 import styles from './Fiat.module.scss'
 import { useImmer } from 'use-immer'
 import { countryNames } from '../../../../../commons/country'
-import { tequila } from '../../../../../api/ApiWrapper'
+import { tequila } from '../../../../../api/wrapped-calls'
 import { parseToastError } from '../../../../../commons/toast.utils'
 import { Money, PaymentGateway, PaymentOrder } from 'mysterium-vpn-js'
 import { Item, RadioCard } from '../../../../../Components/RadioCard/RadioCard'
-import { SelectV2, SelectV2Option } from '../../../../../Components/Select/SelectV2'
 import Button from '../../../../../Components/Buttons/Button'
 import { buildFormData, CARDINITY_GATEWAY, validateOrderAndReturnSecureForm } from './cardinity'
 import { CircularProgress } from '@material-ui/core'
 import { money } from '../../../../../commons/money.utils'
 import _ from 'lodash'
 import { configParser } from '../../../../../commons/config'
+import { Option, Select } from '../../../../../Components/Select/Select'
 
 interface Props {
   mystReceived?: JSX.Element
@@ -31,7 +31,7 @@ interface Props {
 }
 
 interface State {
-  taxCountry: SelectV2Option
+  taxCountry: Option
   currency: string
   paymentOrder?: PaymentOrder
   formData: { [key: string]: any }
@@ -65,10 +65,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
   const pilvytisUrl = configParser.pilvytisUrl(config)
   const currencyOptions: Item[] = state.gateway.currencies.map((c) => ({ value: c, label: c }))
   const countryOptions = useMemo(
-    () =>
-      Object.keys(countryNames).map(
-        (key) => ({ value: key.toUpperCase(), label: countryNames[key] } as SelectV2Option),
-      ),
+    () => Object.keys(countryNames).map((key) => ({ value: key.toUpperCase(), label: countryNames[key] })),
     [],
   )
 
@@ -124,7 +121,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
     setState((d) => {
       d.currency = c
     })
-  const taxCountryChange = (c?: SelectV2Option) => {
+  const taxCountryChange = (c: Option) => {
     if (c) {
       setState((d) => {
         d.taxCountry = c
@@ -134,7 +131,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
 
   const createOrder = async () => {
     try {
-      const country = state.taxCountry.value
+      const country = state.taxCountry.value as string
       const order = await api.payment.createOrder(identity.id, CARDINITY_GATEWAY, {
         payCurrency: state.currency,
         country,
@@ -179,10 +176,10 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
             <RadioCard items={currencyOptions} value={state.currency} onChange={currencyChange} />
           </div>
           <div className={styles.country}>
-            <SelectV2
+            <Select
               options={countryOptions}
               value={state.taxCountry}
-              onChange={(v) => taxCountryChange(v)}
+              onChange={(v) => taxCountryChange(v as Option)}
               placeholder="Residence TAX Country"
             />
           </div>

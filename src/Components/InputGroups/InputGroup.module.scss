@@ -5,11 +5,13 @@
 }
 
 .label {
+  display: flex;
+  justify-content: space-between;
   font-family: Lato, sans-serif;
   font-style: normal;
   font-weight: $normal-weight;
   font-size: $normal-size;
-  line-height: 21px;
+  line-height: 32px;
   color: $secondary-text-color;
   margin-bottom: 6px;
   text-align: left;

@@ -6,7 +6,7 @@
  */
 import { Dispatch } from 'react'
 
-import { api } from '../api/Api'
+import { tequilaClient } from '../api/tequila-client'
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
 import {
@@ -20,7 +20,7 @@ import {
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const terms = await api.terms()
+    const terms = await tequilaClient.terms()
     dispatch(
       updateTermsStore({
         acceptedVersion: terms.agreedVersion,
@@ -31,32 +31,32 @@ export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => 
 
 export const fetchIdentityAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const identityRef = await api.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
+    const identityRef = await tequilaClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
     dispatch(updateIdentityRefStore(identityRef))
 
-    await api.identityBalanceRefresh(identityRef.id)
-    const identity = await api.identity(identityRef.id)
+    await tequilaClient.identityBalanceRefresh(identityRef.id)
+    const identity = await tequilaClient.identity(identityRef.id)
     dispatch(updateIdentityStore(identity))
   }
 }
 
 export const fetchConfigAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const config = await api.config()
+    const config = await tequilaClient.config()
     dispatch(updateConfigStore(config))
   }
 }
 
 export const fetchFeesAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const fees = await api.transactorFees()
+    const fees = await tequilaClient.transactorFees()
     dispatch(updateFeesStore(fees))
   }
 }
 
 export const fetchChainSummaryAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const chainSummary = await api.chainSummary()
+    const chainSummary = await tequilaClient.chainSummary()
     dispatch(updateChainSummaryStore(chainSummary))
   }
 }

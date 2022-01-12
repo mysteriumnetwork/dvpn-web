@@ -21,11 +21,12 @@ import { CardLayout } from '../Components/Card/CardLayout'
 import { Cards } from '../Components/Card/PreparedCards'
 import { myst } from '../../../commons/myst.utils'
 import { FilterBar, FilterItem } from '../../../Components/FilterBar/FilterBar'
-import { Option, SelectV3 } from '../../../Components/Select/SelectV3'
+import { Option, Select } from '../../../Components/Select/Select'
 import { Header } from '../../../Components/Table/TableComponents'
 import { DownloadCSV } from '../../../Components/Download/DownloadCSV'
-import { tequila } from '../../../api/ApiWrapper'
+import { tequila } from '../../../api/wrapped-calls'
 import { toCsv } from './settlement.mapper'
+import styles from './WalletPage.module.scss'
 
 interface State {
   isTableLoading: boolean
@@ -181,11 +182,13 @@ const WalletPage = () => {
       logo={<Logo />}
       main={
         <>
-          <CardLayout>
-            <Cards.Balance />
-            <Cards.UnsettledEarnings />
-            <Cards.TotalWithdrawn amount={withdrawalTotal} />
-          </CardLayout>
+          <div className={styles.cards}>
+            <CardLayout>
+              <Cards.Balance />
+              <Cards.UnsettledEarnings />
+              <Cards.TotalWithdrawn amount={withdrawalTotal} />
+            </CardLayout>
+          </div>
           <FilterBar
             right={
               <DownloadCSV<SettlementListResponse>
@@ -198,7 +201,7 @@ const WalletPage = () => {
             <FilterItem
               label="Type"
               component={
-                <SelectV3
+                <Select
                   value={state.filterTypes}
                   options={settlementTypeItems}
                   onChange={typeChange}
@@ -215,6 +218,7 @@ const WalletPage = () => {
             columns={columns}
             pagination={{ pageSize: state.pageSize }}
             onPaginationChange={handlePageChange}
+            responsivePaging
             mobileRow={(row: Row<Settlement>, index) => {
               const { settledAt, txHash, fees, amount, beneficiary } = row.original
               return (

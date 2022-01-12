@@ -10,16 +10,16 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { api } from '../../../../api/Api'
+import { tequilaClient } from '../../../../api/tequila-client'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import { currentCurrency, displayMyst, toMyst } from '../../../../commons/money.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
-import { Select, SelectItem } from '../../../../Components/Select/Select'
 import { TextField } from '../../../../Components/TextField/TextField'
 import './WithdrawalModal.scss'
 import { Modal } from '../../../../Components/Modal/Modal'
+import { Option, Select } from '../../../../Components/Select/Select'
 
 interface Props {
   isOpen: boolean
@@ -43,8 +43,8 @@ interface State {
   withdrawalAmountMYST: number
   withdrawalAmountWei: number
   balanceTotalWei: number
-  chainOptions: SelectItem[]
-  toChain: number
+  chainOptions: Option[]
+  toChain: Option
   isLoading: boolean
   withdrawalInProgress: boolean
   withdrawalCompleted: boolean
@@ -64,7 +64,7 @@ const initialState: State = {
   withdrawalAmountMYST: 0,
   withdrawalAmountWei: 0,
   balanceTotalWei: 0,
-  toChain: 0,
+  toChain: { label: '0', value: '0' },
   isLoading: true,
   withdrawalInProgress: false,
   withdrawalCompleted: false,
@@ -94,9 +94,11 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   useEffect(() => {
     const init = async () => {
       setState(initialState)
-      const { address } = await api.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
-      const chainSummary = await api.chainSummary()
-      const latestWithdrawal = await api.settlementHistory().then((resp) => resp.items.find((s) => s.isWithdrawal))
+      const { address } = await tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
+      const chainSummary = await tequilaClient.chainSummary()
+      const latestWithdrawal = await tequilaClient
+        .settlementHistory()
+        .then((resp) => resp.items.find((s) => s.isWithdrawal))
 
       const { chains, currentChain } = chainSummary
       const chainOptions = Object.keys(chains)
@@ -105,11 +107,11 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           const chainName = chains[k]
           return {
             value: k,
-            name: chainName,
+            label: chainName,
           }
         })
-      const initialChain = chainOptions?.find((i) => i.value === POLYGON_MATIC_MAINNET_CHAIN_ID)?.value
-      const fees = await api.transactorFees(initialChain)
+      const initialChain = chainOptions?.find((i) => i.value === POLYGON_MATIC_MAINNET_CHAIN_ID)!
+      const fees = await tequilaClient.transactorFees(initialChain.value)
       setState((d) => {
         d.withdrawalAddress = address
         d.chainOptions = chainOptions
@@ -202,7 +204,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                     {errors}
                   </Alert>
                 </Collapse>
-                <Collapse in={state.toChain === POLYGON_MATIC_MAINNET_CHAIN_ID}>
+                <Collapse in={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}>
                   <Alert severity="warning">
                     <AlertTitle>Warning</AlertTitle>
                     Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet)
@@ -241,14 +243,15 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                 <div className="input-group">
                   <div className="input-group__label">Select chain</div>
                   <Select
-                    items={state.chainOptions}
                     value={state.toChain}
-                    onChange={async (value) => {
-                      const chainId = value as number
-                      const fees = await api.transactorFees(chainId)
+                    options={state.chainOptions}
+                    onChange={async (o) => {
+                      const option = o as Option
+                      const chainId = option.value as number
+                      const fees = await tequilaClient.transactorFees(chainId)
 
                       setState((d) => {
-                        d.toChain = chainId
+                        d.toChain = option
                         d.fees = fees
                         d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
                       })
@@ -331,11 +334,11 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           }}
           onConfirm={async () => {
             try {
-              await api.withdraw({
+              await tequilaClient.withdraw({
                 hermesId: state.hermesId,
                 providerId: identity.id,
                 beneficiary: state.withdrawalAddress,
-                toChainId: state.toChain,
+                toChainId: state.toChain.value as number,
                 amount: String(state.withdrawalAmountWei),
               })
               setState((d) => {

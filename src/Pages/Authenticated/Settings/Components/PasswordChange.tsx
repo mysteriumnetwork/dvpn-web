@@ -7,13 +7,15 @@
 import { TequilapiError } from 'mysterium-vpn-js'
 import { useImmer } from 'use-immer'
 
-import { api } from '../../../../api/Api'
+import { tequilaClient } from '../../../../api/tequila-client'
 import { validatePassword } from '../../../../commons/password'
 import { toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'
 import Errors from '../../../../Components/Validation/Errors'
 import { DEFAULT_USERNAME } from '../../../../constants/defaults'
+import styles from './Components.module.scss'
+import classNames from 'classnames'
 
 interface StateInterface {
   newPasswordConfirmation: string
@@ -53,7 +55,7 @@ const PasswordChange = () => {
     setValues((d) => {
       d.loading = true
     })
-    api
+    tequilaClient
       .authChangePassword({
         username: DEFAULT_USERNAME,
         oldPassword: values.currentPassword,
@@ -114,7 +116,7 @@ const PasswordChange = () => {
           value={values.newPasswordConfirmation}
         />
       </div>
-      <div className="footer__buttons m-t-40">
+      <div className={classNames(styles.buttons, 'm-t-40')}>
         <Button type="submit" isLoading={values.loading}>
           Save
         </Button>

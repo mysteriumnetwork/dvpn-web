@@ -4,10 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { LocalVersion, RemoteVersion } from '../../../api/NodeUIVersion'
+import { LocalVersion, RemoteVersion } from '../../../api/ui-version-management'
 import styles from './VersionManagementPage.module.scss'
 import { date2human } from '../../../commons/date.utils'
-import HelpTooltip from '../../../Components/HelpTooltip/HelpTooltip'
+import Tooltip from '../../../Components/Tooltip/Tooltip'
 import Button from '../../../Components/Buttons/Button'
 import React from 'react'
 
@@ -43,7 +43,7 @@ export const VersionCard = ({
         </div>
         <div className={styles.releaseBlock}>
           <div className={styles.released}>({date2human(remote.releasedAt)})</div>
-          {releaseNotes && <HelpTooltip title={releaseNotes} />}
+          {releaseNotes && <Tooltip title={releaseNotes} />}
         </div>
       </div>
       <div>

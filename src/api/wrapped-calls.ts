@@ -12,15 +12,15 @@ import { store } from '../redux/store'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import { updateConfigStore, updateTermsStore } from '../redux/app.slice'
 
-import { api } from './Api'
+import { tequilaClient } from './tequila-client'
 
 const login = async (username: string, password: string): Promise<void> => {
-  return await api.authLogin({ username, password }).then(() => Promise.resolve())
+  return await tequilaClient.authLogin({ username, password }).then(() => Promise.resolve())
 }
 
 const loginWithDefaultCredentials = async (): Promise<boolean> => {
   try {
-    await api.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD })
+    await tequilaClient.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD })
     return true
   } catch (e) {
     if (e instanceof TequilapiError && e.isUnauthorizedError) {
@@ -33,7 +33,7 @@ const loginWithDefaultCredentials = async (): Promise<boolean> => {
 
 const isUserAuthenticated = async (): Promise<boolean> => {
   try {
-    await api.identityList()
+    await tequilaClient.identityList()
   } catch (e) {
     if (e instanceof TequilapiError && e.isUnauthorizedError) {
       return false
@@ -44,7 +44,7 @@ const isUserAuthenticated = async (): Promise<boolean> => {
 }
 
 const acceptWithTermsAndConditions = async () => {
-  return await api
+  return await tequilaClient
     .termsUpdate({
       agreedProvider: true,
       agreedVersion: termsPackageJson.version,
@@ -53,14 +53,14 @@ const acceptWithTermsAndConditions = async () => {
 }
 
 const refreshStoreConfig = async (): Promise<Config> => {
-  return await api.config().then((config) => {
+  return await tequilaClient.config().then((config) => {
     store.dispatch(updateConfigStore(config))
     return config
   })
 }
 
 const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
-  return await api
+  return await tequilaClient
     .updateUserConfig({
       data: {
         'access-policy': {
@@ -72,7 +72,7 @@ const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
 }
 
 const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promise<Config> => {
-  return await api
+  return await tequilaClient
     .updateUserConfig({
       data: {
         shaper: {
@@ -85,7 +85,7 @@ const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promi
 }
 
 const setChainId = async (chainId: number): Promise<Config> => {
-  return await api
+  return await tequilaClient
     .updateUserConfig({
       data: {
         'chain-id': chainId,
@@ -95,11 +95,11 @@ const setChainId = async (chainId: number): Promise<Config> => {
 }
 
 export const setUserConfig = async (data: any): Promise<Config> => {
-  return await api.updateUserConfig({ data }).then(refreshStoreConfig)
+  return await tequilaClient.updateUserConfig({ data }).then(refreshStoreConfig)
 }
 
 export const tequila = {
-  api,
+  api: tequilaClient,
   login,
   loginWithDefaultCredentials,
   isUserAuthenticated,

@@ -6,14 +6,16 @@
  */
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { api } from '../../../../api/Api'
-import { tequila } from '../../../../api/ApiWrapper'
+import { tequilaClient } from '../../../../api/tequila-client'
+import { tequila } from '../../../../api/wrapped-calls'
 import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
 
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'
 import Errors from '../../../../Components/Validation/Errors'
+import styles from './Components.module.scss'
+import classNames from 'classnames'
 
 interface StateInterface {
   apiKey: string
@@ -47,7 +49,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       d.loading = true
     })
 
-    api
+    tequilaClient
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState((cs) => {
@@ -87,7 +89,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
           value={state.apiKey}
         />
       </div>
-      <div className="footer__buttons m-t-40">
+      <div className={classNames(styles.buttons, 'm-t-40')}>
         <Button type="submit" isLoading={state.loading}>
           Save
         </Button>

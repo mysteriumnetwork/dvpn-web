@@ -11,12 +11,16 @@ interface Props {
   label?: string
   help?: string
   children?: any
+  topRight?: JSX.Element
 }
 
-export const InputGroup = ({ label, help, children }: Props) => {
+export const InputGroup = ({ label, help, children, topRight }: Props) => {
   return (
     <div className={styles.group}>
-      <p className={styles.label}>{label}</p>
+      <p className={styles.label}>
+        {label}
+        {topRight && topRight}
+      </p>
       {children}
       {help && <p className={styles.help}>{help}</p>}
     </div>

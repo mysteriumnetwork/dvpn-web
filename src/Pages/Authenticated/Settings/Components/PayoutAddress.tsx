@@ -8,16 +8,18 @@ import { CircularProgress } from '@material-ui/core'
 import { Identity } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { api } from '../../../../api/Api'
+import { tequilaClient } from '../../../../api/tequila-client'
 import { parseError } from '../../../../commons/error.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
 import { TextField } from '../../../../Components/TextField/TextField'
 import './PayoutAddress.scss'
+import classNames from 'classnames'
+import styles from './Components.module.scss'
 
 interface Props {
-  identity?: Identity
+  identity: Identity
 }
 
 interface State {
@@ -38,8 +40,8 @@ const PayoutAddress = ({ identity }: Props) => {
   })
 
   useEffect(() => {
-    api
-      .payoutAddressGet(identity?.id || '')
+    tequilaClient
+      .payoutAddressGet(identity.id)
       .then(({ address }) =>
         setState((d) => {
           d.payoutAddress = address
@@ -52,14 +54,14 @@ const PayoutAddress = ({ identity }: Props) => {
           d.loading = false
         })
       }) // address may not exist
-  }, [identity?.id])
+  }, [identity.id])
 
   const handlePayoutAddressChange = () => {
     setState((d) => {
       d.txPending = true
     })
-    api
-      .payoutAddressSave(identity?.id || '', state.payoutAddress)
+    tequilaClient
+      .payoutAddressSave(identity.id, state.payoutAddress)
       .then((res) => {
         setState((d) => {
           d.txPending = false
@@ -82,7 +84,7 @@ const PayoutAddress = ({ identity }: Props) => {
   return (
     <form onSubmit={handlePayoutAddressChange}>
       <div className="input-group">
-        <div className="flex-row">
+        <div className={styles.row}>
           <div className="input-group__label m-t-5">Default Withdrawal Address</div>
           <CopyToClipboard text={state.payoutAddress} />
         </div>
@@ -101,7 +103,7 @@ const PayoutAddress = ({ identity }: Props) => {
         </p>
         {state.errorMessage && <p className="error">{state.errorMessage}</p>}
       </div>
-      <div className="footer__buttons m-t-40">
+      <div className={classNames(styles.buttons, 'm-t-40')}>
         <Button
           isLoading={state.txPending}
           disabled={

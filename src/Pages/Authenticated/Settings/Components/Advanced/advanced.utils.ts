@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { api } from '../../../../../api/Api'
+import { tequilaClient } from '../../../../../api/tequila-client'
 import { SUPPORTED_TRAVERSALS } from '../../../../../commons/config'
 import { TraversalProp } from './NATTraversalOrder'
 
@@ -66,7 +66,7 @@ export const validateData = async (data: Data): Promise<string[]> => {
     }
 
     try {
-      await api.validateEthRPCL2(rpcl2.split(','))
+      await tequilaClient.validateEthRPCL2(rpcl2.split(','))
     } catch (e) {
       errors.push(e.message)
     }
