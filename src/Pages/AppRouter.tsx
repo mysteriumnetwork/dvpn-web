@@ -99,19 +99,22 @@ const AppRouter = ({ actions }: Props) => {
     await actions.fetchConfigAsync()
     await actions.fetchFeesAsync()
     await actions.fetchChainSummaryAsync()
+
+    setInterval(() => actions.fetchFeesAsync(), 60_000)
   }
 
   useLayoutEffect(() => {
     const blockingCheck = async () => {
-      let defaultPass = await tequila.loginWithDefaultCredentials()
-      let authenticated = defaultPass
+      let isDefaultPassword = await tequila.loginWithDefaultCredentials()
+      let isAuthenticated = isDefaultPassword
+
       //check if there is a token cookie saved
-      if (!authenticated) {
-        authenticated = await tequila.isUserAuthenticated()
+      if (!isAuthenticated) {
+        isAuthenticated = await tequila.isUserAuthenticated()
       }
 
-      if (authenticated) {
-        await authenticatedActions(defaultPass)
+      if (isAuthenticated) {
+        await authenticatedActions(isDefaultPassword)
       }
 
       await actions.updateAuthFlowLoadingStore(false)
