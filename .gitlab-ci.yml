@@ -5,6 +5,13 @@ stages:
   - publish
   - trigger
 
+test:
+  stage: build
+  tags: [docker]
+  script:
+    - yarn
+    - yarn test
+
 build:
   stage: build
   tags: [docker]
