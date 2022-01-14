@@ -316,7 +316,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         </Button>
         <Button
           isLoading={state.isLoading}
-          disabled={state.isWithdrawDisabled}
+          disabled={state.isWithdrawDisabled || !!errors}
           onClick={() => {
             const error = validateForm()
             if (error) {
