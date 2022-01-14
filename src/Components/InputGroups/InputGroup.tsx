@@ -17,10 +17,10 @@ interface Props {
 export const InputGroup = ({ label, help, children, topRight }: Props) => {
   return (
     <div className={styles.group}>
-      <p className={styles.label}>
+      <div className={styles.label}>
         {label}
         {topRight && topRight}
-      </p>
+      </div>
       {children}
       {help && <p className={styles.help}>{help}</p>}
     </div>
