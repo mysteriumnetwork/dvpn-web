@@ -82,6 +82,7 @@ const initialState: State = {
 
 const MINIMAL_WITHDRAWAL_AMOUNT = 10_000_000_000_000_000 // 0.01 MYST
 const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
+const MAXIMUM_WITHDRAW_AMOUNT = 99
 
 const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   const [state, setState] = useImmer<State>(initialState)
@@ -172,6 +173,10 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
     if (state.overBalance) {
       return 'Your withdraw amount exceeds your balance'
     }
+
+    if (state.withdrawalAmountMYST > MAXIMUM_WITHDRAW_AMOUNT) {
+      return `Your withdrawal amount exceeds maximum limit for one transaction. Please reduce amount to ${MAXIMUM_WITHDRAW_AMOUNT} ${currentCurrency()} or lower`
+    }
   }
 
   const errors = validateForm()
@@ -225,7 +230,8 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
               </div>
               <div className="input-group">
                 <div className="input-group__label">
-                  Amount ({currentCurrency()}) / Your Balance: {toMyst(state.balanceTotalWei)}
+                  Amount ({currentCurrency()}) / Your Balance: {toMyst(state.balanceTotalWei)} (Maximum withdrawal
+                  amount: {MAXIMUM_WITHDRAW_AMOUNT} {currentCurrency()})
                 </div>
                 <TextField
                   type="number"
