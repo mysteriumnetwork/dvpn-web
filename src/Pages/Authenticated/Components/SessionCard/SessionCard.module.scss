@@ -50,17 +50,26 @@
   }
 
   &Statistics {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 3fr 3fr 4fr;
     padding-top: 15px;
 
     .statistic {
+
       font-style: normal;
       font-weight: $medium-weight;
       font-size: $normal-size;
       line-height: 21px;
       color: $main-text-color;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+
+      &:last-child {
+        text-align: right;
+      }
     }
+
   }
 }

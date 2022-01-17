@@ -80,6 +80,11 @@ const WalletPage = () => {
     }
   }
 
+  const fetchDownloadData = async () => {
+    const { totalItems } = await api.settlementHistory({ pageSize: 0 })
+    return await api.settlementHistory({ pageSize: totalItems })
+  }
+
   const typeChange = (o: Option | Option[]) => {
     setState((d) => {
       d.filterTypes = o as Option[]
@@ -189,15 +194,7 @@ const WalletPage = () => {
               <Cards.TotalWithdrawn amount={withdrawalTotal} />
             </CardLayout>
           </div>
-          <FilterBar
-            right={
-              <DownloadCSV<SettlementListResponse>
-                disabled={state.settlementResponse.totalItems === 0}
-                fetchData={async () => api.settlementHistory({ pageSize: state.settlementResponse.totalItems })}
-                mapper={toCsv}
-              />
-            }
-          >
+          <FilterBar right={<DownloadCSV<SettlementListResponse> fetchData={fetchDownloadData} mapper={toCsv} />}>
             <FilterItem
               label="Type"
               component={
