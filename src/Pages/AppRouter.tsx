@@ -100,7 +100,8 @@ const AppRouter = ({ actions }: Props) => {
     await actions.fetchFeesAsync()
     await actions.fetchChainSummaryAsync()
 
-    setInterval(() => actions.fetchFeesAsync(), 60_000)
+    // TODO periodically fails investigate why
+    // setInterval(() => actions.fetchFeesAsync(), 60_000)
   }
 
   useLayoutEffect(() => {
