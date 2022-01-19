@@ -9,6 +9,11 @@ import Decimal from 'decimal.js'
 import { currentCurrency } from './money.utils'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index'
 
+/**
+ * @deprecated use display()
+ * @param amount
+ * @param options
+ */
 const displayMYST = (
   amount: string | number | undefined,
   options: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS,
@@ -29,6 +34,14 @@ const displayMYST = (
   return `${new decimal(amount).div(DECIMAL_PART).toFixed(requiredPrecision)}${symbol}`
 }
 
+const display = (
+  amount: string | number | undefined,
+  override: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS,
+): string => {
+  return displayMYST(amount, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, ...override })
+}
+
 export const myst = {
   displayMYST,
+  display,
 }

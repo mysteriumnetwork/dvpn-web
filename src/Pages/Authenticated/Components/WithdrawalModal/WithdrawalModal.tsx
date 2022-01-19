@@ -9,8 +9,7 @@ import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
-import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
-import { currentCurrency, displayMyst, toMyst } from '../../../../commons/money.utils'
+import { currentCurrency, toMyst } from '../../../../commons/money.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
@@ -20,6 +19,7 @@ import { Option, Select } from '../../../../Components/Select/Select'
 import { Modal } from '../../../../Components/Modal/Modal'
 import { CollapseAlert } from './CollapseAlert'
 import classNames from 'classnames'
+import { myst } from '../../../../commons/myst.utils'
 
 interface Props {
   isOpen: boolean
@@ -259,26 +259,11 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
               </div>
             </div>
             <div className={styles.fees}>
-              <Card
-                info="Amount"
-                value={displayMyst(state.withdrawalAmountWei, {
-                  ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                  showCurrency: false,
-                })}
-              />
-              <Card
-                info="Fee"
-                value={displayMyst(settlement, {
-                  ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                  showCurrency: false,
-                })}
-              />
+              <Card info="Amount" value={myst.display(state.withdrawalAmountWei, { showCurrency: false })} />
+              <Card info="Fee" value={myst.display(settlement, { showCurrency: false })} />
               <Card
                 info="You will get"
-                value={displayMyst(state.withdrawalAmountWei - settlement, {
-                  ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                  showCurrency: false,
-                })}
+                value={myst.display(state.withdrawalAmountWei - settlement, { showCurrency: false })}
                 important
               />
             </div>
