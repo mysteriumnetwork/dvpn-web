@@ -30,8 +30,7 @@ interface Props {
 
 interface State {
   withdrawalAddress: string
-  withdrawalAmountMYST: number
-  withdrawalAmountWei: number
+  withdrawalAmount: { wei: number; myst: number }
   balanceTotalWei: number
   chainOptions: Option[]
   toChain: Option
@@ -45,8 +44,7 @@ interface State {
 const initialState: State = {
   withdrawalAddress: '',
   chainOptions: [],
-  withdrawalAmountMYST: 0,
-  withdrawalAmountWei: 0,
+  withdrawalAmount: { myst: 0, wei: 0 },
   balanceTotalWei: 0,
   toChain: { label: '0', value: '0' },
   isLoading: true,
@@ -78,17 +76,19 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
 
   useEffect(() => {
     const init = async () => {
-      const { address } = await tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
-
+      setState(initialState)
       const { currentChain } = chainSummary
       const chainOptions = toOptions(chainSummary)
-      const fees = await tequilaClient.transactorFees(currentChain)
+
+      const [{ address }, fees] = await Promise.all([
+        tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
+        tequilaClient.transactorFees(currentChain),
+      ])
 
       setState((d) => {
         d.withdrawalAddress = address
         d.chainOptions = chainOptions
-        d.withdrawalAmountMYST = Number(toMyst(identity.balance))
-        d.withdrawalAmountWei = identity.balance
+        d.withdrawalAmount = initialCeilingAmount(identity.balance)
         d.balanceTotalWei = identity.balance
         d.toChain = chainOptions.find((o) => o.value === currentChain)!
         d.fees = fees
@@ -103,17 +103,26 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
     }
   }, [isOpen])
 
-  const isOverBalance = (): boolean => state.withdrawalAmountWei > identity.balance
-  const isInsaneWithdrawal = (): boolean => identity.balance - state.fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
-  const isOverCeiling = (): boolean => state.withdrawalAmountMYST > MAXIMUM_WITHDRAW_AMOUNT
+  const initialCeilingAmount = (wei: number): { wei: number; myst: number } => {
+    const myst = toMyst(identity.balance)
+    if (myst > MAXIMUM_WITHDRAW_AMOUNT) {
+      return { myst: MAXIMUM_WITHDRAW_AMOUNT, wei: MAXIMUM_WITHDRAW_AMOUNT * DECIMAL_PART }
+    }
+    return { myst, wei }
+  }
 
-  useEffect(() => {
-    const myst = state.withdrawalAmountMYST
+  const isOverBalance = (): boolean => state.withdrawalAmount.wei > identity.balance
+  const isInsaneWithdrawal = (): boolean =>
+    state.withdrawalAmount.wei - state.fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
+  const isOverCeiling = (): boolean => state.withdrawalAmount.myst > MAXIMUM_WITHDRAW_AMOUNT
+
+  const onWithdrawalAmountChange = (mystString: string) => {
+    const myst = Number(mystString)
     const wei = myst * DECIMAL_PART
     setState((d) => {
-      d.withdrawalAmountWei = wei
+      d.withdrawalAmount = { myst, wei }
     })
-  }, [state.withdrawalAmountMYST, state.toChain])
+  }
 
   const validateForm = (): string | undefined => {
     const { withdrawalAddress } = state
@@ -162,7 +171,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         providerId: identity.id,
         beneficiary: state.withdrawalAddress,
         toChainId: state.toChain.value as number,
-        amount: String(state.withdrawalAmountWei),
+        amount: String(state.withdrawalAmount.wei),
       })
       setState((d) => {
         d.withdrawalCompleted = true
@@ -220,21 +229,12 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           label={`Amount (${currentCurrency()}) / Your Balance: ${toMyst(state.balanceTotalWei)} (Maximum withdrawal
                   amount: ${MAXIMUM_WITHDRAW_AMOUNT} ${currentCurrency()})`}
         >
-          <TextField
-            type="number"
-            value={state.withdrawalAmountMYST}
-            onChange={(value) => {
-              const n = Number(value)
-              setState((d) => {
-                d.withdrawalAmountMYST = n
-              })
-            }}
-          />
+          <TextField type="number" value={state.withdrawalAmount.myst} onChange={onWithdrawalAmountChange} />
         </InputGroup>
         <InputGroup label="Select chain">
           <Select value={state.toChain} options={state.chainOptions} onChange={onChainChange} />
         </InputGroup>
-        <FeesRibbon fees={state.fees} withdrawalAmountWei={state.withdrawalAmountWei} />
+        <FeesRibbon fees={state.fees} withdrawalAmountWei={state.withdrawalAmount.wei} />
       </div>
       <LatestWithdrawal />
     </Modal>
