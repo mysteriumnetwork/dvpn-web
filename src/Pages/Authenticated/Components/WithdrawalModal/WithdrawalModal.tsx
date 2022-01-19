@@ -16,23 +16,13 @@ import styles from './WithdrawalModal.module.scss'
 import { Option, Select } from '../../../../Components/Select/Select'
 import { Modal } from '../../../../Components/Modal/Modal'
 import { CollapseAlert } from './CollapseAlert'
-import classNames from 'classnames'
-import { myst } from '../../../../commons/myst.utils'
 import { LatestWithdrawal } from './LatestWithdrawal'
+import { FeesRibbon } from './FeesRibbon'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
   identity: Identity
-}
-
-const Card = ({ info, value, important }: { info: string; value: string | number; important?: boolean }) => {
-  return (
-    <div className={classNames(styles.card, important && styles.cardHighlighted)}>
-      <div className={styles.info}>{info}</div>
-      <div className={styles.value}>{value}</div>
-    </div>
-  )
 }
 
 interface State {
@@ -284,15 +274,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                 <Select value={state.toChain} options={state.chainOptions} onChange={onChainChange} />
               </div>
             </div>
-            <div className={styles.fees}>
-              <Card info="Amount" value={myst.display(state.withdrawalAmountWei, { showCurrency: false })} />
-              <Card info="Fee" value={myst.display(settlement, { showCurrency: false })} />
-              <Card
-                info="You will get"
-                value={myst.display(state.withdrawalAmountWei - settlement, { showCurrency: false })}
-                important
-              />
-            </div>
+            <FeesRibbon fees={state.fees} withdrawalAmountWei={state.withdrawalAmountWei} />
           </>
         )}
       </div>
