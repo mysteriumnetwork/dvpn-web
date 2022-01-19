@@ -1,0 +1,70 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.content {
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  .disclaimer {
+    font-style: normal;
+    font-weight: normal;
+    font-size: $smaller-size;
+    color: #9090BB;
+    line-height: 18px;
+    text-align: center;
+  }
+
+  .fees {
+    background: rgba(#ED5BAC, 0.05);
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 29px;
+    margin-top: 20px;
+
+    @include respond-below(sm) {
+      align-items: center;
+      gap: 15px;
+      flex-direction: column;
+    }
+  }
+}
+
+.card {
+  .info {
+    font-size: $smaller-size;
+    font-weight: $lighter-weight;
+  }
+
+  .value {
+    font-size: $larger-size;
+  }
+
+  &Highlighted {
+    color: #D61F85;
+  }
+}
+
+.tx {
+  font-size: $smaller-size;
+  font-weight: $normal-weight;
+  color: $secondary-text-color !important;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @include respond-below(sm) {
+    button {
+      font-size: $smaller-size !important;
+    }
+  }
+}
+
+.spinner {
+  margin: 36px;
+}

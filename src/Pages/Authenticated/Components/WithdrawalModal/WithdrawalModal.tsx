@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core'
-import Collapse from '@material-ui/core/Collapse'
-import { Alert, AlertTitle } from '@material-ui/lab'
 import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
@@ -17,9 +15,11 @@ import { toastError, toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
 import { TextField } from '../../../../Components/TextField/TextField'
-import './WithdrawalModal.scss'
+import styles from './WithdrawalModal.module.scss'
 import { Option, Select } from '../../../../Components/Select/Select'
 import { Modal } from '../../../../Components/Modal/Modal'
+import { CollapseAlert } from './CollapseAlert'
+import classNames from 'classnames'
 
 interface Props {
   isOpen: boolean
@@ -28,11 +28,10 @@ interface Props {
 }
 
 const Card = ({ info, value, important }: { info: string; value: string | number; important?: boolean }) => {
-  const extraClass = important && 'modal-card__important'
   return (
-    <div className={['modal-card', extraClass].join(' ')}>
-      <div className="modal-card__info">{info}</div>
-      <div className="modal-card__value">{value}</div>
+    <div className={classNames(styles.card, important && styles.cardHighlighted)}>
+      <div className={styles.info}>{info}</div>
+      <div className={styles.value}>{value}</div>
     </div>
   )
 }
@@ -187,36 +186,32 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   }
 
   return (
-    <Modal open={isOpen} title="Withdrawal">
-      <div className="withdrawal-modal__rows">
-        <div className="withdrawal-modal__row-disclaimer">
+    <Modal open={isOpen} title="Withdrawal" isLoading={state.isLoading}>
+      <div className={styles.content}>
+        <div className={styles.disclaimer}>
           You can withdraw your collected earnings into own Ethereum or Polygon wallet address at any time. Please allow
           some time (usually a few minutes) for withdrawal transaction to be processed. Your balance will update once
           transaction is executed.
         </div>
         {state.isLoading ? (
-          <div className="withdrawal-modal__row-withdraw-loading">
+          <div className={styles.spinner}>
             <CircularProgress className="spinner-relative" disableShrink />
           </div>
         ) : (
           <>
-            <div className="withdrawal-modal__row-withdraw-error">
-              <Collapse in={!!errors}>
-                <Alert severity="error">
-                  <AlertTitle>Error</AlertTitle>
-                  {errors}
-                </Alert>
-              </Collapse>
-              <Collapse in={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}>
-                <Alert severity="warning">
-                  <AlertTitle>Warning</AlertTitle>
-                  Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet)
-                  supporting Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not supported
-                  for Polygon network withdrawals and your tokens might be lost.
-                </Alert>
-              </Collapse>
-            </div>
-            <div className="withdrawal-modal__row-withdraw-info">
+            <CollapseAlert severity="error" title="Error" visible={!!errors}>
+              {errors}
+            </CollapseAlert>
+            <CollapseAlert
+              severity="warning"
+              title="Warning"
+              visible={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}
+            >
+              Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet) supporting
+              Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not supported for Polygon
+              network withdrawals and your tokens might be lost.
+            </CollapseAlert>
+            <div>
               <div className="input-group">
                 <div className="input-group__label">Withdrawal Address</div>
                 <TextField
@@ -263,7 +258,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
                 />
               </div>
             </div>
-            <div className="withdrawal-modal__row-withdraw-fees">
+            <div className={styles.fees}>
               <Card
                 info="Amount"
                 value={displayMyst(state.withdrawalAmountWei, {
@@ -292,7 +287,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       </div>
       <>
         {latestWithdrawal && (
-          <div className="withdrawal-modal__settlement-info">
+          <div className={styles.tx}>
             Your last transaction:{' '}
             {withdrawalContainsTXLink() ? (
               <a href={latestWithdrawal.blockExplorerUrl} rel="noreferrer" target="_blank">
@@ -304,7 +299,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           </div>
         )}
       </>
-      <div className="withdrawal-modal__footer">
+      <div className={styles.footer}>
         <Button
           onClick={() => {
             onClose()
