@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CircularProgress } from '@material-ui/core'
-import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
+import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
@@ -18,6 +18,7 @@ import { Modal } from '../../../../Components/Modal/Modal'
 import { CollapseAlert } from './CollapseAlert'
 import classNames from 'classnames'
 import { myst } from '../../../../commons/myst.utils'
+import { LatestWithdrawal } from './LatestWithdrawal'
 
 interface Props {
   isOpen: boolean
@@ -49,7 +50,6 @@ interface State {
   isInsaneWithdrawal: boolean
   isWithdrawDisabled: boolean
   overBalance: boolean
-  latestWithdrawal?: Settlement
   hermesId: string
 }
 
@@ -93,9 +93,6 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       setState(initialState)
       const { address } = await tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
       const chainSummary = await tequilaClient.chainSummary()
-      const latestWithdrawal = await tequilaClient
-        .settlementHistory()
-        .then((resp) => resp.items.find((s) => s.isWithdrawal))
 
       const { chains, currentChain } = chainSummary
       const chainOptions = Object.keys(chains)
@@ -122,7 +119,6 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         d.overBalance = d.withdrawalAmountWei > identity.balance
         d.isWithdrawDisabled =
           d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
-        d.latestWithdrawal = latestWithdrawal
         d.hermesId = identity.hermesId
       })
     }
@@ -174,11 +170,6 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   }
 
   const errors = validateForm()
-
-  const { latestWithdrawal } = state
-  const withdrawalContainsTXLink = (): boolean => {
-    return latestWithdrawal !== undefined && latestWithdrawal.blockExplorerUrl !== ''
-  }
 
   const onChainChange = async (o: Option | Option[]) => {
     setIsLoading(true)
@@ -305,20 +296,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           </>
         )}
       </div>
-      <>
-        {latestWithdrawal && (
-          <div className={styles.tx}>
-            Your last transaction:{' '}
-            {withdrawalContainsTXLink() ? (
-              <a href={latestWithdrawal.blockExplorerUrl} rel="noreferrer" target="_blank">
-                {latestWithdrawal.txHash}
-              </a>
-            ) : (
-              <span style={{ color: '#000' }}>{latestWithdrawal.txHash}</span>
-            )}
-          </div>
-        )}
-      </>
+      <LatestWithdrawal />
     </Modal>
   )
 }
