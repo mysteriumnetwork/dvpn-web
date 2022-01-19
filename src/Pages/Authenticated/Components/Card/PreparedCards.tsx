@@ -109,7 +109,7 @@ const Balance = () => {
         label="Balance"
         onClick={() => setIsOpen(true)}
       />
-      <WithdrawalModal isOpen={isOpen} onClose={() => setIsOpen(false)} identity={identity} />
+      <WithdrawalModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   )
 }

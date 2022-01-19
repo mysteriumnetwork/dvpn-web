@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
+import { DECIMAL_PART, Fees } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
@@ -25,7 +25,6 @@ import { toOptions } from '../../../../commons/mapping.utils'
 interface Props {
   isOpen: boolean
   onClose: () => void
-  identity: Identity
 }
 
 interface State {
@@ -35,8 +34,6 @@ interface State {
   chainOptions: Option[]
   toChain: Option
   isLoading: boolean
-  withdrawalInProgress: boolean
-  withdrawalCompleted: boolean
   fees: Fees
   hermesId: string
 }
@@ -48,23 +45,22 @@ const initialState: State = {
   balanceTotalWei: 0,
   toChain: { label: '0', value: '0' },
   isLoading: true,
-  withdrawalInProgress: false,
-  withdrawalCompleted: false,
+  hermesId: '',
   fees: {
     registration: 0,
     settlement: 0,
     hermes: 0,
     decreaseStake: 0,
   },
-  hermesId: '',
 }
 
 const MINIMAL_WITHDRAWAL_AMOUNT = 10_000_000_000_000_000 // 0.01 MYST
 const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
 const MAXIMUM_WITHDRAW_AMOUNT = 99
 
-const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
+const WithdrawalModal = ({ isOpen, onClose }: Props) => {
   const chainSummary = useSelector(selectors.chainSummarySelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
 
   const [state, setState] = useImmer<State>(initialState)
 
@@ -166,6 +162,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
     }
 
     try {
+      setIsLoading()
       await tequilaClient.withdraw({
         hermesId: state.hermesId,
         providerId: identity.id,
@@ -173,13 +170,12 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         toChainId: state.toChain.value as number,
         amount: String(state.withdrawalAmount.wei),
       })
-      setState((d) => {
-        d.withdrawalCompleted = true
-      })
       toastSuccess('Withdrawal completed successfully!')
       onClose()
     } catch (e: any) {
       toastError('There was an error processing your withdrawal. Please try again later.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
