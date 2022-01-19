@@ -54,18 +54,6 @@
   text-align: center;
 }
 
-.footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  @include respond-below(sm) {
-    button {
-      font-size: $smaller-size !important;
-    }
-  }
-}
-
 .spinner {
   margin: 36px;
 }

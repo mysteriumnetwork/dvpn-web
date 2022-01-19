@@ -11,8 +11,6 @@ import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
 import { currentCurrency, toMyst } from '../../../../commons/money.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
-import Button from '../../../../Components/Buttons/Button'
-import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
 import { TextField } from '../../../../Components/TextField/TextField'
 import styles from './WithdrawalModal.module.scss'
 import { Option, Select } from '../../../../Components/Select/Select'
@@ -37,7 +35,6 @@ const Card = ({ info, value, important }: { info: string; value: string | number
 }
 
 interface State {
-  showConfirm: boolean
   withdrawalAddress: string
   withdrawalAmountMYST: number
   withdrawalAmountWei: number
@@ -57,7 +54,6 @@ interface State {
 }
 
 const initialState: State = {
-  showConfirm: false,
   withdrawalAddress: '',
   chainOptions: [],
   withdrawalAmountMYST: 0,
@@ -86,10 +82,11 @@ const MAXIMUM_WITHDRAW_AMOUNT = 99
 const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   const [state, setState] = useImmer<State>(initialState)
 
-  const showConfirm = (b: boolean) =>
+  const setIsLoading = (b: boolean = true) => {
     setState((d) => {
-      d.showConfirm = b
+      d.isLoading = b
     })
+  }
 
   useEffect(() => {
     const init = async () => {
@@ -132,9 +129,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
     if (isOpen) {
       init()
     } else {
-      setState((d) => {
-        d.isLoading = true
-      })
+      setIsLoading(false)
     }
   }, [isOpen])
 
@@ -185,8 +180,62 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
     return latestWithdrawal !== undefined && latestWithdrawal.blockExplorerUrl !== ''
   }
 
+  const onChainChange = async (o: Option | Option[]) => {
+    setIsLoading(true)
+    const option = o as Option
+    const chainId = option.value as number
+    const fees = await tequilaClient.transactorFees(chainId)
+
+    setState((d) => {
+      d.toChain = option
+      d.fees = fees
+      d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
+      d.isLoading = false
+    })
+  }
+
+  const onWithdraw = async () => {
+    const error = validateForm()
+    if (error) {
+      setState((d) => {
+        d.error = error
+      })
+      return
+    }
+    clearErrors()
+
+    try {
+      await tequilaClient.withdraw({
+        hermesId: state.hermesId,
+        providerId: identity.id,
+        beneficiary: state.withdrawalAddress,
+        toChainId: state.toChain.value as number,
+        amount: String(state.withdrawalAmountWei),
+      })
+      setState((d) => {
+        d.withdrawalCompleted = true
+      })
+      toastSuccess('Withdrawal completed successfully!')
+      onClose()
+    } catch (e: any) {
+      toastError('There was an error processing your withdrawal. Please try again later.')
+    }
+  }
+
   return (
-    <Modal open={isOpen} title="Withdrawal" isLoading={state.isLoading}>
+    <Modal
+      open={isOpen}
+      title="Withdrawal"
+      isLoading={state.isLoading}
+      confirmationMessage="Please click OK to proceed with your withdrawal request."
+      withConfirmation
+      controls={{
+        onClose: onClose,
+        onSave: onWithdraw,
+        onSaveLabel: 'Withdraw',
+        onSaveDisabled: state.isWithdrawDisabled || !!errors,
+      }}
+    >
       <div className={styles.content}>
         <div className={styles.disclaimer}>
           You can withdraw your collected earnings into own Ethereum or Polygon wallet address at any time. Please allow
@@ -241,21 +290,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
               </div>
               <div className="input-group">
                 <div className="input-group__label">Select chain</div>
-                <Select
-                  value={state.toChain}
-                  options={state.chainOptions}
-                  onChange={async (o) => {
-                    const option = o as Option
-                    const chainId = option.value as number
-                    const fees = await tequilaClient.transactorFees(chainId)
-
-                    setState((d) => {
-                      d.toChain = option
-                      d.fees = fees
-                      d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
-                    })
-                  }}
-                />
+                <Select value={state.toChain} options={state.chainOptions} onChange={onChainChange} />
               </div>
             </div>
             <div className={styles.fees}>
@@ -284,60 +319,6 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           </div>
         )}
       </>
-      <div className={styles.footer}>
-        <Button
-          onClick={() => {
-            onClose()
-            clearErrors()
-          }}
-          extraStyle="gray"
-        >
-          Close
-        </Button>
-        <Button
-          isLoading={state.isLoading}
-          disabled={state.isWithdrawDisabled || !!errors}
-          onClick={() => {
-            const error = validateForm()
-            if (error) {
-              setState((d) => {
-                d.error = error
-              })
-              return
-            }
-            clearErrors()
-            showConfirm(true)
-          }}
-        >
-          Withdraw
-        </Button>
-      </div>
-      <ConfirmationDialogue
-        message="Please click OK to proceed with your withdrawal request."
-        open={state.showConfirm}
-        onCancel={() => {
-          showConfirm(false)
-        }}
-        onConfirm={async () => {
-          try {
-            await tequilaClient.withdraw({
-              hermesId: state.hermesId,
-              providerId: identity.id,
-              beneficiary: state.withdrawalAddress,
-              toChainId: state.toChain.value as number,
-              amount: String(state.withdrawalAmountWei),
-            })
-            setState((d) => {
-              d.withdrawalCompleted = true
-            })
-            toastSuccess('Withdrawal completed successfully!')
-            onClose()
-          } catch (e: any) {
-            toastError('There was an error processing your withdrawal. Please try again later.')
-          }
-          showConfirm(false)
-        }}
-      />
     </Modal>
   )
 }

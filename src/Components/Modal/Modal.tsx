@@ -75,6 +75,8 @@ export const Modal = ({
 type ControlsProps = {
   onSave: () => void
   onSaveLabel?: string
+  onSaveDisabled?: boolean
+
   onClose: () => void
   onCloseLabel?: string
 }
@@ -84,6 +86,7 @@ const Controls = ({
   onClose,
   onSaveLabel,
   onCloseLabel,
+  onSaveDisabled,
   isLoading,
 }: ControlsProps & { isLoading?: boolean }) => {
   return (
@@ -91,7 +94,7 @@ const Controls = ({
       <Button onClick={onClose} extraStyle="gray">
         {onCloseLabel ? onCloseLabel : 'Close'}
       </Button>
-      <Button isLoading={isLoading} disabled={isLoading} onClick={onSave}>
+      <Button isLoading={isLoading} disabled={isLoading || onSaveDisabled} onClick={onSave}>
         {onSaveLabel ? onSaveLabel : 'Save'}
       </Button>
     </div>
