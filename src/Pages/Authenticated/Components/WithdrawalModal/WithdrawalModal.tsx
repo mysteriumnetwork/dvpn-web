@@ -18,6 +18,9 @@ import { CollapseAlert } from './CollapseAlert'
 import { LatestWithdrawal } from './LatestWithdrawal'
 import { FeesRibbon } from './FeesRibbon'
 import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
+import { useSelector } from 'react-redux'
+import { selectors } from '../../../../redux/selectors'
+import { toOptions } from '../../../../commons/mapping.utils'
 
 interface Props {
   isOpen: boolean
@@ -39,7 +42,6 @@ interface State {
   error?: string
   isInsaneWithdrawal: boolean
   isWithdrawDisabled: boolean
-  overBalance: boolean
   hermesId: string
 }
 
@@ -61,7 +63,6 @@ const initialState: State = {
   },
   isInsaneWithdrawal: false,
   isWithdrawDisabled: false,
-  overBalance: false,
   hermesId: '',
 }
 
@@ -70,6 +71,8 @@ const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
 const MAXIMUM_WITHDRAW_AMOUNT = 99
 
 const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
+  const chainSummary = useSelector(selectors.chainSummarySelector)
+
   const [state, setState] = useImmer<State>(initialState)
 
   const setIsLoading = (b: boolean = true) => {
@@ -80,35 +83,23 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
 
   useEffect(() => {
     const init = async () => {
-      setState(initialState)
       const { address } = await tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
-      const chainSummary = await tequilaClient.chainSummary()
 
-      const { chains, currentChain } = chainSummary
-      const chainOptions = Object.keys(chains)
-        .map(Number)
-        .map((k) => {
-          const chainName = chains[k]
-          return {
-            value: k,
-            label: chainName,
-          }
-        })
-      const initialChain = chainOptions?.find((i) => i.value === POLYGON_MATIC_MAINNET_CHAIN_ID)!
-      const fees = await tequilaClient.transactorFees(initialChain.value)
+      const { currentChain } = chainSummary
+      const chainOptions = toOptions(chainSummary)
+      const fees = await tequilaClient.transactorFees(currentChain)
+
       setState((d) => {
         d.withdrawalAddress = address
         d.chainOptions = chainOptions
         d.withdrawalAmountMYST = Number(toMyst(identity.balance))
         d.withdrawalAmountWei = identity.balance
         d.balanceTotalWei = identity.balance
-        d.toChain = initialChain || currentChain
+        d.toChain = chainOptions.find((o) => o.value === currentChain)!
         d.fees = fees
         d.isLoading = false
         d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
-        d.overBalance = d.withdrawalAmountWei > identity.balance
-        d.isWithdrawDisabled =
-          d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
+        d.isWithdrawDisabled = d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted
         d.hermesId = identity.hermesId
       })
     }
@@ -128,15 +119,15 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       d.error = undefined
     })
 
+  const overBalance = (): boolean => state.withdrawalAmountWei > identity.balance
+
   useEffect(() => {
     const myst = state.withdrawalAmountMYST
     const wei = myst * DECIMAL_PART
     setState((d) => {
       d.withdrawalAmountWei = wei
       d.isInsaneWithdrawal = d.withdrawalAmountWei - settlement < MINIMAL_WITHDRAWAL_AMOUNT
-      d.overBalance = d.withdrawalAmountWei > identity.balance
-      d.isWithdrawDisabled =
-        d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
+      d.isWithdrawDisabled = d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted
     })
   }, [state.withdrawalAmountMYST, state.toChain])
 
@@ -150,7 +141,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       return 'Withdrawal amount after fees is below minimal 0.01 MYST'
     }
 
-    if (state.overBalance) {
+    if (overBalance()) {
       return 'Your withdraw amount exceeds your balance'
     }
 
