@@ -39,9 +39,6 @@ interface State {
   withdrawalInProgress: boolean
   withdrawalCompleted: boolean
   fees: Fees
-  error?: string
-  isInsaneWithdrawal: boolean
-  isWithdrawDisabled: boolean
   hermesId: string
 }
 
@@ -61,8 +58,6 @@ const initialState: State = {
     hermes: 0,
     decreaseStake: 0,
   },
-  isInsaneWithdrawal: false,
-  isWithdrawDisabled: false,
   hermesId: '',
 }
 
@@ -98,8 +93,6 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         d.toChain = chainOptions.find((o) => o.value === currentChain)!
         d.fees = fees
         d.isLoading = false
-        d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
-        d.isWithdrawDisabled = d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted
         d.hermesId = identity.hermesId
       })
     }
@@ -110,24 +103,15 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
     }
   }, [isOpen])
 
-  const {
-    fees: { settlement },
-  } = state
-
-  const clearErrors = () =>
-    setState((d) => {
-      d.error = undefined
-    })
-
-  const overBalance = (): boolean => state.withdrawalAmountWei > identity.balance
+  const isOverBalance = (): boolean => state.withdrawalAmountWei > identity.balance
+  const isInsaneWithdrawal = (): boolean => identity.balance - state.fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
+  const isOverCeiling = (): boolean => state.withdrawalAmountMYST > MAXIMUM_WITHDRAW_AMOUNT
 
   useEffect(() => {
     const myst = state.withdrawalAmountMYST
     const wei = myst * DECIMAL_PART
     setState((d) => {
       d.withdrawalAmountWei = wei
-      d.isInsaneWithdrawal = d.withdrawalAmountWei - settlement < MINIMAL_WITHDRAWAL_AMOUNT
-      d.isWithdrawDisabled = d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted
     })
   }, [state.withdrawalAmountMYST, state.toChain])
 
@@ -137,15 +121,15 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       return 'Withdrawal address is required'
     }
 
-    if (state.isInsaneWithdrawal) {
+    if (isInsaneWithdrawal()) {
       return 'Withdrawal amount after fees is below minimal 0.01 MYST'
     }
 
-    if (overBalance()) {
+    if (isOverBalance()) {
       return 'Your withdraw amount exceeds your balance'
     }
 
-    if (state.withdrawalAmountMYST > MAXIMUM_WITHDRAW_AMOUNT) {
+    if (isOverCeiling()) {
       return `Your withdrawal amount exceeds maximum limit for one transaction. Please reduce amount to ${MAXIMUM_WITHDRAW_AMOUNT} ${currentCurrency()} or lower`
     }
   }
@@ -161,7 +145,6 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
     setState((d) => {
       d.toChain = option
       d.fees = fees
-      d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
       d.isLoading = false
     })
   }
@@ -169,12 +152,9 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
   const onWithdraw = async () => {
     const error = validateForm()
     if (error) {
-      setState((d) => {
-        d.error = error
-      })
+      toastError('There are errors preventing withdrawal')
       return
     }
-    clearErrors()
 
     try {
       await tequilaClient.withdraw({
@@ -205,7 +185,7 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
         onClose: onClose,
         onSave: onWithdraw,
         onSaveLabel: 'Withdraw',
-        onSaveDisabled: state.isWithdrawDisabled || !!errors,
+        onSaveDisabled: !!errors,
       }}
     >
       <div className={styles.content}>
