@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress } from '@material-ui/core'
 import { DECIMAL_PART, Fees, Identity } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
@@ -18,6 +17,7 @@ import { Modal } from '../../../../Components/Modal/Modal'
 import { CollapseAlert } from './CollapseAlert'
 import { LatestWithdrawal } from './LatestWithdrawal'
 import { FeesRibbon } from './FeesRibbon'
+import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 
 interface Props {
   isOpen: boolean
@@ -223,60 +223,47 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
           some time (usually a few minutes) for withdrawal transaction to be processed. Your balance will update once
           transaction is executed.
         </div>
-        {state.isLoading ? (
-          <div className={styles.spinner}>
-            <CircularProgress className="spinner-relative" disableShrink />
-          </div>
-        ) : (
-          <>
-            <CollapseAlert severity="error" title="Error" visible={!!errors}>
-              {errors}
-            </CollapseAlert>
-            <CollapseAlert
-              severity="warning"
-              title="Warning"
-              visible={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}
-            >
-              Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet) supporting
-              Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not supported for Polygon
-              network withdrawals and your tokens might be lost.
-            </CollapseAlert>
-            <div>
-              <div className="input-group">
-                <div className="input-group__label">Withdrawal Address</div>
-                <TextField
-                  value={state.withdrawalAddress}
-                  onChange={(value) => {
-                    setState((d) => {
-                      d.withdrawalAddress = value
-                    })
-                  }}
-                />
-              </div>
-              <div className="input-group">
-                <div className="input-group__label">
-                  Amount ({currentCurrency()}) / Your Balance: {toMyst(state.balanceTotalWei)} (Maximum withdrawal
-                  amount: {MAXIMUM_WITHDRAW_AMOUNT} {currentCurrency()})
-                </div>
-                <TextField
-                  type="number"
-                  value={state.withdrawalAmountMYST}
-                  onChange={(value) => {
-                    const n = Number(value)
-                    setState((d) => {
-                      d.withdrawalAmountMYST = n
-                    })
-                  }}
-                />
-              </div>
-              <div className="input-group">
-                <div className="input-group__label">Select chain</div>
-                <Select value={state.toChain} options={state.chainOptions} onChange={onChainChange} />
-              </div>
-            </div>
-            <FeesRibbon fees={state.fees} withdrawalAmountWei={state.withdrawalAmountWei} />
-          </>
-        )}
+        <CollapseAlert severity="error" title="Error" visible={!!errors}>
+          {errors}
+        </CollapseAlert>
+        <CollapseAlert
+          severity="warning"
+          title="Warning"
+          visible={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}
+        >
+          Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet) supporting
+          Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not supported for Polygon
+          network withdrawals and your tokens might be lost.
+        </CollapseAlert>
+        <InputGroup label="Withdrawal Address">
+          <TextField
+            value={state.withdrawalAddress}
+            onChange={(value) => {
+              setState((d) => {
+                d.withdrawalAddress = value
+              })
+            }}
+          />
+        </InputGroup>
+        <InputGroup
+          label={`Amount (${currentCurrency()}) / Your Balance: ${toMyst(state.balanceTotalWei)} (Maximum withdrawal
+                  amount: ${MAXIMUM_WITHDRAW_AMOUNT} ${currentCurrency()})`}
+        >
+          <TextField
+            type="number"
+            value={state.withdrawalAmountMYST}
+            onChange={(value) => {
+              const n = Number(value)
+              setState((d) => {
+                d.withdrawalAmountMYST = n
+              })
+            }}
+          />
+        </InputGroup>
+        <InputGroup label="Select chain">
+          <Select value={state.toChain} options={state.chainOptions} onChange={onChainChange} />
+        </InputGroup>
+        <FeesRibbon fees={state.fees} withdrawalAmountWei={state.withdrawalAmountWei} />
       </div>
       <LatestWithdrawal />
     </Modal>
