@@ -15,18 +15,19 @@
     margin-bottom: 15px;
   }
 
+  .attention {
+    font-size: $smaller-size;
+  }
+
   .fees {
     background: rgba(#ED5BAC, 0.05);
-    border-radius: 20px;
     display: flex;
     justify-content: space-between;
-    padding: 29px;
-    margin-top: 20px;
+    padding: 10px 25px 10px 25px;
+    margin-top: 10px;
 
     @include respond-below(sm) {
-      align-items: center;
-      gap: 15px;
-      flex-direction: column;
+      padding: 5px;
     }
   }
 }
@@ -35,10 +36,18 @@
   .info {
     font-size: $smaller-size;
     font-weight: $lighter-weight;
+
+    @include respond-below(sm) {
+      font-size: $small-size;
+    }
   }
 
   .value {
     font-size: $larger-size;
+
+    @include respond-below(sm) {
+      font-size: $smaller-size;
+    }
   }
 
   &Highlighted {

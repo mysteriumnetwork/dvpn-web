@@ -139,7 +139,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
     }
   }
 
-  const errors = validateForm()
+  const errorMessage = validateForm()
 
   const onChainChange = async (o: Option | Option[]) => {
     setIsLoading(true)
@@ -190,7 +190,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
         onClose: onClose,
         onSave: onWithdraw,
         onSaveLabel: 'Withdraw',
-        onSaveDisabled: !!errors,
+        onSaveDisabled: !!errorMessage,
       }}
     >
       <div className={styles.content}>
@@ -199,17 +199,15 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
           some time (usually a few minutes) for withdrawal transaction to be processed. Your balance will update once
           transaction is executed.
         </div>
-        <CollapseAlert severity="error" title="Error" visible={!!errors}>
-          {errors}
+        <CollapseAlert severity="error" visible={!!errorMessage}>
+          <p className={styles.attention}>{errorMessage}</p>
         </CollapseAlert>
-        <CollapseAlert
-          severity="warning"
-          title="Warning"
-          visible={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}
-        >
-          Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet) supporting
-          Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not supported for Polygon
-          network withdrawals and your tokens might be lost.
+        <CollapseAlert severity="warning" visible={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}>
+          <p className={styles.attention}>
+            Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet) supporting
+            Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not supported for Polygon
+            network withdrawals and your tokens might be lost.
+          </p>
         </CollapseAlert>
         <InputGroup label="Withdrawal Address">
           <TextField

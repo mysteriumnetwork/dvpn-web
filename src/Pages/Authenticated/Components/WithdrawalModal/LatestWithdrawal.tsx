@@ -21,7 +21,7 @@ export const LatestWithdrawal = () => {
 
   const init = async () => {
     const latestWithdrawal = await tequilaClient
-      .settlementHistory({ types: [SettlementType.Withdrawal] })
+      .settlementHistory({ types: [SettlementType.Withdrawal], pageSize: 1 })
       .then((resp) => resp.items.find((it) => it))
     setWithdrawal(latestWithdrawal)
   }
@@ -38,11 +38,13 @@ export const LatestWithdrawal = () => {
     <div className={styles.tx}>
       Your last transaction:{' '}
       {blockExplorerUrl ? (
-        <a href={blockExplorerUrl} rel="noreferrer" target="_blank">
+        <a data-testid="tx-link" href={blockExplorerUrl} rel="noreferrer" target="_blank">
           {enhancedTxHash}
         </a>
       ) : (
-        <span style={{ color: '#000' }}>{enhancedTxHash}</span>
+        <span data-testid="tx-plain" style={{ color: '#000' }}>
+          {enhancedTxHash}
+        </span>
       )}
     </div>
   )

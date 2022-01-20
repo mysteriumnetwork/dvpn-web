@@ -20,7 +20,7 @@ export const CollapseAlert = ({ visible, severity, children, title }: Props) => 
   return (
     <Collapse in={visible}>
       <Alert severity={severity}>
-        <AlertTitle>{title}</AlertTitle>
+        {title && <AlertTitle>{title}</AlertTitle>}
         {children}
       </Alert>
     </Collapse>
