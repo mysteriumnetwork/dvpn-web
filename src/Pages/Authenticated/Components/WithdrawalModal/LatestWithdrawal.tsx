@@ -8,8 +8,12 @@ import React, { useEffect, useState } from 'react'
 import { tequilaClient } from '../../../../api/tequila-client'
 import { Settlement, SettlementType } from 'mysterium-vpn-js'
 import styles from './WithdrawalModal.module.scss'
+import { media } from '../../../../commons/media.utils'
+import { strings } from '../../../../commons/strings.utils'
+import { useMediaQuery } from 'react-responsive'
 
 export const LatestWithdrawal = () => {
+  const isMobile = useMediaQuery(media.isMobileQuery)
   const [withdrawal, setWithdrawal] = useState<Settlement | undefined>()
   useEffect(() => {
     init()
@@ -28,15 +32,17 @@ export const LatestWithdrawal = () => {
 
   const { blockExplorerUrl, txHash } = withdrawal
 
+  const enhancedTxHash = isMobile ? strings.truncateHash(txHash) : txHash
+
   return (
     <div className={styles.tx}>
       Your last transaction:{' '}
       {blockExplorerUrl ? (
         <a href={blockExplorerUrl} rel="noreferrer" target="_blank">
-          {txHash}
+          {enhancedTxHash}
         </a>
       ) : (
-        <span style={{ color: '#000' }}>{txHash}</span>
+        <span style={{ color: '#000' }}>{enhancedTxHash}</span>
       )}
     </div>
   )

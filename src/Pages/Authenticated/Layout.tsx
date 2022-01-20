@@ -10,6 +10,7 @@ import Header from '../../Components/Header/Header'
 import React from 'react'
 import { media } from '../../commons/media.utils'
 import { FullPageSpinner } from './Components/Spinner/FullPageSpinner'
+import { useMediaQuery } from 'react-responsive'
 
 interface Props {
   title?: string
@@ -22,7 +23,8 @@ interface Props {
 }
 
 export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight, isLoading }: Props) => {
-  const showSideBarAdjusted = showSideBar && media.isDesktopQuery
+  const isDesktop = useMediaQuery(media.isDesktopQuery)
+  const showSideBarAdjusted = isDesktop && showSideBar
   return (
     <main className={styles.main}>
       <div className={classNames(styles.mainBlock, showSideBarAdjusted && styles.mainBlockSplit)}>
