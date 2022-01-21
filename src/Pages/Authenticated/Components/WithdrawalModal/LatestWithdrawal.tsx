@@ -38,11 +38,11 @@ export const LatestWithdrawal = () => {
     <div className={styles.tx}>
       Your last transaction:{' '}
       {blockExplorerUrl ? (
-        <a data-testid="tx-link" href={blockExplorerUrl} rel="noreferrer" target="_blank">
+        <a data-testid="LatestWithdrawal.txLink" href={blockExplorerUrl} rel="noreferrer" target="_blank">
           {enhancedTxHash}
         </a>
       ) : (
-        <span data-testid="tx-plain" style={{ color: '#000' }}>
+        <span data-testid="LatestWithdrawal.txPlain" style={{ color: '#000' }}>
           {enhancedTxHash}
         </span>
       )}

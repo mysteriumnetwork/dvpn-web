@@ -15,17 +15,13 @@ import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index'
  * @param options
  */
 const displayMYST = (
-  amount: string | number | undefined,
+  amount: string | number = 0,
   options: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS,
 ): string => {
   const symbol = options?.showCurrency ? ' ' + currentCurrency() : ''
-  if (!amount) {
-    return `0${symbol}`
-  }
-
   const requiredPrecision = options?.fractionDigits || 18
-
   const decimal = Decimal.clone({ precision: requiredPrecision })
+
   const humanAmount = new decimal(amount).div(DECIMAL_PART)
 
   if (-1 * humanAmount.e > requiredPrecision) {
