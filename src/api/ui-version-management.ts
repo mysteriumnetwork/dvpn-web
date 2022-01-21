@@ -4,42 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import axios from 'axios'
-import camelcaseKeys from 'camelcase-keys'
-import snakecaseKeys from 'snakecase-keys'
-
-const http = axios.create({
-  baseURL: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`,
-})
-
-const convertOptions = {
-  deep: true,
-}
-
-http.interceptors.response.use(
-  (config) => {
-    if (config?.data) {
-      config.data = camelcaseKeys(config.data, convertOptions)
-    }
-    return config
-  },
-  (error: any) => {
-    if (error?.response?.data) {
-      error.response.data = camelcaseKeys(error.response.data, convertOptions)
-    }
-    return Promise.reject(error)
-  },
-)
-
-http.interceptors.request.use((config) => {
-  if (config?.params) {
-    config.params = snakecaseKeys(config.params, convertOptions)
-  }
-  if (config?.data) {
-    config.data = snakecaseKeys(config.data, convertOptions)
-  }
-  return config
-})
+import { http } from './axios'
 
 const info = async (): Promise<UI> => {
   return await http.get<UI>('/ui/info').then((r) => r.data)

@@ -4,161 +4,121 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress } from '@material-ui/core'
-import Collapse from '@material-ui/core/Collapse'
-import { Alert, AlertTitle } from '@material-ui/lab'
-import { DECIMAL_PART, Fees, Identity, Settlement } from 'mysterium-vpn-js'
+import { DECIMAL_PART, Fees } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
-import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
-import { currentCurrency, displayMyst, toMyst } from '../../../../commons/money.utils'
+import { currentCurrency, toMyst } from '../../../../commons/money.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
-import Button from '../../../../Components/Buttons/Button'
-import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
 import { TextField } from '../../../../Components/TextField/TextField'
-import './WithdrawalModal.scss'
+import styles from './WithdrawalModal.module.scss'
 import { Option, Select } from '../../../../Components/Select/Select'
 import { Modal } from '../../../../Components/Modal/Modal'
+import { CollapseAlert } from './CollapseAlert'
+import { LatestWithdrawal } from './LatestWithdrawal'
+import { FeesRibbon } from './FeesRibbon'
+import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
+import { useSelector } from 'react-redux'
+import { selectors } from '../../../../redux/selectors'
+import { toOptions } from '../../../../commons/mapping.utils'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
-  identity: Identity
-}
-
-const Card = ({ info, value, important }: { info: string; value: string | number; important?: boolean }) => {
-  const extraClass = important && 'modal-card__important'
-  return (
-    <div className={['modal-card', extraClass].join(' ')}>
-      <div className="modal-card__info">{info}</div>
-      <div className="modal-card__value">{value}</div>
-    </div>
-  )
 }
 
 interface State {
-  showConfirm: boolean
   withdrawalAddress: string
-  withdrawalAmountMYST: number
-  withdrawalAmountWei: number
+  withdrawalAmount: { wei: number; myst: number }
   balanceTotalWei: number
   chainOptions: Option[]
   toChain: Option
   isLoading: boolean
-  withdrawalInProgress: boolean
-  withdrawalCompleted: boolean
   fees: Fees
-  error?: string
-  isInsaneWithdrawal: boolean
-  isWithdrawDisabled: boolean
-  overBalance: boolean
-  latestWithdrawal?: Settlement
   hermesId: string
 }
 
 const initialState: State = {
-  showConfirm: false,
   withdrawalAddress: '',
   chainOptions: [],
-  withdrawalAmountMYST: 0,
-  withdrawalAmountWei: 0,
+  withdrawalAmount: { myst: 0, wei: 0 },
   balanceTotalWei: 0,
   toChain: { label: '0', value: '0' },
   isLoading: true,
-  withdrawalInProgress: false,
-  withdrawalCompleted: false,
+  hermesId: '',
   fees: {
     registration: 0,
     settlement: 0,
     hermes: 0,
     decreaseStake: 0,
   },
-  isInsaneWithdrawal: false,
-  isWithdrawDisabled: false,
-  overBalance: false,
-  hermesId: '',
 }
 
 const MINIMAL_WITHDRAWAL_AMOUNT = 10_000_000_000_000_000 // 0.01 MYST
 const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
 const MAXIMUM_WITHDRAW_AMOUNT = 99
 
-const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
+const WithdrawalModal = ({ isOpen, onClose }: Props) => {
+  const chainSummary = useSelector(selectors.chainSummarySelector)
+  const identity = useSelector(selectors.currentIdentitySelector)
+
   const [state, setState] = useImmer<State>(initialState)
 
-  const showConfirm = (b: boolean) =>
+  const setIsLoading = (b: boolean = true) => {
     setState((d) => {
-      d.showConfirm = b
+      d.isLoading = b
     })
+  }
 
   useEffect(() => {
     const init = async () => {
       setState(initialState)
-      const { address } = await tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
-      const chainSummary = await tequilaClient.chainSummary()
-      const latestWithdrawal = await tequilaClient
-        .settlementHistory()
-        .then((resp) => resp.items.find((s) => s.isWithdrawal))
+      const { currentChain } = chainSummary
+      const chainOptions = toOptions(chainSummary)
 
-      const { chains, currentChain } = chainSummary
-      const chainOptions = Object.keys(chains)
-        .map(Number)
-        .map((k) => {
-          const chainName = chains[k]
-          return {
-            value: k,
-            label: chainName,
-          }
-        })
-      const initialChain = chainOptions?.find((i) => i.value === POLYGON_MATIC_MAINNET_CHAIN_ID)!
-      const fees = await tequilaClient.transactorFees(initialChain.value)
+      const [{ address }, fees] = await Promise.all([
+        tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
+        tequilaClient.transactorFees(currentChain),
+      ])
+
       setState((d) => {
         d.withdrawalAddress = address
         d.chainOptions = chainOptions
-        d.withdrawalAmountMYST = Number(toMyst(identity.balance))
-        d.withdrawalAmountWei = identity.balance
+        d.withdrawalAmount = initialCeilingAmount(identity.balance)
         d.balanceTotalWei = identity.balance
-        d.toChain = initialChain || currentChain
+        d.toChain = chainOptions.find((o) => o.value === currentChain)!
         d.fees = fees
         d.isLoading = false
-        d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
-        d.overBalance = d.withdrawalAmountWei > identity.balance
-        d.isWithdrawDisabled =
-          d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
-        d.latestWithdrawal = latestWithdrawal
         d.hermesId = identity.hermesId
       })
     }
     if (isOpen) {
       init()
     } else {
-      setState((d) => {
-        d.isLoading = true
-      })
+      setIsLoading(false)
     }
   }, [isOpen])
 
-  const {
-    fees: { settlement },
-  } = state
+  const initialCeilingAmount = (wei: number): { wei: number; myst: number } => {
+    const myst = toMyst(identity.balance)
+    if (myst > MAXIMUM_WITHDRAW_AMOUNT) {
+      return { myst: MAXIMUM_WITHDRAW_AMOUNT, wei: MAXIMUM_WITHDRAW_AMOUNT * DECIMAL_PART }
+    }
+    return { myst, wei }
+  }
 
-  const clearErrors = () =>
-    setState((d) => {
-      d.error = undefined
-    })
+  const isOverBalance = (): boolean => state.withdrawalAmount.wei > identity.balance
+  const isInsaneWithdrawal = (): boolean =>
+    state.withdrawalAmount.wei - state.fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
+  const isOverCeiling = (): boolean => state.withdrawalAmount.myst > MAXIMUM_WITHDRAW_AMOUNT
 
-  useEffect(() => {
-    const myst = state.withdrawalAmountMYST
+  const onWithdrawalAmountChange = (mystString: string) => {
+    const myst = Number(mystString)
     const wei = myst * DECIMAL_PART
     setState((d) => {
-      d.withdrawalAmountWei = wei
-      d.isInsaneWithdrawal = d.withdrawalAmountWei - settlement < MINIMAL_WITHDRAWAL_AMOUNT
-      d.overBalance = d.withdrawalAmountWei > identity.balance
-      d.isWithdrawDisabled =
-        d.withdrawalInProgress || d.isLoading || d.isInsaneWithdrawal || d.withdrawalCompleted || d.overBalance
+      d.withdrawalAmount = { myst, wei }
     })
-  }, [state.withdrawalAmountMYST, state.toChain])
+  }
 
   const validateForm = (): string | undefined => {
     const { withdrawalAddress } = state
@@ -166,198 +126,111 @@ const WithdrawalModal = ({ isOpen, onClose, identity }: Props) => {
       return 'Withdrawal address is required'
     }
 
-    if (state.isInsaneWithdrawal) {
+    if (isInsaneWithdrawal()) {
       return 'Withdrawal amount after fees is below minimal 0.01 MYST'
     }
 
-    if (state.overBalance) {
+    if (isOverBalance()) {
       return 'Your withdraw amount exceeds your balance'
     }
 
-    if (state.withdrawalAmountMYST > MAXIMUM_WITHDRAW_AMOUNT) {
+    if (isOverCeiling()) {
       return `Your withdrawal amount exceeds maximum limit for one transaction. Please reduce amount to ${MAXIMUM_WITHDRAW_AMOUNT} ${currentCurrency()} or lower`
     }
   }
 
-  const errors = validateForm()
+  const errorMessage = validateForm()
 
-  const { latestWithdrawal } = state
-  const withdrawalContainsTXLink = (): boolean => {
-    return latestWithdrawal !== undefined && latestWithdrawal.blockExplorerUrl !== ''
+  const onChainChange = async (o: Option | Option[]) => {
+    setIsLoading(true)
+    const option = o as Option
+    const chainId = option.value as number
+    const fees = await tequilaClient.transactorFees(chainId)
+
+    setState((d) => {
+      d.toChain = option
+      d.fees = fees
+      d.isLoading = false
+    })
+  }
+
+  const onWithdraw = async () => {
+    const error = validateForm()
+    if (error) {
+      toastError('There are errors preventing withdrawal')
+      return
+    }
+
+    try {
+      setIsLoading()
+      await tequilaClient.withdraw({
+        hermesId: state.hermesId,
+        providerId: identity.id,
+        beneficiary: state.withdrawalAddress,
+        toChainId: state.toChain.value as number,
+        amount: String(state.withdrawalAmount.wei),
+      })
+      toastSuccess('Withdrawal completed successfully!')
+      onClose()
+    } catch (e: any) {
+      toastError('There was an error processing your withdrawal. Please try again later.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
-    <Modal open={isOpen} title="Withdrawal">
-      <div className="withdrawal-modal__rows">
-        <div className="withdrawal-modal__row-disclaimer">
+    <Modal
+      open={isOpen}
+      title="Withdrawal"
+      isLoading={state.isLoading}
+      confirmationMessage="Please click OK to proceed with your withdrawal request."
+      withConfirmation
+      controls={{
+        onClose: onClose,
+        onSave: onWithdraw,
+        onSaveLabel: 'Withdraw',
+        onSaveDisabled: !!errorMessage,
+      }}
+    >
+      <div className={styles.content}>
+        <div className={styles.disclaimer}>
           You can withdraw your collected earnings into own Ethereum or Polygon wallet address at any time. Please allow
           some time (usually a few minutes) for withdrawal transaction to be processed. Your balance will update once
           transaction is executed.
         </div>
-        {state.isLoading ? (
-          <div className="withdrawal-modal__row-withdraw-loading">
-            <CircularProgress className="spinner-relative" disableShrink />
-          </div>
-        ) : (
-          <>
-            <div className="withdrawal-modal__row-withdraw-error">
-              <Collapse in={!!errors}>
-                <Alert severity="error">
-                  <AlertTitle>Error</AlertTitle>
-                  {errors}
-                </Alert>
-              </Collapse>
-              <Collapse in={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}>
-                <Alert severity="warning">
-                  <AlertTitle>Warning</AlertTitle>
-                  Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet)
-                  supporting Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not supported
-                  for Polygon network withdrawals and your tokens might be lost.
-                </Alert>
-              </Collapse>
-            </div>
-            <div className="withdrawal-modal__row-withdraw-info">
-              <div className="input-group">
-                <div className="input-group__label">Withdrawal Address</div>
-                <TextField
-                  value={state.withdrawalAddress}
-                  onChange={(value) => {
-                    setState((d) => {
-                      d.withdrawalAddress = value
-                    })
-                  }}
-                />
-              </div>
-              <div className="input-group">
-                <div className="input-group__label">
-                  Amount ({currentCurrency()}) / Your Balance: {toMyst(state.balanceTotalWei)} (Maximum withdrawal
-                  amount: {MAXIMUM_WITHDRAW_AMOUNT} {currentCurrency()})
-                </div>
-                <TextField
-                  type="number"
-                  value={state.withdrawalAmountMYST}
-                  onChange={(value) => {
-                    const n = Number(value)
-                    setState((d) => {
-                      d.withdrawalAmountMYST = n
-                    })
-                  }}
-                />
-              </div>
-              <div className="input-group">
-                <div className="input-group__label">Select chain</div>
-                <Select
-                  value={state.toChain}
-                  options={state.chainOptions}
-                  onChange={async (o) => {
-                    const option = o as Option
-                    const chainId = option.value as number
-                    const fees = await tequilaClient.transactorFees(chainId)
-
-                    setState((d) => {
-                      d.toChain = option
-                      d.fees = fees
-                      d.isInsaneWithdrawal = identity.balance - fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
-                    })
-                  }}
-                />
-              </div>
-            </div>
-            <div className="withdrawal-modal__row-withdraw-fees">
-              <Card
-                info="Amount"
-                value={displayMyst(state.withdrawalAmountWei, {
-                  ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                  showCurrency: false,
-                })}
-              />
-              <Card
-                info="Fee"
-                value={displayMyst(settlement, {
-                  ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                  showCurrency: false,
-                })}
-              />
-              <Card
-                info="You will get"
-                value={displayMyst(state.withdrawalAmountWei - settlement, {
-                  ...DEFAULT_MONEY_DISPLAY_OPTIONS,
-                  showCurrency: false,
-                })}
-                important
-              />
-            </div>
-          </>
-        )}
-      </div>
-      <>
-        {latestWithdrawal && (
-          <div className="withdrawal-modal__settlement-info">
-            Your last transaction:{' '}
-            {withdrawalContainsTXLink() ? (
-              <a href={latestWithdrawal.blockExplorerUrl} rel="noreferrer" target="_blank">
-                {latestWithdrawal.txHash}
-              </a>
-            ) : (
-              <span style={{ color: '#000' }}>{latestWithdrawal.txHash}</span>
-            )}
-          </div>
-        )}
-      </>
-      <div className="withdrawal-modal__footer">
-        <Button
-          onClick={() => {
-            onClose()
-            clearErrors()
-          }}
-          extraStyle="gray"
-        >
-          Close
-        </Button>
-        <Button
-          isLoading={state.isLoading}
-          disabled={state.isWithdrawDisabled || !!errors}
-          onClick={() => {
-            const error = validateForm()
-            if (error) {
+        <CollapseAlert severity="error" visible={!!errorMessage}>
+          <p className={styles.attention}>{errorMessage}</p>
+        </CollapseAlert>
+        <CollapseAlert severity="warning" visible={state.toChain.value === POLYGON_MATIC_MAINNET_CHAIN_ID}>
+          <p className={styles.attention}>
+            Make sure withdrawal address is from ERC-20 compatible wallet (e.g. MetaMask or MyEtherWallet) supporting
+            Polygon! Addresses from Ethereum network exchanges (e.g. Bittrex, HitBTC) are not supported for Polygon
+            network withdrawals and your tokens might be lost.
+          </p>
+        </CollapseAlert>
+        <InputGroup label="Withdrawal Address">
+          <TextField
+            value={state.withdrawalAddress}
+            onChange={(value) => {
               setState((d) => {
-                d.error = error
+                d.withdrawalAddress = value
               })
-              return
-            }
-            clearErrors()
-            showConfirm(true)
-          }}
+            }}
+          />
+        </InputGroup>
+        <InputGroup
+          label={`Amount (${currentCurrency()}) / Your Balance: ${toMyst(state.balanceTotalWei)} (Maximum withdrawal
+                  amount: ${MAXIMUM_WITHDRAW_AMOUNT} ${currentCurrency()})`}
         >
-          Withdraw
-        </Button>
+          <TextField type="number" value={state.withdrawalAmount.myst} onChange={onWithdrawalAmountChange} />
+        </InputGroup>
+        <InputGroup label="Select chain">
+          <Select value={state.toChain} options={state.chainOptions} onChange={onChainChange} />
+        </InputGroup>
+        <FeesRibbon fees={state.fees} withdrawalAmountWei={state.withdrawalAmount.wei} />
       </div>
-      <ConfirmationDialogue
-        message="Please click OK to proceed with your withdrawal request."
-        open={state.showConfirm}
-        onCancel={() => {
-          showConfirm(false)
-        }}
-        onConfirm={async () => {
-          try {
-            await tequilaClient.withdraw({
-              hermesId: state.hermesId,
-              providerId: identity.id,
-              beneficiary: state.withdrawalAddress,
-              toChainId: state.toChain.value as number,
-              amount: String(state.withdrawalAmountWei),
-            })
-            setState((d) => {
-              d.withdrawalCompleted = true
-            })
-            toastSuccess('Withdrawal completed successfully!')
-            onClose()
-          } catch (e: any) {
-            toastError('There was an error processing your withdrawal. Please try again later.')
-          }
-          showConfirm(false)
-        }}
-      />
+      <LatestWithdrawal />
     </Modal>
   )
 }

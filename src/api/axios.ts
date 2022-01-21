@@ -4,65 +4,18 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import axios, { AxiosInstance } from 'axios'
-import camelcaseKeys from 'camelcase-keys'
+import { TequilapiClientFactory } from 'mysterium-vpn-js'
 import qs from 'qs'
-import snakecaseKeys from 'snakecase-keys'
 
-export const http: AxiosInstance = axios.create({
-  baseURL: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`,
-})
-
-const convertOptions = {
-  deep: true,
-}
-
-http.interceptors.response.use(
-  (config) => {
-    if (config.config.url && isRawPath(config.config.url)) {
-      return config
-    }
-    if (config?.data) {
-      config.data = camelcaseKeys(config.data, convertOptions)
-    }
-    return config
-  },
-  (error: any) => {
-    if (error?.response?.data) {
-      error.response.data = camelcaseKeys(error.response.data, convertOptions)
-    }
-    return Promise.reject(error)
-  },
-)
+export const http = new TequilapiClientFactory(
+  `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`,
+  20_000,
+).axiosInstance()
 
 http.interceptors.request.use((config) => {
   config.paramsSerializer = (params) => {
     return qs.stringify(params, { arrayFormat: 'repeat' }) // arrays will be serialized as: ?types=1&types=2...
   }
 
-  if (config.url && isRawPath(config.url)) {
-    return config
-  }
-  if (config?.params) {
-    config.params = snakecaseKeys(config.params, convertOptions)
-  }
-  if (config?.data) {
-    config.data = snakecaseKeys(config.data, convertOptions)
-  }
   return config
 })
-
-const pathConfig = 'config'
-const pathConfigUser = 'config/user'
-const pathConfigDefault = 'config/default'
-const pathInvoice = '/invoice'
-
-const isRawPath = (path: string): boolean => {
-  const rawPaths = [pathConfig, pathConfigDefault, pathConfigUser, pathInvoice]
-  for (const rawPath of rawPaths) {
-    if (path.includes(rawPath)) {
-      return true
-    }
-  }
-  return false
-}

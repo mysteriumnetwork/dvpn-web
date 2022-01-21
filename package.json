@@ -57,8 +57,6 @@
     "@mysteriumnetwork/terms": "0.0.35",
     "@reduxjs/toolkit": "1.6.1",
     "array-move": "^4.0.0",
-    "axios": "^0.21.1",
-    "camelcase-keys": "^7.0.1",
     "classnames": "^2.3.1",
     "clipboard": "^2.0.8",
     "decimal.js": "^10.3.1",
@@ -80,11 +78,12 @@
     "react-table": "^7.7.0",
     "recharts": "2.0.10",
     "showdown": "^1.9.1",
-    "snakecase-keys": "^5.1.2",
     "typescript": "^4.2.4",
     "use-immer": "^0.6.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
     "@types/clipboard": "^2.0.1",
     "@types/jest": "26.0.15",
     "@types/lodash": "^4.14.161",
@@ -104,6 +103,7 @@
     "eslint-plugin-header": "^3.1.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "msw": "^0.36.5",
     "node-sass": "^4.14.1",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2"

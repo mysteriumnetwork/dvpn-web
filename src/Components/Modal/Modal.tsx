@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styles from './Modal.module.scss'
-import { Fade, Modal as MUIModal } from '@material-ui/core'
+import { CircularProgress, Fade, Modal as MUIModal } from '@material-ui/core'
 import Button from '../Buttons/Button'
 import React, { useState } from 'react'
 import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
@@ -52,29 +52,45 @@ export const Modal = ({
       <Fade in={open}>
         <div className={styles.block}>
           {title && <div className={styles.title}>{title}</div>}
-          <div className={styles.content}>{children}</div>
-          {confirmationAwareControls && <Controls {...confirmationAwareControls} isLoading={isLoading} />}
-          {withConfirmation && controls && (
-            <ConfirmationDialogue
-              open={showConfirm}
-              onConfirm={() => {
-                controls.onSave()
-                setShowConfirm(false)
-              }}
-              isConfirmDisabled={isLoading}
-              onCancel={() => setShowConfirm(false)}
-              message={confirmationMessage}
-            />
-          )}
+          <div className={styles.intractable}>
+            <Spinner isLoading={isLoading} />
+            <div className={styles.content}>{children}</div>
+            {confirmationAwareControls && <Controls {...confirmationAwareControls} isLoading={isLoading} />}
+            {withConfirmation && controls && (
+              <ConfirmationDialogue
+                open={showConfirm}
+                onConfirm={() => {
+                  controls.onSave()
+                  setShowConfirm(false)
+                }}
+                isConfirmDisabled={isLoading}
+                onCancel={() => setShowConfirm(false)}
+                message={confirmationMessage}
+              />
+            )}
+          </div>
         </div>
       </Fade>
     </MUIModal>
   )
 }
 
+const Spinner = ({ isLoading }: { isLoading?: boolean }) => {
+  return isLoading ? (
+    <>
+      <div className={styles.overlay} />
+      <CircularProgress size={150} thickness={1} className={styles.spinner} disableShrink />
+    </>
+  ) : (
+    <></>
+  )
+}
+
 type ControlsProps = {
   onSave: () => void
   onSaveLabel?: string
+  onSaveDisabled?: boolean
+
   onClose: () => void
   onCloseLabel?: string
 }
@@ -84,6 +100,7 @@ const Controls = ({
   onClose,
   onSaveLabel,
   onCloseLabel,
+  onSaveDisabled,
   isLoading,
 }: ControlsProps & { isLoading?: boolean }) => {
   return (
@@ -91,7 +108,7 @@ const Controls = ({
       <Button onClick={onClose} extraStyle="gray">
         {onCloseLabel ? onCloseLabel : 'Close'}
       </Button>
-      <Button isLoading={isLoading} disabled={isLoading} onClick={onSave}>
+      <Button isLoading={isLoading} disabled={isLoading || onSaveDisabled} onClick={onSave}>
         {onSaveLabel ? onSaveLabel : 'Save'}
       </Button>
     </div>
