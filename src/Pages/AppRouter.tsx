@@ -43,6 +43,7 @@ import PageNotFound from './Error/PageNotFound'
 import AuthenticatedPage from './Authenticated/AuthenticatedPage'
 import { selectors } from '../redux/selectors'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
+import { localStorageKeys } from '../constants/local_storage_keys'
 
 interface Props {
   actions: {
@@ -104,6 +105,16 @@ const AppRouter = ({ actions }: Props) => {
     // setInterval(() => actions.fetchFeesAsync(), 60_000)
   }
 
+  const loadIntercomCookie = () => {
+    const intercomUserId = localStorage.getItem(localStorageKeys.INTERCOM_USER_ID)
+    if (intercomUserId !== null && intercomUserId !== '') {
+      // @ts-ignore
+      window.Intercom('boot', {
+        anonymous_id: intercomUserId,
+      })
+    }
+  }
+
   useLayoutEffect(() => {
     const blockingCheck = async () => {
       let isDefaultPassword = await tequila.loginWithDefaultCredentials()
@@ -127,6 +138,8 @@ const AppRouter = ({ actions }: Props) => {
     if (!loggedIn) {
       return
     }
+
+    loadIntercomCookie()
 
     ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state))
   }, [loggedIn])

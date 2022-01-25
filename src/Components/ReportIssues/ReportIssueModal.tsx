@@ -7,12 +7,12 @@
 import { Dialog, DialogContent, DialogTitle, IconButton } from '@material-ui/core'
 import ChatIcon from '@material-ui/icons/Chat'
 import CloseIcon from '@material-ui/icons/Close'
-import { Issue } from 'mysterium-vpn-js/lib/feedback/issue'
-import React from 'react'
+import { IntercomIssue } from 'mysterium-vpn-js'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../api/tequila-client'
 import { parseError } from '../../commons/error.utils'
-import { toastError, toastSuccess } from '../../commons/toast.utils'
+import { toastError } from '../../commons/toast.utils'
+import { localStorageKeys } from '../../constants/local_storage_keys'
 import Button from '../Buttons/Button'
 
 import { TextField } from '../TextField/TextField'
@@ -24,7 +24,7 @@ interface Props {
   onClose: () => void
 }
 
-interface StateProps extends Issue {
+interface StateProps extends IntercomIssue {
   sending: boolean
 }
 
@@ -48,19 +48,23 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
     resetState()
   }
 
-  const reportIssue = () => {
+  const reportIssue = async () => {
     setState((d) => {
       d.sending = true
     })
-    return tequilaClient
-      .reportIssue(state, 60000)
-      .then(() => {
-        toastSuccess('Thank you! Your report has been sent.')
-      })
-      .catch((err) => toastError(parseError(err)))
-      .finally(() => {
-        handleClose()
-      })
+    try {
+      // @ts-ignore
+      const userId = window.Intercom('getVisitorId')
+      await tequilaClient.reportIssueIntercom({ ...state, userId: userId }, 60000)
+      localStorage.setItem(localStorageKeys.INTERCOM_USER_ID, userId)
+      // @ts-ignore
+      window.Intercom('update')
+      // @ts-ignore
+      window.Intercom('showMessages')
+    } catch (err) {
+      toastError(parseError(err))
+    }
+    handleClose()
   }
 
   const openChat = () => {
