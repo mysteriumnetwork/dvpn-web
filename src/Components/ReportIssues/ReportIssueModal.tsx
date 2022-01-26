@@ -55,7 +55,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
     try {
       // @ts-ignore
       const userId = window.Intercom('getVisitorId')
-      await tequilaClient.reportIssueIntercom({ ...state, userId: userId }, 60000)
+      await tequilaClient.reportIssueIntercom({ ...state, userId: userId, userType: 'provider' }, 60000)
       localStorage.setItem(localStorageKeys.INTERCOM_USER_ID, userId)
       // @ts-ignore
       window.Intercom('update')
