@@ -37,7 +37,21 @@ const display = (
   return displayMYST(amount, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, ...override })
 }
 
+const ZERO_OUT_FROM = String(Number.MAX_SAFE_INTEGER).length - 1
+
+const weiSafeString = (wei: number): string => {
+  const weiString = String(wei)
+
+  let zeroedOut = ''
+  for (let i = 0; i < weiString.length; i++) {
+    zeroedOut += i >= ZERO_OUT_FROM ? '0' : weiString[i]
+  }
+
+  return zeroedOut
+}
+
 export const myst = {
   displayMYST,
   display,
+  weiSafeString,
 }
