@@ -21,6 +21,7 @@ import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../../redux/selectors'
 import { toOptions } from '../../../../commons/mapping.utils'
+import { myst } from '../../../../commons/myst.utils'
 
 interface Props {
   isOpen: boolean
@@ -168,7 +169,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
         providerId: identity.id,
         beneficiary: state.withdrawalAddress,
         toChainId: state.toChain.value as number,
-        amount: String(state.withdrawalAmount.wei),
+        amount: myst.weiSafeString(state.withdrawalAmount.wei),
       })
       toastSuccess('Withdrawal completed successfully!')
       onClose()
