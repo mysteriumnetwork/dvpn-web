@@ -4,24 +4,25 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { DECIMAL_PART, Fees } from 'mysterium-vpn-js'
+import { Fees } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
-import { currentCurrency, toMyst } from '../../../../commons/money.utils'
-import { toastError, toastSuccess } from '../../../../commons/toast.utils'
-import { TextField } from '../../../../Components/TextField/TextField'
-import styles from './WithdrawalModal.module.scss'
-import { Option, Select } from '../../../../Components/Select/Select'
-import { Modal } from '../../../../Components/Modal/Modal'
-import { CollapseAlert } from './CollapseAlert'
-import { LatestWithdrawal } from './LatestWithdrawal'
-import { FeesRibbon } from './FeesRibbon'
-import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
-import { useSelector } from 'react-redux'
-import { selectors } from '../../../../redux/selectors'
+import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import { toOptions } from '../../../../commons/mapping.utils'
+import { currentCurrency } from '../../../../commons/money.utils'
 import { myst } from '../../../../commons/myst.utils'
+import { toastError, toastSuccess } from '../../../../commons/toast.utils'
+import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
+import { Modal } from '../../../../Components/Modal/Modal'
+import { Option, Select } from '../../../../Components/Select/Select'
+import { TextField } from '../../../../Components/TextField/TextField'
+import { selectors } from '../../../../redux/selectors'
+import { CollapseAlert } from './CollapseAlert'
+import { FeesRibbon } from './FeesRibbon'
+import { LatestWithdrawal } from './LatestWithdrawal'
+import styles from './WithdrawalModal.module.scss'
 
 interface Props {
   isOpen: boolean
@@ -30,8 +31,8 @@ interface Props {
 
 interface State {
   withdrawalAddress: string
-  withdrawalAmount: { wei: number; myst: number }
-  balanceTotalWei: number
+  withdrawalAmount: { wei: string; myst: string }
+  balanceTotalWei: string
   chainOptions: Option[]
   toChain: Option
   isLoading: boolean
@@ -42,8 +43,8 @@ interface State {
 const initialState: State = {
   withdrawalAddress: '',
   chainOptions: [],
-  withdrawalAmount: { myst: 0, wei: 0 },
-  balanceTotalWei: 0,
+  withdrawalAmount: { myst: '0', wei: '0' },
+  balanceTotalWei: '0',
   toChain: { label: '0', value: '0' },
   isLoading: true,
   hermesId: '',
@@ -55,9 +56,9 @@ const initialState: State = {
   },
 }
 
-const MINIMAL_WITHDRAWAL_AMOUNT = 10_000_000_000_000_000 // 0.01 MYST
+const MINIMAL_WITHDRAWAL_AMOUNT_WEI = myst.toWeiBig('0.01') // 0.01 MYST
+const MAXIMUM_WITHDRAW_AMOUNT_WEI = myst.toWeiBig(99) // 99.0 MYST
 const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
-const MAXIMUM_WITHDRAW_AMOUNT = 99
 
 const WithdrawalModal = ({ isOpen, onClose }: Props) => {
   const chainSummary = useSelector(selectors.chainSummarySelector)
@@ -82,11 +83,13 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
         tequilaClient.transactorFees(currentChain),
       ])
 
+      const { wei: balanceWei } = identity.balanceTokens
+
       setState((d) => {
         d.withdrawalAddress = address
         d.chainOptions = chainOptions
-        d.withdrawalAmount = initialCeilingAmount(identity.balance)
-        d.balanceTotalWei = identity.balance
+        d.withdrawalAmount = initialCeilingAmount(balanceWei)
+        d.balanceTotalWei = balanceWei
         d.toChain = chainOptions.find((o) => o.value === currentChain)!
         d.fees = fees
         d.isLoading = false
@@ -100,24 +103,22 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
     }
   }, [isOpen])
 
-  const initialCeilingAmount = (wei: number): { wei: number; myst: number } => {
-    const myst = toMyst(identity.balance)
-    if (myst > MAXIMUM_WITHDRAW_AMOUNT) {
-      return { myst: MAXIMUM_WITHDRAW_AMOUNT, wei: MAXIMUM_WITHDRAW_AMOUNT * DECIMAL_PART }
+  const initialCeilingAmount = (wei: string): { wei: string; myst: string } => {
+    const bigWei = myst.toBig(wei)
+    if (bigWei.isGreaterThan(MAXIMUM_WITHDRAW_AMOUNT_WEI)) {
+      return { myst: `${MAXIMUM_WITHDRAW_AMOUNT_WEI}`, wei: MAXIMUM_WITHDRAW_AMOUNT_WEI.toFixed() }
     }
-    return { myst, wei }
+    return { myst: myst.toEtherBig(bigWei).toFixed(DEFAULT_MONEY_DISPLAY_OPTIONS.fractionDigits), wei }
   }
 
-  const isOverBalance = (): boolean => state.withdrawalAmount.wei > identity.balance
+  const isOverBalance = (): boolean => myst.toBig(state.withdrawalAmount.wei).isGreaterThan(identity.balanceTokens.wei)
   const isInsaneWithdrawal = (): boolean =>
-    state.withdrawalAmount.wei - state.fees.settlement < MINIMAL_WITHDRAWAL_AMOUNT
-  const isOverCeiling = (): boolean => state.withdrawalAmount.myst > MAXIMUM_WITHDRAW_AMOUNT
+    myst.toBig(state.withdrawalAmount.wei).minus(state.fees.settlement).isLessThan(MINIMAL_WITHDRAWAL_AMOUNT_WEI)
+  const isOverCeiling = (): boolean => myst.toBig(state.withdrawalAmount.wei).isGreaterThan(MAXIMUM_WITHDRAW_AMOUNT_WEI)
 
-  const onWithdrawalAmountChange = (mystString: string) => {
-    const myst = Number(mystString)
-    const wei = myst * DECIMAL_PART
+  const onWithdrawalAmountChange = (ether: string) => {
     setState((d) => {
-      d.withdrawalAmount = { myst, wei }
+      d.withdrawalAmount = { myst: ether, wei: myst.toWeiString(ether) }
     })
   }
 
@@ -136,7 +137,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
     }
 
     if (isOverCeiling()) {
-      return `Your withdrawal amount exceeds maximum limit for one transaction. Please reduce amount to ${MAXIMUM_WITHDRAW_AMOUNT} ${currentCurrency()} or lower`
+      return `Your withdrawal amount exceeds maximum limit for one transaction. Please reduce amount to ${MAXIMUM_WITHDRAW_AMOUNT_WEI} ${currentCurrency()} or lower`
     }
   }
 
@@ -169,7 +170,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
         providerId: identity.id,
         beneficiary: state.withdrawalAddress,
         toChainId: state.toChain.value as number,
-        amount: myst.weiSafeString(state.withdrawalAmount.wei),
+        amount: state.withdrawalAmount.wei,
       })
       toastSuccess('Withdrawal completed successfully!')
       onClose()
@@ -221,8 +222,10 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
           />
         </InputGroup>
         <InputGroup
-          label={`Amount (${currentCurrency()}) / Your Balance: ${toMyst(state.balanceTotalWei)} (Maximum withdrawal
-                  amount: ${MAXIMUM_WITHDRAW_AMOUNT} ${currentCurrency()})`}
+          label={`Amount (${currentCurrency()}) / Your Balance: ${myst.display(
+            state.balanceTotalWei,
+          )} (Maximum withdrawal
+                  amount: ${MAXIMUM_WITHDRAW_AMOUNT_WEI} ${currentCurrency()})`}
         >
           <TextField type="number" value={state.withdrawalAmount.myst} onChange={onWithdrawalAmountChange} />
         </InputGroup>

@@ -132,8 +132,9 @@ export const VersionManagementPage = () => {
   const switchVersion = async (name: string) => {
     try {
       await switchUi(name)
+      // @ts-ignore
       window.location.reload(true)
-    } catch (err) {
+    } catch (err: any) {
       toastError(err.response.data.message)
     }
   }

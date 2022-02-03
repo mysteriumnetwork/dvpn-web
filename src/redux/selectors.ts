@@ -15,6 +15,11 @@ export const EMPTY_IDENTITY: Identity = {
   registrationStatus: IdentityRegistrationStatus.RegistrationError,
   channelAddress: '0x',
   balance: 0,
+  balanceTokens: {
+    wei: '0',
+    ether: '0',
+    human: '0',
+  },
   earnings: 0,
   earningsTotal: 0,
   stake: 0,

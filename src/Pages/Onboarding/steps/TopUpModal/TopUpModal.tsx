@@ -85,7 +85,7 @@ const TopUpModal = ({
   const MystReceived = () => {
     return (
       <div className={styles.topupReceived}>
-        {myst.displayMYST(identity.balance)}{' '}
+        {myst.display(identity.balance)}{' '}
         {!isRegistrationFeeReceived ? (
           <>
             received...

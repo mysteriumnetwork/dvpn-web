@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { useState } from 'react'
 import MystSlider from '../MystSlider/MystSlider'
 import styles from './BandwidthSettings.module.scss'
-import { useState } from 'react'
 
 interface Props {
   bandwidthMbps: number

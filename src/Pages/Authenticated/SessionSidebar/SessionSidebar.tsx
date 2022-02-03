@@ -32,7 +32,7 @@ const toSessionCard = (
         id={id}
         time={seconds2Time(duration)}
         data={formatBytes(add(bytesSent, bytesReceived))}
-        value={myst.displayMYST(tokens)}
+        value={myst.display(tokens)}
         createdAt={date2human(createdAt)}
       />
     </div>
@@ -75,7 +75,7 @@ const SessionSidebar = ({
       )}
       <div className={styles.footer}>
         <div className={styles.footerSumBlock}>
-          <div className={styles.name}>{myst.displayMYST(liveSessionStats?.sumTokens)}</div>
+          <div className={styles.name}>{myst.display(liveSessionStats?.sumTokens)}</div>
           <div className={styles.explanation}>Live earnings</div>
         </div>
         <div className={styles.footerSumBlock}>

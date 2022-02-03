@@ -45,7 +45,7 @@ const Card = ({ title, value, highlighted }: CardProps) => {
   return (
     <div className={classNames(styles.card, highlighted && styles.cardHighlighted)}>
       <div className={styles.cardTitle}>{title}</div>
-      <div className={styles.cardValue}>{myst.displayMYST(value)}</div>
+      <div className={styles.cardValue}>{myst.display(value)}</div>
     </div>
   )
 }
