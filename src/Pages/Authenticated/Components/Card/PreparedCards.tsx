@@ -41,11 +41,10 @@ const UnsettledEarnings = () => {
     [fees.settlement, config],
   )
 
-  const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earnings, fees), [
-    fees.hermes,
-    fees.settlement,
-    identity.earnings,
-  ])
+  const calculatedFees = useMemo(
+    () => feeCalculator.calculateEarnings(identity.earnings, fees),
+    [fees.hermes, fees.settlement, identity.earnings],
+  )
 
   const isConfirmDisables = calculatedFees.profitsMyst <= 0
 

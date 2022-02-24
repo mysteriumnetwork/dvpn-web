@@ -19,12 +19,12 @@ export const callWithToast = async <T>(fn: () => Promise<T>, msg?: Msg): Promise
       toastSuccess(msg.success)
     }
     return result
-  } catch (err) {
+  } catch (err: any) {
     if (msg?.error && msg?.error.length > 0) {
       toastError(msg.error)
     } else {
       toastError(parseMMNError(err) || parseTequilApiError(err) || err?.message || msg?.error || UNKNOWN_API_ERROR)
     }
-    return err
+    return Promise.reject(err)
   }
 }

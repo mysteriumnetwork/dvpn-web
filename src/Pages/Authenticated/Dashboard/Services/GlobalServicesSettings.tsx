@@ -31,11 +31,12 @@ const GlobalServicesSettings = () => {
   const config = useSelector(selectors.configSelector)
 
   const stopServices = services.map((s) => (): Promise<void> => tequilaClient.serviceStop(s.id))
-  const startServices = services.map((s) => (): Promise<ServiceInfo> =>
-    tequilaClient.serviceStart({
-      providerId: s.providerId,
-      type: s.type,
-    }),
+  const startServices = services.map(
+    (s) => (): Promise<ServiceInfo> =>
+      tequilaClient.serviceStart({
+        providerId: s.providerId,
+        type: s.type,
+      }),
   )
 
   const restartServices = async (doBefore: Promise<any>): Promise<any> => {

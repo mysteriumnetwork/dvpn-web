@@ -8775,10 +8775,10 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-mysterium-vpn-js@18.9.0:
-  version "18.9.0"
-  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-18.9.0.tgz#5052b0cccd6d23d2dfd8bbbbfe9bebe212aeabcd"
-  integrity sha512-6LXYgdQki08bd284gpAVgOu1dYUxIPaj7ZbdvpjxmssxWiPLqE+/qkJ9Vp96erR3fyyyVRmZ2pK8UIQxuSdKUw==
+mysterium-vpn-js@18.10.0:
+  version "18.10.0"
+  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-18.10.0.tgz#483b23bd94a9a9fe8f9f7b8520e93304e4cc7214"
+  integrity sha512-k72PTPzCq5ihga5VQBSA6a3AwTHLh/IofwAEbbzlpJj94pRO51mw2ffPoZLJPvx0xygkk42BzKXy1bCryYnw3g==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     axios "^0.21.1"
@@ -12786,10 +12786,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.2.4:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
-  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
+typescript@4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.4.tgz#2cd01a1a1f160704d3101fd5a58ff0f9fcb8030c"
+  integrity sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA==
 
 unbox-primitive@^1.0.1:
   version "1.0.1"
