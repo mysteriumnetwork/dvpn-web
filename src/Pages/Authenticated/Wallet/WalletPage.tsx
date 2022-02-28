@@ -166,7 +166,7 @@ const WalletPage = () => {
         accessor: 'fees',
         width: 10,
         Cell: ({ value }) => {
-          return myst.displayMYST(value)
+          return myst.display(value)
         },
       },
       {
@@ -174,7 +174,7 @@ const WalletPage = () => {
         accessor: 'amount',
         width: 10,
         Cell: ({ value }) => {
-          return myst.displayMYST(value)
+          return myst.display(value)
         },
       },
     ],
@@ -224,8 +224,8 @@ const WalletPage = () => {
                   topLeft={date2human(settledAt)}
                   topLeftSub={strings.truncateHash(txHash)}
                   topRightSub={strings.truncateHash(beneficiary)}
-                  bottomLeft={myst.displayMYST(fees)}
-                  bottomRight={myst.displayMYST(amount)}
+                  bottomLeft={myst.display(fees)}
+                  bottomRight={myst.display(amount)}
                 />
               )
             }}

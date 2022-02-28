@@ -47,7 +47,7 @@ const row = (s: Session): SessionRow => {
     country: countryName(s.consumerCountry),
     duration: seconds2Time(s.duration),
     started: date2human(s.createdAt),
-    earnings: myst.displayMYST(s.tokens),
+    earnings: myst.display(s.tokens),
     transferred: formatBytes(s.bytesReceived + s.bytesSent),
     sessionId: s.id.split('-')[0],
   }

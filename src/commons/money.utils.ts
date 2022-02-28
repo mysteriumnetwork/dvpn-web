@@ -14,12 +14,22 @@ export const currentCurrency = (): Currency => {
   return Currency.MYST
 }
 
+/**
+ * @deprecated use myst.utils.ts
+ * @param amountWei
+ * @param precision
+ */
 export const toMyst = (amountWei: number, precision: number = 7): number => {
   const m = Math.pow(10, precision)
   const amountMyst = amountWei / DECIMAL_PART
   return Math.floor(amountMyst * m) / m
 }
 
+/**
+ * @deprecated use myst.utils.ts
+ * @param amountWei
+ * @param precision
+ */
 const flooredAmount = (amount: number, precision: number = 7): number => {
   const m = Math.pow(10, precision)
   return Math.floor(amount * m) / m
@@ -36,6 +46,9 @@ export const displayMyst = (amount: number = 0, opts: DisplayMoneyOptions = DEFA
   return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
 }
 
+/**
+ * @deprecated use myst.utils.ts
+ */
 export const displayMystWholeOnly = (
   amount?: number,
   opts: DisplayMoneyOptions = { ...DEFAULT_MONEY_DISPLAY_OPTIONS, fractionDigits: 0, decimalPart: 1 },
@@ -43,6 +56,9 @@ export const displayMystWholeOnly = (
   return displayMoney({ amount: amount || 0, currency: currentCurrency() }, opts)
 }
 
+/**
+ * @deprecated use myst.utils.ts
+ */
 export const money = {
   flooredAmount,
 }

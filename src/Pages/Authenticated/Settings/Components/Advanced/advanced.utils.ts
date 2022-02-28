@@ -67,7 +67,7 @@ export const validateData = async (data: Data): Promise<string[]> => {
 
     try {
       await tequilaClient.validateEthRPCL2(rpcl2.split(','))
-    } catch (e) {
+    } catch (e: any) {
       errors.push(e.message)
     }
   }

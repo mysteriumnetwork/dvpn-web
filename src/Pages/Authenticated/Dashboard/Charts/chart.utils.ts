@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { SessionStats } from 'mysterium-vpn-js'
+import { add } from '../../../../commons/formatBytes'
 
 import { displayMyst } from '../../../../commons/money.utils'
-import { add } from '../../../../commons/formatBytes'
 
 export interface Pair {
   x: string
@@ -26,7 +26,7 @@ export const sessionDailyStatsToSessionsGraph = (statsDaily: { [name: string]: S
   let accum = 0
   return Object.keys(statsDaily).map<Pair>((dateKey) => ({
     x: formatDate(dateKey),
-    y: accum += statsDaily[dateKey].count,
+    y: (accum += statsDaily[dateKey].count),
   }))
 }
 

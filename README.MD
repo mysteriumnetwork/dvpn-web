@@ -20,7 +20,7 @@
 ### Quick Start
 To run app in development mode:
 ```shell
-yarn && yarn start
+yarn && yarn dev
 ```
 This will start app on port 3000 and should automatically open browser and navigate to the webUI.
 

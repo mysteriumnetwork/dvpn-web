@@ -11,7 +11,7 @@ import React from 'react'
 import classNames from 'classnames'
 
 interface Props {
-  withdrawalAmountWei: number
+  withdrawalAmountWei: string
   fees: Fees
 }
 
@@ -22,7 +22,7 @@ export const FeesRibbon = ({ withdrawalAmountWei, fees }: Props) => {
       <Card info="Fee" value={myst.display(fees.settlement, { showCurrency: false })} />
       <Card
         info="You will get"
-        value={myst.display(withdrawalAmountWei - fees.settlement, { showCurrency: false })}
+        value={myst.display(myst.toBig(withdrawalAmountWei).minus(fees.settlement), { showCurrency: false })}
         important
       />
     </div>
