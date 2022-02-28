@@ -135,6 +135,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
       const order = await api.payment.createOrder(identity.id, CARDINITY_GATEWAY, {
         payCurrency: state.currency,
         country,
+        projectId: 'mystnodes',
         mystAmount: `${state.mystAmounts[state.currency]}`,
         gatewayCallerData: {
           country,
