@@ -6,19 +6,19 @@
  */
 import { ServiceInfo } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { tequilaClient } from '../../../../api/tequila-client'
 import { tequila } from '../../../../api/wrapped-calls'
+import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { configParser } from '../../../../commons/config'
 import { parseError } from '../../../../commons/error.utils'
 import { parseToastError, toastError } from '../../../../commons/toast.utils'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
-import styles from './GlobalServicesSettings.module.scss'
-import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
-import { useSelector } from 'react-redux'
-import { selectors } from '../../../../redux/selectors'
 import { Modal } from '../../../../Components/Modal/Modal'
+import { selectors } from '../../../../redux/selectors'
+import styles from './GlobalServicesSettings.module.scss'
 
 interface State {
   bandwidthMbps: number
@@ -31,12 +31,11 @@ const GlobalServicesSettings = () => {
   const config = useSelector(selectors.configSelector)
 
   const stopServices = services.map((s) => (): Promise<void> => tequilaClient.serviceStop(s.id))
-  const startServices = services.map(
-    (s) => (): Promise<ServiceInfo> =>
-      tequilaClient.serviceStart({
-        providerId: s.providerId,
-        type: s.type,
-      }),
+  const startServices = services.map((s) => (): Promise<ServiceInfo> =>
+    tequilaClient.serviceStart({
+      providerId: s.providerId,
+      type: s.type,
+    }),
   )
 
   const restartServices = async (doBefore: Promise<any>): Promise<any> => {

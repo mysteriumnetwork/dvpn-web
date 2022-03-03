@@ -26,7 +26,7 @@ export const sessionDailyStatsToSessionsGraph = (statsDaily: { [name: string]: S
   let accum = 0
   return Object.keys(statsDaily).map<Pair>((dateKey) => ({
     x: formatDate(dateKey),
-    y: (accum += statsDaily[dateKey].count),
+    y: accum += statsDaily[dateKey].count,
   }))
 }
 
