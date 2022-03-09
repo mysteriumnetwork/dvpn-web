@@ -94,6 +94,16 @@ const setChainId = async (chainId: number): Promise<Config> => {
     .then(refreshStoreConfig)
 }
 
+const setFeatures = async (features: string[]): Promise<Config> => {
+  return tequilaClient
+    .updateUserConfig({
+      data: {
+        'ui.features': features.join(','),
+      },
+    })
+    .then(refreshStoreConfig)
+}
+
 export const setUserConfig = async (data: any): Promise<Config> => {
   return await tequilaClient.updateUserConfig({ data }).then(refreshStoreConfig)
 }
@@ -109,4 +119,5 @@ export const tequila = {
   setTrafficShaping,
   setChainId,
   setUserConfig,
+  setFeatures,
 }

@@ -20,6 +20,7 @@ interface Props {
   onSwitchVersion: () => void
   isDownloadInProgress: boolean
   isInUse: boolean
+  isLoading?: boolean
 }
 
 export const VersionCard = ({
@@ -31,6 +32,7 @@ export const VersionCard = ({
   onSwitchVersion,
   isDownloadInProgress,
   isInUse,
+  isLoading,
 }: Props) => {
   const canSwitchTo = local && !isInUse
   return (
@@ -48,12 +50,19 @@ export const VersionCard = ({
       </div>
       <div>
         {!local && (
-          <Button className={styles.control} onClick={onDownload} disabled={isDownloadInProgress} extraStyle="outline">
+          <Button
+            isLoading={isLoading}
+            className={styles.control}
+            onClick={onDownload}
+            disabled={isDownloadInProgress}
+            extraStyle="outline"
+          >
             Download
           </Button>
         )}
         {canSwitchTo && (
           <Button
+            isLoading={isLoading}
             className={styles.control}
             onClick={onSwitchVersion}
             disabled={isDownloadInProgress}

@@ -158,6 +158,7 @@ export const VersionManagement = () => {
 
       return (
         <VersionCard
+          key={remote.name}
           remote={remote}
           local={local}
           bundledVersion={state.ui.bundledVersion}
@@ -191,10 +192,14 @@ export const VersionManagement = () => {
           {infoRow('Used:', state.ui.usedVersion)}
         </div>
         <div className={styles.controls}>
-          <Button onClick={() => init(true)} extraStyle="outline">
+          <Button onClick={() => init(true)} isLoading={state.isLoading} extraStyle="outline">
             Flush Cache
           </Button>
-          {state.ui.usedVersion !== 'bundled' && <Button onClick={() => switchVersion('bundled')}>Switch Back</Button>}
+          {state.ui.usedVersion !== 'bundled' && (
+            <Button onClick={() => switchVersion('bundled')} isLoading={state.isLoading}>
+              Switch Back
+            </Button>
+          )}
         </div>
       </div>
       <div className={styles.progress}>

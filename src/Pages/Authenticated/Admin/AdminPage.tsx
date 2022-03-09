@@ -7,6 +7,7 @@
 import React from 'react'
 import { Layout } from '../Layout'
 import styles from './Admin.module.scss'
+import { FeatureToggle } from './FeatureToggle/FeatureToggle'
 import { VersionManagement } from './VersionManagement/VersionManagement'
 
 export const AdminPage = () => {
@@ -18,6 +19,9 @@ export const AdminPage = () => {
         <div className={styles.page}>
           <div className={styles.versionManagement}>
             <VersionManagement />
+          </div>
+          <div className={styles.versionManagement}>
+            <FeatureToggle />
           </div>
         </div>
       }
