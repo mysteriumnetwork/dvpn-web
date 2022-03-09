@@ -1,5 +1,5 @@
-@import '../../../assets/styles/base/variables';
-@import '../../../assets/styles/base/mixins/media';
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
 
 
 .progress {
@@ -65,6 +65,9 @@
   align-items: center;
   width: 100%;
   gap: 5px;
+
+  height: 80vh;
+  overflow-y: scroll;
 
   .row {
     padding: 35px;

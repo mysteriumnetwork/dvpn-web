@@ -1,0 +1,13 @@
+@import '../../../assets/styles/base/variables';
+@import '../../../assets/styles/base/mixins/media';
+
+.page {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.versionManagement {
+  border: solid 1px $names-text-color;
+  padding: 25px;
+}

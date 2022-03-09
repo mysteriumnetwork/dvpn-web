@@ -4,20 +4,19 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Layout } from '../Layout'
+import classNames from 'classnames'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { parseToastError, toastError } from '../../../commons/toast.utils'
 import {
   LocalVersion,
   LocalVersionsResponse,
   RemoteVersion,
   UI,
   uiVersionManager,
-} from '../../../api/ui-version-management'
-import styles from './VersionManagementPage.module.scss'
-import Button from '../../../Components/Buttons/Button'
-import classNames from 'classnames'
+} from '../../../../api/ui-version-management'
+import { parseToastError, toastError } from '../../../../commons/toast.utils'
+import Button from '../../../../Components/Buttons/Button'
+import styles from './VersionManagement.module.scss'
 import { VersionCard } from './VersionCard'
 
 interface State {
@@ -46,7 +45,7 @@ const initialState: State = {
   },
 }
 
-export const VersionManagementPage = () => {
+export const VersionManagement = () => {
   const { info, localVersions, remoteVersions, downloadUi, downloadStatus, switchUi } = uiVersionManager
 
   const [state, setState] = useImmer<State>(initialState)
@@ -185,36 +184,33 @@ export const VersionManagementPage = () => {
     )
   }
   return (
-    <Layout
-      title="Version Management"
-      isLoading={state.isLoading}
-      main={
-        <div className={styles.page}>
-          <div className={styles.info}>
-            <div className={styles.infoCard}>
-              {infoRow('Bundled:', state.ui.bundledVersion)}
-              {infoRow('Used:', state.ui.usedVersion)}
-            </div>
-            <div className={styles.controls}>
-              <Button onClick={() => init(true)} extraStyle="outline">
-                Flush Cache
-              </Button>
-              {state.ui.usedVersion !== 'bundled' && (
-                <Button onClick={() => switchVersion('bundled')}>Switch Back</Button>
-              )}
-            </div>
-          </div>
-          <div className={styles.progress}>
-            <progress
-              className={classNames(styles.bar, state.isDownloadInProgress ? '' : styles.invisible)}
-              value={state.downloadProgress / 100}
-            />
-          </div>
-          <div className={styles.versions}>{versionList}</div>
+    <>
+      <div className={styles.info}>
+        <div className={styles.infoCard}>
+          {infoRow('Bundled:', state.ui.bundledVersion)}
+          {infoRow('Used:', state.ui.usedVersion)}
         </div>
-      }
-    />
+        <div className={styles.controls}>
+          <Button onClick={() => init(true)} extraStyle="outline">
+            Flush Cache
+          </Button>
+          {state.ui.usedVersion !== 'bundled' && <Button onClick={() => switchVersion('bundled')}>Switch Back</Button>}
+        </div>
+      </div>
+      <div className={styles.progress}>
+        <progress
+          className={classNames(styles.bar, state.isDownloadInProgress ? '' : styles.invisible)}
+          value={state.downloadProgress / 100}
+        />
+      </div>
+      <div className={styles.versions}>{versionList}</div>
+    </>
   )
+}
+
+const parseErrorResponse = (err: any): string => {
+  const data = err.response.data
+  return `${data.message} (${data.originalError})`
 }
 
 const infoRow = (key: string, value: string): JSX.Element => (
@@ -223,8 +219,3 @@ const infoRow = (key: string, value: string): JSX.Element => (
     <div className={styles.value}>{value}</div>
   </div>
 )
-
-const parseErrorResponse = (err: any): string => {
-  const data = err.response.data
-  return `${data.message} (${data.originalError})`
-}
