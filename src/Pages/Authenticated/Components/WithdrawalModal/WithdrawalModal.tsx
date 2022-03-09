@@ -224,7 +224,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
         <InputGroup
           label={`Amount (${currentCurrency()}) / Your Balance: ${myst.display(
             state.balanceTotalWei,
-          )} (Maximum withdrawala
+          )} (Maximum withdrawal
                   amount: ${myst.display(MAXIMUM_WITHDRAW_AMOUNT_WEI)})`}
         >
           <TextField type="number" value={state.withdrawalAmount.myst} onChange={onWithdrawalAmountChange} />
