@@ -11,6 +11,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { store } from '../redux/store'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import { updateConfigStore, updateTermsStore } from '../redux/app.slice'
+import { http } from './axios'
 
 import { tequilaClient } from './tequila-client'
 
@@ -110,6 +111,7 @@ export const setUserConfig = async (data: any): Promise<Config> => {
 
 export const tequila = {
   api: tequilaClient,
+  http: http,
   login,
   loginWithDefaultCredentials,
   isUserAuthenticated,

@@ -5,12 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect } from 'react'
-import { Link, withRouter, RouteComponentProps, NavLink } from 'react-router-dom'
-
-import './Navigation.scss'
-import { ReactComponent as Logo } from '../../../assets/images/authenticated/components/navigation/Logo.svg'
+import { Link, NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
 import { ReactComponent as Dashboard } from '../../../assets/images/authenticated/components/navigation/Dashboard.svg'
 import { ReactComponent as DashboardActive } from '../../../assets/images/authenticated/components/navigation/DashboardActive.svg'
+import { ReactComponent as Logo } from '../../../assets/images/authenticated/components/navigation/Logo.svg'
 import { ReactComponent as Sessions } from '../../../assets/images/authenticated/components/navigation/Sessions.svg'
 import { ReactComponent as SessionsActive } from '../../../assets/images/authenticated/components/navigation/SessionsActive.svg'
 import { ReactComponent as SessionsSidebar } from '../../../assets/images/authenticated/components/navigation/SessionsSidebar.svg'
@@ -19,8 +17,10 @@ import { ReactComponent as Settings } from '../../../assets/images/authenticated
 import { ReactComponent as SettingsActive } from '../../../assets/images/authenticated/components/navigation/SettingsActive.svg'
 import { ReactComponent as Wallet } from '../../../assets/images/authenticated/components/navigation/Wallet.svg'
 import { ReactComponent as WalletActive } from '../../../assets/images/authenticated/components/navigation/WalletActive.svg'
-import { DASHBOARD, SESSIONS, SESSIONS_SIDE, SETTINGS, WALLET } from '../../../constants/routes'
 import ReportIssue from '../../../Components/ReportIssues/ReportIssue'
+import { DASHBOARD, SESSIONS, SESSIONS_SIDE, SETTINGS, WALLET } from '../../../constants/routes'
+
+import './Navigation.scss'
 
 type Props = RouteComponentProps<any, any, any>
 

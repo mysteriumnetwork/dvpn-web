@@ -15,10 +15,6 @@ const FEATURES: { [key: string]: Feature } = {
     name: 'restart',
     description: 'Ability to restart node from NodeUI',
   },
-  DEMO: {
-    name: 'dummy',
-    description: 'dummy description',
-  },
 }
 
 export default FEATURES

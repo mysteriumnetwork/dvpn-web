@@ -13,7 +13,9 @@ import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import { configParser } from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
+import FEATURES from '../../../commons/features'
 import { toastError } from '../../../commons/toast.utils'
+import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 import { Advanced } from './Components/Advanced/Advanced'
 import IdentityInformation from './Components/IdentityInformation'
 
@@ -77,7 +79,16 @@ const SettingsPage = () => {
     <Layout
       title="Settings"
       logo={<Logo />}
-      topRight={<Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />}
+      topRight={
+        <div className={styles.topRight}>
+          {configParser.isFeatureEnabled(config, FEATURES.RESTART.name) && (
+            <div className={styles.powerOff}>
+              <PowerOffButton />
+            </div>
+          )}
+          <Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />
+        </div>
+      }
       isLoading={state.isLoading}
       main={
         <div className={styles.settings}>
