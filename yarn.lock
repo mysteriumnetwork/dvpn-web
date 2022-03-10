@@ -1888,10 +1888,10 @@
     outvariant "^1.2.0"
     strict-event-emitter "^0.2.0"
 
-"@mysteriumnetwork/terms@0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@mysteriumnetwork/terms/-/terms-0.0.35.tgz#097f21d044c6129003a17f06be0028a0683e87f3"
-  integrity sha512-LrYuwkIxkIg2V7syVQIsxwWXam5INB4fzCLg6Pue3ikDBTUIlYDMiNZT/V8+bXDVVjzB5R8WX3jv4CvGv7Rl2Q==
+"@mysteriumnetwork/terms@0.0.40":
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/@mysteriumnetwork/terms/-/terms-0.0.40.tgz#585960b6b260d54858c3c31ec3789c3ce1d4988a"
+  integrity sha512-xmLt6VDmGy8qADH+to2KZpk8gCA1koBEtJnZBpF+4jSPPQvfndCPjLgJu6l3fAplwyfHsrWkJYtmtk/1Sp8ubw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
