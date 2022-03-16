@@ -26,7 +26,7 @@ import { Identity } from 'mysterium-vpn-js'
 import { isEmpty, isRegistered } from '../../commons/identity.utils'
 import SessionSidebarPage from './SessionSidebar/SessionSidebarPage'
 import { RegistrationOverlay } from './RegistrationOverlay'
-import { VersionManagementPage } from './VersionManagement/VersionManagementPage'
+import { AdminPage } from './Admin/AdminPage'
 
 interface Props {
   identity: Identity
@@ -70,7 +70,7 @@ const AuthenticatedPage = ({ identity }: Props) => {
             <WalletPage />
           </Route>
           <Route exact={true} path={VERSION_MANAGEMENT}>
-            <VersionManagementPage />
+            <AdminPage />
           </Route>
           <Route path="*">
             <Redirect to={NOT_FOUND} />

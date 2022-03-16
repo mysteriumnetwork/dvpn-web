@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { Switch } from '../Switch'
-import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
+import ConfirmationDialog from '../ConfirmationDialogue/ConfirmationDialog'
 
 interface Props {
   message?: string
@@ -40,7 +40,7 @@ const ConfirmationSwitch = ({
           setShowConfirm(true)
         }}
       />
-      <ConfirmationDialogue
+      <ConfirmationDialog
         message={message}
         open={showConfirm}
         onCancel={() => {

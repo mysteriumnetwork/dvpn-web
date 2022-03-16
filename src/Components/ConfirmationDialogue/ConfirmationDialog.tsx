@@ -22,7 +22,7 @@ interface Props {
   confirmButton?: (onConfirm?: () => void) => JSX.Element
 }
 
-const ConfirmationDialogue = ({
+const ConfirmationDialog = ({
   open = false,
   onCancel,
   onConfirm = () => {},
@@ -45,9 +45,11 @@ const ConfirmationDialogue = ({
         {content && content}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCancel} extraStyle="gray">
-          Cancel
-        </Button>
+        {!loading && (
+          <Button onClick={onCancel} extraStyle="gray">
+            Cancel
+          </Button>
+        )}
         <Button
           onClick={() => {
             Promise.resolve()
@@ -66,4 +68,4 @@ const ConfirmationDialogue = ({
   )
 }
 
-export default ConfirmationDialogue
+export default ConfirmationDialog

@@ -16,7 +16,7 @@ import { feeCalculator } from '../../../../commons/fees'
 import formatBytes, { add } from '../../../../commons/formatBytes'
 import { myst } from '../../../../commons/myst.utils'
 import { toastError, toastSuccess } from '../../../../commons/toast.utils'
-import ConfirmationDialogue from '../../../../Components/ConfirmationDialogue/ConfirmationDialogue'
+import ConfirmationDialog from '../../../../Components/ConfirmationDialogue/ConfirmationDialog'
 import { selectors } from '../../../../redux/selectors'
 import { FeesTable } from '../Fees/FeesTable'
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
@@ -60,7 +60,7 @@ const UnsettledEarnings = () => {
         action="Settle"
         onAction={() => setShowConfirmation(true)}
       />
-      <ConfirmationDialogue
+      <ConfirmationDialog
         open={showConfirmation}
         onCancel={() => setShowConfirmation(false)}
         message="Please click SETTLE to proceed with settlement to Balance. Note: Settlement transaction may take a few minutes to complete."

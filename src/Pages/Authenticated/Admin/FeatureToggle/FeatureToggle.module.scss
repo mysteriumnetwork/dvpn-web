@@ -1,0 +1,38 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.features {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  gap: 15px;
+
+  overflow-y: auto;
+}
+
+.feature {
+  display: grid;
+  grid-template-columns: 0.25fr 2fr 1fr;
+  justify-content: space-between;
+  width: 500px;
+  gap: 15px;
+
+  .enabled {
+
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+
+    .name {
+      margin-bottom: 5px;
+    }
+
+    .description {
+      color: $secondary-text-color;
+      font-size: $smaller-size;
+    }
+  }
+}

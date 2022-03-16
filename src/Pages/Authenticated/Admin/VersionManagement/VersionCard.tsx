@@ -4,11 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { LocalVersion, RemoteVersion } from '../../../api/ui-version-management'
-import styles from './VersionManagementPage.module.scss'
-import { date2human } from '../../../commons/date.utils'
-import Tooltip from '../../../Components/Tooltip/Tooltip'
-import Button from '../../../Components/Buttons/Button'
+import { LocalVersion, RemoteVersion } from '../../../../api/ui-version-management'
+import styles from './VersionManagement.module.scss'
+import { date2human } from '../../../../commons/date.utils'
+import Tooltip from '../../../../Components/Tooltip/Tooltip'
+import Button from '../../../../Components/Buttons/Button'
 import React from 'react'
 
 interface Props {
@@ -20,6 +20,7 @@ interface Props {
   onSwitchVersion: () => void
   isDownloadInProgress: boolean
   isInUse: boolean
+  isLoading?: boolean
 }
 
 export const VersionCard = ({
@@ -31,6 +32,7 @@ export const VersionCard = ({
   onSwitchVersion,
   isDownloadInProgress,
   isInUse,
+  isLoading,
 }: Props) => {
   const canSwitchTo = local && !isInUse
   return (
@@ -48,12 +50,19 @@ export const VersionCard = ({
       </div>
       <div>
         {!local && (
-          <Button className={styles.control} onClick={onDownload} disabled={isDownloadInProgress} extraStyle="outline">
+          <Button
+            isLoading={isLoading}
+            className={styles.control}
+            onClick={onDownload}
+            disabled={isDownloadInProgress}
+            extraStyle="outline"
+          >
             Download
           </Button>
         )}
         {canSwitchTo && (
           <Button
+            isLoading={isLoading}
             className={styles.control}
             onClick={onSwitchVersion}
             disabled={isDownloadInProgress}

@@ -8,7 +8,7 @@ import styles from './Modal.module.scss'
 import { CircularProgress, Fade, Modal as MUIModal } from '@material-ui/core'
 import Button from '../Buttons/Button'
 import React, { useState } from 'react'
-import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
+import ConfirmationDialog from '../ConfirmationDialogue/ConfirmationDialog'
 
 interface Props {
   open: boolean
@@ -57,7 +57,7 @@ export const Modal = ({
             <div className={styles.content}>{children}</div>
             {confirmationAwareControls && <Controls {...confirmationAwareControls} isLoading={isLoading} />}
             {withConfirmation && controls && (
-              <ConfirmationDialogue
+              <ConfirmationDialog
                 open={showConfirm}
                 onConfirm={() => {
                   controls.onSave()

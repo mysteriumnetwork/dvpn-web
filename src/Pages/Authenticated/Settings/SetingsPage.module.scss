@@ -34,6 +34,23 @@
   }
 }
 
+.topRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  @include respond-below(sm) {
+    flex-direction: column-reverse;
+  }
+
+  .powerOff {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #fa3e3e;
+  }
+}
+
 .footer__buttons {
   display: flex;
   justify-content: flex-end;

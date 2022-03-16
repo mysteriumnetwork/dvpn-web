@@ -107,12 +107,17 @@ const mmnApiKey = (c?: Config): string => {
   return _.get<Config, any>(c, 'data.mmn.api-key')
 }
 
-const defaultFiatAmount = (c?: Config): number => {
-  return _.get<Config, any>(c, 'data.nodeui.default-fiat-amount') || 1
-}
-
 const pilvytisUrl = (c?: Config): string => {
   return urlAddressOrError(c, 'data.pilvytis.address')
+}
+
+const uiFeatures = (c: Config): string[] => {
+  const featuresString = _.get<Config, any>(c, 'data.ui.features') || ''
+  return featuresString.split(',')
+}
+
+const isFeatureEnabled = (c: Config, name: string): boolean => {
+  return uiFeatures(c).includes(name)
 }
 
 export const configParser = {
@@ -131,6 +136,7 @@ export const configParser = {
   mmnDomainName,
   mmnApiUrl,
   mmnApiKey,
-  defaultFiatAmount,
   pilvytisUrl,
+  uiFeatures,
+  isFeatureEnabled,
 }
