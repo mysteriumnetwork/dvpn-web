@@ -45,9 +45,11 @@ const ConfirmationDialog = ({
         {content && content}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCancel} extraStyle="gray">
-          Cancel
-        </Button>
+        {!loading && (
+          <Button onClick={onCancel} extraStyle="gray">
+            Cancel
+          </Button>
+        )}
         <Button
           onClick={() => {
             Promise.resolve()
