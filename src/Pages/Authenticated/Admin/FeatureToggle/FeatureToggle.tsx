@@ -4,7 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useEffect, useState } from 'react'
+import CheckIcon from '@material-ui/icons/Check'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { configParser } from '../../../../commons/config'
@@ -12,14 +13,11 @@ import FEATURES from '../../../../commons/features'
 import Button from '../../../../Components/Buttons/Button'
 import { selectors } from '../../../../redux/selectors'
 import styles from './FeatureToggle.module.scss'
-import CheckIcon from '@material-ui/icons/Check'
 
 export const FeatureToggle = () => {
   const { setFeatures } = tequila
   const config = useSelector(selectors.configSelector)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
-  useEffect(() => {}, [])
 
   const toggle = async (name: string) => {
     setIsLoading(true)
