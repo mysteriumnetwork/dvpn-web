@@ -46,7 +46,8 @@ export const PowerOffButton = () => {
     <IconButton style={{ color: '#FFF' }} onClick={() => setShowConfirmation(true)} disabled={showConfirmation}>
       <Icon />
       <ConfirmationDialogue
-        message="Are you sure you would like to restart your node?"
+        confirmText="Restart"
+        message="Are you sure you want to restart your node?"
         open={showConfirmation}
         onCancel={() => setShowConfirmation(false)}
         onConfirm={handleStop}
