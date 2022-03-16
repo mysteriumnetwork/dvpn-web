@@ -10,7 +10,7 @@ import Icon from '@material-ui/icons/PowerSettingsNewOutlined'
 import { useEffect, useState } from 'react'
 import { tequila } from '../../api/wrapped-calls'
 import { parseToastError } from '../../commons/toast.utils'
-import ConfirmationDialogue from '../ConfirmationDialogue/ConfirmationDialogue'
+import ConfirmationDialog from '../ConfirmationDialogue/ConfirmationDialog'
 
 export const PowerOffButton = () => {
   const { api } = tequila
@@ -45,7 +45,7 @@ export const PowerOffButton = () => {
   return (
     <IconButton style={{ color: '#FFF' }} onClick={() => setShowConfirmation(true)} disabled={showConfirmation}>
       <Icon />
-      <ConfirmationDialogue
+      <ConfirmationDialog
         confirmText="Restart"
         message="Are you sure you want to restart your node?"
         open={showConfirmation}
