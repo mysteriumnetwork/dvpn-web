@@ -18,6 +18,7 @@ import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../Components/Modal/Modal'
 import { Option, Select } from '../../../../Components/Select/Select'
 import { TextField } from '../../../../Components/TextField/TextField'
+import { FEES_EMPTY } from '../../../../constants/instances'
 import { selectors } from '../../../../redux/selectors'
 import { CollapseAlert } from './CollapseAlert'
 import { FeesRibbon } from './FeesRibbon'
@@ -48,12 +49,7 @@ const initialState: State = {
   toChain: { label: '0', value: '0' },
   isLoading: true,
   hermesId: '',
-  fees: {
-    registration: 0,
-    settlement: 0,
-    hermes: 0,
-    decreaseStake: 0,
-  },
+  fees: FEES_EMPTY,
 }
 
 const MINIMAL_WITHDRAWAL_AMOUNT_WEI = myst.toWeiBig('0.01') // 0.01 MYST

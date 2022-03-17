@@ -8,6 +8,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { AppState } from 'mysterium-vpn-js'
 import _ from 'lodash'
 import { ConnectionStatus, NatStatus } from 'mysterium-vpn-js'
+import { TOKENS_EMPTY } from '../constants/instances'
 
 export interface SSEState {
   appState: AppState
@@ -38,6 +39,7 @@ const INITIAL_STATE: SSEState = {
           throughputReceived: 0,
           duration: 0,
           tokensSpent: 0,
+          spentTokens: TOKENS_EMPTY,
         },
       },
     },
