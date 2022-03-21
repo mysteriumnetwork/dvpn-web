@@ -78,13 +78,9 @@ export const SettleModal = ({ open, onClose }: Props) => {
     earningsTokens.wei,
   ])
 
-  const handleOptionsChange = (o: Option | Option[]) => {
-    setState((p) => ({ ...p, settleOption: o as Option }))
-  }
+  const handleOptionsChange = (o: Option | Option[]) => setState((p) => ({ ...p, settleOption: o as Option }))
 
-  const handleExternalWalletChange = (v: string) => {
-    setState((p) => ({ ...p, externalWalletAddress: v }))
-  }
+  const handleExternalWalletChange = (v: string) => setState((p) => ({ ...p, externalWalletAddress: v }))
 
   const setLoading = (b: boolean = true) => setState((p) => ({ ...p, isLoading: b }))
 
