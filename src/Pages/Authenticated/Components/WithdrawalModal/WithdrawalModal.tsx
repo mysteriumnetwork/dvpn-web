@@ -171,7 +171,11 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
       toastSuccess('Withdrawal completed successfully!')
       onClose()
     } catch (e: any) {
-      toastError('There was an error processing your withdrawal. Please try again later.')
+      toastError(
+        'There was an error processing your withdrawal. If this is a new node, you have to wait at least 72 ' +
+          'hours after network registration before making the first withdrawal. Otherwise, please try again later or ' +
+          'contact our support.',
+      )
     } finally {
       setIsLoading(false)
     }
