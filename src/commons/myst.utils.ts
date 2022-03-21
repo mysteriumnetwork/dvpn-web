@@ -21,7 +21,7 @@ const format = (
 
   const ethers = new bigMyst(amount).div(DECIMAL_PART)
 
-  if (!ethers.isZero() && ethers.isLessThan(lowestDisplayable)) {
+  if (ethers.gt(0) && ethers.isLessThan(lowestDisplayable)) {
     return `< ${lowestDisplayable.toFixed(requiredPrecision)}${symbol}`
   }
   return `${ethers.toFixed(requiredPrecision)}${symbol}`

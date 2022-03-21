@@ -7,29 +7,23 @@
 import { SessionStats } from 'mysterium-vpn-js'
 import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { tequila } from '../../../../api/wrapped-calls'
 import { ReactComponent as WalletIcon } from '../../../../assets/icons/WithdrawalWallet.svg'
 import { configParser } from '../../../../commons/config'
 import { seconds2Time } from '../../../../commons/date.utils'
-import { parseError } from '../../../../commons/error.utils'
-import { feeCalculator } from '../../../../commons/fees'
 import formatBytes, { add } from '../../../../commons/formatBytes'
 import { myst } from '../../../../commons/myst.utils'
-import { toastError, toastSuccess } from '../../../../commons/toast.utils'
-import ConfirmationDialog from '../../../../Components/ConfirmationDialogue/ConfirmationDialog'
 import { selectors } from '../../../../redux/selectors'
-import { FeesTable } from '../Fees/FeesTable'
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
 import { HeroStatCard } from './HeroStatCard'
+import { SettleModal } from './SettleModal'
 import { StatCard } from './StatCard'
 
 const UnsettledEarnings = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const fees = useSelector(selectors.feesSelector)
-  const chainSummary = useSelector(selectors.chainSummarySelector)
 
-  const [showConfirmation, setShowConfirmation] = useState<boolean>(false)
+  const [showModal, setShowModal] = useState<boolean>(false)
 
   const tooltipText = useMemo(
     () =>
@@ -41,14 +35,6 @@ const UnsettledEarnings = () => {
     [fees.settlement, config],
   )
 
-  const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earnings, fees), [
-    fees.hermes,
-    fees.settlement,
-    identity.earnings,
-  ])
-
-  const isConfirmDisables = calculatedFees.profitsMyst <= 0
-
   return (
     <>
       <StatCard
@@ -58,9 +44,10 @@ const UnsettledEarnings = () => {
         name="Unsettled earnings"
         helpText={tooltipText}
         action="Settle"
-        onAction={() => setShowConfirmation(true)}
+        onAction={() => setShowModal(true)}
       />
-      <ConfirmationDialog
+      <SettleModal open={showModal} onClose={() => setShowModal(false)} />
+      {/*<ConfirmationDialog
         open={showConfirmation}
         onCancel={() => setShowConfirmation(false)}
         message="Please click SETTLE to proceed with settlement to Balance. Note: Settlement transaction may take a few minutes to complete."
@@ -77,7 +64,7 @@ const UnsettledEarnings = () => {
             console.error(parseError(err))
           }
         }}
-      />
+      />*/}
     </>
   )
 }

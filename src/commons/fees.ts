@@ -4,26 +4,34 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Fees } from 'mysterium-vpn-js'
+import BigNumber from 'bignumber.js'
+import { Fees, Tokens } from 'mysterium-vpn-js'
+import { myst } from './myst.utils'
 
 export interface CalculatedFees {
-  earningsMyst: number
+  earningsWei: BigNumber
   hermesCutPercent: number
-  hermesCutMyst: number
-  blockchainFee: number
-  profitsMyst: number
+  hermesCutWei: BigNumber
+  blockchainFeeWei: BigNumber
+  profitsWei: BigNumber
+  totalFeesWei: BigNumber
 }
 
-const calculateEarnings = (earnings: number, fees: Fees): CalculatedFees => {
-  const hermesCutPercent = fees.hermes / 10000
-  const hermesCutMyst = earnings * hermesCutPercent
-  const profitsMyst = earnings - hermesCutMyst - fees.settlement
+const calculateEarnings = (earnings: Tokens, fees: Fees): CalculatedFees => {
+  const { toBig } = myst
+  const { settlementTokens } = fees
+  const hermesCutPercent = Number(fees.hermesPercent)
+  const hermesCutWei = toBig(earnings.wei).times(hermesCutPercent)
+  const totalFeesWei = toBig(hermesCutWei).plus(settlementTokens.wei)
+  const profitsWei = toBig(earnings.wei).minus(totalFeesWei)
+
   return {
-    earningsMyst: earnings,
-    hermesCutMyst,
+    earningsWei: toBig(earnings.wei),
+    hermesCutWei,
     hermesCutPercent,
-    blockchainFee: fees.settlement,
-    profitsMyst,
+    blockchainFeeWei: toBig(settlementTokens.wei),
+    profitsWei,
+    totalFeesWei,
   }
 }
 
