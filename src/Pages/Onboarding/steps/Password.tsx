@@ -17,7 +17,7 @@ import Button from '../../../Components/Buttons/Button'
 import { Checkbox } from '../../../Components/Checkbox/Checkbox'
 import Tooltip from '../../../Components/Tooltip/Tooltip'
 import { TextField } from '../../../Components/TextField/TextField'
-import Errors from '../../../Components/Validation/Errors'
+import Error from '../../../Components/Validation/Error'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
 import { updateAuthenticatedStore } from '../../../redux/app.slice'
 import styles from './Steps.module.scss'
@@ -174,7 +174,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
         <p className={classNames(styles.passwordContentDescription, 'm-b-20')}>
           <strong>Please create default WebUI password. At least 10 characters are required.</strong>
         </p>
-        <Errors error={state.error} errorMessage={state.errorMessage} />
+        <Error show={state.error} errorMessage={state.errorMessage} />
         <InputGroup label="Node UI password">
           <TextField onChange={onPasswordChange} type="password" placeholder={'*********'} value={state.password} />
         </InputGroup>
