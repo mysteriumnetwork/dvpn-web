@@ -17,7 +17,7 @@ import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../Components/Modal/Modal'
 import { Option, Select } from '../../../../Components/Select/Select'
 import { TextField } from '../../../../Components/TextField/TextField'
-import Errors from '../../../../Components/Validation/Errors'
+import Error from '../../../../Components/Validation/Error'
 import { selectors } from '../../../../redux/selectors'
 import { FeesTable } from '../Fees/FeesTable'
 import styles from './SettleModal.module.scss'
@@ -136,8 +136,8 @@ export const SettleModal = ({ open, onClose }: Props) => {
       }}
     >
       <div className={styles.errors}>
-        {state.errors.map((message) => (
-          <Errors error errorMessage={message} />
+        {state.errors.map((message, idx) => (
+          <Error key={idx} show errorMessage={message} />
         ))}
       </div>
       <p className={styles.info}>

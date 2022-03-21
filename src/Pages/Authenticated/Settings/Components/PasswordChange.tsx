@@ -12,7 +12,7 @@ import { validatePassword } from '../../../../commons/password'
 import { toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'
-import Errors from '../../../../Components/Validation/Errors'
+import Error from '../../../../Components/Validation/Error'
 import { DEFAULT_USERNAME } from '../../../../constants/defaults'
 import styles from './Components.module.scss'
 import classNames from 'classnames'
@@ -75,7 +75,7 @@ const PasswordChange = () => {
 
   return (
     <form onSubmit={handleSubmitPassword}>
-      <Errors error={values.error} errorMessage={values.errorMessage} />
+      <Error show={values.error} errorMessage={values.errorMessage} />
 
       <div className="input-group">
         <div className="text-field-label">Current password</div>

@@ -8,16 +8,16 @@ import Collapse from '@material-ui/core/Collapse'
 import { Alert } from '@material-ui/lab'
 
 interface Props {
-  error: boolean
+  show: boolean
   errorMessage: string
 }
 
-const Errors = ({ error, errorMessage }: Props) => {
+const Error = ({ show, errorMessage }: Props) => {
   return (
-    <Collapse in={error}>
+    <Collapse in={show}>
       <Alert severity="error">{errorMessage}</Alert>
     </Collapse>
   )
 }
 
-export default Errors
+export default Error

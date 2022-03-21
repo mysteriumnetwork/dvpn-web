@@ -11,7 +11,7 @@ import { configParser } from '../../../../../commons/config'
 import { callWithToast } from '../../../../../commons/promise.utils'
 import Button from '../../../../../Components/Buttons/Button'
 import { TextField } from '../../../../../Components/TextField/TextField'
-import Errors from '../../../../../Components/Validation/Errors'
+import Error from '../../../../../Components/Validation/Error'
 import { validateData } from './advanced.utils'
 import { TraversalProp, NATTraversalOrder } from './NATTraversalOrder'
 import styles from './Advanced.module.scss'
@@ -139,7 +139,7 @@ export const Advanced = ({ config, defaultConfig, onSave }: Props) => {
 
   return (
     <form onSubmit={handleSave}>
-      <Errors error={state.error} errorMessage={state.errorMessage} />
+      <Error show={state.error} errorMessage={state.errorMessage} />
       <div className="input-group">
         <div className="input-group__label">UDP Port Range</div>
         <TextField
