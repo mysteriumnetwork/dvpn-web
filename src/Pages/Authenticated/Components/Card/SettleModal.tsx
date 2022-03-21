@@ -98,7 +98,11 @@ export const SettleModal = ({ open, onClose }: Props) => {
   useEffect(() => {
     const errors: string[] = []
     if (calculatedFees.profitsWei.lt(0)) {
-      errors.push("You don't have enough earnings to cover settlement costs")
+      errors.push(
+        `You don’t have enough earnings to cover settlement costs (at least ${display(
+          calculatedFees.totalFeesWei,
+        )} MYST is needed)`,
+      )
     }
     if (isExternal && !isValidEthereumAddress(state.externalWalletAddress)) {
       errors.push('Invalid external wallet address')
