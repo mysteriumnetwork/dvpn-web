@@ -22,6 +22,7 @@ import IdentityInformation from './Components/IdentityInformation'
 import MMN from './Components/MMN'
 import PasswordChange from './Components/PasswordChange'
 import PayoutAddress from './Components/PayoutAddress'
+import { SettlementSettings } from './Components/SettlementSettings'
 
 import styles from './SetingsPage.module.scss'
 import { selectors } from '../../../redux/selectors'
@@ -105,6 +106,9 @@ const SettingsPage = () => {
           <div className={styles.settingsCard}>
             <Card title="WebUI security">
               <PasswordChange />
+            </Card>
+            <Card title="Settlement Settings">
+              <SettlementSettings />
             </Card>
           </div>
 
