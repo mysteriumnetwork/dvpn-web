@@ -22,7 +22,7 @@ import { selectors } from '../../../../redux/selectors'
 import { FeesTable } from '../Fees/FeesTable'
 import styles from './SettleModal.module.scss'
 
-const { api } = tequila
+const { api, refreshBeneficiary } = tequila
 const { display, toWeiBig } = myst
 
 interface Props {
@@ -116,6 +116,7 @@ export const SettleModal = ({ open, onClose }: Props) => {
           ? `Automatic withdrawal to ${state.externalWalletAddress} request submitted`
           : 'Settlement request submitted!',
       )
+      await refreshBeneficiary(identity.id)
     } catch (err: any) {
       parseAndToastError(err)
     }
