@@ -12,7 +12,13 @@ import { connect, useSelector } from 'react-redux'
 import './App.scss'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
-import { Auth, isLoggedIn, updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
+import {
+  Auth,
+  isLoggedIn,
+  updateAuthenticatedStore,
+  updateAuthFlowLoadingStore,
+  updateBeneficiaryStore,
+} from '../redux/app.slice'
 import {
   fetchConfigAsync,
   fetchFeesAsync,
@@ -100,7 +106,7 @@ const AppRouter = ({ actions }: Props) => {
     await actions.fetchConfigAsync()
     await actions.fetchFeesAsync()
     await actions.fetchChainSummaryAsync()
-
+    await tequila.refreshBeneficiary(identity.id)
     // TODO periodically fails investigate why
     // setInterval(() => actions.fetchFeesAsync(), 60_000)
   }

@@ -37,6 +37,7 @@ export interface AppState {
   config: Config
   fees: Fees
   chainSummary: ChainSummary
+  beneficiary: string
 }
 
 const INITIAL_STATE: AppState = {
@@ -58,6 +59,7 @@ const INITIAL_STATE: AppState = {
     },
     currentChain: -1,
   },
+  beneficiary: '',
 }
 
 const slice = createSlice({
@@ -87,6 +89,9 @@ const slice = createSlice({
     },
     updateChainSummaryStore: (state, action) => {
       state.chainSummary = action.payload
+    },
+    updateBeneficiaryStore: (state, action) => {
+      state.beneficiary = action.payload
     },
   },
 })
@@ -127,5 +132,6 @@ export const {
   updateConfigStore,
   updateFeesStore,
   updateChainSummaryStore,
+  updateBeneficiaryStore,
 } = slice.actions
 export default slice.reducer
