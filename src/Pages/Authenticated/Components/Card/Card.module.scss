@@ -17,27 +17,24 @@
   @include respond-below(sm) {
     width: 100%;
   }
+}
 
-  &Value {
-    font-style: normal;
-    font-size: $larger-size;
-    line-height: 32px;
-    font-weight: $medium-weight;
-    color: $main-text-color;
-    white-space: nowrap;
-  }
+.value {
+  font-style: normal;
+  font-size: $larger-size;
+  font-weight: $medium-weight;
+  color: $main-text-color;
+  white-space: nowrap;
+}
 
-   &Label {
-    font-style: normal;
-    font-size: $normal-size;
-    line-height: 21px;
-    font-weight: $lighter-weight;
-    color: $names-text-color;
-    white-space: nowrap;
+.label {
+  font-style: normal;
+  font-size: $normal-size;
+  font-weight: $lighter-weight;
+  color: $names-text-color;
+  white-space: nowrap;
 
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

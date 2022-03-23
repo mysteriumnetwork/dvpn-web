@@ -6,21 +6,21 @@
  */
 import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { tequila } from '../../../../api/wrapped-calls'
-import { configParser } from '../../../../commons/config'
-import { parseAndToastError } from '../../../../commons/error.utils'
-import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
-import { feeCalculator } from '../../../../commons/fees'
-import { myst } from '../../../../commons/myst.utils'
-import { toastSuccess } from '../../../../commons/toast.utils'
-import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
-import { Modal } from '../../../../Components/Modal/Modal'
-import { Option, Select } from '../../../../Components/Select/Select'
-import { TextField } from '../../../../Components/TextField/TextField'
-import Error from '../../../../Components/Validation/Error'
-import { selectors } from '../../../../redux/selectors'
-import { FeesTable } from '../Fees/FeesTable'
-import styles from './SettleModal.module.scss'
+import { tequila } from '../../../../../api/wrapped-calls'
+import { configParser } from '../../../../../commons/config'
+import { parseAndToastError } from '../../../../../commons/error.utils'
+import { isValidEthereumAddress } from '../../../../../commons/ethereum.utils'
+import { feeCalculator } from '../../../../../commons/fees'
+import { myst } from '../../../../../commons/myst.utils'
+import { toastSuccess } from '../../../../../commons/toast.utils'
+import { InputGroup } from '../../../../../Components/InputGroups/InputGroup'
+import { Modal } from '../../../../../Components/Modal/Modal'
+import { Option, Select } from '../../../../../Components/Select/Select'
+import { TextField } from '../../../../../Components/TextField/TextField'
+import Error from '../../../../../Components/Validation/Error'
+import { selectors } from '../../../../../redux/selectors'
+import { FeesTable } from '../../Fees/FeesTable'
+import styles from './SettleSettingsModal.module.scss'
 
 const { api, refreshBeneficiary } = tequila
 const { display, toWeiBig } = myst
@@ -42,7 +42,7 @@ interface State {
   errors: string[]
 }
 
-export const SettleModal = ({ open, onClose }: Props) => {
+export const SettleSettingsModal = ({ open, onClose }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const settlementThresholdEther = configParser.zeroStakeSettlementThreshold(config)
@@ -66,16 +66,15 @@ export const SettleModal = ({ open, onClose }: Props) => {
     })()
   }, [])
 
-  const { earningsTokens } = useSelector(selectors.currentIdentitySelector)
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const fees = useSelector(selectors.feesSelector)
 
   const isExternal = state.settleOption.value === 'external'
 
-  const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(earningsTokens, fees), [
+  const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earningsTokens, fees), [
     fees.hermesPercent,
     fees.settlement,
-    earningsTokens.wei,
+    identity.earningsTokens.wei,
   ])
 
   const handleOptionsChange = (o: Option | Option[]) => setState((p) => ({ ...p, settleOption: o as Option }))
@@ -146,7 +145,7 @@ export const SettleModal = ({ open, onClose }: Props) => {
         directly to your external wallet. Settlement is done automatically when earnings reach{' '}
         {display(toWeiBig(settlementThresholdEther))} or manually when Settle button below is clicked.
       </p>
-      <FeesTable earnings={earningsTokens} chainSummary={chainSummary} calculatedFees={calculatedFees} />
+      <FeesTable earnings={identity.earningsTokens} chainSummary={chainSummary} calculatedFees={calculatedFees} />
       <InputGroup label="Withdrawal mode:">
         <Select value={state.settleOption} options={settleOptions} onChange={handleOptionsChange} />
       </InputGroup>
