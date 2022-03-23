@@ -22,14 +22,22 @@ import { Media } from '../../../../../commons/media.utils'
 const { display, toWeiBig, toBig } = myst
 
 export const EarningsCard = () => {
+  const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
+  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
+  const isBalanceVisible = toBig(balanceTokens.wei).gte(toWeiBig(0.001)) || !isAutoWithdrawal
+
   return (
     <>
       <Media.Desktop>
         <Card width="100%">
           <div className={styles.split}>
             <Earnings />
-            <div className={styles.separator} />
-            <Balance />
+            {isBalanceVisible && (
+              <>
+                <div className={styles.separator} />
+                <Balance />
+              </>
+            )}
           </div>
         </Card>
       </Media.Desktop>
@@ -37,9 +45,11 @@ export const EarningsCard = () => {
         <Card>
           <Earnings />
         </Card>
-        <Card>
-          <Balance />
-        </Card>
+        {isBalanceVisible && (
+          <Card>
+            <Balance />
+          </Card>
+        )}
       </Media.Mobile>
     </>
   )
@@ -48,12 +58,15 @@ export const EarningsCard = () => {
 const Earnings = () => {
   const { earningsTokens } = useSelector(selectors.currentIdentitySelector)
   const { settlementTokens } = useSelector(selectors.feesSelector)
+  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
   const config = useSelector(selectors.configSelector)
   const threshold = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
 
   const tooltipText = useMemo(
     () =>
-      `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${threshold} MYST is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus blockchain fees (${display(
+      `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${display(
+        threshold,
+      )} MYST is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus blockchain fees (${display(
         display(settlementTokens.wei),
       )}), so Balance will be lower than Total earnings.`,
     [threshold, config],
@@ -86,7 +99,7 @@ const Earnings = () => {
           settle
         </Button>
         <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)}>
-          Automatic
+          {isAutoWithdrawal ? 'Automatic Withdrawal: ON' : 'Automatic Withdrawal: OFF'}
         </Button>
       </div>
       <QuickSettleModal open={quickSettleOpen} onClose={() => setQuickSettleOpen(false)} />

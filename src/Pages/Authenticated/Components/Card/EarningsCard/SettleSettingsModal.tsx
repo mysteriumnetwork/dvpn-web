@@ -47,6 +47,7 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
   const config = useSelector(selectors.configSelector)
   const settlementThresholdEther = configParser.zeroStakeSettlementThreshold(config)
   const docsUrl = configParser.docsAddress(config)
+  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
 
   const [state, setState] = useState<State>({
     settleOption: { value: '', label: '' },
@@ -59,7 +60,12 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
     ;(async () => {
       try {
         const { address } = await api.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
-        setState((p) => ({ ...p, settleOption: settleOptions[0], externalWalletAddress: address, isLoading: false }))
+        setState((p) => ({
+          ...p,
+          settleOption: settleOptions[isAutoWithdrawal ? 0 : 1],
+          externalWalletAddress: address,
+          isLoading: false,
+        }))
       } catch (e: any) {
         parseAndToastError(e)
       }
@@ -122,6 +128,8 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
     setLoading(false)
   }
 
+  const isSaveDisabled = state.errors.length > 0
+
   return (
     <Modal
       open={open}
@@ -131,8 +139,8 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
       controls={{
         onClose: onClose,
         onSave: handleSettle,
-        onSaveDisabled: state.errors.length > 0,
-        onSaveLabel: isExternal ? 'Update settlement beneficiary and settle' : 'Settle',
+        onSaveDisabled: isSaveDisabled,
+        onSaveLabel: isExternal ? 'Turn on automatic withdrawal' : 'Turn on manual withdrawal',
       }}
     >
       <div className={styles.errors}>

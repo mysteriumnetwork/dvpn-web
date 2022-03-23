@@ -4,12 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { TOKENS_EMPTY } from '../constants/instances'
-import { AppState, currentIdentity, onBoarding } from './app.slice'
-import { SSEState } from './sse.slice'
-import { IdentityRegistrationStatus } from 'mysterium-vpn-js/lib/identity/identity'
 import { ChainSummary, Fees, Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { IdentityRegistrationStatus } from 'mysterium-vpn-js/lib/identity/identity'
+import { TOKENS_EMPTY } from '../constants/instances'
+import { AppState, onBoarding } from './app.slice'
+import { SSEState } from './sse.slice'
 
 export const EMPTY_IDENTITY: Identity = {
   id: '0x',
@@ -30,31 +30,27 @@ interface RootState {
   sse: SSEState
 }
 
-const currentIdentitySelector = ({ app, sse }: RootState): Identity => {
-  const identity = currentIdentity(app.currentIdentityRef, sse.appState?.identities)
-  return identity || EMPTY_IDENTITY
-}
+const currentIdentitySelector = ({ app }: RootState): Identity => app.currentIdentity || EMPTY_IDENTITY
 
-const feesSelector = ({ app }: RootState): Fees => {
-  return app.fees
-}
+const feesSelector = ({ app }: RootState): Fees => app.fees
 
-const chainSummarySelector = ({ app }: RootState): ChainSummary => {
-  return app.chainSummary
-}
+const chainSummarySelector = ({ app }: RootState): ChainSummary => app.chainSummary
 
-const configSelector = ({ app }: RootState): Config => {
-  return app.config
-}
+const configSelector = ({ app }: RootState): Config => app.config
 
-const onBoardingStateSelector = ({ app, sse }: { app: AppState; sse: SSEState }) =>
+const onBoardingStateSelector = ({ app, sse }: RootState) =>
   onBoarding(app.auth, app.terms, currentIdentitySelector({ app, sse }))
 
-const liveSessionsSelector = ({ sse }: { sse: SSEState }) => sse.appState?.sessions || []
+const liveSessionsSelector = ({ sse }: RootState) => sse.appState?.sessions || []
 
-const liveSessionStatsSelector = ({ sse }: { sse: SSEState }) => sse.appState?.sessionsStats || {}
+const liveSessionStatsSelector = ({ sse }: RootState) => sse.appState?.sessionsStats || {}
 
-const serviceInfoSelector = ({ sse }: { sse: SSEState }) => sse.appState?.serviceInfo || []
+const serviceInfoSelector = ({ sse }: RootState) => sse.appState?.serviceInfo || []
+
+const isAutomaticWithdrawalSelector = ({ app }: RootState) => {
+  const { beneficiary, currentIdentity } = app
+  return currentIdentity.channelAddress !== beneficiary
+}
 
 export const selectors = {
   currentIdentitySelector,
@@ -65,4 +61,5 @@ export const selectors = {
   liveSessionsSelector,
   liveSessionStatsSelector,
   serviceInfoSelector,
+  isAutomaticWithdrawalSelector,
 }
