@@ -11,6 +11,7 @@ import { ChainSummary, Fees, Identity, IdentityRef } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isUnregistered } from '../commons/identity.utils'
 import { FEES_EMPTY } from '../constants/instances'
+import { EMPTY_IDENTITY } from './selectors'
 
 export interface Auth {
   authenticated?: boolean
@@ -31,7 +32,7 @@ export interface Onboarding {
 export interface AppState {
   loading: boolean
   currentIdentityRef?: IdentityRef
-  currentIdentity?: Identity
+  currentIdentity: Identity
   auth: Auth
   terms: Terms
   config: Config
@@ -42,6 +43,7 @@ export interface AppState {
 
 const INITIAL_STATE: AppState = {
   loading: true,
+  currentIdentity: EMPTY_IDENTITY,
   auth: {
     authenticated: false,
     withDefaultCredentials: false,

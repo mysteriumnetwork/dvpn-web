@@ -6,28 +6,10 @@
  */
 import { AppState } from 'mysterium-vpn-js'
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
 import { connect, useSelector } from 'react-redux'
-
-import './App.scss'
-import { sseAppStateStateChanged } from '../redux/sse.slice'
-import ConnectToSSE from '../sse/server-sent-events'
-import {
-  Auth,
-  isLoggedIn,
-  updateAuthenticatedStore,
-  updateAuthFlowLoadingStore,
-  updateBeneficiaryStore,
-} from '../redux/app.slice'
-import {
-  fetchConfigAsync,
-  fetchFeesAsync,
-  fetchChainSummaryAsync,
-  fetchIdentityAsync,
-  updateTermsStoreAsync,
-} from '../redux/app.async.actions'
-import { RootState } from '../redux/store'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import { tequila } from '../api/wrapped-calls'
+import { localStorageKeys } from '../constants/local_storage_keys'
 import {
   DASHBOARD,
   ERROR,
@@ -41,15 +23,27 @@ import {
   VERSION_MANAGEMENT,
   WALLET,
 } from '../constants/routes'
+import {
+  fetchChainSummaryAsync,
+  fetchConfigAsync,
+  fetchFeesAsync,
+  fetchIdentityAsync,
+  updateTermsStoreAsync,
+} from '../redux/app.async.actions'
+import { Auth, isLoggedIn, updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
+import { selectors } from '../redux/selectors'
+import { sseAppStateStateChanged } from '../redux/sse.slice'
+import { RootState } from '../redux/store'
+import ConnectToSSE from '../sse/server-sent-events'
+
+import './App.scss'
+import AuthenticatedPage from './Authenticated/AuthenticatedPage'
+import PageNotFound from './Error/PageNotFound'
+import RestartNode from './Error/RestartNode'
+import LoginPage from './Login/LoginPage'
+import OnBoardingPage from './Onboarding/OnBoardingPage'
 
 import ProtectedRoute from './ProtectedRoute'
-import LoginPage from './Login/LoginPage'
-import RestartNode from './Error/RestartNode'
-import PageNotFound from './Error/PageNotFound'
-import AuthenticatedPage from './Authenticated/AuthenticatedPage'
-import { selectors } from '../redux/selectors'
-import OnBoardingPage from './Onboarding/OnBoardingPage'
-import { localStorageKeys } from '../constants/local_storage_keys'
 
 interface Props {
   actions: {
