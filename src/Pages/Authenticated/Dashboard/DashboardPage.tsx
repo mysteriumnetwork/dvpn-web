@@ -12,7 +12,13 @@ import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../api/tequila-client'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
+import { tequilUtils } from '../../../commons/tequil.utils'
 import { parseToastError } from '../../../commons/toast.utils'
+import { selectors } from '../../../redux/selectors'
+import { CardLayout } from '../Components/Card/CardLayout'
+import { EarningsCard } from '../Components/Card/EarningsCard/EarningsCard'
+import { Cards } from '../Components/Card/PreparedCards'
+import { Layout } from '../Layout'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import Charts from './Charts/Charts'
 
@@ -20,11 +26,6 @@ import styles from './DashboardPage.module.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Services from './Services/Services'
-import { selectors } from '../../../redux/selectors'
-import { Cards } from '../Components/Card/PreparedCards'
-import { CardLayout } from '../Components/Card/CardLayout'
-import { Layout } from '../Layout'
-import { tequilUtils } from '../../../commons/tequil.utils'
 
 interface StateProps {
   loading: boolean
@@ -107,8 +108,7 @@ const DashboardPage = () => {
               <Cards.Transferred stats={state.sessionStatsAllTime} />
               <Cards.Sessions stats={state.sessionStatsAllTime} />
               <Cards.UniqueClients stats={state.sessionStatsAllTime} />
-              <Cards.UnsettledEarnings />
-              <Cards.Balance />
+              <EarningsCard />
             </CardLayout>
           </div>
           <div className={styles.widgets}>

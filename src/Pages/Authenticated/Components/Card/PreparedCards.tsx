@@ -15,7 +15,7 @@ import { myst } from '../../../../commons/myst.utils'
 import { selectors } from '../../../../redux/selectors'
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
 import { HeroStatCard } from './HeroStatCard'
-import { SettleModal } from './SettleModal'
+import { SettleSettingsModal } from './EarningsCard/SettleSettingsModal'
 import { StatCard } from './StatCard'
 
 const UnsettledEarnings = () => {
@@ -46,7 +46,7 @@ const UnsettledEarnings = () => {
         action="Settle"
         onAction={() => setShowModal(true)}
       />
-      <SettleModal open={showModal} onClose={() => setShowModal(false)} />
+      <SettleSettingsModal open={showModal} onClose={() => setShowModal(false)} />
     </>
   )
 }

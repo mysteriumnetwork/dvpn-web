@@ -4,7 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styles from './StatCard.module.scss'
+import { Card } from './Card'
+import styles from './Card.module.scss'
 import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import React from 'react'
 import Button from '../../../../Components/Buttons/Button'
@@ -21,9 +22,9 @@ export const StatCard = ({ stat, name, helpText, action, onAction }: Props) => {
   const hasAction = action && onAction
 
   return (
-    <div className={styles.card}>
-      <p className={styles.cardValue}>{stat}</p>
-      <p className={styles.cardLabel}>
+    <Card>
+      <p className={styles.value}>{stat}</p>
+      <p className={styles.label}>
         {name}
         {helpText && <Tooltip title={helpText} />}
       </p>
@@ -32,6 +33,6 @@ export const StatCard = ({ stat, name, helpText, action, onAction }: Props) => {
           {action}
         </Button>
       )}
-    </div>
+    </Card>
   )
 }
