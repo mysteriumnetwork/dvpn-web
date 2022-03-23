@@ -25,9 +25,10 @@ export const EarningsCard = () => {
   return (
     <>
       <Media.Desktop>
-        <Card span={2}>
+        <Card width="100%">
           <div className={styles.split}>
             <Earnings />
+            <div className={styles.separator} />
             <Balance />
           </div>
         </Card>
@@ -106,18 +107,16 @@ const Balance = () => {
           <div className={styles.value}>{display(balanceTokens.wei)}</div>
           <div className={styles.label}>Internal Balance</div>
         </div>
-        <Media.Desktop>
-          <p className={styles.balanceNote}>
-            Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once
-            withdrawn this section will disappear.
-          </p>
-        </Media.Desktop>
         <WithdrawalModal isOpen={open} onClose={() => setOpen(false)} />
       </div>
       <div className={styles.balanceControl}>
         <Button onClick={() => setOpen(true)} extraStyle="outline-primary">
           withdraw
         </Button>
+        <p className={styles.balanceNote}>
+          Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once
+          withdrawn this section will disappear.
+        </p>
       </div>
     </div>
   )

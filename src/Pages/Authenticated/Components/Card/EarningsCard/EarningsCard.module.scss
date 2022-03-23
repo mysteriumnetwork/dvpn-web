@@ -15,7 +15,12 @@
 .earnings {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  flex: 1;
+
+  @include respond-below(sm) {
+    width: 100%;
+    justify-content: space-between;
+  }
 
   &ProgressContainer {
     display: flex;
@@ -67,7 +72,13 @@
 .balance {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  justify-content: space-between;
+  flex: 1;
+
+  @include respond-below(sm) {
+    width: 100%;
+    justify-content: space-between;
+  }
 
   &Title {
     display: flex;
@@ -80,7 +91,8 @@
 
   &Control {
     display: flex;
-    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
   }
 
   &Note {

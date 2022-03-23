@@ -15,7 +15,10 @@
   flex-grow: 1;
 
   @include respond-below(sm) {
+    padding: 15px 21px 18px 21px;
     width: 100%;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -37,4 +40,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  @include respond-below(sm) {
+    width: auto;
+  }
 }
