@@ -188,9 +188,9 @@ const WalletPage = () => {
       main={
         <>
           <div className={styles.cards}>
-            <CardLayout>
-              <Cards.EarningsCard />
+            <CardLayout wrap="nowrap">
               <Cards.TotalWithdrawn amount={withdrawalTotal} />
+              <Cards.EarningsCard />
             </CardLayout>
           </div>
           <FilterBar right={<DownloadCSV<SettlementListResponse> fetchData={fetchDownloadData} mapper={toCsv} />}>
