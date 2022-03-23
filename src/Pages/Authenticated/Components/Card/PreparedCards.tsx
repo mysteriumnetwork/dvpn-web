@@ -14,6 +14,7 @@ import formatBytes, { add } from '../../../../commons/formatBytes'
 import { myst } from '../../../../commons/myst.utils'
 import { selectors } from '../../../../redux/selectors'
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
+import { EarningsCard } from './EarningsCard/EarningsCard'
 import { HeroStatCard } from './HeroStatCard'
 import { SettleSettingsModal } from './EarningsCard/SettleSettingsModal'
 import { StatCard } from './StatCard'
@@ -115,4 +116,5 @@ export const Cards = {
   Transferred,
   Sessions,
   UniqueClients,
+  EarningsCard,
 }

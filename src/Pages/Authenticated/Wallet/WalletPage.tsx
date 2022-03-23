@@ -189,8 +189,7 @@ const WalletPage = () => {
         <>
           <div className={styles.cards}>
             <CardLayout>
-              <Cards.Balance />
-              <Cards.UnsettledEarnings />
+              <Cards.EarningsCard />
               <Cards.TotalWithdrawn amount={withdrawalTotal} />
             </CardLayout>
           </div>

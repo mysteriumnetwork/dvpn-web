@@ -17,18 +17,30 @@ import { Card } from '../Card'
 import { QuickSettleModal } from './QuickSettleModal'
 import { SettleSettingsModal } from './SettleSettingsModal'
 import styles from './EarningsCard.module.scss'
+import { Media } from '../../../../../commons/media.utils'
 
 const { display, toWeiBig, toBig } = myst
 
 export const EarningsCard = () => {
   return (
-    <Card span={2}>
-      <div className={styles.split}>
-        <Earnings />
-        <div className={styles.separator} />
-        <Balance />
-      </div>
-    </Card>
+    <>
+      <Media.Desktop>
+        <Card span={2}>
+          <div className={styles.split}>
+            <Earnings />
+            <Balance />
+          </div>
+        </Card>
+      </Media.Desktop>
+      <Media.Mobile>
+        <Card>
+          <Earnings />
+        </Card>
+        <Card>
+          <Balance />
+        </Card>
+      </Media.Mobile>
+    </>
   )
 }
 
@@ -60,10 +72,12 @@ const Earnings = () => {
             <Tooltip title={tooltipText} />
           </div>
         </div>
-        <div className={styles.earningsProgressContainer}>
-          <p>Next settlement</p>
-          <progress value={progressPercent} max={100} className={styles.earningsProgress} />
-        </div>
+        <Media.Desktop>
+          <div className={styles.earningsProgressContainer}>
+            <p>Next settlement</p>
+            <progress value={progressPercent} max={100} className={styles.earningsProgress} />
+          </div>
+        </Media.Desktop>
       </div>
 
       <div className={styles.earningsControls}>
@@ -87,20 +101,24 @@ const Balance = () => {
 
   return (
     <div className={styles.balance}>
-      <div className={styles.balanceTitle}>
-        <div className={styles.balanceTitleText}>Remaining internal Node balance:</div>
-        <div>{display(balanceTokens.wei)}</div>
+      <div className={styles.split}>
+        <div className={styles.balanceAmount}>
+          <div className={styles.value}>{display(balanceTokens.wei)}</div>
+          <div className={styles.label}>Internal Balance</div>
+        </div>
+        <Media.Desktop>
+          <p className={styles.balanceNote}>
+            Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once
+            withdrawn this section will disappear.
+          </p>
+        </Media.Desktop>
+        <WithdrawalModal isOpen={open} onClose={() => setOpen(false)} />
       </div>
       <div className={styles.balanceControl}>
         <Button onClick={() => setOpen(true)} extraStyle="outline-primary">
           withdraw
         </Button>
       </div>
-      <p className={styles.balanceNote}>
-        Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once withdrawn
-        this section will disappear.
-      </p>
-      <WithdrawalModal isOpen={open} onClose={() => setOpen(false)} />
     </div>
   )
 }

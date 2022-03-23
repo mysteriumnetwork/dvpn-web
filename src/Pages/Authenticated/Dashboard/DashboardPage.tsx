@@ -108,7 +108,7 @@ const DashboardPage = () => {
               <Cards.Transferred stats={state.sessionStatsAllTime} />
               <Cards.Sessions stats={state.sessionStatsAllTime} />
               <Cards.UniqueClients stats={state.sessionStatsAllTime} />
-              <EarningsCard />
+              <Cards.EarningsCard />
             </CardLayout>
           </div>
           <div className={styles.widgets}>
