@@ -5,7 +5,6 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  gap: 15px;
 }
 
 .separator {
@@ -72,16 +71,16 @@
 
   &Title {
     display: flex;
-    gap: 5px;
+    flex-direction: column;
+  }
 
-    &Text {
+  &Amount {
 
-    }
   }
 
   &Control {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
   }
 
   &Note {
