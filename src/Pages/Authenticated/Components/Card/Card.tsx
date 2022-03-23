@@ -12,11 +12,12 @@ interface Props {
   children?: ReactNode
   className?: string
   span?: number
+  width?: string
 }
 
-export const Card = ({ children, className, span = 1 }: Props) => {
+export const Card = ({ children, className, span = 1, width = 'auto' }: Props) => {
   return (
-    <div className={classNames(styles.card, className)} style={{ flexGrow: span }}>
+    <div className={classNames(styles.card, className)} style={{ flexGrow: span, width }}>
       {children}
     </div>
   )
