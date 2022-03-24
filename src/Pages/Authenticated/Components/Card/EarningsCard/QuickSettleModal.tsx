@@ -4,8 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { tequila } from '../../../../../api/wrapped-calls'
+import { parseAndToastError } from '../../../../../commons/error.utils'
 import { feeCalculator } from '../../../../../commons/fees'
 import { myst } from '../../../../../commons/myst.utils'
 import { Modal } from '../../../../../Components/Modal/Modal'
@@ -19,6 +21,8 @@ interface Props {
   onClose: () => void
 }
 
+const { api } = tequila
+
 export const QuickSettleModal = ({ open, onClose }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const fees = useSelector(selectors.feesSelector)
@@ -29,15 +33,25 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
     identity.earningsTokens.wei,
   ])
 
+  const [loading, setLoading] = useState<boolean>(false)
+
   const isNegativeProfit = calculatedFees.profitsWei.lte(0)
 
   return (
     <Modal
       open={open}
+      isLoading={loading}
       controls={{
         onClose,
-        onSave: () => {
-          onClose()
+        onSave: async () => {
+          try {
+            setLoading(true)
+            await api.settleAsync({ providerId: identity.id, hermesId: identity.hermesId })
+            onClose()
+          } catch (err: any) {
+            parseAndToastError(err)
+          }
+          setLoading(false)
         },
         onSaveLabel: 'settle',
         onSaveDisabled: isNegativeProfit,
