@@ -23,7 +23,7 @@ import { FeesTable } from '../../Fees/FeesTable'
 import styles from './SettleSettingsModal.module.scss'
 
 const { api, refreshBeneficiary } = tequila
-const { display, toWeiBig } = myst
+const { display } = myst
 
 interface Props {
   open?: boolean
@@ -45,7 +45,6 @@ interface State {
 export const SettleSettingsModal = ({ open, onClose }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
-  const settlementThresholdEther = configParser.zeroStakeSettlementThreshold(config)
   const docsUrl = configParser.docsAddress(config)
   const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
 
@@ -102,7 +101,7 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
       errors.push(
         `You don’t have enough earnings to cover settlement costs (at least ${display(
           calculatedFees.totalFeesWei,
-        )} MYST is needed)`,
+        )} is needed)`,
       )
     }
     if (isExternal && !isValidEthereumAddress(state.externalWalletAddress)) {
@@ -134,7 +133,7 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
     <Modal
       open={open}
       isLoading={state.isLoading}
-      confirmationMessage="Are you sure you wish to settle?"
+      confirmationMessage="Are you sure you want to change settlement settings?"
       withConfirmation={true}
       controls={{
         onClose: onClose,
@@ -149,9 +148,9 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
         ))}
       </div>
       <p className={styles.info}>
-        Settlement transactions send your earnings to either node's internal balance which you can withdraw later or
-        directly to your external wallet. Settlement is done automatically when earnings reach{' '}
-        {display(toWeiBig(settlementThresholdEther))} or manually when Settle button below is clicked.
+        When automatic withdrawal is ON, your earnings are settled directly to external wallet (recommended option). If
+        automatic withdrawal is OFF then your earnings are settled to internal Node balance. Note: settlement setting
+        update might take a few minutes to complete.
       </p>
       <FeesTable earnings={identity.earningsTokens} chainSummary={chainSummary} calculatedFees={calculatedFees} />
       <InputGroup label="Withdrawal mode:">

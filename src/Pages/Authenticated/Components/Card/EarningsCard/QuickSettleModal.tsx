@@ -47,7 +47,7 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
         show={isNegativeProfit}
         errorMessage={`You don’t have enough earnings to cover settlement costs (at least ${myst.display(
           calculatedFees.totalFeesWei,
-        )} MYST is needed)`}
+        )} is needed)`}
       />
       <p className={styles.header}>
         Please click SETTLE to proceed with settlement to Balance. Note: Settlement transaction may take a few minutes

@@ -52,6 +52,8 @@ const isAutomaticWithdrawalSelector = ({ app }: RootState) => {
   return currentIdentity.channelAddress !== beneficiary
 }
 
+const beneficiarySelector = ({ app }: RootState) => app.beneficiary
+
 export const selectors = {
   currentIdentitySelector,
   feesSelector,
@@ -62,4 +64,5 @@ export const selectors = {
   liveSessionStatsSelector,
   serviceInfoSelector,
   isAutomaticWithdrawalSelector,
+  beneficiarySelector,
 }
