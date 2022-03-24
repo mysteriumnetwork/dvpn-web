@@ -59,20 +59,23 @@ const Earnings = () => {
   const { earningsTokens } = useSelector(selectors.currentIdentitySelector)
   const { settlementTokens } = useSelector(selectors.feesSelector)
   const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
+  const beneficiary = useSelector(selectors.beneficiarySelector)
   const config = useSelector(selectors.configSelector)
-  const threshold = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
+  const thresholdWei = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
 
   const tooltipText = useMemo(
     () =>
-      `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${display(
-        threshold,
-      )} MYST is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus blockchain fees (${display(
-        display(settlementTokens.wei),
-      )}), so Balance will be lower than Total earnings.`,
-    [threshold, config],
+      `These are confirmed earnings which are not settled to your ${
+        isAutoWithdrawal ? beneficiary : 'balance'
+      } yet. Settlement is done either automatically when ${display(thresholdWei, {
+        fractionDigits: 1,
+      })} is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus current blockchain fees (${display(
+        settlementTokens.wei,
+      )}).`,
+    [thresholdWei, settlementTokens.wei],
   )
 
-  const progressPercent = toBig(earningsTokens.wei).times(100).div(threshold).toNumber()
+  const progressPercent = toBig(earningsTokens.wei).times(100).div(thresholdWei).toNumber()
 
   const [withdrawalOpen, setWithdrawalOpen] = useState<boolean>(false)
   const [quickSettleOpen, setQuickSettleOpen] = useState<boolean>(false)
@@ -80,7 +83,7 @@ const Earnings = () => {
     <div className={styles.earnings}>
       <div className={styles.split}>
         <div className={styles.earningsAmount}>
-          <div className={styles.value}>{display(earningsTokens.wei)}</div>
+          <div className={styles.value}>{display(earningsTokens.wei, { fractionDigits: 2 })}</div>
           <div className={styles.label}>
             Unsettled earnings
             <Tooltip title={tooltipText} />
@@ -117,7 +120,7 @@ const Balance = () => {
     <div className={styles.balance}>
       <div className={styles.split}>
         <div className={styles.balanceAmount}>
-          <div className={styles.value}>{display(balanceTokens.wei)}</div>
+          <div className={styles.value}>{display(balanceTokens.wei, { fractionDigits: 2 })}</div>
           <div className={styles.label}>Internal Balance</div>
         </div>
         <WithdrawalModal isOpen={open} onClose={() => setOpen(false)} />
