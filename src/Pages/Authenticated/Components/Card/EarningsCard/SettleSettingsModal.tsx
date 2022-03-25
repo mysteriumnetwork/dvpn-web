@@ -88,13 +88,6 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
 
   const setLoading = (b: boolean = true) => setState((p) => ({ ...p, isLoading: b }))
 
-  const settleRequest = { providerId: identity.id, hermesId: identity.hermesId }
-  const settleBeneficiaryRequest = {
-    providerId: identity.id,
-    hermesId: identity.hermesId,
-    beneficiary: state.externalWalletAddress,
-  }
-
   useEffect(() => {
     const errors: string[] = []
     if (calculatedFees.profitsWei.lt(0)) {
@@ -113,7 +106,11 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
   const handleSettle = async () => {
     setLoading()
     try {
-      isExternal ? await api.settleWithBeneficiary(settleBeneficiaryRequest) : await api.settleAsync(settleRequest)
+      await api.settleWithBeneficiary({
+        providerId: identity.id,
+        hermesId: identity.hermesId,
+        beneficiary: isExternal ? state.externalWalletAddress : identity.channelAddress,
+      })
       onClose()
       toastSuccess(
         isExternal
