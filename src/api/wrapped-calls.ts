@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
-import { TequilapiError } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 
 import { store } from '../redux/store'
@@ -24,21 +23,15 @@ const loginWithDefaultCredentials = async (): Promise<boolean> => {
     await tequilaClient.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD })
     return true
   } catch (e) {
-    if (e instanceof TequilapiError && e.isUnauthorizedError) {
-      return false
-    }
+    return false
   }
-
-  return false
 }
 
 const isUserAuthenticated = async (): Promise<boolean> => {
   try {
     await tequilaClient.identityList()
   } catch (e) {
-    if (e instanceof TequilapiError && e.isUnauthorizedError) {
-      return false
-    }
+    return false
   }
 
   return true

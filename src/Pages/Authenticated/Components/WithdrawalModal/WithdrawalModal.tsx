@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
+import { parseAndToastError } from '../../../../commons/error.utils'
 import { toOptions } from '../../../../commons/mapping.utils'
 import { currentCurrency } from '../../../../commons/money.utils'
 import { myst } from '../../../../commons/myst.utils'
@@ -18,6 +19,7 @@ import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../Components/Modal/Modal'
 import { Option, Select } from '../../../../Components/Select/Select'
 import { TextField } from '../../../../Components/TextField/TextField'
+import { FEES_EMPTY } from '../../../../constants/instances'
 import { selectors } from '../../../../redux/selectors'
 import { CollapseAlert } from './CollapseAlert'
 import { FeesRibbon } from './FeesRibbon'
@@ -48,12 +50,7 @@ const initialState: State = {
   toChain: { label: '0', value: '0' },
   isLoading: true,
   hermesId: '',
-  fees: {
-    registration: 0,
-    settlement: 0,
-    hermes: 0,
-    decreaseStake: 0,
-  },
+  fees: FEES_EMPTY,
 }
 
 const MINIMAL_WITHDRAWAL_AMOUNT_WEI = myst.toWeiBig('0.01') // 0.01 MYST
@@ -175,7 +172,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
       toastSuccess('Withdrawal completed successfully!')
       onClose()
     } catch (e: any) {
-      toastError('There was an error processing your withdrawal. Please try again later.')
+      parseAndToastError(e)
     } finally {
       setIsLoading(false)
     }

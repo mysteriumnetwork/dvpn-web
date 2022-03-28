@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { TequilapiError } from 'mysterium-vpn-js'
+import { APIError } from 'mysterium-vpn-js'
 import { useImmer } from 'use-immer'
 
 import { tequilaClient } from '../../../../api/tequila-client'
@@ -65,11 +65,8 @@ const PasswordChange = () => {
         setValues(defaultState)
         toastSuccess('Password changed.')
       })
-      .catch((error: Error) => {
-        if (error instanceof TequilapiError) {
-          const apiError = error as TequilapiError
-          setValues({ ...values, error: true, errorMessage: apiError.message, loading: false })
-        }
+      .catch((error: APIError) => {
+        setValues({ ...values, error: true, errorMessage: error.message, loading: false })
       })
   }
 

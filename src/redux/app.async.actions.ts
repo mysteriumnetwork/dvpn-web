@@ -6,21 +6,23 @@
  */
 import { Dispatch } from 'react'
 
-import { tequilaClient } from '../api/tequila-client'
+import { tequila } from '../api/wrapped-calls'
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
 import {
-  updateTermsStore,
+  updateChainSummaryStore,
   updateConfigStore,
+  updateFeesStore,
   updateIdentityRefStore,
   updateIdentityStore,
-  updateFeesStore,
-  updateChainSummaryStore,
+  updateTermsStore,
 } from './app.slice'
+
+const { api } = tequila
 
 export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const terms = await tequilaClient.terms()
+    const terms = await api.terms()
     dispatch(
       updateTermsStore({
         acceptedVersion: terms.agreedVersion,
@@ -31,32 +33,32 @@ export const updateTermsStoreAsync = (): ((dispatch: Dispatch<any>) => void) => 
 
 export const fetchIdentityAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const identityRef = await tequilaClient.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
+    const identityRef = await api.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
     dispatch(updateIdentityRefStore(identityRef))
 
-    await tequilaClient.identityBalanceRefresh(identityRef.id)
-    const identity = await tequilaClient.identity(identityRef.id)
+    await api.identityBalanceRefresh(identityRef.id)
+    const identity = await api.identity(identityRef.id)
     dispatch(updateIdentityStore(identity))
   }
 }
 
 export const fetchConfigAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const config = await tequilaClient.config()
+    const config = await api.config()
     dispatch(updateConfigStore(config))
   }
 }
 
 export const fetchFeesAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const fees = await tequilaClient.transactorFees()
+    const fees = await api.transactorFees()
     dispatch(updateFeesStore(fees))
   }
 }
 
 export const fetchChainSummaryAsync = (): ((dispatch: Dispatch<any>) => void) => {
   return async (dispatch) => {
-    const chainSummary = await tequilaClient.chainSummary()
+    const chainSummary = await api.chainSummary()
     dispatch(updateChainSummaryStore(chainSummary))
   }
 }

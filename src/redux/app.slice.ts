@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Fees, IdentityRef, Identity, ChainSummary } from 'mysterium-vpn-js'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { createSlice } from '@reduxjs/toolkit'
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
-import { isUnregistered } from '../commons/identity.utils'
+import { createSlice } from '@reduxjs/toolkit'
 import _ from 'lodash'
+import { ChainSummary, Fees, Identity, IdentityRef } from 'mysterium-vpn-js'
+import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { isUnregistered } from '../commons/identity.utils'
+import { FEES_EMPTY } from '../constants/instances'
 
 export interface Auth {
   authenticated?: boolean
@@ -47,12 +48,7 @@ const INITIAL_STATE: AppState = {
   terms: {
     acceptedVersion: undefined,
   },
-  fees: {
-    registration: 0,
-    settlement: 0,
-    hermes: 0,
-    decreaseStake: 0,
-  },
+  fees: FEES_EMPTY,
   config: {
     data: {},
   },
