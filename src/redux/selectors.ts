@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { TOKENS_EMPTY } from '../constants/instances'
 import { AppState, currentIdentity, onBoarding } from './app.slice'
 import { SSEState } from './sse.slice'
 import { IdentityRegistrationStatus } from 'mysterium-vpn-js/lib/identity/identity'
@@ -15,13 +16,11 @@ export const EMPTY_IDENTITY: Identity = {
   registrationStatus: IdentityRegistrationStatus.RegistrationError,
   channelAddress: '0x',
   balance: 0,
-  balanceTokens: {
-    wei: '0',
-    ether: '0',
-    human: '0',
-  },
+  balanceTokens: TOKENS_EMPTY,
   earnings: 0,
+  earningsTokens: TOKENS_EMPTY,
   earningsTotal: 0,
+  earningsTotalTokens: TOKENS_EMPTY,
   stake: 0,
   hermesId: '0x',
 }
