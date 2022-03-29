@@ -16,18 +16,17 @@ import { parseError } from '../../../commons/error.utils'
 import FEATURES from '../../../commons/features'
 import { toastError } from '../../../commons/toast.utils'
 import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
+import { selectors } from '../../../redux/selectors'
+import { Layout } from '../Layout'
 import { Advanced } from './Components/Advanced/Advanced'
 import IdentityInformation from './Components/IdentityInformation'
 
 import MMN from './Components/MMN'
 import PasswordChange from './Components/PasswordChange'
 import PayoutAddress from './Components/PayoutAddress'
-import { SettlementSettings } from './Components/SettlementSettings'
+import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
-import { selectors } from '../../../redux/selectors'
-import { Layout } from '../Layout'
-import Version from './Components/Version'
 
 interface CardProps {
   title: string
@@ -107,9 +106,9 @@ const SettingsPage = () => {
             <Card title="WebUI security">
               <PasswordChange />
             </Card>
-            <Card title="Settlement Settings">
-              <SettlementSettings />
-            </Card>
+            {/*<Card title="Settlement Settings">*/}
+            {/*  <SettlementSettings />*/}
+            {/*</Card>*/}
           </div>
 
           <div className={styles.settingsCard}>
