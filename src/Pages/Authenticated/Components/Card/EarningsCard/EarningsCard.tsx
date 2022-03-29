@@ -5,26 +5,32 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useMemo, useState } from 'react'
+import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
+import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { tequila } from '../../../../../api/wrapped-calls'
 import { configParser } from '../../../../../commons/config'
+import { Media } from '../../../../../commons/media.utils'
 import { myst } from '../../../../../commons/myst.utils'
 import Button from '../../../../../Components/Buttons/Button'
 import Tooltip from '../../../../../Components/Tooltip/Tooltip'
 import { selectors } from '../../../../../redux/selectors'
 import WithdrawalModal from '../../WithdrawalModal/WithdrawalModal'
 import { Card } from '../Card'
+import styles from './EarningsCard.module.scss'
 import { QuickSettleModal } from './QuickSettleModal'
 import { SettleSettingsModal } from './SettleSettingsModal'
-import styles from './EarningsCard.module.scss'
-import { Media } from '../../../../../commons/media.utils'
+
+const SETTINGS_BUTTON_NAME = 'Auto Withdrawal:'
 
 const { display, toWeiBig, toBig } = myst
+const { api } = tequila
 
 export const EarningsCard = () => {
   const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
   const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
   const isBalanceVisible = toBig(balanceTokens.wei).gte(toWeiBig(0.001)) || !isAutoWithdrawal
+  // const isBalanceVisible = true
 
   return (
     <>
@@ -54,19 +60,25 @@ export const EarningsCard = () => {
     </>
   )
 }
-
 const Earnings = () => {
-  const { earningsTokens } = useSelector(selectors.currentIdentitySelector)
+  const { earningsTokens, id } = useSelector(selectors.currentIdentitySelector)
   const { settlementTokens } = useSelector(selectors.feesSelector)
   const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
-  const beneficiary = useSelector(selectors.beneficiarySelector)
   const config = useSelector(selectors.configSelector)
   const thresholdWei = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
+
+  const [beneficiaryTx, setBeneficiaryTx] = useState<BeneficiaryTxStatus | undefined>()
+
+  useEffect(() => {
+    ;(async () => {
+      setBeneficiaryTx(await api.beneficiaryTxStatus(id).catch(() => undefined))
+    })()
+  }, [])
 
   const tooltipText = useMemo(
     () =>
       `These are confirmed earnings which are not settled to your ${
-        isAutoWithdrawal ? beneficiary : 'balance'
+        isAutoWithdrawal ? 'external wallet' : 'balance'
       } yet. Settlement is done either automatically when ${display(thresholdWei, {
         fractionDigits: 1,
       })} is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus current blockchain fees (${display(
@@ -79,6 +91,15 @@ const Earnings = () => {
 
   const [withdrawalOpen, setWithdrawalOpen] = useState<boolean>(false)
   const [quickSettleOpen, setQuickSettleOpen] = useState<boolean>(false)
+
+  const settingsButtonName = () => {
+    if (beneficiaryTx?.state === 'completed' && beneficiaryTx?.error) {
+      return `${SETTINGS_BUTTON_NAME} ERROR`
+    }
+
+    return isAutoWithdrawal ? `${SETTINGS_BUTTON_NAME} ON` : `${SETTINGS_BUTTON_NAME} OFF`
+  }
+
   return (
     <div className={styles.earnings}>
       <div className={styles.split}>
@@ -91,7 +112,7 @@ const Earnings = () => {
         </div>
         <Media.Desktop>
           <div className={styles.earningsProgressContainer}>
-            <p>Next settlement</p>
+            <p>Next auto settlement ({display(thresholdWei, { fractionDigits: 1 })})</p>
             <progress value={progressPercent} max={100} className={styles.earningsProgress} />
           </div>
         </Media.Desktop>
@@ -99,10 +120,15 @@ const Earnings = () => {
 
       <div className={styles.earningsControls}>
         <Button extraStyle="outline-primary" onClick={() => setQuickSettleOpen(true)}>
-          settle
+          settle Now
         </Button>
-        <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)}>
-          {isAutoWithdrawal ? 'Automatic Withdrawal: ON' : 'Automatic Withdrawal: OFF'}
+
+        <Button
+          extraStyle="outline-primary"
+          onClick={() => setWithdrawalOpen(true)}
+          isLoading={beneficiaryTx?.state === 'pending'}
+        >
+          {settingsButtonName()}
         </Button>
       </div>
       <QuickSettleModal open={quickSettleOpen} onClose={() => setQuickSettleOpen(false)} />

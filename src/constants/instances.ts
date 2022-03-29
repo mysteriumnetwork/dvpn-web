@@ -18,7 +18,6 @@ export const FEES_EMPTY: Fees = Object.freeze({
   settlement: 0,
   settlementTokens: TOKENS_EMPTY,
   hermes: 0,
-  hermesPercent: '0',
   hermesTokens: TOKENS_EMPTY,
   hermesPercent: '0.000',
   decreaseStake: 0,

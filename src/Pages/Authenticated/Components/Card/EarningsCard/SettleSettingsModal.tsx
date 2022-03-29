@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
@@ -40,13 +41,13 @@ interface State {
   externalWalletAddress: string
   isLoading: boolean
   errors: string[]
+  txStatus?: BeneficiaryTxStatus
 }
 
 export const SettleSettingsModal = ({ open, onClose }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const docsUrl = configParser.docsAddress(config)
-  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
 
   const [state, setState] = useState<State>({
     settleOption: { value: '', label: '' },
@@ -58,11 +59,15 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
   useEffect(() => {
     ;(async () => {
       try {
-        const { address } = await api.payoutAddressGet(identity.id).catch(() => ({ address: '' }))
+        const [{ address }, txStatus] = await Promise.all([
+          api.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
+          api.beneficiaryTxStatus(identity.id).catch(() => undefined),
+        ])
         setState((p) => ({
           ...p,
-          settleOption: settleOptions[isAutoWithdrawal ? 0 : 1],
+          settleOption: settleOptions[1],
           externalWalletAddress: address,
+          txStatus,
           isLoading: false,
         }))
       } catch (e: any) {
@@ -88,9 +93,11 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
 
   const setLoading = (b: boolean = true) => setState((p) => ({ ...p, isLoading: b }))
 
+  const isProfitsBelowZero = calculatedFees.profitsWei.lt(0)
+
   useEffect(() => {
     const errors: string[] = []
-    if (calculatedFees.profitsWei.lt(0)) {
+    if (isProfitsBelowZero) {
       errors.push(
         `You don’t have enough earnings to cover settlement costs (at least ${display(
           calculatedFees.totalFeesWei,
@@ -136,10 +143,13 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
         onClose: onClose,
         onSave: handleSettle,
         onSaveDisabled: isSaveDisabled,
-        onSaveLabel: isExternal ? 'Turn on automatic withdrawal' : 'Turn on manual withdrawal',
+        onSaveLabel: 'Change settlement settings',
       }}
     >
       <div className={styles.errors}>
+        {state.txStatus?.error && state.txStatus.state === 'completed' && (
+          <Error show errorMessage={state.txStatus?.error} />
+        )}
         {state.errors.map((message, idx) => (
           <Error key={idx} show errorMessage={message} />
         ))}
