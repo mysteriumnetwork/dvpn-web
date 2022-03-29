@@ -59,6 +59,9 @@ export const EarningsCard = () => {
     </>
   )
 }
+
+const ONE_MINUTE = 60 * 1000
+
 const Earnings = () => {
   const { earningsTokens, id } = useSelector(selectors.currentIdentitySelector)
   const { settlementTokens } = useSelector(selectors.feesSelector)
@@ -67,9 +70,15 @@ const Earnings = () => {
   const thresholdWei = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
 
   const [beneficiaryTx, setBeneficiaryTx] = useState<BeneficiaryTxStatus | undefined>()
+  const [isSettingsLoading, setIsSettingsLoading] = useState<boolean>(false)
+
+  const updateSettingsLoading = () => {
+    setIsSettingsLoading(beneficiaryTx?.state === 'pending')
+  }
 
   useEffect(() => {
     ;(async () => {
+      updateSettingsLoading()
       setBeneficiaryTx(await api.beneficiaryTxStatus(id).catch(() => undefined))
     })()
   }, [])
@@ -91,12 +100,19 @@ const Earnings = () => {
   const [withdrawalOpen, setWithdrawalOpen] = useState<boolean>(false)
   const [quickSettleOpen, setQuickSettleOpen] = useState<boolean>(false)
 
-  const settingsButtonName = () => {
+  const settingsButtonName = (() => {
     if (beneficiaryTx?.state === 'completed' && beneficiaryTx?.error) {
       return `${SETTINGS_BUTTON_NAME} ERROR`
     }
 
     return isAutoWithdrawal ? `${SETTINGS_BUTTON_NAME} ON` : `${SETTINGS_BUTTON_NAME} OFF`
+  })()
+
+  const initTimerTimeStamp = async () => {
+    setIsSettingsLoading(true)
+    await new Promise((r) => setInterval(r, ONE_MINUTE))
+    // @ts-ignore
+    window.location.reload(true)
   }
 
   return (
@@ -122,16 +138,12 @@ const Earnings = () => {
           settle Now
         </Button>
 
-        <Button
-          extraStyle="outline-primary"
-          onClick={() => setWithdrawalOpen(true)}
-          isLoading={beneficiaryTx?.state === 'pending'}
-        >
-          {settingsButtonName()}
+        <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
+          {settingsButtonName}
         </Button>
       </div>
       <QuickSettleModal open={quickSettleOpen} onClose={() => setQuickSettleOpen(false)} />
-      <SettleSettingsModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} />
+      <SettleSettingsModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} onSave={initTimerTimeStamp} />
     </div>
   )
 }

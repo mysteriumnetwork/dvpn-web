@@ -29,6 +29,7 @@ const { display } = myst
 interface Props {
   open?: boolean
   onClose: () => void
+  onSave: () => void
 }
 
 const settleOptions: Option[] = [
@@ -44,7 +45,7 @@ interface State {
   txStatus?: BeneficiaryTxStatus
 }
 
-export const SettleSettingsModal = ({ open, onClose }: Props) => {
+export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const docsUrl = configParser.docsAddress(config)
@@ -118,6 +119,7 @@ export const SettleSettingsModal = ({ open, onClose }: Props) => {
         hermesId: identity.hermesId,
         beneficiary: isExternal ? state.externalWalletAddress : identity.channelAddress,
       })
+      onSave()
       onClose()
       toastSuccess(
         isExternal

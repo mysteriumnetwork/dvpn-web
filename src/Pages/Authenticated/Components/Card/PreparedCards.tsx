@@ -47,7 +47,7 @@ const UnsettledEarnings = () => {
         action="Settle"
         onAction={() => setShowModal(true)}
       />
-      <SettleSettingsModal open={showModal} onClose={() => setShowModal(false)} />
+      <SettleSettingsModal open={showModal} onClose={() => setShowModal(false)} onSave={() => {}} />
     </>
   )
 }
