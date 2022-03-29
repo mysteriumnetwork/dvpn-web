@@ -30,7 +30,6 @@ export const EarningsCard = () => {
   const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
   const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
   const isBalanceVisible = toBig(balanceTokens.wei).gte(toWeiBig(0.001)) || !isAutoWithdrawal
-  // const isBalanceVisible = true
 
   return (
     <>
@@ -139,7 +138,7 @@ const Earnings = () => {
 
 const Balance = () => {
   const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
-
+  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
   const [open, setOpen] = useState<boolean>(false)
 
   return (
@@ -155,10 +154,12 @@ const Balance = () => {
         <Button onClick={() => setOpen(true)} extraStyle="outline-primary">
           withdraw
         </Button>
-        <p className={styles.balanceNote}>
-          Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once
-          withdrawn this section will disappear.
-        </p>
+        {isAutoWithdrawal && (
+          <p className={styles.balanceNote}>
+            Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once
+            withdrawn this section will disappear.
+          </p>
+        )}
       </div>
     </div>
   )

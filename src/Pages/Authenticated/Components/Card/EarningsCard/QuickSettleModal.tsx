@@ -27,6 +27,7 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const fees = useSelector(selectors.feesSelector)
   const chainSummary = useSelector(selectors.chainSummarySelector)
+  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
   const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earningsTokens, fees), [
     fees.hermesPercent,
     fees.settlement,
@@ -64,8 +65,8 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
         )} is needed)`}
       />
       <p className={styles.header}>
-        Please click SETTLE to proceed with settlement to Balance. Note: Settlement transaction may take a few minutes
-        to complete.
+        Please click SETTLE to proceed with settlement to {isAutoWithdrawal ? 'External wallet' : 'Balance'}. Note:
+        Settlement transaction may take a few minutes to complete.
       </p>
       <FeesTable earnings={identity.earningsTokens} chainSummary={chainSummary} calculatedFees={calculatedFees} />
     </Modal>
