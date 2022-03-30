@@ -13,7 +13,7 @@ import { toastSuccess } from '../../../../commons/toast.utils'
 
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'
-import Errors from '../../../../Components/Validation/Errors'
+import Error from '../../../../Components/Validation/Error'
 import styles from './Components.module.scss'
 import classNames from 'classnames'
 
@@ -76,7 +76,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   )
   return (
     <form onSubmit={handleSubmitToken}>
-      <Errors error={state.error} errorMessage={state.errorMessage} />
+      <Error show={state.error} errorMessage={state.errorMessage} />
 
       <div className="input-group">
         <div className="input-group__label">API Key ({link})</div>

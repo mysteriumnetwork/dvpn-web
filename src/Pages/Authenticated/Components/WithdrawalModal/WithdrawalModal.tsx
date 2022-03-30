@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequilaClient } from '../../../../api/tequila-client'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
-import { parseAndToastError } from '../../../../commons/error.utils'
 import { toOptions } from '../../../../commons/mapping.utils'
 import { currentCurrency } from '../../../../commons/money.utils'
 import { myst } from '../../../../commons/myst.utils'
@@ -172,7 +171,11 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
       toastSuccess('Withdrawal completed successfully!')
       onClose()
     } catch (e: any) {
-      parseAndToastError(e)
+      toastError(
+        'There was an error processing your withdrawal. If this is a new node, you have to wait at least 72 ' +
+          'hours after network registration before making the first withdrawal. Otherwise, please try again later or ' +
+          'contact our support.',
+      )
     } finally {
       setIsLoading(false)
     }

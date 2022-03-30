@@ -4,6 +4,8 @@
 .layout {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   gap: 25px;
+  @include respond-below(sm) {
+    flex-wrap: wrap !important;
+  }
 }

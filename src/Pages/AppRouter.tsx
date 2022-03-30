@@ -6,22 +6,11 @@
  */
 import { AppState } from 'mysterium-vpn-js'
 import React, { Dispatch, useEffect, useLayoutEffect } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
 import { connect, useSelector } from 'react-redux'
-
-import './App.scss'
-import { sseAppStateStateChanged } from '../redux/sse.slice'
-import ConnectToSSE from '../sse/server-sent-events'
-import { Auth, isLoggedIn, updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
-import {
-  fetchConfigAsync,
-  fetchFeesAsync,
-  fetchChainSummaryAsync,
-  fetchIdentityAsync,
-  updateTermsStoreAsync,
-} from '../redux/app.async.actions'
-import { RootState } from '../redux/store'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import { tequila } from '../api/wrapped-calls'
+import { parseToastError } from '../commons/toast.utils'
+import { localStorageKeys } from '../constants/local_storage_keys'
 import {
   DASHBOARD,
   ERROR,
@@ -35,15 +24,27 @@ import {
   VERSION_MANAGEMENT,
   WALLET,
 } from '../constants/routes'
+import {
+  fetchChainSummaryAsync,
+  fetchConfigAsync,
+  fetchFeesAsync,
+  fetchIdentityAsync,
+  updateTermsStoreAsync,
+} from '../redux/app.async.actions'
+import { Auth, isLoggedIn, updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
+import { EMPTY_IDENTITY, selectors } from '../redux/selectors'
+import { sseAppStateStateChanged } from '../redux/sse.slice'
+import { RootState } from '../redux/store'
+import ConnectToSSE from '../sse/server-sent-events'
+
+import './App.scss'
+import AuthenticatedPage from './Authenticated/AuthenticatedPage'
+import PageNotFound from './Error/PageNotFound'
+import RestartNode from './Error/RestartNode'
+import LoginPage from './Login/LoginPage'
+import OnBoardingPage from './Onboarding/OnBoardingPage'
 
 import ProtectedRoute from './ProtectedRoute'
-import LoginPage from './Login/LoginPage'
-import RestartNode from './Error/RestartNode'
-import PageNotFound from './Error/PageNotFound'
-import AuthenticatedPage from './Authenticated/AuthenticatedPage'
-import { selectors } from '../redux/selectors'
-import OnBoardingPage from './Onboarding/OnBoardingPage'
-import { localStorageKeys } from '../constants/local_storage_keys'
 
 interface Props {
   actions: {
@@ -61,13 +62,13 @@ interface Props {
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
     actions: {
-      fetchIdentityAsync: () => dispatch(fetchIdentityAsync()),
-      fetchConfigAsync: () => dispatch(fetchConfigAsync()),
-      updateTermsStoreAsync: () => dispatch(updateTermsStoreAsync()),
-      fetchFeesAsync: () => dispatch(fetchFeesAsync()),
-      fetchChainSummaryAsync: () => dispatch(fetchChainSummaryAsync()),
-      updateAuthenticatedStore: (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
-      updateAuthFlowLoadingStore: (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
+      fetchIdentityAsync: async () => dispatch(fetchIdentityAsync()),
+      fetchConfigAsync: async () => dispatch(fetchConfigAsync()),
+      updateTermsStoreAsync: async () => dispatch(updateTermsStoreAsync()),
+      fetchFeesAsync: async () => dispatch(fetchFeesAsync()),
+      fetchChainSummaryAsync: async () => dispatch(fetchChainSummaryAsync()),
+      updateAuthenticatedStore: async (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
+      updateAuthFlowLoadingStore: async (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
       sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
     },
   }
@@ -100,9 +101,6 @@ const AppRouter = ({ actions }: Props) => {
     await actions.fetchConfigAsync()
     await actions.fetchFeesAsync()
     await actions.fetchChainSummaryAsync()
-
-    // TODO periodically fails investigate why
-    // setInterval(() => actions.fetchFeesAsync(), 60_000)
   }
 
   const loadIntercomCookie = () => {
@@ -114,6 +112,29 @@ const AppRouter = ({ actions }: Props) => {
       })
     }
   }
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        if (identity.id !== EMPTY_IDENTITY.id) {
+          await tequila.refreshBeneficiary(identity.id)
+        }
+      } catch (e: any) {
+        parseToastError(e)
+      }
+    })()
+  }, [identity.id])
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     try {
+  //       actions.fetchFeesAsync()
+  //     } catch (e: any) {
+  //       console.log(e)
+  //     }
+  //   }, 30_000)
+  //   return () => clearInterval(interval)
+  // }, [])
 
   useLayoutEffect(() => {
     const blockingCheck = async () => {

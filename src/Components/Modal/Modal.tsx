@@ -11,8 +11,8 @@ import React, { useState } from 'react'
 import ConfirmationDialog from '../ConfirmationDialogue/ConfirmationDialog'
 
 interface Props {
-  open: boolean
-  children: JSX.Element | JSX.Element[]
+  open?: boolean
+  children: React.ReactNode
   closeAfterTransition?: boolean
   disableAutoFocus?: boolean
   title?: string
@@ -40,7 +40,7 @@ export const Modal = ({
 
   return (
     <MUIModal
-      open={open}
+      open={open || false}
       className={styles.modal}
       disableAutoFocus={disableAutoFocus}
       onClose={() => {}}

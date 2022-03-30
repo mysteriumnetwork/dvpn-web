@@ -11,6 +11,7 @@ import { ChainSummary, Fees, Identity, IdentityRef } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isUnregistered } from '../commons/identity.utils'
 import { FEES_EMPTY } from '../constants/instances'
+import { EMPTY_IDENTITY } from './selectors'
 
 export interface Auth {
   authenticated?: boolean
@@ -31,16 +32,18 @@ export interface Onboarding {
 export interface AppState {
   loading: boolean
   currentIdentityRef?: IdentityRef
-  currentIdentity?: Identity
+  currentIdentity: Identity
   auth: Auth
   terms: Terms
   config: Config
   fees: Fees
   chainSummary: ChainSummary
+  beneficiary: string
 }
 
 const INITIAL_STATE: AppState = {
   loading: true,
+  currentIdentity: EMPTY_IDENTITY,
   auth: {
     authenticated: false,
     withDefaultCredentials: false,
@@ -58,6 +61,7 @@ const INITIAL_STATE: AppState = {
     },
     currentChain: -1,
   },
+  beneficiary: '',
 }
 
 const slice = createSlice({
@@ -87,6 +91,9 @@ const slice = createSlice({
     },
     updateChainSummaryStore: (state, action) => {
       state.chainSummary = action.payload
+    },
+    updateBeneficiaryStore: (state, action) => {
+      state.beneficiary = action.payload
     },
   },
 })
@@ -127,5 +134,6 @@ export const {
   updateConfigStore,
   updateFeesStore,
   updateChainSummaryStore,
+  updateBeneficiaryStore,
 } = slice.actions
 export default slice.reducer

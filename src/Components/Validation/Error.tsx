@@ -4,23 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Alert, AlertTitle } from '@material-ui/lab'
 import Collapse from '@material-ui/core/Collapse'
+import { Alert } from '@material-ui/lab'
 
 interface Props {
-  error: boolean
+  show: boolean
   errorMessage: string
 }
 
-const Errors = ({ error, errorMessage }: Props) => {
+const Error = ({ show, errorMessage }: Props) => {
   return (
-    <Collapse in={error}>
-      <Alert severity="error">
-        <AlertTitle>Error</AlertTitle>
-        {errorMessage}
-      </Alert>
+    <Collapse in={show}>
+      <Alert severity="error">{errorMessage}</Alert>
     </Collapse>
   )
 }
 
-export default Errors
+export default Error

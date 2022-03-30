@@ -8,8 +8,13 @@ import styles from './CardLayout.module.scss'
 
 interface Props {
   children?: any
+  wrap?: 'wrap' | 'nowrap' | 'wrap-reverse'
 }
 
-export const CardLayout = ({ children }: Props) => {
-  return <div className={styles.layout}>{children}</div>
+export const CardLayout = ({ children, wrap = 'wrap' }: Props) => {
+  return (
+    <div className={styles.layout} style={{ flexWrap: wrap }}>
+      {children}
+    </div>
+  )
 }
