@@ -23,13 +23,13 @@ import { SettleSettingsModal } from './SettleSettingsModal'
 
 const SETTINGS_BUTTON_NAME = 'Auto Withdrawal:'
 
-const { display, toWeiBig, toBig } = myst
+const { display, toWeiBig, toBig, toEtherBig } = myst
 const { api } = tequila
 
 export const EarningsCard = () => {
   const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
   const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
-  const isBalanceVisible = toBig(balanceTokens.wei).gte(toWeiBig(0.001)) || !isAutoWithdrawal
+  const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.001) || !isAutoWithdrawal
 
   return (
     <>
