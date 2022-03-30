@@ -60,7 +60,6 @@ const TopUpModal = ({
     () => [
       { value: 'free', label: 'Register for free', disabled: !isFreeRegistrationEligible },
       { value: 'myst', label: 'Deposit MYST token' },
-      { value: 'fiat', label: 'Buy MYST with Credit or Debit card' },
     ],
     [],
   )
