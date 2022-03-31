@@ -26,7 +26,8 @@ export const MYST = ({ registrationFee, chainName, controls, mystReceived }: Pro
   return (
     <>
       <div>
-        1. Send not less than {`${registrationFee} ${currentCurrency()}`} to your identity balance on {chainName}
+        1. Send not less than {`${registrationFee} ${currentCurrency()}`} to the address below. Important: only Polygon
+        blockchain MYST is supported!
       </div>
       <div className={styles.topupChannelAddress}>{identity.channelAddress}</div>
       <div className={styles.topupQR}>

@@ -58,8 +58,8 @@ const TopUpModal = ({
     : money.flooredAmount(identity.balance, 3) >= registrationInfo.flooredFee
   const registrationOptions: Option[] = useMemo(
     () => [
-      { value: 'free', label: 'Register for free', disabled: !isFreeRegistrationEligible },
       { value: 'myst', label: 'Deposit MYST token' },
+      { value: 'fiat', label: 'Buy MYST with Paypal' },
     ],
     [],
   )
@@ -139,10 +139,8 @@ const TopUpInfo = () => (
   <>
     <div className={styles.title}>Network registration</div>
     <div className={styles.subTitle}>
-      To register your node you can either use free registration subsidised by Mysterium Network or deposit a small
-      amount of MYST token to cover registration fee.
+      To register your node on blockchain you need to deposit a small amount of MYST token to cover registration fee.
     </div>
-    <div className={styles.note}>Note: free registrations are capped per day and might not be always available.</div>
   </>
 )
 
