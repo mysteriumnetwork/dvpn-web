@@ -12,9 +12,11 @@ export const validateAndReturnCheckoutUrl = (order: PaymentOrder): string => {
   if (order.gatewayName !== PAYPAL_GATEWAY) {
     throw new Error(`Unsupported payment gateway ${order.gatewayName}`)
   }
+  // @ts-ignore
   if (!order.publicGatewayData?.checkoutUrl) {
     throw new Error('Could not retrieve secure form for payment')
   }
 
+  // @ts-ignore
   return order.publicGatewayData.checkoutUrl
 }
