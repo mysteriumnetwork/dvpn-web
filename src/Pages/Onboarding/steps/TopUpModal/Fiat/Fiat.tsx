@@ -5,23 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { CircularProgress } from '@material-ui/core'
+import _ from 'lodash'
+import { Money, PaymentGateway, PaymentOrder } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import { tequila } from '../../../../../api/wrapped-calls'
+import { countryNames } from '../../../../../commons/country'
+import { money } from '../../../../../commons/money.utils'
+import { parseToastError } from '../../../../../commons/toast.utils'
+import Button from '../../../../../Components/Buttons/Button'
+import { Item, RadioCard } from '../../../../../Components/RadioCard/RadioCard'
+import { Option, Select } from '../../../../../Components/Select/Select'
 import { selectors } from '../../../../../redux/selectors'
 import styles from './Fiat.module.scss'
-import { useImmer } from 'use-immer'
-import { countryNames } from '../../../../../commons/country'
-import { tequila } from '../../../../../api/wrapped-calls'
-import { parseToastError } from '../../../../../commons/toast.utils'
-import { Money, PaymentGateway, PaymentOrder } from 'mysterium-vpn-js'
-import { Item, RadioCard } from '../../../../../Components/RadioCard/RadioCard'
-import Button from '../../../../../Components/Buttons/Button'
-import { buildFormData, CARDINITY_GATEWAY, validateOrderAndReturnSecureForm } from './cardinity'
-import { CircularProgress } from '@material-ui/core'
-import { money } from '../../../../../commons/money.utils'
-import _ from 'lodash'
-import { configParser } from '../../../../../commons/config'
-import { Option, Select } from '../../../../../Components/Select/Select'
+import { PAYPAL_GATEWAY, validateAndReturnCheckoutUrl } from './paypal'
+
+const { api } = tequila
 
 interface Props {
   mystReceived?: JSX.Element
@@ -34,7 +35,7 @@ interface State {
   taxCountry: Option
   currency: string
   paymentOrder?: PaymentOrder
-  formData: { [key: string]: any }
+  checkoutUrl: string
   isRedirected: boolean
   isLoading: boolean
   gateway: PaymentGateway
@@ -45,35 +46,22 @@ interface State {
 const initialState: State = {
   taxCountry: { label: '', value: '' },
   currency: 'USD',
-  formData: {},
+  checkoutUrl: '',
   isRedirected: false,
   isLoading: true,
   gateway: { currencies: [], name: '', orderOptions: { minimum: 0, suggested: [] } },
   rates: [],
   mystAmounts: {},
 }
-
 export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistrationFeeReceived }: Props) => {
-  const { api } = tequila
-
-  const config = useSelector(selectors.configSelector)
   const identity = useSelector(selectors.currentIdentitySelector)
-  const [redirectRef, setRedirectRef] = useState<any>()
 
   const [state, setState] = useImmer<State>(initialState)
-
-  const pilvytisUrl = configParser.pilvytisUrl(config)
   const currencyOptions: Item[] = state.gateway.currencies.map((c) => ({ value: c, label: c }))
   const countryOptions = useMemo(
     () => Object.keys(countryNames).map((key) => ({ value: key.toUpperCase(), label: countryNames[key] })),
     [],
   )
-
-  useEffect(() => {
-    if (redirectRef && state.paymentOrder && !state.isRedirected) {
-      redirectRef.click()
-    }
-  }, [state.paymentOrder, redirectRef, state.isRedirected])
 
   useEffect(() => {
     const init = async () => {
@@ -84,7 +72,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
           throw new Error('Current location is unavailable for payment')
         }
 
-        const gateway = gateways.find((it) => it.name === CARDINITY_GATEWAY)
+        const gateway = gateways.find((it) => it.name === PAYPAL_GATEWAY)
         if (!gateway) {
           throw new Error('Could not fetch gateway information')
         }
@@ -132,27 +120,25 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
   const createOrder = async () => {
     try {
       const country = state.taxCountry.value as string
-      const order = await api.payment.createOrder(identity.id, CARDINITY_GATEWAY, {
+      const order = await api.payment.createOrder(identity.id, PAYPAL_GATEWAY, {
         payCurrency: state.currency,
         country,
-        projectId: 'mystnodes',
         mystAmount: `${state.mystAmounts[state.currency]}`,
-        gatewayCallerData: {
-          country,
-        },
+        gatewayCallerData: {},
       })
 
-      const html = validateOrderAndReturnSecureForm(order)
-      const data = buildFormData(html)
+      const checkoutUrl = validateAndReturnCheckoutUrl(order)
 
-      if (!data) {
-        throw new Error('Cardinity secure form not provided')
+      if (!checkoutUrl) {
+        throw new Error('Paypal checkout URL not provided')
       }
 
       setState((d) => {
         d.paymentOrder = order
-        d.formData = data
+        d.checkoutUrl = checkoutUrl
       })
+      openInNewTab(checkoutUrl)
+      redirected()
     } catch (err) {
       parseToastError(err)
     }
@@ -211,27 +197,13 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
           </Button>
         </div>
       )}
-
-      <form
-        name="checkout"
-        method="POST"
-        target="_blank"
-        action="https://checkout.cardinity.com"
-        onSubmit={() => redirected()}
-      >
-        <button style={{ display: 'none' }} ref={(input) => setRedirectRef(input)} type="submit">
-          Hidden Redirect
-        </button>
-        <input type="hidden" name="amount" value={state.formData['amount']} />
-        <input type="hidden" name="country" value={state.formData['country']} />
-        <input type="hidden" name="currency" value={state.formData['currency']} />
-        <input type="hidden" name="order_id" value={state.formData['order_id']} />
-        <input type="hidden" name="project_id" value={state.formData['project_id']} />
-        <input type="hidden" name="return_url" value={`${pilvytisUrl}/api/v2/payment/cardinity/redirect`} />
-        <input type="hidden" name="signature" value={state.formData['signature']} />
-      </form>
     </div>
   )
+}
+
+const openInNewTab = (url: string) => {
+  const win = window.open(url, '_blank')
+  win?.focus()
 }
 
 const DownloadInvoice = ({ id, orderId }: { id: string; orderId?: string }) => {
@@ -271,13 +243,13 @@ const DownloadInvoice = ({ id, orderId }: { id: string; orderId?: string }) => {
 
 const PriceInfo = ({ rates, mystAmounts }: { rates: Money[]; mystAmounts: { [key: string]: number } }) => {
   const amounts = rates.map((r) => `1 ${r.currency} (${mystAmounts[r.currency]} MYST)`).join(' / ')
-  return <>Minimum amount {amounts} plus applicable VAT. Unused MYST will be credited into your node's balance.</>
+  return <>Minimum amount {amounts} plus applicable VAT.</>
 }
 
 const UsageTip = () => (
   <>
-    Note: After clicking NEXT below, new tab/window will be opened and you will be redirected to the 3rd party payment
-    processor to complete transaction. Please be patient, it might take a few minutes for MYST to arrive after a
-    successful payment card transaction.
+    Note: After clicking NEXT below, new tab/window will be opened and you will be redirected to Paypal to complete
+    transaction. Please be patient, it might take a few minutes for MYST to arrive after a successful payment card
+    transaction.
   </>
 )

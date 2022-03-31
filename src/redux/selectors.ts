@@ -8,7 +8,7 @@ import { ChainSummary, Fees, Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { IdentityRegistrationStatus } from 'mysterium-vpn-js/lib/identity/identity'
 import { TOKENS_EMPTY } from '../constants/instances'
-import { AppState, onBoarding } from './app.slice'
+import { AppState, currentIdentity, onBoarding } from './app.slice'
 import { SSEState } from './sse.slice'
 
 export const EMPTY_IDENTITY: Identity = {
@@ -30,7 +30,10 @@ interface RootState {
   sse: SSEState
 }
 
-const currentIdentitySelector = ({ app }: RootState): Identity => app.currentIdentity || EMPTY_IDENTITY
+const currentIdentitySelector = ({ app, sse }: RootState): Identity => {
+  const identity = currentIdentity(app.currentIdentityRef, sse.appState?.identities)
+  return identity || EMPTY_IDENTITY
+}
 
 const feesSelector = ({ app }: RootState): Fees => app.fees
 
