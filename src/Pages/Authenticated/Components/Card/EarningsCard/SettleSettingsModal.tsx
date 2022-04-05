@@ -180,7 +180,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`${docsUrl}/node-runners/payout-guide/#using-metamask-with-polygon-myst`}
+              href={`${docsUrl}/for-node-runners/how-to-setup-polygon-myst-on-metamask`}
             >
               Read here how to setup Polygon MYST on Metamask
             </a>

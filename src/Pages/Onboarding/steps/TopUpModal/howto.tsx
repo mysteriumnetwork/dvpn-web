@@ -19,7 +19,11 @@ export const HowToGetMyst = (): ReactFragment => {
       </div>
       <div>
         2. Install Metamask wallet. Configure it work with Polygon (
-        <a href="https://docs.mysterium.network/for-node-runners/payout-guide" target="_blank" rel="noreferrer">
+        <a
+          href="https://docs.mysterium.network/for-node-runners/how-to-setup-polygon-myst-on-metamask"
+          target="_blank"
+          rel="noreferrer"
+        >
           see here
         </a>
         ).
