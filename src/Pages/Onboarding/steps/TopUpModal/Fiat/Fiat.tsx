@@ -83,7 +83,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
 
         setState((d) => {
           d.mystAmounts = _.chain(
-            rates.map((r) => ({ currency: r.currency, myst: money.flooredAmount(1 / r.amount, 2) })),
+            rates.map((r) => ({ currency: r.currency, myst: money.flooredAmount(0.77 / r.amount, 2) })),
           )
             .keyBy('currency')
             .mapValues('myst')
