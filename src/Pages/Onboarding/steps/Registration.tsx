@@ -166,7 +166,7 @@ const Registration = ({ nextStep }: StepProps) => {
   const handleDone = async () => {
     try {
       if (isInvalidWithdrawalAddress()) {
-        errors('Invalid Ethereum wallet address')
+        errors('Invalid wallet address')
         return
       }
 
