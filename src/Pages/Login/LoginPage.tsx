@@ -13,6 +13,7 @@ import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png'
 import Button from '../../Components/Buttons/Button'
 import { TextField } from '../../Components/TextField/TextField'
 import { DEFAULT_USERNAME } from '../../constants/defaults'
+import { DOCS_FORGOT_PASSWORD } from '../../constants/urls'
 
 import { updateAuthenticatedStore } from '../../redux/app.slice'
 import { store } from '../../redux/store'
@@ -27,8 +28,6 @@ interface StateProps {
   error: boolean
   isLoading: boolean
 }
-
-const DOCS_URL = 'https://docs.mysterium.network/troubleshooting/forgot-password'
 
 const LoginPage = ({ onSuccessLogin }: Props) => {
   const [state, setState] = useImmer<StateProps>({
@@ -85,7 +84,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
 
               <div className="password-actions-block">
                 {/* we can get config after login only */}
-                <a href={DOCS_URL}>Forgot password?</a>
+                <a href={DOCS_FORGOT_PASSWORD}>Forgot password?</a>
                 <Button type="submit" isLoading={state.isLoading}>
                   Sign In
                 </Button>
