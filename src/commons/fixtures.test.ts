@@ -11,10 +11,51 @@ const defaultIdentity: Identity = Object.freeze({
   registrationStatus: IdentityRegistrationStatus.Registered,
   channelAddress: '0x1',
   balance: 1,
+  balanceTokens: {
+    wei: '000000000000000001',
+    ether: '0',
+    human: '0',
+  },
   earnings: 1,
+  earningsTokens: {
+    wei: '000000000000000001',
+    ether: '0',
+    human: '0',
+  },
   earningsTotal: 1,
+  earningsTotalTokens: {
+    wei: '000000000000000001',
+    ether: '0',
+    human: '0',
+  },
   stake: 1,
   hermesId: '0x2',
+  earningsPerHermes: {
+    '0x1': {
+      earningsTokens: {
+        wei: '000000000000000001',
+        ether: '0',
+        human: '0',
+      },
+      earningsTotalTokens: {
+        wei: '000000000000000001',
+        ether: '0',
+        human: '0',
+      },
+    },
+    '0x2': {
+      earningsTokens: {
+        wei: '000000000000000001',
+        ether: '0',
+        human: '0',
+      },
+      earningsTotalTokens: {
+        wei: '000000000000000001',
+        ether: '0',
+        human: '0',
+      },
+    },
+  },
 })
 
 export const fixtures = {

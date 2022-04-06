@@ -123,6 +123,7 @@ export const Fiat = ({ controls, mystReceived, onClose = () => {}, isRegistratio
       const order = await api.payment.createOrder(identity.id, PAYPAL_GATEWAY, {
         payCurrency: state.currency,
         country,
+        projectId: 'mystnodes',
         mystAmount: `${state.mystAmounts[state.currency]}`,
         gatewayCallerData: {},
       })

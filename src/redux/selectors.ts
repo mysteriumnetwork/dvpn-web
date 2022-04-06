@@ -23,6 +23,7 @@ export const EMPTY_IDENTITY: Identity = {
   earningsTotalTokens: TOKENS_EMPTY,
   stake: 0,
   hermesId: '0x',
+  earningsPerHermes: {},
 }
 
 interface RootState {
