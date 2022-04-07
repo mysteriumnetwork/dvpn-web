@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { ReactFragment } from 'react'
+import { DOCS_METAMASK } from '../../../../constants/urls'
 
 export const HowToGetMyst = (): ReactFragment => {
   return (
@@ -19,11 +20,7 @@ export const HowToGetMyst = (): ReactFragment => {
       </div>
       <div>
         2. Install Metamask wallet. Configure it work with Polygon (
-        <a
-          href="https://docs.mysterium.network/for-node-runners/how-to-setup-polygon-myst-on-metamask"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href={DOCS_METAMASK} target="_blank" rel="noreferrer">
           see here
         </a>
         ).

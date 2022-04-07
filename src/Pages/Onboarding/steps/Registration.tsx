@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { DOCS_METAMASK } from '../../../constants/urls'
 import styles from './Steps.module.scss'
 import Button from '../../../Components/Buttons/Button'
 import { useImmer } from 'use-immer'
@@ -154,18 +155,18 @@ const Registration = ({ nextStep }: StepProps) => {
   const registerIdentity = async (identity: string): Promise<void> => {
     return tequilaClient.identityRegister(identity, {
       beneficiary: state.withdrawalAddress,
-      stake: 10, // quadruple check mit Jaro
+      stake: 0,
     })
   }
 
   const isInvalidWithdrawalAddress = () => {
-    return state.withdrawalAddress && !isValidEthereumAddress(state.withdrawalAddress)
+    return !isValidEthereumAddress(state.withdrawalAddress)
   }
 
   const handleDone = async () => {
     try {
       if (isInvalidWithdrawalAddress()) {
-        errors('Invalid Ethereum wallet address')
+        errors('Invalid wallet address')
         return
       }
 
@@ -186,17 +187,22 @@ const Registration = ({ nextStep }: StepProps) => {
 
   return (
     <div className={styles.step}>
-      <h1 className={styles.title}>Default Withdrawal settings</h1>
-      <p className={styles.description}>
-        Fill in the following information to add a default withdrawal address for payments.
-      </p>
+      <h1 className={styles.title}>Withdrawal settings</h1>
+      <p className={styles.description}>Add your ERC-20 Polygon compatible wallet for automatic withdrawals</p>
       <div id="separator" style={{ marginTop: '100px' }} />
       <div className={styles.content}>
         <Errors {...state} />
         <InputGroup
-          label="Default Withdrawal Address"
-          help="Make sure you enter ERC-20 compatible wallet or MYST compatible exchange wallet address. You can enter this
-            address later in 'Settings' page."
+          label="Withdrawal Address (required)"
+          help={
+            <>
+              Make sure withdrawal address is from ERC-20 Polygon compatible wallet (e.g. MetaMask or MyEtherWallet)!{' '}
+              <a href={DOCS_METAMASK} target="_blank" rel="noopener noreferrer">
+                Check here for instructions how to setup MYST token on MetaMask
+              </a>
+              .
+            </>
+          }
         >
           <TextField onChange={onWalletAddressChange} value={state.withdrawalAddress} placeholder={'0x...'} />
         </InputGroup>

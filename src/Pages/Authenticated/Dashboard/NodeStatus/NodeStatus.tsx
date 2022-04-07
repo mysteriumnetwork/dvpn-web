@@ -13,7 +13,7 @@ import { tequilaClient } from '../../../../api/tequila-client'
 import { parseToastError } from '../../../../commons/toast.utils'
 import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import { NATType } from '../../../../constants/nat'
-import { DOCS_NAT_FIX } from '../../../../constants/urls'
+import { DOCS, DOCS_NAT_FIX } from '../../../../constants/urls'
 import { SSEState } from '../../../../redux/sse.slice'
 import { RootState } from '../../../../redux/store'
 import Bubble from './Bubble'
@@ -119,7 +119,7 @@ const nodeStatusTooltip = (node: NodeMonitoringStatusResponse, online: boolean):
               live chat.
               <br />
               Alternatively, take a look at our{' '}
-              <a target="_blank" rel="noopener noreferrer" href="https://docs.mysterium.network/">
+              <a target="_blank" rel="noopener noreferrer" href={DOCS}>
                 help section
               </a>{' '}
               for further assistance.
