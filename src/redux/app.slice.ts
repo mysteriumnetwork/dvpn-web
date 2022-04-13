@@ -7,11 +7,10 @@
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { createSlice } from '@reduxjs/toolkit'
 import _ from 'lodash'
-import { ChainSummary, Fees, Identity, IdentityRef, IdentityBeneficiaryResponse } from 'mysterium-vpn-js'
+import { ChainSummary, Fees, Identity, IdentityBeneficiaryResponse, IdentityRef } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isUnregistered } from '../commons/identity.utils'
 import { FEES_EMPTY } from '../constants/instances'
-import { EMPTY_IDENTITY } from './selectors'
 
 export interface Auth {
   authenticated?: boolean
@@ -32,7 +31,6 @@ export interface Onboarding {
 export interface AppState {
   loading: boolean
   currentIdentityRef?: IdentityRef
-  currentIdentity: Identity
   auth: Auth
   terms: Terms
   config: Config
@@ -43,7 +41,6 @@ export interface AppState {
 
 const INITIAL_STATE: AppState = {
   loading: true,
-  currentIdentity: EMPTY_IDENTITY,
   auth: {
     authenticated: false,
     withDefaultCredentials: false,
@@ -76,9 +73,6 @@ const slice = createSlice({
     },
     updateIdentityRefStore: (state, action) => {
       state.currentIdentityRef = action.payload
-    },
-    updateIdentityStore: (state, action) => {
-      state.currentIdentity = action.payload
     },
     updateTermsStore: (state, action) => {
       state.terms = action.payload
@@ -131,7 +125,6 @@ export { currentIdentity, onBoarding, isLoggedIn, termsAccepted }
 export const {
   updateAuthenticatedStore,
   updateIdentityRefStore,
-  updateIdentityStore,
   updateTermsStore,
   updateAuthFlowLoadingStore,
   updateConfigStore,
