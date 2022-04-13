@@ -49,7 +49,7 @@ const ServiceHeader = ({ type, running, whitelisted }: Props): JSX.Element => {
       </div>
       <div className="service-header__name">
         <p className="name">{displayName(type)}</p>
-        <p className="type">VPN</p>
+        <p className="type">VPN and Data scraping</p>
       </div>
       <div className="flex-grow" />
       <div>
