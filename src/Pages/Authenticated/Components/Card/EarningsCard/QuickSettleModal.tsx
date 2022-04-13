@@ -28,7 +28,9 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const fees = useSelector(selectors.feesSelector)
   const chainSummary = useSelector(selectors.chainSummarySelector)
-  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
+  const beneficiary = useSelector(selectors.beneficiarySelector)
+  const isAutoWithdrawal = !beneficiary.isChannelAddress
+
   const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earningsTokens, fees), [
     fees.hermesPercent,
     fees.settlement,

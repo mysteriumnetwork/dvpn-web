@@ -55,8 +55,8 @@ const refreshStoreConfig = async (): Promise<Config> => {
 
 const refreshBeneficiary = async (identity: string) => {
   try {
-    const { beneficiary } = await tequilaClient.identityBeneficiary(identity)
-    store.dispatch(updateBeneficiaryStore(beneficiary))
+    const beneficiaryResponse = await tequilaClient.identityBeneficiary(identity)
+    store.dispatch(updateBeneficiaryStore(beneficiaryResponse))
   } catch (ignored: any) {}
 }
 

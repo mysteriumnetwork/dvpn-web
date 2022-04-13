@@ -51,11 +51,6 @@ const liveSessionStatsSelector = ({ sse }: RootState) => sse.appState?.sessionsS
 
 const serviceInfoSelector = ({ sse }: RootState) => sse.appState?.serviceInfo || []
 
-const isAutomaticWithdrawalSelector = ({ app }: RootState) => {
-  const { beneficiary, currentIdentity } = app
-  return currentIdentity.channelAddress !== beneficiary
-}
-
 const beneficiarySelector = ({ app }: RootState) => app.beneficiary
 
 export const selectors = {
@@ -67,6 +62,5 @@ export const selectors = {
   liveSessionsSelector,
   liveSessionStatsSelector,
   serviceInfoSelector,
-  isAutomaticWithdrawalSelector,
   beneficiarySelector,
 }

@@ -7,7 +7,7 @@
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { createSlice } from '@reduxjs/toolkit'
 import _ from 'lodash'
-import { ChainSummary, Fees, Identity, IdentityRef } from 'mysterium-vpn-js'
+import { ChainSummary, Fees, Identity, IdentityRef, IdentityBeneficiaryResponse } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { isUnregistered } from '../commons/identity.utils'
 import { FEES_EMPTY } from '../constants/instances'
@@ -38,7 +38,7 @@ export interface AppState {
   config: Config
   fees: Fees
   chainSummary: ChainSummary
-  beneficiary: string
+  beneficiary: IdentityBeneficiaryResponse
 }
 
 const INITIAL_STATE: AppState = {
@@ -61,7 +61,10 @@ const INITIAL_STATE: AppState = {
     },
     currentChain: -1,
   },
-  beneficiary: '',
+  beneficiary: {
+    beneficiary: '',
+    isChannelAddress: false,
+  },
 }
 
 const slice = createSlice({

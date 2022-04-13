@@ -28,7 +28,8 @@ const { api } = tequila
 
 export const EarningsCard = () => {
   const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
-  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
+  const beneficiary = useSelector(selectors.beneficiarySelector)
+  const isAutoWithdrawal = !beneficiary.isChannelAddress
   const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.001) || !isAutoWithdrawal
 
   return (
@@ -36,11 +37,11 @@ export const EarningsCard = () => {
       <Media.Desktop>
         <Card width="100%">
           <div className={styles.split}>
-            <Earnings />
+            <Earnings isAutoWithdrawal={isAutoWithdrawal} />
             {isBalanceVisible && (
               <>
                 <div className={styles.separator} />
-                <Balance />
+                <Balance isAutoWithdrawal={isAutoWithdrawal} />
               </>
             )}
           </div>
@@ -48,11 +49,11 @@ export const EarningsCard = () => {
       </Media.Desktop>
       <Media.Mobile>
         <Card>
-          <Earnings />
+          <Earnings isAutoWithdrawal={isAutoWithdrawal} />
         </Card>
         {isBalanceVisible && (
           <Card>
-            <Balance />
+            <Balance isAutoWithdrawal={isAutoWithdrawal} />
           </Card>
         )}
       </Media.Mobile>
@@ -62,10 +63,13 @@ export const EarningsCard = () => {
 
 const ONE_MINUTE = 60 * 1000
 
-const Earnings = () => {
+interface SharedProps {
+  isAutoWithdrawal: boolean
+}
+
+const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
   const { earningsTokens, id } = useSelector(selectors.currentIdentitySelector)
   const { settlementTokens } = useSelector(selectors.feesSelector)
-  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
   const config = useSelector(selectors.configSelector)
   const thresholdWei = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
 
@@ -148,9 +152,8 @@ const Earnings = () => {
   )
 }
 
-const Balance = () => {
+const Balance = ({ isAutoWithdrawal }: SharedProps) => {
   const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
-  const isAutoWithdrawal = useSelector(selectors.isAutomaticWithdrawalSelector)
   const [open, setOpen] = useState<boolean>(false)
 
   return (
