@@ -14,7 +14,6 @@ import {
   updateConfigStore,
   updateFeesStore,
   updateIdentityRefStore,
-  updateIdentityStore,
   updateTermsStore,
 } from './app.slice'
 
@@ -37,8 +36,6 @@ export const fetchIdentityAsync = (): ((dispatch: Dispatch<any>) => void) => {
     dispatch(updateIdentityRefStore(identityRef))
 
     await api.identityBalanceRefresh(identityRef.id)
-    const identity = await api.identity(identityRef.id)
-    dispatch(updateIdentityStore(identity))
   }
 }
 
