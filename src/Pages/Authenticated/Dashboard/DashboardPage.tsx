@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
+import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -14,7 +14,6 @@ import { tequilaClient } from '../../../api/tequila-client'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { tequilUtils } from '../../../commons/tequil.utils'
 import { parseToastError } from '../../../commons/toast.utils'
-import { TOKENS_EMPTY } from '../../../constants/instances'
 import { selectors } from '../../../redux/selectors'
 import { CardLayout } from '../Components/Card/CardLayout'
 import { Cards } from '../Components/Card/PreparedCards'
@@ -34,7 +33,6 @@ interface StateProps {
     [date: string]: SessionStats
   }
   historySessions: Session[]
-  currentPrices: CurrentPricesResponse
 }
 
 const initialState: StateProps = {
@@ -49,12 +47,6 @@ const initialState: StateProps = {
   },
   sessionStatsDaily: {},
   historySessions: [],
-  currentPrices: {
-    pricePerHour: BigInt(0),
-    pricePerGib: BigInt(0),
-    pricePerHourTokens: TOKENS_EMPTY,
-    pricePerGibTokens: TOKENS_EMPTY,
-  },
 }
 
 const DashboardPage = () => {
@@ -71,7 +63,7 @@ const DashboardPage = () => {
   const init = async () => {
     const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
     try {
-      const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = await Promise.all([
+      const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }] = await Promise.all([
         tequilaClient.sessionStatsDaily(sessionFilter),
         tequilaClient.sessionStatsAggregated(sessionFilter),
         tequilaClient.sessions({
@@ -80,7 +72,6 @@ const DashboardPage = () => {
           pageSize: 10,
           status: SessionStatus.COMPLETED,
         }),
-        tequilaClient.pricesCurrent(),
         tequilaClient.identityBalanceRefresh(identity.id),
       ])
 
@@ -88,7 +79,6 @@ const DashboardPage = () => {
         d.sessionStatsDaily = statsDaily
         d.sessionStatsAllTime = tequilUtils.addStats(allTimeStats, liveSessionStats)
         d.historySessions = sidebarSessions
-        d.currentPrices = prices
         d.loading = false
       })
     } catch (err) {
