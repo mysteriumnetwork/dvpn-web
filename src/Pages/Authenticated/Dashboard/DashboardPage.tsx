@@ -14,6 +14,7 @@ import { tequilaClient } from '../../../api/tequila-client'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { tequilUtils } from '../../../commons/tequil.utils'
 import { parseToastError } from '../../../commons/toast.utils'
+import { TOKENS_EMPTY } from '../../../constants/instances'
 import { selectors } from '../../../redux/selectors'
 import { CardLayout } from '../Components/Card/CardLayout'
 import { Cards } from '../Components/Card/PreparedCards'
@@ -24,7 +25,7 @@ import Charts from './Charts/Charts'
 import styles from './DashboardPage.module.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
-import Services from './Services/Services'
+import Service from './Services/Service'
 
 interface StateProps {
   loading: boolean
@@ -51,6 +52,8 @@ const initialState: StateProps = {
   currentPrices: {
     pricePerHour: BigInt(0),
     pricePerGib: BigInt(0),
+    pricePerHourTokens: TOKENS_EMPTY,
+    pricePerGibTokens: TOKENS_EMPTY,
   },
 }
 
@@ -119,7 +122,7 @@ const DashboardPage = () => {
             <NodeStatus />
           </div>
           <div className={styles.services}>
-            <Services prices={state.currentPrices} />
+            <Service />
           </div>
 
           <div className={styles.servicesSettings}>
