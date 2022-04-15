@@ -6,14 +6,11 @@
  */
 import { DECIMAL_PART, DisplayMoneyOptions } from 'mysterium-vpn-js'
 
-export enum ServiceType {
-  WIREGUARD = 'WireGuard',
-  OPENVPN = 'OpenVPN',
-}
-
 export const DEFAULT_MONEY_DISPLAY_OPTIONS: Required<DisplayMoneyOptions> = Object.freeze({
   showCurrency: true,
   fractionDigits: 7,
   removeInsignificantZeros: false,
   decimalPart: DECIMAL_PART,
 })
+
+export const WIREGUARD = 'wireguard'

@@ -12,7 +12,7 @@ interface Props {
   children: any
 }
 
-const ServiceDetail = ({ label, alignValueRight, children }: Props): JSX.Element => {
+const ServiceDetail = ({ label, alignValueRight, children }: Props) => {
   const alignRightClass = alignValueRight ? 'service-detail__value--align-right' : ''
 
   return (

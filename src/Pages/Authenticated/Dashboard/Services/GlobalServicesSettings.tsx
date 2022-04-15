@@ -101,8 +101,8 @@ const GlobalServicesSettings = () => {
         />
         <p className={styles.text}>Only Mysterium verified partner traffic</p>
         <p className={styles.subText}>
-          Safe option: traffic vetted via business contracts, unavailable to the general public and limited to
-          streaming. This option potentially will give less reward.
+          Safe option: traffic vetted via business contracts and unavailable to the general public. This option
+          potentially will give less reward.
         </p>
       </div>
       <div className={styles.row}>

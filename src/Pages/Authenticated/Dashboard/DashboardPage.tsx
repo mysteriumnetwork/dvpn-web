@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { CurrentPricesResponse, Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
+import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -24,7 +24,7 @@ import Charts from './Charts/Charts'
 import styles from './DashboardPage.module.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
-import Services from './Services/Services'
+import Service from './Services/Service'
 
 interface StateProps {
   loading: boolean
@@ -33,7 +33,6 @@ interface StateProps {
     [date: string]: SessionStats
   }
   historySessions: Session[]
-  currentPrices: CurrentPricesResponse
 }
 
 const initialState: StateProps = {
@@ -48,10 +47,6 @@ const initialState: StateProps = {
   },
   sessionStatsDaily: {},
   historySessions: [],
-  currentPrices: {
-    pricePerHour: BigInt(0),
-    pricePerGib: BigInt(0),
-  },
 }
 
 const DashboardPage = () => {
@@ -68,7 +63,7 @@ const DashboardPage = () => {
   const init = async () => {
     const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
     try {
-      const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }, prices] = await Promise.all([
+      const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }] = await Promise.all([
         tequilaClient.sessionStatsDaily(sessionFilter),
         tequilaClient.sessionStatsAggregated(sessionFilter),
         tequilaClient.sessions({
@@ -77,7 +72,6 @@ const DashboardPage = () => {
           pageSize: 10,
           status: SessionStatus.COMPLETED,
         }),
-        tequilaClient.pricesCurrent(),
         tequilaClient.identityBalanceRefresh(identity.id),
       ])
 
@@ -85,7 +79,6 @@ const DashboardPage = () => {
         d.sessionStatsDaily = statsDaily
         d.sessionStatsAllTime = tequilUtils.addStats(allTimeStats, liveSessionStats)
         d.historySessions = sidebarSessions
-        d.currentPrices = prices
         d.loading = false
       })
     } catch (err) {
@@ -119,7 +112,7 @@ const DashboardPage = () => {
             <NodeStatus />
           </div>
           <div className={styles.services}>
-            <Services prices={state.currentPrices} />
+            <Service />
           </div>
 
           <div className={styles.servicesSettings}>

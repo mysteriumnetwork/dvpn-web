@@ -10,6 +10,7 @@ import { connect, useSelector } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { tequila } from '../api/wrapped-calls'
 import { parseToastError } from '../commons/toast.utils'
+import { IDENTITY_EMPTY } from '../constants/instances'
 import { localStorageKeys } from '../constants/local_storage_keys'
 import {
   DASHBOARD,
@@ -32,7 +33,7 @@ import {
   updateTermsStoreAsync,
 } from '../redux/app.async.actions'
 import { Auth, isLoggedIn, updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
-import { EMPTY_IDENTITY, selectors } from '../redux/selectors'
+import { selectors } from '../redux/selectors'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
 import { RootState } from '../redux/store'
 import ConnectToSSE from '../sse/server-sent-events'
@@ -116,7 +117,7 @@ const AppRouter = ({ actions }: Props) => {
   useEffect(() => {
     ;(async () => {
       try {
-        if (identity.id !== EMPTY_IDENTITY.id) {
+        if (identity.id !== IDENTITY_EMPTY.id) {
           await tequila.refreshBeneficiary(identity.id)
         }
       } catch (e: any) {
