@@ -27,7 +27,7 @@ export const FeesTable = ({ earnings, chainSummary, calculatedFees }: Props) => 
       <Card title={`Network fee (${hermesCutPercentDisplay})`} value={display(calculatedFees.hermesCutWei)} />
       <Card title={`${chainName} fee`} value={display(calculatedFees.blockchainFeeWei)} />
       <div className="flex-grow" />
-      <Card title="Transferred to Balance" value={display(calculatedFees.profitsWei)} highlighted />
+      <Card title="You get" value={display(calculatedFees.profitsWei)} highlighted />
     </div>
   )
 }

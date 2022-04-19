@@ -39,9 +39,14 @@ interface State {
 }
 
 export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
+  const isAutoWithdrawal = !useSelector(selectors.beneficiarySelector).isChannelAddress
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const docsUrl = configParser.docsAddress(config)
+  const zeroStakeSettlementThreshold = configParser.zeroStakeSettlementThreshold(config)
+  const displayZeroStakeThreshold = myst.display(myst.toWeiBig(zeroStakeSettlementThreshold), {
+    fractionDigits: 2,
+  })
 
   const [state, setState] = useState<State>({
     externalWalletAddress: '',
@@ -140,9 +145,12 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
         ))}
       </div>
       <p className={styles.info}>
-        When automatic withdrawal is ON, your earnings are settled directly to external wallet (recommended option). If
-        automatic withdrawal is OFF then your earnings are settled to internal Node balance. Note: settlement setting
-        update might take a few minutes to complete.
+        {isAutoWithdrawal
+          ? `Automatic withdrawal (settlement) to your external wallet is done each time when your earnings reach ${displayZeroStakeThreshold}. You
+            can also settle manually before ${displayZeroStakeThreshold} is reached by clicking "Settle now" button in the previous screen. You
+            can change your external wallet address below.`
+          : `Once enabled, automatic withdrawal (settlement) to your external wallet will be done each time when earnings reach ${displayZeroStakeThreshold}. You will be able to settle manually before ${displayZeroStakeThreshold} is reached by clicking "Settle now" button in the previous screen.\n` +
+            `Please enter your Polygon compatible ERC-20 wallet address below and click "Change settlement settings" button to enable Auto withdrawals.`}
       </p>
       <FeesTable earnings={identity.earningsTokens} chainSummary={chainSummary} calculatedFees={calculatedFees} />
       <InputGroup label="Your external wallet address:">

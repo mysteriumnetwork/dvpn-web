@@ -140,9 +140,14 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
 
       <div className={styles.earningsControls}>
         {isAutoWithdrawal ? (
-          <Button extraStyle="outline-primary" onClick={() => setQuickSettleOpen(true)}>
-            settle Now
-          </Button>
+          <>
+            <Button extraStyle="outline-primary" onClick={() => setQuickSettleOpen(true)}>
+              settle Now
+            </Button>
+            <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
+              Auto withdrawals: ON
+            </Button>
+          </>
         ) : (
           <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
             Enable Automatic Withdrawals
