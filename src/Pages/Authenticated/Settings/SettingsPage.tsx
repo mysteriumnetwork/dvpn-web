@@ -23,7 +23,6 @@ import IdentityInformation from './Components/IdentityInformation'
 
 import MMN from './Components/MMN'
 import PasswordChange from './Components/PasswordChange'
-import PayoutAddress from './Components/PayoutAddress'
 import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
@@ -95,10 +94,6 @@ const SettingsPage = () => {
           <div className={styles.settingsCard}>
             <Card title="Identity">
               <IdentityInformation identity={identity} />
-            </Card>
-
-            <Card title="Default Withdrawal Address">
-              <PayoutAddress identity={identity} />
             </Card>
           </div>
 
