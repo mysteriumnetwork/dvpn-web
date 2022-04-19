@@ -20,8 +20,7 @@ import { Card } from '../Card'
 import styles from './EarningsCard.module.scss'
 import { QuickSettleModal } from './QuickSettleModal'
 import { SettleSettingsModal } from './SettleSettingsModal'
-
-const SETTINGS_BUTTON_NAME = 'Auto Withdrawal:'
+import WarningIcon from '@material-ui/icons/WarningOutlined'
 
 const { display, toWeiBig, toBig, toEtherBig } = myst
 const { api } = tequila
@@ -104,14 +103,6 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
   const [withdrawalOpen, setWithdrawalOpen] = useState<boolean>(false)
   const [quickSettleOpen, setQuickSettleOpen] = useState<boolean>(false)
 
-  const settingsButtonName = (() => {
-    if (beneficiaryTx?.state === 'completed' && beneficiaryTx?.error) {
-      return `${SETTINGS_BUTTON_NAME} ERROR`
-    }
-
-    return isAutoWithdrawal ? `${SETTINGS_BUTTON_NAME} ON` : `${SETTINGS_BUTTON_NAME} OFF`
-  })()
-
   const initTimerTimeStamp = async () => {
     setIsSettingsLoading(true)
     await new Promise((r) => setInterval(r, ONE_MINUTE))
@@ -130,21 +121,33 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
           </div>
         </div>
         <Media.Desktop>
-          <div className={styles.earningsProgressContainer}>
-            <p>Next auto settlement ({display(thresholdWei, { fractionDigits: 1 })})</p>
-            <progress value={progressPercent} max={100} className={styles.earningsProgress} />
-          </div>
+          {!isAutoWithdrawal ? (
+            <div className={styles.earningsWarning}>
+              <WarningIcon />
+              <p className={styles.earningsWarningText}>
+                Settlement is disabled, because external wallet address is missing for Automatic withdrawals! Click
+                button below to add it and enable Automatic withdrawals.
+              </p>
+            </div>
+          ) : (
+            <div className={styles.earningsProgressContainer}>
+              <p>Next auto settlement ({display(thresholdWei, { fractionDigits: 1 })})</p>
+              <progress value={progressPercent} max={100} className={styles.earningsProgress} />
+            </div>
+          )}
         </Media.Desktop>
       </div>
 
       <div className={styles.earningsControls}>
-        <Button extraStyle="outline-primary" onClick={() => setQuickSettleOpen(true)}>
-          settle Now
-        </Button>
-
-        <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
-          {settingsButtonName}
-        </Button>
+        {isAutoWithdrawal ? (
+          <Button extraStyle="outline-primary" onClick={() => setQuickSettleOpen(true)}>
+            settle Now
+          </Button>
+        ) : (
+          <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
+            Enable Automatic Withdrawals
+          </Button>
+        )}
       </div>
       <QuickSettleModal open={quickSettleOpen} onClose={() => setQuickSettleOpen(false)} />
       <SettleSettingsModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} onSave={initTimerTimeStamp} />
