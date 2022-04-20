@@ -16,7 +16,6 @@ import { myst } from '../../../../../commons/myst.utils'
 import { toastSuccess } from '../../../../../commons/toast.utils'
 import { InputGroup } from '../../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../../Components/Modal/Modal'
-import { Option, Select } from '../../../../../Components/Select/Select'
 import { TextField } from '../../../../../Components/TextField/TextField'
 import Error from '../../../../../Components/Validation/Error'
 import { selectors } from '../../../../../redux/selectors'
@@ -32,13 +31,7 @@ interface Props {
   onSave: () => void
 }
 
-const settleOptions: Option[] = [
-  { value: 'manual', label: "Settle to Node's internal balance" },
-  { value: 'external', label: 'Settle to external wallet (enable automatic withdrawals)' },
-]
-
 interface State {
-  settleOption: Option
   externalWalletAddress: string
   isLoading: boolean
   errors: string[]
@@ -46,12 +39,16 @@ interface State {
 }
 
 export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
+  const isAutoWithdrawal = !useSelector(selectors.beneficiarySelector).isChannelAddress
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const docsUrl = configParser.docsAddress(config)
+  const zeroStakeSettlementThreshold = configParser.zeroStakeSettlementThreshold(config)
+  const displayZeroStakeThreshold = myst.display(myst.toWeiBig(zeroStakeSettlementThreshold), {
+    fractionDigits: 2,
+  })
 
   const [state, setState] = useState<State>({
-    settleOption: { value: '', label: '' },
     externalWalletAddress: '',
     isLoading: true,
     errors: [],
@@ -66,7 +63,6 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
         ])
         setState((p) => ({
           ...p,
-          settleOption: settleOptions[1],
           externalWalletAddress: address,
           txStatus,
           isLoading: false,
@@ -80,15 +76,11 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const fees = useSelector(selectors.feesSelector)
 
-  const isExternal = state.settleOption.value === 'external'
-
   const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earningsTokens, fees), [
     fees.hermesPercent,
     fees.settlement,
     identity.earningsTokens.wei,
   ])
-
-  const handleOptionsChange = (o: Option | Option[]) => setState((p) => ({ ...p, settleOption: o as Option }))
 
   const handleExternalWalletChange = (v: string) => setState((p) => ({ ...p, externalWalletAddress: v }))
 
@@ -105,7 +97,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
         )} is needed)`,
       )
     }
-    if (isExternal && !isValidEthereumAddress(state.externalWalletAddress)) {
+    if (!isValidEthereumAddress(state.externalWalletAddress)) {
       errors.push('Invalid external wallet address')
     }
     setState((p) => ({ ...p, errors: errors }))
@@ -117,15 +109,11 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
       await api.settleWithBeneficiary({
         providerId: identity.id,
         hermesId: identity.hermesId,
-        beneficiary: isExternal ? state.externalWalletAddress : identity.channelAddress,
+        beneficiary: state.externalWalletAddress,
       })
       onSave()
       onClose()
-      toastSuccess(
-        isExternal
-          ? `Automatic withdrawal to ${state.externalWalletAddress} request submitted`
-          : 'Settlement request submitted!',
-      )
+      toastSuccess(`Automatic withdrawal to ${state.externalWalletAddress} request submitted`)
       await refreshBeneficiary(identity.id)
     } catch (err: any) {
       parseAndToastError(err)
@@ -157,36 +145,32 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
         ))}
       </div>
       <p className={styles.info}>
-        When automatic withdrawal is ON, your earnings are settled directly to external wallet (recommended option). If
-        automatic withdrawal is OFF then your earnings are settled to internal Node balance. Note: settlement setting
-        update might take a few minutes to complete.
+        {isAutoWithdrawal
+          ? `Automatic withdrawal (settlement) to your external wallet is done each time when your earnings reach ${displayZeroStakeThreshold}. You
+            can also settle manually before ${displayZeroStakeThreshold} is reached by clicking "Settle now" button in the previous screen. You
+            can change your external wallet address below.`
+          : `Once enabled, automatic withdrawal (settlement) to your external wallet will be done each time when earnings reach ${displayZeroStakeThreshold}. You will be able to settle manually before ${displayZeroStakeThreshold} is reached by clicking "Settle now" button in the previous screen.\n` +
+            `Please enter your Polygon compatible ERC-20 wallet address below and click "Change settlement settings" button to enable Auto withdrawals.`}
       </p>
       <FeesTable earnings={identity.earningsTokens} chainSummary={chainSummary} calculatedFees={calculatedFees} />
-      <InputGroup label="Withdrawal mode:">
-        <Select value={state.settleOption} options={settleOptions} onChange={handleOptionsChange} />
+      <InputGroup label="Your external wallet address:">
+        <TextField
+          placeholder="External wallet address..."
+          value={state.externalWalletAddress}
+          onChange={handleExternalWalletChange}
+        />
       </InputGroup>
-      {isExternal && (
-        <>
-          <InputGroup label="Your external wallet address:">
-            <TextField
-              placeholder="External wallet address..."
-              value={state.externalWalletAddress}
-              onChange={handleExternalWalletChange}
-            />
-          </InputGroup>
-          <p className={styles.walletWarning}>
-            Be aware that only Polygon compatible ERC-20 wallets (e.g. Metamask) are supported for automatic
-            withdrawals! Your tokens might be lost if you use incompatible wallet.{' '}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${docsUrl}/for-node-runners/how-to-setup-polygon-myst-on-metamask`}
-            >
-              Read here how to setup Polygon MYST on Metamask
-            </a>
-          </p>
-        </>
-      )}
+      <p className={styles.walletWarning}>
+        Be aware that only Polygon compatible ERC-20 wallets (e.g. Metamask) are supported for automatic withdrawals!
+        Your tokens might be lost if you use incompatible wallet.{' '}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`${docsUrl}/for-node-runners/how-to-setup-polygon-myst-on-metamask`}
+        >
+          Read here how to setup Polygon MYST on Metamask
+        </a>
+      </p>
     </Modal>
   )
 }

@@ -29,6 +29,17 @@
     padding: 0 10px 0 10px;
   }
 
+  &Warning {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 5px;
+
+    &Text {
+      font-size: $smaller-size;
+    }
+  }
+
   &Progress {
     width: 100%;
 
