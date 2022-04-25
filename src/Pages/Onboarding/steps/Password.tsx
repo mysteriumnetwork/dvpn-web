@@ -20,6 +20,7 @@ import { TextField } from '../../../Components/TextField/TextField'
 import Error from '../../../Components/Validation/Error'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
 import { updateAuthenticatedStore } from '../../../redux/app.slice'
+import { StepLayout } from '../Components/StepLayout'
 import styles from './Steps.module.scss'
 
 import { store } from '../../../redux/store'
@@ -165,12 +166,12 @@ const SetPassword = (_: StepProps): JSX.Element => {
   }
 
   return (
-    <div className={styles.step}>
-      <h1 className={styles.title}>Node settings</h1>
-      <p className={classNames(styles.description, 'm-t-100')}>
-        Fill in the following information to finish setting up your node.
-      </p>
-      <form className={styles.content} onSubmit={handleSubmitPassword}>
+    <StepLayout
+      title="Node settings"
+      description="Fill in the following information to finish setting up your node."
+      controlsCentered
+    >
+      <form onSubmit={handleSubmitPassword}>
         <p className={classNames(styles.passwordContentDescription, 'm-b-20')}>
           <strong>Please create default WebUI password. At least 10 characters are required.</strong>
         </p>
@@ -201,7 +202,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
           </Button>
         </div>
       </form>
-    </div>
+    </StepLayout>
   )
 }
 

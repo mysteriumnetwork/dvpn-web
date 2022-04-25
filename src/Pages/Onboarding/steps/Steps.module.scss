@@ -1,45 +1,6 @@
 @import '../../../assets/styles/base/variables';
 @import '../../../assets/styles/base/mixins/media';
 
-.settlement-referral-block {
-    height: 150px;
-}
-
-.step {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  max-width: 450px;
-}
-
-.title {
-  color: $main-text-color;
-  font-weight: $lighter-weight;
-  font-size: 32px;
-  line-height: 42px;
-}
-
-
-.description {
-  color: $secondary-text-color;
-  font-weight: $lighter-weight;
-  margin-top: 10px;
-}
-
-.content {
-  text-align: left;
-  &-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    &--center, &:only-child {
-      justify-content: center;
-    }
-  }
-}
-
 .controls {
   display: flex;
   justify-content: space-between;

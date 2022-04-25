@@ -5,12 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { Suspense, useMemo, useState } from 'react'
-import { CircularProgress } from '@material-ui/core'
-import styles from './Onboarding.module.scss'
-import sideImage from '../../assets/images/onboarding/SideImage.png'
 import { useSelector } from 'react-redux'
-import { selectors } from '../../redux/selectors'
+import sideImage from '../../assets/images/onboarding/SideImage.png'
 import { Onboarding } from '../../redux/app.slice'
+import { selectors } from '../../redux/selectors'
+import styles from './Onboarding.module.scss'
 
 interface Step {
   component: string
@@ -66,7 +65,7 @@ const OnBoardingPage = () => {
   return (
     <div className={styles.onBoarding}>
       <div className={styles.onBoardingContent}>
-        <Suspense fallback={<CircularProgress className="spinner" disableShrink />}>
+        <Suspense fallback={null}>
           <Step {...{ nextStep }} />
         </Suspense>
       </div>

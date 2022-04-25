@@ -6,7 +6,6 @@
  */
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
-import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequilaClient } from '../../../api/tequila-client'
@@ -21,7 +20,7 @@ import { InputGroup } from '../../../Components/InputGroups/InputGroup'
 import { TextField } from '../../../Components/TextField/TextField'
 import { DOCS_METAMASK } from '../../../constants/urls'
 import { selectors } from '../../../redux/selectors'
-import styles from './Steps.module.scss'
+import { StepLayout } from '../Components/StepLayout'
 
 const { api } = tequila
 
@@ -133,34 +132,33 @@ const Registration = ({ nextStep }: StepProps) => {
   }
 
   return (
-    <div className={styles.step}>
-      <h1 className={styles.title}>Withdrawal settings</h1>
-      <p className={styles.description}>Add your ERC-20 Polygon compatible wallet for automatic withdrawals</p>
+    <StepLayout
+      title="Withdrawal settings"
+      description="Add your ERC-20 Polygon compatible wallet for automatic withdrawals"
+      controls={
+        <Button isLoading={state.isLoading} onClick={handleDone}>
+          Next
+        </Button>
+      }
+      controlsCentered
+    >
       <div id="separator" style={{ marginTop: '100px' }} />
-      <div className={styles.content}>
-        <Errors {...state} />
-        <InputGroup
-          label="Withdrawal Address (required)"
-          help={
-            <>
-              Make sure withdrawal address is from ERC-20 Polygon compatible wallet (e.g. MetaMask or MyEtherWallet)!{' '}
-              <a href={DOCS_METAMASK} target="_blank" rel="noopener noreferrer">
-                Check here for instructions how to setup MYST token on MetaMask
-              </a>
-              .
-            </>
-          }
-        >
-          <TextField onChange={onWalletAddressChange} value={state.withdrawalAddress} placeholder={'0x...'} />
-        </InputGroup>
-        <div id="separator" style={{ marginTop: '40px' }} />
-        <div className={classNames(styles.controls, styles.controlsCentered)}>
-          <Button isLoading={state.isLoading} onClick={handleDone}>
-            Next
-          </Button>
-        </div>
-      </div>
-    </div>
+      <Errors {...state} />
+      <InputGroup
+        label="Withdrawal Address (required)"
+        help={
+          <>
+            Make sure withdrawal address is from ERC-20 Polygon compatible wallet (e.g. MetaMask or MyEtherWallet)!{' '}
+            <a href={DOCS_METAMASK} target="_blank" rel="noopener noreferrer">
+              Check here for instructions how to setup MYST token on MetaMask
+            </a>
+            .
+          </>
+        }
+      >
+        <TextField onChange={onWalletAddressChange} value={state.withdrawalAddress} placeholder={'0x...'} />
+      </InputGroup>
+    </StepLayout>
   )
 }
 

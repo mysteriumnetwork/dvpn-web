@@ -12,8 +12,8 @@ import styles from './StepLayout.module.scss'
 interface Props {
   title: ReactNode
   description?: string
-  children: ReactNode
-  controls: ReactNode
+  children?: ReactNode
+  controls?: ReactNode
   controlsCentered?: boolean
   isLoading?: boolean
 }
