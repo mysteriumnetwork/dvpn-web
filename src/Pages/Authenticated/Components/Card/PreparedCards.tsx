@@ -58,7 +58,7 @@ const TotalWithdrawn = ({ amount }: { amount?: string }) => {
       stat={myst.display(amount, {
         fractionDigits: 2,
       })}
-      name="Total Withdrawn"
+      name="Total Settled"
       helpText="Total amount transferred to external wallet after all applicable fees."
     />
   )
