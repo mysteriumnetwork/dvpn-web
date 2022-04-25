@@ -16,7 +16,7 @@ import classNames from 'classnames'
 
 const md = new showdown.Converter()
 
-const TOS = ({ nextStep }: StepProps): JSX.Element => {
+const TOS = ({ nextStep }: StepProps) => {
   const agree = async () => {
     await tequila.acceptWithTermsAndConditions()
     nextStep()

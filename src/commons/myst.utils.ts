@@ -27,15 +27,15 @@ const format = (
   return `${ethers.toFixed(requiredPrecision)}${symbol}`
 }
 
+// TODO rethink API
 const display = (
   wei: string | BigNumber | number = 0,
   override: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS,
-): string => {
-  return format(wei, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, ...override })
-}
+): string => format(wei, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, ...override })
 
 const ZERO_OUT_FROM = String(Number.MAX_SAFE_INTEGER).length - 1
 
+// TODO don't remember why
 const weiSafeString = (wei: number): string => {
   const weiString = String(wei)
 

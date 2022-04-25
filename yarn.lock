@@ -9295,10 +9295,10 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-mysterium-vpn-js@23.3.0:
-  version "23.3.0"
-  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-23.3.0.tgz#c81940f6d5dd8f560f6308aecd852bb0aa3f977a"
-  integrity sha512-6gnkkZ0lP4ET7HQXuNhARmsZCPuL1LHwjpb7l0YFR7cK63hiBqFkcehp+0xRNxBsVYUwbsxy06POogy2y2fDbA==
+mysterium-vpn-js@23.4.0:
+  version "23.4.0"
+  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-23.4.0.tgz#52f36e436132effe3b0e7d353611fc06a24b4adc"
+  integrity sha512-eBpnoAnP4dkSwLLk8o6VKQR2yz8ufGb/cPdHrxwv9bSW/UXnoihKEf6MwNQAzgD5kz31lPxMBBStYN+X+wdbEA==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     axios "^0.26.1"

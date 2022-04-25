@@ -1,0 +1,30 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.spinner {
+  align-self: center;
+}
+
+.payNow {
+  align-self: center;
+}
+
+.invoice {
+  align-self: center;
+
+  &DisplayNonde {
+    display: none;
+  }
+}
+
+.waitingPayment {
+  align-self: center;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}

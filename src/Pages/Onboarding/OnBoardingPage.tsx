@@ -14,17 +14,19 @@ import { Onboarding } from '../../redux/app.slice'
 
 interface Step {
   component: string
-  isApplicable: (onBoarding: Onboarding) => boolean
+  isApplicable?: (onBoarding: Onboarding) => boolean
 }
 
 const steps: Step[] = [
   {
     component: 'Greeting',
-    isApplicable: () => true,
   },
   {
     component: 'TOS',
     isApplicable: (onBoarding) => onBoarding.needsAgreedTerms,
+  },
+  {
+    component: 'NetworkRegistration',
   },
   {
     component: 'Registration',
@@ -52,7 +54,9 @@ const OnBoardingPage = () => {
     }
 
     for (let i = step + 1; i < steps.length; i++) {
-      if (steps[i].isApplicable(onBoarding)) {
+      const { isApplicable } = steps[i]
+
+      if (isApplicable === undefined || isApplicable(onBoarding)) {
         return i
       }
     }
