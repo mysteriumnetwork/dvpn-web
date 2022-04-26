@@ -142,7 +142,7 @@ const WalletPage = () => {
           />
         ),
         accessor: 'amount',
-        width: 10,
+        width: 15,
         Cell: ({ value }) => {
           return myst.display(value)
         },
