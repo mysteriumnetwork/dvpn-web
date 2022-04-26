@@ -18,6 +18,7 @@ import { InputGroup } from '../../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../../Components/Modal/Modal'
 import { TextField } from '../../../../../Components/TextField/TextField'
 import Error from '../../../../../Components/Validation/Error'
+import { IDENTITY_EMPTY } from '../../../../../constants/instances'
 import { selectors } from '../../../../../redux/selectors'
 import { FeesTable } from '../../Fees/FeesTable'
 import styles from './SettleSettingsModal.module.scss'
@@ -39,7 +40,7 @@ interface State {
 }
 
 export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
-  const isAutoWithdrawal = !useSelector(selectors.beneficiarySelector).isChannelAddress
+  const { isChannelAddress } = useSelector(selectors.beneficiarySelector)
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const docsUrl = configParser.docsAddress(config)
@@ -47,6 +48,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
   const displayZeroStakeThreshold = myst.display(myst.toWeiBig(zeroStakeSettlementThreshold), {
     fractionDigits: 2,
   })
+  const isAutoWithdrawal = !isChannelAddress
 
   const [state, setState] = useState<State>({
     externalWalletAddress: '',
@@ -56,6 +58,9 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
 
   useEffect(() => {
     ;(async () => {
+      if (identity.id === IDENTITY_EMPTY.id) {
+        return
+      }
       try {
         const [{ address }, txStatus] = await Promise.all([
           api.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
@@ -71,7 +76,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
         parseAndToastError(e)
       }
     })()
-  }, [])
+  }, [identity.id])
 
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const fees = useSelector(selectors.feesSelector)
