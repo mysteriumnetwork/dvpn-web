@@ -4,10 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Tokens } from 'mysterium-vpn-js'
+import { Tokens, RegistrationPaymentResponse } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { RegistrationPaymentResponse } from '../../../../../mysterium-vpn-js'
 import { tequila } from '../../../api/wrapped-calls'
 import storage from '../../../commons/localStorage.utils'
 import { currentCurrency } from '../../../commons/money.utils'
