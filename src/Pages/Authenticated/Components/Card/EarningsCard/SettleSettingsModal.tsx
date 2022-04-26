@@ -111,6 +111,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
   const handleSettle = async () => {
     setLoading()
     try {
+      await api.payoutAddressSave(identity.id, state.externalWalletAddress)
       await api.settleWithBeneficiary({
         providerId: identity.id,
         hermesId: identity.hermesId,
