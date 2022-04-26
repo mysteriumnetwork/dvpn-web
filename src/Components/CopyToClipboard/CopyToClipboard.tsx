@@ -18,7 +18,7 @@ const CopyToClipboard = ({ text }: Props) => {
   useEffect(() => {
     const clipboard = new Clipboard('.c2c-btn')
     return () => clipboard.destroy()
-  })
+  }, [])
 
   return (
     <div className="c2c-btn" data-clipboard-text={text}>

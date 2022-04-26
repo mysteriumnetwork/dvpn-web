@@ -6,3 +6,14 @@
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
+.beneficiary {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+
+  &MainText {
+    font-size: $normal-size;
+    margin-right: 5px;
+  }
+}
