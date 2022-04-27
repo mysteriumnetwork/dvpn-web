@@ -30,7 +30,7 @@ type FrozenFee = {
 const isPaid = (balance: Tokens, registrationPayment: RegistrationPaymentResponse, frozenFee: FrozenFee): boolean =>
   myst.toEtherBig(balance.wei).gte(frozenFee.amountEther) || registrationPayment.paid
 
-const isStale = (info?: FrozenFee): boolean => info !== undefined && info.timestamp + _60_MINUTES < Date.now()
+const isStale = (info?: FrozenFee): boolean => info === undefined || info.timestamp + _60_MINUTES < Date.now()
 
 const NetworkRegistration = ({ nextStep }: StepProps) => {
   const identity = useSelector(selectors.currentIdentitySelector)
@@ -43,7 +43,7 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
     const stored = storage.get<FrozenFee>(FROZEN_FEE)
     const feeEther = myst.toEtherBig(fees.registrationTokens.wei)
 
-    if (!isStale(stored)) {
+    if (isStale(stored)) {
       return storage.put<FrozenFee>(FROZEN_FEE, {
         timestamp: Date.now(),
         amountEther: feeEther.gt(payments.ACTUAL_REGISTRATION_FEE_THRESHOLD)
