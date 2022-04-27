@@ -7,7 +7,7 @@
 import { APIError } from 'mysterium-vpn-js'
 import { useImmer } from 'use-immer'
 
-import { tequilaClient } from '../../../../api/tequila-client'
+import { tequila } from '../../../../api/wrapped-calls'
 import { validatePassword } from '../../../../commons/password'
 import { toastSuccess } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
@@ -16,6 +16,8 @@ import Error from '../../../../Components/Validation/Error'
 import { DEFAULT_USERNAME } from '../../../../constants/defaults'
 import styles from './Components.module.scss'
 import classNames from 'classnames'
+
+const { api } = tequila
 
 interface StateInterface {
   newPasswordConfirmation: string
@@ -55,7 +57,7 @@ const PasswordChange = () => {
     setValues((d) => {
       d.loading = true
     })
-    tequilaClient
+    api
       .authChangePassword({
         username: DEFAULT_USERNAME,
         oldPassword: values.currentPassword,

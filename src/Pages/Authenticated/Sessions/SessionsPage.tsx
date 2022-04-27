@@ -8,7 +8,7 @@ import { Session, SessionDirection } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { tequilaClient } from '../../../api/tequila-client'
+import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
 import { countryName } from '../../../commons/country'
 import { date2human, seconds2Time } from '../../../commons/date.utils'
@@ -22,6 +22,8 @@ import { MobileRow } from '../../../Components/Table/MobileRow'
 import { Row } from 'react-table'
 import { myst } from '../../../commons/myst.utils'
 import { selectors } from '../../../redux/selectors'
+
+const { api } = tequila
 
 interface State {
   isLoading: boolean
@@ -74,7 +76,7 @@ const SessionsPage = () => {
   const fetchData = async () => {
     setState((cs) => ({ ...cs, isLoading: false }))
     try {
-      const response = await tequilaClient.sessions({
+      const response = await api.sessions({
         direction: SessionDirection.PROVIDED,
         providerId: id,
         pageSize: state.pageSize,

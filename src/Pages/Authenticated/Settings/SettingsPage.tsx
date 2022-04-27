@@ -8,7 +8,6 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import { tequilaClient } from '../../../api/tequila-client'
 import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import { configParser } from '../../../commons/config'
@@ -26,6 +25,8 @@ import PasswordChange from './Components/PasswordChange'
 import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
+
+const { api } = tequila
 
 interface CardProps {
   title: string
@@ -58,7 +59,7 @@ const SettingsPage = () => {
   })
 
   useEffect(() => {
-    Promise.all([tequilaClient.getMMNApiKey(), tequilaClient.healthCheck(15_000), tequilaClient.defaultConfig()])
+    Promise.all([api.getMMNApiKey(), api.healthCheck(15_000), api.defaultConfig()])
       .then(([mmn, healthcheck, defaultConfig]) => {
         setState((cs) => ({
           ...cs,

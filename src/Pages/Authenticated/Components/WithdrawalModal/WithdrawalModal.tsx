@@ -8,7 +8,7 @@ import { Fees } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { tequilaClient } from '../../../../api/tequila-client'
+import { tequila } from '../../../../api/wrapped-calls'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import { toOptions } from '../../../../commons/mapping.utils'
 import { currentCurrency } from '../../../../commons/money.utils'
@@ -24,6 +24,8 @@ import { CollapseAlert } from './CollapseAlert'
 import { FeesRibbon } from './FeesRibbon'
 import { LatestWithdrawal } from './LatestWithdrawal'
 import styles from './WithdrawalModal.module.scss'
+
+const { api } = tequila
 
 interface Props {
   isOpen: boolean
@@ -76,8 +78,8 @@ const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props)
       const chainOptions = toOptions(chainSummary)
 
       const [{ address }, fees] = await Promise.all([
-        tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
-        tequilaClient.transactorFees(currentChain),
+        api.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
+        api.transactorFees(currentChain),
       ])
 
       const { wei: balanceWei } = identity.balanceTokens
@@ -144,7 +146,7 @@ const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props)
     setIsLoading(true)
     const option = o as Option
     const chainId = option.value as number
-    const fees = await tequilaClient.transactorFees(chainId)
+    const fees = await api.transactorFees(chainId)
 
     setState((d) => {
       d.toChain = option
@@ -162,7 +164,7 @@ const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props)
 
     try {
       setIsLoading()
-      await tequilaClient.withdraw({
+      await api.withdraw({
         hermesId: state.hermesId,
         providerId: identity.id,
         beneficiary: state.withdrawalAddress,

@@ -5,14 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
+import { AxiosAdapter, TequilapiClient } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-
-import { store } from '../redux/store'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import { updateBeneficiaryStore, updateConfigStore, updateTermsStore } from '../redux/app.slice'
+
+import { store } from '../redux/store'
 import { http } from './axios'
 
-import { tequilaClient } from './tequila-client'
+const tequilaClient: TequilapiClient = new TequilapiClient(new AxiosAdapter(http, 20_000))
 
 const login = async (username: string, password: string): Promise<void> => {
   return await tequilaClient.authLogin({ username, password }).then(() => Promise.resolve())

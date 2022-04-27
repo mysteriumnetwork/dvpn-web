@@ -6,7 +6,6 @@
  */
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { tequilaClient } from '../../../../api/tequila-client'
 import { tequila } from '../../../../api/wrapped-calls'
 import { parseError } from '../../../../commons/error.utils'
 import { toastSuccess } from '../../../../commons/toast.utils'
@@ -16,6 +15,8 @@ import { TextField } from '../../../../Components/TextField/TextField'
 import Error from '../../../../Components/Validation/Error'
 import styles from './Components.module.scss'
 import classNames from 'classnames'
+
+const { api } = tequila
 
 interface StateInterface {
   apiKey: string
@@ -49,7 +50,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       d.loading = true
     })
 
-    tequilaClient
+    api
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState((cs) => {

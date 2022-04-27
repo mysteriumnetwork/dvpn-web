@@ -5,12 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect, useState } from 'react'
-import { tequilaClient } from '../../../../api/tequila-client'
 import { Settlement, SettlementType } from 'mysterium-vpn-js'
+import { tequila } from '../../../../api/wrapped-calls'
 import styles from './WithdrawalModal.module.scss'
 import { media } from '../../../../commons/media.utils'
 import { strings } from '../../../../commons/strings.utils'
 import { useMediaQuery } from 'react-responsive'
+
+const { api } = tequila
 
 export const LatestWithdrawal = () => {
   const isMobile = useMediaQuery(media.isMobileQuery)
@@ -20,7 +22,7 @@ export const LatestWithdrawal = () => {
   }, [])
 
   const init = async () => {
-    const latestWithdrawal = await tequilaClient
+    const latestWithdrawal = await api
       .settlementHistory({ types: [SettlementType.Withdrawal], pageSize: 1 })
       .then((resp) => resp.items.find((it) => it))
     setWithdrawal(latestWithdrawal)

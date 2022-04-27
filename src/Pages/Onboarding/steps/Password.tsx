@@ -9,7 +9,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { FormEvent, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useImmer } from 'use-immer'
-import { tequilaClient } from '../../../api/tequila-client'
+import { tequila } from '../../../api/wrapped-calls'
 import { configParser } from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { validatePassword } from '../../../commons/password'
@@ -28,6 +28,8 @@ import { useSelector } from 'react-redux'
 import { selectors } from '../../../redux/selectors'
 import classNames from 'classnames'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
+
+const { api } = tequila
 
 interface State {
   passwordRepeat?: string
@@ -79,7 +81,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
         d.showClaim = true
       })
     } else {
-      tequilaClient.getMMNApiKey().then((resp) => {
+      api.getMMNApiKey().then((resp) => {
         setState((d) => {
           d.apiKey = resp.apiKey
           d.showClaim = d.apiKey === undefined || d.apiKey?.length === 0 || state.mmnDomain === 'error'
@@ -142,10 +144,10 @@ const SetPassword = (_: StepProps): JSX.Element => {
 
     try {
       if (state.useApiKey) {
-        await tequilaClient.setMMNApiKey(state.apiKey)
+        await api.setMMNApiKey(state.apiKey)
       }
 
-      await tequilaClient.authChangePassword({
+      await api.authChangePassword({
         username: DEFAULT_USERNAME,
         oldPassword: DEFAULT_PASSWORD,
         newPassword: state.password,

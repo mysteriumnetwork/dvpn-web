@@ -7,7 +7,6 @@
 import { CurrentPricesResponse, ServiceStatus } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { tequilaClient } from '../../../../api/tequila-client'
 import { tequila } from '../../../../api/wrapped-calls'
 import { WIREGUARD } from '../../../../commons'
 import { configParser } from '../../../../commons/config'
@@ -21,6 +20,7 @@ import ServiceDetail from './ServiceDetail'
 import ServiceHeader from './ServiceHeader'
 import './Services.scss'
 
+const { api } = tequila
 const { RUNNING } = ServiceStatus
 
 const Service = () => {
@@ -44,7 +44,7 @@ const Service = () => {
   const startService = async (serviceType: string) => {
     setLoading(true)
     await callWithToast(() =>
-      tequilaClient.serviceStart({
+      api.serviceStart({
         providerId: identity.id,
         type: serviceType,
       }),
@@ -54,7 +54,7 @@ const Service = () => {
 
   const stopService = async (serviceId: string) => {
     setLoading(true)
-    await callWithToast(() => tequilaClient.serviceStop(serviceId))
+    await callWithToast(() => api.serviceStop(serviceId))
     setLoading(false)
   }
 

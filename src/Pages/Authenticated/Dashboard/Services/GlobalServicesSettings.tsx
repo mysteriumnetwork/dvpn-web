@@ -7,7 +7,6 @@
 import { ServiceInfo } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { tequilaClient } from '../../../../api/tequila-client'
 import { tequila } from '../../../../api/wrapped-calls'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { configParser } from '../../../../commons/config'
@@ -20,6 +19,8 @@ import { Modal } from '../../../../Components/Modal/Modal'
 import { selectors } from '../../../../redux/selectors'
 import styles from './GlobalServicesSettings.module.scss'
 
+const { api } = tequila
+
 interface State {
   bandwidthMbps: number
   isBandwidthModalOpen: boolean
@@ -30,9 +31,9 @@ const GlobalServicesSettings = () => {
   const services = useSelector(selectors.serviceInfoSelector)
   const config = useSelector(selectors.configSelector)
 
-  const stopServices = services.map((s) => (): Promise<void> => tequilaClient.serviceStop(s.id))
+  const stopServices = services.map((s) => (): Promise<void> => api.serviceStop(s.id))
   const startServices = services.map((s) => (): Promise<ServiceInfo> =>
-    tequilaClient.serviceStart({
+    api.serviceStart({
       providerId: s.providerId,
       type: s.type,
     }),

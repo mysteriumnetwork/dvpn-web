@@ -4,9 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { tequilaClient } from '../../../../../api/tequila-client'
+import { tequila } from '../../../../../api/wrapped-calls'
 import { SUPPORTED_TRAVERSALS } from '../../../../../commons/config'
 import { TraversalProp } from './NATTraversalOrder'
+
+const { api } = tequila
 
 export interface Data {
   stunServers: string
@@ -66,7 +68,7 @@ export const validateData = async (data: Data): Promise<string[]> => {
     }
 
     try {
-      await tequilaClient.validateEthRPCL2(rpcl2.split(','))
+      await api.validateEthRPCL2(rpcl2.split(','))
     } catch (e: any) {
       errors.push(e.message)
     }

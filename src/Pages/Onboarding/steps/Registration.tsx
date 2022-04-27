@@ -8,7 +8,6 @@ import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { tequilaClient } from '../../../api/tequila-client'
 import { tequila } from '../../../api/wrapped-calls'
 import { parseError } from '../../../commons/error.utils'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
@@ -74,7 +73,7 @@ const Registration = ({ nextStep }: StepProps) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const { chains, currentChain } = await tequilaClient.chainSummary()
+        const { chains, currentChain } = await api.chainSummary()
         setState((d) => ({
           ...d,
           currentChainName: chains[currentChain],
