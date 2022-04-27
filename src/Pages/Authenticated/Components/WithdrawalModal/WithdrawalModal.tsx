@@ -28,6 +28,7 @@ import styles from './WithdrawalModal.module.scss'
 interface Props {
   isOpen: boolean
   onClose: () => void
+  doAfterWithdraw?: () => void
 }
 
 interface State {
@@ -56,7 +57,7 @@ const MINIMAL_WITHDRAWAL_AMOUNT_WEI = myst.toWeiBig('0.01') // 0.01 MYST
 const MAXIMUM_WITHDRAW_AMOUNT_WEI = myst.toWeiBig(99) // 99.0 MYST
 const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
 
-const WithdrawalModal = ({ isOpen, onClose }: Props) => {
+const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props) => {
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const identity = useSelector(selectors.currentIdentitySelector)
 
@@ -170,6 +171,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
       })
       toastSuccess('Withdrawal completed successfully!')
       onClose()
+      doAfterWithdraw()
     } catch (e: any) {
       toastError(
         'There was an error processing your withdrawal. If this is a new node, you have to wait at least 72 ' +

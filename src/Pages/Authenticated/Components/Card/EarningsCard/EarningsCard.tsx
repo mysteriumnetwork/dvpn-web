@@ -10,9 +10,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
 import { configParser } from '../../../../../commons/config'
+import { lockouts } from '../../../../../commons/lockout'
 import { Media } from '../../../../../commons/media.utils'
 import { myst } from '../../../../../commons/myst.utils'
+import page from '../../../../../commons/page'
 import Button from '../../../../../Components/Buttons/Button'
+import { LockoutButton } from '../../../../../Components/Buttons/LockoutButton'
 import Tooltip from '../../../../../Components/Tooltip/Tooltip'
 import { selectors } from '../../../../../redux/selectors'
 import WithdrawalModal from '../../WithdrawalModal/WithdrawalModal'
@@ -60,8 +63,6 @@ export const EarningsCard = () => {
   )
 }
 
-const ONE_MINUTE = 60 * 1000
-
 interface SharedProps {
   isAutoWithdrawal: boolean
 }
@@ -105,9 +106,7 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
 
   const initTimerTimeStamp = async () => {
     setIsSettingsLoading(true)
-    await new Promise((r) => setInterval(r, ONE_MINUTE))
-    // @ts-ignore
-    window.location.reload(true)
+    page.refreshPage(60)
   }
 
   return (
@@ -171,12 +170,16 @@ const Balance = ({ isAutoWithdrawal }: SharedProps) => {
           <div className={styles.value}>{display(balanceTokens.wei, { fractionDigits: 2 })}</div>
           <div className={styles.label}>Internal Balance</div>
         </div>
-        <WithdrawalModal isOpen={open} onClose={() => setOpen(false)} />
+        <WithdrawalModal
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          doAfterWithdraw={() => lockouts.lock({ id: lockouts.buttons.WITHDRAWAL, seconds: 60, refreshPage: true })}
+        />
       </div>
       <div className={styles.balanceControl}>
-        <Button onClick={() => setOpen(true)} extraStyle="outline-primary">
+        <LockoutButton id={lockouts.buttons.WITHDRAWAL} onClick={() => setOpen(true)} extraStyle="outline-primary">
           withdraw
-        </Button>
+        </LockoutButton>
         {isAutoWithdrawal && (
           <p className={styles.balanceNote}>
             Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once
