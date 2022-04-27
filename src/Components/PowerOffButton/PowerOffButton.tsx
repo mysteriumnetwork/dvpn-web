@@ -9,6 +9,7 @@ import { IconButton } from '@material-ui/core'
 import Icon from '@material-ui/icons/PowerSettingsNewOutlined'
 import { useEffect, useState } from 'react'
 import { tequila } from '../../api/wrapped-calls'
+import page from '../../commons/page'
 import { parseToastError } from '../../commons/toast.utils'
 import ConfirmationDialog from '../ConfirmationDialogue/ConfirmationDialog'
 
@@ -35,8 +36,7 @@ export const PowerOffButton = () => {
       await new Promise((r) => setInterval(r, 10_000))
       setShowConfirmation(false)
       setIsCountdown(false)
-      // @ts-ignore
-      window.location.reload(true)
+      page.refreshPage()
     } catch (e: any) {
       parseToastError(e)
     }
