@@ -23,7 +23,7 @@ const put = async <T extends any>(key: string, value: T) => {
 
 const selector = <T>(key: string): ((state: RootState) => T | undefined) => {
   return ({ app: { config } }: RootState) => {
-    return config.data[ROOT_KEY][key]
+    return (config.data[ROOT_KEY] || {})[key]
   }
 }
 

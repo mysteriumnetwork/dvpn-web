@@ -172,10 +172,7 @@ const Balance = ({ isAutoWithdrawal }: SharedProps) => {
         </div>
         <WithdrawalModal
           isOpen={open}
-          onClose={() => {
-            lockouts.lock({ id: lockouts.buttons.WITHDRAWAL, seconds: 5, refreshPage: true })
-            setOpen(false)
-          }}
+          onClose={() => setOpen(false)}
           doAfterWithdraw={() => lockouts.lock({ id: lockouts.buttons.WITHDRAWAL, seconds: 60, refreshPage: true })}
         />
       </div>
