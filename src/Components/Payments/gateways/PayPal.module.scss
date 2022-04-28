@@ -27,4 +27,11 @@
   display: flex;
   align-items: center;
   gap: 15px;
+
+  &Verification {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+  }
 }

@@ -185,10 +185,10 @@ const WaitingPayment = ({ isRegistrationPaymentReceived, showPayNow }: WaitingPa
       {isRegistrationPaymentReceived ? (
         <>Payment successful! Click Next to proceed.</>
       ) : (
-        <>
+        <div className={styles.waitingPaymentVerification}>
           Payment verification in progress (may take a few minutes)...
           <CircularProgress disableShrink />
-        </>
+        </div>
       )}
     </div>
   )
