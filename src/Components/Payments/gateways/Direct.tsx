@@ -27,8 +27,8 @@ const Direct = ({ payments: { amountRequiredWei } }: GatewayProps) => {
   return (
     <div className={styles.content}>
       <p>
-        1. Send no less than {myst.display(amountRequiredWei, { removeInsignificantZeros: true })} to the address below.
-        Important: only Polygon blockchain {currentCurrency()} is supported!
+        1. Send no less than {myst.display(amountRequiredWei, { fractionDigits: 2 })} to the address below. Important:
+        only Polygon blockchain {currentCurrency()} is supported!
       </p>
       <p className={styles.centered}>{channelAddress}</p>
       <div className={styles.qr}>
