@@ -186,7 +186,7 @@ const WaitingPayment = ({ isRegistrationPaymentReceived, showPayNow }: WaitingPa
         <>Payment successful! Click Next to proceed.</>
       ) : (
         <>
-          Waiting payment confirmation...
+          Payment verification in progress (may take a few minutes)...
           <CircularProgress disableShrink />
         </>
       )}

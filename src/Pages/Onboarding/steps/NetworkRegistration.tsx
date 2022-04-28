@@ -84,13 +84,9 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
   return (
     <StepLayout
       title="Network Registration"
-      description={`To register your node on blockchain you need to deposit a small amount of ${currentCurrency()} token to cover registration fee.`}
+      description={`To register your node on blockchain you can either transfer required amount of ${currentCurrency()} or pay 1 USD/EUR/GBP`}
       isLoading={isLoading}
-      controls={
-        <Button disabled={!isRegistrationPaymentReceived} onClick={nextStep}>
-          Next
-        </Button>
-      }
+      controls={<>{isRegistrationPaymentReceived && <Button onClick={nextStep}>Next</Button>}</>}
       controlsCentered
     >
       <Payments amountRequiredWei={myst.toWeiBig(frozenFee.amountEther)} isCompleted={isRegistrationPaymentReceived} />
