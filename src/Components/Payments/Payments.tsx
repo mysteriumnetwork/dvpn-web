@@ -24,7 +24,7 @@ const SUPPORTED_GATEWAYS: {
     component: 'Direct',
   },
   paypal: {
-    summary: `Buy ${currentCurrency()} with PayPal (1 USD/EUR/GBP)`,
+    summary: `Pay with PayPal (1 USD/EUR/GBP)`,
     component: 'PayPal',
   },
 })
