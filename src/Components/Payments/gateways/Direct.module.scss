@@ -1,0 +1,23 @@
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &Received {
+    gap: 15px
+  }
+}
+
+.qr {
+  height: 120px;
+  width: 120px;
+  margin: 0 auto;
+}
+
+.content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}

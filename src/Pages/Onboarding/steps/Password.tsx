@@ -9,7 +9,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { FormEvent, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useImmer } from 'use-immer'
-import { tequilaClient } from '../../../api/tequila-client'
+import { tequila } from '../../../api/wrapped-calls'
 import { configParser } from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import { validatePassword } from '../../../commons/password'
@@ -20,6 +20,7 @@ import { TextField } from '../../../Components/TextField/TextField'
 import Error from '../../../Components/Validation/Error'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
 import { updateAuthenticatedStore } from '../../../redux/app.slice'
+import { StepLayout } from '../Components/StepLayout'
 import styles from './Steps.module.scss'
 
 import { store } from '../../../redux/store'
@@ -27,6 +28,8 @@ import { useSelector } from 'react-redux'
 import { selectors } from '../../../redux/selectors'
 import classNames from 'classnames'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
+
+const { api } = tequila
 
 interface State {
   passwordRepeat?: string
@@ -78,7 +81,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
         d.showClaim = true
       })
     } else {
-      tequilaClient.getMMNApiKey().then((resp) => {
+      api.getMMNApiKey().then((resp) => {
         setState((d) => {
           d.apiKey = resp.apiKey
           d.showClaim = d.apiKey === undefined || d.apiKey?.length === 0 || state.mmnDomain === 'error'
@@ -141,10 +144,10 @@ const SetPassword = (_: StepProps): JSX.Element => {
 
     try {
       if (state.useApiKey) {
-        await tequilaClient.setMMNApiKey(state.apiKey)
+        await api.setMMNApiKey(state.apiKey)
       }
 
-      await tequilaClient.authChangePassword({
+      await api.authChangePassword({
         username: DEFAULT_USERNAME,
         oldPassword: DEFAULT_PASSWORD,
         newPassword: state.password,
@@ -165,12 +168,12 @@ const SetPassword = (_: StepProps): JSX.Element => {
   }
 
   return (
-    <div className={styles.step}>
-      <h1 className={styles.title}>Node settings</h1>
-      <p className={classNames(styles.description, 'm-t-100')}>
-        Fill in the following information to finish setting up your node.
-      </p>
-      <form className={styles.content} onSubmit={handleSubmitPassword}>
+    <StepLayout
+      title="Node settings"
+      description="Fill in the following information to finish setting up your node."
+      controlsCentered
+    >
+      <form onSubmit={handleSubmitPassword}>
         <p className={classNames(styles.passwordContentDescription, 'm-b-20')}>
           <strong>Please create default WebUI password. At least 10 characters are required.</strong>
         </p>
@@ -201,7 +204,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
           </Button>
         </div>
       </form>
-    </div>
+    </StepLayout>
   )
 }
 

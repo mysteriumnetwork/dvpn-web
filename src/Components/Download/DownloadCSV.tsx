@@ -61,9 +61,5 @@ export const DownloadCSV = <T extends unknown>({ fetchData, mapper, disabled }: 
     }
   }
 
-  return (
-    <Button disabled={disabled} icon={<GetApp />} onClick={handleDownload} extraStyle="outline">
-      CSV
-    </Button>
-  )
+  return <Button disabled={disabled} icon={<GetApp />} onClick={handleDownload} extraStyle="outline" />
 }

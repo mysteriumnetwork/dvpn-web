@@ -8,6 +8,18 @@ import { Settlement, SettlementListResponse } from 'mysterium-vpn-js'
 
 const newLine = '\n'
 
+const aliases: { [key: string]: string } = {
+  beneficiary: 'externalWalletAddress',
+}
+
+const alias = (original: string): string => {
+  const a = aliases[original]
+  if (a) {
+    return a
+  }
+  return original
+}
+
 export const toCsv = (response: SettlementListResponse): string => {
   const { items } = response
   if (items.length === 0) {
@@ -16,7 +28,7 @@ export const toCsv = (response: SettlementListResponse): string => {
 
   const columns = Object.keys(items[0]) as [keyof Settlement]
 
-  let csv = `"${columns.join(',')}"${newLine}`
+  let csv = `"${columns.map(alias).join(',')}"${newLine}`
   items.forEach((item) => {
     const values = columns.map((column) => `"${item[column]}"`).join(',')
     csv += `${values}${newLine}`

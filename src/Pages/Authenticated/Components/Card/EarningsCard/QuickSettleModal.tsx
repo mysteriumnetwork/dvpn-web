@@ -28,8 +28,8 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const fees = useSelector(selectors.feesSelector)
   const chainSummary = useSelector(selectors.chainSummarySelector)
-  const beneficiary = useSelector(selectors.beneficiarySelector)
-  const isAutoWithdrawal = !beneficiary.isChannelAddress
+  const { isChannelAddress, beneficiary } = useSelector(selectors.beneficiarySelector)
+  const isAutoWithdrawal = !isChannelAddress
 
   const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earningsTokens, fees), [
     fees.hermesPercent,
@@ -72,6 +72,10 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
         Settlement transaction may take a few minutes to complete.
       </p>
       <FeesTable earnings={identity.earningsTokens} chainSummary={chainSummary} calculatedFees={calculatedFees} />
+      <div className={styles.beneficiary}>
+        <span className={styles.beneficiaryMainText}>External Wallet Address:</span>
+        {beneficiary}
+      </div>
     </Modal>
   )
 }

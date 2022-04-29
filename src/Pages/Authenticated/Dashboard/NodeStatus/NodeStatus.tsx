@@ -9,7 +9,7 @@ import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vp
 import React, { ReactFragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { tequilaClient } from '../../../../api/tequila-client'
+import { tequila } from '../../../../api/wrapped-calls'
 import { parseToastError } from '../../../../commons/toast.utils'
 import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import { NATType } from '../../../../constants/nat'
@@ -19,6 +19,8 @@ import { RootState } from '../../../../redux/store'
 import Bubble from './Bubble'
 import { natType2Human, natTypeStatusBubble, nodeStatusBubble, statusText } from './nat-status.utils'
 import './NodeStatus.scss'
+
+const { api } = tequila
 
 interface State {
   natStatus: NodeMonitoringStatusResponse
@@ -46,8 +48,7 @@ const NodeStatus = () => {
   useEffect(() => {
     const init = async () => {
       try {
-        const status = await tequilaClient.nodeMonitoringStatus()
-        const natType = await tequilaClient.natType()
+        const [status, natType] = await Promise.all([api.nodeMonitoringStatus(), api.natType()])
         setState((d) => {
           d.natStatus = status
           d.nat.type = natType.type

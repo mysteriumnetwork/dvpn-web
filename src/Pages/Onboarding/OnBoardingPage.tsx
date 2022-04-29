@@ -5,26 +5,27 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { Suspense, useMemo, useState } from 'react'
-import { CircularProgress } from '@material-ui/core'
-import styles from './Onboarding.module.scss'
-import sideImage from '../../assets/images/onboarding/SideImage.png'
 import { useSelector } from 'react-redux'
-import { selectors } from '../../redux/selectors'
+import sideImage from '../../assets/images/onboarding/SideImage.png'
 import { Onboarding } from '../../redux/app.slice'
+import { selectors } from '../../redux/selectors'
+import styles from './Onboarding.module.scss'
 
 interface Step {
   component: string
-  isApplicable: (onBoarding: Onboarding) => boolean
+  isApplicable?: (onBoarding: Onboarding) => boolean
 }
 
 const steps: Step[] = [
   {
     component: 'Greeting',
-    isApplicable: () => true,
   },
   {
     component: 'TOS',
     isApplicable: (onBoarding) => onBoarding.needsAgreedTerms,
+  },
+  {
+    component: 'NetworkRegistration',
   },
   {
     component: 'Registration',
@@ -52,7 +53,9 @@ const OnBoardingPage = () => {
     }
 
     for (let i = step + 1; i < steps.length; i++) {
-      if (steps[i].isApplicable(onBoarding)) {
+      const { isApplicable } = steps[i]
+
+      if (isApplicable === undefined || isApplicable(onBoarding)) {
         return i
       }
     }
@@ -62,7 +65,7 @@ const OnBoardingPage = () => {
   return (
     <div className={styles.onBoarding}>
       <div className={styles.onBoardingContent}>
-        <Suspense fallback={<CircularProgress className="spinner" disableShrink />}>
+        <Suspense fallback={null}>
           <Step {...{ nextStep }} />
         </Suspense>
       </div>

@@ -4,22 +4,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styles from './Steps.module.scss'
+import React from 'react'
 import Button from '../../../Components/Buttons/Button'
+import { StepLayout } from '../Components/StepLayout'
 
-const Greeting = ({ nextStep }: StepProps) => {
-  return (
-    <div className={styles.step}>
-      <h1 className={styles.title}>Welcome node runner!</h1>
-      <p className={styles.description}>Lets get you up and running. </p>
-      <div id="separator" style={{ marginTop: '100px' }} />
-      <div className={styles.content}>
-        <div className={styles.controls}>
-          <Button onClick={nextStep}>Start node setup</Button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
+const Greeting = ({ nextStep }: StepProps) => (
+  <StepLayout
+    title="Welcome node runner!"
+    description="Lets get you up and running."
+    controls={<Button onClick={nextStep}>Start node setup</Button>}
+    controlsCentered
+  />
+)
 export default Greeting

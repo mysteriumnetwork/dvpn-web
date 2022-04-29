@@ -8,7 +8,7 @@ import { Fees } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { tequilaClient } from '../../../../api/tequila-client'
+import { tequila } from '../../../../api/wrapped-calls'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import { toOptions } from '../../../../commons/mapping.utils'
 import { currentCurrency } from '../../../../commons/money.utils'
@@ -25,9 +25,12 @@ import { FeesRibbon } from './FeesRibbon'
 import { LatestWithdrawal } from './LatestWithdrawal'
 import styles from './WithdrawalModal.module.scss'
 
+const { api } = tequila
+
 interface Props {
   isOpen: boolean
   onClose: () => void
+  doAfterWithdraw?: () => void
 }
 
 interface State {
@@ -56,7 +59,7 @@ const MINIMAL_WITHDRAWAL_AMOUNT_WEI = myst.toWeiBig('0.01') // 0.01 MYST
 const MAXIMUM_WITHDRAW_AMOUNT_WEI = myst.toWeiBig(99) // 99.0 MYST
 const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
 
-const WithdrawalModal = ({ isOpen, onClose }: Props) => {
+const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props) => {
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const identity = useSelector(selectors.currentIdentitySelector)
 
@@ -75,8 +78,8 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
       const chainOptions = toOptions(chainSummary)
 
       const [{ address }, fees] = await Promise.all([
-        tequilaClient.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
-        tequilaClient.transactorFees(currentChain),
+        api.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
+        api.transactorFees(currentChain),
       ])
 
       const { wei: balanceWei } = identity.balanceTokens
@@ -143,7 +146,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
     setIsLoading(true)
     const option = o as Option
     const chainId = option.value as number
-    const fees = await tequilaClient.transactorFees(chainId)
+    const fees = await api.transactorFees(chainId)
 
     setState((d) => {
       d.toChain = option
@@ -161,7 +164,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
 
     try {
       setIsLoading()
-      await tequilaClient.withdraw({
+      await api.withdraw({
         hermesId: state.hermesId,
         providerId: identity.id,
         beneficiary: state.withdrawalAddress,
@@ -170,6 +173,7 @@ const WithdrawalModal = ({ isOpen, onClose }: Props) => {
       })
       toastSuccess('Withdrawal completed successfully!')
       onClose()
+      doAfterWithdraw()
     } catch (e: any) {
       toastError(
         'There was an error processing your withdrawal. If this is a new node, you have to wait at least 72 ' +

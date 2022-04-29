@@ -22,7 +22,7 @@ interface Props {
 }
 
 const Button = ({ isLoading, extraStyle, className, children, onClick, type, disabled, autoFocus, icon }: Props) => {
-  const classNames = `btn p-r-30 p-l-30 ${className || ''} btn--${extraStyle || 'filled'}`
+  const classNames = `btn p-r-10 p-l-10 ${className || ''} btn--${extraStyle || 'filled'}`
 
   return (
     <button

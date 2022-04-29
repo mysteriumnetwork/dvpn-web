@@ -9,7 +9,7 @@ import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysteriu
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { tequilaClient } from '../../../api/tequila-client'
+import { tequila } from '../../../api/wrapped-calls'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { tequilUtils } from '../../../commons/tequil.utils'
@@ -25,6 +25,8 @@ import styles from './DashboardPage.module.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Service from './Services/Service'
+
+const { api } = tequila
 
 interface StateProps {
   loading: boolean
@@ -64,15 +66,15 @@ const DashboardPage = () => {
     const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
     try {
       const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }] = await Promise.all([
-        tequilaClient.sessionStatsDaily(sessionFilter),
-        tequilaClient.sessionStatsAggregated(sessionFilter),
-        tequilaClient.sessions({
+        api.sessionStatsDaily(sessionFilter),
+        api.sessionStatsAggregated(sessionFilter),
+        api.sessions({
           direction: SessionDirection.PROVIDED,
           providerId: identity.id,
           pageSize: 10,
           status: SessionStatus.COMPLETED,
         }),
-        tequilaClient.identityBalanceRefresh(identity.id),
+        api.identityBalanceRefresh(identity.id),
       ])
 
       setState((d) => {

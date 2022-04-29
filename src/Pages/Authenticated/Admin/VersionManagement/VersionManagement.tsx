@@ -14,6 +14,7 @@ import {
   UI,
   uiVersionManager,
 } from '../../../../api/ui-version-management'
+import page from '../../../../commons/page'
 import { parseToastError, toastError } from '../../../../commons/toast.utils'
 import Button from '../../../../Components/Buttons/Button'
 import styles from './VersionManagement.module.scss'
@@ -131,8 +132,7 @@ export const VersionManagement = () => {
   const switchVersion = async (name: string) => {
     try {
       await switchUi(name)
-      // @ts-ignore
-      window.location.reload(true)
+      page.refreshPage()
     } catch (err: any) {
       toastError(err.response.data.message)
     }
