@@ -25,6 +25,8 @@ import { GatewayProps } from './types'
 
 const { api } = tequila
 
+const FIAT_PAYMENT_AMOUNT = 0.77
+
 interface State {
   fiatToMystEther: { [key: string]: string }
   currency: string
@@ -74,7 +76,10 @@ const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
           taxCountry,
           order: orders.find((o) => o.status === 'new' && o.gatewayName === gateway.name),
           fiatToMystEther: _.chain(
-            rates.map((r) => ({ currency: r.currency, mystEther: myst.toBig(0.77).div(r.amount).toFixed(2) })),
+            rates.map((r) => ({
+              currency: r.currency,
+              mystEther: myst.toBig(FIAT_PAYMENT_AMOUNT).div(r.amount).toFixed(2),
+            })),
           )
             .keyBy('currency')
             .mapValues('mystEther')
