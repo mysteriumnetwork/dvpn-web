@@ -32,6 +32,7 @@ interface State {
   isLoading: boolean
   isRedirected: boolean
   order?: PaymentOrder
+  isLoadingPayNow: boolean
 }
 
 const initialState: State = {
@@ -40,6 +41,7 @@ const initialState: State = {
   taxCountry: { label: '', value: '' },
   isLoading: true,
   isRedirected: false,
+  isLoadingPayNow: false,
 }
 
 const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
@@ -92,6 +94,7 @@ const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
 
   const handlePayNow = async () => {
     try {
+      setState((p) => ({ ...p, isLoadingPayNow: true }))
       const order = await createOrRetrieveOrder()
       const checkoutUrl = validateAndReturnCheckoutUrl(order)
       if (!checkoutUrl) {
@@ -101,6 +104,8 @@ const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
       markRedirected()
     } catch (err: any) {
       parseToastError(err)
+    } finally {
+      setState((p) => ({ ...p, isLoadingPayNow: false }))
     }
   }
 
@@ -160,7 +165,7 @@ const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
       <Select options={countryOptions} value={taxCountry} onChange={(o) => handleTaxCountryChange(o as Option)} />
       {showPayNow() && (
         <div className={styles.payNow}>
-          <Button extraStyle="outline-primary" onClick={handlePayNow}>
+          <Button extraStyle="outline-primary" onClick={handlePayNow} isLoading={state.isLoadingPayNow}>
             Pay Now
           </Button>
         </div>
