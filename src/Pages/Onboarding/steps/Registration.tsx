@@ -116,9 +116,6 @@ const Registration = ({ nextStep }: StepProps) => {
       }
 
       setIsLoading(true)
-      if (state.withdrawalAddress) {
-        await api.payoutAddressSave(identity.id, state.withdrawalAddress)
-      }
       if (isUnregistered(identity) || isRegistrationError(identity)) {
         await registerIdentity(identity.id, state.withdrawalAddress)
       }

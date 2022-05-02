@@ -25,6 +25,7 @@ import { QuickSettleModal } from './QuickSettleModal'
 import { SettleSettingsModal } from './SettleSettingsModal'
 import WarningIcon from '@material-ui/icons/WarningOutlined'
 
+const QUICK_SETTLE_LOCKOUT_ID = 'QUICK_SETTLE_LOCKOUT_ID'
 const { display, toWeiBig, toBig, toEtherBig } = myst
 const { api } = tequila
 
@@ -140,9 +141,13 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
       <div className={styles.earningsControls}>
         {isAutoWithdrawal ? (
           <>
-            <Button extraStyle="outline-primary" onClick={() => setQuickSettleOpen(true)}>
+            <LockoutButton
+              id={QUICK_SETTLE_LOCKOUT_ID}
+              extraStyle="outline-primary"
+              onClick={() => setQuickSettleOpen(true)}
+            >
               settle Now
-            </Button>
+            </LockoutButton>
             <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
               Auto withdrawals: ON
             </Button>
@@ -153,7 +158,11 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
           </Button>
         )}
       </div>
-      <QuickSettleModal open={quickSettleOpen} onClose={() => setQuickSettleOpen(false)} />
+      <QuickSettleModal
+        open={quickSettleOpen}
+        onClose={() => setQuickSettleOpen(false)}
+        onSave={() => lockouts.lock({ id: QUICK_SETTLE_LOCKOUT_ID, seconds: 60, refreshPage: true })}
+      />
       <SettleSettingsModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} onSave={initTimerTimeStamp} />
     </div>
   )
