@@ -149,7 +149,7 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
               settle Now
             </LockoutButton>
             <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
-              Auto withdrawals: ON
+              Auto withdrawals: {beneficiaryTx?.error ? 'ERROR' : 'ON'}
             </Button>
           </>
         ) : (
