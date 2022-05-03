@@ -73,7 +73,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
         parseAndToastError(e)
       }
     })()
-  }, [identity.id])
+  }, [identity.id, beneficiary, isAutoWithdrawal])
 
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const fees = useSelector(selectors.feesSelector)
