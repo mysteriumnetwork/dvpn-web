@@ -40,7 +40,7 @@ interface State {
 }
 
 export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
-  const { isChannelAddress } = useSelector(selectors.beneficiarySelector)
+  const { isChannelAddress, beneficiary } = useSelector(selectors.beneficiarySelector)
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
   const docsUrl = configParser.docsAddress(config)
@@ -62,13 +62,10 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
         return
       }
       try {
-        const [{ address }, txStatus] = await Promise.all([
-          api.payoutAddressGet(identity.id).catch(() => ({ address: '' })),
-          api.beneficiaryTxStatus(identity.id).catch(() => undefined),
-        ])
+        const txStatus = await api.beneficiaryTxStatus(identity.id).catch(() => undefined)
         setState((p) => ({
           ...p,
-          externalWalletAddress: address,
+          externalWalletAddress: isChannelAddress ? '' : beneficiary,
           txStatus,
           isLoading: false,
         }))
@@ -76,7 +73,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
         parseAndToastError(e)
       }
     })()
-  }, [identity.id])
+  }, [identity.id, beneficiary, isAutoWithdrawal])
 
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const fees = useSelector(selectors.feesSelector)
@@ -111,7 +108,6 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
   const handleSettle = async () => {
     setLoading()
     try {
-      await api.payoutAddressSave(identity.id, state.externalWalletAddress)
       await api.settleWithBeneficiary({
         providerId: identity.id,
         hermesId: identity.hermesId,

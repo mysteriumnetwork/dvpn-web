@@ -14,8 +14,10 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import { date2human } from '../../../commons/date.utils'
 import { parseError } from '../../../commons/error.utils'
 import { myst } from '../../../commons/myst.utils'
+import page from '../../../commons/page'
 import { strings } from '../../../commons/strings.utils'
 import { toastError } from '../../../commons/toast.utils'
+import Button from '../../../Components/Buttons/Button'
 import { DownloadCSV } from '../../../Components/Download/DownloadCSV'
 import { MobileRow } from '../../../Components/Table/MobileRow'
 import Table, { PagingProps } from '../../../Components/Table/Table'
@@ -163,6 +165,7 @@ const WalletPage = () => {
               <Cards.EarningsCard />
             </CardLayout>
           </div>
+          <Button onClick={() => page.refreshPage(5)}>Do Refresh</Button>
           <Table
             data={items}
             lastPage={state.lastPage}

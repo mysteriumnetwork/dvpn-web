@@ -6,10 +6,7 @@
  */
 
 const refreshPage = async (seconds: number = 0) => {
-  if (seconds > 0) {
-    await new Promise((r) => setInterval(r, seconds * 1_000))
-  }
-  window.location.reload()
+  setTimeout(() => window.location.reload(), seconds * 1_000)
 }
 
 const page = {

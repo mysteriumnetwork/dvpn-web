@@ -20,11 +20,12 @@ import styles from './QuickSettleModal.module.scss'
 interface Props {
   open?: boolean
   onClose: () => void
+  onSave?: () => void
 }
 
 const { api } = tequila
 
-export const QuickSettleModal = ({ open, onClose }: Props) => {
+export const QuickSettleModal = ({ open, onClose, onSave = () => {} }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const fees = useSelector(selectors.feesSelector)
   const chainSummary = useSelector(selectors.chainSummarySelector)
@@ -51,6 +52,7 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
           try {
             setLoading(true)
             await api.settleAsync({ providerId: identity.id, hermesIds: identities.hermesIds(identity) })
+            onSave()
             onClose()
           } catch (err: any) {
             parseAndToastError(err)
@@ -72,10 +74,7 @@ export const QuickSettleModal = ({ open, onClose }: Props) => {
         Settlement transaction may take a few minutes to complete.
       </p>
       <FeesTable earnings={identity.earningsTokens} chainSummary={chainSummary} calculatedFees={calculatedFees} />
-      <div className={styles.beneficiary}>
-        <span className={styles.beneficiaryMainText}>External Wallet Address:</span>
-        {beneficiary}
-      </div>
+      <div className={styles.beneficiary}>External Wallet Address: {beneficiary}</div>
     </Modal>
   )
 }
