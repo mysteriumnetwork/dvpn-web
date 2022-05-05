@@ -223,7 +223,7 @@ const DownloadInvoice = ({ id, orderId }: { id: string; orderId?: string }) => {
           window.URL.revokeObjectURL(url)
         }
         setUrl(window.URL.createObjectURL(blob))
-        setName(`MysteriumVPN-order-${orderId}.pdf`)
+        setName(`MystNodes-order-${orderId}.pdf`)
       } catch (err) {
         parseToastError(err)
       }
