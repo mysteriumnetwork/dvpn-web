@@ -6,19 +6,20 @@
  */
 
 import { useCallback, useEffect } from 'react'
-import { VERSION_MANAGEMENT } from '../../../../constants/routes'
-import { useHistory } from 'react-router-dom'
+import { ADMIN } from '../../../../constants/routes'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface Props {
   children: JSX.Element
 }
 
 export const Hotkeys = ({ children }: Props) => {
-  const history = useHistory()
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
 
-  const handleKeyPress = useCallback((event) => {
-    if (event.key === 'F10' && history.location.pathname !== VERSION_MANAGEMENT) {
-      history.push(VERSION_MANAGEMENT)
+  const handleKeyPress = useCallback((event: any) => {
+    if (event.key === 'F10' && pathname !== ADMIN) {
+      navigate(ADMIN)
     }
   }, [])
 

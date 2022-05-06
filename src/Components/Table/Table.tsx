@@ -67,7 +67,7 @@ const Table = ({
               {...cell.getCellProps()}
               className={classNames(styles.tableBodyRowCell, cell.column.width ? `w-${cell.column.width}` : '')}
             >
-              {cell.render('Cell')}
+              <>{cell.render('Cell')}</>
             </div>
           )
         })}
@@ -116,7 +116,7 @@ const Table = ({
               <div className={styles.tableHeader} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <div {...column.getHeaderProps()} className={classNames(styles.tableHeaderCell, `w-${column.width}`)}>
-                    {column.render('Header')}
+                    <>{column.render('Header')}</>
                   </div>
                 ))}
               </div>

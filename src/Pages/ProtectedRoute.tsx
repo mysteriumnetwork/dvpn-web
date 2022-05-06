@@ -4,39 +4,36 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Route, Redirect } from 'react-router-dom'
+import React, { ReactElement } from 'react'
+import { Navigate } from 'react-router-dom'
 
 import { LOGIN, ON_BOARDING_HOME } from '../constants/routes'
 
-interface Props {
-  component: (props: any) => any
+interface ProtectedProps {
   loggedIn: boolean
-  needsOnBoarding?: boolean
-  path: string
+  needsOnBoarding: boolean
+  children: ReactElement
 }
 
-const redirectComponent = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element | null => {
+export const Protected = ({ loggedIn, needsOnBoarding, children }: ProtectedProps) => {
   if (!loggedIn) {
-    return <Redirect to={LOGIN} />
+    return <Navigate to={LOGIN} />
   }
-  if (needsOnboarding) {
-    return <Redirect to={ON_BOARDING_HOME} />
+  if (needsOnBoarding) {
+    return <Navigate to={ON_BOARDING_HOME} />
   }
 
-  return null
+  return children
 }
 
-const ProtectedRoute = ({ component, loggedIn, needsOnBoarding = false, ...rest }: Props): JSX.Element => {
-  const redirect = redirectComponent(needsOnBoarding, loggedIn)
-
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        return redirect || component(props)
-      }}
-    />
-  )
+export const RedirectOrRender = ({
+  redirectCondition,
+  redirectTo,
+  children,
+}: {
+  redirectCondition: boolean
+  redirectTo: string
+  children: JSX.Element
+}) => {
+  return redirectCondition ? <Navigate to={redirectTo} /> : children
 }
-
-export default ProtectedRoute

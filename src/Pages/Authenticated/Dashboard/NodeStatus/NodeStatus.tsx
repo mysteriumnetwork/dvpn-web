@@ -6,7 +6,7 @@
  */
 
 import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vpn-js'
-import React, { ReactFragment, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequila } from '../../../../api/wrapped-calls'
@@ -98,8 +98,8 @@ const NodeStatus = () => {
   )
 }
 
-const nodeStatusTooltip = (node: NodeMonitoringStatusResponse, online: boolean): ReactFragment => {
-  const content = (): ReactFragment => {
+const nodeStatusTooltip = (node: NodeMonitoringStatusResponse, online: boolean) => {
+  const content = () => {
     if (!online) {
       return (
         <>
@@ -135,7 +135,7 @@ const nodeStatusTooltip = (node: NodeMonitoringStatusResponse, online: boolean):
   return <div className="tooltip">{content()}</div>
 }
 
-const natTypeTooltip = (natType: string, natTypeFixUrl: string): ReactFragment => {
+const natTypeTooltip = (natType: string, natTypeFixUrl: string) => {
   const content = () => {
     switch (natType) {
       case 'none':

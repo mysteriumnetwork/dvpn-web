@@ -7,7 +7,6 @@
 import DragHandleIcon from '@material-ui/icons/DragHandle'
 import { arrayMoveImmutable } from 'array-move'
 import React from 'react'
-import { Container, Draggable } from 'react-smooth-dnd'
 import { OnDropCallback } from 'smooth-dnd/dist/src/exportTypes'
 import './NATTraversalOrder.scss'
 
@@ -36,9 +35,10 @@ const Row = ({ prop }: { prop: TraversalProp }) => {
 
 export const NATTraversalOrder = ({ items, onDrop: onMove }: Props) => {
   const options = items.map((o) => (
-    <Draggable key={o.key}>
-      <Row prop={o} />
-    </Draggable>
+    // <Draggable key={o.key}>
+    //   <Row prop={o} />
+    // </Draggable>
+    <></>
   ))
 
   const onDrop: OnDropCallback = ({ removedIndex, addedIndex }) => {
@@ -54,9 +54,9 @@ export const NATTraversalOrder = ({ items, onDrop: onMove }: Props) => {
         <EmptyOptions text="None Selected" />
       ) : (
         <div className="nat-traversal-order__list">
-          <Container dragHandleSelector=".drag-handle" lockAxis="y" onDrop={onDrop}>
-            {options}
-          </Container>
+          {/*<Container dragHandleSelector=".drag-handle" lockAxis="y" onDrop={onDrop}>*/}
+          {/*  {options}*/}
+          {/*</Container>*/}
         </div>
       )}
     </div>

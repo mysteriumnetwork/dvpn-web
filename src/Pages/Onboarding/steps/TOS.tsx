@@ -27,7 +27,9 @@ const TOS = ({ nextStep }: StepProps) => {
 
   return (
     <StepLayout title="Terms & Conditions" controls={<Button onClick={agree}>I accept</Button>} controlsCentered>
-      <div className={styles.tos}>{ReactHtmlParser(termsHtml)}</div>
+      <div className={styles.tos}>
+        <>{ReactHtmlParser(termsHtml)}</>
+      </div>
     </StepLayout>
   )
 }

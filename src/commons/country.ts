@@ -10,13 +10,9 @@ import '@formatjs/intl-displaynames/locale-data/en'
 // @ts-ignore
 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
 
-export const countryName = (countryCode: string): string => {
-  if (countryCode !== '') {
-    return regionNames.of(countryCode)
-  } else {
-    return 'Unknown'
-  }
-}
+const UNKNOWN = 'Unknown'
+
+export const countryName = (countryCode: string): string => regionNames.of(countryCode) || UNKNOWN
 
 export const countryNames: { [key: string]: string } = Object.freeze({
   af: 'Afghanistan',
