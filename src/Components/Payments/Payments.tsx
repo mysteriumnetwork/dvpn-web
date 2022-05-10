@@ -16,16 +16,30 @@ import styles from './Payments.module.scss'
 
 const { api } = tequila
 
-const SUPPORTED_GATEWAYS: {
-  [key: 'direct' | 'paypal' | string]: { summary: string; component: string }
-} = Object.freeze({
+interface SupportedGateways {
+  [key: 'direct' | 'paypal' | string]: {
+    summary: string
+    component: string
+    note?: string
+  }
+}
+
+const SUPPORTED_GATEWAYS: SupportedGateways = Object.freeze({
   direct: {
     summary: `Deposit ${currentCurrency()} token`,
     component: 'Direct',
   },
   paypal: {
     summary: `Pay with PayPal (1 USD/EUR/GBP)`,
-    component: 'PayPal',
+    component: 'Fiat',
+    note:
+      'Note: After clicking PAY NOW below, new tab/window will be opened and you will be redirected to Paypal to complete transaction.',
+  },
+  stripe: {
+    summary: `Pay with Credit or Debit card (1 USD/EUR/GBP)`,
+    component: 'Fiat',
+    note:
+      'Note: After clicking PAY NOW below, new tab/window will be opened and you will be redirected to payment processing partner to complete transaction.',
   },
 })
 
@@ -53,7 +67,6 @@ export const Payments = (props: PaymentProps) => {
         const options: Option[] = gateways
           .filter((gw) => Object.keys(SUPPORTED_GATEWAYS).includes(gw.name))
           .map((gw) => ({ value: gw.name, label: SUPPORTED_GATEWAYS[gw.name].summary }))
-
         setState((p) => ({ ...p, gatewayOptions: [DIRECT_GATEWAY_OPTION, ...options], gateways }))
       } catch (e: any) {
         toastError('Could not retrieve payment gateways')
@@ -68,9 +81,12 @@ export const Payments = (props: PaymentProps) => {
     [state.checkedGateway],
   )
 
+  const gateway = state.gateways.find((gw) => gw.name === state.checkedGateway)!
+  const { note } = SUPPORTED_GATEWAYS[state.checkedGateway]
   const gatewayProps: GatewayProps = {
-    gateway: state.gateways.find((gw) => gw.name === state.checkedGateway)!,
+    gateway,
     payments: props,
+    note,
   }
 
   return (
