@@ -205,9 +205,9 @@ const AppRouter = () => {
       <Route
         path={ADMIN}
         element={
-          <Protected loggedIn={loggedIn} needsOnBoarding={onBoarding.needsOnBoarding}>
+          <RedirectOrRender redirectCondition={!loggedIn} redirectTo={LOGIN}>
             <ContentWithNavigation content={<AdminPage />} />
-          </Protected>
+          </RedirectOrRender>
         }
       />
       <Route path="*" element={<>Not Found</>} />
