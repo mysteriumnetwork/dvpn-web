@@ -9,6 +9,7 @@ import { arrayMoveImmutable } from 'array-move'
 import React from 'react'
 import { OnDropCallback } from 'smooth-dnd/dist/src/exportTypes'
 import './NATTraversalOrder.scss'
+import { Container, Draggable } from 'react-smooth-dnd'
 
 export interface TraversalProp {
   key: string
@@ -35,10 +36,10 @@ const Row = ({ prop }: { prop: TraversalProp }) => {
 
 export const NATTraversalOrder = ({ items, onDrop: onMove }: Props) => {
   const options = items.map((o) => (
-    // <Draggable key={o.key}>
-    //   <Row prop={o} />
-    // </Draggable>
-    <></>
+    // @ts-ignore
+    <Draggable key={o.key}>
+      <Row prop={o} />
+    </Draggable>
   ))
 
   const onDrop: OnDropCallback = ({ removedIndex, addedIndex }) => {
@@ -48,16 +49,19 @@ export const NATTraversalOrder = ({ items, onDrop: onMove }: Props) => {
     }
   }
 
+  // TODO: Find alternative to react-smooth-dnd as it doesn't play nice with up to date typescript
+  const draggableContainer = (
+    // @ts-ignore
+    <Container dragHandleSelector=".drag-handle" lockAxis="y" onDrop={onDrop}>
+      {options}
+    </Container>
+  )
   return (
     <div className="nat-traversal-order">
       {options.length === 0 ? (
         <EmptyOptions text="None Selected" />
       ) : (
-        <div className="nat-traversal-order__list">
-          {/*<Container dragHandleSelector=".drag-handle" lockAxis="y" onDrop={onDrop}>*/}
-          {/*  {options}*/}
-          {/*</Container>*/}
-        </div>
+        <div className="nat-traversal-order__list">{draggableContainer}</div>
       )}
     </div>
   )
