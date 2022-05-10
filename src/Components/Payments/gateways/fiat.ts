@@ -6,10 +6,8 @@
  */
 import { PaymentOrder } from 'mysterium-vpn-js'
 
-export const PAYPAL_GATEWAY = 'paypal'
-
-export const validateAndReturnCheckoutUrl = (order: PaymentOrder): string => {
-  if (order.gatewayName !== PAYPAL_GATEWAY) {
+export const validateAndReturnCheckoutUrl = (order: PaymentOrder, gateway: string): string => {
+  if (order.gatewayName !== gateway) {
     throw new Error(`Unsupported payment gateway ${order.gatewayName}`)
   }
   // @ts-ignore

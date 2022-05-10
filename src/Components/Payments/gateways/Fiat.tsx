@@ -14,18 +14,19 @@ import { tequila } from '../../../api/wrapped-calls'
 import { countryNames } from '../../../commons/country'
 import { myst } from '../../../commons/myst.utils'
 import { parseToastError } from '../../../commons/toast.utils'
-import { PAYPAL_GATEWAY } from './paypal'
 import { selectors } from '../../../redux/selectors'
 import Button from '../../Buttons/Button'
 import { RadioCard } from '../../RadioCard/RadioCard'
 import { Option, Select } from '../../Select/Select'
-import { validateAndReturnCheckoutUrl } from './paypal'
-import styles from './PayPal.module.scss'
+import { validateAndReturnCheckoutUrl } from './fiat'
+import styles from './Fiat.module.scss'
 import { GatewayProps } from './types'
 
 const { api } = tequila
 
-const FIAT_PAYMENT_AMOUNT = 0.77
+const PROJECT_ID = 'mystnodes'
+
+const FIXED_FIAT_PRICE = myst.toBig(0.77)
 
 interface State {
   fiatToMystEther: { [key: string]: string }
@@ -46,7 +47,7 @@ const initialState: State = {
   isLoadingPayNow: false,
 }
 
-const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
+const Fiat = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => {
   const { currencies } = gateway
 
   const identity = useSelector(selectors.currentIdentitySelector)
@@ -78,7 +79,7 @@ const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
           fiatToMystEther: _.chain(
             rates.map((r) => ({
               currency: r.currency,
-              mystEther: myst.toBig(FIAT_PAYMENT_AMOUNT).div(r.amount).toFixed(2),
+              mystEther: FIXED_FIAT_PRICE.div(r.amount).toFixed(2),
             })),
           )
             .keyBy('currency')
@@ -101,10 +102,7 @@ const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
     try {
       setState((p) => ({ ...p, isLoadingPayNow: true }))
       const order = await createOrRetrieveOrder()
-      const checkoutUrl = validateAndReturnCheckoutUrl(order)
-      if (!checkoutUrl) {
-        throw new Error('Paypal checkout URL not provided')
-      }
+      const checkoutUrl = validateAndReturnCheckoutUrl(order, gateway.name)
       openInNewTab(checkoutUrl)
       markRedirected()
     } catch (err: any) {
@@ -120,10 +118,10 @@ const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
     }
 
     const country = state.taxCountry.value as string
-    const order = await api.payment.createOrder(identity.id, PAYPAL_GATEWAY, {
+    const order = await api.payment.createOrder(identity.id, gateway.name, {
       payCurrency: state.currency,
       country,
-      projectId: 'mystnodes',
+      projectId: PROJECT_ID,
       mystAmount: `${fiatToMystEther[currency]}`,
       gatewayCallerData: {},
     })
@@ -158,10 +156,7 @@ const PayPal = ({ payments: { isCompleted }, gateway }: GatewayProps) => {
         You will be charged 1 USD/EUR/GBP plus applicable VAT. Please select your currency and country of residence
         below to proceed.
       </p>
-      <p>
-        Note: After clicking PAY NOW below, new tab/window will be opened and you will be redirected to Paypal to
-        complete transaction.
-      </p>
+      {note && <p>{note}</p>}
       <RadioCard
         items={gateway.currencies.map((c) => ({ value: c, label: c }))}
         value={currency}
@@ -242,4 +237,4 @@ const DownloadInvoice = ({ id, orderId }: { id: string; orderId?: string }) => {
   )
 }
 
-export default PayPal
+export default Fiat
