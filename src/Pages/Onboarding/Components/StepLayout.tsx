@@ -16,10 +16,11 @@ interface Props {
   controls?: ReactNode
   controlsCentered?: boolean
   isLoading?: boolean
+  fixed?: boolean
 }
 
-export const StepLayout = ({ title, children, description, controls, controlsCentered, isLoading }: Props) => (
-  <div className={styles.step}>
+export const StepLayout = ({ title, children, description, controls, controlsCentered, isLoading, fixed }: Props) => (
+  <div className={classNames(styles.step, fixed ? styles.stepFixed : styles.stepCentered)}>
     <h1 className={styles.title}>{title}</h1>
     <p className={styles.description}>{description}</p>
     {isLoading ? (

@@ -19,7 +19,7 @@ import Button from '../../Buttons/Button'
 import { RadioCard } from '../../RadioCard/RadioCard'
 import { Option, Select } from '../../Select/Select'
 import { validateAndReturnCheckoutUrl } from './fiat'
-import styles from './Fiat.module.scss'
+import styles from './Gateway.module.scss'
 import { GatewayProps } from './types'
 
 const { api } = tequila
@@ -47,7 +47,7 @@ const initialState: State = {
   isLoadingPayNow: false,
 }
 
-const Fiat = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => {
+const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => {
   const { currencies, name: gatewayName } = gateway
 
   const identity = useSelector(selectors.currentIdentitySelector)
@@ -237,4 +237,4 @@ const DownloadInvoice = ({ id, orderId }: { id: string; orderId?: string }) => {
   )
 }
 
-export default Fiat
+export default Gateway

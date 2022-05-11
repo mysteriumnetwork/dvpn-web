@@ -65,7 +65,7 @@ const OnBoardingPage = () => {
   return (
     <div className={styles.onBoarding}>
       <div className={styles.onBoardingContent}>
-        <Suspense fallback={null}>
+        <Suspense>
           <Step {...{ nextStep }} />
         </Suspense>
       </div>
