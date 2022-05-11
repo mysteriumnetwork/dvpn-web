@@ -39,23 +39,18 @@ const Navigation = (): JSX.Element => {
         <Logo />
       </Link>
 
-      {/*<NavLink to={DASHBOARD} className={'navigation--item '} activeClassName="navigation--item active">*/}
       <NavLink to={DASHBOARD} className={'navigation--item '}>
         {pathname === DASHBOARD ? <DashboardActive /> : <Dashboard />}
       </NavLink>
-      {/*<NavLink to={SESSIONS} className={'navigation--item '} activeClassName="navigation--item active">*/}
       <NavLink to={SESSIONS} className={'navigation--item '}>
         {pathname === SESSIONS ? <SessionsActive /> : <Sessions />}
       </NavLink>
-      {/*<NavLink to={SETTINGS} className={'navigation--item '} activeClassName="navigation--item active">*/}
       <NavLink to={SETTINGS} className={'navigation--item '}>
         {pathname === SETTINGS ? <SettingsActive /> : <Settings />}
       </NavLink>
-      {/*<NavLink to={SESSIONS_SIDE} className={'mobile navigation--item '} activeClassName="navigation--item active">*/}
       <NavLink to={SESSIONS_SIDE} className={'mobile navigation--item '}>
         {pathname === SESSIONS_SIDE ? <SessionsSidebarActive /> : <SessionsSidebar />}
       </NavLink>
-      {/*<NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">*/}
       <NavLink to={WALLET} className={'navigation--item '}>
         {pathname === WALLET ? <WalletActive /> : <Wallet />}
       </NavLink>
