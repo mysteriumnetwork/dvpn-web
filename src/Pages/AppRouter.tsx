@@ -12,7 +12,16 @@ import { tequila } from '../api/wrapped-calls'
 import { parseToastError } from '../commons/toast.utils'
 import { IDENTITY_EMPTY } from '../constants/instances'
 import { localStorageKeys } from '../constants/local_storage_keys'
-import { ADMIN, DASHBOARD, LOGIN, ON_BOARDING_HOME, SESSIONS, SETTINGS, WALLET } from '../constants/routes'
+import {
+  ADMIN,
+  DASHBOARD,
+  LOGIN,
+  ON_BOARDING_HOME,
+  SESSIONS,
+  SESSIONS_SIDE,
+  SETTINGS,
+  WALLET,
+} from '../constants/routes'
 import {
   fetchChainSummaryAsync,
   fetchConfigAsync,
@@ -30,13 +39,14 @@ import './App.scss'
 import ContentWithNavigation from './Authenticated/ContentWithNavigation'
 import LoginPage from './Login/LoginPage'
 
-import { Protected, RedirectOrRender } from './ProtectedRoute'
+import { Protected } from './ProtectedRoute'
 import DashboardPage from './Authenticated/Dashboard/DashboardPage'
 import SessionsPage from './Authenticated/Sessions/SessionsPage'
 import SettingsPage from './Authenticated/Settings/SettingsPage'
 import WalletPage from './Authenticated/Wallet/WalletPage'
 import { AdminPage } from './Authenticated/Admin/AdminPage'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
+import SessionSidebarPage from './Authenticated/SessionSidebar/SessionSidebarPage'
 
 const AppRouter = () => {
   const navigate = useNavigate()
@@ -135,20 +145,27 @@ const AppRouter = () => {
     return <></>
   }
 
+  const toLoginOrOnBoarding = [
+    { condition: !loggedIn, to: LOGIN },
+    { condition: onBoarding.needsOnBoarding, to: ON_BOARDING_HOME },
+  ]
+
+  const toDashboardIfLoggedIn = [{ condition: loggedIn, to: DASHBOARD }]
+
   return (
     <Routes>
       <Route
         index={true}
         element={
-          <RedirectOrRender redirectCondition={loggedIn} redirectTo={DASHBOARD}>
+          <Protected redirects={toDashboardIfLoggedIn}>
             <LoginPage onSuccessLogin={() => authenticatedActions(false)} />
-          </RedirectOrRender>
+          </Protected>
         }
       />
       <Route
         path={DASHBOARD}
         element={
-          <Protected loggedIn={loggedIn} needsOnBoarding={onBoarding.needsOnBoarding}>
+          <Protected redirects={toLoginOrOnBoarding}>
             <ContentWithNavigation content={<DashboardPage />} />
           </Protected>
         }
@@ -156,7 +173,7 @@ const AppRouter = () => {
       <Route
         path={SESSIONS}
         element={
-          <Protected loggedIn={loggedIn} needsOnBoarding={onBoarding.needsOnBoarding}>
+          <Protected redirects={toLoginOrOnBoarding}>
             <ContentWithNavigation content={<SessionsPage />} />
           </Protected>
         }
@@ -166,7 +183,7 @@ const AppRouter = () => {
         element={
           <ContentWithNavigation
             content={
-              <Protected loggedIn={loggedIn} needsOnBoarding={onBoarding.needsOnBoarding}>
+              <Protected redirects={toLoginOrOnBoarding}>
                 <SettingsPage />
               </Protected>
             }
@@ -176,38 +193,46 @@ const AppRouter = () => {
       <Route
         path={WALLET}
         element={
-          <Protected loggedIn={loggedIn} needsOnBoarding={onBoarding.needsOnBoarding}>
+          <Protected redirects={toLoginOrOnBoarding}>
             <ContentWithNavigation content={<WalletPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={SESSIONS_SIDE}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<SessionSidebarPage />} />
           </Protected>
         }
       />
       <Route
         path={LOGIN}
         element={
-          <RedirectOrRender redirectCondition={loggedIn} redirectTo={DASHBOARD}>
+          <Protected redirects={toDashboardIfLoggedIn}>
             <LoginPage
               onSuccessLogin={async () => {
                 await authenticatedActions(false)
                 navigate(DASHBOARD)
               }}
             />
-          </RedirectOrRender>
+          </Protected>
         }
       />
       <Route
         path={ON_BOARDING_HOME}
         element={
-          <RedirectOrRender redirectCondition={!onBoarding.needsOnBoarding} redirectTo={LOGIN}>
+          <Protected redirects={[{ condition: !onBoarding.needsOnBoarding, to: LOGIN }]}>
             <OnBoardingPage />
-          </RedirectOrRender>
+          </Protected>
         }
       />
       <Route
         path={ADMIN}
         element={
-          <RedirectOrRender redirectCondition={!loggedIn} redirectTo={LOGIN}>
+          <Protected redirects={[{ condition: !loggedIn, to: LOGIN }]}>
             <ContentWithNavigation content={<AdminPage />} />
-          </RedirectOrRender>
+          </Protected>
         }
       />
       <Route path="*" element={<>Not Found</>} />
