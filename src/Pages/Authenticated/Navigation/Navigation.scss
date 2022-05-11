@@ -83,6 +83,12 @@
   }
 }
 
+.intercom-messenger-frame {
+  @include respond-above(sm) {
+    left: 10px !important;
+  }
+}
+
 .intercom-launcher-frame {
   @include respond-above(sm) {
     left: 10px !important;
