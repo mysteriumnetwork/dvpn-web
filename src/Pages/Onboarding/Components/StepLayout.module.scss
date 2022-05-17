@@ -5,10 +5,17 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   height: 100%;
   max-width: 500px;
   position: relative;
+
+  &Centered {
+    justify-content: center;
+  }
+
+  &Fixed {
+    margin-top: 50vh;
+  }
 }
 
 .title {

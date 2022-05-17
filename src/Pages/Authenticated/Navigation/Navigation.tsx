@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useEffect } from 'react'
-import { Link, NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ReactComponent as Dashboard } from '../../../assets/images/authenticated/components/navigation/Dashboard.svg'
 import { ReactComponent as DashboardActive } from '../../../assets/images/authenticated/components/navigation/DashboardActive.svg'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/components/navigation/Logo.svg'
@@ -22,10 +22,8 @@ import { DASHBOARD, SESSIONS, SESSIONS_SIDE, SETTINGS, WALLET } from '../../../c
 
 import './Navigation.scss'
 
-type Props = RouteComponentProps<any, any, any>
-
-const Navigation = ({ location }: Props): JSX.Element => {
-  const { pathname } = location
+const Navigation = (): JSX.Element => {
+  const { pathname } = useLocation()
 
   useEffect(() => {
     // Load intercom chat
@@ -41,19 +39,19 @@ const Navigation = ({ location }: Props): JSX.Element => {
         <Logo />
       </Link>
 
-      <NavLink to={DASHBOARD} className={'navigation--item '} activeClassName="navigation--item active">
+      <NavLink to={DASHBOARD} className={'navigation--item '}>
         {pathname === DASHBOARD ? <DashboardActive /> : <Dashboard />}
       </NavLink>
-      <NavLink to={SESSIONS} className={'navigation--item '} activeClassName="navigation--item active">
+      <NavLink to={SESSIONS} className={'navigation--item '}>
         {pathname === SESSIONS ? <SessionsActive /> : <Sessions />}
       </NavLink>
-      <NavLink to={SETTINGS} className={'navigation--item '} activeClassName="navigation--item active">
+      <NavLink to={SETTINGS} className={'navigation--item '}>
         {pathname === SETTINGS ? <SettingsActive /> : <Settings />}
       </NavLink>
-      <NavLink to={SESSIONS_SIDE} className={'mobile navigation--item '} activeClassName="navigation--item active">
+      <NavLink to={SESSIONS_SIDE} className={'mobile navigation--item '}>
         {pathname === SESSIONS_SIDE ? <SessionsSidebarActive /> : <SessionsSidebar />}
       </NavLink>
-      <NavLink to={WALLET} className={'navigation--item '} activeClassName="navigation--item active">
+      <NavLink to={WALLET} className={'navigation--item '}>
         {pathname === WALLET ? <WalletActive /> : <Wallet />}
       </NavLink>
       <div className="flex-grow" />
@@ -64,4 +62,4 @@ const Navigation = ({ location }: Props): JSX.Element => {
     </div>
   )
 }
-export default withRouter(Navigation)
+export default Navigation

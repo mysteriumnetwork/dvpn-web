@@ -9,23 +9,37 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react'
 import { tequila } from '../../api/wrapped-calls'
 import { currentCurrency } from '../../commons/money.utils'
 import { toastError } from '../../commons/toast.utils'
-import { FullPageSpinner } from '../../Pages/Authenticated/Components/Spinner/FullPageSpinner'
 import { Option, Radio } from '../Radio/Radio'
 import { GatewayProps, PaymentProps } from './gateways/types'
 import styles from './Payments.module.scss'
+import { CircularProgress } from '@material-ui/core'
 
 const { api } = tequila
 
-const SUPPORTED_GATEWAYS: {
-  [key: 'direct' | 'paypal' | string]: { summary: string; component: string }
-} = Object.freeze({
+interface SupportedGateways {
+  [key: 'direct' | 'paypal' | string]: {
+    summary: string
+    component: string
+    note?: string
+  }
+}
+
+const SUPPORTED_GATEWAYS: SupportedGateways = Object.freeze({
   direct: {
     summary: `Deposit ${currentCurrency()} token`,
     component: 'Direct',
   },
   paypal: {
     summary: `Pay with PayPal (1 USD/EUR/GBP)`,
-    component: 'PayPal',
+    component: 'Gateway',
+    note:
+      'Note: After clicking PAY NOW below, new tab/window will be opened and you will be redirected to Paypal to complete transaction.',
+  },
+  stripe: {
+    summary: `Pay with Credit or Debit card (1 USD/EUR/GBP)`,
+    component: 'Gateway',
+    note:
+      'Note: After clicking PAY NOW below, new tab/window will be opened and you will be redirected to payment processing partner to complete transaction.',
   },
 })
 
@@ -53,7 +67,6 @@ export const Payments = (props: PaymentProps) => {
         const options: Option[] = gateways
           .filter((gw) => Object.keys(SUPPORTED_GATEWAYS).includes(gw.name))
           .map((gw) => ({ value: gw.name, label: SUPPORTED_GATEWAYS[gw.name].summary }))
-
         setState((p) => ({ ...p, gatewayOptions: [DIRECT_GATEWAY_OPTION, ...options], gateways }))
       } catch (e: any) {
         toastError('Could not retrieve payment gateways')
@@ -68,31 +81,34 @@ export const Payments = (props: PaymentProps) => {
     [state.checkedGateway],
   )
 
+  const gateway = state.gateways.find((gw) => gw.name === state.checkedGateway)!
+  const { note } = SUPPORTED_GATEWAYS[state.checkedGateway]
   const gatewayProps: GatewayProps = {
-    gateway: state.gateways.find((gw) => gw.name === state.checkedGateway)!,
+    gateway,
     payments: props,
+    note,
   }
 
   return (
     <div className={styles.content}>
-      <div className={styles.options}>
-        {state.isLoading ? (
-          <FullPageSpinner />
-        ) : (
-          <Radio
-            options={state.gatewayOptions}
-            checked={DIRECT_GATEWAY_OPTION.value}
-            onChange={(value) => {
-              setState((p) => ({ ...p, checkedGateway: value }))
-            }}
-          />
-        )}
-      </div>
-      <div>
-        <Suspense fallback={<div>Loading gateway...</div>}>
-          <GatewayComponent {...gatewayProps} />
-        </Suspense>
-      </div>
+      {state.isLoading ? (
+        <CircularProgress className={styles.loading} />
+      ) : (
+        <>
+          <div className={styles.options}>
+            <Radio
+              options={state.gatewayOptions}
+              checked={DIRECT_GATEWAY_OPTION.value}
+              onChange={(value) => {
+                setState((p) => ({ ...p, checkedGateway: value }))
+              }}
+            />
+          </div>
+          <Suspense>
+            <GatewayComponent {...gatewayProps} />
+          </Suspense>
+        </>
+      )}
     </div>
   )
 }

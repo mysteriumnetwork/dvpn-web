@@ -36,7 +36,6 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const fees = useSelector(selectors.feesSelector)
 
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [registrationPayment, setRegistrationPayment] = useState<RegistrationPaymentResponse>({ paid: false })
 
   const frozenFee = useMemo(() => {
@@ -65,7 +64,6 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
       if (isPaid(identity.balanceTokens, registrationPayment, frozenFee)) {
         nextStep()
       }
-      setIsLoading(false)
     }
     skipIfPaid()
   }, [])
@@ -85,9 +83,9 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
     <StepLayout
       title="Network Registration"
       description={`To register your node on blockchain you can either transfer required amount of ${currentCurrency()} or pay 1 USD/EUR/GBP`}
-      isLoading={isLoading}
       controls={<>{isRegistrationPaymentReceived && <Button onClick={nextStep}>Next</Button>}</>}
       controlsCentered
+      fixed
     >
       <Payments amountRequiredWei={myst.toWeiBig(frozenFee.amountEther)} isCompleted={isRegistrationPaymentReceived} />
     </StepLayout>

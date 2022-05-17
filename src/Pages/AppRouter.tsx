@@ -5,24 +5,21 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { AppState } from 'mysterium-vpn-js'
-import React, { Dispatch, useEffect, useLayoutEffect } from 'react'
-import { connect, useSelector } from 'react-redux'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import React, { useEffect, useLayoutEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { tequila } from '../api/wrapped-calls'
 import { parseToastError } from '../commons/toast.utils'
 import { IDENTITY_EMPTY } from '../constants/instances'
 import { localStorageKeys } from '../constants/local_storage_keys'
 import {
+  ADMIN,
   DASHBOARD,
-  ERROR,
-  HOME,
   LOGIN,
-  NOT_FOUND,
   ON_BOARDING_HOME,
   SESSIONS,
   SESSIONS_SIDE,
   SETTINGS,
-  VERSION_MANAGEMENT,
   WALLET,
 } from '../constants/routes'
 import {
@@ -39,54 +36,32 @@ import { RootState } from '../redux/store'
 import ConnectToSSE from '../sse/server-sent-events'
 
 import './App.scss'
-import AuthenticatedPage from './Authenticated/AuthenticatedPage'
-import PageNotFound from './Error/PageNotFound'
-import RestartNode from './Error/RestartNode'
+import ContentWithNavigation from './Authenticated/ContentWithNavigation'
 import LoginPage from './Login/LoginPage'
+
+import { Protected } from './ProtectedRoute'
+import DashboardPage from './Authenticated/Dashboard/DashboardPage'
+import SessionsPage from './Authenticated/Sessions/SessionsPage'
+import SettingsPage from './Authenticated/Settings/SettingsPage'
+import WalletPage from './Authenticated/Wallet/WalletPage'
+import { AdminPage } from './Authenticated/Admin/AdminPage'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
+import SessionSidebarPage from './Authenticated/SessionSidebar/SessionSidebarPage'
 
-import ProtectedRoute from './ProtectedRoute'
-
-interface Props {
-  actions: {
-    fetchIdentityAsync: () => void
-    fetchConfigAsync: () => void
-    updateTermsStoreAsync: () => void
-    fetchFeesAsync: () => void
-    fetchChainSummaryAsync: () => void
-    updateAuthenticatedStore: (auth: Auth) => void
-    updateAuthFlowLoadingStore: (loading: boolean) => void
-    sseAppStateStateChanged: (state: AppState) => void
-  }
-}
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
-    actions: {
-      fetchIdentityAsync: async () => dispatch(fetchIdentityAsync()),
-      fetchConfigAsync: async () => dispatch(fetchConfigAsync()),
-      updateTermsStoreAsync: async () => dispatch(updateTermsStoreAsync()),
-      fetchFeesAsync: async () => dispatch(fetchFeesAsync()),
-      fetchChainSummaryAsync: async () => dispatch(fetchChainSummaryAsync()),
-      updateAuthenticatedStore: async (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
-      updateAuthFlowLoadingStore: async (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
-      sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
-    },
-  }
-}
-
-const redirectTo = (needsOnboarding: boolean, loggedIn: boolean): JSX.Element => {
-  if (!loggedIn) {
-    return <Redirect to={LOGIN} />
-  }
-  if (needsOnboarding) {
-    return <Redirect to={ON_BOARDING_HOME} />
+const AppRouter = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const actions = {
+    fetchIdentityAsync: async () => fetchIdentityAsync(),
+    fetchConfigAsync: async () => fetchConfigAsync(),
+    updateTermsStoreAsync: async () => updateTermsStoreAsync(),
+    fetchFeesAsync: async () => fetchFeesAsync(),
+    fetchChainSummaryAsync: async () => fetchChainSummaryAsync(),
+    updateAuthenticatedStore: async (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
+    updateAuthFlowLoadingStore: async (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
+    sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
   }
 
-  return <Redirect to={DASHBOARD} />
-}
-
-const AppRouter = ({ actions }: Props) => {
   const loading = useSelector<RootState, boolean>(({ app }) => app.loading)
   const loggedIn = useSelector<RootState, boolean>(({ app }) => isLoggedIn(app.auth))
   const identity = useSelector(selectors.currentIdentitySelector)
@@ -166,74 +141,103 @@ const AppRouter = ({ actions }: Props) => {
     ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state))
   }, [loggedIn])
 
-  const authenticatedPage = (props: any) => {
-    return <AuthenticatedPage identity={identity} {...props} />
-  }
-
   if (loading) {
     return <></>
   }
 
+  const toLoginOrOnBoarding = [
+    { condition: !loggedIn, to: LOGIN },
+    { condition: onBoarding.needsOnBoarding, to: ON_BOARDING_HOME },
+  ]
+
+  const toDashboardIfLoggedIn = [{ condition: loggedIn, to: DASHBOARD }]
+
   return (
-    <Switch>
-      <Route exact path={HOME}>
-        {redirectTo(onBoarding.needsOnBoarding, loggedIn)}
-      </Route>
+    <Routes>
       <Route
-        exact
-        path={LOGIN}
-        render={() => {
-          return !loggedIn ? (
+        index={true}
+        element={
+          <Protected redirects={toDashboardIfLoggedIn}>
             <LoginPage onSuccessLogin={() => authenticatedActions(false)} />
-          ) : (
-            <Redirect to={DASHBOARD} />
-          )
-        }}
+          </Protected>
+        }
+      />
+      <Route
+        path={DASHBOARD}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<DashboardPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={SESSIONS}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<SessionsPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={SETTINGS}
+        element={
+          <ContentWithNavigation
+            content={
+              <Protected redirects={toLoginOrOnBoarding}>
+                <SettingsPage />
+              </Protected>
+            }
+          />
+        }
+      />
+      <Route
+        path={WALLET}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<WalletPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={SESSIONS_SIDE}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<SessionSidebarPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={LOGIN}
+        element={
+          <Protected redirects={toDashboardIfLoggedIn}>
+            <LoginPage
+              onSuccessLogin={async () => {
+                await authenticatedActions(false)
+                navigate(DASHBOARD)
+              }}
+            />
+          </Protected>
+        }
       />
       <Route
         path={ON_BOARDING_HOME}
-        render={(props) => {
-          return onBoarding.needsOnBoarding ? <OnBoardingPage /> : <Redirect to={DASHBOARD} />
-        }}
+        element={
+          <Protected redirects={[{ condition: !onBoarding.needsOnBoarding, to: LOGIN }]}>
+            <OnBoardingPage />
+          </Protected>
+        }
       />
-      <Route exact path={ERROR} component={RestartNode} />
-      <Route path={NOT_FOUND} component={PageNotFound} />
-
-      <ProtectedRoute
-        path={DASHBOARD}
-        needsOnBoarding={onBoarding.needsOnBoarding}
-        loggedIn={loggedIn}
-        component={authenticatedPage}
+      <Route
+        path={ADMIN}
+        element={
+          <Protected redirects={[{ condition: !loggedIn, to: LOGIN }]}>
+            <ContentWithNavigation content={<AdminPage />} />
+          </Protected>
+        }
       />
-      <ProtectedRoute
-        path={SESSIONS}
-        needsOnBoarding={onBoarding.needsOnBoarding}
-        loggedIn={loggedIn}
-        component={authenticatedPage}
-      />
-      <ProtectedRoute
-        path={SETTINGS}
-        needsOnBoarding={onBoarding.needsOnBoarding}
-        loggedIn={loggedIn}
-        component={authenticatedPage}
-      />
-      <ProtectedRoute
-        path={SESSIONS_SIDE}
-        needsOnBoarding={onBoarding.needsOnBoarding}
-        loggedIn={loggedIn}
-        component={authenticatedPage}
-      />
-      <ProtectedRoute
-        path={WALLET}
-        needsOnBoarding={onBoarding.needsOnBoarding}
-        loggedIn={loggedIn}
-        component={authenticatedPage}
-      />
-      <ProtectedRoute path={VERSION_MANAGEMENT} loggedIn={loggedIn} component={authenticatedPage} />
-
-      <Redirect from="*" to={NOT_FOUND} />
-    </Switch>
+      <Route path="*" element={<>Not Found</>} />
+    </Routes>
   )
 }
 
-export default connect(null, mapDispatchToProps)(AppRouter)
+export default AppRouter
