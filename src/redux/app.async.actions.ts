@@ -16,6 +16,7 @@ import {
   updateTermsStore,
 } from './app.slice'
 import { store } from './store'
+import { parseAndToastError } from '../commons/error.utils'
 
 const { api } = tequila
 
@@ -43,13 +44,21 @@ export const fetchConfigAsync = async () => {
 }
 
 export const fetchFeesAsync = async () => {
-  const { dispatch } = store
-  const fees = await api.transactorFees()
-  dispatch(updateFeesStore(fees))
+  try {
+    const { dispatch } = store
+    const fees = await api.transactorFees()
+    dispatch(updateFeesStore(fees))
+  } catch (err: any) {
+    parseAndToastError(err)
+  }
 }
 
 export const fetchChainSummaryAsync = async () => {
-  const { dispatch } = store
-  const chainSummary = await api.chainSummary()
-  dispatch(updateChainSummaryStore(chainSummary))
+  try {
+    const { dispatch } = store
+    const chainSummary = await api.chainSummary()
+    dispatch(updateChainSummaryStore(chainSummary))
+  } catch (err: any) {
+    parseAndToastError(err)
+  }
 }
