@@ -37,6 +37,8 @@ const serviceInfoSelector = ({ sse }: RootState) => sse.appState?.serviceInfo ||
 
 const beneficiarySelector = ({ app }: RootState) => app.beneficiary
 
+const isSSELoading = ({ sse }: RootState) => sse.isLoading
+
 export const selectors = {
   currentIdentitySelector,
   feesSelector,
@@ -47,4 +49,5 @@ export const selectors = {
   liveSessionStatsSelector,
   serviceInfoSelector,
   beneficiarySelector,
+  isSSELoading,
 }

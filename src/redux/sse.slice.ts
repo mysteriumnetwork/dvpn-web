@@ -12,9 +12,11 @@ import { TOKENS_EMPTY } from '../constants/instances'
 
 export interface SSEState {
   appState: AppState
+  isLoading: boolean
 }
 
 const INITIAL_STATE: SSEState = {
+  isLoading: true,
   appState: {
     natStatus: {
       status: NatStatus.NOT_FINISHED,
@@ -54,6 +56,7 @@ const slice = createSlice({
   reducers: {
     sseAppStateStateChanged: (state, action) => {
       state.appState = action.payload
+      state.isLoading = false
     },
   },
 })

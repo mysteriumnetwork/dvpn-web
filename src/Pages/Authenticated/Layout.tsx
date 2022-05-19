@@ -11,6 +11,8 @@ import React from 'react'
 import { media } from '../../commons/media.utils'
 import { FullPageSpinner } from './Components/Spinner/FullPageSpinner'
 import { useMediaQuery } from 'react-responsive'
+import { useSelector } from 'react-redux'
+import { selectors } from '../../redux/selectors'
 
 interface Props {
   title?: string
@@ -23,8 +25,12 @@ interface Props {
 }
 
 export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight, isLoading }: Props) => {
+  const isSSELoading = useSelector(selectors.isSSELoading)
   const isDesktop = useMediaQuery(media.isDesktopQuery)
   const showSideBarAdjusted = isDesktop && showSideBar
+
+  const showSpinner = isLoading || isSSELoading
+
   return (
     <main className={styles.main}>
       <div className={classNames(styles.mainBlock, showSideBarAdjusted && styles.mainBlockSplit)}>
@@ -32,7 +38,7 @@ export const Layout = ({ logo, title, main, showSideBar, sidebar, topRight, isLo
           <Header logo={logo} name={title} />
           {topRight}
         </div>
-        {isLoading && <FullPageSpinner />}
+        {showSpinner && <FullPageSpinner />}
         {main}
       </div>
       {showSideBarAdjusted && <div className={styles.sidebarBlock}>{sidebar}</div>}
