@@ -11,14 +11,12 @@ import {
   Identity,
   IdentityRegistrationStatus,
   MMNApiKeyResponse,
-  NatStatusResponse,
   NatTypeResponse,
   NodeHealthcheck,
   NodeMonitoringStatus,
   SessionListResponse,
   SessionStats,
 } from 'mysterium-vpn-js'
-import { NatStatus } from 'mysterium-vpn-js/lib/nat/status'
 import { NodeMonitoringStatusResponse } from 'mysterium-vpn-js/lib/node/status'
 
 export const TOKENS_EMPTY = Object.freeze({
