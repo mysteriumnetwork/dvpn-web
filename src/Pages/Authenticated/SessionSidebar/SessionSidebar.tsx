@@ -10,12 +10,13 @@ import styles from './SessionSidebar.module.scss'
 import countries from '../../../commons/countries'
 
 import formatBytes, { add } from '../../../commons/formatBytes'
-import { date2human, seconds2Time } from '../../../commons/date.utils'
+import dates from '../../../commons/dates'
 import { SESSIONS } from '../../../constants/routes'
 
 import SessionCard from '../Components/SessionCard/SessionCard'
 import { myst } from '../../../commons/myst.utils'
 
+const { date2human, seconds2Time } = dates
 const { countryName } = countries
 
 const sumBytes = (sessionStats?: SessionStats) => {

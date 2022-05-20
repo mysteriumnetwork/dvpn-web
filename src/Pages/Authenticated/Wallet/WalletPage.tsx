@@ -11,7 +11,7 @@ import { Column, Row } from 'react-table'
 import { useImmer } from 'use-immer'
 import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
-import { date2human } from '../../../commons/date.utils'
+import dates from '../../../commons/dates'
 import { parseError } from '../../../commons/error.utils'
 import { myst } from '../../../commons/myst.utils'
 import { strings } from '../../../commons/strings.utils'
@@ -25,6 +25,8 @@ import { Cards } from '../Components/Card/PreparedCards'
 import { Layout } from '../Layout'
 import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
+
+const { date2human } = dates
 
 interface State {
   isTableLoading: boolean

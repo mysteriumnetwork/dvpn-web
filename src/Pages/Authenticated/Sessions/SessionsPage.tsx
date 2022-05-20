@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
 import countries from '../../../commons/countries'
-import { date2human, seconds2Time } from '../../../commons/date.utils'
+import dates from '../../../commons/dates'
 import formatBytes from '../../../commons/formatBytes'
 import { parseToastError } from '../../../commons/toast.utils'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
@@ -23,6 +23,7 @@ import { Row } from 'react-table'
 import { myst } from '../../../commons/myst.utils'
 import { selectors } from '../../../redux/selectors'
 
+const { seconds2Time, date2human } = dates
 const { countryName } = countries
 const { api } = tequila
 

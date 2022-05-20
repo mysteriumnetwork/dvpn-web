@@ -9,7 +9,7 @@ import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ReactComponent as WalletIcon } from '../../../../assets/icons/WithdrawalWallet.svg'
 import { configParser } from '../../../../commons/config'
-import { seconds2Time } from '../../../../commons/date.utils'
+import dates from '../../../../commons/dates'
 import formatBytes, { add } from '../../../../commons/formatBytes'
 import { myst } from '../../../../commons/myst.utils'
 import { selectors } from '../../../../redux/selectors'
@@ -18,6 +18,8 @@ import { EarningsCard } from './EarningsCard/EarningsCard'
 import { HeroStatCard } from './HeroStatCard'
 import { SettleSettingsModal } from './EarningsCard/SettleSettingsModal'
 import { StatCard } from './StatCard'
+
+const { seconds2Time } = dates
 
 const UnsettledEarnings = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
