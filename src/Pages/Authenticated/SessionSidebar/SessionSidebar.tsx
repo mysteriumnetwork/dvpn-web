@@ -61,8 +61,8 @@ const SessionSidebar = ({
   headerText,
   historySessions = [],
 }: Props) => {
-  const historyCards = historySessions.map((hs, idx) => toSessionCard(hs.id, hs))
-  const latestSessionCards = liveSessions.map((ls, idx) => toSessionCard(ls.id, ls)).concat(historyCards)
+  const historyCards = historySessions.map((hs) => toSessionCard(hs.id, hs))
+  const latestSessionCards = liveSessions.map((ls) => toSessionCard(ls.id, ls)).concat(historyCards)
 
   return (
     <div className={styles.sessions}>
