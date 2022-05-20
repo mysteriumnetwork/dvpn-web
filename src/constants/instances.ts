@@ -11,10 +11,15 @@ import {
   Identity,
   IdentityRegistrationStatus,
   MMNApiKeyResponse,
+  NatStatusResponse,
+  NatTypeResponse,
   NodeHealthcheck,
+  NodeMonitoringStatus,
   SessionListResponse,
   SessionStats,
 } from 'mysterium-vpn-js'
+import { NatStatus } from 'mysterium-vpn-js/lib/nat/status'
+import { NodeMonitoringStatusResponse } from 'mysterium-vpn-js/lib/node/status'
 
 export const TOKENS_EMPTY = Object.freeze({
   wei: '0',
@@ -41,7 +46,7 @@ export const CURRENT_PRICES_EMPTY: CurrentPricesResponse = Object.freeze({
   pricePerGibTokens: TOKENS_EMPTY,
 })
 
-export const IDENTITY_EMPTY: Identity = {
+export const IDENTITY_EMPTY: Identity = Object.freeze({
   id: '0x',
   registrationStatus: IdentityRegistrationStatus.RegistrationError,
   channelAddress: '0x',
@@ -54,20 +59,20 @@ export const IDENTITY_EMPTY: Identity = {
   stake: 0,
   hermesId: '0x',
   earningsPerHermes: {},
-}
+})
 
-export const SESSION_STATS_EMPTY: SessionStats = {
+export const SESSION_STATS_EMPTY: SessionStats = Object.freeze({
   count: 0,
   countConsumers: 0,
   sumBytesReceived: 0,
   sumBytesSent: 0,
   sumDuration: 0,
   sumTokens: 0,
-}
+})
 
-export const CONFIG_EMPTY: Config = { data: {} }
+export const CONFIG_EMPTY: Config = Object.freeze({ data: {} })
 
-export const HEALTHCHECK_EMPTY: NodeHealthcheck = {
+export const HEALTHCHECK_EMPTY: NodeHealthcheck = Object.freeze({
   uptime: '0',
   process: 0,
   version: '0',
@@ -76,16 +81,24 @@ export const HEALTHCHECK_EMPTY: NodeHealthcheck = {
     branch: 'N/A',
     buildNumber: 'N/A',
   },
-}
+})
 
-export const MMN_KEY_RESPONSE_EMPTY: MMNApiKeyResponse = {
+export const MMN_KEY_RESPONSE_EMPTY: MMNApiKeyResponse = Object.freeze({
   apiKey: 'N/A',
-}
+})
 
-export const SESSIONS_LIST_RESPONSE_EMPTY: SessionListResponse = {
+export const SESSIONS_LIST_RESPONSE_EMPTY: SessionListResponse = Object.freeze({
   items: [],
   page: 1,
   pageSize: 0,
   totalItems: 0,
   totalPages: 0,
-}
+})
+
+export const NODE_MONITORING_STATUS_RESPONSE_EMPTY: NodeMonitoringStatusResponse = Object.freeze({
+  status: NodeMonitoringStatus.PASSED,
+})
+
+export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
+  type: '',
+})
