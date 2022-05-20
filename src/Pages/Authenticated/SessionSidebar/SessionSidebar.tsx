@@ -7,7 +7,7 @@
 import { Session, SessionStatus, SessionStats, SessionDirection } from 'mysterium-vpn-js'
 import { Link } from 'react-router-dom'
 import styles from './SessionSidebar.module.scss'
-import { countryName } from '../../../commons/country'
+import countries from '../../../commons/countries'
 
 import formatBytes, { add } from '../../../commons/formatBytes'
 import { date2human, seconds2Time } from '../../../commons/date.utils'
@@ -15,6 +15,8 @@ import { SESSIONS } from '../../../constants/routes'
 
 import SessionCard from '../Components/SessionCard/SessionCard'
 import { myst } from '../../../commons/myst.utils'
+
+const { countryName } = countries
 
 const sumBytes = (sessionStats?: SessionStats) => {
   return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0)

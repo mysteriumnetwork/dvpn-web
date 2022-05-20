@@ -11,7 +11,7 @@ import { Money, PaymentOrder } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
-import { countryNames } from '../../../commons/country'
+import countries from '../../../commons/countries'
 import { myst } from '../../../commons/myst.utils'
 import { parseToastError } from '../../../commons/toast.utils'
 import { selectors } from '../../../redux/selectors'
@@ -22,6 +22,7 @@ import { validateAndReturnCheckoutUrl } from './fiat'
 import styles from './Gateway.module.scss'
 import { GatewayProps } from './types'
 
+const { countryNames } = countries
 const { api } = tequila
 
 const PROJECT_ID = 'mystnodes'
