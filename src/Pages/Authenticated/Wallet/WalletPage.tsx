@@ -24,6 +24,7 @@ import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
 import hooks from '../../../commons/hooks'
 
+const { api } = tequila
 const { useFetch } = hooks
 const { date2human } = dates
 
@@ -35,11 +36,9 @@ interface State {
 const EMPTY_RESPONSE = { items: [], totalPages: 0, page: 1, pageSize: 10, totalItems: 0, withdrawalTotal: '0' }
 
 const WalletPage = () => {
-  const { api } = tequila
-
   const [state, setState] = useState<State>({
     page: 1,
-    pageSize: 2,
+    pageSize: 10,
   })
 
   const [data = EMPTY_RESPONSE, loading] = useFetch(
