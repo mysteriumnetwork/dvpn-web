@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { tequilUtils } from './tequil.utils'
+import { stats } from './stats'
 
 test('stats - add', () => {
-  const result = tequilUtils.addStats(
+  const result = stats.addStats(
     {
       count: 1,
       countConsumers: 2,

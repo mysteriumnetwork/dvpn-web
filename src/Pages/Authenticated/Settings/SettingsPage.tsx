@@ -4,16 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Config } from 'mysterium-vpn-js/lib/config/config'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 
 import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import { configParser } from '../../../commons/config'
-import { parseError } from '../../../commons/error.utils'
 import FEATURES from '../../../commons/features'
-import toasts from '../../../commons/toasts'
 import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 import { selectors } from '../../../redux/selectors'
 import { Layout } from '../Layout'
@@ -25,8 +22,9 @@ import PasswordChange from './Components/PasswordChange'
 import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
+import hooks from '../../../commons/hooks'
+import { CONFIG_EMPTY, HEALTHCHECK_EMPTY, MMN_KEY_RESPONSE_EMPTY } from '../../../constants/instances'
 
-const { toastError } = toasts
 const { api } = tequila
 
 interface CardProps {
@@ -41,40 +39,21 @@ const Card = ({ title, children }: CardProps) => (
   </>
 )
 
-interface StateInterface {
-  apiKey: string
-  nodeVersion?: string
-  defaultConfig: Config
-  isLoading: boolean
-  nodeCommit?: string
-}
-
 const SettingsPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
-
-  const [state, setState] = React.useState<StateInterface>({
-    apiKey: '',
-    isLoading: true,
-    defaultConfig: { data: {} },
-  })
-
-  useEffect(() => {
-    Promise.all([api.getMMNApiKey(), api.healthCheck(15_000), api.defaultConfig()])
-      .then(([mmn, healthcheck, defaultConfig]) => {
-        setState((cs) => ({
-          ...cs,
-          apiKey: mmn.apiKey,
-          nodeVersion: healthcheck.version,
-          isLoading: false,
-          defaultConfig: defaultConfig,
-          nodeCommit: healthcheck.buildInfo.commit,
-        }))
-      })
-      .catch((err) => toastError(parseError(err)))
-  }, [identity?.id])
-
   const mmnWebAddress = configParser.mmnWebAddress(config)
+
+  const [data = [], loading] = hooks.useFetch(
+    () => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000), api.defaultConfig()]),
+    [identity.id],
+  )
+
+  const [
+    { apiKey } = MMN_KEY_RESPONSE_EMPTY,
+    { buildInfo, version } = HEALTHCHECK_EMPTY,
+    defaultConfig = CONFIG_EMPTY,
+  ] = data
 
   return (
     <Layout
@@ -87,10 +66,10 @@ const SettingsPage = () => {
               <PowerOffButton />
             </div>
           )}
-          <Version nodeVersion={state.nodeVersion} nodeCommit={state.nodeCommit} />
+          <Version nodeVersion={version} nodeCommit={buildInfo.commit} />
         </div>
       }
-      isLoading={state.isLoading}
+      isLoading={loading}
       main={
         <div className={styles.settings}>
           <div className={styles.settingsCard}>
@@ -110,10 +89,10 @@ const SettingsPage = () => {
 
           <div className={styles.settingsCard}>
             <Card title="Mystnodes.com integration">
-              <MMN mmnUrl={mmnWebAddress} apiKey={state.apiKey} />
+              <MMN mmnUrl={mmnWebAddress} apiKey={apiKey} />
             </Card>
             <Card title="Advanced Settings">
-              <Advanced config={config} defaultConfig={state.defaultConfig} onSave={tequila.setUserConfig} />
+              <Advanced config={config} defaultConfig={defaultConfig} onSave={tequila.setUserConfig} />
             </Card>
           </div>
         </div>

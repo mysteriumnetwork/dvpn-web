@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Session, SessionDirection } from 'mysterium-vpn-js'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { tequila } from '../../../api/wrapped-calls'
@@ -13,7 +13,6 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import countries from '../../../commons/countries'
 import dates from '../../../commons/dates'
 import bytes from '../../../commons/bytes'
-import toasts from '../../../commons/toasts'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import './SessionsPage.scss'
 import { Layout } from '../Layout'
@@ -22,21 +21,18 @@ import { MobileRow } from '../../../Components/Table/MobileRow'
 import { Row } from 'react-table'
 import { myst } from '../../../commons/mysts'
 import { selectors } from '../../../redux/selectors'
+import hooks from '../../../commons/hooks'
+import { SESSIONS_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 
-const { parseToastError } = toasts
 const { format } = bytes
 const { seconds2Time, date2human } = dates
 const { countryName } = countries
 const { api } = tequila
+const { useFetch } = hooks
 
 interface State {
-  isLoading: boolean
-  sessionList: SessionRow[]
-  sessionListPages: number
-
   page: number
   pageSize: number
-  lastPage: number
 }
 
 interface SessionRow {
@@ -61,39 +57,24 @@ const row = (s: Session): SessionRow => {
 
 const SessionsPage = () => {
   const [state, setState] = useState<State>({
-    isLoading: true,
-    sessionList: [],
-    sessionListPages: 0,
     page: 1,
     pageSize: 10,
-    lastPage: 1,
   })
 
   const { id } = useSelector(selectors.currentIdentitySelector)
   const liveSessions = useSelector(selectors.liveSessionsSelector)
   const liveSessionStats = useSelector(selectors.liveSessionStatsSelector)
 
-  useEffect(() => {
-    fetchData()
-  }, [state.page])
-
-  const fetchData = async () => {
-    setState((cs) => ({ ...cs, isLoading: false }))
-    try {
-      const response = await api.sessions({
+  const [data = SESSIONS_LIST_RESPONSE_EMPTY, loading] = useFetch(
+    () =>
+      api.sessions({
         direction: SessionDirection.PROVIDED,
         providerId: id,
         pageSize: state.pageSize,
         page: state.page,
-      })
-      const { items = [], totalPages = 0 } = { ...response }
-      setState((cs) => ({ ...cs, sessionList: items.map(row), sessionListPages: totalPages }))
-    } catch (err) {
-      parseToastError(err)
-    } finally {
-      setState((cs) => ({ ...cs, isLoading: false }))
-    }
-  }
+      }),
+    [id, state.pageSize, state.page],
+  )
 
   const handlePageChange = ({ pageSize, page }: PagingProps) => {
     setState((cs) => ({ ...cs, page, pageSize }))
@@ -139,15 +120,15 @@ const SessionsPage = () => {
     <Layout
       title="Sessions"
       logo={<Logo />}
-      isLoading={state.isLoading}
+      isLoading={loading}
       main={
         <Table
           columns={columns}
-          data={state.sessionList}
+          data={data.items.map(row)}
           onPaginationChange={handlePageChange}
           pagination={{ pageSize: state.pageSize }}
-          lastPage={state.sessionListPages}
-          loading={state.isLoading}
+          lastPage={data.totalPages}
+          loading={loading}
           responsivePaging
           mobileRow={({ original }: Row<SessionRow>, index) => {
             const { country, duration, transferred, earnings, sessionId } = original

@@ -4,7 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CurrentPricesResponse, Fees, Identity, IdentityRegistrationStatus } from 'mysterium-vpn-js'
+import {
+  Config,
+  CurrentPricesResponse,
+  Fees,
+  Identity,
+  IdentityRegistrationStatus,
+  MMNApiKeyResponse,
+  NodeHealthcheck,
+  SessionListResponse,
+  SessionStats,
+} from 'mysterium-vpn-js'
 
 export const TOKENS_EMPTY = Object.freeze({
   wei: '0',
@@ -44,4 +54,38 @@ export const IDENTITY_EMPTY: Identity = {
   stake: 0,
   hermesId: '0x',
   earningsPerHermes: {},
+}
+
+export const SESSION_STATS_EMPTY: SessionStats = {
+  count: 0,
+  countConsumers: 0,
+  sumBytesReceived: 0,
+  sumBytesSent: 0,
+  sumDuration: 0,
+  sumTokens: 0,
+}
+
+export const CONFIG_EMPTY: Config = { data: {} }
+
+export const HEALTHCHECK_EMPTY: NodeHealthcheck = {
+  uptime: '0',
+  process: 0,
+  version: '0',
+  buildInfo: {
+    commit: 'N/A',
+    branch: 'N/A',
+    buildNumber: 'N/A',
+  },
+}
+
+export const MMN_KEY_RESPONSE_EMPTY: MMNApiKeyResponse = {
+  apiKey: 'N/A',
+}
+
+export const SESSIONS_LIST_RESPONSE_EMPTY: SessionListResponse = {
+  items: [],
+  page: 1,
+  pageSize: 0,
+  totalItems: 0,
+  totalPages: 0,
 }

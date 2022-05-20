@@ -24,6 +24,7 @@ import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
 import hooks from '../../../commons/hooks'
 
+const { useFetch } = hooks
 const { date2human } = dates
 
 interface State {
@@ -41,7 +42,7 @@ const WalletPage = () => {
     pageSize: 2,
   })
 
-  const [data = EMPTY_RESPONSE, loading] = hooks.useFetch(
+  const [data = EMPTY_RESPONSE, loading] = useFetch(
     () => api.settlementHistory({ pageSize: state.pageSize, page: state.page }),
     [state.pageSize, state.page],
   )
