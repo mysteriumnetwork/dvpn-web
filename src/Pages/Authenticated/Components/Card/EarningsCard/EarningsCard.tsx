@@ -24,7 +24,7 @@ import styles from './EarningsCard.module.scss'
 import { QuickSettleModal } from './QuickSettleModal'
 import { SettleSettingsModal } from './SettleSettingsModal'
 import WarningIcon from '@material-ui/icons/WarningOutlined'
-import { IDENTITY_EMPTY } from '../../../../../constants/instances'
+import identities from '../../../../../commons/identities'
 
 const QUICK_SETTLE_LOCKOUT_ID = 'QUICK_SETTLE_LOCKOUT_ID'
 const { display, toWeiBig, toBig, toEtherBig } = myst
@@ -84,7 +84,7 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
 
   useEffect(() => {
     ;(async () => {
-      if (id === IDENTITY_EMPTY.id) {
+      if (identities.isEmpty(id)) {
         return
       }
       updateSettingsLoading()

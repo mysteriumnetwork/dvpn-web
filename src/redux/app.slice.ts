@@ -9,8 +9,10 @@ import { createSlice } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import { ChainSummary, Fees, Identity, IdentityBeneficiaryResponse, IdentityRef } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { isUnregistered } from '../commons/identity.utils'
 import { FEES_EMPTY } from '../constants/instances'
+import identities from '../commons/identities'
+
+const { isUnregistered } = identities
 
 export interface Auth {
   authenticated?: boolean

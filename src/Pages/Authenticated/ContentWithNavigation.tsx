@@ -10,11 +10,13 @@ import { useLocation } from 'react-router-dom'
 import { ADMIN } from '../../constants/routes'
 import Navigation from './Navigation/Navigation'
 import { Identity } from 'mysterium-vpn-js'
-import { isEmpty, isRegistered } from '../../commons/identity.utils'
 import { RegistrationOverlay } from './RegistrationOverlay'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../redux/selectors'
 import { ReactElement } from 'react'
+import identities from '../../commons/identities'
+
+const { isEmpty, isRegistered } = identities
 
 const displayOverlay = (identity: Identity, currentLocation: string): boolean => {
   if (isEmpty(identity)) {

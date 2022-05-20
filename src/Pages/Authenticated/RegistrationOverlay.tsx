@@ -7,13 +7,15 @@
 import { Identity } from 'mysterium-vpn-js'
 import { CircularProgress } from '@material-ui/core'
 import CopyToClipboard from '../../Components/CopyToClipboard/CopyToClipboard'
-import { isInProgress, isRegistrationError, isUnregistered } from '../../commons/identity.utils'
 import styles from './RegistrationOverslay.module.scss'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { useMemo, useState } from 'react'
 import Button from '../../Components/Buttons/Button'
 import Registration from '../Onboarding/steps/Registration'
 import { Modal } from '../../Components/Modal/Modal'
+import identities from '../../commons/identities'
+
+const { isInProgress, isRegistrationError, isUnregistered } = identities
 
 interface Props {
   identity: Identity

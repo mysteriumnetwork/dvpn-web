@@ -18,10 +18,10 @@ import { InputGroup } from '../../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../../Components/Modal/Modal'
 import { TextField } from '../../../../../Components/TextField/TextField'
 import Error from '../../../../../Components/Validation/Error'
-import { IDENTITY_EMPTY } from '../../../../../constants/instances'
 import { selectors } from '../../../../../redux/selectors'
 import { FeesTable } from '../../Fees/FeesTable'
 import styles from './SettleSettingsModal.module.scss'
+import identities from '../../../../../commons/identities'
 
 const { api, refreshBeneficiary } = tequila
 const { display } = myst
@@ -58,7 +58,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
 
   useEffect(() => {
     ;(async () => {
-      if (identity.id === IDENTITY_EMPTY.id) {
+      if (identities.isEmpty(identity)) {
         return
       }
       try {

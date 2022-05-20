@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
 import { parseError } from '../../../commons/error.utils'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
-import { isRegistrationError, isUnregistered } from '../../../commons/identity.utils'
+import identities from '../../../commons/identities'
 import storage from '../../../commons/localStorage.utils'
 import { toastError } from '../../../commons/toast.utils'
 import Button from '../../../Components/Buttons/Button'
@@ -21,6 +21,7 @@ import { DOCS_METAMASK } from '../../../constants/urls'
 import { selectors } from '../../../redux/selectors'
 import { StepLayout } from '../Components/StepLayout'
 
+const { isRegistrationError, isUnregistered } = identities
 const { api } = tequila
 
 const registerIdentity = async (id: string, beneficiary: string) => {
