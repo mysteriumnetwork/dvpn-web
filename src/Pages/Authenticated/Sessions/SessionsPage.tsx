@@ -12,7 +12,7 @@ import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
 import countries from '../../../commons/countries'
 import dates from '../../../commons/dates'
-import formatBytes from '../../../commons/formatBytes'
+import bytes from '../../../commons/bytes'
 import { parseToastError } from '../../../commons/toast.utils'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import './SessionsPage.scss'
@@ -23,6 +23,7 @@ import { Row } from 'react-table'
 import { myst } from '../../../commons/myst.utils'
 import { selectors } from '../../../redux/selectors'
 
+const { format } = bytes
 const { seconds2Time, date2human } = dates
 const { countryName } = countries
 const { api } = tequila
@@ -52,7 +53,7 @@ const row = (s: Session): SessionRow => {
     duration: seconds2Time(s.duration),
     started: date2human(s.createdAt),
     earnings: myst.display(s.tokens),
-    transferred: formatBytes(s.bytesReceived + s.bytesSent),
+    transferred: format(s.bytesReceived + s.bytesSent),
     sessionId: s.id.split('-')[0],
   }
 }

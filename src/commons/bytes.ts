@@ -14,8 +14,13 @@ const format = (a?: number, b = 2): string => {
   )
 }
 
-export default format
-
 export const add = (a?: number, b?: number): number => {
   return (a || 0) + (b || 0)
 }
+
+const bytes = {
+  format,
+  add,
+}
+
+export default bytes

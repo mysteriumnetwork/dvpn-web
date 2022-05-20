@@ -9,13 +9,14 @@ import { Link } from 'react-router-dom'
 import styles from './SessionSidebar.module.scss'
 import countries from '../../../commons/countries'
 
-import formatBytes, { add } from '../../../commons/formatBytes'
 import dates from '../../../commons/dates'
 import { SESSIONS } from '../../../constants/routes'
 
 import SessionCard from '../Components/SessionCard/SessionCard'
 import { myst } from '../../../commons/myst.utils'
+import bytes from '../../../commons/bytes'
 
+const { format, add } = bytes
 const { date2human, seconds2Time } = dates
 const { countryName } = countries
 
@@ -34,7 +35,7 @@ const toSessionCard = (
         onGoing={status === SessionStatus.NEW}
         id={id}
         time={seconds2Time(duration)}
-        data={formatBytes(add(bytesSent, bytesReceived))}
+        data={format(add(bytesSent, bytesReceived))}
         value={myst.display(tokens)}
         createdAt={date2human(createdAt)}
       />
@@ -82,7 +83,7 @@ const SessionSidebar = ({
           <div className={styles.explanation}>Live earnings</div>
         </div>
         <div className={styles.footerSumBlock}>
-          <div className={styles.name}>{formatBytes(sumBytes(liveSessionStats))}</div>
+          <div className={styles.name}>{format(sumBytes(liveSessionStats))}</div>
           <div className={styles.explanation}>Live data</div>
         </div>
       </div>

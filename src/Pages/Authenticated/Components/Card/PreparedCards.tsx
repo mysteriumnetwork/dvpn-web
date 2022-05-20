@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
 import { ReactComponent as WalletIcon } from '../../../../assets/icons/WithdrawalWallet.svg'
 import { configParser } from '../../../../commons/config'
 import dates from '../../../../commons/dates'
-import formatBytes, { add } from '../../../../commons/formatBytes'
+import bytes from '../../../../commons/bytes'
 import { myst } from '../../../../commons/myst.utils'
 import { selectors } from '../../../../redux/selectors'
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
@@ -19,6 +19,7 @@ import { HeroStatCard } from './HeroStatCard'
 import { SettleSettingsModal } from './EarningsCard/SettleSettingsModal'
 import { StatCard } from './StatCard'
 
+const { format, add } = bytes
 const { seconds2Time } = dates
 
 const UnsettledEarnings = () => {
@@ -100,7 +101,7 @@ const SessionTime = ({ stats }: { stats: SessionStats }) => (
 )
 
 const Transferred = ({ stats }: { stats: SessionStats }) => (
-  <StatCard stat={formatBytes(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
+  <StatCard stat={format(add(stats.sumBytesSent, stats.sumBytesReceived))} name="Transferred" />
 )
 
 const Sessions = ({ stats }: { stats: SessionStats }) => <StatCard stat={stats.count} name="Sessions" />
