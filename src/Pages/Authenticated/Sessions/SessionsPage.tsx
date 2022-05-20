@@ -13,7 +13,7 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import countries from '../../../commons/countries'
 import dates from '../../../commons/dates'
 import bytes from '../../../commons/bytes'
-import { parseToastError } from '../../../commons/toast.utils'
+import toasts from '../../../commons/toasts'
 import SessionSidebar from '../SessionSidebar/SessionSidebar'
 import './SessionsPage.scss'
 import { Layout } from '../Layout'
@@ -23,6 +23,7 @@ import { Row } from 'react-table'
 import { myst } from '../../../commons/myst.utils'
 import { selectors } from '../../../redux/selectors'
 
+const { parseToastError } = toasts
 const { format } = bytes
 const { seconds2Time, date2human } = dates
 const { countryName } = countries

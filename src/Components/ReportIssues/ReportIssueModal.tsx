@@ -11,7 +11,7 @@ import { IntercomIssue } from 'mysterium-vpn-js'
 import { useImmer } from 'use-immer'
 import { tequila } from '../../api/wrapped-calls'
 import { parseError } from '../../commons/error.utils'
-import { toastError } from '../../commons/toast.utils'
+import toasts from '../../commons/toasts'
 import { localStorageKeys } from '../../constants/local_storage_keys'
 import Button from '../Buttons/Button'
 
@@ -19,6 +19,7 @@ import { TextField } from '../TextField/TextField'
 
 import './ReportIssueModal.scss'
 
+const { toastError } = toasts
 const { api } = tequila
 
 interface Props {

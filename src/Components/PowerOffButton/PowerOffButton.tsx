@@ -10,8 +10,10 @@ import Icon from '@material-ui/icons/PowerSettingsNewOutlined'
 import { useEffect, useState } from 'react'
 import { tequila } from '../../api/wrapped-calls'
 import page from '../../commons/page'
-import { parseToastError } from '../../commons/toast.utils'
+import toasts from '../../commons/toasts'
 import ConfirmationDialog from '../ConfirmationDialogue/ConfirmationDialog'
+
+const { parseToastError } = toasts
 
 export const PowerOffButton = () => {
   const { api } = tequila

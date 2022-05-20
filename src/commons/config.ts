@@ -7,7 +7,9 @@
 
 import _ from 'lodash'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { toastError } from './toast.utils'
+import toasts from './toasts'
+
+const { toastError } = toasts
 
 export const SUPPORTED_TRAVERSALS = ['manual', 'upnp', 'holepunching']
 

@@ -13,7 +13,7 @@ import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import mapping from '../../../../commons/mapping'
 import { currentCurrency } from '../../../../commons/money.utils'
 import { myst } from '../../../../commons/myst.utils'
-import { toastError, toastSuccess } from '../../../../commons/toast.utils'
+import toasts from '../../../../commons/toasts'
 import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../Components/Modal/Modal'
 import { Option, Select } from '../../../../Components/Select/Select'
@@ -25,6 +25,8 @@ import { FeesRibbon } from './FeesRibbon'
 import { LatestWithdrawal } from './LatestWithdrawal'
 import styles from './WithdrawalModal.module.scss'
 
+const { toastSuccess } = toasts
+const { toastError } = toasts
 const { toOptions } = mapping
 const { api } = tequila
 

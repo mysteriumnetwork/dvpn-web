@@ -15,10 +15,12 @@ import {
   uiVersionManager,
 } from '../../../../api/ui-version-management'
 import page from '../../../../commons/page'
-import { parseToastError, toastError } from '../../../../commons/toast.utils'
+import toasts from '../../../../commons/toasts'
 import Button from '../../../../Components/Buttons/Button'
 import styles from './VersionManagement.module.scss'
 import { VersionCard } from './VersionCard'
+
+const { parseToastError, toastError } = toasts
 
 interface State {
   isLoading: boolean

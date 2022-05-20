@@ -13,7 +13,7 @@ import { tequila } from '../../../api/wrapped-calls'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { tequilUtils } from '../../../commons/tequil.utils'
-import { parseToastError } from '../../../commons/toast.utils'
+import toasts from '../../../commons/toasts'
 import { selectors } from '../../../redux/selectors'
 import { CardLayout } from '../Components/Card/CardLayout'
 import { Cards } from '../Components/Card/PreparedCards'
@@ -26,6 +26,7 @@ import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Service from './Services/Service'
 
+const { parseToastError } = toasts
 const { api } = tequila
 
 interface StateProps {

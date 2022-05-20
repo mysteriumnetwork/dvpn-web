@@ -15,7 +15,7 @@ import dates from '../../../commons/dates'
 import { parseError } from '../../../commons/error.utils'
 import { myst } from '../../../commons/myst.utils'
 import { strings } from '../../../commons/strings.utils'
-import { toastError } from '../../../commons/toast.utils'
+import toasts from '../../../commons/toasts'
 import { DownloadCSV } from '../../../Components/Download/DownloadCSV'
 import { MobileRow } from '../../../Components/Table/MobileRow'
 import Table, { PagingProps } from '../../../Components/Table/Table'
@@ -26,6 +26,7 @@ import { Layout } from '../Layout'
 import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
 
+const { toastError } = toasts
 const { date2human } = dates
 
 interface State {

@@ -13,7 +13,7 @@ import { parseError } from '../../../commons/error.utils'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import identities from '../../../commons/identities'
 import storage from '../../../commons/localStorage.utils'
-import { toastError } from '../../../commons/toast.utils'
+import toasts from '../../../commons/toasts'
 import Button from '../../../Components/Buttons/Button'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
 import { TextField } from '../../../Components/TextField/TextField'
@@ -21,6 +21,7 @@ import { DOCS_METAMASK } from '../../../constants/urls'
 import { selectors } from '../../../redux/selectors'
 import { StepLayout } from '../Components/StepLayout'
 
+const { toastError } = toasts
 const { isRegistrationError, isUnregistered } = identities
 const { api } = tequila
 

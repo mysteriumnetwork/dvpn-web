@@ -10,7 +10,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequila } from '../../../../api/wrapped-calls'
-import { parseToastError } from '../../../../commons/toast.utils'
+import toasts from '../../../../commons/toasts'
 import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import { NATType } from '../../../../constants/nat'
 import { DOCS, DOCS_NAT_FIX } from '../../../../constants/urls'
@@ -20,6 +20,7 @@ import Bubble from './Bubble'
 import { natType2Human, natTypeStatusBubble, nodeStatusBubble, statusText } from './nat-status.utils'
 import './NodeStatus.scss'
 
+const { parseToastError } = toasts
 const { api } = tequila
 
 interface State {

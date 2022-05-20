@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { tequila } from '../../../../api/wrapped-calls'
 import { parseError } from '../../../../commons/error.utils'
-import { toastSuccess } from '../../../../commons/toast.utils'
+import toasts from '../../../../commons/toasts'
 
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'
@@ -16,6 +16,7 @@ import Error from '../../../../Components/Validation/Error'
 import styles from './Components.module.scss'
 import classNames from 'classnames'
 
+const { toastSuccess } = toasts
 const { api } = tequila
 
 interface StateInterface {

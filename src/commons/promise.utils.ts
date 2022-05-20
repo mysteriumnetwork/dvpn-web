@@ -5,7 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { parseTequilApiError, UNKNOWN_API_ERROR } from './error.utils'
-import { toastError, toastSuccess } from './toast.utils'
+import toasts from './toasts'
+
+const { toastError, toastSuccess } = toasts
 
 export interface Msg {
   success?: string

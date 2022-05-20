@@ -11,7 +11,7 @@ import { tequila } from '../../../../api/wrapped-calls'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { configParser } from '../../../../commons/config'
 import { parseError } from '../../../../commons/error.utils'
-import { parseToastError, toastError } from '../../../../commons/toast.utils'
+import toasts from '../../../../commons/toasts'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
@@ -19,6 +19,7 @@ import { Modal } from '../../../../Components/Modal/Modal'
 import { selectors } from '../../../../redux/selectors'
 import styles from './GlobalServicesSettings.module.scss'
 
+const { parseToastError, toastError } = toasts
 const { api } = tequila
 
 interface State {

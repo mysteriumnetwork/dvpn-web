@@ -13,7 +13,7 @@ import { ReactComponent as Logo } from '../../../assets/images/authenticated/pag
 import { configParser } from '../../../commons/config'
 import { parseError } from '../../../commons/error.utils'
 import FEATURES from '../../../commons/features'
-import { toastError } from '../../../commons/toast.utils'
+import toasts from '../../../commons/toasts'
 import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 import { selectors } from '../../../redux/selectors'
 import { Layout } from '../Layout'
@@ -26,6 +26,7 @@ import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
 
+const { toastError } = toasts
 const { api } = tequila
 
 interface CardProps {

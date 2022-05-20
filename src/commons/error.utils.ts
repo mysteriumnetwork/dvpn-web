@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { APIError } from 'mysterium-vpn-js'
-import { toastError } from './toast.utils'
+import toasts from './toasts'
 
+const { toastError } = toasts
 export const UNKNOWN_API_ERROR = 'Unknown API Error'
 
 export const parseError = (error: any, defaultMsg?: string) => {

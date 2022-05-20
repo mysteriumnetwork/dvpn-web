@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
 import countries from '../../../commons/countries'
 import { myst } from '../../../commons/myst.utils'
-import { parseToastError } from '../../../commons/toast.utils'
+import toasts from '../../../commons/toasts'
 import { selectors } from '../../../redux/selectors'
 import Button from '../../Buttons/Button'
 import { RadioCard } from '../../RadioCard/RadioCard'
@@ -22,6 +22,7 @@ import { validateAndReturnCheckoutUrl } from './fiat'
 import styles from './Gateway.module.scss'
 import { GatewayProps } from './types'
 
+const { parseToastError } = toasts
 const { countryNames } = countries
 const { api } = tequila
 

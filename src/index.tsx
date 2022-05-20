@@ -9,7 +9,7 @@ import { SnackbarProvider } from 'notistack'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { SnackbarUtilsConfigurator } from './commons/toast.utils'
+import { SnackbarUtilsConfigurator } from './commons/toasts'
 
 import AppRouter from './Pages/AppRouter'
 import { store } from './redux/store'

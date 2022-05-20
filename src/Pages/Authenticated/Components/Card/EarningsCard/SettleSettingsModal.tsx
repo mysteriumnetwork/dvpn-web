@@ -13,7 +13,7 @@ import { parseAndToastError } from '../../../../../commons/error.utils'
 import { isValidEthereumAddress } from '../../../../../commons/ethereum.utils'
 import { feeCalculator } from '../../../../../commons/fees'
 import { myst } from '../../../../../commons/myst.utils'
-import { toastSuccess } from '../../../../../commons/toast.utils'
+import toasts from '../../../../../commons/toasts'
 import { InputGroup } from '../../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../../Components/Modal/Modal'
 import { TextField } from '../../../../../Components/TextField/TextField'
@@ -23,6 +23,7 @@ import { FeesTable } from '../../Fees/FeesTable'
 import styles from './SettleSettingsModal.module.scss'
 import identities from '../../../../../commons/identities'
 
+const { toastSuccess } = toasts
 const { api, refreshBeneficiary } = tequila
 const { display } = myst
 
