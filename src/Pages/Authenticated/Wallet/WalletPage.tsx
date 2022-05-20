@@ -6,16 +6,13 @@
  */
 import { SettlementListResponse } from 'mysterium-vpn-js'
 import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
-import React, { ReactNode, useEffect, useMemo } from 'react'
+import React, { ReactNode, useMemo, useState } from 'react'
 import { Column, Row } from 'react-table'
-import { useImmer } from 'use-immer'
 import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
 import dates from '../../../commons/dates'
-import { parseError } from '../../../commons/error.utils'
 import { myst } from '../../../commons/mysts'
 import { strings } from '../../../commons/strings'
-import toasts from '../../../commons/toasts'
 import { DownloadCSV } from '../../../Components/Download/DownloadCSV'
 import { MobileRow } from '../../../Components/Table/MobileRow'
 import Table, { PagingProps } from '../../../Components/Table/Table'
@@ -25,56 +22,29 @@ import { Cards } from '../Components/Card/PreparedCards'
 import { Layout } from '../Layout'
 import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
+import hooks from '../../../commons/hooks'
 
-const { toastError } = toasts
 const { date2human } = dates
 
 interface State {
-  isTableLoading: boolean
   page: number
   pageSize: number
-  lastPage: number
-  settlementResponse: SettlementListResponse
 }
 
-const EMPTY_RESPONSE = { items: [], totalPages: 0, page: 1, pageSize: 10, totalItems: 0 }
+const EMPTY_RESPONSE = { items: [], totalPages: 0, page: 1, pageSize: 10, totalItems: 0, withdrawalTotal: '0' }
 
 const WalletPage = () => {
   const { api } = tequila
 
-  const [state, setState] = useImmer<State>({
-    isTableLoading: true,
-    lastPage: 1,
+  const [state, setState] = useState<State>({
     page: 1,
-    pageSize: 10,
-    settlementResponse: EMPTY_RESPONSE,
+    pageSize: 2,
   })
 
-  const setLoading = (b: boolean = true) => {
-    setState((d) => {
-      d.isTableLoading = b
-    })
-  }
-  const { items, withdrawalTotal } = state.settlementResponse
-
-  useEffect(() => {
-    fetchData()
-  }, [state.page])
-
-  const fetchData = async () => {
-    try {
-      setLoading()
-      const settlements = await api.settlementHistory({ pageSize: state.pageSize, page: state.page })
-      setState((d) => {
-        d.lastPage = settlements.totalPages
-        d.settlementResponse = settlements
-      })
-    } catch (err) {
-      toastError(parseError(err))
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [data = EMPTY_RESPONSE, loading] = hooks.useFetch(
+    () => api.settlementHistory({ pageSize: state.pageSize, page: state.page }),
+    [state.pageSize, state.page],
+  )
 
   const fetchDownloadData = async () => {
     const { totalItems } = await api.settlementHistory({ pageSize: 0 })
@@ -82,10 +52,7 @@ const WalletPage = () => {
   }
 
   const handlePageChange = ({ pageSize, page }: PagingProps) => {
-    setState((d) => {
-      d.page = page
-      d.pageSize = pageSize
-    })
+    setState((p) => ({ ...p, pageSize, page }))
   }
 
   const columns: Column[] = useMemo(
@@ -162,14 +129,14 @@ const WalletPage = () => {
         <>
           <div className={styles.cards}>
             <CardLayout wrap="nowrap">
-              <Cards.TotalWithdrawn amount={withdrawalTotal} />
+              <Cards.TotalWithdrawn amount={data.withdrawalTotal} />
               <Cards.EarningsCard />
             </CardLayout>
           </div>
           <Table
-            data={items}
-            lastPage={state.lastPage}
-            loading={state.isTableLoading}
+            data={data.items}
+            lastPage={data.totalPages}
+            loading={loading}
             columns={columns}
             pagination={{ pageSize: state.pageSize }}
             onPaginationChange={handlePageChange}
