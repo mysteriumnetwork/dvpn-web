@@ -8,7 +8,7 @@ import { APIError } from 'mysterium-vpn-js'
 import { useImmer } from 'use-immer'
 
 import { tequila } from '../../../../api/wrapped-calls'
-import { validatePassword } from '../../../../commons/password'
+import { validatePassword } from '../../../../commons/passwords'
 import toasts from '../../../../commons/toasts'
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'

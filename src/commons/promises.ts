@@ -14,6 +14,11 @@ export interface Msg {
   error?: string
 }
 
+/**
+ * @deprecated not useful
+ * @param fn
+ * @param msg
+ */
 export const callWithToast = async <T>(fn: () => Promise<T>, msg?: Msg): Promise<T> => {
   try {
     const result = await fn()

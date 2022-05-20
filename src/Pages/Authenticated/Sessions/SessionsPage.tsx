@@ -20,7 +20,7 @@ import { Layout } from '../Layout'
 import Table, { PagingProps } from '../../../Components/Table/Table'
 import { MobileRow } from '../../../Components/Table/MobileRow'
 import { Row } from 'react-table'
-import { myst } from '../../../commons/myst.utils'
+import { myst } from '../../../commons/mysts'
 import { selectors } from '../../../redux/selectors'
 
 const { parseToastError } = toasts

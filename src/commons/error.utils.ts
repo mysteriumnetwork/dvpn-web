@@ -7,7 +7,6 @@
 import { APIError } from 'mysterium-vpn-js'
 import toasts from './toasts'
 
-const { toastError } = toasts
 export const UNKNOWN_API_ERROR = 'Unknown API Error'
 
 export const parseError = (error: any, defaultMsg?: string) => {
@@ -15,7 +14,7 @@ export const parseError = (error: any, defaultMsg?: string) => {
 }
 
 export const parseAndToastError = (error: any) => {
-  toastError(parseError(error))
+  toasts.toastError(parseError(error))
 }
 
 export const parseTequilApiError = (error: any): string | undefined => {

@@ -6,7 +6,7 @@
  */
 import BigNumber from 'bignumber.js'
 import { Fees, Tokens } from 'mysterium-vpn-js'
-import { myst } from './myst.utils'
+import { myst } from './mysts'
 
 export interface CalculatedFees {
   earningsWei: BigNumber

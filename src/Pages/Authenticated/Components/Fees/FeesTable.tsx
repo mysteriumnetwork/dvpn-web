@@ -7,7 +7,7 @@
 import classNames from 'classnames'
 import { ChainSummary, Tokens } from 'mysterium-vpn-js'
 import { CalculatedFees } from '../../../../commons/fees'
-import { myst } from '../../../../commons/myst.utils'
+import { myst } from '../../../../commons/mysts'
 import styles from './FeesTable.module.scss'
 
 interface Props {

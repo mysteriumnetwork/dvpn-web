@@ -13,7 +13,7 @@ import dates from '../../../commons/dates'
 import { SESSIONS } from '../../../constants/routes'
 
 import SessionCard from '../Components/SessionCard/SessionCard'
-import { myst } from '../../../commons/myst.utils'
+import { myst } from '../../../commons/mysts'
 import bytes from '../../../commons/bytes'
 
 const { format, add } = bytes

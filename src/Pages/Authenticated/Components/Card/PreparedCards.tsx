@@ -11,7 +11,7 @@ import { ReactComponent as WalletIcon } from '../../../../assets/icons/Withdrawa
 import { configParser } from '../../../../commons/config'
 import dates from '../../../../commons/dates'
 import bytes from '../../../../commons/bytes'
-import { myst } from '../../../../commons/myst.utils'
+import { myst } from '../../../../commons/mysts'
 import { selectors } from '../../../../redux/selectors'
 import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
 import { EarningsCard } from './EarningsCard/EarningsCard'
