@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
 import { configParser } from '../../../../../commons/config'
-import { parseAndToastError } from '../../../../../commons/error.utils'
+import { parseToastError } from '../../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../../commons/ethereum.utils'
 import { feeCalculator } from '../../../../../commons/fees'
 import { myst } from '../../../../../commons/mysts'
@@ -71,7 +71,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
           isLoading: false,
         }))
       } catch (e: any) {
-        parseAndToastError(e)
+        parseToastError(e)
       }
     })()
   }, [identity.id, beneficiary, isAutoWithdrawal])
@@ -119,7 +119,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
       toastSuccess(`Automatic withdrawal to ${state.externalWalletAddress} request submitted`)
       await refreshBeneficiary(identity.id)
     } catch (err: any) {
-      parseAndToastError(err)
+      parseToastError(err)
     }
     setLoading(false)
   }

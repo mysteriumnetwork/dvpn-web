@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useSnackbar, VariantType, WithSnackbarProps } from 'notistack'
-import { parseError } from './error.utils'
+import { parseError } from './errors'
 
 let useSnackbarRef: WithSnackbarProps
 export const SnackbarUtilsConfigurator: React.FC = () => {
@@ -29,9 +29,6 @@ const toastInfo = (msg: string) => {
 const toastError = (msg: string) => {
   toast(msg, 'error')
 }
-const parseToastError = (err: any) => {
-  toast(parseError(err), 'error')
-}
 
 const toasts = {
   toast,
@@ -39,7 +36,6 @@ const toasts = {
   toastWarning,
   toastInfo,
   toastError,
-  parseToastError,
 }
 
 export default toasts

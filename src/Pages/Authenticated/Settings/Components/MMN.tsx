@@ -7,7 +7,7 @@
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { tequila } from '../../../../api/wrapped-calls'
-import { parseError } from '../../../../commons/error.utils'
+import { parseError } from '../../../../commons/errors'
 import toasts from '../../../../commons/toasts'
 
 import Button from '../../../../Components/Buttons/Button'

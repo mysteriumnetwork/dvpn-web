@@ -10,8 +10,7 @@ import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { configParser } from '../../../../commons/config'
-import { parseError } from '../../../../commons/error.utils'
-import toasts from '../../../../commons/toasts'
+import errors from '../../../../commons/errors'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import Button from '../../../../Components/Buttons/Button'
 import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/ConfirmationSwitch'
@@ -19,7 +18,7 @@ import { Modal } from '../../../../Components/Modal/Modal'
 import { selectors } from '../../../../redux/selectors'
 import styles from './GlobalServicesSettings.module.scss'
 
-const { parseToastError, toastError } = toasts
+const { parseToastError } = errors
 const { api } = tequila
 
 interface State {
@@ -46,7 +45,7 @@ const GlobalServicesSettings = () => {
       await Promise.all(stopServices.map((stop) => stop()))
       await Promise.all(startServices.map((start) => start()))
     } catch (err: any) {
-      toastError(parseError(err))
+      parseToastError(err)
     }
   }
 

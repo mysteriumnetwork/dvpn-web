@@ -15,12 +15,12 @@ import {
   uiVersionManager,
 } from '../../../../api/ui-version-management'
 import page from '../../../../commons/page'
-import toasts from '../../../../commons/toasts'
+import errors from '../../../../commons/errors'
 import Button from '../../../../Components/Buttons/Button'
 import styles from './VersionManagement.module.scss'
 import { VersionCard } from './VersionCard'
 
-const { parseToastError, toastError } = toasts
+const { parseToastError } = errors
 
 interface State {
   isLoading: boolean
@@ -127,7 +127,7 @@ export const VersionManagement = () => {
         d.downloadProgress = 0
       })
     } catch (err) {
-      toastError(parseErrorResponse(err))
+      parseToastError(err)
     }
   }
 
@@ -136,7 +136,7 @@ export const VersionManagement = () => {
       await switchUi(name)
       page.refreshPage()
     } catch (err: any) {
-      toastError(err.response.data.message)
+      parseToastError(err)
     }
   }
 

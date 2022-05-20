@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useEffect, useState } from 'react'
-import { parseAndToastError } from './error.utils'
+import { parseToastError } from './errors'
 
 const useFetch = <T>(
   fetch: () => Promise<T>,
@@ -27,7 +27,7 @@ const useFetch = <T>(
       setData(response)
     } catch (err: any) {
       setError(err)
-      parseAndToastError(err)
+      parseToastError(err)
     } finally {
       setLoading(false)
     }
