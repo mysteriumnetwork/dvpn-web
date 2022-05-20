@@ -23,6 +23,7 @@ import { Layout } from '../Layout'
 import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
 import hooks from '../../../commons/hooks'
+import { SETTLEMENT_LIST_REPONSE_EMPTY } from '../../../constants/instances'
 
 const { api } = tequila
 const { useFetch } = hooks
@@ -33,15 +34,13 @@ interface State {
   pageSize: number
 }
 
-const EMPTY_RESPONSE = { items: [], totalPages: 0, page: 1, pageSize: 10, totalItems: 0, withdrawalTotal: '0' }
-
 const WalletPage = () => {
   const [state, setState] = useState<State>({
     page: 1,
     pageSize: 10,
   })
 
-  const [data = EMPTY_RESPONSE, loading] = useFetch(
+  const [data = SETTLEMENT_LIST_REPONSE_EMPTY, loading] = useFetch(
     () => api.settlementHistory({ pageSize: state.pageSize, page: state.page }),
     [state.pageSize, state.page],
   )

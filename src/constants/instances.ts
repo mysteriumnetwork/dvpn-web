@@ -16,8 +16,9 @@ import {
   NodeMonitoringStatus,
   SessionListResponse,
   SessionStats,
+  SettlementListResponse,
+  NodeMonitoringStatusResponse,
 } from 'mysterium-vpn-js'
-import { NodeMonitoringStatusResponse } from 'mysterium-vpn-js/lib/node/status'
 
 export const TOKENS_EMPTY = Object.freeze({
   wei: '0',
@@ -99,4 +100,13 @@ export const NODE_MONITORING_STATUS_RESPONSE_EMPTY: NodeMonitoringStatusResponse
 
 export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
   type: '',
+})
+
+export const SETTLEMENT_LIST_REPONSE_EMPTY: SettlementListResponse = Object.freeze({
+  items: [],
+  totalPages: 0,
+  page: 1,
+  pageSize: 10,
+  totalItems: 0,
+  withdrawalTotal: '0',
 })

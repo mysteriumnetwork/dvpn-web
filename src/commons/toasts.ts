@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useSnackbar, VariantType, WithSnackbarProps } from 'notistack'
-import { parseError } from './errors'
 
 let useSnackbarRef: WithSnackbarProps
 export const SnackbarUtilsConfigurator: React.FC = () => {

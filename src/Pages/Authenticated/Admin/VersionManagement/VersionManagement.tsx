@@ -215,11 +215,6 @@ export const VersionManagement = () => {
   )
 }
 
-const parseErrorResponse = (err: any): string => {
-  const data = err.response.data
-  return `${data.message} (${data.originalError})`
-}
-
 const infoRow = (key: string, value: string): JSX.Element => (
   <div className={styles.row}>
     <div className={styles.key}>{key}</div>
