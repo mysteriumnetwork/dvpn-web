@@ -6,18 +6,6 @@
  */
 
 import { myst } from './mysts'
-import { DECIMAL_PART } from 'mysterium-vpn-js'
-
-test.each([
-  { wei: 9007199254740991, expected: '9007199254740990' },
-  { wei: 90071992547409912, expected: '90071992547409900' },
-  { wei: 98.16874512345678 * DECIMAL_PART, expected: '98168745123456700000' },
-  { wei: 1.6478 * DECIMAL_PART, expected: '1647800000000000000' },
-  { wei: 1.123456789123456789, expected: '1.1234567891234000' },
-  { wei: 1123456789123456789, expected: '1123456789123450000' },
-])('safe round off: %s', (data) => {
-  expect(myst.weiSafeString(data.wei)).toEqual(data.expected)
-})
 
 test.each([
   { wei: '6123456789123456789', expected: '6.1234567 MYST' },

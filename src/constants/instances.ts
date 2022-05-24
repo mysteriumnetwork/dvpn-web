@@ -8,22 +8,38 @@ import {
   Config,
   CurrentPricesResponse,
   Fees,
+  FeesResponse,
+  FeesV2,
   Identity,
   IdentityRegistrationStatus,
   MMNApiKeyResponse,
   NatTypeResponse,
   NodeHealthcheck,
   NodeMonitoringStatus,
+  NodeMonitoringStatusResponse,
   SessionListResponse,
   SessionStats,
   SettlementListResponse,
-  NodeMonitoringStatusResponse,
 } from 'mysterium-vpn-js'
 
 export const TOKENS_EMPTY = Object.freeze({
   wei: '0',
   ether: '0',
   human: '0',
+})
+
+export const FEES_V2_EMPTY: FeesV2 = Object.freeze({
+  registration: TOKENS_EMPTY,
+  decreaseStake: TOKENS_EMPTY,
+  settlement: TOKENS_EMPTY,
+  validUntil: new Date(0).toJSON(),
+})
+
+export const FEES_RESPONSE_EMPTY: FeesResponse = Object.freeze({
+  last: FEES_V2_EMPTY,
+  current: FEES_V2_EMPTY,
+  hermesPercent: '0.2000',
+  serverTime: new Date(0).toJSON(),
 })
 
 export const FEES_EMPTY: Fees = Object.freeze({

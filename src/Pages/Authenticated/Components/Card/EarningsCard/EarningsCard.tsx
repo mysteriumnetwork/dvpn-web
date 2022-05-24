@@ -71,7 +71,7 @@ interface SharedProps {
 
 const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
   const { earningsTokens, id } = useSelector(selectors.currentIdentitySelector)
-  const { settlementTokens } = useSelector(selectors.feesSelector)
+  const { current } = useSelector(selectors.feesSelector)
   const config = useSelector(selectors.configSelector)
   const thresholdWei = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
 
@@ -99,9 +99,9 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
       } yet. Settlement is done either automatically when ${display(thresholdWei, {
         fractionDigits: 1,
       })} is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus current blockchain fees (${display(
-        settlementTokens.wei,
+        current.settlement.wei,
       )}).`,
-    [thresholdWei, settlementTokens.wei],
+    [thresholdWei, current.settlement.wei],
   )
 
   const progressPercent = toBig(earningsTokens.wei).times(100).div(thresholdWei).toNumber()

@@ -11,7 +11,7 @@ import { tequila } from '../../../../../api/wrapped-calls'
 import { configParser } from '../../../../../commons/config'
 import { parseToastError } from '../../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../../commons/ethereum.utils'
-import { feeCalculator } from '../../../../../commons/fees'
+import { feez } from '../../../../../commons/fees'
 import { myst } from '../../../../../commons/mysts'
 import toasts from '../../../../../commons/toasts'
 import { InputGroup } from '../../../../../Components/InputGroups/InputGroup'
@@ -77,11 +77,11 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
   }, [identity.id, beneficiary, isAutoWithdrawal])
 
   const chainSummary = useSelector(selectors.chainSummarySelector)
-  const fees = useSelector(selectors.feesSelector)
+  const { current, hermesPercent } = useSelector(selectors.feesSelector)
 
-  const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earningsTokens, fees), [
-    fees.hermesPercent,
-    fees.settlement,
+  const calculatedFees = useMemo(() => feez.calculateEarnings(identity.earningsTokens, current, hermesPercent), [
+    hermesPercent,
+    current.settlement.wei,
     identity.earningsTokens.wei,
   ])
 

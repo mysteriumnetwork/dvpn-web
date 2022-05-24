@@ -33,20 +33,6 @@ const display = (
   override: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS,
 ): string => format(wei, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, ...override })
 
-const ZERO_OUT_FROM = String(Number.MAX_SAFE_INTEGER).length - 1
-
-// TODO don't remember why
-const weiSafeString = (wei: number): string => {
-  const weiString = String(wei)
-
-  let zeroedOut = ''
-  for (let i = 0; i < weiString.length; i++) {
-    zeroedOut += i >= ZERO_OUT_FROM ? '0' : weiString[i]
-  }
-
-  return zeroedOut
-}
-
 const toEtherBig = (wei: BigNumber | string | number): BigNumber => {
   return new (BigNumber.clone({ POW_PRECISION: 0, ROUNDING_MODE: BigNumber.ROUND_DOWN }))(wei).div(DECIMAL_PART)
 }
@@ -63,8 +49,8 @@ const toWeiBig = (ether: BigNumber | string | number): BigNumber => {
   return new (BigNumber.clone({ POW_PRECISION: 0 }))(ether).times(DECIMAL_PART)
 }
 
-const toBig = (value: BigNumber | string | number): BigNumber => {
-  return new BigNumber(value)
+const toBig = (value: BigNumber | string | number, config?: BigNumber.Config): BigNumber => {
+  return new (BigNumber.clone(config))(value)
 }
 
 export const myst = {
@@ -74,5 +60,4 @@ export const myst = {
   toWeiString,
   toWeiBig,
   toBig,
-  weiSafeString,
 }

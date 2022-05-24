@@ -25,7 +25,7 @@ const { seconds2Time } = dates
 const UnsettledEarnings = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
-  const fees = useSelector(selectors.feesSelector)
+  const { current } = useSelector(selectors.feesSelector)
 
   const [showModal, setShowModal] = useState<boolean>(false)
 
@@ -34,9 +34,9 @@ const UnsettledEarnings = () => {
       `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${configParser.zeroStakeSettlementThreshold(
         config,
       )} is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus blockchain fees (${myst.display(
-        fees.settlement,
+        current.settlement.wei,
       )}), so Balance will be lower than Total earnings.`,
-    [fees.settlement, config],
+    [current.settlement.wei, config],
   )
 
   return (
