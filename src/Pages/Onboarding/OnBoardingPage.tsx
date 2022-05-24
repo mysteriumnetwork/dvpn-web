@@ -26,6 +26,7 @@ const steps: Step[] = [
   },
   {
     component: 'NetworkRegistration',
+    isApplicable: (onBoarding) => onBoarding.needsRegisteredIdentity,
   },
   {
     component: 'Registration',
