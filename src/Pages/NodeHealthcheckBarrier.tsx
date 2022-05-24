@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const NodeHealthcheckBarrier = ({ children }: Props) => {
-  const [response, loading, error] = useFetch(() => api.healthCheck(), [])
+  const [, loading, error] = useFetch(() => api.healthCheck(), [])
 
   if (loading) {
     return <FullPageSpinner />
