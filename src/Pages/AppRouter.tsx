@@ -4,13 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { AppState } from 'mysterium-vpn-js'
-import React, { useEffect, useLayoutEffect } from 'react'
+import { AppState, FeesResponse } from 'mysterium-vpn-js'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { tequila } from '../api/wrapped-calls'
 import errors from '../commons/errors'
-import { IDENTITY_EMPTY } from '../constants/instances'
 import { localStorageKeys } from '../constants/local_storage_keys'
 import {
   ADMIN,
@@ -25,11 +24,16 @@ import {
 import {
   fetchChainSummaryAsync,
   fetchConfigAsync,
-  fetchFeesAsync,
   fetchIdentityAsync,
   updateTermsStoreAsync,
 } from '../redux/app.async.actions'
-import { Auth, isLoggedIn, updateAuthenticatedStore, updateAuthFlowLoadingStore } from '../redux/app.slice'
+import {
+  Auth,
+  isLoggedIn,
+  updateAuthenticatedStore,
+  updateAuthFlowLoadingStore,
+  updateFeesStore,
+} from '../redux/app.slice'
 import { selectors } from '../redux/selectors'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
 import { RootState } from '../redux/store'
@@ -47,8 +51,11 @@ import WalletPage from './Authenticated/Wallet/WalletPage'
 import { AdminPage } from './Authenticated/Admin/AdminPage'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
 import SessionSidebarPage from './Authenticated/SessionSidebar/SessionSidebarPage'
+import identities from '../commons/identities'
 
+const { api } = tequila
 const { parseToastError } = errors
+const SECOND = 1000
 
 const AppRouter = () => {
   const navigate = useNavigate()
@@ -57,11 +64,11 @@ const AppRouter = () => {
     fetchIdentityAsync: async () => fetchIdentityAsync(),
     fetchConfigAsync: async () => fetchConfigAsync(),
     updateTermsStoreAsync: async () => updateTermsStoreAsync(),
-    fetchFeesAsync: async () => fetchFeesAsync(),
     fetchChainSummaryAsync: async () => fetchChainSummaryAsync(),
     updateAuthenticatedStore: async (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
     updateAuthFlowLoadingStore: async (loading: boolean) => dispatch(updateAuthFlowLoadingStore(loading)),
     sseAppStateStateChanged: (state: AppState) => dispatch(sseAppStateStateChanged(state)),
+    updateFeesStore: (fees: FeesResponse) => dispatch(updateFeesStore(fees)),
   }
 
   const loading = useSelector<RootState, boolean>(({ app }) => app.loading)
@@ -70,6 +77,7 @@ const AppRouter = () => {
   const onBoarding = useSelector(selectors.onBoardingStateSelector)
 
   const authenticatedActions = async (defaultCredentials: boolean) => {
+    console.log('wat', defaultCredentials)
     await actions.updateAuthenticatedStore({
       authenticated: true,
       withDefaultCredentials: defaultCredentials,
@@ -77,8 +85,8 @@ const AppRouter = () => {
     await actions.updateTermsStoreAsync()
     await actions.fetchIdentityAsync()
     await actions.fetchConfigAsync()
-    await actions.fetchFeesAsync()
     await actions.fetchChainSummaryAsync()
+    await updateFees()
   }
 
   const loadIntercomCookie = () => {
@@ -93,28 +101,36 @@ const AppRouter = () => {
 
   useEffect(() => {
     ;(async () => {
+      if (identities.isEmpty(identity)) {
+        return
+      }
       try {
-        if (identity.id !== IDENTITY_EMPTY.id) {
-          await tequila.refreshBeneficiary(identity.id)
-        }
+        await tequila.refreshBeneficiary(identity.id)
       } catch (e: any) {
         parseToastError(e)
       }
     })()
   }, [identity.id])
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     try {
-  //       actions.fetchFeesAsync()
-  //     } catch (e: any) {
-  //       console.log(e)
-  //     }
-  //   }, 30_000)
-  //   return () => clearInterval(interval)
-  // }, [])
+  const updateFees = async () => {
+    if (loggedIn) {
+      return
+    }
+    try {
+      const response = await api.transactorFeesV2()
+      const {
+        current: { validUntil },
+        serverTime,
+      } = response
+      const staleInMs = new Date(validUntil).getTime() - new Date(serverTime).getTime()
+      actions.updateFeesStore(response)
+      setTimeout(() => updateFees(), staleInMs - SECOND * 10)
+    } catch (ignored: any) {
+      setTimeout(() => updateFees(), SECOND * 10)
+    }
+  }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const blockingCheck = async () => {
       let isDefaultPassword = await tequila.loginWithDefaultCredentials()
       let isAuthenticated = isDefaultPassword
