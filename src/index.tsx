@@ -15,6 +15,7 @@ import AppRouter from './Pages/AppRouter'
 import { store } from './redux/store'
 
 import { Hotkeys } from './Pages/Authenticated/Components/Hotkeys/Hotkeys'
+import { NodeHealthcheckBarrier } from './Pages/NodeHealthcheckBarrier'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -31,7 +32,9 @@ root.render(
         <SnackbarUtilsConfigurator />
         <HashRouter>
           <Hotkeys>
-            <AppRouter />
+            <NodeHealthcheckBarrier>
+              <AppRouter />
+            </NodeHealthcheckBarrier>
           </Hotkeys>
         </HashRouter>
       </SnackbarProvider>
