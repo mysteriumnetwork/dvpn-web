@@ -7,7 +7,9 @@
 import Button from '../Buttons/Button'
 import GetApp from '@material-ui/icons/GetApp'
 import { useImmer } from 'use-immer'
-import { parseToastError } from '../../commons/toast.utils'
+import errors from '../../commons/errors'
+
+const { parseToastError } = errors
 
 interface Props<T> {
   fetchData: () => Promise<T> | undefined

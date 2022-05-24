@@ -12,7 +12,7 @@ import { tequila } from '../../../../../api/wrapped-calls'
 import { configParser } from '../../../../../commons/config'
 import { lockouts } from '../../../../../commons/lockout'
 import { Media } from '../../../../../commons/media.utils'
-import { myst } from '../../../../../commons/myst.utils'
+import { myst } from '../../../../../commons/mysts'
 import page from '../../../../../commons/page'
 import Button from '../../../../../Components/Buttons/Button'
 import { LockoutButton } from '../../../../../Components/Buttons/LockoutButton'
@@ -24,7 +24,7 @@ import styles from './EarningsCard.module.scss'
 import { QuickSettleModal } from './QuickSettleModal'
 import { SettleSettingsModal } from './SettleSettingsModal'
 import WarningIcon from '@material-ui/icons/WarningOutlined'
-import { IDENTITY_EMPTY } from '../../../../../constants/instances'
+import identities from '../../../../../commons/identities'
 
 const QUICK_SETTLE_LOCKOUT_ID = 'QUICK_SETTLE_LOCKOUT_ID'
 const { display, toWeiBig, toBig, toEtherBig } = myst
@@ -84,7 +84,7 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
 
   useEffect(() => {
     ;(async () => {
-      if (id === IDENTITY_EMPTY.id) {
+      if (identities.isEmpty(id)) {
         return
       }
       updateSettingsLoading()

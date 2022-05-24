@@ -8,14 +8,15 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { configParser } from '../../../../commons/config'
-import { parseAndToastError } from '../../../../commons/error.utils'
-import { toastSuccess } from '../../../../commons/toast.utils'
+import { parseToastError } from '../../../../commons/errors'
+import toasts from '../../../../commons/toasts'
 import Button from '../../../../Components/Buttons/Button'
 import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 import MystSlider from '../../../../Components/MystSlider/MystSlider'
 import { selectors } from '../../../../redux/selectors'
 import styles from './SettlementSettings.module.scss'
 
+const { toastSuccess } = toasts
 const { setUserConfig } = tequila
 
 export const SettlementSettings = () => {
@@ -32,7 +33,7 @@ export const SettlementSettings = () => {
       await setUserConfig({ payments: { 'zero-stake-unsettled-amount': threshold } })
       toastSuccess('Settlement threshold updated')
     } catch (err: any) {
-      parseAndToastError(err)
+      parseToastError(err)
     }
   }
 

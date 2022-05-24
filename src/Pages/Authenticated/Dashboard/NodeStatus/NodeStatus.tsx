@@ -5,12 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vpn-js'
-import React, { useEffect } from 'react'
+import { NodeMonitoringStatusResponse } from 'mysterium-vpn-js'
+import React from 'react'
 import { useSelector } from 'react-redux'
-import { useImmer } from 'use-immer'
 import { tequila } from '../../../../api/wrapped-calls'
-import { parseToastError } from '../../../../commons/toast.utils'
 import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import { NATType } from '../../../../constants/nat'
 import { DOCS, DOCS_NAT_FIX } from '../../../../constants/urls'
@@ -19,54 +17,22 @@ import { RootState } from '../../../../redux/store'
 import Bubble from './Bubble'
 import { natType2Human, natTypeStatusBubble, nodeStatusBubble, statusText } from './nat-status.utils'
 import './NodeStatus.scss'
+import hooks from '../../../../commons/hooks'
+import { NAT_TYPE_RESPONSE_EMPTY, NODE_MONITORING_STATUS_RESPONSE_EMPTY } from '../../../../constants/instances'
 
+const { useFetch } = hooks
 const { api } = tequila
-
-interface State {
-  natStatus: NodeMonitoringStatusResponse
-  nat: {
-    loading: boolean
-    type: string
-    error?: string
-  }
-}
-
-const initialState: State = {
-  natStatus: {
-    status: NodeMonitoringStatus.PASSED,
-  },
-  nat: {
-    loading: true,
-    type: '',
-  },
-}
 
 const NodeStatus = () => {
   const sse = useSelector<RootState, SSEState>(({ sse }) => sse)
-  const [state, setState] = useImmer<State>(initialState)
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const [status, natType] = await Promise.all([api.nodeMonitoringStatus(), api.natType()])
-        setState((d) => {
-          d.natStatus = status
-          d.nat.type = natType.type
-          d.nat.error = natType.error
-          d.nat.loading = false
-        })
-      } catch (e) {
-        parseToastError(e)
-      }
-    }
-    init()
-  }, [])
+  const [data = [], loading] = useFetch(() => Promise.all([api.nodeMonitoringStatus(), api.natType()]))
+  const [monitoring = NODE_MONITORING_STATUS_RESPONSE_EMPTY, nat = NAT_TYPE_RESPONSE_EMPTY] = data
 
   const serviceInfo = sse.appState?.serviceInfo
-  const { natStatus, nat } = state
   const online = !!(serviceInfo && serviceInfo.length > 0)
-  const nodeStatus = nodeStatusBubble(natStatus, online)
-  const natTypeStatus = natTypeStatusBubble(nat.type, nat.loading)
+  const nodeStatus = nodeStatusBubble(monitoring, online)
+  const natTypeStatus = natTypeStatusBubble(nat.type, loading)
 
   return (
     <div className="status-card">
@@ -74,12 +40,12 @@ const NodeStatus = () => {
         <div className="status-card__status-text">Node status:</div>
         <div className="status-card__status-icon">
           <Bubble status={nodeStatus} />
-          <p className="status-card__status-icon-description">{statusText(natStatus, online)}</p>
+          <p className="status-card__status-icon-description">{statusText(monitoring, online)}</p>
         </div>
-        {(online && natStatus.status === 'failed') ||
+        {(online && monitoring.status === 'failed') ||
           (!online && (
             <div className="status-card__tooltip">
-              <Tooltip title={nodeStatusTooltip(natStatus, online)} placement="bottom-start" />
+              <Tooltip title={nodeStatusTooltip(monitoring, online)} placement="bottom-start" />
             </div>
           ))}
       </div>
@@ -88,7 +54,7 @@ const NodeStatus = () => {
         <div className="status-card__status-text">Accepting Connections:</div>
         <div className="status-card__status-icon">
           <Bubble status={natTypeStatus} />
-          <p className="status-card__status-icon-description">{natType2Human(nat.type, nat.loading)}</p>
+          <p className="status-card__status-icon-description">{natType2Human(nat.type, loading)}</p>
         </div>
         <div className="status-card__tooltip">
           <Tooltip title={<div>{natTypeTooltip(nat.type, DOCS_NAT_FIX)}</div>} />

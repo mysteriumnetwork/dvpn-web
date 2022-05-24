@@ -9,20 +9,21 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
 import { configParser } from '../../../../../commons/config'
-import { parseAndToastError } from '../../../../../commons/error.utils'
+import { parseToastError } from '../../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../../commons/ethereum.utils'
 import { feeCalculator } from '../../../../../commons/fees'
-import { myst } from '../../../../../commons/myst.utils'
-import { toastSuccess } from '../../../../../commons/toast.utils'
+import { myst } from '../../../../../commons/mysts'
+import toasts from '../../../../../commons/toasts'
 import { InputGroup } from '../../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../../Components/Modal/Modal'
 import { TextField } from '../../../../../Components/TextField/TextField'
 import Error from '../../../../../Components/Validation/Error'
-import { IDENTITY_EMPTY } from '../../../../../constants/instances'
 import { selectors } from '../../../../../redux/selectors'
 import { FeesTable } from '../../Fees/FeesTable'
 import styles from './SettleSettingsModal.module.scss'
+import identities from '../../../../../commons/identities'
 
+const { toastSuccess } = toasts
 const { api, refreshBeneficiary } = tequila
 const { display } = myst
 
@@ -58,7 +59,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
 
   useEffect(() => {
     ;(async () => {
-      if (identity.id === IDENTITY_EMPTY.id) {
+      if (identities.isEmpty(identity)) {
         return
       }
       try {
@@ -70,7 +71,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
           isLoading: false,
         }))
       } catch (e: any) {
-        parseAndToastError(e)
+        parseToastError(e)
       }
     })()
   }, [identity.id, beneficiary, isAutoWithdrawal])
@@ -118,7 +119,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
       toastSuccess(`Automatic withdrawal to ${state.externalWalletAddress} request submitted`)
       await refreshBeneficiary(identity.id)
     } catch (err: any) {
-      parseAndToastError(err)
+      parseToastError(err)
     }
     setLoading(false)
   }

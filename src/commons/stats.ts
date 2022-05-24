@@ -18,6 +18,6 @@ const addStats = (a: SessionStats, b: SessionStats): SessionStats => {
   }
 }
 
-export const tequilUtils = {
+export const stats = {
   addStats,
 }

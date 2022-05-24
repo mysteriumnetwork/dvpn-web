@@ -6,7 +6,7 @@
  */
 import { ChainSummary } from 'mysterium-vpn-js'
 
-export const toOptions = (chainSummary: ChainSummary) => {
+const toOptions = (chainSummary: ChainSummary) => {
   const { chains } = chainSummary
   return Object.keys(chains)
     .map(Number)
@@ -18,3 +18,9 @@ export const toOptions = (chainSummary: ChainSummary) => {
       }
     })
 }
+
+const mapping = {
+  toOptions,
+}
+
+export default mapping

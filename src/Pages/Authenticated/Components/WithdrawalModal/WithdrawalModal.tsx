@@ -10,10 +10,10 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { tequila } from '../../../../api/wrapped-calls'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
-import { toOptions } from '../../../../commons/mapping.utils'
+import mapping from '../../../../commons/mapping'
 import { currentCurrency } from '../../../../commons/money.utils'
-import { myst } from '../../../../commons/myst.utils'
-import { toastError, toastSuccess } from '../../../../commons/toast.utils'
+import { myst } from '../../../../commons/mysts'
+import toasts from '../../../../commons/toasts'
 import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 import { Modal } from '../../../../Components/Modal/Modal'
 import { Option, Select } from '../../../../Components/Select/Select'
@@ -25,6 +25,9 @@ import { FeesRibbon } from './FeesRibbon'
 import { LatestWithdrawal } from './LatestWithdrawal'
 import styles from './WithdrawalModal.module.scss'
 
+const { toastSuccess } = toasts
+const { toastError } = toasts
+const { toOptions } = mapping
 const { api } = tequila
 
 interface Props {

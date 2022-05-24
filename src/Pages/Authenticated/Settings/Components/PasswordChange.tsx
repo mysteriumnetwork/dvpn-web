@@ -8,8 +8,8 @@ import { APIError } from 'mysterium-vpn-js'
 import { useImmer } from 'use-immer'
 
 import { tequila } from '../../../../api/wrapped-calls'
-import { validatePassword } from '../../../../commons/password'
-import { toastSuccess } from '../../../../commons/toast.utils'
+import { validatePassword } from '../../../../commons/passwords'
+import toasts from '../../../../commons/toasts'
 import Button from '../../../../Components/Buttons/Button'
 import { TextField } from '../../../../Components/TextField/TextField'
 import Error from '../../../../Components/Validation/Error'
@@ -17,6 +17,7 @@ import { DEFAULT_USERNAME } from '../../../../constants/defaults'
 import styles from './Components.module.scss'
 import classNames from 'classnames'
 
+const { toastSuccess } = toasts
 const { api } = tequila
 
 interface StateInterface {

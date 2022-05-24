@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { SessionStats } from 'mysterium-vpn-js'
-import { add } from '../../../../commons/formatBytes'
+import { add } from '../../../../commons/bytes'
 
 import { displayMyst } from '../../../../commons/money.utils'
 

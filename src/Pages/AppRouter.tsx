@@ -9,7 +9,7 @@ import React, { useEffect, useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { tequila } from '../api/wrapped-calls'
-import { parseToastError } from '../commons/toast.utils'
+import errors from '../commons/errors'
 import { IDENTITY_EMPTY } from '../constants/instances'
 import { localStorageKeys } from '../constants/local_storage_keys'
 import {
@@ -47,6 +47,8 @@ import WalletPage from './Authenticated/Wallet/WalletPage'
 import { AdminPage } from './Authenticated/Admin/AdminPage'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
 import SessionSidebarPage from './Authenticated/SessionSidebar/SessionSidebarPage'
+
+const { parseToastError } = errors
 
 const AppRouter = () => {
   const navigate = useNavigate()

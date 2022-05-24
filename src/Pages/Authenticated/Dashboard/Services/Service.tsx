@@ -10,9 +10,9 @@ import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { WIREGUARD } from '../../../../commons'
 import { configParser } from '../../../../commons/config'
-import { isRegistered } from '../../../../commons/identity.utils'
-import { myst } from '../../../../commons/myst.utils'
-import { callWithToast } from '../../../../commons/promise.utils'
+import identities from '../../../../commons/identities'
+import { myst } from '../../../../commons/mysts'
+import { callWithToast } from '../../../../commons/calls'
 import { Switch } from '../../../../Components/Switch'
 import { CURRENT_PRICES_EMPTY } from '../../../../constants/instances'
 import { selectors } from '../../../../redux/selectors'
@@ -20,6 +20,7 @@ import ServiceDetail from './ServiceDetail'
 import ServiceHeader from './ServiceHeader'
 import './Services.scss'
 
+const { isRegistered } = identities
 const { api } = tequila
 const { RUNNING } = ServiceStatus
 

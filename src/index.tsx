@@ -9,12 +9,11 @@ import { SnackbarProvider } from 'notistack'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { SnackbarUtilsConfigurator } from './commons/toast.utils'
+import { SnackbarUtilsConfigurator } from './commons/toasts'
 
 import AppRouter from './Pages/AppRouter'
 import { store } from './redux/store'
 
-import { unregister } from './serviceWorker'
 import { Hotkeys } from './Pages/Authenticated/Components/Hotkeys/Hotkeys'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
@@ -39,5 +38,3 @@ root.render(
     </Provider>
   </React.StrictMode>,
 )
-
-unregister() // cache busting

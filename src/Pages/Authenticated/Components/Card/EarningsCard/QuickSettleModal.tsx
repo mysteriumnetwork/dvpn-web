@@ -7,10 +7,10 @@
 import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
-import { parseAndToastError } from '../../../../../commons/error.utils'
+import { parseToastError } from '../../../../../commons/errors'
 import { feeCalculator } from '../../../../../commons/fees'
 import identities from '../../../../../commons/identities'
-import { myst } from '../../../../../commons/myst.utils'
+import { myst } from '../../../../../commons/mysts'
 import { Modal } from '../../../../../Components/Modal/Modal'
 import Error from '../../../../../Components/Validation/Error'
 import { selectors } from '../../../../../redux/selectors'
@@ -55,7 +55,7 @@ export const QuickSettleModal = ({ open, onClose, onSave = () => {} }: Props) =>
             onSave()
             onClose()
           } catch (err: any) {
-            parseAndToastError(err)
+            parseToastError(err)
           }
           setLoading(false)
         },

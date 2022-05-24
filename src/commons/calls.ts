@@ -4,14 +4,21 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { parseTequilApiError, UNKNOWN_API_ERROR } from './error.utils'
-import { toastError, toastSuccess } from './toast.utils'
+import toasts from './toasts'
+import errors from './errors'
+
+const { toastError, toastSuccess } = toasts
 
 export interface Msg {
   success?: string
   error?: string
 }
 
+/**
+ * @deprecated not useful
+ * @param fn
+ * @param msg
+ */
 export const callWithToast = async <T>(fn: () => Promise<T>, msg?: Msg): Promise<T> => {
   try {
     const result = await fn()
@@ -23,7 +30,7 @@ export const callWithToast = async <T>(fn: () => Promise<T>, msg?: Msg): Promise
     if (msg?.error && msg?.error.length > 0) {
       toastError(msg.error)
     } else {
-      toastError(parseTequilApiError(err) || err?.message || msg?.error || UNKNOWN_API_ERROR)
+      errors.parseToastError(err)
     }
     return Promise.reject(err)
   }

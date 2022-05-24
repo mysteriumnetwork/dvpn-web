@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { myst } from './myst.utils'
+import { myst } from './mysts'
 import { DECIMAL_PART } from 'mysterium-vpn-js'
 
 test.each([

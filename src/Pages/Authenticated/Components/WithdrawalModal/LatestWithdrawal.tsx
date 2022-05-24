@@ -9,7 +9,7 @@ import { Settlement, SettlementType } from 'mysterium-vpn-js'
 import { tequila } from '../../../../api/wrapped-calls'
 import styles from './WithdrawalModal.module.scss'
 import { media } from '../../../../commons/media.utils'
-import { strings } from '../../../../commons/strings.utils'
+import { strings } from '../../../../commons/strings'
 import { useMediaQuery } from 'react-responsive'
 
 const { api } = tequila

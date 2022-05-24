@@ -8,12 +8,13 @@ import { PaymentGateway } from 'mysterium-vpn-js'
 import React, { Suspense, useEffect, useMemo, useState } from 'react'
 import { tequila } from '../../api/wrapped-calls'
 import { currentCurrency } from '../../commons/money.utils'
-import { toastError } from '../../commons/toast.utils'
+import toasts from '../../commons/toasts'
 import { Option, Radio } from '../Radio/Radio'
 import { GatewayProps, PaymentProps } from './gateways/types'
 import styles from './Payments.module.scss'
 import { CircularProgress } from '@material-ui/core'
 
+const { toastError } = toasts
 const { api } = tequila
 
 interface SupportedGateways {

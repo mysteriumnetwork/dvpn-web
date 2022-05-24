@@ -15,10 +15,12 @@ import {
   uiVersionManager,
 } from '../../../../api/ui-version-management'
 import page from '../../../../commons/page'
-import { parseToastError, toastError } from '../../../../commons/toast.utils'
+import errors from '../../../../commons/errors'
 import Button from '../../../../Components/Buttons/Button'
 import styles from './VersionManagement.module.scss'
 import { VersionCard } from './VersionCard'
+
+const { parseToastError } = errors
 
 interface State {
   isLoading: boolean
@@ -125,7 +127,7 @@ export const VersionManagement = () => {
         d.downloadProgress = 0
       })
     } catch (err) {
-      toastError(parseErrorResponse(err))
+      parseToastError(err)
     }
   }
 
@@ -134,7 +136,7 @@ export const VersionManagement = () => {
       await switchUi(name)
       page.refreshPage()
     } catch (err: any) {
-      toastError(err.response.data.message)
+      parseToastError(err)
     }
   }
 
@@ -211,11 +213,6 @@ export const VersionManagement = () => {
       <div className={styles.versions}>{versionList}</div>
     </>
   )
-}
-
-const parseErrorResponse = (err: any): string => {
-  const data = err.response.data
-  return `${data.message} (${data.originalError})`
 }
 
 const infoRow = (key: string, value: string): JSX.Element => (

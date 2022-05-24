@@ -12,9 +12,9 @@ const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
 
 const UNKNOWN = 'Unknown'
 
-export const countryName = (countryCode: string): string => regionNames.of(countryCode) || UNKNOWN
+const countryName = (countryCode: string): string => regionNames.of(countryCode) || UNKNOWN
 
-export const countryNames: { [key: string]: string } = Object.freeze({
+const countryNames: { [key: string]: string } = Object.freeze({
   af: 'Afghanistan',
   al: 'Albania',
   dz: 'Algeria',
@@ -253,3 +253,10 @@ export const countryNames: { [key: string]: string } = Object.freeze({
   zw: 'Zimbabwe',
   ax: 'Åland Islands',
 })
+
+const countries = {
+  countryNames,
+  countryName,
+}
+
+export default countries

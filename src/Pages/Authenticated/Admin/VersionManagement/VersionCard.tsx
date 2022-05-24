@@ -6,10 +6,12 @@
  */
 import { LocalVersion, RemoteVersion } from '../../../../api/ui-version-management'
 import styles from './VersionManagement.module.scss'
-import { date2human } from '../../../../commons/date.utils'
+import dates from '../../../../commons/dates'
 import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import Button from '../../../../Components/Buttons/Button'
 import React from 'react'
+
+const { date2human } = dates
 
 interface Props {
   remote: RemoteVersion

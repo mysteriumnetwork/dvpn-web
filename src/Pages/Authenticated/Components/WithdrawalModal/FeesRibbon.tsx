@@ -6,7 +6,7 @@
  */
 import { Fees } from 'mysterium-vpn-js'
 import styles from './WithdrawalModal.module.scss'
-import { myst } from '../../../../commons/myst.utils'
+import { myst } from '../../../../commons/mysts'
 import React from 'react'
 import classNames from 'classnames'
 

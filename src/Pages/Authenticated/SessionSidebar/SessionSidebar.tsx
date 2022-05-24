@@ -7,14 +7,18 @@
 import { Session, SessionStatus, SessionStats, SessionDirection } from 'mysterium-vpn-js'
 import { Link } from 'react-router-dom'
 import styles from './SessionSidebar.module.scss'
-import { countryName } from '../../../commons/country'
+import countries from '../../../commons/countries'
 
-import formatBytes, { add } from '../../../commons/formatBytes'
-import { date2human, seconds2Time } from '../../../commons/date.utils'
+import dates from '../../../commons/dates'
 import { SESSIONS } from '../../../constants/routes'
 
 import SessionCard from '../Components/SessionCard/SessionCard'
-import { myst } from '../../../commons/myst.utils'
+import { myst } from '../../../commons/mysts'
+import bytes from '../../../commons/bytes'
+
+const { format, add } = bytes
+const { date2human, seconds2Time } = dates
+const { countryName } = countries
 
 const sumBytes = (sessionStats?: SessionStats) => {
   return (sessionStats?.sumBytesSent || 0) + (sessionStats?.sumBytesReceived || 0)
@@ -31,7 +35,7 @@ const toSessionCard = (
         onGoing={status === SessionStatus.NEW}
         id={id}
         time={seconds2Time(duration)}
-        data={formatBytes(add(bytesSent, bytesReceived))}
+        data={format(add(bytesSent, bytesReceived))}
         value={myst.display(tokens)}
         createdAt={date2human(createdAt)}
       />
@@ -57,8 +61,8 @@ const SessionSidebar = ({
   headerText,
   historySessions = [],
 }: Props) => {
-  const historyCards = historySessions.map((hs, idx) => toSessionCard(hs.id, hs))
-  const latestSessionCards = liveSessions.map((ls, idx) => toSessionCard(ls.id, ls)).concat(historyCards)
+  const historyCards = historySessions.map((hs) => toSessionCard(hs.id, hs))
+  const latestSessionCards = liveSessions.map((ls) => toSessionCard(ls.id, ls)).concat(historyCards)
 
   return (
     <div className={styles.sessions}>
@@ -79,7 +83,7 @@ const SessionSidebar = ({
           <div className={styles.explanation}>Live earnings</div>
         </div>
         <div className={styles.footerSumBlock}>
-          <div className={styles.name}>{formatBytes(sumBytes(liveSessionStats))}</div>
+          <div className={styles.name}>{format(sumBytes(liveSessionStats))}</div>
           <div className={styles.explanation}>Live data</div>
         </div>
       </div>

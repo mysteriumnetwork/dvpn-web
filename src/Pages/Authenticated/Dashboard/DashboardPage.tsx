@@ -5,15 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Session, SessionDirection, SessionStats, SessionStatus } from 'mysterium-vpn-js'
-import React, { useEffect } from 'react'
+import { SessionDirection, SessionStatus } from 'mysterium-vpn-js'
+import React from 'react'
 import { useSelector } from 'react-redux'
-import { useImmer } from 'use-immer'
 import { tequila } from '../../../api/wrapped-calls'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
-import { tequilUtils } from '../../../commons/tequil.utils'
-import { parseToastError } from '../../../commons/toast.utils'
+import { stats } from '../../../commons/stats'
 import { selectors } from '../../../redux/selectors'
 import { CardLayout } from '../Components/Card/CardLayout'
 import { Cards } from '../Components/Card/PreparedCards'
@@ -25,47 +23,21 @@ import styles from './DashboardPage.module.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Service from './Services/Service'
+import hooks from '../../../commons/hooks'
+import { SESSION_STATS_EMPTY } from '../../../constants/instances'
 
+const { useFetch } = hooks
 const { api } = tequila
-
-interface StateProps {
-  loading: boolean
-  sessionStatsAllTime: SessionStats
-  sessionStatsDaily: {
-    [date: string]: SessionStats
-  }
-  historySessions: Session[]
-}
-
-const initialState: StateProps = {
-  loading: true,
-  sessionStatsAllTime: {
-    count: 0,
-    countConsumers: 0,
-    sumBytesReceived: 0,
-    sumBytesSent: 0,
-    sumDuration: 0,
-    sumTokens: 0,
-  },
-  sessionStatsDaily: {},
-  historySessions: [],
-}
 
 const DashboardPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const liveSessionStats = useSelector(selectors.liveSessionStatsSelector)
   const liveSessions = useSelector(selectors.liveSessionsSelector)
 
-  const [state, setState] = useImmer<StateProps>(initialState)
-
-  useEffect(() => {
-    init()
-  }, [identity.id])
-
-  const init = async () => {
-    const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
-    try {
-      const [{ items: statsDaily }, { stats: allTimeStats }, { items: sidebarSessions }] = await Promise.all([
+  const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
+  const [data = [], loading] = useFetch(
+    () =>
+      Promise.all([
         api.sessionStatsDaily(sessionFilter),
         api.sessionStatsAggregated(sessionFilter),
         api.sessions({
@@ -75,39 +47,37 @@ const DashboardPage = () => {
           status: SessionStatus.COMPLETED,
         }),
         api.identityBalanceRefresh(identity.id),
-      ])
+      ]),
+    [identity.id],
+  )
 
-      setState((d) => {
-        d.sessionStatsDaily = statsDaily
-        d.sessionStatsAllTime = tequilUtils.addStats(allTimeStats, liveSessionStats)
-        d.historySessions = sidebarSessions
-        d.loading = false
-      })
-    } catch (err) {
-      parseToastError(err)
-    }
-  }
+  const [
+    { items: statsDaily } = { items: {} },
+    { stats: allTimeStats } = { stats: SESSION_STATS_EMPTY },
+    { items: historySessions } = { items: [] },
+  ] = data
+  const allTimeAggregatedStats = stats.addStats(allTimeStats, liveSessionStats)
 
   return (
     <Layout
       title="Dashboard"
       logo={<Logo />}
-      isLoading={state.loading}
+      isLoading={loading}
       main={
         <>
           <div className={styles.statistics}>
             <CardLayout>
               <Cards.TotalEarnings />
-              <Cards.SessionTime stats={state.sessionStatsAllTime} />
-              <Cards.Transferred stats={state.sessionStatsAllTime} />
-              <Cards.Sessions stats={state.sessionStatsAllTime} />
-              <Cards.UniqueClients stats={state.sessionStatsAllTime} />
+              <Cards.SessionTime stats={allTimeAggregatedStats} />
+              <Cards.Transferred stats={allTimeAggregatedStats} />
+              <Cards.Sessions stats={allTimeAggregatedStats} />
+              <Cards.UniqueClients stats={allTimeAggregatedStats} />
               <Cards.EarningsCard />
             </CardLayout>
           </div>
           <div className={styles.widgets}>
             <div className={styles.widget}>
-              <Charts statsDaily={state.sessionStatsDaily} />
+              <Charts statsDaily={statsDaily} />
             </div>
           </div>
           <div className={styles.nodeStatus}>
@@ -126,7 +96,7 @@ const DashboardPage = () => {
         <SessionSidebar
           liveSessions={liveSessions}
           liveSessionStats={liveSessionStats}
-          historySessions={state.historySessions}
+          historySessions={historySessions}
           headerText="Latest Sessions"
           displayNavigation
         />

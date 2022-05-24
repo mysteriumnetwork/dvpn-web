@@ -9,11 +9,11 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
-import { parseError } from '../../../commons/error.utils'
+import { parseError } from '../../../commons/errors'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
-import { isRegistrationError, isUnregistered } from '../../../commons/identity.utils'
-import storage from '../../../commons/localStorage.utils'
-import { toastError } from '../../../commons/toast.utils'
+import identities from '../../../commons/identities'
+import storage from '../../../commons/localStorageWrapper'
+import toasts from '../../../commons/toasts'
 import Button from '../../../Components/Buttons/Button'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
 import { TextField } from '../../../Components/TextField/TextField'
@@ -21,6 +21,8 @@ import { DOCS_METAMASK } from '../../../constants/urls'
 import { selectors } from '../../../redux/selectors'
 import { StepLayout } from '../Components/StepLayout'
 
+const { toastError } = toasts
+const { isRegistrationError, isUnregistered } = identities
 const { api } = tequila
 
 const registerIdentity = async (id: string, beneficiary: string) => {
