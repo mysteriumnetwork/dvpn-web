@@ -36,6 +36,7 @@ export interface AppState {
   auth: Auth
   terms: Terms
   config: Config
+  defaultConfig: Config
   fees: FeesResponse
   chainSummary: ChainSummary
   beneficiary: IdentityBeneficiaryResponse
@@ -52,6 +53,9 @@ const INITIAL_STATE: AppState = {
   },
   fees: FEES_RESPONSE_EMPTY,
   config: {
+    data: {},
+  },
+  defaultConfig: {
     data: {},
   },
   chainSummary: {
@@ -94,6 +98,9 @@ const slice = createSlice({
     updateBeneficiaryStore: (state, action) => {
       state.beneficiary = action.payload
     },
+    updateDefaultConfigStore: (state, action) => {
+      state.defaultConfig = action.payload
+    },
   },
 })
 
@@ -130,6 +137,7 @@ export const {
   updateTermsStore,
   updateAuthFlowLoadingStore,
   updateConfigStore,
+  updateDefaultConfigStore,
   updateFeesStore,
   updateChainSummaryStore,
   updateBeneficiaryStore,

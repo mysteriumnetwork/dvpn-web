@@ -14,7 +14,7 @@ import FEATURES from '../../../commons/features'
 import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 import { selectors } from '../../../redux/selectors'
 import { Layout } from '../Layout'
-import { Advanced } from './Components/Advanced/Advanced'
+import { AdvancedSettings } from './Components/Advanced/AdvancedSettings'
 import IdentityInformation from './Components/IdentityInformation'
 
 import MMN from './Components/MMN'
@@ -23,7 +23,7 @@ import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
 import hooks from '../../../commons/hooks'
-import { CONFIG_EMPTY, HEALTHCHECK_EMPTY, MMN_KEY_RESPONSE_EMPTY } from '../../../constants/instances'
+import { HEALTHCHECK_EMPTY, MMN_KEY_RESPONSE_EMPTY } from '../../../constants/instances'
 
 const { api } = tequila
 
@@ -44,16 +44,11 @@ const SettingsPage = () => {
   const config = useSelector(selectors.configSelector)
   const mmnWebAddress = configParser.mmnWebAddress(config)
 
-  const [data = [], loading] = hooks.useFetch(
-    () => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000), api.defaultConfig()]),
-    [identity.id],
-  )
+  const [data = [], loading] = hooks.useFetch(() => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000)]), [
+    identity.id,
+  ])
 
-  const [
-    { apiKey } = MMN_KEY_RESPONSE_EMPTY,
-    { buildInfo, version } = HEALTHCHECK_EMPTY,
-    defaultConfig = CONFIG_EMPTY,
-  ] = data
+  const [{ apiKey } = MMN_KEY_RESPONSE_EMPTY, { buildInfo, version } = HEALTHCHECK_EMPTY] = data
 
   return (
     <Layout
@@ -91,8 +86,8 @@ const SettingsPage = () => {
             <Card title="Mystnodes.com integration">
               <MMN mmnUrl={mmnWebAddress} apiKey={apiKey} />
             </Card>
-            <Card title="Advanced Settings">
-              <Advanced config={config} defaultConfig={defaultConfig} onSave={tequila.setUserConfig} />
+            <Card title="Advanced Settings Refactor">
+              <AdvancedSettings />
             </Card>
           </div>
         </div>

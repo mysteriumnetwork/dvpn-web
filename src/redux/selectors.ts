@@ -26,6 +26,8 @@ const chainSummarySelector = ({ app }: RootState): ChainSummary => app.chainSumm
 
 const configSelector = ({ app }: RootState): Config => app.config
 
+const defaultConfigSelector = ({ app }: RootState): Config => app.defaultConfig
+
 const onBoardingStateSelector = ({ app, sse }: RootState) =>
   onBoarding(app.auth, app.terms, currentIdentitySelector({ app, sse }))
 
@@ -43,6 +45,7 @@ export const selectors = {
   currentIdentitySelector,
   feesSelector,
   configSelector,
+  defaultConfigSelector,
   onBoardingStateSelector,
   chainSummarySelector,
   liveSessionsSelector,

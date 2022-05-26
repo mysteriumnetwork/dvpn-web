@@ -8,7 +8,7 @@ import React, { ReactNode } from 'react'
 import styles from './InputGroup.module.scss'
 
 interface Props {
-  label?: string
+  label?: ReactNode
   help?: ReactNode
   children?: any
   topRight?: JSX.Element

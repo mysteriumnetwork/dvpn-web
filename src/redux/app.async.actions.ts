@@ -8,7 +8,13 @@
 import { tequila } from '../api/wrapped-calls'
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
-import { updateChainSummaryStore, updateConfigStore, updateIdentityRefStore, updateTermsStore } from './app.slice'
+import {
+  updateChainSummaryStore,
+  updateConfigStore,
+  updateDefaultConfigStore,
+  updateIdentityRefStore,
+  updateTermsStore,
+} from './app.slice'
 import { store } from './store'
 import { parseToastError } from '../commons/errors'
 
@@ -35,6 +41,12 @@ export const fetchConfigAsync = async () => {
   const { dispatch } = store
   const config = await api.config()
   dispatch(updateConfigStore(config))
+}
+
+export const fetchDefaultConfigAsync = async () => {
+  const { dispatch } = store
+  const defaultConfig = await api.defaultConfig()
+  dispatch(updateDefaultConfigStore(defaultConfig))
 }
 
 export const fetchChainSummaryAsync = async () => {

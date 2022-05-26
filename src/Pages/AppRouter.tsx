@@ -24,6 +24,7 @@ import {
 import {
   fetchChainSummaryAsync,
   fetchConfigAsync,
+  fetchDefaultConfigAsync,
   fetchIdentityAsync,
   updateTermsStoreAsync,
 } from '../redux/app.async.actions'
@@ -63,6 +64,7 @@ const AppRouter = () => {
   const actions = {
     fetchIdentityAsync: async () => fetchIdentityAsync(),
     fetchConfigAsync: async () => fetchConfigAsync(),
+    fetchDefaultConfigAsync: async () => fetchDefaultConfigAsync(),
     updateTermsStoreAsync: async () => updateTermsStoreAsync(),
     fetchChainSummaryAsync: async () => fetchChainSummaryAsync(),
     updateAuthenticatedStore: async (auth: Auth) => dispatch(updateAuthenticatedStore(auth)),
@@ -85,6 +87,7 @@ const AppRouter = () => {
     await actions.updateTermsStoreAsync()
     await actions.fetchIdentityAsync()
     await actions.fetchConfigAsync()
+    await actions.fetchDefaultConfigAsync()
     await actions.fetchChainSummaryAsync()
     await updateFees()
   }
