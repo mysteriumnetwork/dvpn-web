@@ -34,7 +34,7 @@ export const EarningsCard = () => {
   const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
   const beneficiary = useSelector(selectors.beneficiarySelector)
   const isAutoWithdrawal = !beneficiary.isChannelAddress
-  const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.001) || !isAutoWithdrawal
+  const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.1) || !isAutoWithdrawal
 
   return (
     <>
