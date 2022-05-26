@@ -79,7 +79,6 @@ const AppRouter = () => {
   const onBoarding = useSelector(selectors.onBoardingStateSelector)
 
   const authenticatedActions = async (defaultCredentials: boolean) => {
-    console.log('wat', defaultCredentials)
     await actions.updateAuthenticatedStore({
       authenticated: true,
       withDefaultCredentials: defaultCredentials,

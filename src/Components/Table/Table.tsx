@@ -10,7 +10,7 @@ import styles from './Table.module.scss'
 import './Pagination.mui.scss'
 import { Column, Row, usePagination, useTable } from 'react-table'
 import classNames from 'classnames'
-import { Media } from '../../commons/media.utils'
+import { Media } from '../../commons/media'
 import { CircularProgress } from '@material-ui/core'
 import { Pagination } from './TableComponents'
 

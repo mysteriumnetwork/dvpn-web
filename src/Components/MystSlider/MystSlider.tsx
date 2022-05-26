@@ -6,7 +6,7 @@
  */
 import { Mark, Slider as MUISlider } from '@material-ui/core'
 import './MystSlider.scss'
-import { currentCurrency } from '../../commons/money.utils'
+import { currentCurrency } from '../../commons/currency'
 
 interface Props {
   label: string

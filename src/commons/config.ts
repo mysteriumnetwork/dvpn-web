@@ -52,7 +52,7 @@ const hermesId = (c?: Config): string | undefined => {
 }
 
 const dropLeadingSlash = (s: string): string => {
-  return s.endsWith('/') ? s.substr(0, s.length - 1) : s
+  return s.endsWith('/') ? s.substring(0, s.length - 1) : s
 }
 
 const mmnWebAddress = (c?: Config): string => {

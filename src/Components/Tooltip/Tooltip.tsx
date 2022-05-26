@@ -7,7 +7,7 @@
 import { Tooltip as MUIToolTip } from '@material-ui/core'
 import HelpIcon from '@material-ui/icons/Help'
 import React from 'react'
-import { Media } from '../../commons/media.utils'
+import { Media } from '../../commons/media'
 
 interface Props {
   title: NonNullable<React.ReactNode>

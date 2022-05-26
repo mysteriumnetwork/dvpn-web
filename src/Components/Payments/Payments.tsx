@@ -7,7 +7,7 @@
 import { PaymentGateway } from 'mysterium-vpn-js'
 import React, { Suspense, useEffect, useMemo, useState } from 'react'
 import { tequila } from '../../api/wrapped-calls'
-import { currentCurrency } from '../../commons/money.utils'
+import { currentCurrency } from '../../commons/currency'
 import toasts from '../../commons/toasts'
 import { Option, Radio } from '../Radio/Radio'
 import { GatewayProps, PaymentProps } from './gateways/types'

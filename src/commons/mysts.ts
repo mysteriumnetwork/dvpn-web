@@ -6,7 +6,7 @@
  */
 import BigNumber from 'bignumber.js'
 import { DECIMAL_PART, DisplayMoneyOptions } from 'mysterium-vpn-js'
-import { currentCurrency } from './money.utils'
+import { currentCurrency } from './currency'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index'
 
 const format = (

@@ -6,6 +6,7 @@
  */
 import { DECIMAL_PART, DisplayMoneyOptions } from 'mysterium-vpn-js'
 
+// TODO use custom type for MYST formatting functions instead of vpn js
 export const DEFAULT_MONEY_DISPLAY_OPTIONS: Required<DisplayMoneyOptions> = Object.freeze({
   showCurrency: true,
   fractionDigits: 7,
