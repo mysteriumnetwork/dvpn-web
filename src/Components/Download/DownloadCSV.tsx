@@ -6,8 +6,8 @@
  */
 import Button from '../Buttons/Button'
 import GetApp from '@material-ui/icons/GetApp'
-import { useImmer } from 'use-immer'
 import errors from '../../commons/errors'
+import { useState } from 'react'
 
 const { parseToastError } = errors
 
@@ -23,16 +23,12 @@ interface State {
 }
 
 export const DownloadCSV = <T extends unknown>({ fetchData, mapper, disabled }: Props<T>) => {
-  const [state, setState] = useImmer<State>({
+  const [state, setState] = useState<State>({
     isLoading: true,
     downloadLink: '',
   })
 
-  const setIsLoading = (b: boolean = true) => {
-    setState((d) => {
-      d.isLoading = b
-    })
-  }
+  const setIsLoading = (b: boolean = true) => setState((d) => ({ ...d, isLoading: b }))
 
   const handleDownload = async () => {
     try {

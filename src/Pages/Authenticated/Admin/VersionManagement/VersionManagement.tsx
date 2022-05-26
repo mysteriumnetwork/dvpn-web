@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import classNames from 'classnames'
-import React, { useEffect } from 'react'
-import { useImmer } from 'use-immer'
+import React, { useEffect, useState } from 'react'
 import {
   LocalVersion,
   LocalVersionsResponse,
@@ -51,12 +50,8 @@ const initialState: State = {
 export const VersionManagement = () => {
   const { info, localVersions, remoteVersions, downloadUi, downloadStatus, switchUi } = uiVersionManager
 
-  const [state, setState] = useImmer<State>(initialState)
-  const setIsLoading = (b: boolean = true) => {
-    setState((d) => {
-      d.isLoading = b
-    })
-  }
+  const [state, setState] = useState<State>(initialState)
+  const setIsLoading = (b: boolean = true) => setState((d) => ({ ...d, isLoading: b }))
 
   useEffect(() => {
     init()
@@ -70,11 +65,12 @@ export const VersionManagement = () => {
           if (s.error) {
             parseToastError(s.error)
           }
-          setState((d) => {
-            d.downloadProgress = s.progressPercent
-            d.downloadError = s.error
-            d.isDownloadInProgress = inProgress
-          })
+          setState((d) => ({
+            ...d,
+            downloadProgress: s.progressPercent,
+            downloadError: s.error,
+            isDownloadInProgress: inProgress,
+          }))
 
           if (s.status === 'done') {
             init()
@@ -94,21 +90,20 @@ export const VersionManagement = () => {
         remoteVersions({ flushCache }),
         downloadStatus(),
       ])
-      setState((d) => {
-        d.ui = uiInfo
-        d.isLoading = false
-        d.remote = remote
-        d.local = local
-        d.isDownloadInProgress = dlStatus.status === 'in_progress'
-      })
+      setState((d) => ({
+        ...d,
+        ui: uiInfo,
+        isLoading: false,
+        remote: remote,
+        local: local,
+        isDownloadInProgress: dlStatus.status === 'in_progress',
+      }))
     } catch (err) {
       parseToastError(err)
     }
   }
 
-  const findLocal = (name: string): LocalVersion | undefined => {
-    return state.local.versions.find((it) => it.name === name)
-  }
+  const findLocal = (name: string): LocalVersion | undefined => state.local.versions.find((it) => it.name === name)
 
   const isInUse = (lv?: LocalVersion): boolean => {
     if (!lv) {
@@ -121,11 +116,7 @@ export const VersionManagement = () => {
   const download = async (name: string) => {
     try {
       await downloadUi(name)
-      setState((d) => {
-        d.isDownloadInProgress = true
-        d.downloadError = undefined
-        d.downloadProgress = 0
-      })
+      setState((d) => ({ ...d, isDownloadInProgress: true, downloadError: undefined, downloadProgress: 0 }))
     } catch (err) {
       parseToastError(err)
     }

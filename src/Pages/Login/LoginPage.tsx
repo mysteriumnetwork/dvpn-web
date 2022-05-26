@@ -6,10 +6,9 @@
  */
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
-import React, { FormEvent } from 'react'
-import { useImmer } from 'use-immer'
+import React, { FormEvent, useState } from 'react'
 import { tequila } from '../../api/wrapped-calls'
-import sideImageOnboarding from '../../assets/images/onboarding/SideImage.png'
+import SideImage from '../../assets/images/onboarding/SideImage.png'
 import Button from '../../Components/Buttons/Button'
 import { TextField } from '../../Components/TextField/TextField'
 import { DEFAULT_USERNAME } from '../../constants/defaults'
@@ -30,37 +29,28 @@ interface StateProps {
 }
 
 const LoginPage = ({ onSuccessLogin }: Props) => {
-  const [state, setState] = useImmer<StateProps>({
+  const [state, setState] = useState<StateProps>({
     password: '',
     error: false,
     isLoading: false,
   })
 
   const handleTextFieldsChange = (value: string) => {
-    setState((d) => {
-      d.password = value
-    })
+    setState((d) => ({ ...d, password: value }))
   }
 
   const handleLogin = async (e: FormEvent<any>) => {
     e.preventDefault()
-    setState((d) => {
-      d.error = false
-      d.isLoading = true
-    })
+    setState((d) => ({ ...d, error: false, isLoading: true }))
 
     try {
       await tequila.login(DEFAULT_USERNAME, state.password)
       await onSuccessLogin()
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
     } catch (_) {
-      setState((d) => {
-        d.error = true
-      })
+      setState((d) => ({ ...d, error: true }))
     } finally {
-      setState((d) => {
-        d.isLoading = false
-      })
+      setState((d) => ({ ...d, isLoading: false }))
     }
   }
   return (
@@ -94,7 +84,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
         </div>
       </div>
       <div className="side">
-        <img alt="onboarding" src={sideImageOnboarding} />
+        <img alt="onboarding" src={SideImage} />
       </div>
     </div>
   )

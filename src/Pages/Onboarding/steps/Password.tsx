@@ -6,9 +6,8 @@
  */
 import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import React, { FormEvent, useEffect } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useImmer } from 'use-immer'
 import { tequila } from '../../../api/wrapped-calls'
 import { configParser } from '../../../commons/config'
 import { parseError } from '../../../commons/errors'
@@ -54,7 +53,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
 
   const config = useSelector(selectors.configSelector)
 
-  const [state, setState] = useImmer<State>({
+  const [state, setState] = useState<State>({
     passwordRepeat: '',
     password: '',
     apiKey: '',
@@ -68,76 +67,51 @@ const SetPassword = (_: StepProps): JSX.Element => {
   })
 
   useEffect(() => {
-    setState((d) => {
-      d.mmnDomain = configParser.mmnDomainName(config)
-    })
+    setState((p) => ({ ...p, mmnDomain: configParser.mmnDomainName(config) }))
 
     const urlApiKey = query.get('mmnApiKey')
     if (urlApiKey !== null && urlApiKey.length > 0) {
-      setState((d) => {
-        d.apiKey = urlApiKey
-        d.useApiKey = true
-        d.urlApiKey = true
-        d.showClaim = true
-      })
+      setState((d) => ({ ...d, apiKey: urlApiKey, useApiKey: true, urlApiKey: true, showClaim: true }))
     } else {
       api.getMMNApiKey().then((resp) => {
-        setState((d) => {
-          d.apiKey = resp.apiKey
-          d.showClaim = d.apiKey === undefined || d.apiKey?.length === 0 || state.mmnDomain === 'error'
-        })
+        setState((d) => ({
+          ...d,
+          apiKey: resp.apiKey,
+          showClaim: d.apiKey === undefined || d.apiKey?.length === 0 || state.mmnDomain === 'error',
+        }))
       })
     }
   }, [])
 
   const onPasswordChange = (value: string) => {
-    setState((d) => {
-      d.password = value
-    })
+    setState((d) => ({ ...d, password: value }))
   }
 
   const onPasswordRepeatChange = (value: string) => {
-    setState((d) => {
-      d.passwordRepeat = value
-    })
+    setState((d) => ({ ...d, passwordRepeat: value }))
   }
 
   const onApiKeyChange = (value: string) => {
-    setState((d) => {
-      d.apiKey = value
-    })
+    setState((d) => ({ ...d, apiKey: value }))
   }
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState((d) => {
-      d.useApiKey = event.target.checked
-    })
+    setState((d) => ({ ...d, useApiKey: event.target.checked }))
   }
 
   const handleSubmitPassword = async (e: FormEvent<any>) => {
     e.preventDefault()
 
-    setState((d) => {
-      d.loading = true
-      d.error = false
-    })
+    setState((d) => ({ ...d, loading: true, error: false }))
 
     if (state.useApiKey && !state.apiKey) {
-      setState((d) => {
-        d.error = true
-        d.errorMessage = 'Please enter MMN ApiKey'
-        d.loading = false
-      })
+      setState((d) => ({ ...d, error: true, errorMessage: 'Please enter MMN ApiKey', loading: false }))
       return
     }
 
     const isPasswordValid = validatePassword(state.password, state.passwordRepeat)
     if (!isPasswordValid.success) {
-      setState((d) => {
-        d.error = true
-        d.errorMessage = isPasswordValid.errorMessage
-        d.loading = false
-      })
+      setState((d) => ({ ...d, error: true, errorMessage: isPasswordValid.errorMessage, loading: false }))
 
       return
     }
@@ -156,14 +130,9 @@ const SetPassword = (_: StepProps): JSX.Element => {
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
     } catch (err) {
       const msg = parseError(err)
-      setState((d) => {
-        d.error = true
-        d.errorMessage = msg
-      })
+      setState((d) => ({ ...d, error: true, errorMessage: msg }))
     } finally {
-      setState((d) => {
-        d.loading = false
-      })
+      setState((d) => ({ ...d, loading: false }))
     }
   }
 
