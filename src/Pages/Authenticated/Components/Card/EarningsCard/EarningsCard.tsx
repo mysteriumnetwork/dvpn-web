@@ -9,7 +9,7 @@ import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
-import { configParser } from '../../../../../commons/config'
+import { configs } from '../../../../../commons/config'
 import { lockouts } from '../../../../../commons/lockout'
 import { Media } from '../../../../../commons/media.utils'
 import { myst } from '../../../../../commons/mysts'
@@ -73,7 +73,7 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
   const { earningsTokens, id } = useSelector(selectors.currentIdentitySelector)
   const { current } = useSelector(selectors.feesSelector)
   const config = useSelector(selectors.configSelector)
-  const thresholdWei = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
+  const thresholdWei = toWeiBig(configs.zeroStakeSettlementThreshold(config))
 
   const [beneficiaryTx, setBeneficiaryTx] = useState<BeneficiaryTxStatus | undefined>()
   const [isSettingsLoading, setIsSettingsLoading] = useState<boolean>(false)

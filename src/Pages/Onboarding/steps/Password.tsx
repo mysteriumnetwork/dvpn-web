@@ -9,7 +9,7 @@ import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { tequila } from '../../../api/wrapped-calls'
-import { configParser } from '../../../commons/config'
+import { configs } from '../../../commons/config'
 import { parseError } from '../../../commons/errors'
 import { validatePassword } from '../../../commons/passwords'
 import Button from '../../../Components/Buttons/Button'
@@ -67,7 +67,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
   })
 
   useEffect(() => {
-    setState((p) => ({ ...p, mmnDomain: configParser.mmnDomainName(config) }))
+    setState((p) => ({ ...p, mmnDomain: configs.mmnDomainName(config) }))
 
     const urlApiKey = query.get('mmnApiKey')
     if (urlApiKey !== null && urlApiKey.length > 0) {
@@ -209,7 +209,7 @@ const MMNClaim = ({
           {!state.urlApiKey && (
             <p className="input-group__label">
               API Key (
-              <a href={`${configParser.mmnWebAddress(config)}/me`} target="_blank" rel="noopener noreferrer">
+              <a href={`${configs.mmnWebAddress(config)}/me`} target="_blank" rel="noopener noreferrer">
                 Get it here
               </a>
               )

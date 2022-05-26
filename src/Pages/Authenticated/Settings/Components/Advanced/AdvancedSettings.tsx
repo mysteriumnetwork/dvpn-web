@@ -11,7 +11,7 @@ import styles from './AdvancedSettings.module.scss'
 import Button from '../../../../../Components/Buttons/Button'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../../../../redux/selectors'
-import { configParser } from '../../../../../commons/config'
+import { configs } from '../../../../../commons/config'
 import { tequila } from '../../../../../api/wrapped-calls'
 import { Config } from 'mysterium-vpn-js'
 import calls from '../../../../../commons/calls'
@@ -34,8 +34,8 @@ const initialForm: Form = {
 }
 
 const rpcl2UrlsWithoutDefaults = (config: Config, defaultConfig: Config): string[] => {
-  const all = configParser.rpcl2(config)
-  const defaults = configParser.rpcl2(defaultConfig)
+  const all = configs.rpcl2(config)
+  const defaults = configs.rpcl2(defaultConfig)
 
   return all.filter((u) => !defaults.includes(u))
 }
@@ -53,15 +53,15 @@ export const AdvancedSettings = () => {
   }
 
   const mapTraversals = (): TraversalProp[] => {
-    const traversalSetting = configParser.natTraversals(config)
+    const traversalSetting = configs.natTraversals(config)
     if (traversalSetting?.length === 0) {
       return []
     }
     return traversalSetting.split(',').map((s) => ({ key: s, label: s }))
   }
 
-  const udpPortRange = configParser.udpPorts(config)
-  const stunServers = configParser.stunServers(config).join(',')
+  const udpPortRange = configs.udpPorts(config)
+  const stunServers = configs.stunServers(config).join(',')
   const traversals = mapTraversals()
   const rpcl2Urls = rpcl2UrlsWithoutDefaults(config, defaultConfig).join(',')
 
@@ -79,10 +79,10 @@ export const AdvancedSettings = () => {
   }, [config])
 
   const defaultData = {
-    'stun-servers': configParser.stunServers(defaultConfig),
-    'udp.ports': configParser.udpPorts(defaultConfig),
-    traversal: configParser.natTraversals(defaultConfig),
-    'ether.client.rpcl2': configParser.rpcl2(defaultConfig),
+    'stun-servers': configs.stunServers(defaultConfig),
+    'udp.ports': configs.udpPorts(defaultConfig),
+    traversal: configs.natTraversals(defaultConfig),
+    'ether.client.rpcl2': configs.rpcl2(defaultConfig),
   }
 
   const data = {

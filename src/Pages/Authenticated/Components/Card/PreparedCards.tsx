@@ -8,7 +8,7 @@ import { SessionStats } from 'mysterium-vpn-js'
 import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ReactComponent as WalletIcon } from '../../../../assets/icons/WithdrawalWallet.svg'
-import { configParser } from '../../../../commons/config'
+import { configs } from '../../../../commons/config'
 import dates from '../../../../commons/dates'
 import bytes from '../../../../commons/bytes'
 import { myst } from '../../../../commons/mysts'
@@ -31,7 +31,7 @@ const UnsettledEarnings = () => {
 
   const tooltipText = useMemo(
     () =>
-      `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${configParser.zeroStakeSettlementThreshold(
+      `These are confirmed earnings which are not settled to your Balance yet. Settlement to Balance is done either automatically when ${configs.zeroStakeSettlementThreshold(
         config,
       )} is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus blockchain fees (${myst.display(
         current.settlement.wei,

@@ -122,7 +122,7 @@ const isFeatureEnabled = (c: Config, name: string): boolean => {
   return uiFeatures(c).includes(name)
 }
 
-export const configParser = {
+export const configs = {
   isTrafficShapingEnabled,
   trafficShapingBandwidthKBps,
   isAccessPolicyEnabled,

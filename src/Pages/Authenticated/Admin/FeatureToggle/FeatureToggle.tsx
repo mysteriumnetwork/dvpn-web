@@ -8,7 +8,7 @@ import CheckIcon from '@material-ui/icons/Check'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
-import { configParser } from '../../../../commons/config'
+import { configs } from '../../../../commons/config'
 import FEATURES from '../../../../commons/features'
 import Button from '../../../../Components/Buttons/Button'
 import { selectors } from '../../../../redux/selectors'
@@ -21,8 +21,8 @@ export const FeatureToggle = () => {
 
   const toggle = async (name: string) => {
     setIsLoading(true)
-    const isEnabled = configParser.isFeatureEnabled(config, name)
-    const enabledFeatures = configParser.uiFeatures(config)
+    const isEnabled = configs.isFeatureEnabled(config, name)
+    const enabledFeatures = configs.uiFeatures(config)
 
     try {
       if (isEnabled) {
@@ -37,7 +37,7 @@ export const FeatureToggle = () => {
 
   const featureList = Object.keys(FEATURES).map((f) => {
     const feature = FEATURES[f]
-    const isEnabled = configParser.isFeatureEnabled(config, feature.name)
+    const isEnabled = configs.isFeatureEnabled(config, feature.name)
     return (
       <div key={feature.name} className={styles.feature}>
         <div className={styles.enabled}>{isEnabled && <CheckIcon />}</div>

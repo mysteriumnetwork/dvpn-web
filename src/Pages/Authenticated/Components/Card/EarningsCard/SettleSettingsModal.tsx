@@ -8,7 +8,7 @@ import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
-import { configParser } from '../../../../../commons/config'
+import { configs } from '../../../../../commons/config'
 import { parseToastError } from '../../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../../commons/ethereum.utils'
 import { feez } from '../../../../../commons/fees'
@@ -44,8 +44,8 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
   const { isChannelAddress, beneficiary } = useSelector(selectors.beneficiarySelector)
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
-  const docsUrl = configParser.docsAddress(config)
-  const zeroStakeSettlementThreshold = configParser.zeroStakeSettlementThreshold(config)
+  const docsUrl = configs.docsAddress(config)
+  const zeroStakeSettlementThreshold = configs.zeroStakeSettlementThreshold(config)
   const displayZeroStakeThreshold = myst.display(myst.toWeiBig(zeroStakeSettlementThreshold), {
     fractionDigits: 2,
   })

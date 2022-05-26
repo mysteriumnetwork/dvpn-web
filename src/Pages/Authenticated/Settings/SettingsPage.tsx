@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 
 import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
-import { configParser } from '../../../commons/config'
+import { configs } from '../../../commons/config'
 import FEATURES from '../../../commons/features'
 import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 import { selectors } from '../../../redux/selectors'
@@ -42,7 +42,7 @@ const Card = ({ title, children }: CardProps) => (
 const SettingsPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
-  const mmnWebAddress = configParser.mmnWebAddress(config)
+  const mmnWebAddress = configs.mmnWebAddress(config)
 
   const [data = [], loading] = hooks.useFetch(() => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000)]), [
     identity.id,
@@ -56,7 +56,7 @@ const SettingsPage = () => {
       logo={<Logo />}
       topRight={
         <div className={styles.topRight}>
-          {configParser.isFeatureEnabled(config, FEATURES.RESTART.name) && (
+          {configs.isFeatureEnabled(config, FEATURES.RESTART.name) && (
             <div className={styles.powerOff}>
               <PowerOffButton />
             </div>
