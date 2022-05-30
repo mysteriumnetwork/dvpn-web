@@ -11,7 +11,7 @@ import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 import {
   updateChainSummaryStore,
   updateConfigStore,
-  updateFeesStore,
+  updateDefaultConfigStore,
   updateIdentityRefStore,
   updateTermsStore,
 } from './app.slice'
@@ -43,14 +43,10 @@ export const fetchConfigAsync = async () => {
   dispatch(updateConfigStore(config))
 }
 
-export const fetchFeesAsync = async () => {
-  try {
-    const { dispatch } = store
-    const fees = await api.transactorFees()
-    dispatch(updateFeesStore(fees))
-  } catch (err: any) {
-    parseToastError(err)
-  }
+export const fetchDefaultConfigAsync = async () => {
+  const { dispatch } = store
+  const defaultConfig = await api.defaultConfig()
+  dispatch(updateDefaultConfigStore(defaultConfig))
 }
 
 export const fetchChainSummaryAsync = async () => {

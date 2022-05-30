@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
-import { configParser } from '../../../../commons/config'
+import { configs } from '../../../../commons/config'
 import errors from '../../../../commons/errors'
 import BandwidthControl from '../../../../Components/BandwidthControl/BandwidthControl'
 import Button from '../../../../Components/Buttons/Button'
@@ -49,9 +49,9 @@ const GlobalServicesSettings = () => {
     }
   }
 
-  const isVerified = configParser.isAccessPolicyEnabled(config) as boolean
-  const isShaping = configParser.isTrafficShapingEnabled(config)
-  const bandwidthMbps = (configParser.trafficShapingBandwidthKBps(config) / 1_000) * 8
+  const isVerified = configs.isAccessPolicyEnabled(config) as boolean
+  const isShaping = configs.isTrafficShapingEnabled(config)
+  const bandwidthMbps = (configs.trafficShapingBandwidthKBps(config) / 1_000) * 8
 
   const [state, setState] = useState<State>({
     bandwidthMbps: bandwidthMbps,

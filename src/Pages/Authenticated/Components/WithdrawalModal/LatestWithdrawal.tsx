@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { Settlement, SettlementType } from 'mysterium-vpn-js'
 import { tequila } from '../../../../api/wrapped-calls'
 import styles from './WithdrawalModal.module.scss'
-import { media } from '../../../../commons/media.utils'
+import { media } from '../../../../commons/media'
 import { strings } from '../../../../commons/strings'
 import { useMediaQuery } from 'react-responsive'
 

@@ -15,26 +15,31 @@ import AppRouter from './Pages/AppRouter'
 import { store } from './redux/store'
 
 import { Hotkeys } from './Pages/Authenticated/Components/Hotkeys/Hotkeys'
+import { NodeHealthcheckBarrier } from './Pages/NodeHealthcheckBarrier'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <SnackbarProvider
-        maxSnack={3}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-      >
-        <SnackbarUtilsConfigurator />
-        <HashRouter>
-          <Hotkeys>
+const app = (
+  <Provider store={store}>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+    >
+      <SnackbarUtilsConfigurator />
+      <HashRouter>
+        <Hotkeys>
+          <NodeHealthcheckBarrier>
             <AppRouter />
-          </Hotkeys>
-        </HashRouter>
-      </SnackbarProvider>
-    </Provider>
-  </React.StrictMode>,
+          </NodeHealthcheckBarrier>
+        </Hotkeys>
+      </HashRouter>
+    </SnackbarProvider>
+  </Provider>
 )
+
+// use strict mode for dev environment for additional checks; this will cause components to be rendered twice resulting in double requests
+// root.render(<React.StrictMode>{app}</React.StrictMode>)
+root.render(app)

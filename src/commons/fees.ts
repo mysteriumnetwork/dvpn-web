@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import BigNumber from 'bignumber.js'
-import { Fees, Tokens } from 'mysterium-vpn-js'
+import { FeesResponse, FeesV2, Tokens } from 'mysterium-vpn-js'
 import { myst } from './mysts'
 
 export interface CalculatedFees {
@@ -17,24 +17,30 @@ export interface CalculatedFees {
   totalFeesWei: BigNumber
 }
 
-const calculateEarnings = (earnings: Tokens, fees: Fees): CalculatedFees => {
+const calculateEarnings = (earnings: Tokens, fees: FeesV2, hermesPercent: string): CalculatedFees => {
   const { toBig } = myst
-  const { settlementTokens } = fees
-  const hermesCutPercent = Number(fees.hermesPercent)
+  const { settlement } = fees
+  const hermesCutPercent = Number(hermesPercent)
   const hermesCutWei = toBig(earnings.wei).times(hermesCutPercent)
-  const totalFeesWei = toBig(hermesCutWei).plus(settlementTokens.wei)
+  const totalFeesWei = toBig(hermesCutWei).plus(settlement.wei)
   const profitsWei = toBig(earnings.wei).minus(totalFeesWei)
 
   return {
     earningsWei: toBig(earnings.wei),
     hermesCutWei,
     hermesCutPercent,
-    blockchainFeeWei: toBig(settlementTokens.wei),
+    blockchainFeeWei: toBig(settlement.wei),
     profitsWei,
     totalFeesWei,
   }
 }
 
-export const feeCalculator = {
+const ZERO_DATE = new Date(0).toJSON()
+
+const isEmpty = (fees: FeesResponse): boolean => fees.serverTime === ZERO_DATE
+
+// intentional typo
+export const feez = {
   calculateEarnings,
+  isEmpty,
 }

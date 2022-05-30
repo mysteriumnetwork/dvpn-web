@@ -6,23 +6,26 @@
  */
 import { SessionStats } from 'mysterium-vpn-js'
 import { add } from '../../../../commons/bytes'
-
-import { displayMyst } from '../../../../commons/money.utils'
+import { myst } from '../../../../commons/mysts'
 
 export interface Pair {
   x: string
   y: number | string
 }
 
-export const sessionDailyStatsToEarningGraph = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
-  let accum = 0
+interface StatsDaily {
+  [name: string]: SessionStats
+}
+
+export const sessionDailyStatsToEarningGraph = (statsDaily: StatsDaily): Pair[] => {
+  let accum = myst.toBig(0)
   return Object.keys(statsDaily).map<Pair>((dateKey) => ({
     x: formatDate(dateKey),
-    y: displayMyst((accum += statsDaily[dateKey].sumTokens), { fractionDigits: 3 }),
+    y: myst.display((accum = accum.plus(statsDaily[dateKey].sumTokens)), { fractionDigits: 3, showCurrency: false }),
   }))
 }
 
-export const sessionDailyStatsToSessionsGraph = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
+export const sessionDailyStatsToSessionsGraph = (statsDaily: StatsDaily): Pair[] => {
   let accum = 0
   return Object.keys(statsDaily).map<Pair>((dateKey) => ({
     x: formatDate(dateKey),
@@ -30,7 +33,7 @@ export const sessionDailyStatsToSessionsGraph = (statsDaily: { [name: string]: S
   }))
 }
 
-export const sessionDailyStatsToData = (statsDaily: { [name: string]: SessionStats }): Pair[] => {
+export const sessionDailyStatsToData = (statsDaily: StatsDaily): Pair[] => {
   let accum = 0
   return Object.keys(statsDaily).map<Pair>((dateKey) => ({
     x: formatDate(dateKey),
@@ -41,7 +44,7 @@ export const sessionDailyStatsToData = (statsDaily: { [name: string]: SessionSta
 }
 
 const formatDate = (malformed: string): string => {
-  const month = malformed.substr(4, 2)
-  const day = malformed.substr(6, 2)
+  const month = malformed.substring(4, 2)
+  const day = malformed.substring(6, 2)
   return `${month}-${day}`
 }

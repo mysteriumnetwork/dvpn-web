@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { APIError } from 'mysterium-vpn-js'
-import { useImmer } from 'use-immer'
 
 import { tequila } from '../../../../api/wrapped-calls'
 import { validatePassword } from '../../../../commons/passwords'
@@ -16,6 +15,8 @@ import Error from '../../../../Components/Validation/Error'
 import { DEFAULT_USERNAME } from '../../../../constants/defaults'
 import styles from './Components.module.scss'
 import classNames from 'classnames'
+import React, { useState } from 'react'
+import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 
 const { toastSuccess } = toasts
 const { api } = tequila
@@ -39,25 +40,19 @@ const defaultState = {
 }
 
 const PasswordChange = () => {
-  const [values, setValues] = useImmer<StateInterface>(defaultState)
+  const [values, setValues] = useState<StateInterface>(defaultState)
 
-  const handleSubmitPassword = () => {
-    setValues((d) => {
-      d.error = false
-    })
+  const handleSubmitPassword = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setValues((d) => ({ ...d, error: false }))
 
     const isPasswordValid = validatePassword(values.newPassword, values.newPasswordConfirmation)
     if (!isPasswordValid.success) {
-      setValues((d) => {
-        d.error = true
-        d.errorMessage = isPasswordValid.errorMessage
-      })
+      setValues((d) => ({ ...d, error: true, errorMessage: isPasswordValid.errorMessage }))
 
       return
     }
-    setValues((d) => {
-      d.loading = true
-    })
+    setValues((d) => ({ ...d, loading: true }))
     api
       .authChangePassword({
         username: DEFAULT_USERNAME,
@@ -77,45 +72,30 @@ const PasswordChange = () => {
     <form onSubmit={handleSubmitPassword}>
       <Error show={values.error} errorMessage={values.errorMessage} />
 
-      <div className="input-group">
-        <div className="text-field-label">Current password</div>
+      <InputGroup label="Current password">
         <TextField
-          onChange={(value) => {
-            setValues((d) => {
-              d.currentPassword = value
-            })
-          }}
+          onChange={(currentPassword) => setValues((d) => ({ ...d, currentPassword }))}
           type="password"
           placeholder={'*********'}
           value={values.currentPassword}
         />
-      </div>
-      <div className="input-group">
-        <div className="input-group__label">New password</div>
+      </InputGroup>
+      <InputGroup label="New password">
         <TextField
-          onChange={(value) => {
-            setValues((d) => {
-              d.newPassword = value
-            })
-          }}
+          onChange={(newPassword) => setValues((d) => ({ ...d, newPassword }))}
           type="password"
           placeholder={'*********'}
           value={values.newPassword}
         />
-      </div>
-      <div className="input-group">
-        <div className="input-group__label">Repeat password</div>
+      </InputGroup>
+      <InputGroup label="Repeat password">
         <TextField
-          onChange={(value) => {
-            setValues((d) => {
-              d.newPasswordConfirmation = value
-            })
-          }}
+          onChange={(newPasswordConfirmation) => setValues((d) => ({ ...d, newPasswordConfirmation }))}
           type="password"
           placeholder={'*********'}
           value={values.newPasswordConfirmation}
         />
-      </div>
+      </InputGroup>
       <div className={classNames(styles.buttons, 'm-t-40')}>
         <Button type="submit" isLoading={values.loading}>
           Save

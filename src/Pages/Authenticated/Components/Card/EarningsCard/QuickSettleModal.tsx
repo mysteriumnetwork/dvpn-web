@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
 import { parseToastError } from '../../../../../commons/errors'
-import { feeCalculator } from '../../../../../commons/fees'
+import { feez } from '../../../../../commons/fees'
 import identities from '../../../../../commons/identities'
 import { myst } from '../../../../../commons/mysts'
 import { Modal } from '../../../../../Components/Modal/Modal'
@@ -27,14 +27,14 @@ const { api } = tequila
 
 export const QuickSettleModal = ({ open, onClose, onSave = () => {} }: Props) => {
   const identity = useSelector(selectors.currentIdentitySelector)
-  const fees = useSelector(selectors.feesSelector)
+  const { current, hermesPercent } = useSelector(selectors.feesSelector)
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const { isChannelAddress, beneficiary } = useSelector(selectors.beneficiarySelector)
   const isAutoWithdrawal = !isChannelAddress
 
-  const calculatedFees = useMemo(() => feeCalculator.calculateEarnings(identity.earningsTokens, fees), [
-    fees.hermesPercent,
-    fees.settlement,
+  const calculatedFees = useMemo(() => feez.calculateEarnings(identity.earningsTokens, current, hermesPercent), [
+    hermesPercent,
+    current.settlement.wei,
     identity.earningsTokens.wei,
   ])
 

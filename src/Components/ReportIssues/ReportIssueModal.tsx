@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogTitle, IconButton } from '@material-ui/cor
 import ChatIcon from '@material-ui/icons/Chat'
 import CloseIcon from '@material-ui/icons/Close'
 import { IntercomIssue } from 'mysterium-vpn-js'
-import { useImmer } from 'use-immer'
 import { tequila } from '../../api/wrapped-calls'
 import { parseError } from '../../commons/errors'
 import toasts from '../../commons/toasts'
@@ -18,6 +17,7 @@ import Button from '../Buttons/Button'
 import { TextField } from '../TextField/TextField'
 
 import './ReportIssueModal.scss'
+import { useState } from 'react'
 
 const { toastError } = toasts
 const { api } = tequila
@@ -32,18 +32,14 @@ interface StateProps extends IntercomIssue {
 }
 
 const ReportIssueModal = ({ open, onClose }: Props) => {
-  const [state, setState] = useImmer<StateProps>({
+  const [state, setState] = useState<StateProps>({
     description: '',
     email: '',
     sending: false,
   })
 
   const resetState = () => {
-    setState((d) => {
-      d.description = ''
-      d.email = ''
-      d.sending = false
-    })
+    setState((d) => ({ ...d, description: '', email: '', sending: false }))
   }
 
   const handleClose = () => {
@@ -52,9 +48,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
   }
 
   const reportIssue = async () => {
-    setState((d) => {
-      d.sending = true
-    })
+    setState((d) => ({ ...d, sending: true }))
     try {
       // @ts-ignore
       const userId = window.Intercom('getVisitorId')
@@ -126,9 +120,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
               <TextField
                 placeholder="node@runner.com"
                 onChange={(value) => {
-                  setState((d) => {
-                    d.email = value
-                  })
+                  setState((d) => ({ ...d, email: value }))
                 }}
                 value={state.email || ''}
               />
@@ -137,9 +129,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
               <div className="input-group__label">Your message ({typedIn})</div>
               <TextField
                 onChange={(value) => {
-                  setState((d) => {
-                    d.description = value
-                  })
+                  setState((d) => ({ ...d, description: value }))
                 }}
                 value={state.description}
                 rows={4}

@@ -7,7 +7,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
-import { configParser } from '../../../../commons/config'
+import { configs } from '../../../../commons/config'
 import { parseToastError } from '../../../../commons/errors'
 import toasts from '../../../../commons/toasts'
 import Button from '../../../../Components/Buttons/Button'
@@ -21,7 +21,7 @@ const { setUserConfig } = tequila
 
 export const SettlementSettings = () => {
   const config = useSelector(selectors.configSelector)
-  const configThreshold = configParser.zeroStakeSettlementThreshold(config)
+  const configThreshold = configs.zeroStakeSettlementThreshold(config)
 
   const [threshold, setThreshold] = useState<number>(configThreshold)
   useEffect(() => setThreshold(configThreshold), [configThreshold])

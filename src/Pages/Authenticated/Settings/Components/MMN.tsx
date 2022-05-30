@@ -4,8 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useEffect } from 'react'
-import { useImmer } from 'use-immer'
+import React, { useEffect, useState } from 'react'
 import { tequila } from '../../../../api/wrapped-calls'
 import { parseError } from '../../../../commons/errors'
 import toasts from '../../../../commons/toasts'
@@ -15,6 +14,7 @@ import { TextField } from '../../../../Components/TextField/TextField'
 import Error from '../../../../Components/Validation/Error'
 import styles from './Components.module.scss'
 import classNames from 'classnames'
+import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 
 const { toastSuccess } = toasts
 const { api } = tequila
@@ -32,7 +32,7 @@ interface Props {
 }
 
 const MMN = ({ apiKey, mmnUrl }: Props) => {
-  const [state, setState] = useImmer<StateInterface>({
+  const [state, setState] = useState<StateInterface>({
     apiKey: '',
     error: false,
     errorMessage: '',
@@ -40,34 +40,22 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   })
 
   useEffect(() => {
-    setState((d) => {
-      d.apiKey = apiKey
-    })
+    setState((d) => ({ ...d, apiKey: apiKey }))
   }, [apiKey])
 
-  const handleSubmitToken = async () => {
-    setState((d) => {
-      d.error = false
-      d.loading = true
-    })
+  const handleSubmitToken = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setState((d) => ({ ...d, error: false, loading: true }))
 
     api
       .setMMNApiKey(state.apiKey)
       .then(() => {
-        setState((cs) => {
-          cs.error = false
-          cs.errorMessage = ''
-          cs.loading = false
-        })
+        setState((cs) => ({ ...cs, error: false, errorMessage: '', loading: false }))
         toastSuccess('MMN API key updated.')
       })
       .then(() => tequila.refreshStoreConfig())
       .catch((error) =>
-        setState((d) => {
-          d.error = true
-          d.errorMessage = parseError(error, 'Validation Error')
-          d.loading = false
-        }),
+        setState((d) => ({ ...d, error: true, errorMessage: parseError(error, 'Validation Error'), loading: false })),
       )
   }
 
@@ -79,18 +67,9 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
   return (
     <form onSubmit={handleSubmitToken}>
       <Error show={state.error} errorMessage={state.errorMessage} />
-
-      <div className="input-group">
-        <div className="input-group__label">API Key ({link})</div>
-        <TextField
-          onChange={(value: string) => {
-            setState((d) => {
-              d.apiKey = value
-            })
-          }}
-          value={state.apiKey}
-        />
-      </div>
+      <InputGroup label={<span>API Key ({link})</span>}>
+        <TextField onChange={(apiKey: string) => setState((d) => ({ ...d, apiKey }))} value={state.apiKey} />
+      </InputGroup>
       <div className={classNames(styles.buttons, 'm-t-40')}>
         <Button type="submit" isLoading={state.loading}>
           Save

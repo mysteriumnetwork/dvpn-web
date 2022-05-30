@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 const truncateHash = (hash: string, n: number = 10): string => {
-  const b = hash.substr(0, 10)
-  const e = hash.substr(hash.length - n + 1, hash.length - 1)
+  const b = hash.substring(0, 10)
+  const e = hash.substring(hash.length - n + 1, hash.length - 1)
   return `${b}...${e}`
 }
 

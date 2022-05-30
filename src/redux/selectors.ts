@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ChainSummary, Fees, Identity } from 'mysterium-vpn-js'
+import { ChainSummary, FeesResponse, Identity } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { IDENTITY_EMPTY } from '../constants/instances'
 import { AppState, currentIdentity, onBoarding } from './app.slice'
@@ -20,11 +20,13 @@ const currentIdentitySelector = ({ app, sse }: RootState): Identity => {
   return identity || IDENTITY_EMPTY
 }
 
-const feesSelector = ({ app }: RootState): Fees => app.fees
+const feesSelector = ({ app }: RootState): FeesResponse => app.fees
 
 const chainSummarySelector = ({ app }: RootState): ChainSummary => app.chainSummary
 
 const configSelector = ({ app }: RootState): Config => app.config
+
+const defaultConfigSelector = ({ app }: RootState): Config => app.defaultConfig
 
 const onBoardingStateSelector = ({ app, sse }: RootState) =>
   onBoarding(app.auth, app.terms, currentIdentitySelector({ app, sse }))
@@ -43,6 +45,7 @@ export const selectors = {
   currentIdentitySelector,
   feesSelector,
   configSelector,
+  defaultConfigSelector,
   onBoardingStateSelector,
   chainSummarySelector,
   liveSessionsSelector,

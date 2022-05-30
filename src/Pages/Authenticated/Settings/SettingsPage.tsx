@@ -9,12 +9,12 @@ import { useSelector } from 'react-redux'
 
 import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
-import { configParser } from '../../../commons/config'
+import { configs } from '../../../commons/config'
 import FEATURES from '../../../commons/features'
 import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 import { selectors } from '../../../redux/selectors'
 import { Layout } from '../Layout'
-import { Advanced } from './Components/Advanced/Advanced'
+import { AdvancedSettings } from './Components/Advanced/AdvancedSettings'
 import IdentityInformation from './Components/IdentityInformation'
 
 import MMN from './Components/MMN'
@@ -23,7 +23,7 @@ import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
 import hooks from '../../../commons/hooks'
-import { CONFIG_EMPTY, HEALTHCHECK_EMPTY, MMN_KEY_RESPONSE_EMPTY } from '../../../constants/instances'
+import { HEALTHCHECK_EMPTY, MMN_KEY_RESPONSE_EMPTY } from '../../../constants/instances'
 
 const { api } = tequila
 
@@ -42,18 +42,13 @@ const Card = ({ title, children }: CardProps) => (
 const SettingsPage = () => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const config = useSelector(selectors.configSelector)
-  const mmnWebAddress = configParser.mmnWebAddress(config)
+  const mmnWebAddress = configs.mmnWebAddress(config)
 
-  const [data = [], loading] = hooks.useFetch(
-    () => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000), api.defaultConfig()]),
-    [identity.id],
-  )
+  const [data = [], loading] = hooks.useFetch(() => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000)]), [
+    identity.id,
+  ])
 
-  const [
-    { apiKey } = MMN_KEY_RESPONSE_EMPTY,
-    { buildInfo, version } = HEALTHCHECK_EMPTY,
-    defaultConfig = CONFIG_EMPTY,
-  ] = data
+  const [{ apiKey } = MMN_KEY_RESPONSE_EMPTY, { buildInfo, version } = HEALTHCHECK_EMPTY] = data
 
   return (
     <Layout
@@ -61,7 +56,7 @@ const SettingsPage = () => {
       logo={<Logo />}
       topRight={
         <div className={styles.topRight}>
-          {configParser.isFeatureEnabled(config, FEATURES.RESTART.name) && (
+          {configs.isFeatureEnabled(config, FEATURES.RESTART.name) && (
             <div className={styles.powerOff}>
               <PowerOffButton />
             </div>
@@ -91,8 +86,8 @@ const SettingsPage = () => {
             <Card title="Mystnodes.com integration">
               <MMN mmnUrl={mmnWebAddress} apiKey={apiKey} />
             </Card>
-            <Card title="Advanced Settings">
-              <Advanced config={config} defaultConfig={defaultConfig} onSave={tequila.setUserConfig} />
+            <Card title="Advanced Settings Refactor">
+              <AdvancedSettings />
             </Card>
           </div>
         </div>

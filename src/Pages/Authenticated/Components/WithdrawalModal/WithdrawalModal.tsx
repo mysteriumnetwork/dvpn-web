@@ -5,13 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Fees } from 'mysterium-vpn-js'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useImmer } from 'use-immer'
 import { tequila } from '../../../../api/wrapped-calls'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import mapping from '../../../../commons/mapping'
-import { currentCurrency } from '../../../../commons/money.utils'
+import { currentCurrency } from '../../../../commons/currency'
 import { myst } from '../../../../commons/mysts'
 import toasts from '../../../../commons/toasts'
 import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
@@ -66,13 +65,9 @@ const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props)
   const chainSummary = useSelector(selectors.chainSummarySelector)
   const identity = useSelector(selectors.currentIdentitySelector)
 
-  const [state, setState] = useImmer<State>(initialState)
+  const [state, setState] = useState<State>(initialState)
 
-  const setIsLoading = (b: boolean = true) => {
-    setState((d) => {
-      d.isLoading = b
-    })
-  }
+  const setIsLoading = (b: boolean = true) => setState((d) => ({ ...d, isLoading: b }))
 
   useEffect(() => {
     const init = async () => {
@@ -87,16 +82,17 @@ const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props)
 
       const { wei: balanceWei } = identity.balanceTokens
 
-      setState((d) => {
-        d.withdrawalAddress = address
-        d.chainOptions = chainOptions
-        d.withdrawalAmount = initialCeilingAmount(balanceWei)
-        d.balanceTotalWei = balanceWei
-        d.toChain = chainOptions.find((o) => o.value === currentChain)!
-        d.fees = fees
-        d.isLoading = false
-        d.hermesId = identity.hermesId
-      })
+      setState((d) => ({
+        ...d,
+        withdrawalAddress: address,
+        chainOptions: chainOptions,
+        withdrawalAmount: initialCeilingAmount(balanceWei),
+        balanceTotalWei: balanceWei,
+        toChain: chainOptions.find((o) => o.value === currentChain)!,
+        fees: fees,
+        isLoading: false,
+        hermesId: identity.hermesId,
+      }))
     }
     if (isOpen) {
       init()
@@ -118,11 +114,8 @@ const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props)
     myst.toBig(state.withdrawalAmount.wei).minus(state.fees.settlement).isLessThan(MINIMAL_WITHDRAWAL_AMOUNT_WEI)
   const isOverCeiling = (): boolean => myst.toBig(state.withdrawalAmount.wei).isGreaterThan(MAXIMUM_WITHDRAW_AMOUNT_WEI)
 
-  const onWithdrawalAmountChange = (ether: string) => {
-    setState((d) => {
-      d.withdrawalAmount = { myst: ether, wei: myst.toWeiString(ether) }
-    })
-  }
+  const onWithdrawalAmountChange = (ether: string) =>
+    setState((d) => ({ ...d, withdrawalAmount: { myst: ether, wei: myst.toWeiString(ether) } }))
 
   const validateForm = (): string | undefined => {
     const { withdrawalAddress } = state
@@ -151,11 +144,7 @@ const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props)
     const chainId = option.value as number
     const fees = await api.transactorFees(chainId)
 
-    setState((d) => {
-      d.toChain = option
-      d.fees = fees
-      d.isLoading = false
-    })
+    setState((d) => ({ ...d, toChain: option, fees: fees, isLoading: false }))
   }
 
   const onWithdraw = async () => {
@@ -221,11 +210,7 @@ const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props)
         <InputGroup label="Withdrawal Address">
           <TextField
             value={state.withdrawalAddress}
-            onChange={(value) => {
-              setState((d) => {
-                d.withdrawalAddress = value
-              })
-            }}
+            onChange={(value) => setState((d) => ({ ...d, withdrawalAddress: value }))}
           />
         </InputGroup>
         <InputGroup

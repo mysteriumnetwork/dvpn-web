@@ -9,9 +9,9 @@ import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../../api/wrapped-calls'
-import { configParser } from '../../../../../commons/config'
+import { configs } from '../../../../../commons/config'
 import { lockouts } from '../../../../../commons/lockout'
-import { Media } from '../../../../../commons/media.utils'
+import { Media } from '../../../../../commons/media'
 import { myst } from '../../../../../commons/mysts'
 import page from '../../../../../commons/page'
 import Button from '../../../../../Components/Buttons/Button'
@@ -34,7 +34,7 @@ export const EarningsCard = () => {
   const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
   const beneficiary = useSelector(selectors.beneficiarySelector)
   const isAutoWithdrawal = !beneficiary.isChannelAddress
-  const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.001) || !isAutoWithdrawal
+  const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.1) || !isAutoWithdrawal
 
   return (
     <>
@@ -71,9 +71,9 @@ interface SharedProps {
 
 const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
   const { earningsTokens, id } = useSelector(selectors.currentIdentitySelector)
-  const { settlementTokens } = useSelector(selectors.feesSelector)
+  const { current } = useSelector(selectors.feesSelector)
   const config = useSelector(selectors.configSelector)
-  const thresholdWei = toWeiBig(configParser.zeroStakeSettlementThreshold(config))
+  const thresholdWei = toWeiBig(configs.zeroStakeSettlementThreshold(config))
 
   const [beneficiaryTx, setBeneficiaryTx] = useState<BeneficiaryTxStatus | undefined>()
   const [isSettingsLoading, setIsSettingsLoading] = useState<boolean>(false)
@@ -99,9 +99,9 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
       } yet. Settlement is done either automatically when ${display(thresholdWei, {
         fractionDigits: 1,
       })} is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus current blockchain fees (${display(
-        settlementTokens.wei,
+        current.settlement.wei,
       )}).`,
-    [thresholdWei, settlementTokens.wei],
+    [thresholdWei, current.settlement.wei],
   )
 
   const progressPercent = toBig(earningsTokens.wei).times(100).div(thresholdWei).toNumber()

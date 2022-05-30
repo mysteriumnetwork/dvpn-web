@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { WIREGUARD } from '../../../../commons'
-import { configParser } from '../../../../commons/config'
+import { configs } from '../../../../commons/config'
 import identities from '../../../../commons/identities'
 import { myst } from '../../../../commons/mysts'
 import { callWithToast } from '../../../../commons/calls'
@@ -59,7 +59,7 @@ const Service = () => {
     setLoading(false)
   }
 
-  const accessPolicyEnabled = configParser.isAccessPolicyEnabled(config)
+  const accessPolicyEnabled = configs.isAccessPolicyEnabled(config)
 
   return (
     <div className="service-list">

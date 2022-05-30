@@ -4,55 +4,43 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Tokens, RegistrationPaymentResponse } from 'mysterium-vpn-js'
+import { RegistrationPaymentResponse, Tokens } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
-import storage from '../../../commons/localStorageWrapper'
-import { currentCurrency } from '../../../commons/money.utils'
+import { currentCurrency } from '../../../commons/currency'
 import { myst } from '../../../commons/mysts'
-import payments from '../../../commons/payments'
 import Button from '../../../Components/Buttons/Button'
 import { Payments } from '../../../Components/Payments/Payments'
 import { selectors } from '../../../redux/selectors'
 import { StepLayout } from '../Components/StepLayout'
+import { feez } from '../../../commons/fees'
+import { CollapseAlert } from '../../Authenticated/Components/WithdrawalModal/CollapseAlert'
+import BigNumber from 'bignumber.js'
 
 const { api } = tequila
 
-const FROZEN_FEE = 'FROZEN_FEE'
-const _60_MINUTES = 60 * 60 * 1000
+const FEE_SPIKE_MULTIPLIER = 1.5
 
-type FrozenFee = {
-  timestamp: number
-  amountEther: string
-}
-
-const isPaid = (balance: Tokens, registrationPayment: RegistrationPaymentResponse, frozenFee: FrozenFee): boolean =>
-  myst.toEtherBig(balance.wei).gte(frozenFee.amountEther) || registrationPayment.paid
-
-const isStale = (info?: FrozenFee): boolean => info === undefined || info.timestamp + _60_MINUTES < Date.now()
+const isPaid = (balance: Tokens, registrationPayment: RegistrationPaymentResponse, feeEther: string): boolean =>
+  myst.toEtherBig(balance.wei).gte(feeEther) || registrationPayment.paid
 
 const NetworkRegistration = ({ nextStep }: StepProps) => {
   const identity = useSelector(selectors.currentIdentitySelector)
   const fees = useSelector(selectors.feesSelector)
 
+  const {
+    current: { registration },
+  } = fees
+
+  const isEmptyFees = feez.isEmpty(fees)
+
+  const minimalAmountEther = useMemo(
+    () => myst.toBig(registration.ether).times(FEE_SPIKE_MULTIPLIER).dp(2, BigNumber.ROUND_UP),
+    [registration.ether],
+  )
+
   const [registrationPayment, setRegistrationPayment] = useState<RegistrationPaymentResponse>({ paid: false })
-
-  const frozenFee = useMemo(() => {
-    const stored = storage.get<FrozenFee>(FROZEN_FEE)
-    const feeEther = myst.toEtherBig(fees.registrationTokens.wei)
-
-    if (isStale(stored)) {
-      return storage.put<FrozenFee>(FROZEN_FEE, {
-        timestamp: Date.now(),
-        amountEther: feeEther.gt(payments.ACTUAL_REGISTRATION_FEE_THRESHOLD)
-          ? feeEther.times(1.5).toFixed(2)
-          : payments.MINIMAL_REGISTRATION_FEE_ETHER.toString(),
-      })
-    }
-
-    return stored!
-  }, [fees.registration, identity.id])
 
   useEffect(() => {
     const skipIfPaid = async () => {
@@ -60,8 +48,7 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
         api.registrationPayment(identity.id),
         api.identityBalanceRefresh(identity.id),
       ])
-
-      if (isPaid(identity.balanceTokens, registrationPayment, frozenFee)) {
+      if (!isEmptyFees && isPaid(identity.balanceTokens, registrationPayment, registration.ether)) {
         nextStep()
       }
     }
@@ -77,17 +64,20 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
   }, [])
 
   const isRegistrationPaymentReceived =
-    myst.toEtherBig(identity.balanceTokens.wei).gte(frozenFee.amountEther) || registrationPayment.paid
+    myst.toEtherBig(identity.balanceTokens.wei).gte(registration.ether) || registrationPayment.paid
 
   return (
     <StepLayout
       title="Network Registration"
       description={`To register your node on blockchain you can either transfer required amount of ${currentCurrency()} or pay 1 USD/EUR/GBP`}
-      controls={<>{isRegistrationPaymentReceived && <Button onClick={nextStep}>Next</Button>}</>}
+      controls={<>{isRegistrationPaymentReceived && !isEmptyFees && <Button onClick={nextStep}>Next</Button>}</>}
       controlsCentered
       fixed
     >
-      <Payments amountRequiredWei={myst.toWeiBig(frozenFee.amountEther)} isCompleted={isRegistrationPaymentReceived} />
+      <CollapseAlert severity="error" visible={isEmptyFees}>
+        Could not retrieve blockchain fees please refresh page and try again...
+      </CollapseAlert>
+      <Payments amountRequiredWei={myst.toWeiBig(minimalAmountEther)} isCompleted={isRegistrationPaymentReceived} />
     </StepLayout>
   )
 }

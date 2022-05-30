@@ -15,7 +15,7 @@ import {
   sessionDailyStatsToSessionsGraph,
 } from './chart.utils'
 import './Charts.scss'
-import { currentCurrency } from '../../../../commons/money.utils'
+import { currentCurrency } from '../../../../commons/currency'
 
 interface Props {
   statsDaily: {

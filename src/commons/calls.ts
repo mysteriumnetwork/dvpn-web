@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import toasts from './toasts'
-import errors from './errors'
+import errors, { parseToastError } from './errors'
 
 const { toastError, toastSuccess } = toasts
 
@@ -35,3 +35,19 @@ export const callWithToast = async <T>(fn: () => Promise<T>, msg?: Msg): Promise
     return Promise.reject(err)
   }
 }
+
+const tryTo = async <T>(fn: () => Promise<T>, msg?: Msg): Promise<T | undefined> => {
+  try {
+    const value = await fn()
+    msg?.success && toasts.toastSuccess(msg?.success)
+    return value
+  } catch (err: any) {
+    parseToastError(err)
+  }
+}
+
+const calls = {
+  tryTo,
+}
+
+export default calls
