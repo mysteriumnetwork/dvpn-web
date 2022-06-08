@@ -45,7 +45,7 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
   useEffect(() => {
     const skipIfPaid = async () => {
       const [registrationPayment] = await Promise.all([
-        api.registrationPayment(identity.id),
+        api.payment.registrationPayment(identity.id),
         api.identityBalanceRefresh(identity.id),
       ])
       if (!isEmptyFees && isPaid(identity.balanceTokens, registrationPayment, registration.ether)) {
@@ -58,7 +58,7 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       api.identityBalanceRefresh(identity.id)
-      api.registrationPayment(identity.id).then((r) => setRegistrationPayment(r))
+      api.payment.registrationPayment(identity.id).then((r) => setRegistrationPayment(r))
     }, 5 * 1000)
     return () => clearInterval(interval)
   }, [])
@@ -69,7 +69,7 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
   return (
     <StepLayout
       title="Network Registration"
-      description={`To register your node on blockchain you can either transfer required amount of ${currentCurrency()} or pay 1 USD/EUR/GBP`}
+      description={`To register your node on blockchain you can either transfer required amount of ${currentCurrency()} or pay 1 USD`}
       controls={<>{isRegistrationPaymentReceived && !isEmptyFees && <Button onClick={nextStep}>Next</Button>}</>}
       controlsCentered
       fixed
