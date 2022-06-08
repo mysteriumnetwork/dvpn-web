@@ -10,7 +10,7 @@ import React, { FormEvent, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { tequila } from '../../../api/wrapped-calls'
 import { configs } from '../../../commons/config'
-import { parseError } from '../../../commons/errors'
+import errors from '../../../commons/errors'
 import { validatePassword } from '../../../commons/passwords'
 import Button from '../../../Components/Buttons/Button'
 import { Checkbox } from '../../../Components/Checkbox/Checkbox'
@@ -105,7 +105,7 @@ const SetPassword = (_: StepProps): JSX.Element => {
     setState((d) => ({ ...d, loading: true, error: false }))
 
     if (state.useApiKey && !state.apiKey) {
-      setState((d) => ({ ...d, error: true, errorMessage: 'Please enter MMN ApiKey', loading: false }))
+      setState((d) => ({ ...d, error: true, errorMessage: 'Please enter mystnodes.com API key', loading: false }))
       return
     }
 
@@ -128,9 +128,14 @@ const SetPassword = (_: StepProps): JSX.Element => {
       })
 
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
-    } catch (err) {
-      const msg = parseError(err)
-      setState((d) => ({ ...d, error: true, errorMessage: msg }))
+    } catch (err: any) {
+      const apiError = errors.apiError(err)
+
+      setState((d) => ({
+        ...d,
+        error: true,
+        errorMessage: apiError.human(),
+      }))
     } finally {
       setState((d) => ({ ...d, loading: false }))
     }
