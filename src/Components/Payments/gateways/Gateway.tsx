@@ -6,17 +6,14 @@
  */
 import { CircularProgress } from '@material-ui/core'
 import classNames from 'classnames'
-import _ from 'lodash'
-import { Money, PaymentOrder } from 'mysterium-vpn-js'
+import { PaymentOrder } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
 import countries from '../../../commons/countries'
-import { myst } from '../../../commons/mysts'
 import errors from '../../../commons/errors'
 import { selectors } from '../../../redux/selectors'
 import Button from '../../Buttons/Button'
-import { RadioCard } from '../../RadioCard/RadioCard'
 import { Option, Select } from '../../Select/Select'
 import { validateAndReturnCheckoutUrl } from './fiat'
 import styles from './Gateway.module.scss'
@@ -28,10 +25,7 @@ const { api } = tequila
 
 const PROJECT_ID = 'mystnodes'
 
-const FIXED_FIAT_PRICE = myst.toBig(0.77)
-
 interface State {
-  fiatToMystEther: { [key: string]: string }
   currency: string
   taxCountry: Option
   isLoading: boolean
@@ -41,7 +35,6 @@ interface State {
 }
 
 const initialState: State = {
-  fiatToMystEther: {},
   currency: 'USD',
   taxCountry: { label: '', value: '' },
   isLoading: true,
@@ -50,12 +43,12 @@ const initialState: State = {
 }
 
 const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => {
-  const { currencies, name: gatewayName } = gateway
+  const { name: gatewayName } = gateway
 
   const identity = useSelector(selectors.currentIdentitySelector)
 
   const [state, setState] = useState<State>(initialState)
-  const { fiatToMystEther, currency, taxCountry, isLoading, isRedirected } = state
+  const { taxCountry, isLoading, isRedirected } = state
 
   const countryOptions = useMemo(
     () => Object.keys(countryNames).map((key) => ({ value: key.toUpperCase(), label: countryNames[key] })),
@@ -70,23 +63,11 @@ const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => 
         if (!taxCountry) {
           throw new Error('Current location is unavailable for payment')
         }
-        const rates = await Promise.all(
-          currencies.map((c) => api.exchangeRate(c).catch(() => ({ currency: c, amount: 0 } as Money))),
-        )
 
         setState((p) => ({
           ...p,
           taxCountry,
           order: orders.find((o) => o.status === 'new' && o.gatewayName === gatewayName),
-          fiatToMystEther: _.chain(
-            rates.map((r) => ({
-              currency: r.currency,
-              mystEther: FIXED_FIAT_PRICE.div(r.amount).toFixed(2),
-            })),
-          )
-            .keyBy('currency')
-            .mapValues('mystEther')
-            .value(),
         }))
       } catch (e: any) {
         parseToastError(e)
@@ -97,7 +78,6 @@ const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => 
   }, [gatewayName])
 
   const markRedirected = () => setState((p) => ({ ...p, isRedirected: true }))
-  const handleCurrencyChange = (currency: string) => setState((p) => ({ ...p, currency }))
   const handleTaxCountryChange = (taxCountry: Option) => setState((p) => ({ ...p, taxCountry }))
 
   const handlePayNow = async () => {
@@ -124,7 +104,7 @@ const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => 
       payCurrency: state.currency,
       country,
       projectId: PROJECT_ID,
-      mystAmount: `${fiatToMystEther[currency]}`,
+      amountUsd: '1',
       gatewayCallerData: {},
     })
     setState((p) => ({ ...p, order: order }))
@@ -154,16 +134,8 @@ const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => 
 
   return (
     <div className={styles.content}>
-      <p>
-        You will be charged 1 USD/EUR/GBP plus applicable VAT. Please select your currency and country of residence
-        below to proceed.
-      </p>
+      <p>You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed.</p>
       {note && <p>{note}</p>}
-      <RadioCard
-        items={gateway.currencies.map((c) => ({ value: c, label: c }))}
-        value={currency}
-        onChange={handleCurrencyChange}
-      />
       <Select options={countryOptions} value={taxCountry} onChange={(o) => handleTaxCountryChange(o as Option)} />
       {showPayNow() && (
         <div className={styles.payNow}>

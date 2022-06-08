@@ -31,13 +31,13 @@ const SUPPORTED_GATEWAYS: SupportedGateways = Object.freeze({
     component: 'Direct',
   },
   paypal: {
-    summary: `Pay with PayPal (1 USD/EUR/GBP)`,
+    summary: `Pay with PayPal (1 USD)`,
     component: 'Gateway',
     note:
       'Note: After clicking PAY NOW below, new tab/window will be opened and you will be redirected to Paypal to complete transaction.',
   },
   stripe: {
-    summary: `Pay with Credit or Debit card (1 USD/EUR/GBP)`,
+    summary: `Pay with Credit or Debit card (1 USD)`,
     component: 'Gateway',
     note:
       'Note: After clicking PAY NOW below, new tab/window will be opened and you will be redirected to payment processing partner to complete transaction.',
