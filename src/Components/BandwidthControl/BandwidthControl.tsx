@@ -6,7 +6,7 @@
  */
 import { useState } from 'react'
 import MystSlider from '../MystSlider/MystSlider'
-import styles from './BandwidthSettings.module.scss'
+import styles from './BandwidthControl.module.scss'
 
 interface Props {
   bandwidthMbps: number

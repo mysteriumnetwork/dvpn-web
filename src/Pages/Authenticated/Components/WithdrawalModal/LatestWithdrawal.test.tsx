@@ -30,22 +30,6 @@ test('link', async () => {
   expect(notRendered).toBeNull()
 })
 
-test('no link', async () => {
-  // given
-  setupServer(
-    rest.get('/tequilapi/transactor/settle/history', (req, res, ctx) => {
-      return res(ctx.json(tequilaFixtures.pagedResponse({ ...tequilaFixtures.defaultTx, block_explorer_url: '' })))
-    }),
-  ).listen()
-
-  // expect
-  render(<LatestWithdrawal />)
-  const notFound = await screen.queryByTestId('LatestWithdrawal.txLink')
-  expect(notFound).toBeNull()
-  const plainText = await screen.findByTestId('LatestWithdrawal.txPlain')
-  expect(plainText).toHaveTextContent('0x0423b4876780466a4d2e3825037a83a8ceafe549077d6fb161f3a57c10bb15bf')
-})
-
 test('no tx', async () => {
   // given
   setupServer(
