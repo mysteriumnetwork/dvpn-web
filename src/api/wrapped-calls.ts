@@ -15,10 +15,6 @@ import { http } from './axios'
 
 const tequilaClient: TequilapiClient = new TequilapiClient(new AxiosAdapter(http, 20_000))
 
-const login = async (username: string, password: string): Promise<void> => {
-  return await tequilaClient.authLogin({ username, password }).then(() => Promise.resolve())
-}
-
 const loginWithDefaultCredentials = async (): Promise<boolean> => {
   try {
     await tequilaClient.authLogin({ username: DEFAULT_USERNAME, password: DEFAULT_PASSWORD })
@@ -113,7 +109,6 @@ export const setUserConfig = async (data: any): Promise<Config> => {
 export const tequila = {
   api: tequilaClient,
   http: http,
-  login,
   loginWithDefaultCredentials,
   isUserAuthenticated,
   acceptWithTermsAndConditions,

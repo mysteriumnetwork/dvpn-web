@@ -18,6 +18,8 @@ import { updateAuthenticatedStore } from '../../redux/app.slice'
 import { store } from '../../redux/store'
 import './LoginPage.scss'
 
+const { api } = tequila
+
 interface Props {
   onSuccessLogin: () => void
 }
@@ -44,7 +46,10 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
     setState((d) => ({ ...d, error: false, isLoading: true }))
 
     try {
-      await tequila.login(DEFAULT_USERNAME, state.password)
+      await api.authLogin({
+        username: DEFAULT_USERNAME,
+        password: state.password,
+      })
       await onSuccessLogin()
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
     } catch (_) {
