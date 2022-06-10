@@ -25,6 +25,6 @@ $sides: (top, bottom, left, right); // Leave this variable alone
     }
   }
   .w-#{$space} {
-    width: #{$space}'%' !important;
+    width: #{$space}% !important;
   }
 }
