@@ -7,18 +7,17 @@
 
 import { useCallback, useEffect } from 'react'
 import { ADMIN } from '../../../../constants/routes'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   children: JSX.Element
 }
 
 export const Hotkeys = ({ children }: Props) => {
-  const { pathname } = useLocation()
   const navigate = useNavigate()
 
   const handleKeyPress = useCallback((event: any) => {
-    if (event.key === 'F10' && pathname !== ADMIN) {
+    if (event.key === 'F10') {
       navigate(ADMIN)
     }
   }, [])

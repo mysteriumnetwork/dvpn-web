@@ -1,0 +1,58 @@
+@import '../../../../assets/styles/base/variables';
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+
+.row {
+  &:hover {
+    background-color: #f1e1ff
+  }
+  border: 1px solid $inputs-labels-text-color;
+  background-color: #ffffff;
+  border-radius: 0.4rem;
+  padding-top: 0.5rem;
+
+  color: $light-key-color;
+
+  display: grid;
+  grid-template-areas:
+  "time tag code"
+  "m   m    m";
+
+  .tag {
+    grid-area: tag;
+    font-size: $smaller-size;
+  }
+
+  .code {
+    grid-area: code;
+    font-size: $smaller-size;
+  }
+
+  .time {
+    padding-left: 0.5rem;
+    grid-area: time;
+    font-size: $smaller-size;
+  }
+
+  .message {
+    grid-area: m;
+
+    font-size: $normal-size;
+
+    width: 60%;
+
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    color: $main-text-color;
+  }
+}

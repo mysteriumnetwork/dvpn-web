@@ -6,16 +6,39 @@
  */
 import { TequilapiClientFactory } from 'mysterium-vpn-js'
 import qs from 'qs'
+import { AxiosInstance } from 'axios'
 
-export const http = new TequilapiClientFactory(
-  `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`,
-  20_000,
-).axiosInstance()
+import errors from '../commons/errors'
 
-http.interceptors.request.use((config) => {
-  config.paramsSerializer = (params) => {
-    return qs.stringify(params, { arrayFormat: 'repeat' }) // arrays will be serialized as: ?types=1&types=2...
-  }
+const buildAxios = (): AxiosInstance => {
+  const instance = new TequilapiClientFactory(
+    `${window.location.protocol}//${window.location.hostname}:${window.location.port}/tequilapi`,
+    20_000,
+  ).axiosInstance()
 
-  return config
-})
+  instance.interceptors.request.use(
+    (config) => {
+      config.paramsSerializer = (params) => {
+        return qs.stringify(params, { arrayFormat: 'repeat' }) // arrays will be serialized as: ?types=1&types=2...
+      }
+
+      return config
+    },
+    (error: any) => {
+      errors.logError('request', error)
+      return Promise.reject(error)
+    },
+  )
+
+  instance.interceptors.response.use(
+    (response) => response,
+    (error: any) => {
+      errors.logError('response', error)
+      return Promise.reject(error)
+    },
+  )
+
+  return instance
+}
+
+export const http = buildAxios()
