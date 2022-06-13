@@ -23,10 +23,10 @@ import { StepLayout } from '../Components/StepLayout'
 import styles from './Steps.module.scss'
 
 import { store } from '../../../redux/store'
-import { useSelector } from 'react-redux'
 import { selectors } from '../../../redux/selectors'
 import classNames from 'classnames'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
+import { useAppSelector } from '../../../commons/hooks'
 
 const { api } = tequila
 
@@ -48,10 +48,10 @@ const useQuery = () => {
   return React.useMemo(() => new URLSearchParams(search), [search])
 }
 
-const SetPassword = (_: StepProps): JSX.Element => {
+const SetPassword = (): JSX.Element => {
   const query = useQuery()
 
-  const config = useSelector(selectors.configSelector)
+  const config = useAppSelector(selectors.configSelector)
 
   const [state, setState] = useState<State>({
     passwordRepeat: '',

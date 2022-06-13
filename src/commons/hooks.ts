@@ -6,6 +6,8 @@
  */
 import { useEffect, useState } from 'react'
 import { parseToastError } from './errors'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../redux/store'
 
 export const useFetch = <T>(
   fetch: () => Promise<T>,
@@ -35,3 +37,7 @@ export const useFetch = <T>(
 
   return [data, loading, error, refetch]
 }
+
+export const useAppDispatch = () => useDispatch<AppDispatch>()
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

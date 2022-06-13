@@ -6,7 +6,6 @@
  */
 import { RegistrationPaymentResponse, Tokens } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
 import { currentCurrency } from '../../../commons/currency'
 import { myst } from '../../../commons/mysts'
@@ -17,6 +16,7 @@ import { StepLayout } from '../Components/StepLayout'
 import { feez } from '../../../commons/fees'
 import { CollapseAlert } from '../../Authenticated/Components/WithdrawalModal/CollapseAlert'
 import BigNumber from 'bignumber.js'
+import { useAppSelector } from '../../../commons/hooks'
 
 const { api } = tequila
 
@@ -26,8 +26,8 @@ const isPaid = (balance: Tokens, registrationPayment: RegistrationPaymentRespons
   myst.toEtherBig(balance.wei).gte(feeEther) || registrationPayment.paid
 
 const NetworkRegistration = ({ nextStep }: StepProps) => {
-  const identity = useSelector(selectors.currentIdentitySelector)
-  const fees = useSelector(selectors.feesSelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const fees = useAppSelector(selectors.feesSelector)
 
   const {
     current: { registration },

@@ -6,7 +6,6 @@
  */
 import { CurrentPricesResponse, ServiceStatus } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { WIREGUARD } from '../../../../commons'
 import { configs } from '../../../../commons/config'
@@ -19,15 +18,16 @@ import { selectors } from '../../../../redux/selectors'
 import ServiceDetail from './ServiceDetail'
 import ServiceHeader from './ServiceHeader'
 import './Services.scss'
+import { useAppSelector } from '../../../../commons/hooks'
 
 const { isRegistered } = identities
 const { api } = tequila
 const { RUNNING } = ServiceStatus
 
 const Service = () => {
-  const identity = useSelector(selectors.currentIdentitySelector)
-  const config = useSelector(selectors.configSelector)
-  const servicesInfos = useSelector(selectors.serviceInfoSelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const config = useAppSelector(selectors.configSelector)
+  const servicesInfos = useAppSelector(selectors.serviceInfoSelector)
 
   const [loading, setLoading] = useState<boolean>(false)
   const [prices, setPrices] = useState<CurrentPricesResponse>(CURRENT_PRICES_EMPTY)

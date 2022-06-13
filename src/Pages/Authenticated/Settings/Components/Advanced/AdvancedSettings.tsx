@@ -9,13 +9,13 @@ import { InputGroup } from '../../../../../Components/InputGroups/InputGroup'
 import { TextField } from '../../../../../Components/TextField/TextField'
 import styles from './AdvancedSettings.module.scss'
 import Button from '../../../../../Components/Buttons/Button'
-import { useSelector } from 'react-redux'
 import { selectors } from '../../../../../redux/selectors'
 import { configs } from '../../../../../commons/config'
 import { tequila } from '../../../../../api/wrapped-calls'
 import { Config } from 'mysterium-vpn-js'
 import calls from '../../../../../commons/calls'
 import { NATTraversalOrder, TraversalProp } from './NATTraversalOrder'
+import { useAppSelector } from '../../../../../commons/hooks'
 
 const { setUserConfig } = tequila
 
@@ -41,8 +41,8 @@ const rpcl2UrlsWithoutDefaults = (config: Config, defaultConfig: Config): string
 }
 
 export const AdvancedSettings = () => {
-  const config = useSelector(selectors.configSelector)
-  const defaultConfig = useSelector(selectors.defaultConfigSelector)
+  const config = useAppSelector(selectors.configSelector)
+  const defaultConfig = useAppSelector(selectors.defaultConfigSelector)
 
   const [form, setForm] = useState<Form>(initialForm)
   const [isLoading, setLoading] = useState<boolean>(true)

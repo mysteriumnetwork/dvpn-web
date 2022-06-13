@@ -6,7 +6,6 @@
  */
 import { Session, SessionDirection } from 'mysterium-vpn-js'
 import React, { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
 
 import { tequila } from '../../../api/wrapped-calls'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
@@ -21,7 +20,7 @@ import { MobileRow } from '../../../Components/Table/MobileRow'
 import { Row } from 'react-table'
 import { myst } from '../../../commons/mysts'
 import { selectors } from '../../../redux/selectors'
-import { useFetch } from '../../../commons/hooks'
+import { useAppSelector, useFetch } from '../../../commons/hooks'
 import { SESSIONS_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 
 const { format } = bytes
@@ -60,9 +59,9 @@ const SessionsPage = () => {
     pageSize: 10,
   })
 
-  const { id } = useSelector(selectors.currentIdentitySelector)
-  const liveSessions = useSelector(selectors.liveSessionsSelector)
-  const liveSessionStats = useSelector(selectors.liveSessionStatsSelector)
+  const { id } = useAppSelector(selectors.currentIdentitySelector)
+  const liveSessions = useAppSelector(selectors.liveSessionsSelector)
+  const liveSessionStats = useAppSelector(selectors.liveSessionStatsSelector)
 
   const [data = SESSIONS_LIST_RESPONSE_EMPTY, loading] = useFetch(
     () =>

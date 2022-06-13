@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { Suspense, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
 import sideImage from '../../assets/images/onboarding/SideImage.png'
 import { Onboarding } from '../../redux/app.slice'
 import { selectors } from '../../redux/selectors'
 import styles from './Onboarding.module.scss'
+import { useAppSelector } from '../../commons/hooks'
 
 interface Step {
   component: string
@@ -39,7 +39,7 @@ const steps: Step[] = [
 ]
 
 const OnBoardingPage = () => {
-  const onBoarding = useSelector(selectors.onBoardingStateSelector)
+  const onBoarding = useAppSelector(selectors.onBoardingStateSelector)
 
   const [step, setStep] = useState<number>(0)
   const Step = useMemo(() => React.lazy(() => import(`./steps/${steps[step].component}`)), [step])

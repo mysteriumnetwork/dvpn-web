@@ -6,7 +6,6 @@
  */
 import { AppState, FeesResponse } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { tequila } from '../api/wrapped-calls'
 import errors from '../commons/errors'
@@ -37,7 +36,6 @@ import {
 } from '../redux/app.slice'
 import { selectors } from '../redux/selectors'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
-import { RootState } from '../redux/store'
 import ConnectToSSE from '../sse/server-sent-events'
 
 import './App.scss'
@@ -53,6 +51,7 @@ import { AdminPage } from './Authenticated/Admin/AdminPage'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
 import SessionSidebarPage from './Authenticated/SessionSidebar/SessionSidebarPage'
 import identities from '../commons/identities'
+import { useAppDispatch, useAppSelector } from '../commons/hooks'
 
 const { api } = tequila
 const { parseToastError } = errors
@@ -60,7 +59,7 @@ const SECOND = 1000
 
 const AppRouter = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const actions = {
     fetchIdentityAsync: async () => fetchIdentityAsync(),
     fetchConfigAsync: async () => fetchConfigAsync(),
@@ -73,10 +72,10 @@ const AppRouter = () => {
     updateFeesStore: (fees: FeesResponse) => dispatch(updateFeesStore(fees)),
   }
 
-  const loading = useSelector<RootState, boolean>(({ app }) => app.loading)
-  const loggedIn = useSelector<RootState, boolean>(({ app }) => isLoggedIn(app.auth))
-  const identity = useSelector(selectors.currentIdentitySelector)
-  const onBoarding = useSelector(selectors.onBoardingStateSelector)
+  const loading = useAppSelector(({ app }) => app.loading)
+  const loggedIn = useAppSelector(({ app }) => isLoggedIn(app.auth))
+  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const onBoarding = useAppSelector(selectors.onBoardingStateSelector)
 
   const authenticatedActions = async (defaultCredentials: boolean) => {
     await actions.updateAuthenticatedStore({

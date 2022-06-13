@@ -7,7 +7,6 @@
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
 import { parseErrorMessage } from '../../../commons/errors'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
@@ -20,6 +19,7 @@ import { TextField } from '../../../Components/TextField/TextField'
 import { DOCS_METAMASK } from '../../../constants/urls'
 import { selectors } from '../../../redux/selectors'
 import { StepLayout } from '../Components/StepLayout'
+import { useAppSelector } from '../../../commons/hooks'
 
 const { toastError } = toasts
 const { isRegistrationError, isUnregistered } = identities
@@ -57,7 +57,7 @@ export type RegistrationInfo = {
 }
 
 const Registration = ({ nextStep }: StepProps) => {
-  const identity = useSelector(selectors.currentIdentitySelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
   const [state, setState] = useState<State>({
     isLoading: true,
     withdrawalAddress: '',

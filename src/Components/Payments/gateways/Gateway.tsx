@@ -8,7 +8,6 @@ import { CircularProgress } from '@material-ui/core'
 import classNames from 'classnames'
 import { PaymentOrder } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
 import countries from '../../../commons/countries'
 import errors from '../../../commons/errors'
@@ -18,6 +17,7 @@ import { Option, Select } from '../../Select/Select'
 import { validateAndReturnCheckoutUrl } from './fiat'
 import styles from './Gateway.module.scss'
 import { GatewayProps } from './types'
+import { useAppSelector } from '../../../commons/hooks'
 
 const { parseToastError } = errors
 const { countryNames } = countries
@@ -45,7 +45,7 @@ const initialState: State = {
 const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => {
   const { name: gatewayName } = gateway
 
-  const identity = useSelector(selectors.currentIdentitySelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
 
   const [state, setState] = useState<State>(initialState)
   const { taxCountry, isLoading, isRedirected } = state

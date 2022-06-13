@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { configs } from '../../../../commons/config'
 import { parseToastError } from '../../../../commons/errors'
@@ -15,12 +14,13 @@ import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
 import MystSlider from '../../../../Components/MystSlider/MystSlider'
 import { selectors } from '../../../../redux/selectors'
 import styles from './SettlementSettings.module.scss'
+import { useAppSelector } from '../../../../commons/hooks'
 
 const { toastSuccess } = toasts
 const { setUserConfig } = tequila
 
 export const SettlementSettings = () => {
-  const config = useSelector(selectors.configSelector)
+  const config = useAppSelector(selectors.configSelector)
   const configThreshold = configs.zeroStakeSettlementThreshold(config)
 
   const [threshold, setThreshold] = useState<number>(configThreshold)

@@ -9,7 +9,6 @@ import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
 import classNames from 'classnames'
 import React from 'react'
 import { QRCode } from 'react-qr-svg'
-import { useSelector } from 'react-redux'
 import { currentCurrency } from '../../../commons/currency'
 import { myst } from '../../../commons/mysts'
 import payments from '../../../commons/payments'
@@ -17,9 +16,10 @@ import { selectors } from '../../../redux/selectors'
 import styles from './Direct.module.scss'
 import { HowToGetMyst } from './howto'
 import { GatewayProps } from './types'
+import { useAppSelector } from '../../../commons/hooks'
 
 const Direct = ({ payments: { amountRequiredWei } }: GatewayProps) => {
-  const { channelAddress, balanceTokens } = useSelector(selectors.currentIdentitySelector)
+  const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
   const isRegistrationFeeReceived = myst
     .toWeiBig(balanceTokens.wei)
     .gte(amountRequiredWei || payments.MINIMAL_REGISTRATION_FEE_ETHER)

@@ -6,17 +6,17 @@
  */
 import CheckIcon from '@material-ui/icons/Check'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { tequila } from '../../../../api/wrapped-calls'
 import { configs } from '../../../../commons/config'
 import FEATURES from '../../../../commons/features'
 import Button from '../../../../Components/Buttons/Button'
 import { selectors } from '../../../../redux/selectors'
 import styles from './FeatureToggle.module.scss'
+import { useAppSelector } from '../../../../commons/hooks'
 
 export const FeatureToggle = () => {
   const { setFeatures } = tequila
-  const config = useSelector(selectors.configSelector)
+  const config = useAppSelector(selectors.configSelector)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const toggle = async (name: string) => {
