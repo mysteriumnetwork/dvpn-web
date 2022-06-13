@@ -23,10 +23,9 @@ import styles from './DashboardPage.module.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Service from './Services/Service'
-import hooks from '../../../commons/hooks'
+import { useFetch } from '../../../commons/hooks'
 import { SESSION_STATS_EMPTY } from '../../../constants/instances'
 
-const { useFetch } = hooks
 const { api } = tequila
 
 const DashboardPage = () => {

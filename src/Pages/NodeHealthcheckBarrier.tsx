@@ -5,11 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { tequila } from '../api/wrapped-calls'
-import hooks from '../commons/hooks'
+import { useFetch } from '../commons/hooks'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 import styles from './NodeHealthcheckBarrier.module.scss'
 
-const { useFetch } = hooks
 const { api } = tequila
 
 interface Props {

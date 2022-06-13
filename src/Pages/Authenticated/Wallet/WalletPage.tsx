@@ -22,11 +22,10 @@ import { Cards } from '../Components/Card/PreparedCards'
 import { Layout } from '../Layout'
 import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
-import hooks from '../../../commons/hooks'
+import { useFetch } from '../../../commons/hooks'
 import { SETTLEMENT_LIST_REPONSE_EMPTY } from '../../../constants/instances'
 
 const { api } = tequila
-const { useFetch } = hooks
 const { date2human } = dates
 
 interface State {

@@ -22,7 +22,7 @@ import PasswordChange from './Components/PasswordChange'
 import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
-import hooks from '../../../commons/hooks'
+import { useFetch } from '../../../commons/hooks'
 import { HEALTHCHECK_EMPTY, MMN_KEY_RESPONSE_EMPTY } from '../../../constants/instances'
 
 const { api } = tequila
@@ -44,9 +44,7 @@ const SettingsPage = () => {
   const config = useSelector(selectors.configSelector)
   const mmnWebAddress = configs.mmnWebAddress(config)
 
-  const [data = [], loading] = hooks.useFetch(() => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000)]), [
-    identity.id,
-  ])
+  const [data = [], loading] = useFetch(() => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000)]), [identity.id])
 
   const [{ apiKey } = MMN_KEY_RESPONSE_EMPTY, { buildInfo, version } = HEALTHCHECK_EMPTY] = data
 

@@ -17,10 +17,9 @@ import { RootState } from '../../../../redux/store'
 import Bubble from './Bubble'
 import { natType2Human, natTypeStatusBubble, nodeStatusBubble, statusText } from './nat-status.utils'
 import './NodeStatus.scss'
-import hooks from '../../../../commons/hooks'
+import { useFetch } from '../../../../commons/hooks'
 import { NAT_TYPE_RESPONSE_EMPTY, NODE_MONITORING_STATUS_RESPONSE_EMPTY } from '../../../../constants/instances'
 
-const { useFetch } = hooks
 const { api } = tequila
 
 const NodeStatus = () => {

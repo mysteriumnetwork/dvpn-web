@@ -7,7 +7,7 @@
 import { useEffect, useState } from 'react'
 import { parseToastError } from './errors'
 
-const useFetch = <T>(
+export const useFetch = <T>(
   fetch: () => Promise<T>,
   deps: ReadonlyArray<unknown> = [],
 ): [T | undefined, boolean, any, () => void] => {
@@ -35,9 +35,3 @@ const useFetch = <T>(
 
   return [data, loading, error, refetch]
 }
-
-const hooks = {
-  useFetch,
-}
-
-export default hooks
