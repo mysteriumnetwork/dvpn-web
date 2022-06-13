@@ -7,6 +7,9 @@
 import { APIError } from 'mysterium-vpn-js'
 import toasts from './toasts'
 import storage from './localStorageWrapper'
+import { store } from '../redux/store'
+import FEATURES from './features'
+import { configs } from './config'
 
 export const UNKNOWN_API_ERROR = 'Unknown API Error'
 
@@ -80,6 +83,12 @@ export interface ErrorLog {
 const errorQueue: { tag: string; error: any }[] = []
 
 const logError = (tag: string, error: any) => {
+  const config = store.getState().app.config
+  const isEnabled = configs.isFeatureEnabled(config, FEATURES.ERROR_LOGGING.name)
+
+  if (!isEnabled) {
+    return
+  }
   errorQueue.push({ tag, error })
 }
 

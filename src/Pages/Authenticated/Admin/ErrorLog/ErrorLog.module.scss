@@ -13,6 +13,7 @@
 
 
 .row {
+  cursor: pointer;
   &:hover {
     background-color: #f1e1ff
   }
@@ -26,7 +27,7 @@
   display: grid;
   grid-template-areas:
   "time tag code"
-  "m   m    m";
+  "m    m    m";
 
   .tag {
     grid-area: tag;
