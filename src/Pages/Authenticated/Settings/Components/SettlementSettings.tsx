@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useEffect, useState } from 'react'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import { configs } from '../../../../commons/config'
 import { parseToastError } from '../../../../commons/errors'
 import toasts from '../../../../commons/toasts'

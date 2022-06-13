@@ -7,7 +7,7 @@
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 import { parseErrorMessage } from '../../../commons/errors'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import identities from '../../../commons/identities'

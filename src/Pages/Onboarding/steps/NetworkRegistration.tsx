@@ -6,7 +6,7 @@
  */
 import { RegistrationPaymentResponse, Tokens } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 import { currentCurrency } from '../../../commons/currency'
 import { myst } from '../../../commons/mysts'
 import Button from '../../../Components/Buttons/Button'

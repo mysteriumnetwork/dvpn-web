@@ -6,7 +6,7 @@
  */
 import { CurrentPricesResponse, ServiceStatus } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import { WIREGUARD } from '../../../../commons'
 import { configs } from '../../../../commons/config'
 import identities from '../../../../commons/identities'

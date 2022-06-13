@@ -8,7 +8,7 @@
 import { IconButton } from '@material-ui/core'
 import Icon from '@material-ui/icons/PowerSettingsNewOutlined'
 import { useEffect, useState } from 'react'
-import { tequila } from '../../api/wrapped-calls'
+import { tequila } from '../../api/tequila'
 import page from '../../commons/page'
 import errors from '../../commons/errors'
 import ConfirmationDialog from '../ConfirmationDialogue/ConfirmationDialog'

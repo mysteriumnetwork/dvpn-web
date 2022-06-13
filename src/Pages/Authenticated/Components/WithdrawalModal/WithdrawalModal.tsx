@@ -6,7 +6,7 @@
  */
 import { Fees } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import mapping from '../../../../commons/mapping'
 import { currentCurrency } from '../../../../commons/currency'

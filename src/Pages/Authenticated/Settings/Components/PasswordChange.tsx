@@ -6,7 +6,7 @@
  */
 import { APIError } from 'mysterium-vpn-js'
 
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import { validatePassword } from '../../../../commons/passwords'
 import toasts from '../../../../commons/toasts'
 import Button from '../../../../Components/Buttons/Button'

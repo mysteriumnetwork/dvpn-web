@@ -8,7 +8,7 @@
 import { NodeMonitoringStatusResponse } from 'mysterium-vpn-js'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import { NATType } from '../../../../constants/nat'
 import { DOCS, DOCS_NAT_FIX } from '../../../../constants/urls'

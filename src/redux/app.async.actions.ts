@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { tequila } from '../api/wrapped-calls'
+import { tequila } from '../api/tequila'
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
 import {

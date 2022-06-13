@@ -7,7 +7,7 @@
 import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { FormEvent, useState } from 'react'
-import { tequila } from '../../api/wrapped-calls'
+import { tequila } from '../../api/tequila'
 import SideImage from '../../assets/images/onboarding/SideImage.png'
 import Button from '../../Components/Buttons/Button'
 import { TextField } from '../../Components/TextField/TextField'

@@ -7,7 +7,7 @@
 
 import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
-import { tequila } from '../../../../../api/wrapped-calls'
+import { tequila } from '../../../../../api/tequila'
 import { configs } from '../../../../../commons/config'
 import { lockouts } from '../../../../../commons/lockout'
 import { Media } from '../../../../../commons/media'

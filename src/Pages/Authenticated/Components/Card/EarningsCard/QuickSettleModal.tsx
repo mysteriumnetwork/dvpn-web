@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useMemo, useState } from 'react'
-import { tequila } from '../../../../../api/wrapped-calls'
+import { tequila } from '../../../../../api/tequila'
 import { parseToastError } from '../../../../../commons/errors'
 import { feez } from '../../../../../commons/fees'
 import identities from '../../../../../commons/identities'

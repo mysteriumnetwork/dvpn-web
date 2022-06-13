@@ -6,7 +6,7 @@
  */
 import React from 'react'
 
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import { configs } from '../../../commons/config'
 import FEATURES from '../../../commons/features'

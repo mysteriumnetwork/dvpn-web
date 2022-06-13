@@ -10,7 +10,7 @@ import React from 'react'
 import ReactHtmlParser from 'react-html-parser'
 import showdown from 'showdown'
 
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 import Button from '../../../Components/Buttons/Button'
 import { StepLayout } from '../Components/StepLayout'
 import styles from './Steps.module.scss'

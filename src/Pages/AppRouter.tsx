@@ -7,7 +7,7 @@
 import { AppState, FeesResponse } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
-import { tequila } from '../api/wrapped-calls'
+import { tequila } from '../api/tequila'
 import errors from '../commons/errors'
 import { localStorageKeys } from '../constants/local_storage_keys'
 import {

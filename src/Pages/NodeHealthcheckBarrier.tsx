@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { tequila } from '../api/wrapped-calls'
+import { tequila } from '../api/tequila'
 import { useFetch } from '../commons/hooks'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 import styles from './NodeHealthcheckBarrier.module.scss'

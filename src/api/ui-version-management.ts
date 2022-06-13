@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { tequila } from './wrapped-calls'
+import { tequila } from './tequila'
 
 const { http } = tequila
 

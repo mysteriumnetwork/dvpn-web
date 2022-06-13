@@ -6,7 +6,7 @@
  */
 import { ServiceInfo } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { configs } from '../../../../commons/config'
 import errors from '../../../../commons/errors'

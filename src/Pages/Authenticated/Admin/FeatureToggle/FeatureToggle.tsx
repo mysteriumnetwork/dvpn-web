@@ -6,7 +6,7 @@
  */
 import CheckIcon from '@material-ui/icons/Check'
 import { useState } from 'react'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import { configs } from '../../../../commons/config'
 import FEATURES from '../../../../commons/features'
 import Button from '../../../../Components/Buttons/Button'

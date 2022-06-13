@@ -7,7 +7,7 @@
 import { Session, SessionDirection } from 'mysterium-vpn-js'
 import React, { useMemo, useState } from 'react'
 
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/sessions/logo.svg'
 import countries from '../../../commons/countries'
 import dates from '../../../commons/dates'
