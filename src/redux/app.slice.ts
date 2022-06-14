@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
+import termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { createSlice } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import { ChainSummary, FeesResponse, Identity, IdentityBeneficiaryResponse, IdentityRef } from 'mysterium-vpn-js'

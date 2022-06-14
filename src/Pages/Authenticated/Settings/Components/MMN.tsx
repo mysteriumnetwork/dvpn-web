@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { tequila } from '../../../../api/wrapped-calls'
-import { parseError } from '../../../../commons/errors'
+import { parseErrorMessage } from '../../../../commons/errors'
 import toasts from '../../../../commons/toasts'
 
 import Button from '../../../../Components/Buttons/Button'
@@ -51,11 +51,16 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
       .setMMNApiKey(state.apiKey)
       .then(() => {
         setState((cs) => ({ ...cs, error: false, errorMessage: '', loading: false }))
-        toastSuccess('MMN API key updated.')
+        toastSuccess('mystnodes.com API key updated.')
       })
       .then(() => tequila.refreshStoreConfig())
       .catch((error) =>
-        setState((d) => ({ ...d, error: true, errorMessage: parseError(error, 'Validation Error'), loading: false })),
+        setState((d) => ({
+          ...d,
+          error: true,
+          errorMessage: parseErrorMessage(error, 'Validation Error'),
+          loading: false,
+        })),
       )
   }
 

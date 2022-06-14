@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import * as termsPackageJson from '@mysteriumnetwork/terms/package.json'
+import termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { AxiosAdapter, TequilapiClient } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
@@ -14,10 +14,6 @@ import { store } from '../redux/store'
 import { http } from './axios'
 
 const tequilaClient: TequilapiClient = new TequilapiClient(new AxiosAdapter(http, 20_000))
-
-const login = async (username: string, password: string): Promise<void> => {
-  return await tequilaClient.authLogin({ username, password }).then(() => Promise.resolve())
-}
 
 const loginWithDefaultCredentials = async (): Promise<boolean> => {
   try {
@@ -113,7 +109,6 @@ export const setUserConfig = async (data: any): Promise<Config> => {
 export const tequila = {
   api: tequilaClient,
   http: http,
-  login,
   loginWithDefaultCredentials,
   isUserAuthenticated,
   acceptWithTermsAndConditions,

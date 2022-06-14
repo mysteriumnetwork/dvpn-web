@@ -9,7 +9,7 @@ import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { tequila } from '../../../api/wrapped-calls'
-import { parseError } from '../../../commons/errors'
+import { parseErrorMessage } from '../../../commons/errors'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import identities from '../../../commons/identities'
 import storage from '../../../commons/localStorageWrapper'
@@ -81,7 +81,7 @@ const Registration = ({ nextStep }: StepProps) => {
           currentChainName: chains[currentChain],
         }))
       } catch (err) {
-        toastError(parseError(err))
+        toastError(parseErrorMessage(err))
       }
       setIsLoading(false)
     }
@@ -124,7 +124,7 @@ const Registration = ({ nextStep }: StepProps) => {
 
       nextStep()
     } catch (error) {
-      errors(parseError(error) || 'API call failed')
+      errors(parseErrorMessage(error) || 'API call failed')
     }
     setIsLoading(false)
   }

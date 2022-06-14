@@ -9,7 +9,7 @@ import ChatIcon from '@material-ui/icons/Chat'
 import CloseIcon from '@material-ui/icons/Close'
 import { IntercomIssue } from 'mysterium-vpn-js'
 import { tequila } from '../../api/wrapped-calls'
-import { parseError } from '../../commons/errors'
+import { parseErrorMessage } from '../../commons/errors'
 import toasts from '../../commons/toasts'
 import { localStorageKeys } from '../../constants/local_storage_keys'
 import Button from '../Buttons/Button'
@@ -59,7 +59,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
       // @ts-ignore
       window.Intercom('showMessages')
     } catch (err) {
-      toastError(parseError(err))
+      toastError(parseErrorMessage(err))
     }
     handleClose()
   }
