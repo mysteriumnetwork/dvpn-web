@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { tequila } from '../../../../api/tequila'
-import { parseErrorMessage } from '../../../../commons/errors'
+import errors from '../../../../commons/errors'
 import toasts from '../../../../commons/toasts'
 
 import Button from '../../../../Components/Buttons/Button'
@@ -58,7 +58,7 @@ const MMN = ({ apiKey, mmnUrl }: Props) => {
         setState((d) => ({
           ...d,
           error: true,
-          errorMessage: parseErrorMessage(error, 'Validation Error'),
+          errorMessage: errors.apiError(error).human() || 'Validation Error',
           loading: false,
         })),
       )

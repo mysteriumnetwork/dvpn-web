@@ -16,7 +16,7 @@ import {
   updateTermsStore,
 } from './app.slice'
 import { store } from './store'
-import { parseToastError } from '../commons/errors'
+import errors from '../commons/errors'
 
 const { api } = tequila
 
@@ -55,6 +55,6 @@ export const fetchChainSummaryAsync = async () => {
     const chainSummary = await api.chainSummary()
     dispatch(updateChainSummaryStore(chainSummary))
   } catch (err: any) {
-    parseToastError(err)
+    errors.parseToastError(err)
   }
 }

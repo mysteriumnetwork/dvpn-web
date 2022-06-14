@@ -5,18 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 import termsPackageJson from '@mysteriumnetwork/terms/package.json'
-import { AxiosAdapter, TequilapiClient } from 'mysterium-vpn-js'
+import { AxiosAdapter, TequilapiClient, TequilapiClientFactory } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import { updateBeneficiaryStore, updateConfigStore, updateTermsStore } from '../redux/app.slice'
 
 import { store } from '../redux/store'
-
-import { TequilapiClientFactory } from 'mysterium-vpn-js'
 import qs from 'qs'
 import { AxiosInstance } from 'axios'
-
-import errors from '../commons/errors'
+import errorInterceptors from './error.interceptors'
 
 const buildAxios = (): AxiosInstance => {
   const instance = new TequilapiClientFactory(
@@ -24,27 +21,15 @@ const buildAxios = (): AxiosInstance => {
     20_000,
   ).axiosInstance()
 
-  instance.interceptors.request.use(
-    (config) => {
-      config.paramsSerializer = (params) => {
-        return qs.stringify(params, { arrayFormat: 'repeat' }) // arrays will be serialized as: ?types=1&types=2...
-      }
+  instance.interceptors.request.use((config) => {
+    config.paramsSerializer = (params) => {
+      return qs.stringify(params, { arrayFormat: 'repeat' }) // arrays will be serialized as: ?types=1&types=2...
+    }
 
-      return config
-    },
-    (error: any) => {
-      errors.logError('request', error)
-      return Promise.reject(error)
-    },
-  )
+    return config
+  }, errorInterceptors.buildLogError('request'))
 
-  instance.interceptors.response.use(
-    (response) => response,
-    (error: any) => {
-      errors.logError('response', error)
-      return Promise.reject(error)
-    },
-  )
+  instance.interceptors.response.use((response) => response, errorInterceptors.buildLogError('response'))
 
   return instance
 }

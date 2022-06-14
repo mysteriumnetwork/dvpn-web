@@ -6,10 +6,6 @@
  */
 import { APIError } from 'mysterium-vpn-js'
 import toasts from './toasts'
-import storage from './localStorageWrapper'
-import { store } from '../redux/store'
-import FEATURES from './features'
-import { configs } from './config'
 
 export const UNKNOWN_API_ERROR = 'Unknown API Error'
 
@@ -41,7 +37,7 @@ export class ErrorWrapper {
       return translation.message
     }
 
-    return this.errorHuman || errors.parseErrorMessage(this.error)
+    return this.errorHuman || UNKNOWN_API_ERROR
   }
 
   public code() {
@@ -49,66 +45,13 @@ export class ErrorWrapper {
   }
 }
 
-export const parseErrorMessage = (error: any, defaultMsg?: string): string => {
-  return parseTequilApiError(error) || defaultMsg || error?.message || UNKNOWN_API_ERROR
+const parseToastError = (error: any) => {
+  toasts.toastError(apiError(error).human())
 }
 
-export const parseToastError = (error: any) => {
-  toasts.toastError(parseErrorMessage(error))
-}
-
-const parseTequilApiError = (error: any): string | undefined => {
-  if (error instanceof APIError) {
-    const tqerr = error as APIError
-    return tqerr.human()
-  }
-}
-
-const apiError = (error: any) => new ErrorWrapper(error as APIError)
-
-const KEY_ERROR_LOG = 'ERROR_LOG'
-const ENTRIES_TO_KEEP = 1_000
-
-export interface ErrorEntry {
-  tag: string
-  message: string
-  code: string
-  createdAt: number
-}
-
-export interface ErrorLog {
-  errors: ErrorEntry[]
-}
-
-const errorQueue: { tag: string; error: any }[] = []
-
-const logError = (tag: string, error: any) => {
-  const config = store.getState().app.config
-  const isEnabled = configs.isFeatureEnabled(config, FEATURES.ERROR_LOGGING.name)
-
-  if (!isEnabled) {
-    return
-  }
-  errorQueue.push({ tag, error })
-}
-
-setInterval(() => {
-  const item = errorQueue.shift()
-  if (!item) {
-    return
-  }
-
-  const { tag, error } = item
-  const wrapped = new ErrorWrapper(error)
-  const log = storage.get<ErrorLog>(KEY_ERROR_LOG) || { errors: [] }
-  log.errors.push({ tag, message: wrapped.human(), code: wrapped.code(), createdAt: new Date().getTime() })
-  storage.put<ErrorLog>(KEY_ERROR_LOG, { errors: log.errors.slice(0, ENTRIES_TO_KEEP) })
-}, 1000)
+const apiError = (error: any) => new ErrorWrapper(error)
 
 const errors = {
-  KEY_ERROR_LOG,
-  logError,
-  parseErrorMessage,
   parseToastError,
   apiError,
 }

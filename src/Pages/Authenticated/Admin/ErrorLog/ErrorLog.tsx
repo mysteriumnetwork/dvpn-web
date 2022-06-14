@@ -6,7 +6,7 @@
  */
 import { useEffect, useMemo, useState } from 'react'
 import storage from '../../../../commons/localStorageWrapper'
-import errors, { ErrorEntry, ErrorLog as EL } from '../../../../commons/errors'
+import errorInterceptors, { ErrorEntry, ErrorLog as EL } from '../../../../api/error.interceptors'
 import styles from './ErrorLog.module.scss'
 import dates from '../../../../commons/dates'
 import Clipboard from 'clipboard'
@@ -17,7 +17,7 @@ export const ErrorLog = () => {
   const [errorLog, setErrorLog] = useState<EL>({ errors: [] })
 
   useEffect(() => {
-    setErrorLog(storage.get<EL>(errors.KEY_ERROR_LOG) || { errors: [] })
+    setErrorLog(storage.get<EL>(errorInterceptors.KEY_ERROR_LOG) || { errors: [] })
   }, [])
 
   return (

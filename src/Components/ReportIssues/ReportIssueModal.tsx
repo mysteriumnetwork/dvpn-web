@@ -9,8 +9,6 @@ import ChatIcon from '@material-ui/icons/Chat'
 import CloseIcon from '@material-ui/icons/Close'
 import { IntercomIssue } from 'mysterium-vpn-js'
 import { tequila } from '../../api/tequila'
-import { parseErrorMessage } from '../../commons/errors'
-import toasts from '../../commons/toasts'
 import { localStorageKeys } from '../../constants/local_storage_keys'
 import Button from '../Buttons/Button'
 
@@ -18,8 +16,8 @@ import { TextField } from '../TextField/TextField'
 
 import './ReportIssueModal.scss'
 import { useState } from 'react'
+import errors from '../../commons/errors'
 
-const { toastError } = toasts
 const { api } = tequila
 
 interface Props {
@@ -59,7 +57,7 @@ const ReportIssueModal = ({ open, onClose }: Props) => {
       // @ts-ignore
       window.Intercom('showMessages')
     } catch (err) {
-      toastError(parseErrorMessage(err))
+      errors.parseToastError(err)
     }
     handleClose()
   }
