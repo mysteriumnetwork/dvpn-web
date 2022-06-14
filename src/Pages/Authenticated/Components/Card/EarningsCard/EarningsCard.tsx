@@ -17,7 +17,6 @@ import Button from '../../../../../Components/Buttons/Button'
 import { LockoutButton } from '../../../../../Components/Buttons/LockoutButton'
 import Tooltip from '../../../../../Components/Tooltip/Tooltip'
 import { selectors } from '../../../../../redux/selectors'
-import WithdrawalModal from '../../WithdrawalModal/WithdrawalModal'
 import { Card } from '../Card'
 import styles from './EarningsCard.module.scss'
 import { QuickSettleModal } from './QuickSettleModal'
@@ -27,14 +26,12 @@ import identities from '../../../../../commons/identities'
 import { useAppSelector } from '../../../../../commons/hooks'
 
 const QUICK_SETTLE_LOCKOUT_ID = 'QUICK_SETTLE_LOCKOUT_ID'
-const { display, toWeiBig, toBig, toEtherBig } = myst
+const { display, toWeiBig, toBig } = myst
 const { api } = tequila
 
 export const EarningsCard = () => {
-  const { balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
   const beneficiary = useAppSelector(selectors.beneficiarySelector)
   const isAutoWithdrawal = !beneficiary.isChannelAddress
-  const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.1) || !isAutoWithdrawal
 
   return (
     <>
@@ -42,12 +39,6 @@ export const EarningsCard = () => {
         <Card width="100%">
           <div className={styles.split}>
             <Earnings isAutoWithdrawal={isAutoWithdrawal} />
-            {isBalanceVisible && (
-              <>
-                <div className={styles.separator} />
-                <Balance isAutoWithdrawal={isAutoWithdrawal} />
-              </>
-            )}
           </div>
         </Card>
       </Media.Desktop>
@@ -55,11 +46,6 @@ export const EarningsCard = () => {
         <Card>
           <Earnings isAutoWithdrawal={isAutoWithdrawal} />
         </Card>
-        {isBalanceVisible && (
-          <Card>
-            <Balance isAutoWithdrawal={isAutoWithdrawal} />
-          </Card>
-        )}
       </Media.Mobile>
     </>
   )
@@ -168,38 +154,6 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
         onSave={() => lockouts.lock({ id: QUICK_SETTLE_LOCKOUT_ID, seconds: 60, refreshPage: true })}
       />
       <SettleSettingsModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} onSave={initTimerTimeStamp} />
-    </div>
-  )
-}
-
-const Balance = ({ isAutoWithdrawal }: SharedProps) => {
-  const { balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
-  const [open, setOpen] = useState<boolean>(false)
-
-  return (
-    <div className={styles.balance}>
-      <div className={styles.split}>
-        <div className={styles.balanceAmount}>
-          <div className={styles.value}>{display(balanceTokens.wei, { fractionDigits: 2 })}</div>
-          <div className={styles.label}>Internal Balance</div>
-        </div>
-        <WithdrawalModal
-          isOpen={open}
-          onClose={() => setOpen(false)}
-          doAfterWithdraw={() => lockouts.lock({ id: lockouts.buttons.WITHDRAWAL, seconds: 60, refreshPage: true })}
-        />
-      </div>
-      <div className={styles.balanceControl}>
-        <LockoutButton id={lockouts.buttons.WITHDRAWAL} onClick={() => setOpen(true)} extraStyle="outline-primary">
-          withdraw
-        </LockoutButton>
-        {isAutoWithdrawal && (
-          <p className={styles.balanceNote}>
-            Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once
-            withdrawn this section will disappear.
-          </p>
-        )}
-      </div>
     </div>
   )
 }

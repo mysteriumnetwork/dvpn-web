@@ -14,7 +14,7 @@ import { Payments } from '../../../Components/Payments/Payments'
 import { selectors } from '../../../redux/selectors'
 import { StepLayout } from '../Components/StepLayout'
 import { feez } from '../../../commons/fees'
-import { CollapseAlert } from '../../Authenticated/Components/WithdrawalModal/CollapseAlert'
+import { CollapseAlert } from '../../../Components/Alerts/CollapseAlert'
 import BigNumber from 'bignumber.js'
 import { useAppSelector } from '../../../commons/hooks'
 
