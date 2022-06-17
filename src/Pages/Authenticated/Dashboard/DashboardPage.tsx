@@ -7,8 +7,7 @@
 
 import { SessionDirection, SessionStatus } from 'mysterium-vpn-js'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { stats } from '../../../commons/stats'
@@ -23,16 +22,15 @@ import styles from './DashboardPage.module.scss'
 import NodeStatus from './NodeStatus/NodeStatus'
 import GlobalServicesSettings from './Services/GlobalServicesSettings'
 import Service from './Services/Service'
-import hooks from '../../../commons/hooks'
+import { useAppSelector, useFetch } from '../../../commons/hooks'
 import { SESSION_STATS_EMPTY } from '../../../constants/instances'
 
-const { useFetch } = hooks
 const { api } = tequila
 
 const DashboardPage = () => {
-  const identity = useSelector(selectors.currentIdentitySelector)
-  const liveSessionStats = useSelector(selectors.liveSessionStatsSelector)
-  const liveSessions = useSelector(selectors.liveSessionsSelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const liveSessionStats = useAppSelector(selectors.liveSessionStatsSelector)
+  const liveSessions = useAppSelector(selectors.liveSessionsSelector)
 
   const sessionFilter = { direction: SessionDirection.PROVIDED, providerId: identity.id }
   const [data = [], loading] = useFetch(

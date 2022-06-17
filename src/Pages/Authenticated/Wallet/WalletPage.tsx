@@ -8,7 +8,7 @@ import { SettlementListResponse } from 'mysterium-vpn-js'
 import { Settlement } from 'mysterium-vpn-js/lib/transactor/settlement'
 import React, { ReactNode, useMemo, useState } from 'react'
 import { Column, Row } from 'react-table'
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/wallet/logo.svg'
 import dates from '../../../commons/dates'
 import { myst } from '../../../commons/mysts'
@@ -22,11 +22,10 @@ import { Cards } from '../Components/Card/PreparedCards'
 import { Layout } from '../Layout'
 import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
-import hooks from '../../../commons/hooks'
+import { useFetch } from '../../../commons/hooks'
 import { SETTLEMENT_LIST_REPONSE_EMPTY } from '../../../constants/instances'
 
 const { api } = tequila
-const { useFetch } = hooks
 const { date2human } = dates
 
 interface State {

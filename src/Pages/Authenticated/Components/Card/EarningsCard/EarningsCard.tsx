@@ -7,8 +7,7 @@
 
 import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { tequila } from '../../../../../api/wrapped-calls'
+import { tequila } from '../../../../../api/tequila'
 import { configs } from '../../../../../commons/config'
 import { lockouts } from '../../../../../commons/lockout'
 import { Media } from '../../../../../commons/media'
@@ -25,14 +24,15 @@ import { QuickSettleModal } from './QuickSettleModal'
 import { SettleSettingsModal } from './SettleSettingsModal'
 import WarningIcon from '@material-ui/icons/WarningOutlined'
 import identities from '../../../../../commons/identities'
+import { useAppSelector } from '../../../../../commons/hooks'
 
 const QUICK_SETTLE_LOCKOUT_ID = 'QUICK_SETTLE_LOCKOUT_ID'
 const { display, toWeiBig, toBig, toEtherBig } = myst
 const { api } = tequila
 
 export const EarningsCard = () => {
-  const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
-  const beneficiary = useSelector(selectors.beneficiarySelector)
+  const { balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
+  const beneficiary = useAppSelector(selectors.beneficiarySelector)
   const isAutoWithdrawal = !beneficiary.isChannelAddress
   const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.1) || !isAutoWithdrawal
 
@@ -70,9 +70,9 @@ interface SharedProps {
 }
 
 const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
-  const { earningsTokens, id } = useSelector(selectors.currentIdentitySelector)
-  const { current } = useSelector(selectors.feesSelector)
-  const config = useSelector(selectors.configSelector)
+  const { earningsTokens, id } = useAppSelector(selectors.currentIdentitySelector)
+  const { current } = useAppSelector(selectors.feesSelector)
+  const config = useAppSelector(selectors.configSelector)
   const thresholdWei = toWeiBig(configs.zeroStakeSettlementThreshold(config))
 
   const [beneficiaryTx, setBeneficiaryTx] = useState<BeneficiaryTxStatus | undefined>()
@@ -173,7 +173,7 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
 }
 
 const Balance = ({ isAutoWithdrawal }: SharedProps) => {
-  const { balanceTokens } = useSelector(selectors.currentIdentitySelector)
+  const { balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
   const [open, setOpen] = useState<boolean>(false)
 
   return (

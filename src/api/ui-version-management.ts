@@ -4,7 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { http } from './axios'
+
+import { tequila } from './tequila'
+
+const { http } = tequila
 
 const info = async (): Promise<UI> => {
   return await http.get<UI>('/ui/info').then((r) => r.data)

@@ -11,10 +11,10 @@ import { ADMIN } from '../../constants/routes'
 import Navigation from './Navigation/Navigation'
 import { Identity } from 'mysterium-vpn-js'
 import { RegistrationOverlay } from './RegistrationOverlay'
-import { useSelector } from 'react-redux'
 import { selectors } from '../../redux/selectors'
 import { ReactElement } from 'react'
 import identities from '../../commons/identities'
+import { useAppSelector } from '../../commons/hooks'
 
 const { isEmpty, isRegistered } = identities
 
@@ -35,7 +35,7 @@ interface Props {
 }
 
 const ContentWithNavigation = ({ content }: Props) => {
-  const identity = useSelector(selectors.currentIdentitySelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
   const { pathname } = useLocation()
   return (
     <div className="page">

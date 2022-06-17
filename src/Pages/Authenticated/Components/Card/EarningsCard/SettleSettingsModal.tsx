@@ -6,8 +6,7 @@
  */
 import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { tequila } from '../../../../../api/wrapped-calls'
+import { tequila } from '../../../../../api/tequila'
 import { configs } from '../../../../../commons/config'
 import { parseToastError } from '../../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../../commons/ethereum.utils'
@@ -22,6 +21,7 @@ import { selectors } from '../../../../../redux/selectors'
 import { FeesTable } from '../../Fees/FeesTable'
 import styles from './SettleSettingsModal.module.scss'
 import identities from '../../../../../commons/identities'
+import { useAppSelector } from '../../../../../commons/hooks'
 
 const { toastSuccess } = toasts
 const { api, refreshBeneficiary } = tequila
@@ -41,9 +41,9 @@ interface State {
 }
 
 export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
-  const { isChannelAddress, beneficiary } = useSelector(selectors.beneficiarySelector)
-  const identity = useSelector(selectors.currentIdentitySelector)
-  const config = useSelector(selectors.configSelector)
+  const { isChannelAddress, beneficiary } = useAppSelector(selectors.beneficiarySelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const config = useAppSelector(selectors.configSelector)
   const docsUrl = configs.docsAddress(config)
   const zeroStakeSettlementThreshold = configs.zeroStakeSettlementThreshold(config)
   const displayZeroStakeThreshold = myst.display(myst.toWeiBig(zeroStakeSettlementThreshold), {
@@ -76,8 +76,8 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
     })()
   }, [identity.id, beneficiary, isAutoWithdrawal])
 
-  const chainSummary = useSelector(selectors.chainSummarySelector)
-  const { current, hermesPercent } = useSelector(selectors.feesSelector)
+  const chainSummary = useAppSelector(selectors.chainSummarySelector)
+  const { current, hermesPercent } = useAppSelector(selectors.feesSelector)
 
   const calculatedFees = useMemo(() => feez.calculateEarnings(identity.earningsTokens, current, hermesPercent), [
     hermesPercent,

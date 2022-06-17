@@ -17,9 +17,13 @@ const rootReducer = combineReducers({
 export default rootReducer
 
 const middleWares = getDefaultMiddleware()
-export type RootState = ReturnType<typeof rootReducer>
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: middleWares,
 })
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch

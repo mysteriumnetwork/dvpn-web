@@ -8,7 +8,7 @@
 import { NodeMonitoringStatusResponse } from 'mysterium-vpn-js'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import { NATType } from '../../../../constants/nat'
 import { DOCS, DOCS_NAT_FIX } from '../../../../constants/urls'
@@ -17,10 +17,9 @@ import { RootState } from '../../../../redux/store'
 import Bubble from './Bubble'
 import { natType2Human, natTypeStatusBubble, nodeStatusBubble, statusText } from './nat-status.utils'
 import './NodeStatus.scss'
-import hooks from '../../../../commons/hooks'
+import { useFetch } from '../../../../commons/hooks'
 import { NAT_TYPE_RESPONSE_EMPTY, NODE_MONITORING_STATUS_RESPONSE_EMPTY } from '../../../../constants/instances'
 
-const { useFetch } = hooks
 const { api } = tequila
 
 const NodeStatus = () => {

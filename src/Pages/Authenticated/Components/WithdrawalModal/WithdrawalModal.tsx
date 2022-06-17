@@ -6,8 +6,7 @@
  */
 import { Fees } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import { DEFAULT_MONEY_DISPLAY_OPTIONS } from '../../../../commons'
 import mapping from '../../../../commons/mapping'
 import { currentCurrency } from '../../../../commons/currency'
@@ -23,6 +22,7 @@ import { CollapseAlert } from './CollapseAlert'
 import { FeesRibbon } from './FeesRibbon'
 import { LatestWithdrawal } from './LatestWithdrawal'
 import styles from './WithdrawalModal.module.scss'
+import { useAppSelector } from '../../../../commons/hooks'
 
 const { toastSuccess } = toasts
 const { toastError } = toasts
@@ -62,8 +62,8 @@ const MAXIMUM_WITHDRAW_AMOUNT_WEI = myst.toWeiBig(99) // 99.0 MYST
 const POLYGON_MATIC_MAINNET_CHAIN_ID = 137
 
 const WithdrawalModal = ({ isOpen, onClose, doAfterWithdraw = () => {} }: Props) => {
-  const chainSummary = useSelector(selectors.chainSummarySelector)
-  const identity = useSelector(selectors.currentIdentitySelector)
+  const chainSummary = useAppSelector(selectors.chainSummarySelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
 
   const [state, setState] = useState<State>(initialState)
 

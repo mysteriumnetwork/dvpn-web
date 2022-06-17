@@ -6,8 +6,7 @@
  */
 import { ServiceInfo } from 'mysterium-vpn-js'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import { ReactComponent as Settings } from '../../../../assets/images/authenticated/components/navigation/Settings.svg'
 import { configs } from '../../../../commons/config'
 import errors from '../../../../commons/errors'
@@ -17,6 +16,7 @@ import ConfirmationSwitch from '../../../../Components/ConfirmationSwitch/Confir
 import { Modal } from '../../../../Components/Modal/Modal'
 import { selectors } from '../../../../redux/selectors'
 import styles from './GlobalServicesSettings.module.scss'
+import { useAppSelector } from '../../../../commons/hooks'
 
 const { parseToastError } = errors
 const { api } = tequila
@@ -28,8 +28,8 @@ interface State {
 }
 
 const GlobalServicesSettings = () => {
-  const services = useSelector(selectors.serviceInfoSelector)
-  const config = useSelector(selectors.configSelector)
+  const services = useAppSelector(selectors.serviceInfoSelector)
+  const config = useAppSelector(selectors.configSelector)
 
   const stopServices = services.map((s) => (): Promise<void> => api.serviceStop(s.id))
   const startServices = services.map((s) => (): Promise<ServiceInfo> =>

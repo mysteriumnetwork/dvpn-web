@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react'
-import { useSelector } from 'react-redux'
 
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/settings/logo.svg'
 import { configs } from '../../../commons/config'
 import FEATURES from '../../../commons/features'
@@ -22,7 +21,7 @@ import PasswordChange from './Components/PasswordChange'
 import Version from './Components/Version'
 
 import styles from './SetingsPage.module.scss'
-import hooks from '../../../commons/hooks'
+import { useAppSelector, useFetch } from '../../../commons/hooks'
 import { HEALTHCHECK_EMPTY, MMN_KEY_RESPONSE_EMPTY } from '../../../constants/instances'
 
 const { api } = tequila
@@ -40,13 +39,11 @@ const Card = ({ title, children }: CardProps) => (
 )
 
 const SettingsPage = () => {
-  const identity = useSelector(selectors.currentIdentitySelector)
-  const config = useSelector(selectors.configSelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const config = useAppSelector(selectors.configSelector)
   const mmnWebAddress = configs.mmnWebAddress(config)
 
-  const [data = [], loading] = hooks.useFetch(() => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000)]), [
-    identity.id,
-  ])
+  const [data = [], loading] = useFetch(() => Promise.all([api.getMMNApiKey(), api.healthCheck(15_000)]), [identity.id])
 
   const [{ apiKey } = MMN_KEY_RESPONSE_EMPTY, { buildInfo, version } = HEALTHCHECK_EMPTY] = data
 

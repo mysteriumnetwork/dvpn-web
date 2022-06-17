@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { tequila } from '../../../../../api/wrapped-calls'
+import { tequila } from '../../../../../api/tequila'
 import { parseToastError } from '../../../../../commons/errors'
 import { feez } from '../../../../../commons/fees'
 import identities from '../../../../../commons/identities'
@@ -16,6 +15,7 @@ import Error from '../../../../../Components/Validation/Error'
 import { selectors } from '../../../../../redux/selectors'
 import { FeesTable } from '../../Fees/FeesTable'
 import styles from './QuickSettleModal.module.scss'
+import { useAppSelector } from '../../../../../commons/hooks'
 
 interface Props {
   open?: boolean
@@ -26,10 +26,10 @@ interface Props {
 const { api } = tequila
 
 export const QuickSettleModal = ({ open, onClose, onSave = () => {} }: Props) => {
-  const identity = useSelector(selectors.currentIdentitySelector)
-  const { current, hermesPercent } = useSelector(selectors.feesSelector)
-  const chainSummary = useSelector(selectors.chainSummarySelector)
-  const { isChannelAddress, beneficiary } = useSelector(selectors.beneficiarySelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const { current, hermesPercent } = useAppSelector(selectors.feesSelector)
+  const chainSummary = useAppSelector(selectors.chainSummarySelector)
+  const { isChannelAddress, beneficiary } = useAppSelector(selectors.beneficiarySelector)
   const isAutoWithdrawal = !isChannelAddress
 
   const calculatedFees = useMemo(() => feez.calculateEarnings(identity.earningsTokens, current, hermesPercent), [

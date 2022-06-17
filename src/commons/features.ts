@@ -15,6 +15,10 @@ const FEATURES: { [key: string]: Feature } = {
     name: 'restart',
     description: 'Ability to restart node from NodeUI',
   },
+  ERROR_LOGGING: {
+    name: 'error logging',
+    description: 'NodeUI will log recent errors to local storage',
+  },
 }
 
 export default FEATURES

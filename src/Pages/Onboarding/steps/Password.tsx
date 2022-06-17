@@ -8,7 +8,7 @@ import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { tequila } from '../../../api/wrapped-calls'
+import { tequila } from '../../../api/tequila'
 import { configs } from '../../../commons/config'
 import errors from '../../../commons/errors'
 import { validatePassword } from '../../../commons/passwords'
@@ -23,10 +23,10 @@ import { StepLayout } from '../Components/StepLayout'
 import styles from './Steps.module.scss'
 
 import { store } from '../../../redux/store'
-import { useSelector } from 'react-redux'
 import { selectors } from '../../../redux/selectors'
 import classNames from 'classnames'
 import { InputGroup } from '../../../Components/InputGroups/InputGroup'
+import { useAppSelector } from '../../../commons/hooks'
 
 const { api } = tequila
 
@@ -48,10 +48,10 @@ const useQuery = () => {
   return React.useMemo(() => new URLSearchParams(search), [search])
 }
 
-const SetPassword = (_: StepProps): JSX.Element => {
+const SetPassword = (): JSX.Element => {
   const query = useQuery()
 
-  const config = useSelector(selectors.configSelector)
+  const config = useAppSelector(selectors.configSelector)
 
   const [state, setState] = useState<State>({
     passwordRepeat: '',

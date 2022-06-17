@@ -9,6 +9,7 @@ import { Layout } from '../Layout'
 import styles from './Admin.module.scss'
 import { FeatureToggle } from './FeatureToggle/FeatureToggle'
 import { VersionManagement } from './VersionManagement/VersionManagement'
+import { ErrorLog } from './ErrorLog/ErrorLog'
 
 export const AdminPage = () => {
   return (
@@ -22,6 +23,9 @@ export const AdminPage = () => {
           </div>
           <div className={styles.versionManagement}>
             <FeatureToggle />
+          </div>
+          <div className={styles.versionManagement}>
+            <ErrorLog />
           </div>
         </div>
       }

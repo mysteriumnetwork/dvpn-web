@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { MouseEventHandler, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { lockouts } from '../../commons/lockout'
 import page from '../../commons/page'
 import Button from './Button'
 import { LockoutButtonProps } from './types'
+import { useAppSelector } from '../../commons/hooks'
 
 export const LockoutButton = ({
   id,
@@ -19,7 +19,7 @@ export const LockoutButton = ({
   lockoutAfterOnClick = false,
   ...rest
 }: LockoutButtonProps) => {
-  const settings = useSelector(lockouts.selector(id)) || { lockoutUntil: 0 }
+  const settings = useAppSelector(lockouts.selector(id)) || { lockoutUntil: 0 }
   const [isLockedOut, setIsLockedOut] = useState<boolean>(true)
 
   useEffect(() => {

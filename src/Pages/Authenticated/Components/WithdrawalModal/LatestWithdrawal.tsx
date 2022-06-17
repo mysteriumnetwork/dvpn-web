@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { Settlement, SettlementType } from 'mysterium-vpn-js'
-import { tequila } from '../../../../api/wrapped-calls'
+import { tequila } from '../../../../api/tequila'
 import styles from './WithdrawalModal.module.scss'
 import { media } from '../../../../commons/media'
 import { strings } from '../../../../commons/strings'
