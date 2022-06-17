@@ -111,7 +111,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
     try {
       await api.settleWithBeneficiary({
         providerId: identity.id,
-        hermesId: identity.hermesId,
+        hermesId: '',
         beneficiary: state.externalWalletAddress,
       })
       onSave()
