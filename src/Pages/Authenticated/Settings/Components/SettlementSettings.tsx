@@ -7,7 +7,7 @@
 import { useEffect, useState } from 'react'
 import { tequila } from '../../../../api/tequila'
 import { configs } from '../../../../commons/config'
-import { parseToastError } from '../../../../commons/errors'
+import errors from '../../../../commons/errors'
 import toasts from '../../../../commons/toasts'
 import Button from '../../../../Components/Buttons/Button'
 import { InputGroup } from '../../../../Components/InputGroups/InputGroup'
@@ -33,7 +33,7 @@ export const SettlementSettings = () => {
       await setUserConfig({ payments: { 'zero-stake-unsettled-amount': threshold } })
       toastSuccess('Settlement threshold updated')
     } catch (err: any) {
-      parseToastError(err)
+      errors.parseToastError(err)
     }
   }
 

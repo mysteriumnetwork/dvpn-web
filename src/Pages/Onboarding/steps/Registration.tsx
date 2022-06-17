@@ -8,7 +8,7 @@ import Collapse from '@material-ui/core/Collapse'
 import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
 import { tequila } from '../../../api/tequila'
-import { parseErrorMessage } from '../../../commons/errors'
+import errorz from '../../../commons/errors'
 import { isValidEthereumAddress } from '../../../commons/ethereum.utils'
 import identities from '../../../commons/identities'
 import storage from '../../../commons/localStorageWrapper'
@@ -81,7 +81,7 @@ const Registration = ({ nextStep }: StepProps) => {
           currentChainName: chains[currentChain],
         }))
       } catch (err) {
-        toastError(parseErrorMessage(err))
+        toastError(errorz.apiError(err).human())
       }
       setIsLoading(false)
     }
@@ -124,7 +124,7 @@ const Registration = ({ nextStep }: StepProps) => {
 
       nextStep()
     } catch (error) {
-      errors(parseErrorMessage(error) || 'API call failed')
+      errors()
     }
     setIsLoading(false)
   }

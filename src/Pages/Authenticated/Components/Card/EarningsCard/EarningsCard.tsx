@@ -17,59 +17,35 @@ import Button from '../../../../../Components/Buttons/Button'
 import { LockoutButton } from '../../../../../Components/Buttons/LockoutButton'
 import Tooltip from '../../../../../Components/Tooltip/Tooltip'
 import { selectors } from '../../../../../redux/selectors'
-import WithdrawalModal from '../../WithdrawalModal/WithdrawalModal'
 import { Card } from '../Card'
 import styles from './EarningsCard.module.scss'
 import { QuickSettleModal } from './QuickSettleModal'
 import { SettleSettingsModal } from './SettleSettingsModal'
-import WarningIcon from '@material-ui/icons/WarningOutlined'
 import identities from '../../../../../commons/identities'
 import { useAppSelector } from '../../../../../commons/hooks'
 
 const QUICK_SETTLE_LOCKOUT_ID = 'QUICK_SETTLE_LOCKOUT_ID'
-const { display, toWeiBig, toBig, toEtherBig } = myst
+const { display, toWeiBig, toBig } = myst
 const { api } = tequila
 
 export const EarningsCard = () => {
-  const { balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
-  const beneficiary = useAppSelector(selectors.beneficiarySelector)
-  const isAutoWithdrawal = !beneficiary.isChannelAddress
-  const isBalanceVisible = toEtherBig(balanceTokens.wei).gte(0.1) || !isAutoWithdrawal
-
   return (
     <>
       <Media.Desktop>
         <Card width="100%">
-          <div className={styles.split}>
-            <Earnings isAutoWithdrawal={isAutoWithdrawal} />
-            {isBalanceVisible && (
-              <>
-                <div className={styles.separator} />
-                <Balance isAutoWithdrawal={isAutoWithdrawal} />
-              </>
-            )}
-          </div>
+          <Earnings />
         </Card>
       </Media.Desktop>
       <Media.Mobile>
         <Card>
-          <Earnings isAutoWithdrawal={isAutoWithdrawal} />
+          <Earnings />
         </Card>
-        {isBalanceVisible && (
-          <Card>
-            <Balance isAutoWithdrawal={isAutoWithdrawal} />
-          </Card>
-        )}
       </Media.Mobile>
     </>
   )
 }
 
-interface SharedProps {
-  isAutoWithdrawal: boolean
-}
-
-const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
+const Earnings = () => {
   const { earningsTokens, id } = useAppSelector(selectors.currentIdentitySelector)
   const { current } = useAppSelector(selectors.feesSelector)
   const config = useAppSelector(selectors.configSelector)
@@ -94,11 +70,10 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
 
   const tooltipText = useMemo(
     () =>
-      `These are confirmed earnings which are not settled to your ${
-        isAutoWithdrawal ? 'external wallet' : 'balance'
-      } yet. Settlement is done either automatically when ${display(thresholdWei, {
-        fractionDigits: 1,
-      })} is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus current blockchain fees (${display(
+      `These are confirmed earnings which are not settled to your external wallet'
+       yet. Settlement is done either automatically when ${display(thresholdWei, {
+         fractionDigits: 1,
+       })} is reached or manually when SETTLE button is clicked. Please note that settlement fee is 20% plus current blockchain fees (${display(
         current.settlement.wei,
       )}).`,
     [thresholdWei, current.settlement.wei],
@@ -116,7 +91,7 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
 
   return (
     <div className={styles.earnings}>
-      <div className={styles.split}>
+      <div className={styles.content}>
         <div className={styles.earningsAmount}>
           <div className={styles.value}>{display(earningsTokens.wei, { fractionDigits: 2 })}</div>
           <div className={styles.label}>
@@ -125,42 +100,24 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
           </div>
         </div>
         <Media.Desktop>
-          {!isAutoWithdrawal ? (
-            <div className={styles.earningsWarning}>
-              <WarningIcon />
-              <p className={styles.earningsWarningText}>
-                Settlement is disabled, because external wallet address is missing for Automatic withdrawals! Click
-                button below to add it and enable Automatic withdrawals.
-              </p>
-            </div>
-          ) : (
-            <div className={styles.earningsProgressContainer}>
-              <p>Next auto settlement ({display(thresholdWei, { fractionDigits: 1 })})</p>
-              <progress value={progressPercent} max={100} className={styles.earningsProgress} />
-            </div>
-          )}
+          <div className={styles.earningsProgressContainer}>
+            <p>Next auto settlement ({display(thresholdWei, { fractionDigits: 1 })})</p>
+            <progress value={progressPercent} max={100} className={styles.earningsProgress} />
+          </div>
         </Media.Desktop>
       </div>
 
       <div className={styles.earningsControls}>
-        {isAutoWithdrawal ? (
-          <>
-            <LockoutButton
-              id={QUICK_SETTLE_LOCKOUT_ID}
-              extraStyle="outline-primary"
-              onClick={() => setQuickSettleOpen(true)}
-            >
-              settle Now
-            </LockoutButton>
-            <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
-              Auto withdrawals: {beneficiaryTx?.error ? 'ERROR' : 'ON'}
-            </Button>
-          </>
-        ) : (
-          <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
-            Enable Automatic Withdrawals
-          </Button>
-        )}
+        <LockoutButton
+          id={QUICK_SETTLE_LOCKOUT_ID}
+          extraStyle="outline-primary"
+          onClick={() => setQuickSettleOpen(true)}
+        >
+          settle Now
+        </LockoutButton>
+        <Button extraStyle="outline-primary" onClick={() => setWithdrawalOpen(true)} isLoading={isSettingsLoading}>
+          Settings {beneficiaryTx?.error && '(ERROR)'}
+        </Button>
       </div>
       <QuickSettleModal
         open={quickSettleOpen}
@@ -168,38 +125,6 @@ const Earnings = ({ isAutoWithdrawal }: SharedProps) => {
         onSave={() => lockouts.lock({ id: QUICK_SETTLE_LOCKOUT_ID, seconds: 60, refreshPage: true })}
       />
       <SettleSettingsModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} onSave={initTimerTimeStamp} />
-    </div>
-  )
-}
-
-const Balance = ({ isAutoWithdrawal }: SharedProps) => {
-  const { balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
-  const [open, setOpen] = useState<boolean>(false)
-
-  return (
-    <div className={styles.balance}>
-      <div className={styles.split}>
-        <div className={styles.balanceAmount}>
-          <div className={styles.value}>{display(balanceTokens.wei, { fractionDigits: 2 })}</div>
-          <div className={styles.label}>Internal Balance</div>
-        </div>
-        <WithdrawalModal
-          isOpen={open}
-          onClose={() => setOpen(false)}
-          doAfterWithdraw={() => lockouts.lock({ id: lockouts.buttons.WITHDRAWAL, seconds: 60, refreshPage: true })}
-        />
-      </div>
-      <div className={styles.balanceControl}>
-        <LockoutButton id={lockouts.buttons.WITHDRAWAL} onClick={() => setOpen(true)} extraStyle="outline-primary">
-          withdraw
-        </LockoutButton>
-        {isAutoWithdrawal && (
-          <p className={styles.balanceNote}>
-            Note: as Automatic withdrawals are enabled, your internal node balance will not increase anymore. Once
-            withdrawn this section will disappear.
-          </p>
-        )}
-      </div>
     </div>
   )
 }

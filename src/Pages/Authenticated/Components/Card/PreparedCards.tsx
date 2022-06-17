@@ -6,15 +6,12 @@
  */
 import { SessionStats } from 'mysterium-vpn-js'
 import { useMemo, useState } from 'react'
-import { ReactComponent as WalletIcon } from '../../../../assets/icons/WithdrawalWallet.svg'
 import { configs } from '../../../../commons/config'
 import dates from '../../../../commons/dates'
 import bytes from '../../../../commons/bytes'
 import { myst } from '../../../../commons/mysts'
 import { selectors } from '../../../../redux/selectors'
-import WithdrawalModal from '../WithdrawalModal/WithdrawalModal'
 import { EarningsCard } from './EarningsCard/EarningsCard'
-import { HeroStatCard } from './HeroStatCard'
 import { SettleSettingsModal } from './EarningsCard/SettleSettingsModal'
 import { StatCard } from './StatCard'
 import { useAppSelector } from '../../../../commons/hooks'
@@ -67,23 +64,6 @@ const TotalWithdrawn = ({ amount }: { amount?: string }) => {
   )
 }
 
-const Balance = () => {
-  const identity = useAppSelector(selectors.currentIdentitySelector)
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  return (
-    <>
-      <HeroStatCard
-        buttonName="withdraw"
-        value={myst.display(identity.balance)}
-        icon={<WalletIcon />}
-        label="Balance"
-        onClick={() => setIsOpen(true)}
-      />
-      <WithdrawalModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-    </>
-  )
-}
-
 const TotalEarnings = () => {
   const identity = useAppSelector(selectors.currentIdentitySelector)
   return (
@@ -113,7 +93,6 @@ const UniqueClients = ({ stats }: { stats: SessionStats }) => (
 export const Cards = {
   UnsettledEarnings,
   TotalWithdrawn,
-  Balance,
   TotalEarnings,
   SessionTime,
   Transferred,

@@ -6,7 +6,7 @@
  */
 import { useMemo, useState } from 'react'
 import { tequila } from '../../../../../api/tequila'
-import { parseToastError } from '../../../../../commons/errors'
+import errors from '../../../../../commons/errors'
 import { feez } from '../../../../../commons/fees'
 import identities from '../../../../../commons/identities'
 import { myst } from '../../../../../commons/mysts'
@@ -55,7 +55,7 @@ export const QuickSettleModal = ({ open, onClose, onSave = () => {} }: Props) =>
             onSave()
             onClose()
           } catch (err: any) {
-            parseToastError(err)
+            errors.parseToastError(err)
           }
           setLoading(false)
         },

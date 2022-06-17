@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useEffect, useState } from 'react'
-import { parseToastError } from './errors'
+import errors from './errors'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
 
@@ -29,7 +29,7 @@ export const useFetch = <T>(
       setData(response)
     } catch (err: any) {
       setError(err)
-      parseToastError(err)
+      errors.parseToastError(err)
     } finally {
       setLoading(false)
     }

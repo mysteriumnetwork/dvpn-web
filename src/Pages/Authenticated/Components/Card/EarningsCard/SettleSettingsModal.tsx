@@ -8,7 +8,7 @@ import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import { useEffect, useMemo, useState } from 'react'
 import { tequila } from '../../../../../api/tequila'
 import { configs } from '../../../../../commons/config'
-import { parseToastError } from '../../../../../commons/errors'
+import errors from '../../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../../commons/ethereum.utils'
 import { feez } from '../../../../../commons/fees'
 import { myst } from '../../../../../commons/mysts'
@@ -71,7 +71,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
           isLoading: false,
         }))
       } catch (e: any) {
-        parseToastError(e)
+        errors.parseToastError(e)
       }
     })()
   }, [identity.id, beneficiary, isAutoWithdrawal])
@@ -119,7 +119,7 @@ export const SettleSettingsModal = ({ open, onClose, onSave }: Props) => {
       toastSuccess(`Automatic withdrawal to ${state.externalWalletAddress} request submitted`)
       await refreshBeneficiary(identity.id)
     } catch (err: any) {
-      parseToastError(err)
+      errors.parseToastError(err)
     }
     setLoading(false)
   }
