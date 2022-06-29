@@ -4,15 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import '@formatjs/intl-displaynames/polyfill'
-import '@formatjs/intl-displaynames/locale-data/en'
-
-// @ts-ignore
-const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
-
 const UNKNOWN = 'Unknown'
 
-const countryName = (countryCode: string): string => regionNames.of(countryCode) || UNKNOWN
+const countryName = (countryCode: string): string => countryNames[countryCode.toLowerCase()] || UNKNOWN
 
 const countryNames: { [key: string]: string } = Object.freeze({
   af: 'Afghanistan',
