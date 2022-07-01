@@ -6,20 +6,11 @@
  */
 import { AppState, FeesResponse } from 'mysterium-vpn-js'
 import React, { useEffect } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { tequila } from '../api/tequila'
 import errors from '../commons/errors'
 import { localStorageKeys } from '../constants/local_storage_keys'
-import {
-  ADMIN,
-  DASHBOARD,
-  LOGIN,
-  ON_BOARDING_HOME,
-  SESSIONS,
-  SESSIONS_SIDE,
-  SETTINGS,
-  WALLET,
-} from '../constants/routes'
+import { ADMIN, DASHBOARD, LOGIN, ON_BOARDING_HOME } from '../constants/routes'
 import {
   fetchChainSummaryAsync,
   fetchConfigAsync,
@@ -44,12 +35,7 @@ import LoginPage from './Login/LoginPage'
 
 import { Protected } from './ProtectedRoute'
 import DashboardPage from './Authenticated/Dashboard/DashboardPage'
-import SessionsPage from './Authenticated/Sessions/SessionsPage'
-import SettingsPage from './Authenticated/Settings/SettingsPage'
-import WalletPage from './Authenticated/Wallet/WalletPage'
 import { AdminPage } from './Authenticated/Admin/AdminPage'
-import OnBoardingPage from './Onboarding/OnBoardingPage'
-import SessionSidebarPage from './Authenticated/SessionSidebar/SessionSidebarPage'
 import identities from '../commons/identities'
 import { useAppDispatch, useAppSelector } from '../commons/hooks'
 
@@ -58,7 +44,7 @@ const { parseToastError } = errors
 const SECOND = 1000
 
 const AppRouter = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const actions = {
     fetchIdentityAsync: async () => fetchIdentityAsync(),
@@ -186,63 +172,6 @@ const AppRouter = () => {
         element={
           <Protected redirects={toLoginOrOnBoarding}>
             <ContentWithNavigation content={<DashboardPage />} />
-          </Protected>
-        }
-      />
-      <Route
-        path={SESSIONS}
-        element={
-          <Protected redirects={toLoginOrOnBoarding}>
-            <ContentWithNavigation content={<SessionsPage />} />
-          </Protected>
-        }
-      />
-      <Route
-        path={SETTINGS}
-        element={
-          <ContentWithNavigation
-            content={
-              <Protected redirects={toLoginOrOnBoarding}>
-                <SettingsPage />
-              </Protected>
-            }
-          />
-        }
-      />
-      <Route
-        path={WALLET}
-        element={
-          <Protected redirects={toLoginOrOnBoarding}>
-            <ContentWithNavigation content={<WalletPage />} />
-          </Protected>
-        }
-      />
-      <Route
-        path={SESSIONS_SIDE}
-        element={
-          <Protected redirects={toLoginOrOnBoarding}>
-            <ContentWithNavigation content={<SessionSidebarPage />} />
-          </Protected>
-        }
-      />
-      <Route
-        path={LOGIN}
-        element={
-          <Protected redirects={toDashboardIfLoggedIn}>
-            <LoginPage
-              onSuccessLogin={async () => {
-                await authenticatedActions(false)
-                navigate(DASHBOARD)
-              }}
-            />
-          </Protected>
-        }
-      />
-      <Route
-        path={ON_BOARDING_HOME}
-        element={
-          <Protected redirects={[{ condition: !onBoarding.needsOnBoarding, to: LOGIN }]}>
-            <OnBoardingPage />
           </Protected>
         }
       />

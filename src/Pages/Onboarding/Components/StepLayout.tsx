@@ -4,10 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress } from '@material-ui/core'
 import classNames from 'classnames'
 import React, { ReactNode } from 'react'
 import styles from './StepLayout.module.scss'
+import { CircularSpinner } from '../../../Components/CircularSpinner/CircularSpinner'
 
 interface Props {
   title: ReactNode
@@ -24,7 +24,7 @@ export const StepLayout = ({ title, children, description, controls, controlsCen
     <h1 className={styles.title}>{title}</h1>
     <p className={styles.description}>{description}</p>
     {isLoading ? (
-      <CircularProgress className={styles.loading} />
+      <CircularSpinner className={styles.loading} />
     ) : (
       <>
         <div className={styles.content}>{children}</div>

@@ -4,16 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useSnackbar, VariantType, WithSnackbarProps } from 'notistack'
 
-let useSnackbarRef: WithSnackbarProps
-export const SnackbarUtilsConfigurator: React.FC = () => {
-  useSnackbarRef = useSnackbar()
-  return null
-}
-
-const toast = (msg: string, variant: VariantType = 'default') => {
-  useSnackbarRef.enqueueSnackbar(msg, { variant })
+const toast = (msg: string, variant: any) => {
+  console.error(`NOTIFICATIONS NOT IMPLEMENTED! ${variant}:${msg} `)
 }
 
 const toastSuccess = (msg: string) => {

@@ -14,7 +14,6 @@ import { Payments } from '../../../Components/Payments/Payments'
 import { selectors } from '../../../redux/selectors'
 import { StepLayout } from '../Components/StepLayout'
 import { feez } from '../../../commons/fees'
-import { CollapseAlert } from '../../../Components/Alerts/CollapseAlert'
 import BigNumber from 'bignumber.js'
 import { useAppSelector } from '../../../commons/hooks'
 
@@ -74,9 +73,7 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
       controlsCentered
       fixed
     >
-      <CollapseAlert severity="error" visible={isEmptyFees}>
-        Could not retrieve blockchain fees please refresh page and try again...
-      </CollapseAlert>
+      {isEmptyFees && <div>Could not retrieve blockchain fees please refresh page and try again...</div>}
       <Payments amountRequiredWei={myst.toWeiBig(minimalAmountEther)} isCompleted={isRegistrationPaymentReceived} />
     </StepLayout>
   )

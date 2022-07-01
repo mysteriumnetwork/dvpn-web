@@ -7,7 +7,6 @@
 import { LocalVersion, RemoteVersion } from '../../../../api/ui-version-management'
 import styles from './VersionManagement.module.scss'
 import dates from '../../../../commons/dates'
-import Tooltip from '../../../../Components/Tooltip/Tooltip'
 import Button from '../../../../Components/Buttons/Button'
 import React from 'react'
 
@@ -47,7 +46,7 @@ export const VersionCard = ({
         </div>
         <div className={styles.releaseBlock}>
           <div className={styles.released}>({date2human(remote.releasedAt)})</div>
-          {releaseNotes && <Tooltip title={releaseNotes} />}
+          {/*{releaseNotes && <Tooltip title={releaseNotes} />}*/}
         </div>
       </div>
       <div>

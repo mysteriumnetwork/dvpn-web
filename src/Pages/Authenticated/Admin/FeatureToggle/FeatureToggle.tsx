@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import CheckIcon from '@material-ui/icons/Check'
 import { useState } from 'react'
 import { tequila } from '../../../../api/tequila'
 import { configs } from '../../../../commons/config'
@@ -40,7 +39,7 @@ export const FeatureToggle = () => {
     const isEnabled = configs.isFeatureEnabled(config, feature.name)
     return (
       <div key={feature.name} className={styles.feature}>
-        <div className={styles.enabled}>{isEnabled && <CheckIcon />}</div>
+        <div className={styles.enabled}>{isEnabled && <div>X</div>}</div>
         <div className={styles.info}>
           <p className={styles.name}>{feature.name}</p>
           <p className={styles.description}>{feature.description}</p>

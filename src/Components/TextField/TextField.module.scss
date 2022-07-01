@@ -1,0 +1,29 @@
+.input {
+    width: 100%;
+    border: 1px solid #9090bb;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 44px;
+    padding: 0.5rem 1rem;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+.inputHolder {
+    position: relative;
+    .inputText {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        right: 10px;
+        display: flex;
+        align-items: center;
+        color: #9090bb;
+        font-size: 12px;
+        font-weight: 500;
+    }
+}

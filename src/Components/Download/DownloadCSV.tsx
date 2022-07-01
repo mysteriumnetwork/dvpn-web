@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import Button from '../Buttons/Button'
-import GetApp from '@material-ui/icons/GetApp'
 import errors from '../../commons/errors'
 import { useState } from 'react'
 
@@ -59,5 +58,5 @@ export const DownloadCSV = <T extends unknown>({ fetchData, mapper, disabled }: 
     }
   }
 
-  return <Button disabled={disabled} icon={<GetApp />} onClick={handleDownload} extraStyle="outline" />
+  return <Button disabled={disabled} onClick={handleDownload} extraStyle="outline" />
 }

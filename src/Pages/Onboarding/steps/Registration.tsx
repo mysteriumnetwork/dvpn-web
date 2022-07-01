@@ -4,8 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import Collapse from '@material-ui/core/Collapse'
-import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
 import { tequila } from '../../../api/tequila'
 import errorz from '../../../commons/errors'
@@ -39,15 +37,12 @@ interface State {
   errors: string[]
 }
 
-const Errors = ({ errors }: State) => (
-  <Collapse in={errors.length > 0}>
-    <Alert severity="error">
-      <AlertTitle>Error</AlertTitle>
-      {errors.map((err, idx) => (
-        <div key={idx}>{err}</div>
-      ))}
-    </Alert>
-  </Collapse>
+const Errors = ({ errors }: Pick<State, 'errors'>) => (
+  <div>
+    {errors.map((err, idx) => (
+      <div key={idx}>{err}</div>
+    ))}
+  </div>
 )
 
 export type RegistrationInfo = {
@@ -141,7 +136,7 @@ const Registration = ({ nextStep }: StepProps) => {
       controlsCentered
     >
       <div id="separator" style={{ marginTop: '100px' }} />
-      <Errors {...state} />
+      <Errors errors={state.errors} />
       <InputGroup
         label="Withdrawal Address (required)"
         help={

@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { SwitchBaseProps } from '@material-ui/core/internal/SwitchBase'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import React, { FormEvent, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -13,8 +12,6 @@ import { configs } from '../../../commons/config'
 import errors from '../../../commons/errors'
 import { validatePassword } from '../../../commons/passwords'
 import Button from '../../../Components/Buttons/Button'
-import { Checkbox } from '../../../Components/Checkbox/Checkbox'
-import Tooltip from '../../../Components/Tooltip/Tooltip'
 import { TextField } from '../../../Components/TextField/TextField'
 import Error from '../../../Components/Validation/Error'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
@@ -191,23 +188,23 @@ const MMNClaim = ({
   config?: Config
   state: State
   onApiKeyChange: (value: string) => void
-  handleCheckboxChange: SwitchBaseProps['onChange']
+  handleCheckboxChange: any
 }) => {
   return (
     <>
       <div className={classNames(styles.claimRow, 'input-group', 'm-t-50', 'm-b-20')}>
-        <Checkbox
+        {/*        <Checkbox
           checked={state.useApiKey}
           handleCheckboxChange={handleCheckboxChange}
           label={'Claim this node in ' + state.mmnDomain}
           disabled={state.urlApiKey}
-        />
+        />*/}
         <div className="m-l-15" />
-        <Tooltip
-          title={
-            'If you claim your node you will be able to manage and see statistics for all your nodes in mystnodes.com'
-          }
-        />
+        {/*<Tooltip*/}
+        {/*  title={*/}
+        {/*    'If you claim your node you will be able to manage and see statistics for all your nodes in mystnodes.com'*/}
+        {/*  }*/}
+        {/*/>*/}
       </div>
       {state.useApiKey ? (
         <div className="input-group m-t-20">

@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { MouseEventHandler } from 'react'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 import './Button.scss'
+import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 
 interface Props {
   isLoading?: boolean
@@ -34,9 +34,8 @@ const Button = ({ isLoading, extraStyle, className, children, onClick, type, dis
       style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
     >
       {isLoading ? (
-        <CircularProgress
+        <CircularSpinner
           className={['outline', 'outline-primary'].includes(`${extraStyle}`) ? 'loader-outline' : 'loader'}
-          disableShrink
         />
       ) : (
         children

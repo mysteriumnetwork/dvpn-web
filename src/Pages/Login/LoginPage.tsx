@@ -4,8 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import Collapse from '@material-ui/core/Collapse'
-import { Alert, AlertTitle } from '@material-ui/lab'
 import React, { FormEvent, useState } from 'react'
 import { tequila } from '../../api/tequila'
 import SideImage from '../../assets/images/onboarding/SideImage.png'
@@ -65,12 +63,7 @@ const LoginPage = ({ onSuccessLogin }: Props) => {
           <h1 className="login-content-block--heading">Welcome node runner!</h1>
           <p className="login-content-block--heading-paragraph">Lets get you up and running. </p>
           <div className="login-content-block--password-block">
-            <Collapse in={state.error}>
-              <Alert severity="error">
-                <AlertTitle>Error</AlertTitle>
-                Bad credentials
-              </Alert>
-            </Collapse>
+            {state.error && <div>Bad credentials</div>}
             <form onSubmit={handleLogin}>
               <div className="password-input-block">
                 <p className="text-field-label">Web UI password</p>

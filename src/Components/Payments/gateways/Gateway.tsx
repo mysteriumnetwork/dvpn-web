@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress } from '@material-ui/core'
 import classNames from 'classnames'
 import { PaymentOrder } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -18,6 +17,7 @@ import { validateAndReturnCheckoutUrl } from './fiat'
 import styles from './Gateway.module.scss'
 import { GatewayProps } from './types'
 import { useAppSelector } from '../../../commons/hooks'
+import { CircularSpinner } from '../../CircularSpinner/CircularSpinner'
 
 const { parseToastError } = errors
 const { countryNames } = countries
@@ -127,7 +127,7 @@ const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => 
   if (isLoading) {
     return (
       <div className={styles.content}>
-        <CircularProgress className={styles.spinner} />
+        <CircularSpinner className={styles.spinner} />
       </div>
     )
   }
@@ -166,7 +166,7 @@ const WaitingPayment = ({ isRegistrationPaymentReceived, showPayNow }: WaitingPa
       ) : (
         <div className={styles.waitingPaymentVerification}>
           Payment verification in progress (may take a few minutes)...
-          <CircularProgress disableShrink />
+          <CircularSpinner />
         </div>
       )}
     </div>

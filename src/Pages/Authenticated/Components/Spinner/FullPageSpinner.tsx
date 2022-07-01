@@ -5,15 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { CircularProgress } from '@material-ui/core'
 import React from 'react'
 import styles from './Spinner.module.scss'
+import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 
 export const FullPageSpinner = () => {
   return (
     <>
       <div className={styles.overlay} />
-      <CircularProgress size={150} thickness={1} className={styles.spinner} disableShrink />
+      <CircularSpinner className={styles.spinner} />
     </>
   )
 }

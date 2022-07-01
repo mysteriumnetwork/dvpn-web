@@ -4,8 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CircularProgress, Tooltip } from '@material-ui/core'
-import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline'
 import classNames from 'classnames'
 import React from 'react'
 import { QRCode } from 'react-qr-svg'
@@ -17,6 +15,7 @@ import styles from './Direct.module.scss'
 import { HowToGetMyst } from './howto'
 import { GatewayProps } from './types'
 import { useAppSelector } from '../../../commons/hooks'
+import { CircularSpinner } from '../../CircularSpinner/CircularSpinner'
 
 const Direct = ({ payments: { amountRequiredWei } }: GatewayProps) => {
   const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
@@ -36,14 +35,14 @@ const Direct = ({ payments: { amountRequiredWei } }: GatewayProps) => {
       </div>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a className={styles.centered}>
-        <Tooltip
+        {/*        <Tooltip
           title={HowToGetMyst()}
           style={{ backgroundColor: '#FFFFFF !important', fill: '#9D9D9D' }}
           placement="bottom"
           arrow
           interactive
           children={<div>Don't have any MYST? Read here how to get it</div>}
-        />
+        />*/}
       </a>
       <p>2. Wait for the confirmation (might take a couple of minutes)</p>
       <div className={classNames(styles.centered, styles.centeredReceived)}>
@@ -51,10 +50,10 @@ const Direct = ({ payments: { amountRequiredWei } }: GatewayProps) => {
         {!isRegistrationFeeReceived ? (
           <>
             received...
-            <CircularProgress disableShrink />
+            <CircularSpinner />
           </>
         ) : (
-          <CheckCircleOutline fontSize="large" />
+          <CircularSpinner />
         )}
       </div>
     </div>

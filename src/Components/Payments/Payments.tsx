@@ -12,7 +12,7 @@ import toasts from '../../commons/toasts'
 import { Option, Radio } from '../Radio/Radio'
 import { GatewayProps, PaymentProps } from './gateways/types'
 import styles from './Payments.module.scss'
-import { CircularProgress } from '@material-ui/core'
+import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 
 const { toastError } = toasts
 const { api } = tequila
@@ -93,7 +93,7 @@ export const Payments = (props: PaymentProps) => {
   return (
     <div className={styles.content}>
       {state.isLoading ? (
-        <CircularProgress className={styles.loading} />
+        <CircularSpinner className={styles.loading} />
       ) : (
         <>
           <div className={styles.options}>

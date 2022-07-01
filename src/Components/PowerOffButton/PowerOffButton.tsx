@@ -5,13 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { IconButton } from '@material-ui/core'
-import Icon from '@material-ui/icons/PowerSettingsNewOutlined'
 import { useEffect, useState } from 'react'
 import { tequila } from '../../api/tequila'
 import page from '../../commons/page'
 import errors from '../../commons/errors'
-import ConfirmationDialog from '../ConfirmationDialogue/ConfirmationDialog'
 
 const { parseToastError } = errors
 
@@ -45,16 +42,17 @@ export const PowerOffButton = () => {
   }
 
   return (
-    <IconButton style={{ color: '#FFF' }} onClick={() => setShowConfirmation(true)} disabled={showConfirmation}>
-      <Icon />
-      <ConfirmationDialog
-        confirmText="Restart"
-        message="Are you sure you want to restart your node?"
-        open={showConfirmation}
-        onCancel={() => setShowConfirmation(false)}
-        onConfirm={handleStop}
-        content={<div>{isCountdown && <p>Page will be automatically refreshed in: {timer.toFixed(1)}</p>}</div>}
-      />
-    </IconButton>
+    <h3>WIP</h3>
+    // <IconButton style={{ color: '#FFF' }} onClick={() => setShowConfirmation(true)} disabled={showConfirmation}>
+    //   <Icon />
+    //   <ConfirmationDialog
+    //     confirmText="Restart"
+    //     message="Are you sure you want to restart your node?"
+    //     open={showConfirmation}
+    //     onCancel={() => setShowConfirmation(false)}
+    //     onConfirm={handleStop}
+    //     content={<div>{isCountdown && <p>Page will be automatically refreshed in: {timer.toFixed(1)}</p>}</div>}
+    //   />
+    // </IconButton>
   )
 }

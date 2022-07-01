@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import './AuthenticatedPage.scss'
+import styles from './AuthenticatedPage.module.scss'
 import { useLocation } from 'react-router-dom'
 
 import { ADMIN } from '../../constants/routes'
@@ -38,12 +38,12 @@ const ContentWithNavigation = ({ content }: Props) => {
   const identity = useAppSelector(selectors.currentIdentitySelector)
   const { pathname } = useLocation()
   return (
-    <div className="page">
+    <div className={styles.page}>
       {displayOverlay(identity, pathname) && <RegistrationOverlay identity={identity} />}
-      <div className="page__menu">
+      <div className={styles.navigation}>
         <Navigation />
       </div>
-      <div className="page__content">{content}</div>
+      <div className={styles.content}>{content}</div>
     </div>
   )
 }
