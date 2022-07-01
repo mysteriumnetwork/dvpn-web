@@ -1,0 +1,47 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.card {
+  padding: 22px 28px 25px 28px;
+  box-shadow: 0 2px 5px rgba(99,99,99, 0.05);
+  background: #ffffff;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 10px;
+  height: 120px;
+  flex-grow: 1;
+
+  @include respond-below(sm) {
+    padding: 15px 21px 18px 21px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.value {
+  font-style: normal;
+  font-size: $larger-size;
+  font-weight: $medium-weight;
+  color: $main-text-color;
+  white-space: nowrap;
+}
+
+.label {
+  font-style: normal;
+  font-size: $normal-size;
+  font-weight: $lighter-weight;
+  color: $names-text-color;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  @include respond-below(sm) {
+    width: auto;
+  }
+}

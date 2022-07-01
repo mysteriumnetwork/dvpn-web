@@ -1,0 +1,75 @@
+@import 'variables';
+
+// UBUNTU FONTS
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/Ubuntu/Ubuntu-Medium.ttf") format("truetype");
+  font-weight: $normal-weight;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/Ubuntu/Ubuntu-MediumItalic.ttf") format("truetype");
+  font-weight: $normal-weight;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/Ubuntu/Ubuntu-Bold.ttf") format("truetype");
+  font-weight: $bold-weight;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/Ubuntu/Ubuntu-BoldItalic.ttf") format("truetype");
+  font-weight: $bold-weight;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/Ubuntu/Ubuntu-Light.ttf") format("truetype");
+  font-weight: $lighter-weight;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/Ubuntu/Ubuntu-LightItalic.ttf") format("truetype");
+  font-weight: $lighter-weight;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/Ubuntu/Ubuntu-Medium.ttf") format("truetype");
+  font-weight: $medium-weight;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/Ubuntu/Ubuntu-MediumItalic.ttf") format("truetype");
+  font-weight: $medium-weight;
+  font-style: italic;
+}
+
+// LATO FONTS
+
+@font-face {
+  font-family: 'Lato';
+  src: url("../../fonts/Lato/Lato-Regular.ttf") format("truetype");
+  font-weight: $normal-weight;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url("../../fonts/Lato/Lato-Bold.ttf") format("truetype");
+  font-weight: $bold-weight;
+  font-style: normal;
+}
+

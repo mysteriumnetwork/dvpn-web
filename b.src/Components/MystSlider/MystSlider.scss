@@ -1,0 +1,105 @@
+@import "../../assets/styles/base/variables";
+
+.slider {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+
+    &--label {
+      font-weight: $bold-weight;
+      color: $inputs-labels-text-color;
+      font-size: $smaller-size;
+      line-height: 14px;
+      font-family: Lato;
+      text-align: left;
+    }
+
+    &--amount {
+      font-weight: $bold-weight;
+      color: $inputs-labels-text-color;
+      font-size: $smaller-size;
+      line-height: 14px;
+      font-family: Lato;
+      text-align: left;
+    }
+  }
+
+  &__container {
+    .MuiSlider-root {
+      color: #932063;
+
+      .myst-slider {
+        .MuiSlider-valueLabel {
+          width: 86px;
+          left: -35px;
+        }
+      }
+
+      .MuiSlider-thumb::after {
+        display: none;
+        content: none;
+      }
+
+      .MuiSlider-valueLabel {
+        background: #eeeeee;
+        padding: 8px 8px;
+        transform: none !important;
+        border-radius: 2px;
+        top: -44px !important;
+        left: -38px;
+        width: 92px;
+        display: none;
+
+        span {
+          height: auto;
+        }
+      }
+
+      .MuiSlider-active {
+        .MuiSlider-valueLabel {
+          display: block;
+        }
+      }
+
+      .MuiSlider-valueLabel span, .MuiSlider-valueLabel span div {
+        transform: none;
+        color: #252631;
+        font-style: normal;
+        font-size: $smaller-size;
+        line-height: 14px;
+        font-family: Lato;
+        font-weight: $bold-weight;
+        background-color: unset !important;
+        width: 100%;
+        text-align: center;
+      }
+
+      .MuiSlider-thumb {
+        background-color: #ffffff;
+        height: 14px;
+        width: 14px;
+
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+
+        &.MuiSlider-active {
+          box-shadow: 0 0 0 10px rgba(147, 32, 99, 0.16);
+        }
+
+        &.Mui-disabled {
+          margin-top: -5px;
+          margin-left: -6px;
+        }
+      }
+
+      .MuiSlider-rail {
+        height: 6px;
+        background-color: #eeeeee;
+        opacity: initial;
+      }
+
+      .MuiSlider-track {
+        height: 6px;
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+@import '../../assets/styles/base/variables';
+@import '../../assets/styles/base/mixins/media';
+
+.login.wrapper {
+  display: flex;
+  min-height: 100vh;
+
+  .login-content {
+    background: #ffffff;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include respond-above(sm) {
+      border-radius: 0 16px 16px 0;
+      width: 55%;
+      margin-right: -5%;
+    }
+    @include respond-below(sm) {
+      width: 100%;
+    }
+
+    .login-content-block {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+
+      &--heading {
+        color: $main-text-color;
+        font-weight: $lighter-weight;
+        font-size: 32px;
+        line-height: 42px;
+      }
+
+      &--heading-paragraph {
+        color: $secondary-text-color;
+        font-weight: $lighter-weight;
+        margin-top: 3px;
+        font-size: $normal-size;
+        line-height: 21px;
+      }
+
+      &--password-block {
+        margin-top: 80px;
+        text-align: left;
+      }
+
+      .password-actions-block {
+        margin-top: 56px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        a {
+          text-decoration: none;
+          font-weight: $medium-weight;
+          font-size: $normal-size;
+          line-height: 16px;
+          color: $third-color;
+        }
+      }
+    }
+  }
+
+  .side {
+    @include respond-above(sm) {
+      background: linear-gradient(214.77deg, #262262 0%, $third-color 100.08%);
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        max-width: 100%;
+      }
+    }
+    @include respond-below(sm) {
+      display: none;
+    }
+  }
+}
+

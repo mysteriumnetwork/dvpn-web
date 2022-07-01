@@ -1,0 +1,56 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.card {
+  background: linear-gradient(359.97deg, #262262 0.61%, #9E1F63 100.02%);
+  padding: 22px 28px 25px 28px;
+  box-shadow: 0 2px 5px rgba(99,99,99, 0.05);
+  text-align: left;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 10px;
+  min-height: 120px;
+  flex-grow: 2;
+  flex-wrap: wrap;
+  row-gap: 30px;
+
+  @include respond-below(sm) {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  &Icon {
+    background: $light-key-color;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 14px;
+  }
+
+  &Stat {
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+
+    &Value {
+      color: #FFFFFF;
+      font-style: normal;
+      font-size: $larger-size;
+      line-height: 32px;
+      font-weight: $medium-weight;
+    }
+
+    &Label {
+      font-style: normal;
+      font-size: $normal-size;
+      line-height: 21px;
+      font-weight: $lighter-weight;
+      color: #FFFFFF;
+    }
+  }
+
+}

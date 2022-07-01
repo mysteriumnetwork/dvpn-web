@@ -1,0 +1,32 @@
+@import '../assets/styles/base/resets';
+@import '../assets/styles/base/variables';
+@import '../assets/styles/base/fonts';
+@import '../assets/styles/base/spacing';
+@import '../assets/styles/base/common';
+
+@import '../assets/styles/components/form';
+@import '../assets/styles/components/checkbox';
+@import '../assets/styles/components/spinner';
+@import '../assets/styles/components/switch';
+@import '../assets/styles/components/tooltip';
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

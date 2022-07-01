@@ -1,0 +1,75 @@
+@import "src/assets/styles/base/variables";
+
+.session {
+  background: #FCFCFC;
+  border: 1px solid #ECECF2;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 4px 12px;
+  width: 100%;
+
+  &Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &Title {
+      font-style: normal;
+      font-weight: $normal-weight;
+      font-size: $normal-size;
+      line-height: 21px;
+      color: $main-text-color;
+      padding-left: 0;
+    }
+
+    .status {
+      font-style: normal;
+      font-weight: $bold-weight;
+      font-size: $smaller-size;
+      line-height: 21px;
+
+      &Success {
+        color: #58A079;
+      }
+
+      &Failed {
+        color: #CB0D0D;
+      }
+    }
+  }
+
+  &Meta {
+    display: flex;
+    justify-content: space-between;
+
+    font-style: normal;
+    font-weight: $normal-weight;
+    font-size: $smaller-size;
+    line-height: 18px;
+    color: #A0A0A0;
+  }
+
+  &Statistics {
+    display: grid;
+    grid-template-columns: 3fr 3fr 4fr;
+    padding-top: 15px;
+
+    .statistic {
+
+      font-style: normal;
+      font-weight: $medium-weight;
+      font-size: $normal-size;
+      line-height: 21px;
+      color: $main-text-color;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+
+  }
+}

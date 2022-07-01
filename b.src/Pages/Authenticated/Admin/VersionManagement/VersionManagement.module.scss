@@ -1,0 +1,121 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.progress {
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .bar {
+    width: 60%;
+  }
+
+  .invisible {
+    display: none;
+  }
+}
+
+.info {
+  display: flex;
+  width: 100%;
+  height: 6rem;
+  justify-content: center;
+  gap: 25px;
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    height: 100%;
+    width: 10rem;
+  }
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  gap: 15px;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .key {
+      color: $secondary-text-color;
+    }
+
+    .value {
+      font-size: $larger-size;
+    }
+  }
+
+  .switchBack {
+    align-self: center;
+  }
+}
+
+.versions {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+
+  height: 60vh;
+  overflow-y: auto;
+
+  .row {
+    padding: 35px;
+    border-radius: 5px;
+    background: #FFFFFF;
+
+    width: 500px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .versionBlock {
+      display: flex;
+    }
+
+    .releaseBlock {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      width: 200px;
+    }
+
+    .preRelease {
+      font-size: $smaller-size;
+      color: red;
+    }
+
+    .name {
+      margin-right: 15px;
+      font-size: $larger-size;
+    }
+
+    .released {
+      color: $secondary-text-color;
+      font-size: $smaller-size;
+    }
+
+    .control {
+      width: 120px;
+    }
+  }
+}
+
+.releaseNotes {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

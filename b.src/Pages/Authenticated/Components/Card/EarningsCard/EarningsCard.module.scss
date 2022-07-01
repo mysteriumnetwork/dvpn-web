@@ -1,0 +1,113 @@
+@import '../../../../../assets/styles/base/variables';
+@import '../../../../../assets/styles/base/mixins/media';
+
+.content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.separator {
+  border-left: 1px solid $names-text-color;
+  margin: 0 5px 0 5px;
+}
+
+.earnings {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @include respond-below(sm) {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  &ProgressContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 10px 0 10px;
+  }
+
+  &Warning {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 5px;
+
+    &Text {
+      font-size: $smaller-size;
+    }
+  }
+
+  &Progress {
+    width: 100%;
+
+  }
+
+  &Amount {
+    margin-right: 15px;
+  }
+
+  &Controls {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.value {
+  font-style: normal;
+  font-size: $larger-size;
+  font-weight: $medium-weight;
+  color: $main-text-color;
+  white-space: nowrap;
+
+  display: flex;
+  gap: 50px;
+}
+
+.label {
+  font-style: normal;
+  font-size: $normal-size;
+  font-weight: $lighter-weight;
+  color: $names-text-color;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  //justify-content: space-between;
+  gap: 5px;
+  width: 100%;
+}
+
+.balance {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+
+  @include respond-below(sm) {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  &Title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &Amount {
+
+  }
+
+  &Control {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+  }
+
+  &Note {
+    font-size: $smaller-size;
+  }
+}

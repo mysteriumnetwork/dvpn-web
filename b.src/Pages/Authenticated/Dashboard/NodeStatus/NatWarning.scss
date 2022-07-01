@@ -1,0 +1,30 @@
+@import '../../../../assets/styles/base/variables';
+@import '../../../../assets/styles/base/mixins/media';
+
+.nat-warning {
+  padding: 22px 0 25px 28px;
+  box-shadow: 0 2px 5px rgba(99, 99, 99, 0.05);
+  background: #FFFFFF;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+
+  &__warning {
+    font-size: $larger-size;
+    color: red;
+  }
+
+  &__header {
+    margin-top: 10px;
+  }
+
+  &__content {
+    margin-top: 10px;
+    font-style: normal;
+    font-weight: $lighter-weight;
+    font-size: $normal-size;
+    line-height: 21px;
+    color: $names-text-color;
+    width: 80%;
+  }
+}

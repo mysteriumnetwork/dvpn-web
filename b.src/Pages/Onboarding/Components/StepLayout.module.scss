@@ -1,0 +1,58 @@
+@import '../../../assets/styles/base/variables';
+@import '../../../assets/styles/base/mixins/media';
+
+.step {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 500px;
+  position: relative;
+
+  &Centered {
+    justify-content: center;
+  }
+
+  &Fixed {
+    margin-top: 50vh;
+  }
+}
+
+.title {
+  color: $main-text-color;
+  font-weight: $lighter-weight;
+  font-size: 32px;
+  line-height: 42px;
+}
+
+.description {
+  color: $secondary-text-color;
+  font-weight: $lighter-weight;
+  margin-top: 10px;
+}
+
+.content {
+  text-align: left;
+  &-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &--center, &:only-child {
+      justify-content: center;
+    }
+  }
+}
+
+.loading {
+  margin-top: 25px;
+  align-self: center;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &Centered, &:only-child {
+    justify-content: center;
+  }
+}

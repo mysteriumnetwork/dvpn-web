@@ -1,0 +1,90 @@
+@import 'src/assets/styles/base/variables';
+@import 'src/assets/styles/base/mixins/media';
+
+.overlay {
+  position: fixed;
+  max-width: 100%;
+  min-width: 100%;
+  height: 100vh;
+
+  z-index: 1000;
+  background: #dfdfdfd1;
+}
+
+.registration {
+  position: fixed;
+  max-width: 100%;
+  min-width: 100%;
+  height: 100%;
+  z-index: 1001;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &Content {
+    display: flex;
+    align-items: center;
+    font-weight: $bold-weight;
+    color: $third-color;
+
+    &Row {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    @include respond-below(sm) {
+      font-size: $small-size;
+    }
+  }
+
+  &Footer {
+    display: flex;
+    align-items: center;
+
+    @include respond-below(sm) {
+      font-size: $smaller-size;
+    }
+  }
+
+  &Identity {
+    font-weight: $bold-weight;
+    font-size: $normal-size;
+    color: $main-text-color;
+  }
+
+  &Copy {
+    color: $main-text-color;
+  }
+}
+
+.intercomHelpPointer {
+  @include respond-below(sm) {
+    display: none;
+  }
+
+  position: absolute;
+  bottom: 30px;
+  left: 80px;
+  z-index: 1001;
+
+  display: flex;
+
+  align-items: center;
+
+  font-weight: $bold-weight;
+  color: $main-text-color;
+
+  &Arrow {
+    font-size: 2em;
+  }
+}
+
+.registrationModalContent {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

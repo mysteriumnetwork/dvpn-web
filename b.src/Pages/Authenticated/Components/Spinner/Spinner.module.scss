@@ -1,0 +1,17 @@
+.overlay {
+  width: 100%;
+  opacity: 0.5;
+  z-index: 1000;
+  height: 100%;
+  background: #dfdfdf;
+  position: fixed;
+  top:        0;
+  left:       0;
+}
+
+.spinner {
+  top: calc(50% - 75px);
+  left: calc(50% - 75px);
+  z-index: 1001;
+  position: fixed;
+}

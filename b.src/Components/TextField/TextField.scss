@@ -1,0 +1,47 @@
+@import '../../assets/styles/base/variables';
+
+.text-field-label {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: $normal-weight;
+  font-size: $normal-size;
+  line-height: 21px;
+  color: $secondary-text-color;
+  margin-bottom: 6px;
+  margin-top: 20px;
+}
+
+.default-text-field.MuiFormControl-root {
+  width: 100%;
+
+  .MuiInputBase-input {
+    padding: 10px 0;
+    color: $main-text-color;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: $bold-weight;
+    font-size: $normal-size;
+    line-height: 17px;
+  }
+
+  .MuiInput-underline{
+    &.Mui-disabled:before {
+      border-bottom-style: solid;
+      border-bottom-color: #F0F0F3;
+    }
+    &.Mui-focused:before {
+      border-bottom: 2px solid #9a1f63b3;
+    }
+    &:hover:not(.Mui-disabled):before {
+      border-bottom: 2px solid #9a1f63b3;
+    }
+    &:before {
+      border-bottom: 2px solid #F0F0F3;
+    }
+    &:after {
+      border: 0 solid #F0F0F3;
+      transform: none;
+      transition: none;
+    }
+  }
+}
