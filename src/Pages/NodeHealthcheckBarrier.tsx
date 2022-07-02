@@ -8,11 +8,12 @@ import { tequila } from '../api/tequila'
 import { useFetch } from '../commons/hooks'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 import styles from './NodeHealthcheckBarrier.module.scss'
+import { ReactNode } from 'react'
 
 const { api } = tequila
 
 interface Props {
-  children: JSX.Element
+  children: ReactNode
 }
 
 export const NodeHealthcheckBarrier = ({ children }: Props) => {
@@ -30,5 +31,5 @@ export const NodeHealthcheckBarrier = ({ children }: Props) => {
     )
   }
 
-  return children
+  return <>{children}</>
 }

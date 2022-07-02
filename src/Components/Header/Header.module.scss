@@ -1,14 +1,11 @@
 @import "../../assets/styles/base/variables";
 
 .header {
-  padding-top: 25px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 25px;
 
   .logo {
-    background: rgba(38, 34, 98, 0.1);
     border-radius: 6px;
     display: flex;
     justify-content: center;

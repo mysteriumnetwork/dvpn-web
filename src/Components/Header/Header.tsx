@@ -11,7 +11,7 @@ interface Props {
   name?: string
 }
 
-const Header = ({ logo, name }: Props): JSX.Element => {
+const Header = ({ logo, name }: Props) => {
   return (
     <div className={styles.header}>
       <div className={styles.logo}>{logo}</div>

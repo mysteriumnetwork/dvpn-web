@@ -10,7 +10,16 @@ import { Route, Routes } from 'react-router-dom'
 import { tequila } from '../api/tequila'
 import errors from '../commons/errors'
 import { localStorageKeys } from '../constants/local_storage_keys'
-import { ADMIN, DASHBOARD, LOGIN, ON_BOARDING_HOME } from '../constants/routes'
+import {
+  ADMIN,
+  DASHBOARD,
+  LOGIN,
+  ON_BOARDING_HOME,
+  SESSIONS,
+  SESSIONS_SIDE,
+  SETTINGS,
+  WALLET,
+} from '../constants/routes'
 import {
   fetchChainSummaryAsync,
   fetchConfigAsync,
@@ -169,6 +178,38 @@ const AppRouter = () => {
       />
       <Route
         path={DASHBOARD}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<DashboardPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={SESSIONS}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<DashboardPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={SETTINGS}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<DashboardPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={WALLET}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <ContentWithNavigation content={<DashboardPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={SESSIONS_SIDE}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
             <ContentWithNavigation content={<DashboardPage />} />

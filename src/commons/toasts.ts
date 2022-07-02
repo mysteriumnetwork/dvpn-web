@@ -4,26 +4,23 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { toast as rtoast } from 'react-toastify'
+import { ReactNode } from 'react'
 
-const toast = (msg: string, variant: any) => {
-  console.error(`NOTIFICATIONS NOT IMPLEMENTED! ${variant}:${msg} `)
+const toastSuccess = (msg: ReactNode) => {
+  rtoast.success(msg)
 }
-
-const toastSuccess = (msg: string) => {
-  toast(msg, 'success')
+const toastWarning = (msg: ReactNode) => {
+  rtoast.warning(msg)
 }
-const toastWarning = (msg: string) => {
-  toast(msg, 'warning')
+const toastInfo = (msg: ReactNode) => {
+  rtoast.info(msg)
 }
-const toastInfo = (msg: string) => {
-  toast(msg, 'info')
-}
-const toastError = (msg: string) => {
-  toast(msg, 'error')
+const toastError = (msg: ReactNode) => {
+  rtoast.error(msg)
 }
 
 const toasts = {
-  toast,
   toastSuccess,
   toastWarning,
   toastInfo,

@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useCallback, useEffect } from 'react'
+import { ReactNode, useCallback, useEffect } from 'react'
 import { ADMIN } from '../../../../constants/routes'
 import { useNavigate } from 'react-router-dom'
 
 interface Props {
-  children: JSX.Element
+  children: ReactNode
 }
 
 export const Hotkeys = ({ children }: Props) => {

@@ -1,7 +1,6 @@
 @import '../../../../assets/styles/base/variables';
 @import '../../../../assets/styles/base/mixins/media';
 
-// graph block
 .chart {
   background: #FFFFFF;
   border: 1px solid #ECECF2;
@@ -99,7 +98,7 @@
 
     .recharts-default-tooltip {
       background: #FFFFFF;
-      box-shadow: 0px 8px 15px rgba(152, 169, 188, 0.267182);
+      box-shadow: 0 8px 15px rgba(152, 169, 188, 0.267182);
       border-radius: 2px;
       border: none !important;
     }

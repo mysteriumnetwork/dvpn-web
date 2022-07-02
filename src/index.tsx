@@ -14,6 +14,7 @@ import { store } from './redux/store'
 
 import { Hotkeys } from './Pages/Authenticated/Components/Hotkeys/Hotkeys'
 import { NodeHealthcheckBarrier } from './Pages/NodeHealthcheckBarrier'
+import { ToastContainer } from 'react-toastify'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -24,6 +25,7 @@ const app = (
         <NodeHealthcheckBarrier>
           <AppRouter />
         </NodeHealthcheckBarrier>
+        <ToastContainer position="bottom-right" />
       </Hotkeys>
     </HashRouter>
   </Provider>

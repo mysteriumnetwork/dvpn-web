@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react'
-import { Layout } from '../Layout'
+import { Layout } from '../Components/Layout/Layout'
 import styles from './Admin.module.scss'
 import { FeatureToggle } from './FeatureToggle/FeatureToggle'
 import { VersionManagement } from './VersionManagement/VersionManagement'
