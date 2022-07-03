@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styles from './AuthenticatedPage.module.scss'
 import { useLocation } from 'react-router-dom'
 
 import { ADMIN } from '../../constants/routes'
@@ -15,6 +14,8 @@ import { selectors } from '../../redux/selectors'
 import { ReactElement } from 'react'
 import identities from '../../commons/identities'
 import { useAppSelector } from '../../commons/hooks'
+import styled from 'styled-components'
+import themes from '../../commons/themes'
 
 const { isEmpty, isRegistered } = identities
 
@@ -30,22 +31,34 @@ const displayOverlay = (identity: Identity, currentLocation: string): boolean =>
   return !isRegistered(identity)
 }
 
+const Page = styled.div`
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  height: 100vh;
+`
+
+const Content = styled.div`
+  background: ${themes.current().backgroundMysterium};
+  height: 100%;
+  width: 100%;
+  display: flex;
+`
+
 interface Props {
   content?: ReactElement
 }
 
-const ContentWithNavigation = ({ content }: Props) => {
+const WithNavigation = ({ content }: Props) => {
   const identity = useAppSelector(selectors.currentIdentitySelector)
   const { pathname } = useLocation()
   return (
-    <div className={styles.page}>
+    <Page>
       {displayOverlay(identity, pathname) && <RegistrationOverlay identity={identity} />}
-      <div className={styles.navigation}>
-        <Navigation />
-      </div>
-      <div className={styles.content}>{content}</div>
-    </div>
+      <Navigation />
+      <Content>{content}</Content>
+    </Page>
   )
 }
 
-export default ContentWithNavigation
+export default WithNavigation

@@ -39,7 +39,7 @@ import { sseAppStateStateChanged } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
 
 import './App.scss'
-import ContentWithNavigation from './Authenticated/ContentWithNavigation'
+import WithNavigation from './Authenticated/WithNavigation'
 import LoginPage from './Login/LoginPage'
 
 import { Protected } from './ProtectedRoute'
@@ -180,7 +180,7 @@ const AppRouter = () => {
         path={DASHBOARD}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <ContentWithNavigation content={<DashboardPage />} />
+            <WithNavigation content={<DashboardPage />} />
           </Protected>
         }
       />
@@ -188,7 +188,7 @@ const AppRouter = () => {
         path={SESSIONS}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <ContentWithNavigation content={<DashboardPage />} />
+            <WithNavigation content={<DashboardPage />} />
           </Protected>
         }
       />
@@ -196,7 +196,7 @@ const AppRouter = () => {
         path={SETTINGS}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <ContentWithNavigation content={<DashboardPage />} />
+            <WithNavigation content={<DashboardPage />} />
           </Protected>
         }
       />
@@ -204,7 +204,7 @@ const AppRouter = () => {
         path={WALLET}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <ContentWithNavigation content={<DashboardPage />} />
+            <WithNavigation content={<DashboardPage />} />
           </Protected>
         }
       />
@@ -212,7 +212,7 @@ const AppRouter = () => {
         path={SESSIONS_SIDE}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <ContentWithNavigation content={<DashboardPage />} />
+            <WithNavigation content={<DashboardPage />} />
           </Protected>
         }
       />
@@ -220,7 +220,7 @@ const AppRouter = () => {
         path={ADMIN}
         element={
           <Protected redirects={[{ condition: !loggedIn, to: LOGIN }]}>
-            <ContentWithNavigation content={<AdminPage />} />
+            <WithNavigation content={<AdminPage />} />
           </Protected>
         }
       />

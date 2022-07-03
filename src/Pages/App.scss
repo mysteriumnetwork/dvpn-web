@@ -1,14 +1,23 @@
-@import '../assets/styles/base/resets';
-@import '../assets/styles/base/variables';
 @import '../assets/styles/base/fonts';
-@import '../assets/styles/base/spacing';
 @import '../assets/styles/base/common';
 
-@import '../assets/styles/components/form';
-@import '../assets/styles/components/checkbox';
-@import '../assets/styles/components/spinner';
-@import '../assets/styles/components/switch';
-@import '../assets/styles/components/tooltip';
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Ubuntu", sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0px;
+  background-color: #F8F8FB;
+}
+
+#root {
+  height: 100%;
+}
+
 
 /* width */
 ::-webkit-scrollbar {

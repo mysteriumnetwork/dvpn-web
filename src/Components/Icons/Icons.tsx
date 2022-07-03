@@ -9,6 +9,8 @@ import { ReactComponent as DashboardNavSvg } from '../../assets/images/navigatio
 import { ReactComponent as SessionsNavSvg } from '../../assets/images/navigation/sessions.svg'
 import { ReactComponent as SettingsNavSvg } from '../../assets/images/navigation/settings.svg'
 import { ReactComponent as WalletNavSvg } from '../../assets/images/navigation/wallet.svg'
+import { ReactComponent as BugNavSvg } from '../../assets/images/navigation/bug.svg'
+import { ReactComponent as ChatNavSvg } from '../../assets/images/navigation/chat.svg'
 import { ReactComponent as InfoSvg } from '../../assets/images/info.svg'
 import { ReactComponent as ClockSvg } from '../../assets/images/clock.svg'
 import { ReactComponent as DataSvg } from '../../assets/images/data.svg'
@@ -44,6 +46,14 @@ export const WalletNavIcon = styled(WalletNavSvg)<NavProps>`
 `
 
 export const SettingsNavIcon = styled(SettingsNavSvg)<NavProps>`
+  ${navIconCss}
+`
+
+export const BugNavIcon = styled(BugNavSvg)<NavProps>`
+  ${navIconCss}
+`
+
+export const ChatNavIcon = styled(ChatNavSvg)<NavProps>`
   ${navIconCss}
 `
 

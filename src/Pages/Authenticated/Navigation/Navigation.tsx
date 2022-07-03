@@ -13,7 +13,14 @@ import './Navigation.scss'
 import styled from 'styled-components'
 import themes from '../../../commons/themes'
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
-import { DashboardNavIcon, SessionsNavIcon, SettingsNavIcon, WalletNavIcon } from '../../../Components/Icons/Icons'
+import {
+  BugNavIcon,
+  ChatNavIcon,
+  DashboardNavIcon,
+  SessionsNavIcon,
+  SettingsNavIcon,
+  WalletNavIcon,
+} from '../../../Components/Icons/Icons'
 
 const Content = styled.div`
   background: ${themes.current().backgroundMysterium};
@@ -77,6 +84,8 @@ const Navigation = () => {
       {/*  <ReportIssue />*/}
       {/*</div>*/}
       {/*<div className="navigation--chat-space" />*/}
+      <BugNavIcon />
+      <ChatNavIcon />
       <ThemeSwitch />
       <Margin />
     </Content>

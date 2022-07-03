@@ -7,14 +7,27 @@
 import { tequila } from '../api/tequila'
 import { useFetch } from '../commons/hooks'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
-import styles from './NodeHealthcheckBarrier.module.scss'
 import { ReactNode } from 'react'
+import styled from 'styled-components'
 
 const { api } = tequila
 
 interface Props {
   children: ReactNode
 }
+
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100vh;
+
+  align-items: center;
+  text-align: center;
+`
+
+const SadMessage = styled.h1`
+  width: 100%;
+`
 
 export const NodeHealthcheckBarrier = ({ children }: Props) => {
   const [, loading, error] = useFetch(() => api.healthCheck(), [])
@@ -25,9 +38,9 @@ export const NodeHealthcheckBarrier = ({ children }: Props) => {
 
   if (error) {
     return (
-      <div className={styles.container}>
-        <h1 className={styles.message}>Looks like your node is unreachable... ☹️😭</h1>
-      </div>
+      <Container>
+        <SadMessage>Looks like your node is unreachable... ☹️😭</SadMessage>
+      </Container>
     )
   }
 
