@@ -10,11 +10,15 @@ const light = {
   backgroundLightgreen: '#EFF8ED',
   backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
 
-  primary: '#D61F85',
+  colorPrimary: '#D61F85',
+  colorSecondary: '#ED5BAC',
   colorGrayBlue: '#9090BB',
   colorGrayBlue2: '#5A597D',
   colorWhite: '#FFFFFF',
   colorGreen: '#63B64E',
+
+  colorNavStroke: '#FFFFFF',
+  colorNavActiveStroke: '#3C3857',
 
   fontSizeSmall: '12px',
   fontSizeNormal: '14pp',

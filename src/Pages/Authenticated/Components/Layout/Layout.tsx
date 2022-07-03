@@ -24,7 +24,7 @@ const Main = styled.main`
 const Header = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 20px 0 0 30px;
+  margin: 20px 0 20px 32px;
   justify-content: space-between;
   align-items: center;
 `

@@ -6,6 +6,7 @@
  */
 
 import RSwitch from 'react-switch'
+import themes from '../../commons/themes'
 
 interface Props {
   checked: boolean
@@ -21,8 +22,8 @@ export const Switch = ({ checked, onChange, className }: Props) => {
       onChange={onChange}
       uncheckedIcon={false}
       checkedIcon={false}
-      onColor="#63B64E"
-      offColor="#9090BB"
+      onColor={themes.current().colorGreen}
+      offColor={themes.current().colorGrayBlue}
     />
   )
 }

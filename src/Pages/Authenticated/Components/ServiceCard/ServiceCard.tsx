@@ -4,16 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ReactComponent as DataIcon } from '../../../../assets/images/authenticated/components/data.svg'
-import { ReactComponent as ClockIcon } from '../../../../assets/images/authenticated/components/clock.svg'
-import { ReactComponent as WalletIcon } from '../../../../assets/images/authenticated/components/wallet.svg'
-import { ReactComponent as PeopleIcon } from '../../../../assets/images/authenticated/components/people.svg'
-import { ReactComponent as InfoInverted } from '../../../../assets/images/authenticated/components/infoInverted.svg'
 import { Switch } from '../../../../Components/Switch/Switch'
 import { myst } from '../../../../commons/mysts'
 import styled from 'styled-components'
 import themes from '../../../../commons/themes'
 import { InfoCard } from './InfoCard'
+import { ClockIcon, DataIcon, InfoIcon, PeopleIcon, WalletIcon } from '../../../../Components/Icons/Icons'
 
 const Card = styled.div`
   display: flex;
@@ -92,23 +88,27 @@ export const ServiceCard = ({
       </Header>
       <Content>
         <Row>
-          <InfoCard title="Price per GiB" value={myst.display(priceGiB, { fractionDigits: 4 })} icon={<DataIcon />} />
+          <InfoCard
+            title="Price per GiB"
+            value={myst.display(priceGiB, { fractionDigits: 4 })}
+            icon={<DataIcon inactive={!enabled} />}
+          />
           <InfoCard
             title="Price per hour"
             value={myst.display(priceHour, { fractionDigits: 4 })}
-            icon={<ClockIcon />}
+            icon={<ClockIcon inactive={!enabled} />}
           />
         </Row>
         <Row>
           <InfoCard
             title="Service earnings"
             value={myst.display(earnings, { fractionDigits: 4 })}
-            icon={<WalletIcon />}
+            icon={<WalletIcon inactive={!enabled} />}
           />
           <InfoCard
             title="Total earnings"
             value={myst.display(totalEarning, { fractionDigits: 4 })}
-            icon={<PeopleIcon />}
+            icon={<PeopleIcon inactive={!enabled} />}
           />
         </Row>
       </Content>
@@ -133,6 +133,6 @@ const ApprovalBadge = styled.div`
 const PendingApproval = () => (
   <ApprovalBadge>
     Pending Approval
-    <InfoInverted />
+    <InfoIcon inverted />
   </ApprovalBadge>
 )

@@ -51,6 +51,7 @@ const Charts = ({ statsDaily }: Props) => {
     selectedRange: RANGES[0],
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const changeGraph = (active: ChartType) => {
     const config = charts.configByType(active)
     setState({ ...state, active: active, data: config.dataFunction, dataName: config.dataName })
@@ -120,11 +121,11 @@ const Charts = ({ statsDaily }: Props) => {
             <Area
               type="monotone"
               dataKey="y"
-              fill={`${themes.current().primary}1F`}
+              fill={`${themes.current().colorPrimary}1F`}
               fillOpacity={2}
               strokeWidth={2}
               fillRule={'evenodd'}
-              stroke={themes.current().primary}
+              stroke={themes.current().colorPrimary}
             />
           </AreaChart>
         </ResponsiveContainer>

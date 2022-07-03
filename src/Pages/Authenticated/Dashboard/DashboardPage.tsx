@@ -7,14 +7,14 @@
 
 import React from 'react'
 
-import { ReactComponent as Logo } from '../../../assets/images/authenticated/pages/dashboard/logo.svg'
 import { Layout, LayoutAccentedRow, LayoutRow } from '../Components/Layout/Layout'
 import { ServiceCard } from '../Components/ServiceCard/ServiceCard'
 import { Report } from './Report/Report'
+import { DashboardIcon } from '../../../Components/Icons/Icons'
 
 const DashboardPage = () => {
   return (
-    <Layout title="Dashboard" logo={<Logo />} isLoading={false}>
+    <Layout title="Dashboard" logo={<DashboardIcon />} isLoading={false}>
       <LayoutAccentedRow>
         {[
           {

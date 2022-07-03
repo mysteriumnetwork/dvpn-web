@@ -11,9 +11,9 @@ import Charts from '../Charts/Charts'
 import { SessionStats } from 'mysterium-vpn-js/lib/session/session'
 import { useMemo } from 'react'
 import { ReportCard } from '../Stats/ReportCard'
-import { ReactComponent as WalletIcon } from '../../../../assets/images/authenticated/components/wallet.svg'
 import styled from 'styled-components'
 import themes from '../../../../commons/themes'
+import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
 const { api } = tequila
 
 const CardRow = styled.div`
@@ -26,9 +26,7 @@ const BorderRight = styled.div`
 `
 
 export const Report = () => {
-  const [data = []] = useFetch(() => Promise.all([api.sessionStatsDaily()]))
-
-  const [{ items: statsDaily } = { items: {} }] = data
+  useFetch(() => Promise.all([api.sessionStatsDaily()]))
 
   const sd: { [k: string]: SessionStats } = useMemo(() => {
     const day = 1000 * 60 * 60 * 24
@@ -55,13 +53,13 @@ export const Report = () => {
     <>
       <Charts statsDaily={sd} />
       <CardRow>
-        <ReportCard icon={<WalletIcon />} value="35.34" title="Total seattled earnings" diff={0.56} />
+        <ReportCard icon={<WalletIcon accented />} value="35.34" title="Total seattled earnings" diff={0.56} />
         <BorderRight />
-        <ReportCard icon={<WalletIcon />} value="35.34" title="Total seattled earnings" diff={0.56} />
+        <ReportCard icon={<SessionsIcon />} value="35.34" title="Total seattled earnings" diff={0.56} />
         <BorderRight />
-        <ReportCard icon={<WalletIcon />} value="35.34" title="Total seattled earnings" diff={0.56} />
+        <ReportCard icon={<StopwatchIcon />} value="35.34" title="Total seattled earnings" diff={0.56} />
         <BorderRight />
-        <ReportCard icon={<WalletIcon />} value="-35.34" title="Total seattled earnings" diff={-0.56} />
+        <ReportCard icon={<CloudIcon />} value="-35.34" title="Total seattled earnings" diff={-0.56} />
       </CardRow>
     </>
   )
