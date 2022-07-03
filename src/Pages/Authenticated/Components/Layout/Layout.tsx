@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import PageHeader from '../../../../Components/Header/Header'
+import PageHeader from '../../../../Components/LayoutHeader/LayoutHeader'
 import React from 'react'
 import { FullPageSpinner } from '../Spinner/FullPageSpinner'
 import { selectors } from '../../../../redux/selectors'
@@ -37,7 +37,7 @@ const Content = styled.div`
 
 interface Props {
   title?: string
-  logo?: JSX.Element
+  logo?: React.ReactNode
   children?: React.ReactNode
   isLoading?: boolean
 }

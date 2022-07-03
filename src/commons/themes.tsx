@@ -12,6 +12,7 @@ const light = {
 
   colorPrimary: '#D61F85',
   colorSecondary: '#ED5BAC',
+  colorDarkBlue: '#3C3857',
   colorGrayBlue: '#9090BB',
   colorGrayBlue2: '#5A597D',
   colorWhite: '#FFFFFF',

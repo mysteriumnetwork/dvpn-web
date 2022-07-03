@@ -6,7 +6,6 @@
  */
 
 import React from 'react'
-import styles from './Spinner.module.scss'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import styled from 'styled-components'
 
@@ -21,11 +20,23 @@ const Overlay = styled.div`
   left: 0;
 `
 
+const Spinner = styled(CircularSpinner)`
+  width: 6em;
+  height: 6em;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 1001;
+  position: fixed;
+`
+
 export const FullPageSpinner = () => {
   return (
     <>
       <Overlay />
-      <CircularSpinner className={styles.spinner} />
+      <Spinner />
     </>
   )
 }
