@@ -47,6 +47,7 @@ import DashboardPage from './Authenticated/Dashboard/DashboardPage'
 import { AdminPage } from './Authenticated/Admin/AdminPage'
 import identities from '../commons/identities'
 import { useAppDispatch, useAppSelector } from '../commons/hooks'
+import OnBoardingPage from './Onboarding/OnBoardingPage'
 
 const { api } = tequila
 const { parseToastError } = errors
@@ -213,6 +214,14 @@ const AppRouter = () => {
         element={
           <Protected redirects={toLoginOrOnBoarding}>
             <WithNavigation content={<DashboardPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={ON_BOARDING_HOME}
+        element={
+          <Protected redirects={[{ condition: !onBoarding.needsOnBoarding, to: LOGIN }]}>
+            <OnBoardingPage />
           </Protected>
         }
       />
