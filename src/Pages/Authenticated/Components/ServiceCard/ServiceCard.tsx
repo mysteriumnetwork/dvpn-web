@@ -59,6 +59,7 @@ interface Props {
   name: string
   description: string
   enabled: boolean
+  approvalPending?: boolean
   onChange: () => void
   priceGiB?: string | number
   priceHour?: string | number
@@ -71,6 +72,7 @@ export const ServiceCard = ({
   description,
   enabled,
   onChange,
+  approvalPending = false,
   priceGiB = 0,
   priceHour = 0,
   earnings = 0,
@@ -79,7 +81,7 @@ export const ServiceCard = ({
   return (
     <Card>
       <Header>
-        <PendingApproval />
+        {approvalPending && <PendingApproval />}
         <Controls>
           {name}
           <Switch checked={enabled} onChange={onChange} />
