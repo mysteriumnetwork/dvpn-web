@@ -4,10 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styles from './ServiceCards.module.scss'
-import { ReactNode } from 'react'
-import classNames from 'classnames'
-
 import { ReactComponent as DataIcon } from '../../../../assets/images/authenticated/components/data.svg'
 import { ReactComponent as ClockIcon } from '../../../../assets/images/authenticated/components/clock.svg'
 import { ReactComponent as WalletIcon } from '../../../../assets/images/authenticated/components/wallet.svg'
@@ -15,6 +11,53 @@ import { ReactComponent as PeopleIcon } from '../../../../assets/images/authenti
 import { ReactComponent as InfoInverted } from '../../../../assets/images/authenticated/components/infoInverted.svg'
 import { Switch } from '../../../../Components/Switch/Switch'
 import { myst } from '../../../../commons/mysts'
+import styled from 'styled-components'
+import themes from '../../../../commons/themes'
+import { InfoCard } from './InfoCard'
+
+const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
+const Header = styled.div`
+  position: relative;
+  background: ${themes.current().backgroundContent};
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 24px;
+  height: 100%;
+`
+
+const Controls = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+`
+
+const Description = styled.div`
+  color: ${themes.current().colorGrayBlue2};
+  font-size: ${themes.current().fontSizeSmall};
+`
+
+const Row = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`
+const Content = styled.div`
+  background: ${themes.current().backgroundLightgray};
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 31px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`
 
 interface Props {
   name: string
@@ -38,65 +81,58 @@ export const ServiceCard = ({
   totalEarning = 0,
 }: Props) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.header}>
+    <Card>
+      <Header>
         <PendingApproval />
-        <Row className={styles.controls}>
-          <div>{name}</div>
-          <div>
-            <Switch checked={enabled} onChange={onChange} />
-          </div>
-        </Row>
-        <Row className={styles.serviceInfo}>{description}</Row>
-      </div>
-      <div className={styles.content}>
+        <Controls>
+          {name}
+          <Switch checked={enabled} onChange={onChange} />
+        </Controls>
+        <Description>{description}</Description>
+      </Header>
+      <Content>
         <Row>
-          <Info title="Price per GiB" value={myst.display(priceGiB, { fractionDigits: 4 })} icon={<DataIcon />} />
-          <Info title="Price per hour" value={myst.display(priceHour, { fractionDigits: 4 })} icon={<ClockIcon />} />
+          <InfoCard title="Price per GiB" value={myst.display(priceGiB, { fractionDigits: 4 })} icon={<DataIcon />} />
+          <InfoCard
+            title="Price per hour"
+            value={myst.display(priceHour, { fractionDigits: 4 })}
+            icon={<ClockIcon />}
+          />
         </Row>
         <Row>
-          <Info title="Service earnings" value={myst.display(earnings, { fractionDigits: 4 })} icon={<WalletIcon />} />
-          <Info
+          <InfoCard
+            title="Service earnings"
+            value={myst.display(earnings, { fractionDigits: 4 })}
+            icon={<WalletIcon />}
+          />
+          <InfoCard
             title="Total earnings"
             value={myst.display(totalEarning, { fractionDigits: 4 })}
             icon={<PeopleIcon />}
           />
         </Row>
-      </div>
-    </div>
+      </Content>
+    </Card>
   )
 }
 
-interface RowProps {
-  className?: string
-  children?: ReactNode
-}
-
-const Row = ({ className, children }: RowProps) => {
-  return <div className={classNames(styles.row, className)}>{children}</div>
-}
-
-interface InfoProps {
-  title: string
-  value: string
-  icon?: ReactNode
-}
-
-const Info = ({ title, value, icon }: InfoProps) => {
-  return (
-    <div className={styles.info}>
-      <div className={styles.infoIcon}>{icon && icon}</div>
-      <div className={styles.infoTextRow}>
-        <div className={styles.infoTitle}>{title}</div>
-        <div className={styles.infoValue}>{value}</div>
-      </div>
-    </div>
-  )
-}
+const ApprovalBadge = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: absolute;
+  background: ${themes.current().colorGrayBlue};
+  border-radius: 12px;
+  font-size: ${themes.current().fontSizeSmall};
+  top: -8px;
+  padding: 4px;
+  color: ${themes.current().colorWhite};
+  width: 150px;
+`
 
 const PendingApproval = () => (
-  <div className={styles.pendingApproval}>
+  <ApprovalBadge>
     Pending Approval
     <InfoInverted />
-  </div>
+  </ApprovalBadge>
 )

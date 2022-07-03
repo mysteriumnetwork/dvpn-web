@@ -4,18 +4,29 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { SessionStats } from 'mysterium-vpn-js'
-import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer, YAxis } from 'recharts'
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
-import {
-  Pair,
-  sessionDailyStatsToData,
-  sessionDailyStatsToEarningGraph,
-  sessionDailyStatsToSessionsGraph,
-} from './chart.utils'
-import './Charts.scss'
-import { currentCurrency } from '../../../../commons/currency'
+import charts, { ChartType, Pair } from './chart.utils'
+import './ChartsOverrides.scss'
+import themes from '../../../../commons/themes'
+import styled from 'styled-components'
+import { RangePicker } from './RangePicker'
+
+const Chart = styled.div``
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+`
+
+const Title = styled.div`
+  font-size: ${themes.current().fontSizeBig};
+  font-weight: 700;
+  font-family: Poppins;
+  margin-right: 60px;
+`
 
 interface Props {
   statsDaily: {
@@ -23,96 +34,52 @@ interface Props {
   }
 }
 
-type ChartType = 'earnings' | 'sessions' | 'data'
-
 interface StateProps {
   active: ChartType
   data: (arg: { [p: string]: SessionStats }) => Pair[]
   dataName: string
+  selectedRange: number
 }
 
-interface Config {
-  dataFunction: (arg: { [p: string]: SessionStats }) => Pair[]
-  dataName: string
-}
-
-const configByType = (type: ChartType): Config => {
-  switch (type) {
-    case 'earnings':
-      return {
-        dataFunction: sessionDailyStatsToEarningGraph,
-        dataName: ` ${currentCurrency()}`,
-      }
-    case 'sessions':
-      return {
-        dataFunction: sessionDailyStatsToSessionsGraph,
-        dataName: ' sessions',
-      }
-    case 'data':
-      return {
-        dataFunction: sessionDailyStatsToData,
-        dataName: ' GB',
-      }
-  }
-}
-
-// calculates ticks by the taking the largest number from pairs, rounding it to the nearest
-// multiple of 2 (i.e.: 1 -> 2, 5 -> 6, 2.1 -> 4) and converting into 3 ticks: [0, n/2, n] where n is nearest ceiling of 2
-const ticks = (allPairs: Pair[]): number[] => {
-  const defaultTicks = [0, 1, 2]
-
-  if (allPairs.length === 0) {
-    return defaultTicks
-  }
-
-  const lastPair = allPairs[allPairs.length - 1]
-  const maxValue = lastPair.y as number
-  if (maxValue < defaultTicks[2]) {
-    return defaultTicks
-  }
-
-  const maxTick = ceilingOf2(maxValue)
-  const midTick = maxTick / 2
-  return [0, midTick, maxTick]
-}
-
-const ceilingOf2 = (n: number): number => {
-  return Math.ceil(n / 2) * 2
-}
+const RANGES = [7, 30, 90]
 
 const Charts = ({ statsDaily }: Props) => {
-  const [values, setValues] = useState<StateProps>({
+  const [state, setState] = useState<StateProps>({
     active: 'earnings',
-    data: configByType('earnings').dataFunction,
-    dataName: configByType('earnings').dataName,
+    data: charts.configByType('earnings').dataFunction,
+    dataName: charts.configByType('earnings').dataName,
+    selectedRange: RANGES[0],
   })
 
   const changeGraph = (active: ChartType) => {
-    const config = configByType(active)
-    setValues({ ...values, active: active, data: config.dataFunction, dataName: config.dataName })
+    const config = charts.configByType(active)
+    setState({ ...state, active: active, data: config.dataFunction, dataName: config.dataName })
   }
 
-  const types: {
-    [key: string]: {
-      name: string
-    }
-  } = {
-    earnings: {
-      name: 'Earnings',
-    },
-    sessions: {
-      name: 'Sessions',
-    },
-    data: {
-      name: 'Data',
-    },
+  const handleRange = (range: number) => {
+    setState((p) => ({ ...p, selectedRange: range }))
   }
+
+  const rangedStats = useMemo(() => {
+    const dates = Object.keys(statsDaily)
+
+    const ranged: { [date: string]: SessionStats } = {}
+    for (let i = 0; i < state.selectedRange; i++) {
+      if (!dates[i]) {
+        break
+      }
+      ranged[dates[i]] = statsDaily[dates[i]]
+    }
+
+    return ranged
+  }, [state.selectedRange])
 
   return (
-    <div className="chart">
-      <div className="chart__header">
-        <div className="chart__header-title">Last 30 days report</div>
-        <div className="chart__header-buttons">
+    <Chart>
+      <Header>
+        <Title>Earnings Report</Title>
+        <RangePicker options={RANGES} active={state.selectedRange} onChange={handleRange} />
+        {/*<div className="chart__header-buttons">
           {Object.keys(types).map((type) => {
             return (
               <div
@@ -124,15 +91,15 @@ const Charts = ({ statsDaily }: Props) => {
               </div>
             )
           })}
-        </div>
-      </div>
+        </div>*/}
+      </Header>
 
-      <div className="graph-block">
+      <div className="graphOverride">
         <ResponsiveContainer width="100%" maxHeight={320} aspect={4.0 / 3.0}>
-          <LineChart
+          <AreaChart
             width={500}
             height={300}
-            data={values.data(statsDaily)}
+            data={state.data(rangedStats)}
             margin={{
               top: 5,
               right: 50,
@@ -145,22 +112,24 @@ const Charts = ({ statsDaily }: Props) => {
             <YAxis
               tick={{ width: 250 }}
               tickMargin={10}
-              ticks={ticks(values.data(statsDaily))}
+              ticks={charts.ticks(state.data(rangedStats))}
               dataKey="y"
-              unit={values.dataName}
+              unit={state.dataName}
             />
             <Tooltip />
-            <Line
+            <Area
               type="monotone"
               dataKey="y"
-              name={values.dataName}
-              stroke="#8884d8"
-              activeDot={{ stroke: '#C986AB', fill: '#9e1f63', strokeWidth: 5, r: 8 }}
+              fill={`${themes.current().primary}1F`}
+              fillOpacity={2}
+              strokeWidth={2}
+              fillRule={'evenodd'}
+              stroke={themes.current().primary}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </Chart>
   )
 }
 

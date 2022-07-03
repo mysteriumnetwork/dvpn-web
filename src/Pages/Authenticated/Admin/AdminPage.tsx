@@ -13,22 +13,18 @@ import { ErrorLog } from './ErrorLog/ErrorLog'
 
 export const AdminPage = () => {
   return (
-    <Layout
-      title="Admin"
-      isLoading={false}
-      main={
-        <div className={styles.page}>
-          <div className={styles.versionManagement}>
-            <VersionManagement />
-          </div>
-          <div className={styles.versionManagement}>
-            <FeatureToggle />
-          </div>
-          <div className={styles.versionManagement}>
-            <ErrorLog />
-          </div>
+    <Layout title="Admin" isLoading={false}>
+      <div className={styles.page}>
+        <div className={styles.versionManagement}>
+          <VersionManagement />
         </div>
-      }
-    />
+        <div className={styles.versionManagement}>
+          <FeatureToggle />
+        </div>
+        <div className={styles.versionManagement}>
+          <ErrorLog />
+        </div>
+      </div>
+    </Layout>
   )
 }
