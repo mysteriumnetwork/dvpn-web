@@ -13,6 +13,7 @@ const Card = styled.div`
   gap: 16px;
   background: ${themes.current().colorWhite};
   padding: 20px;
+  color: ${themes.current().colorDarkBlue};
 }
 `
 

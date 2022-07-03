@@ -14,7 +14,9 @@ import themes from '../../../../commons/themes'
 import styled from 'styled-components'
 import { RangePicker } from './RangePicker'
 
-const Chart = styled.div``
+const Chart = styled.div`
+  color: ${themes.current().colorDarkBlue};
+`
 const Header = styled.div`
   display: flex;
   align-items: center;

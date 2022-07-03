@@ -15,6 +15,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  color: ${themes.current().colorDarkBlue};
 `
 
 const Header = styled.div`
