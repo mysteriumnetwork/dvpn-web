@@ -43,11 +43,12 @@ import WithNavigation from './Authenticated/WithNavigation'
 import LoginPage from './Login/LoginPage'
 
 import { Protected } from './ProtectedRoute'
-import DashboardPage from './Authenticated/Dashboard/DashboardPage'
-import { AdminPage } from './Authenticated/Admin/AdminPage'
+import DashboardPage from './Authenticated/DashboardPage/DashboardPage'
+import { AdminPage } from './Authenticated/AdminPage/AdminPage'
 import identities from '../commons/identities'
 import { useAppDispatch, useAppSelector } from '../commons/hooks'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
+import { SessionsPage } from './Authenticated/SessionsPage/SessionsPage'
 
 const { api } = tequila
 const { parseToastError } = errors
@@ -189,7 +190,7 @@ const AppRouter = () => {
         path={SESSIONS}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <WithNavigation content={<DashboardPage />} />
+            <WithNavigation content={<SessionsPage />} />
           </Protected>
         }
       />

@@ -40,6 +40,7 @@ const DashboardPage = () => {
           },
         ].map((s) => (
           <ServiceCard
+            key={s.name}
             name={s.name}
             description={s.description}
             enabled={s.enabled}

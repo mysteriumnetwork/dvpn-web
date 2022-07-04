@@ -80,12 +80,8 @@ const Navigation = () => {
         <SettingsNavIcon active={pathname === SETTINGS} />
       </PlainLink>
       <FlexGrow />
-      {/*<div className="navigation--issue">*/}
-      {/*  <ReportIssue />*/}
-      {/*</div>*/}
-      {/*<div className="navigation--chat-space" />*/}
-      <BugNavIcon />
-      <ChatNavIcon />
+      <BugNavIcon active={false} />
+      <ChatNavIcon active={false} />
       <ThemeSwitch />
       <Margin />
     </Content>

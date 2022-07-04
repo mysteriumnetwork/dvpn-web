@@ -41,7 +41,7 @@ export const RangePicker = ({ active, options = [], name = 'days', onChange = ()
   return (
     <Content>
       {options?.map((o) => (
-        <Option active={active === o} onClick={() => onChange(o)}>
+        <Option key={o} active={active === o} onClick={() => onChange(o)}>
           {'Last ' + o + ' days'}
         </Option>
       ))}

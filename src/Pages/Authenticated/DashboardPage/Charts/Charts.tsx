@@ -13,22 +13,8 @@ import './ChartsOverrides.scss'
 import themes from '../../../../commons/themes'
 import styled from 'styled-components'
 import { RangePicker } from './RangePicker'
-
-const Chart = styled.div`
-  color: ${themes.current().colorDarkBlue};
-`
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-`
-
-const Title = styled.div`
-  font-size: ${themes.current().fontSizeBig};
-  font-weight: 700;
-  font-family: Poppins;
-  margin-right: 60px;
-`
+import { GraphDropDown } from './GraphDropDown'
+import { types } from './chart.utils'
 
 interface Props {
   statsDaily: {
@@ -82,22 +68,11 @@ const Charts = ({ statsDaily }: Props) => {
       <Header>
         <Title>Earnings Report</Title>
         <RangePicker options={RANGES} active={state.selectedRange} onChange={handleRange} />
-        {/*<div className="chart__header-buttons">
-          {Object.keys(types).map((type) => {
-            return (
-              <div
-                key={type}
-                className={values.active === type ? 'control-btn active' : 'control-btn'}
-                onClick={() => changeGraph(type as ChartType)}
-              >
-                {types[type].name}
-              </div>
-            )
-          })}
-        </div>*/}
+        <FlexGrow />
+        <GraphDropDown options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
       </Header>
 
-      <div className="graphOverride">
+      <ChartOverrides>
         <ResponsiveContainer width="100%" maxHeight={320} aspect={4.0 / 3.0}>
           <AreaChart
             width={500}
@@ -110,6 +85,12 @@ const Charts = ({ statsDaily }: Props) => {
               bottom: 30,
             }}
           >
+            <defs>
+              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="10%" stopColor={themes.current().colorPrimary} stopOpacity={0.1} />
+                <stop offset="90%" stopColor="#FFFFFF" stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="4 4" stroke="#eee" />
             <XAxis dataKey="x" tickMargin={20} />
             <YAxis
@@ -121,9 +102,10 @@ const Charts = ({ statsDaily }: Props) => {
             />
             <Tooltip />
             <Area
+              // style={{ strokeDasharray: `40% 60%` }}
               type="monotone"
               dataKey="y"
-              fill={`${themes.current().colorPrimary}1F`}
+              fill="url(#colorUv)"
               fillOpacity={2}
               strokeWidth={2}
               fillRule={'evenodd'}
@@ -131,9 +113,82 @@ const Charts = ({ statsDaily }: Props) => {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </ChartOverrides>
     </Chart>
   )
 }
+
+const Chart = styled.div`
+  color: ${themes.current().colorDarkBlue};
+`
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+`
+
+const FlexGrow = styled.div`
+  flex-grow: 1;
+`
+
+const Title = styled.div`
+  font-size: ${themes.current().fontSizeBig};
+  font-weight: 700;
+  font-family: Poppins;
+  margin-right: 60px;
+`
+
+const ChartOverrides = styled.div`
+  .recharts-curve.recharts-area-area {
+  }
+
+  .recharts-cartesian-axis-line {
+    display: none;
+  }
+
+  .recharts-cartesian-grid-vertical {
+    display: none;
+  }
+
+  .recharts-layer.recharts-line-dots {
+    display: none;
+  }
+
+  .recharts-cartesian-axis-tick-line {
+    display: none;
+  }
+
+  .recharts-area {
+    fill: none;
+  }
+
+  .recharts-text.recharts-cartesian-axis-tick-value {
+    font-family: 'Ubuntu', sans-serif;
+    font-style: normal !important;
+    font-size: ${themes.current().fontSizeSmall};
+    line-height: 21px;
+  }
+
+  .recharts-default-tooltip {
+    background: ${themes.current().colorWhite};
+    box-shadow: 0 8px 15px rgba(152, 169, 188, 0.267182);
+    border-radius: 2px;
+    border: none !important;
+  }
+
+  .recharts-tooltip-label {
+    font-family: 'Ubuntu', sans-serif;
+    font-style: normal;
+    font-size: ${themes.current().fontSizeNormal};
+    line-height: 21px;
+  }
+
+  .recharts-tooltip-item-list li {
+    font-family: 'Ubuntu', sans-serif !important;
+    font-style: normal;
+    font-size: 14px !important;
+    line-height: 21px !important;
+  }
+`
 
 export default Charts

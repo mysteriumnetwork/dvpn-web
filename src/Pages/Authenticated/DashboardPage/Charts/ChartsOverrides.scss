@@ -3,6 +3,10 @@
 @import '../../../../assets/styles/base/mixins/media';
 
 .graphOverride {
+  .recharts-curve.recharts-area-area {
+    fill: none;
+    background: linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%);
+  }
   .recharts-cartesian-axis-line {
     display: none;
   }

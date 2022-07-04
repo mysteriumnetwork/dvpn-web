@@ -46,7 +46,7 @@ const formatDate = (malformed: string): string => {
   // return `${month}-${day}`
 }
 
-const types: {
+export const types: {
   [key: string]: {
     name: string
   }
