@@ -21,15 +21,15 @@ import { ReactComponent as CloudSvg } from '../../assets/images/cloud.svg'
 import themes from '../../commons/themes'
 
 interface NavProps {
-  active?: boolean
+  $active?: boolean
 }
 
 const navIconCss = css<NavProps>`
   rect {
-    opacity: ${({ active }) => (active ? 1 : 0.05)};
+    opacity: ${({ $active }) => ($active ? 1 : 0.05)};
   }
   path {
-    stroke: ${({ active }) => (active ? themes.current().colorNavActiveStroke : themes.current().colorNavStroke)};
+    stroke: ${({ $active }) => ($active ? themes.current().colorNavActiveStroke : themes.current().colorNavStroke)};
   }
 `
 
@@ -58,31 +58,31 @@ export const ChatNavIcon = styled(ChatNavSvg)<NavProps>`
 `
 
 interface InfoProps {
-  inverted?: boolean
+  $inverted?: boolean
 }
 
 export const InfoIcon = styled(InfoSvg)<InfoProps>`
   path {
-    fill: ${({ inverted }) => (inverted ? themes.current().colorWhite : themes.current().colorGrayBlue)};
+    fill: ${({ $inverted }) => ($inverted ? themes.current().colorWhite : themes.current().colorGrayBlue)};
   }
 `
 
 interface AccentedProps {
-  accented?: boolean
+  $accented?: boolean
 }
 
 interface InactiveProps {
-  inactive?: boolean
+  $inactive?: boolean
 }
 
 export const ClockIcon = styled(ClockSvg)<InactiveProps>`
-  ${({ inactive }) => inactive && walletInactiveCss}
+  ${({ $inactive }) => $inactive && walletInactiveCss}
 `
 export const DataIcon = styled(DataSvg)<InactiveProps>`
-  ${({ inactive }) => inactive && walletInactiveCss}
+  ${({ $inactive }) => $inactive && walletInactiveCss}
 `
 export const PeopleIcon = styled(PeopleSvg)<InactiveProps>`
-  ${({ inactive }) => inactive && walletInactiveCss}
+  ${({ $inactive }) => $inactive && walletInactiveCss}
 `
 export const StopwatchIcon = styled(StopwatchSvg)``
 export const CloudIcon = styled(CloudSvg)``
@@ -93,8 +93,8 @@ export const DashboardIcon = styled(DashboardNavSvg)`
   }
 `
 export const WalletIcon = styled(WalletSvg)<AccentedProps & InactiveProps>`
-  ${({ accented }) => accented && walletIconAccentedCss}
-  ${({ inactive }) => inactive && walletInactiveCss}
+  ${({ $accented }) => $accented && walletIconAccentedCss}
+  ${({ $inactive }) => $inactive && walletInactiveCss}
 `
 const walletIconAccentedCss = css<AccentedProps>`
   width: 50px;

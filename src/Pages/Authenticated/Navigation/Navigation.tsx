@@ -68,20 +68,20 @@ const Navigation = () => {
         <Logo />
       </LogoLink>
       <PlainLink to={DASHBOARD}>
-        <DashboardNavIcon active={pathname === DASHBOARD} />
+        <DashboardNavIcon $active={pathname === DASHBOARD} />
       </PlainLink>
       <PlainLink to={SESSIONS}>
-        <SessionsNavIcon active={pathname === SESSIONS} />
+        <SessionsNavIcon $active={pathname === SESSIONS} />
       </PlainLink>
       <PlainLink to={WALLET}>
-        <WalletNavIcon active={pathname === WALLET} />
+        <WalletNavIcon $active={pathname === WALLET} />
       </PlainLink>
       <PlainLink to={SETTINGS}>
-        <SettingsNavIcon active={pathname === SETTINGS} />
+        <SettingsNavIcon $active={pathname === SETTINGS} />
       </PlainLink>
       <FlexGrow />
-      <BugNavIcon active={false} />
-      <ChatNavIcon active={false} />
+      <BugNavIcon $active={false} />
+      <ChatNavIcon $active={false} />
       <ThemeSwitch />
       <Margin />
     </Content>

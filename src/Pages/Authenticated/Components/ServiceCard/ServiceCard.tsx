@@ -94,24 +94,24 @@ export const ServiceCard = ({
           <InfoCard
             title="Price per GiB"
             value={myst.display(priceGiB, { fractionDigits: 4 })}
-            icon={<DataIcon inactive={!enabled} />}
+            icon={<DataIcon $inactive={!enabled} />}
           />
           <InfoCard
             title="Price per hour"
             value={myst.display(priceHour, { fractionDigits: 4 })}
-            icon={<ClockIcon inactive={!enabled} />}
+            icon={<ClockIcon $inactive={!enabled} />}
           />
         </Row>
         <Row>
           <InfoCard
             title="Service earnings"
             value={myst.display(earnings, { fractionDigits: 4 })}
-            icon={<WalletIcon inactive={!enabled} />}
+            icon={<WalletIcon $inactive={!enabled} />}
           />
           <InfoCard
             title="Total earnings"
             value={myst.display(totalEarning, { fractionDigits: 4 })}
-            icon={<PeopleIcon inactive={!enabled} />}
+            icon={<PeopleIcon $inactive={!enabled} />}
           />
         </Row>
       </Content>
@@ -136,6 +136,6 @@ const ApprovalBadge = styled.div`
 const PendingApproval = () => (
   <ApprovalBadge>
     Pending Approval
-    <InfoIcon inverted />
+    <InfoIcon $inverted />
   </ApprovalBadge>
 )
