@@ -9,7 +9,7 @@ import React from 'react'
 import { FullPageSpinner } from '../Spinner/FullPageSpinner'
 import { selectors } from '../../../../redux/selectors'
 import { useAppSelector } from '../../../../commons/hooks'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import themes from '../../../../commons/themes'
 
 const Main = styled.main`
@@ -60,6 +60,12 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
   )
 }
 
+const sharedRowCss = css`
+  display: flex;
+  flex-direction: row;
+  min-width: 1200px;
+`
+
 export const LayoutAccentedRow = styled.div`
   position: relative;
   display: flex;
@@ -70,12 +76,13 @@ export const LayoutAccentedRow = styled.div`
   background: ${themes.current().colorGrayBlue}1a;
   border-radius: 35px;
 
-  min-width: 1200px;
+  ${sharedRowCss}
 `
 export const LayoutRow = styled.div`
   margin: 25px 32px 0 32px;
-  min-width: 1200px;
   background: ${themes.current().colorWhite};
   border-radius: 20px;
   padding: 20px;
+
+  ${sharedRowCss}
 `

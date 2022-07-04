@@ -16,6 +16,11 @@ import themes from '../../../../commons/themes'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
 const { api } = tequila
 
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 const CardRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -50,7 +55,7 @@ export const Report = () => {
   }, [])
 
   return (
-    <>
+    <Column>
       <Charts statsDaily={sd} />
       <CardRow>
         <ReportCard icon={<WalletIcon $accented />} value="35.34" title="Total seattled earnings" diff={0.56} />
@@ -61,6 +66,6 @@ export const Report = () => {
         <BorderRight />
         <ReportCard icon={<CloudIcon />} value="-35.34" title="Total seattled earnings" diff={-0.56} />
       </CardRow>
-    </>
+    </Column>
   )
 }

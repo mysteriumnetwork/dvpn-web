@@ -18,6 +18,7 @@ import { ReactComponent as PeopleSvg } from '../../assets/images/people.svg'
 import { ReactComponent as WalletSvg } from '../../assets/images/wallet.svg'
 import { ReactComponent as StopwatchSvg } from '../../assets/images/stopwatch.svg'
 import { ReactComponent as CloudSvg } from '../../assets/images/cloud.svg'
+import { ReactComponent as StopwatchSimpleSvg } from '../../assets/images/stopwatch_simple.svg'
 import themes from '../../commons/themes'
 
 interface NavProps {
@@ -136,3 +137,5 @@ export const SessionsIcon = styled(SessionsNavSvg)<AccentedProps>`
     opacity: 0.5;
   }
 `
+
+export const StopwatchSimpleIcon = styled(StopwatchSimpleSvg)``

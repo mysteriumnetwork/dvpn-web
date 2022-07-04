@@ -17,10 +17,12 @@ const light = {
   colorGrayBlue2: '#5A597D',
   colorWhite: '#FFFFFF',
   colorGreen: '#63B64E',
+  colorBlue: '#5BB1EF',
 
   colorNavStroke: '#FFFFFF',
   colorNavActiveStroke: '#3C3857',
 
+  fontSizeSmallest: '10px',
   fontSizeSmall: '12px',
   fontSizeNormal: '14pp',
   fontSizeBig: '18px',

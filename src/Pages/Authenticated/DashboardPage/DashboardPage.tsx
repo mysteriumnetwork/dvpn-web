@@ -11,6 +11,7 @@ import { Layout, LayoutAccentedRow, LayoutRow } from '../Components/Layout/Layou
 import { ServiceCard } from '../Components/ServiceCard/ServiceCard'
 import { Report } from './Report/Report'
 import { DashboardIcon } from '../../../Components/Icons/Icons'
+import { IdleStat } from '../Components/IdleStat/IdleStat'
 
 const DashboardPage = () => {
   return (
@@ -51,6 +52,9 @@ const DashboardPage = () => {
       </LayoutAccentedRow>
       <LayoutRow>
         <Report />
+      </LayoutRow>
+      <LayoutRow>
+        <IdleStat />
       </LayoutRow>
     </Layout>
   )

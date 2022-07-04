@@ -134,7 +134,7 @@ const FlexGrow = styled.div`
 const Title = styled.div`
   font-size: ${themes.current().fontSizeBig};
   font-weight: 700;
-  font-family: Poppins;
+  font-family: Ubuntu;
   margin-right: 60px;
 `
 
