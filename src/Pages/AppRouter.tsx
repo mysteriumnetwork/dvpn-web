@@ -15,10 +15,10 @@ import {
   DASHBOARD,
   LOGIN,
   ON_BOARDING_HOME,
-  SESSIONS,
+  HISTORY,
   SESSIONS_SIDE,
   SETTINGS,
-  WALLET,
+  TRANSACTIONS,
 } from '../constants/routes'
 import {
   fetchChainSummaryAsync,
@@ -48,7 +48,9 @@ import { AdminPage } from './Authenticated/AdminPage/AdminPage'
 import identities from '../commons/identities'
 import { useAppDispatch, useAppSelector } from '../commons/hooks'
 import OnBoardingPage from './Onboarding/OnBoardingPage'
-import { SessionsPage } from './Authenticated/SessionsPage/SessionsPage'
+import { HistoryPage } from './Authenticated/HistoryPage/HistoryPage'
+import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
+import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
 
 const { api } = tequila
 const { parseToastError } = errors
@@ -187,10 +189,10 @@ const AppRouter = () => {
         }
       />
       <Route
-        path={SESSIONS}
+        path={HISTORY}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <WithNavigation content={<SessionsPage />} />
+            <WithNavigation content={<HistoryPage />} />
           </Protected>
         }
       />
@@ -198,15 +200,15 @@ const AppRouter = () => {
         path={SETTINGS}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <WithNavigation content={<DashboardPage />} />
+            <WithNavigation content={<SettingsPage />} />
           </Protected>
         }
       />
       <Route
-        path={WALLET}
+        path={TRANSACTIONS}
         element={
           <Protected redirects={toLoginOrOnBoarding}>
-            <WithNavigation content={<DashboardPage />} />
+            <WithNavigation content={<TransactionsPage />} />
           </Protected>
         }
       />

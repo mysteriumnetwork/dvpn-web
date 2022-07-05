@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Layout } from '../Components/Layout/Layout'
+import { HistoryHeaderIcon } from '../../../Components/Icons/Icons'
 
-export const SessionsPage = () => {
-  return <Layout></Layout>
+export const HistoryPage = () => {
+  return <Layout logo={<HistoryHeaderIcon />} title="History"></Layout>
 }

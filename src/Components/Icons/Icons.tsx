@@ -6,9 +6,9 @@
  */
 import styled, { css } from 'styled-components'
 import { ReactComponent as DashboardNavSvg } from '../../assets/images/navigation/dashboard.svg'
-import { ReactComponent as SessionsNavSvg } from '../../assets/images/navigation/sessions.svg'
+import { ReactComponent as HistoryNavSvg } from '../../assets/images/navigation/history.svg'
 import { ReactComponent as SettingsNavSvg } from '../../assets/images/navigation/settings.svg'
-import { ReactComponent as WalletNavSvg } from '../../assets/images/navigation/wallet.svg'
+import { ReactComponent as TransactionsNavSvg } from '../../assets/images/navigation/transactions.svg'
 import { ReactComponent as BugNavSvg } from '../../assets/images/navigation/bug.svg'
 import { ReactComponent as ChatNavSvg } from '../../assets/images/navigation/chat.svg'
 import { ReactComponent as InfoSvg } from '../../assets/images/info.svg'
@@ -39,11 +39,11 @@ export const DashboardNavIcon = styled(DashboardNavSvg)<NavProps>`
   ${navIconCss}
 `
 
-export const SessionsNavIcon = styled(SessionsNavSvg)<NavProps>`
+export const SessionsNavIcon = styled(HistoryNavSvg)<NavProps>`
   ${navIconCss}
 `
 
-export const WalletNavIcon = styled(WalletNavSvg)<NavProps>`
+export const WalletNavIcon = styled(TransactionsNavSvg)<NavProps>`
   ${navIconCss}
 `
 
@@ -88,12 +88,29 @@ export const PeopleIcon = styled(PeopleSvg)<InactiveProps>`
 `
 export const StopwatchIcon = styled(StopwatchSvg)``
 export const CloudIcon = styled(CloudSvg)``
-export const DashboardIcon = styled(DashboardNavSvg)`
+
+const headerCSS = css`
   rect {
     opacity: 1;
     fill: ${themes.current().colorKey};
   }
 `
+
+export const DashboardHeaderIcon = styled(DashboardNavSvg)`
+  ${headerCSS}
+`
+export const SettingsHeaderIcon = styled(SettingsNavSvg)`
+  ${headerCSS}
+`
+
+export const HistoryHeaderIcon = styled(HistoryNavSvg)`
+  ${headerCSS}
+`
+
+export const TransactionsHeaderIcon = styled(TransactionsNavSvg)`
+  ${headerCSS}
+`
+
 export const WalletIcon = styled(WalletSvg)<AccentedProps & InactiveProps>`
   ${({ $accented }) => $accented && walletIconAccentedCss}
   ${({ $inactive }) => $inactive && walletInactiveCss}
@@ -127,7 +144,7 @@ const walletInactiveCss = css<InactiveProps>`
   }
 `
 
-export const SessionsIcon = styled(SessionsNavSvg)<AccentedProps>`
+export const SessionsIcon = styled(HistoryNavSvg)<AccentedProps>`
   rect {
     fill: ${themes.current().colorKeyLight};
     opacity: 1;
