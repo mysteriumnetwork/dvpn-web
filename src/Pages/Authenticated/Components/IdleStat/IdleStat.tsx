@@ -4,10 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import themes from '../../../../commons/themes'
 import { StopwatchSimpleIcon } from '../../../../Components/Icons/Icons'
 import { DoughnutChart } from './DoughnutChart'
+import { Bubble } from '../../DashboardPage/Bubble'
 
 const Statistics = styled.div`
   display: flex;
@@ -49,37 +50,6 @@ const Column = styled.div<{ $marginLeft?: string }>`
   justify-content: center;
   align-content: center;
   margin-left: ${({ $marginLeft }) => $marginLeft || '0'};
-`
-
-interface BubbleProps {
-  $primary?: boolean
-}
-
-const commonBubbleCss = css`
-  display: flex;
-  justify-content: center;
-  border-radius: 12px;
-  padding: 5px;
-  font-weight: 700;
-  font-family: Ubuntu;
-  font-size: ${themes.current().fontSizeSmall};
-`
-
-const BlueBubble = styled.div<BubbleProps>`
-  ${commonBubbleCss};
-  background: ${({ $primary }) => ($primary ? themes.current().colorBlue : `${themes.current().colorBlue}33`)};
-  color: ${({ $primary }) => ($primary ? themes.current().colorWhite : themes.current().colorDarkBlue)};
-`
-
-const GreenBubble = styled.div<BubbleProps>`
-  ${commonBubbleCss};
-  background: ${({ $primary }) => ($primary ? themes.current().colorGreen : `${themes.current().colorGreen}1a`)};
-  color: ${({ $primary }) => ($primary ? themes.current().colorWhite : themes.current().colorDarkBlue)};
-`
-
-const NoBackgroundBubble = styled.div`
-  ${commonBubbleCss};
-  font-weight: 400 !important;
 `
 
 const GreenBackground = styled.div`
@@ -142,12 +112,12 @@ export const IdleStat = () => {
           colorB={`${themes.current().colorBlue}33`}
         />
         <Column $marginLeft="40px">
-          <BlueBubble $primary>30%</BlueBubble>
-          <BlueBubble>30%</BlueBubble>
+          <Bubble value="30%" primary />
+          <Bubble value="45%" />
         </Column>
         <Column $marginLeft="40px">
-          <GreenBubble>Online</GreenBubble>
-          <NoBackgroundBubble>Offline</NoBackgroundBubble>
+          <Bubble value="Online" color="green" />
+          <Bubble value="Offline" color="no-background" />
         </Column>
         <Column $marginLeft="40px" />
         <GreenBackground>
@@ -158,11 +128,11 @@ export const IdleStat = () => {
           />
           <Column $marginLeft="40px">
             <Row>
-              <GreenBubble $primary>30%</GreenBubble>
+              <Bubble value="30%" color="green" primary />
               <SmallText>Connected</SmallText>
             </Row>
             <Row>
-              <GreenBubble>70%</GreenBubble>
+              <Bubble value="70%" color="green" />
               <SmallText>Idle</SmallText>
             </Row>
           </Column>

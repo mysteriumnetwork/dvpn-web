@@ -19,6 +19,7 @@ import { ReactComponent as WalletSvg } from '../../assets/images/wallet.svg'
 import { ReactComponent as StopwatchSvg } from '../../assets/images/stopwatch.svg'
 import { ReactComponent as CloudSvg } from '../../assets/images/cloud.svg'
 import { ReactComponent as StopwatchSimpleSvg } from '../../assets/images/stopwatch_simple.svg'
+import { ReactComponent as QualityBarsSvg } from '../../assets/images/quality-bars.svg'
 import themes from '../../commons/themes'
 
 interface NavProps {
@@ -139,3 +140,22 @@ export const SessionsIcon = styled(SessionsNavSvg)<AccentedProps>`
 `
 
 export const StopwatchSimpleIcon = styled(StopwatchSimpleSvg)``
+
+interface QualityBarsProps {
+  $quality?: number
+}
+
+export const QualityBarsIcon = styled(QualityBarsSvg)<QualityBarsProps>`
+  rect {
+    fill: ${themes.current().colorSecondary}33;
+  }
+  #bar-1 {
+    fill: ${({ $quality = 0 }) => $quality > 0 && themes.current().colorPrimary} !important;
+  }
+  #bar-2 {
+    fill: ${({ $quality = 0 }) => $quality > 1 && themes.current().colorPrimary} !important;
+  }
+  #bar-3 {
+    fill: ${({ $quality = 0 }) => $quality > 2 && themes.current().colorPrimary} !important;
+  }
+`

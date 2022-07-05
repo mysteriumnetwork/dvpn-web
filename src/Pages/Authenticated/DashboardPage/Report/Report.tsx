@@ -19,6 +19,7 @@ const { api } = tequila
 const Column = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `
 
 const CardRow = styled.div`

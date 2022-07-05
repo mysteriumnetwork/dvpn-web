@@ -59,6 +59,7 @@
     "clipboard": "^2.0.8",
     "lodash": "^4.17.21",
     "mysterium-vpn-js": "24.0.0",
+    "nanoid": "3.3.4",
     "node-sass": "^7.0.1",
     "qs": "^6.10.2",
     "react": "^18.1.0",

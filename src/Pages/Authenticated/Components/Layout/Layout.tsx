@@ -11,6 +11,7 @@ import { selectors } from '../../../../redux/selectors'
 import { useAppSelector } from '../../../../commons/hooks'
 import styled, { css } from 'styled-components'
 import themes from '../../../../commons/themes'
+import { Quality } from '../Quality/Quality'
 
 const Main = styled.main`
   display: flex;
@@ -25,8 +26,8 @@ const Header = styled.div`
   display: flex;
   flex-direction: row;
   margin: 20px 0 20px 32px;
-  justify-content: space-between;
   align-items: center;
+  gap: 20px;
 `
 
 const Content = styled.div`
@@ -51,6 +52,7 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
     <Main>
       <Header>
         <PageHeader logo={logo} name={title} />
+        <Quality />
       </Header>
       <Content>
         {showSpinner && <FullPageSpinner />}
@@ -64,25 +66,37 @@ const sharedRowCss = css`
   display: flex;
   flex-direction: row;
   min-width: 1200px;
+  gap: 20px;
 `
 
-export const LayoutAccentedRow = styled.div`
+const cardCss = css`
+  background: ${themes.current().colorWhite};
+  border-radius: 20px;
+  padding: 20px;
+`
+
+export const LayoutHeroCardRow = styled.div`
   position: relative;
   display: flex;
   justify-content: space-around;
-  gap: 20px;
   margin: 0 16px 0 16px;
   padding: 16px;
   background: ${themes.current().colorGrayBlue}1a;
   border-radius: 35px;
 
-  ${sharedRowCss}
+  ${sharedRowCss};
 `
-export const LayoutRow = styled.div`
+export const LayoutCardRow = styled.div`
   margin: 25px 32px 0 32px;
-  background: ${themes.current().colorWhite};
-  border-radius: 20px;
-  padding: 20px;
+  ${cardCss};
+  ${sharedRowCss};
+`
 
-  ${sharedRowCss}
+export const LayoutUnstyledRow = styled.div`
+  margin: 25px 32px 0 32px;
+  ${sharedRowCss};
+`
+
+export const LayoutCard = styled.div`
+  ${cardCss};
 `

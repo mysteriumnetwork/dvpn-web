@@ -7,7 +7,7 @@
 
 import React from 'react'
 
-import { Layout, LayoutAccentedRow, LayoutRow } from '../Components/Layout/Layout'
+import { Layout, LayoutHeroCardRow, LayoutCard, LayoutCardRow, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { ServiceCard } from '../Components/ServiceCard/ServiceCard'
 import { Report } from './Report/Report'
 import { DashboardIcon } from '../../../Components/Icons/Icons'
@@ -16,7 +16,7 @@ import { IdleStat } from '../Components/IdleStat/IdleStat'
 const DashboardPage = () => {
   return (
     <Layout title="Dashboard" logo={<DashboardIcon />} isLoading={false}>
-      <LayoutAccentedRow>
+      <LayoutHeroCardRow>
         {[
           {
             name: 'Public',
@@ -49,13 +49,15 @@ const DashboardPage = () => {
             approvalPending={s.approvalPending}
           />
         ))}
-      </LayoutAccentedRow>
-      <LayoutRow>
+      </LayoutHeroCardRow>
+      <LayoutCardRow>
         <Report />
-      </LayoutRow>
-      <LayoutRow>
-        <IdleStat />
-      </LayoutRow>
+      </LayoutCardRow>
+      <LayoutUnstyledRow>
+        <LayoutCard>
+          <IdleStat />
+        </LayoutCard>
+      </LayoutUnstyledRow>
     </Layout>
   )
 }
