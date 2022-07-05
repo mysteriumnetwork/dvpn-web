@@ -12,6 +12,7 @@ import { useAppSelector } from '../../../../commons/hooks'
 import styled, { css } from 'styled-components'
 import themes from '../../../../commons/themes'
 import { Quality } from '../Quality/Quality'
+import { NodeStatus } from '../NodeStatus/NodeStatus'
 
 const Main = styled.main`
   display: flex;
@@ -52,6 +53,7 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
     <Main>
       <Header>
         <PageHeader logo={logo} name={title} />
+        <NodeStatus />
         <Quality />
       </Header>
       <Content>
