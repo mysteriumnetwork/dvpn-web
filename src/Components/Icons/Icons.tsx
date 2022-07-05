@@ -91,7 +91,7 @@ export const CloudIcon = styled(CloudSvg)``
 export const DashboardIcon = styled(DashboardNavSvg)`
   rect {
     opacity: 1;
-    fill: ${themes.current().colorPrimary};
+    fill: ${themes.current().colorKey};
   }
 `
 export const WalletIcon = styled(WalletSvg)<AccentedProps & InactiveProps>`
@@ -102,11 +102,11 @@ const walletIconAccentedCss = css<AccentedProps>`
   width: 50px;
   height: 50px;
   circle {
-    fill: ${themes.current().colorPrimary};
+    fill: ${themes.current().colorKey};
     opacity: 1;
   }
   #outline {
-    stroke: ${themes.current().colorSecondary};
+    stroke: ${themes.current().colorKeyLight};
   }
   #buckle,
   #pocket {
@@ -129,7 +129,7 @@ const walletInactiveCss = css<InactiveProps>`
 
 export const SessionsIcon = styled(SessionsNavSvg)<AccentedProps>`
   rect {
-    fill: ${themes.current().colorSecondary};
+    fill: ${themes.current().colorKeyLight};
     opacity: 1;
   }
   #l1,
@@ -147,15 +147,15 @@ interface QualityBarsProps {
 
 export const QualityBarsIcon = styled(QualityBarsSvg)<QualityBarsProps>`
   rect {
-    fill: ${themes.current().colorSecondary}33;
+    fill: ${themes.current().colorKeyLight}33;
   }
   #bar-1 {
-    fill: ${({ $quality = 0 }) => $quality > 0 && themes.current().colorPrimary} !important;
+    fill: ${({ $quality = 0 }) => $quality > 0 && themes.current().colorKey} !important;
   }
   #bar-2 {
-    fill: ${({ $quality = 0 }) => $quality > 1 && themes.current().colorPrimary} !important;
+    fill: ${({ $quality = 0 }) => $quality > 1 && themes.current().colorKey} !important;
   }
   #bar-3 {
-    fill: ${({ $quality = 0 }) => $quality > 2 && themes.current().colorPrimary} !important;
+    fill: ${({ $quality = 0 }) => $quality > 2 && themes.current().colorKey} !important;
   }
 `

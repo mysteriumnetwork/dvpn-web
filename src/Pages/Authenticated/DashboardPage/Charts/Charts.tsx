@@ -87,7 +87,7 @@ const Charts = ({ statsDaily }: Props) => {
           >
             <defs>
               <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="10%" stopColor={themes.current().colorPrimary} stopOpacity={0.1} />
+                <stop offset="10%" stopColor={themes.current().colorKey} stopOpacity={0.1} />
                 <stop offset="90%" stopColor="#FFFFFF" stopOpacity={0.1} />
               </linearGradient>
             </defs>
@@ -109,7 +109,7 @@ const Charts = ({ statsDaily }: Props) => {
               fillOpacity={2}
               strokeWidth={2}
               fillRule={'evenodd'}
-              stroke={themes.current().colorPrimary}
+              stroke={themes.current().colorKey}
             />
           </AreaChart>
         </ResponsiveContainer>

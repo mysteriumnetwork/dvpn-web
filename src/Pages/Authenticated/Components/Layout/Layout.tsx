@@ -13,6 +13,7 @@ import styled, { css } from 'styled-components'
 import themes from '../../../../commons/themes'
 import { Quality } from '../Quality/Quality'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
+import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 
 const Main = styled.main`
   display: flex;
@@ -55,6 +56,7 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
         <PageHeader logo={logo} name={title} />
         <NodeStatus />
         <Quality />
+        <SettlementStatus />
       </Header>
       <Content>
         {showSpinner && <FullPageSpinner />}

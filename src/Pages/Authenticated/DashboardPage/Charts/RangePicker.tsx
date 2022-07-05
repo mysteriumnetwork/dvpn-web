@@ -26,7 +26,7 @@ const Option = styled.div`
     active &&
     `
     border-radius: 100px;
-    background: ${themes.current().colorPrimary};
+    background: ${themes.current().colorKey};
   `}
 `
 

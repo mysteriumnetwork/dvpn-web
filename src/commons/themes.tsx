@@ -10,8 +10,8 @@ const light = {
   backgroundLightgreen: '#EFF8ED',
   backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
 
-  colorPrimary: '#D61F85',
-  colorSecondary: '#ED5BAC',
+  colorKey: '#D61F85',
+  colorKeyLight: '#ED5BAC',
   colorDarkBlue: '#3C3857',
   colorGrayBlue: '#9090BB',
   colorGrayBlue2: '#5A597D',
