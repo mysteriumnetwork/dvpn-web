@@ -24,7 +24,8 @@ const light = {
 
   fontSizeSmallest: '10px',
   fontSizeSmall: '12px',
-  fontSizeNormal: '14pp',
+  fontSizeNormal: '14px',
+  fontSizeBigger: '16px',
   fontSizeBig: '18px',
 }
 

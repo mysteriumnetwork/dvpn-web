@@ -19,6 +19,9 @@ import {
   SESSIONS_SIDE,
   SETTINGS,
   TRANSACTIONS,
+  SETTINGS_ACCOUNT,
+  SETTINGS_ADVANCED,
+  SETTINGS_TRAFFIC,
 } from '../constants/routes'
 import {
   fetchChainSummaryAsync,
@@ -203,7 +206,11 @@ const AppRouter = () => {
             <WithNavigation content={<SettingsPage />} />
           </Protected>
         }
-      />
+      >
+        <Route path={SETTINGS_ACCOUNT} element={<SettingsPage />} />
+        <Route path={SETTINGS_TRAFFIC} element={<SettingsPage />} />
+        <Route path={SETTINGS_ADVANCED} element={<SettingsPage />} />
+      </Route>
       <Route
         path={TRANSACTIONS}
         element={

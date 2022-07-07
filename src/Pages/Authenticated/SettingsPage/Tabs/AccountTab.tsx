@@ -11,7 +11,7 @@ import { YourIdentity } from './Account/YourIdentity'
 import { MystNodesClaim } from './Account/MystNodesClaim'
 import { PasswordChange } from './Account/PasswordChange'
 
-export const AccountTab = () => {
+const AccountTab = () => {
   return (
     <>
       <LayoutUnstyledRow>
@@ -25,3 +25,5 @@ export const AccountTab = () => {
     </>
   )
 }
+
+export default AccountTab
