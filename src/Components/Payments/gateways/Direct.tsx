@@ -16,6 +16,7 @@ import { HowToGetMyst } from './howto'
 import { GatewayProps } from './types'
 import { useAppSelector } from '../../../commons/hooks'
 import { CircularSpinner } from '../../CircularSpinner/CircularSpinner'
+import { Tooltip } from '../../Tooltip/Tooltip'
 
 const Direct = ({ payments: { amountRequiredWei } }: GatewayProps) => {
   const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
@@ -35,14 +36,11 @@ const Direct = ({ payments: { amountRequiredWei } }: GatewayProps) => {
       </div>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a className={styles.centered}>
-        {/*        <Tooltip
-          title={HowToGetMyst()}
-          style={{ backgroundColor: '#FFFFFF !important', fill: '#9D9D9D' }}
-          placement="bottom"
-          arrow
-          interactive
-          children={<div>Don't have any MYST? Read here how to get it</div>}
-        />*/}
+        <Tooltip
+          content={HowToGetMyst()}
+          position="bottom"
+          // children={<div>Don't have any MYST? Read here how to get it</div>}
+        />
       </a>
       <p>2. Wait for the confirmation (might take a couple of minutes)</p>
       <div className={classNames(styles.centered, styles.centeredReceived)}>

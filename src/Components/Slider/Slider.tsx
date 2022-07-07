@@ -7,7 +7,6 @@
 
 import styled from 'styled-components'
 import * as React from 'react'
-import { useState } from 'react'
 import themes from '../../commons/themes'
 import RCSlider from 'rc-slider'
 import 'rc-slider/assets/index.css'

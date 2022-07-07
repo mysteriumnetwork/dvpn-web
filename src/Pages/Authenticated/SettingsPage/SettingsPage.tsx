@@ -6,7 +6,12 @@
  */
 import { Layout } from '../Components/Layout/Layout'
 import { SettingsHeaderIcon } from '../../../Components/Icons/Icons'
+import { AccountTab } from './Tabs/AccountTab'
 
 export const SettingsPage = () => {
-  return <Layout logo={<SettingsHeaderIcon />} title="Settings"></Layout>
+  return (
+    <Layout logo={<SettingsHeaderIcon />} title="Settings">
+      <AccountTab />
+    </Layout>
+  )
 }

@@ -20,6 +20,9 @@ import { ReactComponent as StopwatchSvg } from '../../assets/images/stopwatch.sv
 import { ReactComponent as CloudSvg } from '../../assets/images/cloud.svg'
 import { ReactComponent as StopwatchSimpleSvg } from '../../assets/images/stopwatch_simple.svg'
 import { ReactComponent as QualityBarsSvg } from '../../assets/images/quality-bars.svg'
+import { ReactComponent as InputEmailSvg } from '../../assets/images/input/email.svg'
+import { ReactComponent as InputCopyToClipboardSvg } from '../../assets/images/input/copy-to-clipboard.svg'
+import { ReactComponent as InputLockSvg } from '../../assets/images/input/lock.svg'
 import themes from '../../commons/themes'
 
 interface NavProps {
@@ -174,5 +177,36 @@ export const QualityBarsIcon = styled(QualityBarsSvg)<QualityBarsProps>`
   }
   #bar-3 {
     fill: ${({ $quality = 0 }) => $quality > 2 && themes.current().colorKey} !important;
+  }
+`
+
+interface InputIconProps {
+  $noCircle?: boolean
+}
+
+export const InputEmailIcon = styled(InputEmailSvg)<InputIconProps>`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  circle {
+    opacity: ${({ $noCircle }) => $noCircle && 0};
+  }
+`
+
+export const InputCopyToClipboardIcon = styled(InputCopyToClipboardSvg)<InputIconProps>`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  circle {
+    opacity: ${({ $noCircle }) => $noCircle && 0};
+  }
+`
+
+export const InputLockIcon = styled(InputLockSvg)<InputIconProps>`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  circle {
+    opacity: ${({ $noCircle }) => $noCircle && 0};
   }
 `
