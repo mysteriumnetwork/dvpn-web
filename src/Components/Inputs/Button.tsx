@@ -20,6 +20,10 @@ const StyledButton = styled.button`
   min-width: 70px;
   min-height: 26px;
   padding: 8px 12px 8px 12px;
+
+  :hover {
+    cursor: pointer;
+  }
 `
 
 const LoadingOverlay = styled.div`

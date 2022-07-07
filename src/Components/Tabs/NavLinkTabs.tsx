@@ -13,10 +13,12 @@ interface TabProps {
   $active?: boolean
 }
 
-//const Tab = styled.div<TabProps>`
 const Tab = styled(Link)<TabProps>`
   text-decoration: none;
-  animation: none;
+
+  :hover {
+    color: ${({ $active }) => ($active ? themes.current().colorWhite : themes.current().colorGrayBlue2)};
+  }
 
   text-align: center;
   background: ${({ $active }) => ($active ? themes.current().colorKey : themes.current().colorWhite)};

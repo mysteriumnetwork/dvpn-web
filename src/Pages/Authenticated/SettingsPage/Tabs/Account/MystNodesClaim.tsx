@@ -8,7 +8,6 @@
 import { MMN_SITE } from '../../../../../constants/names'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
-import { InputCopyToClipboardIcon } from '../../../../../Components/Icons/InputIcons'
 import { SettingsCard } from '../../SettingsCard'
 import { Button } from '../../../../../Components/Inputs/Button'
 import { useAppSelector, useFetch } from '../../../../../commons/hooks'
@@ -19,6 +18,7 @@ import { useEffect, useState } from 'react'
 import toasts from '../../../../../commons/toasts'
 import errors from '../../../../../commons/errors'
 import { Form } from '../../../../../Components/Inputs/Form'
+import CopyToClipboardButtonIcon from '../../../../../Components/Inputs/CopyToClipboardButtonIcon'
 
 const { api } = tequila
 
@@ -62,7 +62,7 @@ export const MystNodesClaim = () => {
       <Form onSubmit={handleClaim}>
         <InputGroup
           title="API Key"
-          input={<TextField value={token} onChange={handleApiKey} icon={<InputCopyToClipboardIcon />} />}
+          input={<TextField value={token} onChange={handleApiKey} icon={<CopyToClipboardButtonIcon text={token} />} />}
         />
       </Form>
     </SettingsCard>

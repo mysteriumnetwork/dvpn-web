@@ -7,18 +7,21 @@
 
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
-import { InputCopyToClipboardIcon } from '../../../../../Components/Icons/InputIcons'
 import { SettingsCard } from '../../SettingsCard'
 import { useAppSelector } from '../../../../../commons/hooks'
 import { selectors } from '../../../../../redux/selectors'
 import identities from '../../../../../commons/identities'
+import CopyToClipboardButtonIcon from '../../../../../Components/Inputs/CopyToClipboardButtonIcon'
 
 export const YourIdentity = () => {
   const { id } = useAppSelector(selectors.currentIdentitySelector)
 
   return (
     <SettingsCard loading={identities.isEmpty(id)} title="Identity">
-      <InputGroup title="Your identity" input={<TextField disabled value={id} icon={<InputCopyToClipboardIcon />} />} />
+      <InputGroup
+        title="Your identity"
+        input={<TextField disabled value={id} icon={<CopyToClipboardButtonIcon text={id} />} />}
+      />
     </SettingsCard>
   )
 }
