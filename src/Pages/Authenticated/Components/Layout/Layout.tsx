@@ -6,7 +6,6 @@
  */
 import PageHeader from '../../../../Components/LayoutHeader/LayoutHeader'
 import React from 'react'
-import { FullPageSpinner } from '../Spinner/FullPageSpinner'
 import { selectors } from '../../../../redux/selectors'
 import { useAppSelector } from '../../../../commons/hooks'
 import styled, { css } from 'styled-components'
@@ -14,8 +13,10 @@ import themes from '../../../../commons/themes'
 import { Quality } from '../Quality/Quality'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
+import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 
 const Main = styled.main`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -38,6 +39,37 @@ const Content = styled.div`
   overflow-y: auto;
 `
 
+const Overlay = styled.div`
+  width: 100%;
+  opacity: 0.5;
+  z-index: 1000;
+  height: 100%;
+  background: #dfdfdf;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: 20px;
+`
+
+const Spinner = styled(CircularSpinner)`
+  width: 6em;
+  height: 6em;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 1001;
+  position: absolute;
+`
+
+const PageSpinner = () => (
+  <>
+    <Overlay />
+    <Spinner />
+  </>
+)
+
 interface Props {
   title?: string
   logo?: React.ReactNode
@@ -52,16 +84,14 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
 
   return (
     <Main>
+      {showSpinner && <PageSpinner />}
       <Header>
         <PageHeader logo={logo} name={title} />
         <NodeStatus />
         <Quality />
         <SettlementStatus />
       </Header>
-      <Content>
-        {showSpinner && <FullPageSpinner />}
-        {children}
-      </Content>
+      <Content>{children}</Content>
     </Main>
   )
 }

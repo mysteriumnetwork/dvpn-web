@@ -24,6 +24,10 @@ const StyledButton = styled.button`
   :hover {
     cursor: pointer;
   }
+
+  :active {
+    background: ${themes.current().colorGrayBlue}BB;
+  }
 `
 
 const LoadingOverlay = styled.div`
@@ -60,7 +64,7 @@ interface Props {
 
 export const Button = ({ loading, label, variant = 'primary', onClick, type }: Props) => {
   return (
-    <StyledButton type={type} onClick={onClick}>
+    <StyledButton type={type} disabled={loading} onClick={onClick}>
       {loading && (
         <LoadingOverlay>
           <Spinner />
