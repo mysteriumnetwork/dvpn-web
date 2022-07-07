@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Layout } from '../Components/Layout/Layout'
-import { TransactionsHeaderIcon } from '../../../Components/Icons/Icons'
+import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
 
 export const TransactionsPage = () => {
   return <Layout logo={<TransactionsHeaderIcon />} title="Transactions"></Layout>

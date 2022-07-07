@@ -7,7 +7,7 @@
 
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
-import { InputCopyToClipboardIcon } from '../../../../../Components/Icons/Icons'
+import { InputCopyToClipboardIcon } from '../../../../../Components/Icons/InputIcons'
 import { SettingsCard } from '../../SettingsCard'
 import { useAppSelector } from '../../../../../commons/hooks'
 import { selectors } from '../../../../../redux/selectors'

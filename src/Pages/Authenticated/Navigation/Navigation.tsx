@@ -20,7 +20,7 @@ import {
   SessionsNavIcon,
   SettingsNavIcon,
   WalletNavIcon,
-} from '../../../Components/Icons/Icons'
+} from '../../../Components/Icons/NavigationIcons'
 
 const Content = styled.div`
   background: ${themes.current().backgroundMysterium};

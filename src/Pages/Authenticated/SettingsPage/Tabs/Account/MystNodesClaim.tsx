@@ -8,7 +8,7 @@
 import { MMN_SITE } from '../../../../../constants/names'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
-import { InputCopyToClipboardIcon } from '../../../../../Components/Icons/Icons'
+import { InputCopyToClipboardIcon } from '../../../../../Components/Icons/InputIcons'
 import { SettingsCard } from '../../SettingsCard'
 import { Button } from '../../../../../Components/Inputs/Button'
 import { useAppSelector, useFetch } from '../../../../../commons/hooks'

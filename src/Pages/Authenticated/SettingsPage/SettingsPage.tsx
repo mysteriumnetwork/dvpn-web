@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Layout } from '../Components/Layout/Layout'
-import { SettingsHeaderIcon } from '../../../Components/Icons/Icons'
+import { SettingsHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { AccountTab } from './Tabs/AccountTab'
 
 export const SettingsPage = () => {

@@ -7,7 +7,7 @@
 
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
-import { InputLockIcon } from '../../../../../Components/Icons/Icons'
+import { InputLockIcon } from '../../../../../Components/Icons/InputIcons'
 import { SettingsCard } from '../../SettingsCard'
 import { Button } from '../../../../../Components/Inputs/Button'
 import { Form } from '../../../../../Components/Inputs/Form'
