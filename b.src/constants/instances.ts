@@ -21,6 +21,7 @@ import {
   SessionStats,
   SettlementListResponse,
 } from 'mysterium-vpn-js'
+import { NodeBuildInfo } from 'mysterium-vpn-js/lib/daemon/healthcheck'
 
 export const TOKENS_EMPTY = Object.freeze({
   wei: '0',
@@ -118,7 +119,7 @@ export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
   type: '',
 })
 
-export const SETTLEMENT_LIST_REPONSE_EMPTY: SettlementListResponse = Object.freeze({
+export const SETTLEMENT_LIST_RESPONSE_EMPTY: SettlementListResponse = Object.freeze({
   items: [],
   totalPages: 0,
   page: 1,

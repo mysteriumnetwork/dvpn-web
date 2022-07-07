@@ -23,7 +23,7 @@ import { Layout } from '../Layout'
 import { toCsv } from './settlement.mapper'
 import styles from './WalletPage.module.scss'
 import { useFetch } from '../../../commons/hooks'
-import { SETTLEMENT_LIST_REPONSE_EMPTY } from '../../../constants/instances'
+import { SETTLEMENT_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 
 const { api } = tequila
 const { date2human } = dates
@@ -39,7 +39,7 @@ const WalletPage = () => {
     pageSize: 10,
   })
 
-  const [data = SETTLEMENT_LIST_REPONSE_EMPTY, loading] = useFetch(
+  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY, loading] = useFetch(
     () => api.settlementHistory({ pageSize: state.pageSize, page: state.page }),
     [state.pageSize, state.page],
   )

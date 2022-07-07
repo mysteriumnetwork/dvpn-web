@@ -54,6 +54,7 @@ import OnBoardingPage from './Onboarding/OnBoardingPage'
 import { HistoryPage } from './Authenticated/HistoryPage/HistoryPage'
 import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
 import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
+import PageNotFound from './Error/PageNotFound'
 
 const { api } = tequila
 const { parseToastError } = errors
@@ -243,7 +244,7 @@ const AppRouter = () => {
           </Protected>
         }
       />
-      <Route path="*" element={<>Not Found</>} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   )
 }

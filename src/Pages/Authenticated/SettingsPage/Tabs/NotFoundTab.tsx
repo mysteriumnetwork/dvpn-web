@@ -10,7 +10,7 @@ import { LayoutUnstyledRow } from '../../Components/Layout/Layout'
 const NotFoundTab = () => {
   return (
     <LayoutUnstyledRow>
-      <h1>Tab not found</h1>
+      <h1>Tab not found ️😭</h1>
     </LayoutUnstyledRow>
   )
 }

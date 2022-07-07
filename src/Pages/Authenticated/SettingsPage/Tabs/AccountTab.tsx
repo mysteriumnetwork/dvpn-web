@@ -10,6 +10,7 @@ import { SettingsCard } from '../SettingsCard'
 import { YourIdentity } from './Account/YourIdentity'
 import { MystNodesClaim } from './Account/MystNodesClaim'
 import { PasswordChange } from './Account/PasswordChange'
+import { AvatarChoice } from './Account/AvatarChoice'
 
 const AccountTab = () => {
   return (
@@ -20,7 +21,7 @@ const AccountTab = () => {
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <PasswordChange />
-        <SettingsCard title="Select Avatar" />
+        <AvatarChoice />
       </LayoutUnstyledRow>
     </>
   )

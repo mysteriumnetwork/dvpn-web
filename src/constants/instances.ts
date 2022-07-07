@@ -118,11 +118,22 @@ export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
   type: '',
 })
 
-export const SETTLEMENT_LIST_REPONSE_EMPTY: SettlementListResponse = Object.freeze({
+export const SETTLEMENT_LIST_RESPONSE_EMPTY: SettlementListResponse = Object.freeze({
   items: [],
   totalPages: 0,
   page: 1,
   pageSize: 10,
   totalItems: 0,
   withdrawalTotal: '0',
+})
+
+export const NODE_HEALTH_CHECK_EMPTY: NodeHealthcheck = Object.freeze({
+  uptime: '',
+  process: 0,
+  version: '',
+  buildInfo: {
+    commit: '',
+    branch: '',
+    buildNumber: '',
+  },
 })
