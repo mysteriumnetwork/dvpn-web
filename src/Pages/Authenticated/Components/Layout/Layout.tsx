@@ -23,6 +23,7 @@ const Main = styled.main`
   height: 100%;
   background-color: ${themes.current().backgroundLightgray};
   border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 `
 
 const Header = styled.div`

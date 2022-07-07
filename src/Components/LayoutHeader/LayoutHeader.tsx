@@ -24,11 +24,12 @@ const Logo = styled.div`
 `
 
 const PageName = styled.div`
-  font-family: Ubuntu;
   font-style: normal;
   font-size: 20px;
   margin-left: 25px;
   font-weight: 500;
+  max-width: 200px;
+  min-width: 200px;
   color: ${themes.current().colorDarkBlue};
 `
 
