@@ -12,6 +12,7 @@ import RCSlider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
 const Content = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
 `
@@ -26,10 +27,10 @@ const StyledRCSlider = styled(RCSlider)`
   }
 
   .rc-slider-handle {
-    width: 8px;
-    height: 8px;
-    margin-top: -2.5px;
-    border: solid 3px ${themes.current().colorKeyLight};
+    //width: 8px;
+    //height: 8px;
+    //margin-top: -2.5px;
+    border: solid 5px ${themes.current().colorKey};
   }
 
   .rc-slider-handle:active {
@@ -60,11 +61,16 @@ const StyledRCSlider = styled(RCSlider)`
     box-shadow: 0 0 5px ${themes.current().colorKeyLight};
   }
   .rc-slider-mark-text {
-    color: red;
+    color: ${themes.current().colorGrayBlue2};
+    font-size: ${themes.current().fontSizeSmall};
+    font-weight: 400;
+    width: 80px;
   }
 
   .rc-slider-mark-text-active {
-    color: red;
+    color: ${themes.current().colorGrayBlue2};
+    font-size: ${themes.current().fontSizeSmall};
+    font-weight: 400;
   }
 `
 

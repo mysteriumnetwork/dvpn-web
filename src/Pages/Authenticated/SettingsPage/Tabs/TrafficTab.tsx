@@ -6,12 +6,14 @@
  */
 import { LayoutUnstyledRow } from '../../Components/Layout/Layout'
 import { NodeStatus } from './Traffic/NodeStatus'
+import { BandwidthControl } from './Traffic/BandwidthControl'
 
 const TrafficTab = () => {
   return (
     <>
       <LayoutUnstyledRow>
         <NodeStatus />
+        <BandwidthControl />
       </LayoutUnstyledRow>
     </>
   )

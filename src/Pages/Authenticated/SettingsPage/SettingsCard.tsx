@@ -10,6 +10,7 @@ import themes from '../../../commons/themes'
 import { CircularSpinner } from '../../../Components/CircularSpinner/CircularSpinner'
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
 
@@ -17,15 +18,14 @@ const Container = styled.div`
   padding: 25px;
   border-radius: 20px;
 
-  box-shadow: 0px 10px 30px rgba(78, 28, 103, 0.05);
-
+  box-shadow: 0 10px 30px rgba(78, 28, 103, 0.05);
+  gap: 24px;
   width: 100%;
 `
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
   gap: 20px;
 `
 
@@ -51,12 +51,16 @@ const Spinner = styled(CircularSpinner)`
 
 const Title = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
+`
 
+const TitleText = styled.div`
+  display: flex;
+  width: 100%;
   color: ${themes.current().colorDarkBlue};
   font-size: ${themes.current().fontSizeBig};
   font-weight: 700;
-  margin-bottom: 24px;
 `
 
 const Footer = styled.div`
@@ -64,7 +68,8 @@ const Footer = styled.div`
 `
 
 interface Props {
-  title?: string
+  title?: ReactNode
+  titleControl?: ReactNode
   children?: ReactNode
   footer?: ReactNode
   loading?: boolean
@@ -73,16 +78,18 @@ interface Props {
 export const SettingsCard = ({ title, children, footer, loading }: Props) => {
   return (
     <Container>
-      {title && <Title>{title}</Title>}
-      <Content>
-        {loading && (
-          <LoadingOverlay>
-            <Spinner />
-          </LoadingOverlay>
-        )}
-        {children}
-        {footer && <Footer>{footer}</Footer>}
-      </Content>
+      {title && (
+        <Title>
+          <TitleText>{title}</TitleText>
+        </Title>
+      )}
+      {children && <Content>{children}</Content>}
+      {footer && <Footer>{footer}</Footer>}
+      {loading && (
+        <LoadingOverlay>
+          <Spinner />
+        </LoadingOverlay>
+      )}
     </Container>
   )
 }

@@ -10,11 +10,12 @@ import themes from '../../commons/themes'
 
 interface Props {
   checked: boolean
+  disabled?: boolean
   onChange: (value: boolean) => void
   className?: string
 }
 
-export const Switch = ({ checked, onChange, className }: Props) => {
+export const Switch = ({ checked, onChange, className, disabled }: Props) => {
   return (
     <RSwitch
       className={className}
@@ -24,6 +25,7 @@ export const Switch = ({ checked, onChange, className }: Props) => {
       checkedIcon={false}
       onColor={themes.current().colorGreen}
       offColor={themes.current().colorGrayBlue}
+      disabled={disabled}
     />
   )
 }
