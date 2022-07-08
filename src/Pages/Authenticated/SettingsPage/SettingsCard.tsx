@@ -64,7 +64,7 @@ const Footer = styled.div`
 `
 
 interface Props {
-  title: string
+  title?: string
   children?: ReactNode
   footer?: ReactNode
   loading?: boolean
@@ -73,7 +73,7 @@ interface Props {
 export const SettingsCard = ({ title, children, footer, loading }: Props) => {
   return (
     <Container>
-      <Title>{title}</Title>
+      {title && <Title>{title}</Title>}
       <Content>
         {loading && (
           <LoadingOverlay>

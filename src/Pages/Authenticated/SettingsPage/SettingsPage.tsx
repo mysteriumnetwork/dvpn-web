@@ -24,7 +24,7 @@ const FlexGrow = styled.div`
 const PATH_TO_TAB = {
   [SETTINGS]: './Tabs/AccountTab',
   [SETTINGS_ACCOUNT]: './Tabs/AccountTab',
-  [SETTINGS_TRAFFIC]: './Tabs/AccountTab',
+  [SETTINGS_TRAFFIC]: './Tabs/TrafficTab',
 }
 
 export const SettingsPage = () => {

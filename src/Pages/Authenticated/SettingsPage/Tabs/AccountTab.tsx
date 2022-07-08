@@ -6,7 +6,6 @@
  */
 
 import { LayoutUnstyledRow } from '../../Components/Layout/Layout'
-import { SettingsCard } from '../SettingsCard'
 import { YourIdentity } from './Account/YourIdentity'
 import { MystNodesClaim } from './Account/MystNodesClaim'
 import { PasswordChange } from './Account/PasswordChange'
