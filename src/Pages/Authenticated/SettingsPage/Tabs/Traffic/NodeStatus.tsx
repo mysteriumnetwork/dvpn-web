@@ -23,8 +23,6 @@ const Title = styled.div`
 interface StatusProps {}
 
 const Status = styled.div<StatusProps>``
-const On = styled.div``
-const Wtf = styled.div``
 const FlexGrow = styled.div`
   flex-grow: 1;
 `
