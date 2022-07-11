@@ -54,7 +54,7 @@ const light = {
   bgReportChartRowBoxShadow: '0 10px 30px' + common.color4e1c67 + alphaToHex(0.05),
 
   colorTextMain: common.colorDarkBlue,
-  colorTextSecondary: common.colorDarkBlue,
+  colorTextSecondary: common.colorGrayBlue2,
 
   backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
 

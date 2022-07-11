@@ -12,15 +12,13 @@ interface Props {
   checked: boolean
   disabled?: boolean
   onChange: (value: boolean) => void
-  className?: string
   variant?: 'green' | 'key'
   size?: 'normal' | 'small'
 }
 
-export const Switch = ({ checked, onChange, className, disabled, variant = 'green', size = 'normal' }: Props) => {
+export const Switch = ({ checked, onChange, disabled, variant = 'green', size = 'normal' }: Props) => {
   return (
     <RSwitch
-      className={className}
       checked={checked}
       onChange={onChange}
       uncheckedIcon={false}
@@ -28,6 +26,9 @@ export const Switch = ({ checked, onChange, className, disabled, variant = 'gree
       onColor={variant === 'green' ? themes.current().colorGreen : themes.current().colorKey}
       offColor={themes.current().colorGrayBlue}
       disabled={disabled}
+      handleDiameter={size === 'small' ? 14 : undefined}
+      height={size === 'small' ? 20 : undefined}
+      width={size === 'small' ? 40 : undefined}
     />
   )
 }

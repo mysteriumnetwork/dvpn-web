@@ -15,6 +15,7 @@ import { updateTheme } from '../../../../redux/app.slice'
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   border-radius: 40px;
   background: ${themes.current().colorWhite}10;
   padding-bottom: 20px;
@@ -29,7 +30,12 @@ export const ThemeSwitch = () => {
   return (
     <Container>
       {isDark ? <MoonNavIcon /> : <SunNavIcon />}
-      <Switch variant="key" checked={isDark} onChange={() => dispatch(updateTheme(isDark ? 'light' : 'dark'))} />
+      <Switch
+        variant="key"
+        size="small"
+        checked={isDark}
+        onChange={() => dispatch(updateTheme(isDark ? 'light' : 'dark'))}
+      />
     </Container>
   )
 }

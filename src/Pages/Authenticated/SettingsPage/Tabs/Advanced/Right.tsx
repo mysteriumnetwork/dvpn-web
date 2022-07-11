@@ -15,11 +15,22 @@ import { selectors } from '../../../../../redux/selectors'
 import { AdvancedSettingsForms } from './AdvancedSettings'
 import { useEffect } from 'react'
 import { configs } from '../../../../../commons/config'
+import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
+import themes from '../../../../../commons/themes'
 
 const Controls = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`
+
+const SubTitle = styled.div`
+  color: ${({ theme }) => theme.colorTextSecondary};
+  font-size: ${themes.common.fontSizeSmall};
+`
+
+const MarginTop = styled.div`
+  margin-top: 20px;
 `
 
 interface Props {
@@ -55,12 +66,21 @@ export const Right = ({ handleSave, loading, onChange, form }: Props) => {
         </Controls>
       }
     >
-      <DNDList
-        items={configs
-          .natTraversals(config)
-          .split(',')
-          .map((v) => ({ id: v, label: v }))}
-        onChange={handleChange}
+      <InputGroup
+        title="NAT Traversal Order"
+        titleRight={<SubTitle>Drag items to reorder</SubTitle>}
+        input={
+          <>
+            <MarginTop />
+            <DNDList
+              items={configs
+                .natTraversals(config)
+                .split(',')
+                .map((v) => ({ id: v, label: v }))}
+              onChange={handleChange}
+            />
+          </>
+        }
       />
     </SettingsCard>
   )
