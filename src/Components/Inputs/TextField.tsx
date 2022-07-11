@@ -19,7 +19,7 @@ const StyledInput = styled.input<StyledInputProps>`
   height: 35px;
 
   font-weight: 400;
-  font-size: ${themes.current().fontSizeNormal};
+  font-size: ${themes.common.fontSizeNormal};
   line-height: 16px;
   padding-left: 5px;
 

@@ -15,7 +15,6 @@ import { ReactElement } from 'react'
 import identities from '../../commons/identities'
 import { useAppSelector } from '../../commons/hooks'
 import styled from 'styled-components'
-import themes from '../../commons/themes'
 
 const { isEmpty, isRegistered } = identities
 
@@ -39,7 +38,7 @@ const Page = styled.div`
 `
 
 const Content = styled.div`
-  background: ${themes.current().backgroundMysterium};
+  background: ${({ theme }) => theme.bgNavigation};
   height: 100%;
   width: 100%;
   display: flex;

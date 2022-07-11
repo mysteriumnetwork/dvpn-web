@@ -9,7 +9,6 @@ import React from 'react'
 import { selectors } from '../../../../redux/selectors'
 import { useAppSelector } from '../../../../commons/hooks'
 import styled, { css } from 'styled-components'
-import themes from '../../../../commons/themes'
 import { Quality } from '../Quality/Quality'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
@@ -21,7 +20,7 @@ const Main = styled.main`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: ${themes.current().backgroundLightgray};
+  background-color: ${({ theme }) => theme.bgLayout};
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 `
@@ -105,7 +104,7 @@ const sharedRowCss = css`
 `
 
 const cardCss = css`
-  background: ${themes.current().colorWhite};
+  background: ${({ theme }) => theme.bgLayoutCardCss};
   border-radius: 20px;
   padding: 20px;
 `
@@ -116,7 +115,8 @@ export const LayoutHeroCardRow = styled.div`
   justify-content: space-around;
   margin: 0 16px 0 16px;
   padding: 16px;
-  background: ${themes.current().colorGrayBlue}1a;
+  background: ${({ theme }) => theme.bgLayoutHeroRow};
+
   border-radius: 35px;
 
   ${sharedRowCss};

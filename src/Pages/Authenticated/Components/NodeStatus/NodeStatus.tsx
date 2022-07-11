@@ -13,18 +13,16 @@ const Status = styled.div`
   gap: 6px;
 `
 const Title = styled.div`
-  color: ${themes.current().colorDarkBlue};
-  font-size: ${themes.current().fontSizeSmall};
+  color: ${({ theme }) => theme.colorTextMain};
+  font-size: ${themes.common.fontSizeSmall};
   font-weight: 400;
-  font-family: Ubuntu;
 `
 
 const OnlineStatus = styled.div`
-  background: ${themes.current().colorGreen};
-  font-size: ${themes.current().fontSizeSmaller};
-  color: ${themes.current().colorWhite};
+  background: ${themes.common.colorGreen};
+  font-size: ${themes.common.fontSizeSmaller};
+  color: ${({ theme }) => theme.colorTextMain};
   font-weight: 400;
-  font-family: Ubuntu;
   padding: 5px;
   border-radius: 10px;
 `

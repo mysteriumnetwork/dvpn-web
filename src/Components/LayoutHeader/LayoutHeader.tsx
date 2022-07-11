@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes from '../../commons/themes'
 import React from 'react'
 
 const Content = styled.div`
@@ -30,7 +29,7 @@ const PageName = styled.div`
   font-weight: 500;
   max-width: 200px;
   min-width: 200px;
-  color: ${themes.current().colorDarkBlue};
+  color: ${({ theme }) => theme.colorTextMain};
 `
 
 interface Props {

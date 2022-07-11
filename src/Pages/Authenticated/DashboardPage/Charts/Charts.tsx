@@ -119,7 +119,7 @@ const Charts = ({ statsDaily }: Props) => {
 }
 
 const Chart = styled.div`
-  color: ${themes.current().colorDarkBlue};
+  color: ${({ theme }) => theme.colorTextMain};
 `
 const Header = styled.div`
   display: flex;
@@ -132,7 +132,7 @@ const FlexGrow = styled.div`
 `
 
 const Title = styled.div`
-  font-size: ${themes.current().fontSizeBig};
+  font-size: ${themes.common.fontSizeBig};
   font-weight: 700;
   font-family: Ubuntu;
   margin-right: 60px;
@@ -165,7 +165,7 @@ const ChartOverrides = styled.div`
   .recharts-text.recharts-cartesian-axis-tick-value {
     font-family: 'Ubuntu', sans-serif;
     font-style: normal !important;
-    font-size: ${themes.current().fontSizeSmall};
+    font-size: ${themes.common.fontSizeSmall};
     line-height: 21px;
   }
 
@@ -179,7 +179,7 @@ const ChartOverrides = styled.div`
   .recharts-tooltip-label {
     font-family: 'Ubuntu', sans-serif;
     font-style: normal;
-    font-size: ${themes.current().fontSizeNormal};
+    font-size: ${themes.common.fontSizeNormal};
     line-height: 21px;
   }
 

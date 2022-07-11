@@ -20,7 +20,7 @@ export const DoughnutChart = ({ data, colorA, colorB }: Props) => {
     <Wrapper>
       <ResponsiveContainer width={70} height={70}>
         <PieChart>
-          <Pie data={data} innerRadius={12} outerRadius={30} dataKey="value">
+          <Pie data={data} stroke="none" innerRadius={12} outerRadius={30} dataKey="value">
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={index === 0 ? colorA : colorB} />
             ))}

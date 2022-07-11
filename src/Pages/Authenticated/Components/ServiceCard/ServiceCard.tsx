@@ -20,7 +20,7 @@ const Card = styled.div`
 
 const Header = styled.div`
   position: relative;
-  background: ${themes.current().backgroundContent};
+  background: ${({ theme }) => theme.bgServiceCardHeader};
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   padding: 24px;
@@ -33,11 +33,12 @@ const Controls = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  color: ${({ theme }) => theme.colorTextMain};
 `
 
 const Description = styled.div`
-  color: ${themes.current().colorGrayBlue2};
-  font-size: ${themes.current().fontSizeSmall};
+  color: ${({ theme }) => theme.colorTextSecondary};
+  font-size: ${themes.common.fontSizeSmall};
 `
 
 const Row = styled.div`
@@ -46,7 +47,7 @@ const Row = styled.div`
   justify-content: space-between;
 `
 const Content = styled.div`
-  background: ${themes.current().backgroundLightgray};
+  background: ${({ theme }) => theme.bgServiceCardContent};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   padding: 31px;

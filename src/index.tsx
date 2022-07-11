@@ -8,26 +8,16 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-
-import AppRouter from './Pages/AppRouter'
 import { store } from './redux/store'
-
-import { Hotkeys } from './Pages/Authenticated/Components/Hotkeys/Hotkeys'
-import { NodeHealthcheckBarrier } from './Pages/NodeHealthcheckBarrier'
-import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { App } from './Pages/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 const app = (
   <Provider store={store}>
     <HashRouter>
-      <Hotkeys>
-        <NodeHealthcheckBarrier>
-          <AppRouter />
-        </NodeHealthcheckBarrier>
-      </Hotkeys>
-      <ToastContainer position="bottom-right" />
+      <App />
     </HashRouter>
   </Provider>
 )

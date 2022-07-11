@@ -16,9 +16,8 @@ const Content = styled.div`
 `
 
 const Title = styled.div`
-  color: ${themes.current().colorGrayBlue};
-  font-size: ${themes.current().fontSizeSmall};
-  font-family: Ubuntu;
+  color: ${({ theme }) => theme.colorTextMain};
+  font-size: ${themes.common.fontSizeSmall};
 `
 
 export const Quality = () => {

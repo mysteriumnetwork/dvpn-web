@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes from '../../../../commons/themes'
+import themes, { alphaToHex } from '../../../../commons/themes'
 import { StopwatchSimpleIcon } from '../../../../Components/Icons/Icons'
 import { DoughnutChart } from './DoughnutChart'
 import { Bubble } from '../../DashboardPage/Bubble'
@@ -13,7 +13,7 @@ import { Bubble } from '../../DashboardPage/Bubble'
 const Statistics = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${themes.current().colorDarkBlue};
+  color: ${({ theme }) => theme.colorTextMain};
 `
 const Header = styled.div`
   display: flex;
@@ -23,8 +23,7 @@ const Header = styled.div`
 `
 
 const Title = styled.div`
-  font-family: 'Ubuntu';
-  font-size: ${themes.current().fontSizeBig};
+  font-size: ${themes.common.fontSizeBig};
   font-weight: 700;
   font-style: normal;
 `
@@ -33,9 +32,8 @@ const SubTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Ubuntu';
-  font-size: ${themes.current().fontSizeSmaller};
-  color: ${themes.current().colorGrayBlue2};
+  font-size: ${themes.common.fontSizeSmaller};
+  color: ${({ theme }) => theme.colorTextSecondary};
 `
 
 const Content = styled.div`
@@ -68,9 +66,8 @@ const Row = styled.div`
 `
 
 const SmallText = styled.div`
-  font-family: Ubuntu;
   font-weight: 400;
-  font-size: ${themes.current().fontSizeSmall};
+  font-size: ${themes.common.fontSizeSmall};
 `
 
 export const IdleStat = () => {
@@ -108,8 +105,8 @@ export const IdleStat = () => {
       <Content>
         <DoughnutChart
           data={statusData}
-          colorA={themes.current().colorBlue}
-          colorB={`${themes.current().colorBlue}33`}
+          colorA={themes.common.colorBlue}
+          colorB={`${themes.common.colorBlue}${alphaToHex(0.2)}`}
         />
         <Column $marginLeft="40px">
           <Bubble value="30%" primary />
@@ -123,8 +120,8 @@ export const IdleStat = () => {
         <GreenBackground>
           <DoughnutChart
             data={idleData}
-            colorA={themes.current().colorGreen}
-            colorB={`${themes.current().colorGreen}33`}
+            colorA={themes.common.colorGreen}
+            colorB={`${themes.common.colorGreen}${alphaToHex(0.2)}`}
           />
           <Column $marginLeft="40px">
             <Row>

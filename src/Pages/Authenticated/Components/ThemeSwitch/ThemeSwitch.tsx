@@ -5,21 +5,31 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ReactComponent as LightIcon } from '../../../../assets/images/light.svg'
 import styled from 'styled-components'
 import themes from '../../../../commons/themes'
+import { MoonNavIcon, SunNavIcon } from '../../../../Components/Icons/NavigationIcons'
+import { Switch } from '../../../../Components/Switch/Switch'
+import { useAppDispatch, useAppSelector } from '../../../../commons/hooks'
+import { updateTheme } from '../../../../redux/app.slice'
 
-const LightOn = styled(LightIcon)`
-  g circle,
-  g path {
-    stroke: ${themes.current().colorWhite};
-  }
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  background: ${themes.current().colorWhite}10;
+  padding-bottom: 20px;
 `
 
 export const ThemeSwitch = () => {
+  const theme = useAppSelector(({ app }) => app.theme)
+  const dispatch = useAppDispatch()
+
+  const isDark = theme === 'dark'
+
   return (
-    <>
-      <LightOn />
-    </>
+    <Container>
+      {isDark ? <MoonNavIcon /> : <SunNavIcon />}
+      <Switch variant="key" checked={isDark} onChange={() => dispatch(updateTheme(isDark ? 'light' : 'dark'))} />
+    </Container>
   )
 }

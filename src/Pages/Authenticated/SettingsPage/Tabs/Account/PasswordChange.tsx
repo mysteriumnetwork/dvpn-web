@@ -78,7 +78,7 @@ export const PasswordChange = () => {
 
   return (
     <SettingsCard
-      footer={<Button loading={loading} onClick={handlePasswordChange} label="Update Password" />}
+      footer={<Button loading={loading} onClick={handlePasswordChange} variant="secondary" label="Update Password" />}
       title="Change Password"
     >
       <Form onSubmit={handlePasswordChange}>

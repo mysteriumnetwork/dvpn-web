@@ -4,10 +4,55 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { store } from '../redux/store'
+
+export const alphaToHex = (a: number) => {
+  return ((a * 255) | (1 << 8)).toString(16).slice(1)
+}
+
+const common = {
+  backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
+  colorKey: '#D61F85',
+  colorKeyLight: '#ED5BAC',
+  colorDarkBlue: '#3C3857',
+  colorGrayBlue: '#9090BB',
+  colorGrayBlue2: '#5A597D',
+  colorWhite: '#FFFFFF',
+  colorGreen: '#63B64E',
+  colorLightGreen: '#EFF8ED',
+  colorBlue: '#5BB1EF',
+  colorLightBlue: '#F6F6FA',
+
+  colorNavStroke: '#FFFFFF',
+  colorNavActiveStroke: '#3C3857',
+
+  color221E39: '#221E39',
+  color2F2A48: '#2F2A48',
+  color393453: '#393453',
+
+  fontSizeSmallest: '8px',
+  fontSizeSmaller: '10px',
+  fontSizeSmall: '12px',
+  fontSizeNormal: '14px',
+  fontSizeBigger: '16px',
+  fontSizeBig: '18px',
+  fontSizeHuge: '24px',
+}
+
 const light = {
-  backgroundLightgray: '#F6F6FA',
-  backgroundContent: '#FFFFFF',
-  backgroundLightgreen: '#EFF8ED',
+  bgNavigation: common.backgroundMysterium,
+  bgLayout: common.colorLightBlue,
+  bgLayoutHeroRow: common.colorGrayBlue + alphaToHex(0.1),
+  bgLayoutCardCss: common.colorWhite,
+
+  bgServiceCardHeader: common.colorWhite,
+  bgServiceCardContent: common.colorLightBlue,
+
+  bgSettingsCard: common.colorWhite,
+
+  colorTextMain: common.colorDarkBlue,
+  colorTextSecondary: common.colorDarkBlue,
+
   backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
 
   colorKey: '#D61F85',
@@ -17,6 +62,45 @@ const light = {
   colorGrayBlue2: '#5A597D',
   colorWhite: '#FFFFFF',
   colorGreen: '#63B64E',
+  colorLightGreen: '#EFF8ED',
+  colorBlue: '#5BB1EF',
+  colorLightBlue: '#F6F6FA',
+
+  colorNavStroke: '#FFFFFF',
+  colorNavActiveStroke: '#3C3857',
+
+  fontSizeSmallest: '8px',
+  fontSizeSmaller: '10px',
+  fontSizeSmall: '12px',
+  fontSizeNormal: '14px',
+  fontSizeBigger: '16px',
+  fontSizeBig: '18px',
+}
+
+const dark = {
+  bgNavigation: common.color221E39,
+  bgLayout: common.color2F2A48,
+  bgLayoutHeroRow: common.color221E39,
+  bgLayoutCardCss: common.color393453,
+
+  bgServiceCardHeader: common.color393453,
+  bgServiceCardContent: common.color393453,
+
+  bgSettingsCard: common.color393453,
+
+  colorTextMain: common.colorLightBlue,
+  colorTextSecondary: common.colorGrayBlue,
+
+  backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
+
+  colorKey: '#D61F85',
+  colorKeyLight: '#ED5BAC',
+  colorDarkBlue: '#3C3857',
+  colorGrayBlue: '#9090BB',
+  colorGrayBlue2: '#5A597D',
+  colorWhite: '#FFFFFF',
+  colorGreen: '#63B64E',
+  colorLightGreen: '#EFF8ED',
   colorBlue: '#5BB1EF',
   colorLightBlue: '#F6F6FA',
 
@@ -32,11 +116,13 @@ const light = {
 }
 
 const current = () => {
-  return light
+  return store.getState().app.theme === 'light' ? light : dark
 }
 
 const themes = {
+  dark,
   light,
+  common,
   current,
 }
 

@@ -57,7 +57,7 @@ export const MystNodesClaim = () => {
     <SettingsCard
       loading={fetchLoading}
       title={`${MMN_SITE} Integrations`}
-      footer={<Button type="submit" loading={resolvedLoading} onClick={handleClaim} label="Save" />}
+      footer={<Button type="submit" variant="secondary" loading={resolvedLoading} onClick={handleClaim} label="Save" />}
     >
       <Form onSubmit={handleClaim}>
         <InputGroup

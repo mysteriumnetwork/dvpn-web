@@ -40,6 +40,7 @@ export interface AppState {
   fees: FeesResponse
   chainSummary: ChainSummary
   beneficiary: IdentityBeneficiaryResponse
+  theme: 'light' | 'dark'
 }
 
 const INITIAL_STATE: AppState = {
@@ -68,6 +69,7 @@ const INITIAL_STATE: AppState = {
     beneficiary: '',
     isChannelAddress: false,
   },
+  theme: 'light',
 }
 
 const slice = createSlice({
@@ -100,6 +102,9 @@ const slice = createSlice({
     },
     updateDefaultConfigStore: (state, action) => {
       state.defaultConfig = action.payload
+    },
+    updateTheme: (state, action) => {
+      state.theme = action.payload
     },
   },
 })
@@ -141,5 +146,7 @@ export const {
   updateFeesStore,
   updateChainSummaryStore,
   updateBeneficiaryStore,
+  updateTheme,
 } = slice.actions
+
 export default slice.reducer

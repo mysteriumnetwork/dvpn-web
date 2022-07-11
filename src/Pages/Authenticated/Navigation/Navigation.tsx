@@ -11,7 +11,6 @@ import { DASHBOARD, HISTORY, SETTINGS, TRANSACTIONS } from '../../../constants/r
 
 import './Navigation.scss'
 import styled from 'styled-components'
-import themes from '../../../commons/themes'
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
 import {
   BugNavIcon,
@@ -23,12 +22,13 @@ import {
 } from '../../../Components/Icons/NavigationIcons'
 
 const Content = styled.div`
-  background: ${themes.current().backgroundMysterium};
+  background: ${({ theme }) => theme.bgNavigation};
   padding: 0 18px 0 18px;
   display: flex;
   height: 100%;
   position: relative;
   flex-direction: column;
+  gap: 10px;
 `
 
 const LogoLink = styled(Link)`
@@ -38,7 +38,6 @@ const LogoLink = styled(Link)`
 const PlainLink = styled(NavLink)`
   width: 48px;
   height: 48px;
-  margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;

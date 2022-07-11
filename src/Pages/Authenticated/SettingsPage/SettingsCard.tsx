@@ -14,7 +14,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  background: ${themes.current().colorWhite};
+  background: ${({ theme }) => theme.bgSettingsCard};
   padding: 25px;
   border-radius: 20px;
 
@@ -41,7 +41,7 @@ const LoadingOverlay = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${themes.current().colorWhite}AA;
+  background: ${themes.common.colorWhite}AA;
 `
 
 const Spinner = styled(CircularSpinner)`
@@ -58,8 +58,8 @@ const Title = styled.div`
 const TitleText = styled.div`
   display: flex;
   width: 100%;
-  color: ${themes.current().colorDarkBlue};
-  font-size: ${themes.current().fontSizeBig};
+  color: ${({ theme }) => theme.colorTextMain};
+  font-size: ${themes.common.fontSizeBig};
   font-weight: 700;
 `
 

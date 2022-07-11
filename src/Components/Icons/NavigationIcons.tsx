@@ -12,6 +12,8 @@ import { ReactComponent as TransactionsNavSvg } from '../../assets/images/naviga
 import { ReactComponent as SettingsNavSvg } from '../../assets/images/navigation/settings.svg'
 import { ReactComponent as BugNavSvg } from '../../assets/images/navigation/bug.svg'
 import { ReactComponent as ChatNavSvg } from '../../assets/images/navigation/chat.svg'
+import { ReactComponent as SunSvg } from '../../assets/images/navigation/sun.svg'
+import { ReactComponent as MoonSvg } from '../../assets/images/navigation/moon.svg'
 
 interface NavProps {
   $active?: boolean
@@ -47,5 +49,13 @@ export const BugNavIcon = styled(BugNavSvg)<NavProps>`
 `
 
 export const ChatNavIcon = styled(ChatNavSvg)<NavProps>`
+  ${navIconCss}
+`
+
+export const SunNavIcon = styled(SunSvg)<NavProps>`
+  ${navIconCss}
+`
+
+export const MoonNavIcon = styled(MoonSvg)<NavProps>`
   ${navIconCss}
 `

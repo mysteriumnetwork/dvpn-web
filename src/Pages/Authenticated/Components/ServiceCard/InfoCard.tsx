@@ -24,11 +24,12 @@ const Content = styled.div`
 
 const Title = styled.div`
   font-family: 'Ubuntu', sans-serif;
-  font-size: ${themes.current().fontSizeSmall};
-  color: ${themes.current().colorGrayBlue};
+  font-size: ${themes.common.fontSizeSmall};
+  color: ${({ theme }) => theme.colorTextSecondary}; ;
 `
 const Value = styled.div`
-  font-size: ${themes.current().fontSizeNormal};
+  font-size: ${themes.common.fontSizeBigger};
+  color: ${({ theme }) => theme.colorTextMain};
   font-style: normal;
 `
 

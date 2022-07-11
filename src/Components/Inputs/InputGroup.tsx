@@ -25,8 +25,8 @@ const Title = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  color: ${themes.current().colorDarkBlue};
-  font-size: ${themes.current().fontSizeNormal};
+  color: ${({ theme }) => theme.colorTextMain};
+  font-size: ${themes.common.fontSizeNormal};
   font-weight: 500;
   margin-bottom: 6px;
 `

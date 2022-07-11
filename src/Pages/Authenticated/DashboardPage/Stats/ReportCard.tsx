@@ -11,9 +11,9 @@ import styled from 'styled-components'
 const Card = styled.div`
   display: flex;
   gap: 16px;
-  background: ${themes.current().colorWhite};
+  background: ${({ theme }) => theme.bgLayoutCardCss};
   padding: 20px;
-  color: ${themes.current().colorDarkBlue};
+  color: ${({ theme }) => theme.colorTextMain};
 }
 `
 
@@ -22,10 +22,16 @@ const Content = styled.div`
   flex-direction: column;
 `
 
+const Value = styled.div`
+  font-size: ${themes.common.fontSizeHuge};
+  font-weight: 700;
+  color: ${({ theme }) => theme.colorTextMain};
+`
+
 const Title = styled.div`
-  font-family: 'Ubuntu';
-  font-size: ${themes.current().fontSizeSmall};
+  font-size: ${themes.common.fontSizeSmall};
   font-weight: 400;
+  color: ${({ theme }) => theme.colorTextSecondary};
 `
 
 const Meta = styled.div`
@@ -34,16 +40,17 @@ const Meta = styled.div`
 `
 
 const DiffValue = styled.div`
-  display: block;
+  display: flex;
+  justify-content: center;
   width: 80px;
-  font-size: ${themes.current().fontSizeNormal};
-  padding: 0 10px;
+  font-size: ${themes.common.fontSizeNormal};
+  padding: 4px 10px;
   border-radius: 100px;
 
   color: ${({ positive }: { positive: boolean }) =>
     positive ? themes.current().colorGreen : themes.current().colorGrayBlue};
   background: ${({ positive }: { positive: boolean }) =>
-    positive ? themes.current().backgroundLightgreen : themes.current().backgroundLightgray};
+    positive ? themes.current().colorLightGreen : themes.current().colorLightBlue};
 `
 
 interface Props {
@@ -59,7 +66,7 @@ export const ReportCard = ({ icon, value, title, tooltip, diff = 0 }: Props) => 
     <Card>
       <div>{icon}</div>
       <Content>
-        <div>{value}</div>
+        <Value>{value}</Value>
         <Title>{title}</Title>
       </Content>
       <Meta>
