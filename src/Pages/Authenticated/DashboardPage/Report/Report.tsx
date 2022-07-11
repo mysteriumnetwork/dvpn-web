@@ -14,6 +14,7 @@ import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import themes from '../../../../commons/themes'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
+
 const { api } = tequila
 
 const Column = styled.div`
@@ -25,6 +26,22 @@ const Column = styled.div`
 const CardRow = styled.div`
   display: flex;
   justify-content: space-between;
+
+  background: ${({ theme }) => theme.bgReportChartRow};
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  padding-top: 20px;
+  padding-bottom: 20px;
+`
+const ChartRow = styled.div`
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 20px 20px 0 20px;
+  background: ${({ theme }) => theme.bgReportChartRow};
+
+  z-index: 1;
+  box-shadow: ${({ theme }) => theme.bgReportChartRowBoxShadow};
 `
 
 const BorderRight = styled.div`
@@ -57,7 +74,9 @@ export const Report = () => {
 
   return (
     <Column>
-      <Charts statsDaily={sd} />
+      <ChartRow>
+        <Charts statsDaily={sd} />
+      </ChartRow>
       <CardRow>
         <ReportCard icon={<WalletIcon $accented />} value="35.34" title="Total seattled earnings" diff={0.56} />
         <BorderRight />

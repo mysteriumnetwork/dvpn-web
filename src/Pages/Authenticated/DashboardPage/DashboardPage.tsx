@@ -50,9 +50,9 @@ const DashboardPage = () => {
           />
         ))}
       </LayoutHeroCardRow>
-      <LayoutCardRow>
+      <LayoutUnstyledRow>
         <Report />
-      </LayoutCardRow>
+      </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <LayoutCard>
           <IdleStat />

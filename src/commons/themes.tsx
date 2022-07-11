@@ -4,10 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { store } from '../redux/store'
 
-export const alphaToHex = (a: number) => {
-  return ((a * 255) | (1 << 8)).toString(16).slice(1)
+export const alphaToHex = (value: number) => {
+  return ((value * 255) | (1 << 8)).toString(16).slice(1)
 }
 
 const common = {
@@ -29,6 +28,7 @@ const common = {
   color221E39: '#221E39',
   color2F2A48: '#2F2A48',
   color393453: '#393453',
+  color4e1c67: '#4e1c67',
 
   fontSizeSmallest: '8px',
   fontSizeSmaller: '10px',
@@ -49,6 +49,9 @@ const light = {
   bgServiceCardContent: common.colorLightBlue,
 
   bgSettingsCard: common.colorWhite,
+
+  bgReportChartRow: common.colorWhite,
+  bgReportChartRowBoxShadow: '0 10px 30px' + common.color4e1c67 + alphaToHex(0.05),
 
   colorTextMain: common.colorDarkBlue,
   colorTextSecondary: common.colorDarkBlue,
@@ -88,6 +91,9 @@ const dark = {
 
   bgSettingsCard: common.color393453,
 
+  bgReportChartRow: common.color393453,
+  bgReportChartRowBoxShadow: '0 10px 20px' + common.color221E39 + alphaToHex(0.4),
+
   colorTextMain: common.colorLightBlue,
   colorTextSecondary: common.colorGrayBlue,
 
@@ -115,8 +121,11 @@ const dark = {
   fontSizeBig: '18px',
 }
 
+/**
+ * @deprecated
+ */
 const current = () => {
-  return store.getState().app.theme === 'light' ? light : dark
+  return light
 }
 
 const themes = {

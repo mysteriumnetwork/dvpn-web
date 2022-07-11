@@ -41,7 +41,6 @@ import { selectors } from '../redux/selectors'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
 
-import './App.scss'
 import WithNavigation from './Authenticated/WithNavigation'
 import LoginPage from './Login/LoginPage'
 

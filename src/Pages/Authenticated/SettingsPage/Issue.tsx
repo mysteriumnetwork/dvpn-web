@@ -17,13 +17,13 @@ const Container = styled.div`
   gap: 50px;
 `
 const Title = styled.div`
-  font-size: ${themes.current().fontSizeSmall};
-  color: ${themes.current().colorGrayBlue};
+  font-size: ${themes.common.fontSizeSmall};
+  color: ${themes.common.colorGrayBlue};
   font-weight: 400;
 `
 const Value = styled.div`
-  font-size: ${themes.current().fontSizeSmall};
-  color: ${themes.current().colorGrayBlue2};
+  font-size: ${themes.common.fontSizeSmall};
+  color: ${themes.common.colorGrayBlue2};
   font-weight: 700;
 `
 const Row = styled.div`

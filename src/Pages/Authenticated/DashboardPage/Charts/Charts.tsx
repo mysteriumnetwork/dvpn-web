@@ -8,13 +8,11 @@ import React, { useMemo, useState } from 'react'
 import { SessionStats } from 'mysterium-vpn-js'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
-import charts, { ChartType, Pair } from './chart.utils'
-import './ChartsOverrides.scss'
+import charts, { ChartType, Pair, types } from './chart.utils'
 import themes from '../../../../commons/themes'
 import styled from 'styled-components'
 import { RangePicker } from './RangePicker'
 import { GraphDropDown } from './GraphDropDown'
-import { types } from './chart.utils'
 
 interface Props {
   statsDaily: {
@@ -109,7 +107,7 @@ const Charts = ({ statsDaily }: Props) => {
               fillOpacity={2}
               strokeWidth={2}
               fillRule={'evenodd'}
-              stroke={themes.current().colorKey}
+              stroke={themes.common.colorKey}
             />
           </AreaChart>
         </ResponsiveContainer>
