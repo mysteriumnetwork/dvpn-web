@@ -25,6 +25,7 @@ const PATH_TO_TAB = {
   [SETTINGS]: './Tabs/AccountTab',
   [SETTINGS_ACCOUNT]: './Tabs/AccountTab',
   [SETTINGS_TRAFFIC]: './Tabs/TrafficTab',
+  [SETTINGS_ADVANCED]: './Tabs/AdvancedTab',
 }
 
 export const SettingsPage = () => {

@@ -34,7 +34,7 @@ const SubTitle = styled.div`
   align-items: center;
   gap: 8px;
   font-family: 'Ubuntu';
-  font-size: ${themes.current().fontSizeSmallest};
+  font-size: ${themes.current().fontSizeSmaller};
   color: ${themes.current().colorGrayBlue2};
 `
 

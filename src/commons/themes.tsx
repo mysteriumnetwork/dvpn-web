@@ -18,11 +18,13 @@ const light = {
   colorWhite: '#FFFFFF',
   colorGreen: '#63B64E',
   colorBlue: '#5BB1EF',
+  colorLightBlue: '#F6F6FA',
 
   colorNavStroke: '#FFFFFF',
   colorNavActiveStroke: '#3C3857',
 
-  fontSizeSmallest: '10px',
+  fontSizeSmallest: '8px',
+  fontSizeSmaller: '10px',
   fontSizeSmall: '12px',
   fontSizeNormal: '14px',
   fontSizeBigger: '16px',

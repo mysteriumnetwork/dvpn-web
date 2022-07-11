@@ -4,15 +4,60 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import themes from '../../commons/themes'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 
-const StyledButton = styled.button`
-  position: relative;
-  font-size: ${themes.current().fontSizeSmall};
+export type ButtonVariant = 'primary' | 'secondary' | 'outlined'
+
+const PRIMARY_CSS = css`
+  color: ${themes.current().colorWhite};
+  background: ${themes.current().colorKey};
+
+  :active {
+    background: ${themes.current().colorKey}BB;
+  }
+`
+
+const SECONDARY_CSS = css`
   color: ${themes.current().colorWhite};
   background: ${themes.current().colorGrayBlue};
+
+  :active {
+    background: ${themes.current().colorGrayBlue}BB;
+  }
+`
+
+const OUTLINES_CSS = css`
+  color: ${themes.current().colorGrayBlue};
+  background: none;
+  border: 1px solid ${themes.current().colorGrayBlue};
+
+  :active {
+    background: ${themes.current().colorGrayBlue}51;
+  }
+`
+
+const resolveCSS = (variant: ButtonVariant) => {
+  switch (variant) {
+    case 'primary':
+      return PRIMARY_CSS
+    case 'secondary':
+      return SECONDARY_CSS
+    case 'outlined':
+      return OUTLINES_CSS
+    default:
+      return PRIMARY_CSS
+  }
+}
+
+interface ButtonStyleProps {
+  $variant: ButtonVariant
+}
+
+const StyledButton = styled.button<ButtonStyleProps>`
+  position: relative;
+  font-size: ${themes.current().fontSizeSmall};
 
   border: 0;
   border-radius: 5px;
@@ -25,9 +70,7 @@ const StyledButton = styled.button`
     cursor: pointer;
   }
 
-  :active {
-    background: ${themes.current().colorGrayBlue}BB;
-  }
+  ${({ $variant }) => resolveCSS($variant)}
 `
 
 const LoadingOverlay = styled.div`
@@ -56,7 +99,7 @@ const Spinner = styled(CircularSpinner)`
 
 interface Props {
   label: string
-  variant?: 'primary' | 'secondary' | 'outlined'
+  variant?: ButtonVariant
   loading?: boolean
   onClick?: () => void
   type?: 'submit' | 'reset' | 'button'
@@ -64,7 +107,7 @@ interface Props {
 
 export const Button = ({ loading, label, variant = 'primary', onClick, type }: Props) => {
   return (
-    <StyledButton type={type} disabled={loading} onClick={onClick}>
+    <StyledButton $variant={variant} type={type} disabled={loading} onClick={onClick}>
       {loading && (
         <LoadingOverlay>
           <Spinner />

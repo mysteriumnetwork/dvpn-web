@@ -63,6 +63,10 @@ const TitleText = styled.div`
   font-weight: 700;
 `
 
+const FlexGrow = styled.div`
+  flex-grow: 1;
+`
+
 const Footer = styled.div`
   display: flex;
 `
@@ -84,6 +88,7 @@ export const SettingsCard = ({ title, children, footer, loading }: Props) => {
         </Title>
       )}
       {children && <Content>{children}</Content>}
+      <FlexGrow />
       {footer && <Footer>{footer}</Footer>}
       {loading && (
         <LoadingOverlay>

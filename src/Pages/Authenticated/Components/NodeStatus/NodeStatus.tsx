@@ -21,7 +21,7 @@ const Title = styled.div`
 
 const OnlineStatus = styled.div`
   background: ${themes.current().colorGreen};
-  font-size: ${themes.current().fontSizeSmallest};
+  font-size: ${themes.current().fontSizeSmaller};
   color: ${themes.current().colorWhite};
   font-weight: 400;
   font-family: Ubuntu;

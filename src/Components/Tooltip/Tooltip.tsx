@@ -21,7 +21,7 @@ export const ReactTooltipStyled = styled(ReactTooltip)<ReactTooltipStyledProps>`
     background-color: ${themes.current().colorWhite};
     padding: 0.3rem 1rem;
     color: ${themes.current().colorGrayBlue};
-    font-size: ${themes.current().fontSizeSmallest};
+    font-size: ${themes.current().fontSizeSmaller};
     font-family: Ubuntu;
     font-weight: 400;
     border-radius: 10px;

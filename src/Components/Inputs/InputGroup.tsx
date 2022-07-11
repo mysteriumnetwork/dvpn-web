@@ -31,14 +31,22 @@ const Title = styled.div`
   margin-bottom: 6px;
 `
 
+const Error = styled.div`
+  display: flex;
+  color: ${themes.current().colorKey};
+  font-size: ${themes.current().fontSizeSmallest};
+  margin-top: 4px;
+`
+
 interface Props {
   title: string
   titleRight?: ReactNode
   input: ReactNode
   fluid?: boolean
+  error?: string
 }
 
-export const InputGroup = ({ input, title, titleRight, fluid }: Props) => {
+export const InputGroup = ({ input, title, titleRight, fluid, error }: Props) => {
   return (
     <Container $fluid={fluid}>
       <Title>
@@ -46,6 +54,7 @@ export const InputGroup = ({ input, title, titleRight, fluid }: Props) => {
         {titleRight && titleRight}
       </Title>
       {input}
+      {error && <Error>{error}</Error>}
     </Container>
   )
 }

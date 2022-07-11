@@ -10,6 +10,7 @@ import { HTMLInputTypeAttribute, ReactNode } from 'react'
 
 interface StyledInputProps {
   $icon?: boolean
+  $error?: boolean
 }
 
 const StyledInput = styled.input<StyledInputProps>`
@@ -17,14 +18,14 @@ const StyledInput = styled.input<StyledInputProps>`
   width: 100%;
   height: 35px;
 
-  font-family: Ubuntu;
   font-weight: 400;
   font-size: ${themes.current().fontSizeNormal};
   line-height: 16px;
   padding-left: 5px;
 
-  background: ${themes.current().colorWhite};
-  border: 1px solid ${themes.current().colorGrayBlue};
+  color: ${({ $error }) => ($error ? `${themes.current().colorKey}` : themes.current().colorGrayBlue2)};
+  background: ${({ $error }) => ($error ? `${themes.current().colorKey}1A` : themes.current().colorWhite)};
+  border: 1px solid ${({ $error }) => ($error ? themes.current().colorKey : themes.current().colorGrayBlue)};
 
   border-radius: 5px;
 
@@ -66,14 +67,16 @@ interface Props {
   onChange?: (v: string) => void
   disabled?: boolean
   type?: HTMLInputTypeAttribute
+  error?: boolean
 }
 
-export const TextField = ({ icon, value, onChange = () => {}, disabled, type = 'text' }: Props) => {
+export const TextField = ({ icon, value, onChange = () => {}, disabled, type = 'text', error }: Props) => {
   return (
     <Container>
       <StyledInput
         type={type}
         $icon={icon !== undefined}
+        $error={error}
         value={value}
         onChange={(e) => {
           const value = e.target.value

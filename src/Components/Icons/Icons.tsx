@@ -15,6 +15,7 @@ import { ReactComponent as StopwatchSvg } from '../../assets/images/stopwatch.sv
 import { ReactComponent as CloudSvg } from '../../assets/images/cloud.svg'
 import { ReactComponent as StopwatchSimpleSvg } from '../../assets/images/stopwatch_simple.svg'
 import { ReactComponent as QualityBarsSvg } from '../../assets/images/quality-bars.svg'
+import { ReactComponent as DragIndicatorSvg } from '../../assets/images/drag-indicator.svg'
 import themes from '../../commons/themes'
 
 interface InfoProps {
@@ -112,3 +113,5 @@ export const QualityBarsIcon = styled(QualityBarsSvg)<QualityBarsProps>`
     fill: ${({ $quality = 0 }) => $quality > 2 && themes.current().colorKey} !important;
   }
 `
+
+export const DragIndicatorIcon = styled(DragIndicatorSvg)``
