@@ -8,34 +8,42 @@ import styled, { css } from 'styled-components'
 import themes from '../../commons/themes'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outlined'
+export type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'blue'
 
 const PRIMARY_CSS = css`
-  color: ${themes.current().colorWhite};
-  background: ${themes.current().colorKey};
+  color: ${themes.common.colorWhite};
+  background: ${themes.common.colorKey};
 
   :active {
-    background: ${themes.current().colorKey}BB;
+    background: ${themes.common.colorKey}BB;
   }
 `
 
 const SECONDARY_CSS = css`
-  color: ${themes.current().colorWhite};
-  background: ${themes.current().colorGrayBlue};
+  color: ${themes.common.colorWhite};
+  background: ${themes.common.colorGrayBlue};
 
   :active {
-    background: ${themes.current().colorGrayBlue}BB;
+    background: ${themes.common.colorGrayBlue}BB;
   }
 `
 
 const OUTLINES_CSS = css`
-  color: ${themes.current().colorGrayBlue};
+  color: ${themes.common.colorGrayBlue};
   background: none;
-  border: 1px solid ${themes.current().colorGrayBlue};
+  border: 1px solid ${themes.common.colorGrayBlue};
 
   :active {
-    background: ${themes.current().colorGrayBlue}51;
+    background: ${themes.common.colorGrayBlue}51;
   }
+`
+
+const BLUE_CSS = css`
+  color: ${themes.common.colorWhite};
+  background: ${themes.common.colorBlue};
+
+  :active {
+    background: ${themes.common.colorBlue}BB;
 `
 
 const resolveCSS = (variant: ButtonVariant) => {
@@ -46,6 +54,8 @@ const resolveCSS = (variant: ButtonVariant) => {
       return SECONDARY_CSS
     case 'outlined':
       return OUTLINES_CSS
+    case 'blue':
+      return BLUE_CSS
     default:
       return PRIMARY_CSS
   }
@@ -53,17 +63,19 @@ const resolveCSS = (variant: ButtonVariant) => {
 
 interface ButtonStyleProps {
   $variant: ButtonVariant
+  $rounded?: boolean
 }
 
 const StyledButton = styled.button<ButtonStyleProps>`
   position: relative;
-  font-size: ${themes.current().fontSizeSmall};
+  font-size: ${themes.common.fontSizeSmall};
 
   border: 0;
-  border-radius: 5px;
+  border-radius: ${({ $rounded }) => ($rounded ? '100px' : '5px')};
 
   min-width: 70px;
-  min-height: 26px;
+  min-height: 32px;
+  max-height: 32px;
   padding: 8px 12px 8px 12px;
 
   :hover {
@@ -79,7 +91,7 @@ const LoadingOverlay = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${themes.current().colorGrayBlue};
+  background: ${themes.common.colorGrayBlue};
   border-radius: 5px;
 
   top: 0;
@@ -93,7 +105,7 @@ const LoadingOverlay = styled.div`
 const Spinner = styled(CircularSpinner)`
   width: 8px;
   height: 8px;
-  border: 6px solid ${themes.current().colorWhite};
+  border: 6px solid ${themes.common.colorWhite};
   z-index: 1001;
 `
 
@@ -101,13 +113,14 @@ interface Props {
   label: string
   variant?: ButtonVariant
   loading?: boolean
+  rounded?: boolean
   onClick?: () => void
   type?: 'submit' | 'reset' | 'button'
 }
 
-export const Button = ({ loading, label, variant = 'primary', onClick, type }: Props) => {
+export const Button = ({ loading, label, variant = 'primary', onClick, type, rounded }: Props) => {
   return (
-    <StyledButton $variant={variant} type={type} disabled={loading} onClick={onClick}>
+    <StyledButton $rounded={rounded} $variant={variant} type={type} disabled={loading} onClick={onClick}>
       {loading && (
         <LoadingOverlay>
           <Spinner />

@@ -16,6 +16,7 @@ import { ReactComponent as CloudSvg } from '../../assets/images/cloud.svg'
 import { ReactComponent as StopwatchSimpleSvg } from '../../assets/images/stopwatch_simple.svg'
 import { ReactComponent as QualityBarsSvg } from '../../assets/images/quality-bars.svg'
 import { ReactComponent as DragIndicatorSvg } from '../../assets/images/drag-indicator.svg'
+import { ReactComponent as FileSvg } from '../../assets/images/file.svg'
 import themes from '../../commons/themes'
 
 interface InfoProps {
@@ -24,7 +25,7 @@ interface InfoProps {
 
 export const InfoIcon = styled(InfoSvg)<InfoProps>`
   path {
-    fill: ${({ $inverted }) => ($inverted ? themes.current().colorWhite : themes.current().colorGrayBlue)};
+    fill: ${({ $inverted }) => ($inverted ? themes.common.colorWhite : themes.common.colorGrayBlue)};
   }
 `
 
@@ -56,15 +57,15 @@ const walletIconAccentedCss = css<AccentedProps>`
   width: 50px;
   height: 50px;
   circle {
-    fill: ${themes.current().colorKey};
+    fill: ${themes.common.colorKey};
     opacity: 1;
   }
   #outline {
-    stroke: ${themes.current().colorKeyLight};
+    stroke: ${themes.common.colorKeyLight};
   }
   #buckle,
   #pocket {
-    stroke: ${themes.current().colorWhite};
+    stroke: ${themes.common.colorWhite};
   }
 `
 
@@ -73,17 +74,17 @@ const walletInactiveCss = css<InactiveProps>`
     opacity: 0.5;
   }
   circle {
-    fill: ${themes.current().colorGrayBlue};
+    fill: ${themes.common.colorGrayBlue};
   }
   path,
   ellipse {
-    stroke: ${themes.current().colorGrayBlue};
+    stroke: ${themes.common.colorGrayBlue};
   }
 `
 
 export const SessionsIcon = styled(HistoryNavSvg)<AccentedProps>`
   rect {
-    fill: ${themes.current().colorKeyLight};
+    fill: ${themes.common.colorKeyLight};
     opacity: 1;
   }
   #l1,
@@ -101,17 +102,19 @@ interface QualityBarsProps {
 
 export const QualityBarsIcon = styled(QualityBarsSvg)<QualityBarsProps>`
   rect {
-    fill: ${themes.current().colorKeyLight}33;
+    fill: ${themes.common.colorKeyLight}33;
   }
   #bar-1 {
-    fill: ${({ $quality = 0 }) => $quality > 0 && themes.current().colorKey} !important;
+    fill: ${({ $quality = 0 }) => $quality > 0 && themes.common.colorKey} !important;
   }
   #bar-2 {
-    fill: ${({ $quality = 0 }) => $quality > 1 && themes.current().colorKey} !important;
+    fill: ${({ $quality = 0 }) => $quality > 1 && themes.common.colorKey} !important;
   }
   #bar-3 {
-    fill: ${({ $quality = 0 }) => $quality > 2 && themes.current().colorKey} !important;
+    fill: ${({ $quality = 0 }) => $quality > 2 && themes.common.colorKey} !important;
   }
 `
 
 export const DragIndicatorIcon = styled(DragIndicatorSvg)``
+
+export const FileIcon = styled(FileSvg)``

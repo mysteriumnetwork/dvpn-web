@@ -29,6 +29,7 @@ const common = {
   color2F2A48: '#2F2A48',
   color393453: '#393453',
   color4e1c67: '#4e1c67',
+  color00006: '#00006',
 
   fontSizeSmallest: '8px',
   fontSizeSmaller: '10px',
@@ -54,6 +55,9 @@ const light = {
   bgReportChartRowBoxShadow: '0 10px 30px ' + common.color4e1c67 + alphaToHex(0.05),
 
   bgReportCardDiffPositive: common.colorGreen + alphaToHex(0.1),
+
+  bgTransactionPageCard: common.colorWhite,
+  bgTransactionPageCardBoxShadow: '0px 5px 20px ' + common.color00006 + alphaToHex(0.02),
 
   colorTextMain: common.colorDarkBlue,
   colorTextSecondary: common.colorGrayBlue2,
@@ -97,6 +101,9 @@ const dark = {
   bgReportChartRowBoxShadow: '0 10px 20px ' + common.color221E39 + alphaToHex(0.4),
 
   bgReportCardDiffPositive: common.colorGreen + alphaToHex(0.1),
+
+  bgTransactionPageCard: common.color393453,
+  bgTransactionPageCardBoxShadow: '0px 10px 20px ' + common.color221E39 + alphaToHex(0.4),
 
   colorTextMain: common.colorLightBlue,
   colorTextSecondary: common.colorGrayBlue,
