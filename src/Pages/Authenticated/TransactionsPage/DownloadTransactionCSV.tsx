@@ -17,7 +17,7 @@ const Row = styled.div`
 
 const Title = styled.div`
   max-width: 8em;
-  color: ${({ theme }) => theme.colorTextSecondary};
+  color: ${({ theme }) => theme.text.colorSecondary};
 `
 
 export const DownloadTransactionCSV = () => {

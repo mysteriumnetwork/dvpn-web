@@ -58,7 +58,7 @@ const Title = styled.div`
 const TitleText = styled.div`
   display: flex;
   width: 100%;
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
   font-size: ${themes.common.fontSizeBig};
   font-weight: 700;
 `

@@ -13,7 +13,7 @@ const Card = styled.div`
   gap: 16px;
   background: ${({ theme }) => theme.bgLayoutCardCss};
   padding: 20px;
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
 }
 `
 
@@ -25,13 +25,13 @@ const Content = styled.div`
 const Value = styled.div`
   font-size: ${themes.common.fontSizeHuge};
   font-weight: 700;
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
 `
 
 const Title = styled.div`
   font-size: ${themes.common.fontSizeSmall};
   font-weight: 400;
-  color: ${({ theme }) => theme.colorTextSecondary};
+  color: ${({ theme }) => theme.text.colorSecondary};
 `
 
 const Meta = styled.div`

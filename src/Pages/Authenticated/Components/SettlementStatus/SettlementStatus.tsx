@@ -26,7 +26,7 @@ const ProgressContainer = styled.div`
 `
 
 const Title = styled.div`
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
   font-size: ${themes.common.fontSizeSmall};
   font-style: normal;
   font-weight: 400;

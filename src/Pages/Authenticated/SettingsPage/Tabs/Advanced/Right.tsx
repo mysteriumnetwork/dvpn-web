@@ -25,7 +25,7 @@ const Controls = styled.div`
 `
 
 const SubTitle = styled.div`
-  color: ${({ theme }) => theme.colorTextSecondary};
+  color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${themes.common.fontSizeSmall};
 `
 

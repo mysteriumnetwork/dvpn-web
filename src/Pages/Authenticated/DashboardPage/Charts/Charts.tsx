@@ -117,7 +117,7 @@ const Charts = ({ statsDaily }: Props) => {
 }
 
 const Chart = styled.div`
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
 `
 const Header = styled.div`
   display: flex;

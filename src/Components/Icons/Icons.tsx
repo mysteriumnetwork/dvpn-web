@@ -17,6 +17,7 @@ import { ReactComponent as StopwatchSimpleSvg } from '../../assets/images/stopwa
 import { ReactComponent as QualityBarsSvg } from '../../assets/images/quality-bars.svg'
 import { ReactComponent as DragIndicatorSvg } from '../../assets/images/drag-indicator.svg'
 import { ReactComponent as FileSvg } from '../../assets/images/file.svg'
+import { ReactComponent as ChatSvg } from '../../assets/images/chat.svg'
 import themes from '../../commons/themes'
 
 interface InfoProps {
@@ -118,3 +119,5 @@ export const QualityBarsIcon = styled(QualityBarsSvg)<QualityBarsProps>`
 export const DragIndicatorIcon = styled(DragIndicatorSvg)``
 
 export const FileIcon = styled(FileSvg)``
+
+export const ChatIcon = styled(ChatSvg)``

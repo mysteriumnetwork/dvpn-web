@@ -11,6 +11,8 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '../../../../Components/Inputs/Button'
 import themes from '../../../../commons/themes'
+import { ChatIcon } from '../../../../Components/Icons/Icons'
+import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 
 interface Props {
   show: boolean
@@ -27,7 +29,7 @@ const Content = styled.div`
 `
 
 const Note = styled.div`
-  color: ${({ theme }) => theme.colorTextSecondary};
+  color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${themes.common.fontSizeSmaller};
 `
 
@@ -36,6 +38,19 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   gap: 20px;
+`
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`
+
+const StyledBugButtonIcon = styled(BugButtonIcon)`
+  rect {
+    fill: ${themes.common.colorKey};
+    opacity: 1;
+  }
 `
 
 export const ReportIssueModal = ({ show, onClose }: Props) => {
@@ -53,7 +68,13 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
   }
 
   return (
-    <Modal show={show} title="Report Issue" subTitle="Describe your issue" onClickX={handleClose}>
+    <Modal
+      show={show}
+      title="Report Issue"
+      subTitle="Describe your issue"
+      icon={<StyledBugButtonIcon />}
+      onClickX={handleClose}
+    >
       <Content>
         <InputGroup
           title="Email address (Optional)"
@@ -63,6 +84,7 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
           title={`Your message (${message.length})`}
           input={
             <TextField
+              textarea
               value={message}
               placeholder="Describe what went wrong (minimum 30 characters)"
               onChange={(v) => setMessage(v)}
@@ -76,7 +98,15 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
         </Note>
 
         <Footer>
-          <Button variant="blue" rounded label={'Talk to us via live chat'} />
+          <Button
+            variant="blue"
+            rounded
+            label={
+              <Row>
+                <ChatIcon /> Talk to us via live chat
+              </Row>
+            }
+          />
           <Button rounded label="Send" />
         </Footer>
       </Content>

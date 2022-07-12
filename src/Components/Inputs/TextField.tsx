@@ -69,6 +69,7 @@ interface Props {
   disabled?: boolean
   type?: 'text' | 'password'
   error?: boolean
+  textarea?: boolean
 }
 
 export const TextField = ({ icon, value, onChange = () => {}, disabled, type = 'text', error, placeholder }: Props) => {

@@ -13,7 +13,7 @@ import { Bubble } from '../../DashboardPage/Bubble'
 const Statistics = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
 `
 const Header = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const SubTitle = styled.div`
   align-items: center;
   gap: 8px;
   font-size: ${themes.common.fontSizeSmaller};
-  color: ${({ theme }) => theme.colorTextSecondary};
+  color: ${({ theme }) => theme.text.colorSecondary};
 `
 
 const Content = styled.div`

@@ -13,7 +13,7 @@ const Status = styled.div`
   gap: 6px;
 `
 const Title = styled.div`
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
   font-size: ${themes.common.fontSizeSmall};
   font-weight: 400;
 `
@@ -21,7 +21,7 @@ const Title = styled.div`
 const OnlineStatus = styled.div`
   background: ${themes.common.colorGreen};
   font-size: ${themes.common.fontSizeSmaller};
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
   font-weight: 400;
   padding: 5px;
   border-radius: 10px;

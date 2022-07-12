@@ -29,7 +29,7 @@ const PageName = styled.div`
   font-weight: 500;
   max-width: 200px;
   min-width: 200px;
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
 `
 
 interface Props {

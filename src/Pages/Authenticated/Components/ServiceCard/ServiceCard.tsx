@@ -33,11 +33,11 @@ const Controls = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
 `
 
 const Description = styled.div`
-  color: ${({ theme }) => theme.colorTextSecondary};
+  color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${themes.common.fontSizeSmall};
 `
 

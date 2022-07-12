@@ -6,11 +6,34 @@
  */
 import 'styled-components'
 
-export type Theme = { [k: string]: any } & {
+export type Theme = {
+  bgNavigation: string
+  bgLayout: string
+  bgLayoutHeroRow: string
+  bgLayoutCardCss: string
+
+  bgServiceCardHeader: string
+  bgServiceCardContent: string
+
+  bgSettingsCard: string
+
+  bgReportChartRow: string
+  bgReportChartRowBoxShadow: string
+
+  bgReportCardDiffPositive: string
+
+  bgTransactionPageCard: string
+  bgTransactionPageCardBoxShadow: string
+
   modal: {
     bgOverlay: string
     bgColor: string
     boxShadow: string
+  }
+
+  text: {
+    colorMain: string
+    colorSecondary: string
   }
 }
 

@@ -23,13 +23,13 @@ const Column = styled.div`
 
 const Title = styled.div`
   max-width: 8em;
-  color: ${({ theme }) => theme.colorTextSecondary};
+  color: ${({ theme }) => theme.text.colorSecondary};
 `
 const Value = styled.div`
   max-width: 8em;
   font-size: ${themes.common.fontSizeHuge};
   font-weight: 700;
-  color: ${({ theme }) => theme.colorTextMain};
+  color: ${({ theme }) => theme.text.colorMain};
 `
 
 export const TotalSettled = () => {
