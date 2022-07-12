@@ -78,13 +78,13 @@ export const Report = () => {
         <Charts statsDaily={sd} />
       </ChartRow>
       <CardRow>
-        <ReportCard icon={<WalletIcon $accented />} value="35.34" title="Total seattled earnings" diff={0.56} />
+        <ReportCard icon={<WalletIcon $accented />} value="35.34" title="Total Settled earnings" diff={0.56} />
         <BorderRight />
-        <ReportCard icon={<SessionsIcon />} value="35.34" title="Total seattled earnings" diff={0.56} />
+        <ReportCard icon={<SessionsIcon />} value="35.34" title="Total Settled earnings" diff={0.56} />
         <BorderRight />
-        <ReportCard icon={<StopwatchIcon />} value="35.34" title="Total seattled earnings" diff={0.56} />
+        <ReportCard icon={<StopwatchIcon />} value="35.34" title="Total Settled earnings" diff={0.56} />
         <BorderRight />
-        <ReportCard icon={<CloudIcon />} value="-35.34" title="Total seattled earnings" diff={-0.56} />
+        <ReportCard icon={<CloudIcon />} value="-35.34" title="Total Settled earnings" diff={-0.56} />
       </CardRow>
     </Column>
   )

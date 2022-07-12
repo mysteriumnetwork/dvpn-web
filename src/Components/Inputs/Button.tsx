@@ -7,6 +7,7 @@
 import styled, { css } from 'styled-components'
 import themes from '../../commons/themes'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
+import { ReactNode } from 'react'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'blue'
 
@@ -110,7 +111,7 @@ const Spinner = styled(CircularSpinner)`
 `
 
 interface Props {
-  label: string
+  label: ReactNode
   variant?: ButtonVariant
   loading?: boolean
   rounded?: boolean

@@ -7,19 +7,27 @@
 import React from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
-import { DASHBOARD, HISTORY, SETTINGS, TRANSACTIONS } from '../../../constants/routes'
+import {
+  DASHBOARD,
+  HISTORY,
+  SETTINGS,
+  SETTINGS_ACCOUNT,
+  SETTINGS_ADVANCED,
+  SETTINGS_TRAFFIC,
+  TRANSACTIONS,
+} from '../../../constants/routes'
 
 import './Navigation.scss'
 import styled from 'styled-components'
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
 import {
-  BugNavIcon,
   ChatNavIcon,
   DashboardNavIcon,
   SessionsNavIcon,
   SettingsNavIcon,
   WalletNavIcon,
 } from '../../../Components/Icons/NavigationIcons'
+import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
 
 const Content = styled.div`
   background: ${({ theme }) => theme.bgNavigation};
@@ -76,10 +84,12 @@ const Navigation = () => {
         <WalletNavIcon $active={pathname === TRANSACTIONS} />
       </PlainLink>
       <PlainLink to={SETTINGS}>
-        <SettingsNavIcon $active={pathname === SETTINGS} />
+        <SettingsNavIcon
+          $active={[SETTINGS, SETTINGS_TRAFFIC, SETTINGS_ADVANCED, SETTINGS_ACCOUNT].includes(pathname)}
+        />
       </PlainLink>
       <FlexGrow />
-      <BugNavIcon $active={false} />
+      <ReportIssue />
       <ChatNavIcon $active={false} />
       <ThemeSwitch />
       <Margin />
