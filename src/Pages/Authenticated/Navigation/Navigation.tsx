@@ -7,7 +7,15 @@
 import React from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
-import { DASHBOARD, HISTORY, SETTINGS, TRANSACTIONS } from '../../../constants/routes'
+import {
+  DASHBOARD,
+  HISTORY,
+  SETTINGS,
+  SETTINGS_ACCOUNT,
+  SETTINGS_ADVANCED,
+  SETTINGS_TRAFFIC,
+  TRANSACTIONS,
+} from '../../../constants/routes'
 
 import './Navigation.scss'
 import styled from 'styled-components'
@@ -76,7 +84,9 @@ const Navigation = () => {
         <WalletNavIcon $active={pathname === TRANSACTIONS} />
       </PlainLink>
       <PlainLink to={SETTINGS}>
-        <SettingsNavIcon $active={pathname === SETTINGS} />
+        <SettingsNavIcon
+          $active={[SETTINGS, SETTINGS_TRAFFIC, SETTINGS_ADVANCED, SETTINGS_ACCOUNT].includes(pathname)}
+        />
       </PlainLink>
       <FlexGrow />
       <ReportIssue />
