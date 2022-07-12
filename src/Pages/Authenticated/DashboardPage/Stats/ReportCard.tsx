@@ -39,7 +39,11 @@ const Meta = styled.div`
   flex-direction: column;
 `
 
-const DiffValue = styled.div`
+interface DiffValueProps {
+  positive: boolean
+}
+
+const DiffValue = styled.div<DiffValueProps>`
   display: flex;
   justify-content: center;
   width: 80px;
@@ -47,10 +51,8 @@ const DiffValue = styled.div`
   padding: 4px 10px;
   border-radius: 100px;
 
-  color: ${({ positive }: { positive: boolean }) =>
-    positive ? themes.current().colorGreen : themes.current().colorGrayBlue};
-  background: ${({ positive }: { positive: boolean }) =>
-    positive ? themes.current().colorLightGreen : themes.current().colorLightBlue};
+  color: ${({ positive }) => (positive ? themes.common.colorGreen : themes.common.colorGrayBlue)};
+  background: ${({ positive, theme }) => (positive ? theme.bgReportCardDiffPositive : themes.common.colorLightBlue)};
 `
 
 interface Props {

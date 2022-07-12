@@ -51,7 +51,9 @@ const light = {
   bgSettingsCard: common.colorWhite,
 
   bgReportChartRow: common.colorWhite,
-  bgReportChartRowBoxShadow: '0 10px 30px' + common.color4e1c67 + alphaToHex(0.05),
+  bgReportChartRowBoxShadow: '0 10px 30px ' + common.color4e1c67 + alphaToHex(0.05),
+
+  bgReportCardDiffPositive: common.colorGreen + alphaToHex(0.1),
 
   colorTextMain: common.colorDarkBlue,
   colorTextSecondary: common.colorGrayBlue2,
@@ -92,7 +94,9 @@ const dark = {
   bgSettingsCard: common.color393453,
 
   bgReportChartRow: common.color393453,
-  bgReportChartRowBoxShadow: '0 10px 20px' + common.color221E39 + alphaToHex(0.4),
+  bgReportChartRowBoxShadow: '0 10px 20px ' + common.color221E39 + alphaToHex(0.4),
+
+  bgReportCardDiffPositive: common.colorGreen + alphaToHex(0.1),
 
   colorTextMain: common.colorLightBlue,
   colorTextSecondary: common.colorGrayBlue,
