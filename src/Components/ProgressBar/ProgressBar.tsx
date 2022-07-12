@@ -10,6 +10,7 @@ import themes from '../../commons/themes'
 
 interface BarProps {
   $size: 'big' | 'small'
+  $primary?: boolean
 }
 
 interface ProgressProps {
@@ -26,7 +27,13 @@ export const Bar = styled.div<BarProps>`
   border-radius: 10px;
   background-color: ${themes.common.colorGrayBlue};
 `
-
+const Container = styled.div`
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
 const Progress = styled.div<ProgressProps>`
   display: flex;
   justify-content: flex-end;
@@ -44,7 +51,25 @@ const Circle = styled.span`
   border: 3px solid ${themes.common.colorKeyLight};
   transform: translateY(-2px) translateX(4px);
 `
-
+const Mark = styled.span<BarProps>`
+  height: ${({ $size }) => {
+    return $size === 'big' ? '4px' : '1px'
+  }};
+  width: 1px;
+  border-radius: ${({ $size }) => {
+    return $size === 'big' ? '10px' : '50%'
+  }};
+  background-color: ${({ $primary }) => ($primary ? themes.common.colorGrayBlue : `${themes.common.colorGrayBlue2}10`)};
+`
+const MarkContainer = styled.div<BarProps>`
+  width: ${({ $size }) => {
+    return $size === 'big' ? '347px' : '124px'
+  }};
+  box-sizing: border-box;
+  display: flex;
+  margin: 4px 20px;
+  justify-content: space-between;
+`
 interface Props {
   settleThresholdMyst: number
   earningsTokens: number
@@ -56,8 +81,15 @@ export const ProgressBar = ({ settleThresholdMyst, earningsTokens, size }: Props
   const width = (earningsTokens / settleThresholdMyst) * 100
   console.log(width)
   return (
-    <Bar $size={size}>
-      <Progress $width={width}>{size === 'small' && <Circle />}</Progress>
-    </Bar>
+    <Container>
+      <Bar $size={size}>
+        <Progress $width={width}>{size === 'small' && <Circle />}</Progress>
+      </Bar>
+      <MarkContainer $size={size}>
+        {[...Array(11)].map((_, i) => {
+          return <Mark $size={size} $primary={i % 2 ? false : true} />
+        })}
+      </MarkContainer>
+    </Container>
   )
 }
