@@ -12,6 +12,9 @@ import { ReactComponent as HistoryNavSvg } from '../../assets/images/navigation/
 import { ReactComponent as TransactionsNavSvg } from '../../assets/images/navigation/transactions.svg'
 
 const headerCSS = css`
+  //width: 100%;
+  //height: 100%;
+
   rect {
     opacity: 1;
     fill: ${themes.common.colorKey};

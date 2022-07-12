@@ -6,7 +6,7 @@
  */
 import styled from 'styled-components'
 import themes from '../../commons/themes'
-import { HTMLInputTypeAttribute, ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 interface StyledInputProps {
   $icon?: boolean
@@ -64,19 +64,21 @@ const IconSize = styled.div`
 interface Props {
   icon?: ReactNode
   value: string
+  placeholder?: string
   onChange?: (v: string) => void
   disabled?: boolean
-  type?: HTMLInputTypeAttribute
+  type?: 'text' | 'password'
   error?: boolean
 }
 
-export const TextField = ({ icon, value, onChange = () => {}, disabled, type = 'text', error }: Props) => {
+export const TextField = ({ icon, value, onChange = () => {}, disabled, type = 'text', error, placeholder }: Props) => {
   return (
     <Container>
       <StyledInput
         type={type}
         $icon={icon !== undefined}
         $error={error}
+        placeholder={placeholder}
         value={value}
         onChange={(e) => {
           const value = e.target.value

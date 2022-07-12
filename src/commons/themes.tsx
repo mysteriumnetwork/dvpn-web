@@ -4,6 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { Theme } from '../types/theme'
 
 export const alphaToHex = (value: number) => {
   return ((value * 255) | (1 << 8)).toString(16).slice(1)
@@ -40,12 +41,6 @@ const common = {
   fontSizeHuge: '24px',
 }
 
-export type Theme = { [k: string]: any } & {
-  modal: {
-    bgOverlay: string
-  }
-}
-
 const light: Theme = {
   bgNavigation: common.backgroundMysterium,
   bgLayout: common.colorLightBlue,
@@ -70,6 +65,8 @@ const light: Theme = {
 
   modal: {
     bgOverlay: common.colorDarkBlue + alphaToHex(0.5),
+    bgColor: common.colorWhite,
+    boxShadow: '0px 5px 20px ' + common.color221E39 + alphaToHex(0.1),
   },
 }
 
@@ -97,6 +94,8 @@ const dark: Theme = {
 
   modal: {
     bgOverlay: common.color231F3A + alphaToHex(0.8),
+    bgColor: common.color393453,
+    boxShadow: '0px 10px 20px ' + common.color221E39 + alphaToHex(0.4),
   },
 }
 

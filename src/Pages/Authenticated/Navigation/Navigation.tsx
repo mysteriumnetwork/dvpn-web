@@ -13,13 +13,13 @@ import './Navigation.scss'
 import styled from 'styled-components'
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
 import {
-  BugNavIcon,
   ChatNavIcon,
   DashboardNavIcon,
   SessionsNavIcon,
   SettingsNavIcon,
   WalletNavIcon,
 } from '../../../Components/Icons/NavigationIcons'
+import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
 
 const Content = styled.div`
   background: ${({ theme }) => theme.bgNavigation};
@@ -79,7 +79,7 @@ const Navigation = () => {
         <SettingsNavIcon $active={pathname === SETTINGS} />
       </PlainLink>
       <FlexGrow />
-      <BugNavIcon $active={false} />
+      <ReportIssue />
       <ChatNavIcon $active={false} />
       <ThemeSwitch />
       <Margin />
