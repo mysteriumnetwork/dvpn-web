@@ -45,7 +45,7 @@ const ChartRow = styled.div`
 `
 
 const BorderRight = styled.div`
-  border-right: 1px dashed ${themes.current().colorGrayBlue2}80;
+  border-right: 1px dashed ${themes.common.colorGrayBlue2}80;
 `
 
 export const Report = () => {

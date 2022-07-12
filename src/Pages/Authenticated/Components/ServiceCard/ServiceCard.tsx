@@ -15,7 +15,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  color: ${themes.current().colorDarkBlue};
+  color: ${themes.common.colorDarkBlue};
 `
 
 const Header = styled.div`
@@ -125,12 +125,12 @@ const ApprovalBadge = styled.div`
   justify-content: space-evenly;
   align-items: center;
   position: absolute;
-  background: ${themes.current().colorGrayBlue};
+  background: ${themes.common.colorGrayBlue};
   border-radius: 12px;
-  font-size: ${themes.current().fontSizeSmall};
+  font-size: ${themes.common.fontSizeSmall};
   top: -8px;
   padding: 4px;
-  color: ${themes.current().colorWhite};
+  color: ${themes.common.colorWhite};
   width: 150px;
 `
 

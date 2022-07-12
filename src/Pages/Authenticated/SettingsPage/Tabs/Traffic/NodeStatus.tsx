@@ -16,8 +16,8 @@ const Row = styled.div`
 
 const Title = styled.div`
   font-weight: 700;
-  font-size: ${themes.current().fontSizeNormal};
-  color: ${themes.current().colorDarkBlue};
+  font-size: ${themes.common.fontSizeNormal};
+  color: ${themes.common.colorDarkBlue};
 `
 
 interface StatusProps {}

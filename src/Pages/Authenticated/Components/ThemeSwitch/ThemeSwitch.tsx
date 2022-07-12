@@ -17,7 +17,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 40px;
-  background: ${themes.current().colorWhite}10;
+  background: ${themes.common.colorWhite}10;
   padding-bottom: 20px;
 `
 

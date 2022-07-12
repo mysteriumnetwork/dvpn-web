@@ -51,7 +51,7 @@ const Column = styled.div<{ $marginLeft?: string }>`
 `
 
 const GreenBackground = styled.div`
-  background: ${themes.current().colorGreen}33;
+  background: ${themes.common.colorGreen}33;
   display: flex;
   border-radius: 15px;
   padding-right: 30px;

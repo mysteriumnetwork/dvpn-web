@@ -14,7 +14,7 @@ import { ReactComponent as TransactionsNavSvg } from '../../assets/images/naviga
 const headerCSS = css`
   rect {
     opacity: 1;
-    fill: ${themes.current().colorKey};
+    fill: ${themes.common.colorKey};
   }
 `
 

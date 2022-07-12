@@ -23,7 +23,7 @@ export const CircularSpinner = styled.div`
     top: -6px;
     height: 100%;
     width: 100%;
-    border-top: 6px solid ${themes.current().colorKey};
+    border-top: 6px solid ${themes.common.colorKey};
     border-left: 6px solid transparent;
     border-bottom: 6px solid transparent;
     border-right: 6px solid transparent;

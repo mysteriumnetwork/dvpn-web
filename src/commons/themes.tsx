@@ -29,7 +29,7 @@ const common = {
   color2F2A48: '#2F2A48',
   color393453: '#393453',
   color4e1c67: '#4e1c67',
-  color00006: '#00006',
+  color231F3A: '#231F3A',
 
   fontSizeSmallest: '8px',
   fontSizeSmaller: '10px',
@@ -40,7 +40,13 @@ const common = {
   fontSizeHuge: '24px',
 }
 
-const light = {
+export type Theme = { [k: string]: any } & {
+  modal: {
+    bgOverlay: string
+  }
+}
+
+const light: Theme = {
   bgNavigation: common.backgroundMysterium,
   bgLayout: common.colorLightBlue,
   bgLayoutHeroRow: common.colorGrayBlue + alphaToHex(0.1),
@@ -57,36 +63,17 @@ const light = {
   bgReportCardDiffPositive: common.colorGreen + alphaToHex(0.1),
 
   bgTransactionPageCard: common.colorWhite,
-  bgTransactionPageCardBoxShadow: '0px 5px 20px ' + common.color00006 + alphaToHex(0.02),
+  bgTransactionPageCardBoxShadow: '0px 5px 20px ' + common.color221E39 + alphaToHex(0.02),
 
   colorTextMain: common.colorDarkBlue,
   colorTextSecondary: common.colorGrayBlue2,
 
-  backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
-
-  colorKey: '#D61F85',
-  colorKeyLight: '#ED5BAC',
-  colorDarkBlue: '#3C3857',
-  colorGrayBlue: '#9090BB',
-  colorGrayBlue2: '#5A597D',
-  colorWhite: '#FFFFFF',
-  colorGreen: '#63B64E',
-  colorLightGreen: '#EFF8ED',
-  colorBlue: '#5BB1EF',
-  colorLightBlue: '#F6F6FA',
-
-  colorNavStroke: '#FFFFFF',
-  colorNavActiveStroke: '#3C3857',
-
-  fontSizeSmallest: '8px',
-  fontSizeSmaller: '10px',
-  fontSizeSmall: '12px',
-  fontSizeNormal: '14px',
-  fontSizeBigger: '16px',
-  fontSizeBig: '18px',
+  modal: {
+    bgOverlay: common.colorDarkBlue + alphaToHex(0.5),
+  },
 }
 
-const dark = {
+const dark: Theme = {
   bgNavigation: common.color221E39,
   bgLayout: common.color2F2A48,
   bgLayoutHeroRow: common.color221E39,
@@ -108,42 +95,15 @@ const dark = {
   colorTextMain: common.colorLightBlue,
   colorTextSecondary: common.colorGrayBlue,
 
-  backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
-
-  colorKey: '#D61F85',
-  colorKeyLight: '#ED5BAC',
-  colorDarkBlue: '#3C3857',
-  colorGrayBlue: '#9090BB',
-  colorGrayBlue2: '#5A597D',
-  colorWhite: '#FFFFFF',
-  colorGreen: '#63B64E',
-  colorLightGreen: '#EFF8ED',
-  colorBlue: '#5BB1EF',
-  colorLightBlue: '#F6F6FA',
-
-  colorNavStroke: '#FFFFFF',
-  colorNavActiveStroke: '#3C3857',
-
-  fontSizeSmallest: '8px',
-  fontSizeSmaller: '10px',
-  fontSizeSmall: '12px',
-  fontSizeNormal: '14px',
-  fontSizeBigger: '16px',
-  fontSizeBig: '18px',
-}
-
-/**
- * @deprecated
- */
-const current = () => {
-  return light
+  modal: {
+    bgOverlay: common.color231F3A + alphaToHex(0.8),
+  },
 }
 
 const themes = {
   dark,
   light,
   common,
-  current,
 }
 
 export const screenSizes = {

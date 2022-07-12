@@ -17,14 +17,14 @@ const Tab = styled(Link)<TabProps>`
   text-decoration: none;
 
   :hover {
-    color: ${({ $active }) => ($active ? themes.current().colorWhite : themes.current().colorGrayBlue2)};
+    color: ${({ $active }) => ($active ? themes.common.colorWhite : themes.common.colorGrayBlue2)};
   }
 
   text-align: center;
-  background: ${({ $active }) => ($active ? themes.current().colorKey : themes.current().colorWhite)};
+  background: ${({ $active }) => ($active ? themes.common.colorKey : themes.common.colorWhite)};
   border-radius: 100px;
-  color: ${({ $active }) => ($active ? themes.current().colorWhite : themes.current().colorGrayBlue2)};
-  font-size: ${themes.current().fontSizeBigger};
+  color: ${({ $active }) => ($active ? themes.common.colorWhite : themes.common.colorGrayBlue2)};
+  font-size: ${themes.common.fontSizeBigger};
   padding: 8px 12px 8px 12px;
   cursor: pointer;
 `

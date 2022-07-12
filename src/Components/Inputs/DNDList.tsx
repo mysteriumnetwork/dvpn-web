@@ -21,11 +21,11 @@ const StyledDraggable = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  background: ${themes.current().colorLightBlue};
+  background: ${themes.common.colorLightBlue};
   border-radius: 5px;
   padding: 10px;
   font-weight: 400;
-  font-size: ${themes.current().fontSizeSmall};
+  font-size: ${themes.common.fontSizeSmall};
 `
 
 export type DNDListItem = {

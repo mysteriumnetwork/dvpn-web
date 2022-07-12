@@ -19,23 +19,23 @@ const Content = styled.div`
 
 const StyledRCSlider = styled(RCSlider)`
   .rc-slider-rail {
-    background: ${themes.current().colorGrayBlue}33;
+    background: ${themes.common.colorGrayBlue}33;
   }
 
   .rc-slider-track {
-    background: ${themes.current().colorKey};
+    background: ${themes.common.colorKey};
   }
 
   .rc-slider-handle {
     //width: 8px;
     //height: 8px;
     //margin-top: -2.5px;
-    border: solid 5px ${themes.current().colorKey};
+    border: solid 5px ${themes.common.colorKey};
   }
 
   .rc-slider-handle:active {
-    border-color: ${themes.current().colorKeyLight};
-    box-shadow: 0 0 5px ${themes.current().colorKeyLight};
+    border-color: ${themes.common.colorKeyLight};
+    box-shadow: 0 0 5px ${themes.common.colorKeyLight};
     cursor: -webkit-grabbing;
     cursor: grabbing;
   }
@@ -46,30 +46,30 @@ const StyledRCSlider = styled(RCSlider)`
     width: 0;
     height: 0;
     vertical-align: middle;
-    background-color: ${themes.current().colorGrayBlue};
-    border: 1px dashed ${themes.current().colorGrayBlue} !important;
+    background-color: ${themes.common.colorGrayBlue};
+    border: 1px dashed ${themes.common.colorGrayBlue} !important;
     border-radius: 10px;
     cursor: pointer;
   }
 
   .rc-slider-dot-active {
-    border-color: ${themes.current().colorGrayBlue};
+    border-color: ${themes.common.colorGrayBlue};
   }
 
   .rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
-    border-color: ${themes.current().colorKeyLight};
-    box-shadow: 0 0 5px ${themes.current().colorKeyLight};
+    border-color: ${themes.common.colorKeyLight};
+    box-shadow: 0 0 5px ${themes.common.colorKeyLight};
   }
   .rc-slider-mark-text {
-    color: ${themes.current().colorGrayBlue2};
-    font-size: ${themes.current().fontSizeSmall};
+    color: ${themes.common.colorGrayBlue2};
+    font-size: ${themes.common.fontSizeSmall};
     font-weight: 400;
     width: 80px;
   }
 
   .rc-slider-mark-text-active {
-    color: ${themes.current().colorGrayBlue2};
-    font-size: ${themes.current().fontSizeSmall};
+    color: ${themes.common.colorGrayBlue2};
+    font-size: ${themes.common.fontSizeSmall};
     font-weight: 400;
   }
 `

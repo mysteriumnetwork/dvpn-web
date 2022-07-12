@@ -18,16 +18,16 @@ interface ReactTooltipStyledProps {
 // @ts-ignore
 export const ReactTooltipStyled = styled(ReactTooltip)<ReactTooltipStyledProps>`
   &.type-dark.place-${({ $position }) => $position} {
-    background-color: ${themes.current().colorWhite};
+    background-color: ${themes.common.colorWhite};
     padding: 0.3rem 1rem;
-    color: ${themes.current().colorGrayBlue};
-    font-size: ${themes.current().fontSizeSmaller};
+    color: ${themes.common.colorGrayBlue};
+    font-size: ${themes.common.fontSizeSmaller};
     font-family: Ubuntu;
     font-weight: 400;
     border-radius: 10px;
 
     &:after {
-      border-${({ $position }) => $position}-color: ${themes.current().colorWhite};
+      border-${({ $position }) => $position}-color: ${themes.common.colorWhite};
     }
   }
 `

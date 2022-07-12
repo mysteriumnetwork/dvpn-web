@@ -15,8 +15,8 @@ const Content = styled.div`
 const Option = styled.div`
   width: 120px;
   padding: 2px 0 2px 0;
-  color: ${({ active }) => (active ? themes.current().colorWhite : themes.current().colorGrayBlue)};
-  font-size: ${themes.current().fontSizeSmall};
+  color: ${({ active }) => (active ? themes.common.colorWhite : themes.common.colorGrayBlue)};
+  font-size: ${themes.common.fontSizeSmall};
   font-weight: 400;
   font-family: 'Poppins';
   font-style: normal;
@@ -26,7 +26,7 @@ const Option = styled.div`
     active &&
     `
     border-radius: 100px;
-    background: ${themes.current().colorKey};
+    background: ${themes.common.colorKey};
   `}
 `
 

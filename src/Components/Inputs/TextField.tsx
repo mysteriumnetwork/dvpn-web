@@ -23,20 +23,20 @@ const StyledInput = styled.input<StyledInputProps>`
   line-height: 16px;
   padding-left: 5px;
 
-  color: ${({ $error }) => ($error ? `${themes.current().colorKey}` : themes.current().colorGrayBlue2)};
-  background: ${({ $error }) => ($error ? `${themes.current().colorKey}1A` : themes.current().colorWhite)};
-  border: 1px solid ${({ $error }) => ($error ? themes.current().colorKey : themes.current().colorGrayBlue)};
+  color: ${({ $error }) => ($error ? `${themes.common.colorKey}` : themes.common.colorGrayBlue2)};
+  background: ${({ $error }) => ($error ? `${themes.common.colorKey}1A` : themes.common.colorWhite)};
+  border: 1px solid ${({ $error }) => ($error ? themes.common.colorKey : themes.common.colorGrayBlue)};
 
   border-radius: 5px;
 
   padding-right: ${({ $icon }) => ($icon ? '35px' : '0')};
 
   :focus {
-    outline: 1px solid ${themes.current().colorGrayBlue2};
+    outline: 1px solid ${themes.common.colorGrayBlue2};
   }
 
   :disabled {
-    background: ${themes.current().colorGrayBlue}1A;
+    background: ${themes.common.colorGrayBlue}1A;
   }
 `
 

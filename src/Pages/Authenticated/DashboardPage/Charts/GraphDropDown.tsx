@@ -9,12 +9,12 @@ import themes from '../../../../commons/themes'
 import { Option } from '../../../../types/common'
 
 const StyledSelect = styled.select`
-  background: ${themes.current().colorDarkBlue};
-  color: ${themes.current().colorWhite};
+  background: ${themes.common.colorDarkBlue};
+  color: ${themes.common.colorWhite};
   padding: 5px;
   border-radius: 100px;
   min-width: 100px;
-  font-size: ${themes.current().fontSizeSmall};
+  font-size: ${themes.common.fontSizeSmall};
 `
 
 interface Props {

@@ -23,8 +23,8 @@ export const Switch = ({ checked, onChange, disabled, variant = 'green', size = 
       onChange={onChange}
       uncheckedIcon={false}
       checkedIcon={false}
-      onColor={variant === 'green' ? themes.current().colorGreen : themes.current().colorKey}
-      offColor={themes.current().colorGrayBlue}
+      onColor={variant === 'green' ? themes.common.colorGreen : themes.common.colorKey}
+      offColor={themes.common.colorGrayBlue}
       disabled={disabled}
       handleDiameter={size === 'small' ? 14 : undefined}
       height={size === 'small' ? 20 : undefined}

@@ -30,8 +30,8 @@ const Row = styled.div`
 `
 
 const LimitTarget = styled.div`
-  color: ${themes.current().colorKey};
-  font-size: ${themes.current().fontSizeBig};
+  color: ${themes.common.colorKey};
+  font-size: ${themes.common.fontSizeBig};
   font-weight: 700;
   margin-left: 20px;
 `

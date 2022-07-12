@@ -33,8 +33,8 @@ const Title = styled.div`
 
 const Error = styled.div`
   display: flex;
-  color: ${themes.current().colorKey};
-  font-size: ${themes.current().fontSizeSmallest};
+  color: ${themes.common.colorKey};
+  font-size: ${themes.common.fontSizeSmallest};
   margin-top: 4px;
 `
 

@@ -51,7 +51,6 @@ export const SettlementStatus = () => {
       <ProgressContainer>
         <Slider min={0} step={0.01} max={5} value={myst.toEtherBig(earningsTokens.wei).toNumber()} marks={marks} />
       </ProgressContainer>
-      --------------0-----
     </Content>
   )
 }

@@ -24,7 +24,7 @@ const navIconCss = css<NavProps>`
     opacity: ${({ $active }) => ($active ? 1 : 0.05)};
   }
   path {
-    stroke: ${({ $active }) => ($active ? themes.current().colorNavActiveStroke : themes.current().colorNavStroke)};
+    stroke: ${({ $active }) => ($active ? themes.common.colorNavActiveStroke : themes.common.colorNavStroke)};
   }
 `
 

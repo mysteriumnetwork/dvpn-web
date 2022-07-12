@@ -85,7 +85,7 @@ const Charts = ({ statsDaily }: Props) => {
           >
             <defs>
               <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="10%" stopColor={themes.current().colorKey} stopOpacity={0.1} />
+                <stop offset="10%" stopColor={themes.common.colorKey} stopOpacity={0.1} />
                 <stop offset="90%" stopColor="#FFFFFF" stopOpacity={0.1} />
               </linearGradient>
             </defs>
@@ -168,7 +168,7 @@ const ChartOverrides = styled.div`
   }
 
   .recharts-default-tooltip {
-    background: ${themes.current().colorWhite};
+    background: ${themes.common.colorWhite};
     box-shadow: 0 8px 15px rgba(152, 169, 188, 0.267182);
     border-radius: 2px;
     border: none !important;
