@@ -60,8 +60,10 @@ const light: Theme = {
   bgTransactionPageCard: common.colorWhite,
   bgTransactionPageCardBoxShadow: '0px 5px 20px ' + common.color221E39 + alphaToHex(0.02),
 
-  colorTextMain: common.colorDarkBlue,
-  colorTextSecondary: common.colorGrayBlue2,
+  text: {
+    colorMain: common.colorDarkBlue,
+    colorSecondary: common.colorGrayBlue2,
+  },
 
   modal: {
     bgOverlay: common.colorDarkBlue + alphaToHex(0.5),
@@ -89,8 +91,10 @@ const dark: Theme = {
   bgTransactionPageCard: common.color393453,
   bgTransactionPageCardBoxShadow: '0px 10px 20px ' + common.color221E39 + alphaToHex(0.4),
 
-  colorTextMain: common.colorLightBlue,
-  colorTextSecondary: common.colorGrayBlue,
+  text: {
+    colorMain: common.colorLightBlue,
+    colorSecondary: common.colorGrayBlue,
+  },
 
   modal: {
     bgOverlay: common.color231F3A + alphaToHex(0.8),

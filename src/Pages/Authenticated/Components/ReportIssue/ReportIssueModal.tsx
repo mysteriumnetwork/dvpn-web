@@ -29,7 +29,7 @@ const Content = styled.div`
 `
 
 const Note = styled.div`
-  color: ${({ theme }) => theme.colorTextSecondary};
+  color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${themes.common.fontSizeSmaller};
 `
 

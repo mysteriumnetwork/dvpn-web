@@ -12,6 +12,11 @@ export type Theme = { [k: string]: any } & {
     bgColor: string
     boxShadow: string
   }
+
+  text: {
+    colorMain: string
+    colorSecondary: string
+  }
 }
 
 declare module 'styled-components' {
