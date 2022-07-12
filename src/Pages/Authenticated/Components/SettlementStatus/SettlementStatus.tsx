@@ -13,6 +13,7 @@ import { selectors } from '../../../../redux/selectors'
 import { configs } from '../../../../commons/config'
 import { myst } from '../../../../commons/mysts'
 import { Slider } from '../../../../Components/Slider/Slider'
+import { ProgressBar } from '../../../../Components/ProgressBar/ProgressBar'
 
 const Content = styled.div`
   display: flex;
@@ -37,20 +38,18 @@ export const SettlementStatus = () => {
   const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
   const settleThresholdMyst = configs.zeroStakeSettlementThreshold(config)
 
-  const marks = useMemo(() => {
-    let marks: { [k: number]: ReactNode } = {}
-    for (let i = 0; i <= Math.floor(settleThresholdMyst); i++) {
-      marks[i] = <div />
-    }
-    return marks
-  }, [settleThresholdMyst])
+  // const marks = useMemo(() => {
+  //   let marks: { [k: number]: ReactNode } = {}
+  //   for (let i = 0; i <= Math.floor(settleThresholdMyst); i++) {
+  //     marks[i] = <div />
+  //   }
+  //   return marks
+  // }, [settleThresholdMyst])
 
   return (
     <Content>
       <Title>Next auto settlement ({myst.display(myst.toWeiBig(settleThresholdMyst), { fractionDigits: 1 })})</Title>
-      <ProgressContainer>
-        <Slider min={0} step={0.01} max={5} value={myst.toEtherBig(earningsTokens.wei).toNumber()} marks={marks} />
-      </ProgressContainer>
+      <ProgressBar settleThresholdMyst={myst.toBig(settleThresholdMyst).toNumber()} earningsTokens={3.78} />
     </Content>
   )
 }
