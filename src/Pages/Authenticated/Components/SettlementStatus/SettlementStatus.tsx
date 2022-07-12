@@ -6,13 +6,11 @@
  */
 
 import styled from 'styled-components'
-import { ReactNode, useMemo } from 'react'
 import themes from '../../../../commons/themes'
 import { useAppSelector } from '../../../../commons/hooks'
 import { selectors } from '../../../../redux/selectors'
 import { configs } from '../../../../commons/config'
 import { myst } from '../../../../commons/mysts'
-import { Slider } from '../../../../Components/Slider/Slider'
 import { ProgressBar } from '../../../../Components/ProgressBar/ProgressBar'
 
 const Content = styled.div`
@@ -35,21 +33,18 @@ const Title = styled.div`
 
 export const SettlementStatus = () => {
   const config = useAppSelector(selectors.configSelector)
-  const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
+  // const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
   const settleThresholdMyst = configs.zeroStakeSettlementThreshold(config)
 
-  // const marks = useMemo(() => {
-  //   let marks: { [k: number]: ReactNode } = {}
-  //   for (let i = 0; i <= Math.floor(settleThresholdMyst); i++) {
-  //     marks[i] = <div />
-  //   }
-  //   return marks
-  // }, [settleThresholdMyst])
-
+  // TODO: REPLACE MOCK number with myst.toWeiBig(earningsTokens.wei).toNumber()
   return (
     <Content>
       <Title>Next auto settlement ({myst.display(myst.toWeiBig(settleThresholdMyst), { fractionDigits: 1 })})</Title>
-      <ProgressBar settleThresholdMyst={myst.toBig(settleThresholdMyst).toNumber()} earningsTokens={3.78} />
+      <ProgressBar
+        size={'small'}
+        settleThresholdMyst={myst.toBig(settleThresholdMyst).toNumber()}
+        earningsTokens={3.78}
+      />
     </Content>
   )
 }

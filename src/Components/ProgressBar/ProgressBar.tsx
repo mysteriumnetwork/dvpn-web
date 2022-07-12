@@ -5,15 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import themes from '../../commons/themes'
+
+interface BarProps {
+  $size: 'big' | 'small'
+}
+
 interface ProgressProps {
   $width?: number
 }
-export const Bar = styled.div`
-  height: 4px;
-  width: 168px;
+
+export const Bar = styled.div<BarProps>`
+  height: ${({ $size }) => {
+    return $size === 'big' ? '9px' : '4px'
+  }};
+  width: ${({ $size }) => {
+    return $size === 'big' ? '347px' : '126px'
+  }};
   border-radius: 10px;
   background-color: ${themes.common.colorGrayBlue};
 `
@@ -39,17 +48,16 @@ const Circle = styled.span`
 interface Props {
   settleThresholdMyst: number
   earningsTokens: number
+  size: 'big' | 'small'
 }
 
-export const ProgressBar = ({ settleThresholdMyst, earningsTokens }: Props) => {
+export const ProgressBar = ({ settleThresholdMyst, earningsTokens, size }: Props) => {
   console.log(settleThresholdMyst, earningsTokens)
   const width = (earningsTokens / settleThresholdMyst) * 100
   console.log(width)
   return (
-    <Bar>
-      <Progress $width={width}>
-        <Circle />
-      </Progress>
+    <Bar $size={size}>
+      <Progress $width={width}>{size === 'small' && <Circle />}</Progress>
     </Bar>
   )
 }
