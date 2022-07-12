@@ -63,11 +63,13 @@ const Mark = styled.span<BarProps>`
 `
 const MarkContainer = styled.div<BarProps>`
   width: ${({ $size }) => {
-    return $size === 'big' ? '347px' : '124px'
+    return $size === 'big' ? '343px' : '124px'
   }};
   box-sizing: border-box;
   display: flex;
-  margin: 4px 20px;
+  margin: ${({ $size }) => {
+    return $size === 'big' ? '9px' : '4px'
+  }};
   justify-content: space-between;
 `
 interface Props {
