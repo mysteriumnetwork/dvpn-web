@@ -6,7 +6,7 @@
  */
 
 import RSwitch from 'react-switch'
-import themes from '../../commons/themes'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface Props {
   checked: boolean
@@ -23,8 +23,8 @@ export const Switch = ({ checked, onChange, disabled, variant = 'green', size = 
       onChange={onChange}
       uncheckedIcon={false}
       checkedIcon={false}
-      onColor={variant === 'green' ? themes.common.colorGreen : themes.common.colorKey}
-      offColor={themes.common.colorGrayBlue}
+      onColor={variant === 'green' ? themeCommon.colorGreen : themeCommon.colorKey}
+      offColor={themeCommon.colorGrayBlue}
       disabled={disabled}
       handleDiameter={size === 'small' ? 14 : undefined}
       height={size === 'small' ? 20 : undefined}

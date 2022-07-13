@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes from '../../../../commons/themes'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const Content = styled.div`
   display: flex;
@@ -15,8 +15,8 @@ const Content = styled.div`
 const Option = styled.div`
   width: 120px;
   padding: 2px 0 2px 0;
-  color: ${({ active }) => (active ? themes.common.colorWhite : themes.common.colorGrayBlue)};
-  font-size: ${themes.common.fontSizeSmall};
+  color: ${({ active }) => (active ? themeCommon.colorWhite : themeCommon.colorGrayBlue)};
+  font-size: ${themeCommon.fontSizeSmall};
   font-weight: 400;
   font-family: 'Poppins';
   font-style: normal;
@@ -26,7 +26,7 @@ const Option = styled.div`
     active &&
     `
     border-radius: 100px;
-    background: ${themes.common.colorKey};
+    background: ${themeCommon.colorKey};
   `}
 `
 

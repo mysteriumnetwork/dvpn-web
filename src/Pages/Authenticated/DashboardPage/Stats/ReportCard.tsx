@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { ReactNode } from 'react'
-import themes from '../../../../commons/themes'
 import styled from 'styled-components'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const Card = styled.div`
   display: flex;
@@ -23,13 +23,13 @@ const Content = styled.div`
 `
 
 const Value = styled.div`
-  font-size: ${themes.common.fontSizeHuge};
+  font-size: ${themeCommon.fontSizeHuge};
   font-weight: 700;
   color: ${({ theme }) => theme.text.colorMain};
 `
 
 const Title = styled.div`
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
   font-weight: 400;
   color: ${({ theme }) => theme.text.colorSecondary};
 `
@@ -47,12 +47,12 @@ const DiffValue = styled.div<DiffValueProps>`
   display: flex;
   justify-content: center;
   width: 80px;
-  font-size: ${themes.common.fontSizeNormal};
+  font-size: ${themeCommon.fontSizeNormal};
   padding: 4px 10px;
   border-radius: 100px;
 
-  color: ${({ positive }) => (positive ? themes.common.colorGreen : themes.common.colorGrayBlue)};
-  background: ${({ positive, theme }) => (positive ? theme.bgReportCardDiffPositive : themes.common.colorLightBlue)};
+  color: ${({ positive }) => (positive ? themeCommon.colorGreen : themeCommon.colorGrayBlue)};
+  background: ${({ positive, theme }) => (positive ? theme.bgReportCardDiffPositive : themeCommon.colorLightBlue)};
 `
 
 interface Props {

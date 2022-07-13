@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes from '../../commons/themes'
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface TabProps {
   $active?: boolean
@@ -17,14 +17,14 @@ const Tab = styled(Link)<TabProps>`
   text-decoration: none;
 
   :hover {
-    color: ${({ $active }) => ($active ? themes.common.colorWhite : themes.common.colorGrayBlue2)};
+    color: ${({ $active }) => ($active ? themeCommon.colorWhite : themeCommon.colorGrayBlue2)};
   }
 
   text-align: center;
-  background: ${({ $active }) => ($active ? themes.common.colorKey : themes.common.colorWhite)};
+  background: ${({ $active }) => ($active ? themeCommon.colorKey : themeCommon.colorWhite)};
   border-radius: 100px;
-  color: ${({ $active }) => ($active ? themes.common.colorWhite : themes.common.colorGrayBlue2)};
-  font-size: ${themes.common.fontSizeBigger};
+  color: ${({ $active }) => ($active ? themeCommon.colorWhite : themeCommon.colorGrayBlue2)};
+  font-size: ${themeCommon.fontSizeBigger};
   padding: 8px 12px 8px 12px;
   cursor: pointer;
 `

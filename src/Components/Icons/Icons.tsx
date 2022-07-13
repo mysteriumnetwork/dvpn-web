@@ -18,7 +18,7 @@ import { ReactComponent as QualityBarsSvg } from '../../assets/images/quality-ba
 import { ReactComponent as DragIndicatorSvg } from '../../assets/images/drag-indicator.svg'
 import { ReactComponent as FileSvg } from '../../assets/images/file.svg'
 import { ReactComponent as ChatSvg } from '../../assets/images/chat.svg'
-import themes from '../../commons/themes'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface InfoProps {
   $inverted?: boolean
@@ -26,7 +26,7 @@ interface InfoProps {
 
 export const InfoIcon = styled(InfoSvg)<InfoProps>`
   path {
-    fill: ${({ $inverted }) => ($inverted ? themes.common.colorWhite : themes.common.colorGrayBlue)};
+    fill: ${({ $inverted }) => ($inverted ? themeCommon.colorWhite : themeCommon.colorGrayBlue)};
   }
 `
 
@@ -58,15 +58,15 @@ const walletIconAccentedCss = css<AccentedProps>`
   width: 50px;
   height: 50px;
   circle {
-    fill: ${themes.common.colorKey};
+    fill: ${themeCommon.colorKey};
     opacity: 1;
   }
   #outline {
-    stroke: ${themes.common.colorKeyLight};
+    stroke: ${themeCommon.colorKeyLight};
   }
   #buckle,
   #pocket {
-    stroke: ${themes.common.colorWhite};
+    stroke: ${themeCommon.colorWhite};
   }
 `
 
@@ -75,17 +75,17 @@ const walletInactiveCss = css<InactiveProps>`
     opacity: 0.5;
   }
   circle {
-    fill: ${themes.common.colorGrayBlue};
+    fill: ${themeCommon.colorGrayBlue};
   }
   path,
   ellipse {
-    stroke: ${themes.common.colorGrayBlue};
+    stroke: ${themeCommon.colorGrayBlue};
   }
 `
 
 export const SessionsIcon = styled(HistoryNavSvg)<AccentedProps>`
   rect {
-    fill: ${themes.common.colorKeyLight};
+    fill: ${themeCommon.colorKeyLight};
     opacity: 1;
   }
   #l1,
@@ -103,16 +103,16 @@ interface QualityBarsProps {
 
 export const QualityBarsIcon = styled(QualityBarsSvg)<QualityBarsProps>`
   rect {
-    fill: ${themes.common.colorKeyLight}33;
+    fill: ${themeCommon.colorKeyLight}33;
   }
   #bar-1 {
-    fill: ${({ $quality = 0 }) => $quality > 0 && themes.common.colorKey} !important;
+    fill: ${({ $quality = 0 }) => $quality > 0 && themeCommon.colorKey} !important;
   }
   #bar-2 {
-    fill: ${({ $quality = 0 }) => $quality > 1 && themes.common.colorKey} !important;
+    fill: ${({ $quality = 0 }) => $quality > 1 && themeCommon.colorKey} !important;
   }
   #bar-3 {
-    fill: ${({ $quality = 0 }) => $quality > 2 && themes.common.colorKey} !important;
+    fill: ${({ $quality = 0 }) => $quality > 2 && themeCommon.colorKey} !important;
   }
 `
 

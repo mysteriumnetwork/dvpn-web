@@ -7,10 +7,10 @@
 import { Card } from './Card'
 import styled from 'styled-components'
 import { WalletIcon } from '../../../Components/Icons/Icons'
-import themes from '../../../commons/themes'
 import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
 import { myst } from '../../../commons/mysts'
+import { themeCommon } from '../../../theme/themeCommon'
 
 const Row = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const Title = styled.div`
 `
 const Value = styled.div`
   max-width: 8em;
-  font-size: ${themes.common.fontSizeHuge};
+  font-size: ${themeCommon.fontSizeHuge};
   font-weight: 700;
   color: ${({ theme }) => theme.text.colorMain};
 `

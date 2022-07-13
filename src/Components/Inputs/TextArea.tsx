@@ -6,8 +6,8 @@
  */
 
 import styled, { css } from 'styled-components'
-import themes from '../../commons/themes'
 import { TextFieldVariant } from './TextField'
+import { themeCommon } from '../../theme/themeCommon'
 
 const errorCSS = css`
   background: ${({ theme }) => theme.textInput.backgroundError} !important;
@@ -26,7 +26,7 @@ const StyledTextArea = styled.textarea<StyledTextAreaProps>`
   width: 100%;
 
   font-weight: 400;
-  font-size: ${themes.common.fontSizeNormal};
+  font-size: ${themeCommon.fontSizeNormal};
   line-height: 16px;
   padding: 5px;
 
@@ -35,7 +35,7 @@ const StyledTextArea = styled.textarea<StyledTextAreaProps>`
   border: ${({ theme }) => theme.textInput.border};
 
   :focus {
-    outline: 1px solid ${themes.common.colorGrayBlue2};
+    outline: 1px solid ${themeCommon.colorGrayBlue2};
   }
 
   :disabled {

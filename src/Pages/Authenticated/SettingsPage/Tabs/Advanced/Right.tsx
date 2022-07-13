@@ -16,7 +16,7 @@ import { AdvancedSettingsForms } from './AdvancedSettings'
 import { useEffect } from 'react'
 import { configs } from '../../../../../commons/config'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
-import themes from '../../../../../commons/themes'
+import { themeCommon } from '../../../../../theme/themeCommon'
 
 const Controls = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const Controls = styled.div`
 
 const SubTitle = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
 `
 
 const MarginTop = styled.div`

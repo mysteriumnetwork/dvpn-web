@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes from '../../../commons/themes'
+import { themeCommon } from '../../../theme/themeCommon'
 
 interface Props {
   nodeVersion: string
@@ -17,13 +17,13 @@ const Container = styled.div`
   gap: 50px;
 `
 const Title = styled.div`
-  font-size: ${themes.common.fontSizeSmall};
-  color: ${themes.common.colorGrayBlue};
+  font-size: ${themeCommon.fontSizeSmall};
+  color: ${themeCommon.colorGrayBlue};
   font-weight: 400;
 `
 const Value = styled.div`
-  font-size: ${themes.common.fontSizeSmall};
-  color: ${themes.common.colorGrayBlue2};
+  font-size: ${themeCommon.fontSizeSmall};
+  color: ${themeCommon.colorGrayBlue2};
   font-weight: 700;
 `
 const Row = styled.div`

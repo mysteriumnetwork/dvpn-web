@@ -6,8 +6,8 @@
  */
 
 import styled, { css } from 'styled-components'
-import themes from '../../commons/themes'
 import { ReactNode } from 'react'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface IconButtonProps {
   $clickable?: boolean
@@ -15,7 +15,7 @@ interface IconButtonProps {
 
 const clickableCSS = css`
   :hover {
-    border: 1px solid ${themes.common.colorDarkBlue}AA;
+    border: 1px solid ${themeCommon.colorDarkBlue}AA;
     border-radius: 100px;
   }
 

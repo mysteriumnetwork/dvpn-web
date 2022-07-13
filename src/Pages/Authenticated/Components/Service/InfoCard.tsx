@@ -6,7 +6,7 @@
  */
 import styled from 'styled-components'
 import { ReactNode } from 'react'
-import themes from '../../../../commons/themes'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const Card = styled.div`
   display: flex;
@@ -24,11 +24,11 @@ const Content = styled.div`
 
 const Title = styled.div`
   font-family: 'Ubuntu', sans-serif;
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
   color: ${({ theme }) => theme.text.colorSecondary}; ;
 `
 const Value = styled.div`
-  font-size: ${themes.common.fontSizeBigger};
+  font-size: ${themeCommon.fontSizeBigger};
   color: ${({ theme }) => theme.text.colorMain};
   font-style: normal;
 `

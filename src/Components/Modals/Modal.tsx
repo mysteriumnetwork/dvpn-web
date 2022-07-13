@@ -6,9 +6,9 @@
  */
 import styled from 'styled-components'
 import { ReactNode } from 'react'
-import themes from '../../commons/themes'
 import { XButtonIcon } from '../Icons/ButtonIcons'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
+import { themeCommon } from '../../theme/themeCommon'
 
 const PageOverlay = styled.div`
   position: fixed;
@@ -76,10 +76,10 @@ const Title = styled.div`
 `
 
 const SubTitle = styled.div`
-  font-size: ${themes.common.fontSizeBig};
+  font-size: ${themeCommon.fontSizeBig};
   font-weight: 700;
   margin-top: 10px;
-  color: ${themes.common.colorKey};
+  color: ${themeCommon.colorKey};
 `
 
 const SpinnerOverlay = styled.div`
@@ -89,7 +89,7 @@ const SpinnerOverlay = styled.div`
   z-index: 1000;
   width: 100%;
   height: 100%;
-  background: ${themes.common.colorDarkBlue}6A;
+  background: ${themeCommon.colorDarkBlue}6A;
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -99,7 +99,7 @@ const SpinnerOverlay = styled.div`
 const Spinner = styled(CircularSpinner)`
   width: 50px;
   height: 50px;
-  border: 6px solid ${themes.common.colorWhite};
+  border: 6px solid ${themeCommon.colorWhite};
   z-index: 1001;
 `
 

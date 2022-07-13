@@ -6,8 +6,8 @@
  */
 
 import styled, { css } from 'styled-components'
-import themes, { alphaToHex } from '../../../commons/themes'
 import { useMemo } from 'react'
+import { themeCommon, alphaToHex } from '../../../theme/themeCommon'
 
 interface BubbleProps {
   $primary?: boolean
@@ -20,21 +20,19 @@ const commonBubbleCss = css`
   border-radius: 12px;
   padding: 5px;
   font-weight: 700;
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
 `
 
 const BlueBubble = styled.div<BubbleProps>`
   ${commonBubbleCss};
-  background: ${({ $primary }) =>
-    $primary ? themes.common.colorBlue : `${themes.common.colorBlue}${alphaToHex(0.2)}`};
-  color: ${({ $primary }) => ($primary ? themes.common.colorWhite : themes.common.colorDarkBlue)};
+  background: ${({ $primary }) => ($primary ? themeCommon.colorBlue : `${themeCommon.colorBlue}${alphaToHex(0.2)}`)};
+  color: ${({ $primary }) => ($primary ? themeCommon.colorWhite : themeCommon.colorDarkBlue)};
 `
 
 const GreenBubble = styled.div<BubbleProps>`
   ${commonBubbleCss};
-  background: ${({ $primary }) =>
-    $primary ? themes.common.colorGreen : `${themes.common.colorGreen}${alphaToHex(0.1)}`};
-  color: ${({ $primary }) => ($primary ? themes.common.colorWhite : themes.common.colorDarkBlue)};
+  background: ${({ $primary }) => ($primary ? themeCommon.colorGreen : `${themeCommon.colorGreen}${alphaToHex(0.1)}`)};
+  color: ${({ $primary }) => ($primary ? themeCommon.colorWhite : themeCommon.colorDarkBlue)};
 `
 
 const NoBackgroundBubble = styled.div<BubbleProps>`

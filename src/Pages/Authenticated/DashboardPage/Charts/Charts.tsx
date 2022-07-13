@@ -9,10 +9,10 @@ import { SessionStats } from 'mysterium-vpn-js'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 import charts, { ChartType, Pair, types } from './chart.utils'
-import themes from '../../../../commons/themes'
 import styled from 'styled-components'
 import { RangePicker } from './RangePicker'
 import { GraphDropDown } from './GraphDropDown'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 interface Props {
   statsDaily: {
@@ -85,7 +85,7 @@ const Charts = ({ statsDaily }: Props) => {
           >
             <defs>
               <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="10%" stopColor={themes.common.colorKey} stopOpacity={0.1} />
+                <stop offset="10%" stopColor={themeCommon.colorKey} stopOpacity={0.1} />
                 <stop offset="90%" stopColor="#FFFFFF" stopOpacity={0.1} />
               </linearGradient>
             </defs>
@@ -107,7 +107,7 @@ const Charts = ({ statsDaily }: Props) => {
               fillOpacity={2}
               strokeWidth={2}
               fillRule={'evenodd'}
-              stroke={themes.common.colorKey}
+              stroke={themeCommon.colorKey}
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -130,7 +130,7 @@ const FlexGrow = styled.div`
 `
 
 const Title = styled.div`
-  font-size: ${themes.common.fontSizeBig};
+  font-size: ${themeCommon.fontSizeBig};
   font-weight: 700;
   font-family: Ubuntu;
   margin-right: 60px;
@@ -163,12 +163,12 @@ const ChartOverrides = styled.div`
   .recharts-text.recharts-cartesian-axis-tick-value {
     font-family: 'Ubuntu', sans-serif;
     font-style: normal !important;
-    font-size: ${themes.common.fontSizeSmall};
+    font-size: ${themeCommon.fontSizeSmall};
     line-height: 21px;
   }
 
   .recharts-default-tooltip {
-    background: ${themes.common.colorWhite};
+    background: ${themeCommon.colorWhite};
     box-shadow: 0 8px 15px rgba(152, 169, 188, 0.267182);
     border-radius: 2px;
     border: none !important;
@@ -177,7 +177,7 @@ const ChartOverrides = styled.div`
   .recharts-tooltip-label {
     font-family: 'Ubuntu', sans-serif;
     font-style: normal;
-    font-size: ${themes.common.fontSizeNormal};
+    font-size: ${themeCommon.fontSizeNormal};
     line-height: 21px;
   }
 

@@ -5,46 +5,46 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled, { css } from 'styled-components'
-import themes from '../../commons/themes'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { ReactNode } from 'react'
+import { themeCommon } from '../../theme/themeCommon'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'blue'
 
 const PRIMARY_CSS = css`
-  color: ${themes.common.colorWhite};
-  background: ${themes.common.colorKey};
+  color: ${themeCommon.colorWhite};
+  background: ${themeCommon.colorKey};
 
   :active {
-    background: ${themes.common.colorKey}BB;
+    background: ${themeCommon.colorKey}BB;
   }
 `
 
 const SECONDARY_CSS = css`
-  color: ${themes.common.colorWhite};
-  background: ${themes.common.colorGrayBlue};
+  color: ${themeCommon.colorWhite};
+  background: ${themeCommon.colorGrayBlue};
 
   :active {
-    background: ${themes.common.colorGrayBlue}BB;
+    background: ${themeCommon.colorGrayBlue}BB;
   }
 `
 
 const OUTLINES_CSS = css`
-  color: ${themes.common.colorGrayBlue};
+  color: ${themeCommon.colorGrayBlue};
   background: none;
-  border: 1px solid ${themes.common.colorGrayBlue};
+  border: 1px solid ${themeCommon.colorGrayBlue};
 
   :active {
-    background: ${themes.common.colorGrayBlue}51;
+    background: ${themeCommon.colorGrayBlue}51;
   }
 `
 
 const BLUE_CSS = css`
-  color: ${themes.common.colorWhite};
-  background: ${themes.common.colorBlue};
+  color: ${themeCommon.colorWhite};
+  background: ${themeCommon.colorBlue};
 
   :active {
-    background: ${themes.common.colorBlue}BB;
+    background: ${themeCommon.colorBlue}BB;
 `
 
 const resolveCSS = (variant: ButtonVariant) => {
@@ -69,7 +69,7 @@ interface ButtonStyleProps {
 
 const StyledButton = styled.button<ButtonStyleProps>`
   position: relative;
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
 
   border: 0;
   border-radius: ${({ $rounded }) => ($rounded ? '100px' : '5px')};
@@ -92,7 +92,7 @@ const LoadingOverlay = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${themes.common.colorGrayBlue};
+  background: ${themeCommon.colorGrayBlue};
   border-radius: 5px;
 
   top: 0;
@@ -106,7 +106,7 @@ const LoadingOverlay = styled.div`
 const Spinner = styled(CircularSpinner)`
   width: 8px;
   height: 8px;
-  border: 6px solid ${themes.common.colorWhite};
+  border: 6px solid ${themeCommon.colorWhite};
   z-index: 11;
 `
 

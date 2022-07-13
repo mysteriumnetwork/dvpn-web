@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes, { alphaToHex } from '../../../../commons/themes'
 import { StopwatchSimpleIcon } from '../../../../Components/Icons/Icons'
 import { DoughnutChart } from './DoughnutChart'
 import { Bubble } from '../../DashboardPage/Bubble'
+import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
 
 const Statistics = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ const Header = styled.div`
 `
 
 const Title = styled.div`
-  font-size: ${themes.common.fontSizeBig};
+  font-size: ${themeCommon.fontSizeBig};
   font-weight: 700;
   font-style: normal;
 `
@@ -32,7 +32,7 @@ const SubTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: ${themes.common.fontSizeSmaller};
+  font-size: ${themeCommon.fontSizeSmaller};
   color: ${({ theme }) => theme.text.colorSecondary};
 `
 
@@ -51,7 +51,7 @@ const Column = styled.div<{ $marginLeft?: string }>`
 `
 
 const GreenBackground = styled.div`
-  background: ${themes.common.colorGreen}33;
+  background: ${themeCommon.colorGreen}33;
   display: flex;
   border-radius: 15px;
   padding-right: 30px;
@@ -67,7 +67,7 @@ const Row = styled.div`
 
 const SmallText = styled.div`
   font-weight: 400;
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
 `
 
 export const IdleStat = () => {
@@ -105,8 +105,8 @@ export const IdleStat = () => {
       <Content>
         <DoughnutChart
           data={statusData}
-          colorA={themes.common.colorBlue}
-          colorB={`${themes.common.colorBlue}${alphaToHex(0.2)}`}
+          colorA={themeCommon.colorBlue}
+          colorB={`${themeCommon.colorBlue}${alphaToHex(0.2)}`}
         />
         <Column $marginLeft="40px">
           <Bubble value="30%" primary />
@@ -120,8 +120,8 @@ export const IdleStat = () => {
         <GreenBackground>
           <DoughnutChart
             data={idleData}
-            colorA={themes.common.colorGreen}
-            colorB={`${themes.common.colorGreen}${alphaToHex(0.2)}`}
+            colorA={themeCommon.colorGreen}
+            colorB={`${themeCommon.colorGreen}${alphaToHex(0.2)}`}
           />
           <Column $marginLeft="40px">
             <Row>
