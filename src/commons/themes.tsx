@@ -94,6 +94,11 @@ const light: Theme = {
     strokeDisabled: common.colorGrayBlue,
     strokeError: common.colorWhite,
   },
+
+  dndList: {
+    textColor: common.colorGrayBlue2,
+    background: common.colorLightBlue + alphaToHex(0.5),
+  },
 }
 
 const dark: Theme = {
@@ -147,6 +152,11 @@ const dark: Theme = {
     stroke: common.colorGrayBlue,
     strokeDisabled: common.colorGrayBlue,
     strokeError: common.colorWhite,
+  },
+
+  dndList: {
+    textColor: common.colorLightBlue,
+    background: common.colorGrayBlue + alphaToHex(0.1),
   },
 }
 

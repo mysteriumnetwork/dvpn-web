@@ -21,7 +21,8 @@ const StyledDraggable = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  background: ${themes.common.colorLightBlue};
+  color: ${({ theme }) => theme.dndList.textColor};
+  background: ${({ theme }) => theme.dndList.background};
   border-radius: 5px;
   padding: 10px;
   font-weight: 400;

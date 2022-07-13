@@ -59,6 +59,11 @@ export type Theme = {
     borderDisabled: string
     borderError: string
   }
+
+  dndList: {
+    textColor: string
+    background: string
+  }
 }
 
 declare module 'styled-components' {
