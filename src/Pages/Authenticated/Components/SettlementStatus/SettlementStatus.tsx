@@ -33,14 +33,13 @@ const Title = styled.div`
 
 export const SettlementStatus = () => {
   const config = useAppSelector(selectors.configSelector)
-  // const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
+  const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
   const settleThresholdMyst = configs.zeroStakeSettlementThreshold(config)
 
-  // TODO: REPLACE MOCK number with myst.toWeiBig(earningsTokens.wei).toNumber()
   return (
     <Content>
       <Title>Next auto settlement ({myst.display(myst.toWeiBig(settleThresholdMyst), { fractionDigits: 1 })})</Title>
-      <ProgressBar size={'small'} max={myst.toBig(settleThresholdMyst).toNumber()} value={4.56} />
+      <ProgressBar size={'small'} max={settleThresholdMyst} value={myst.toEtherBig(earningsTokens.wei).toNumber()} />
     </Content>
   )
 }

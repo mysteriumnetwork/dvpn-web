@@ -9,6 +9,7 @@ import { useTable } from 'react-table'
 interface Props {
   columns: any[]
   data: any[]
+  loading?: boolean
 }
 
 export const Table = ({ columns, data }: Props) => {

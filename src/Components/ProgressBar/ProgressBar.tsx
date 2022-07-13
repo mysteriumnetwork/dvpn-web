@@ -130,7 +130,7 @@ export const ProgressBar = ({ max, value, size }: Props) => {
           {actualSize === 'small' && (
             <div>
               <Circle />
-              <Tooltip data-tooltip={value} />
+              <Tooltip data-tooltip={value.toFixed(2)} />
             </div>
           )}
         </Progress>
