@@ -19,10 +19,10 @@ const Content = styled.div`
   gap: 20px;
 `
 
-const ProgressContainer = styled.div`
-  width: 200px;
-  display: none;
-`
+// const ProgressContainer = styled.div`
+//   width: 200px;
+//   display: none;
+// `
 
 const Title = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
