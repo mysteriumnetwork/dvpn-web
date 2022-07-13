@@ -7,7 +7,6 @@
 
 import styled from 'styled-components'
 import { useMemo } from 'react'
-import { themeCommon } from '../../theme/themeCommon'
 
 interface BarProps {
   $size?: 'big' | 'small'
@@ -23,7 +22,7 @@ export const Bar = styled.div<BarProps>`
     return $size === 'big' ? '347px' : '126px'
   }};
   border-radius: 10px;
-  background-color: ${themeCommon.colorGrayBlue};
+  background-color: ${({ theme }) => theme.common.colorGrayBlue};
 `
 const Container = styled.div`
   width: 200px;
@@ -39,7 +38,7 @@ const Progress = styled.div<BarProps>`
   flex-direction: column;
   height: 100%;
   border-radius: 10px;
-  background-color: ${themeCommon.colorKey};
+  background-color: ${({ theme }) => theme.common.colorKey};
 `
 const Circle = styled.span`
   position: absolute;
@@ -47,7 +46,7 @@ const Circle = styled.span`
   width: 8px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid ${themeCommon.colorKeyLight};
+  border: 3px solid ${({ theme }) => theme.common.colorKeyLight};
   transform: translateY(2.5px) translateX(28.5px);
 `
 const Mark = styled.span<BarProps>`
@@ -58,7 +57,8 @@ const Mark = styled.span<BarProps>`
   border-radius: ${({ $size }) => {
     return $size === 'big' ? '10px' : '50%'
   }};
-  background-color: ${({ $primary }) => ($primary ? themeCommon.colorGrayBlue : `${themeCommon.colorGrayBlue2}10`)};
+  background-color: ${({ $primary, theme }) =>
+    $primary ? theme.common.colorGrayBlue : `${theme.common.colorGrayBlue2}10`};
 `
 const MarkContainer = styled.div<BarProps>`
   width: ${({ $size }) => {
@@ -74,10 +74,10 @@ const MarkContainer = styled.div<BarProps>`
 const Tooltip = styled.div`
   height: 13px;
   width: 32px;
-  background-color: ${themeCommon.colorKey};
-  color: ${themeCommon.colorWhite};
+  background-color: ${({ theme }) => theme.common.colorKey};
+  color: ${({ theme }) => theme.common.colorWhite};
   border-radius: 100px;
-  font-size: ${themeCommon.fontSizeSmaller};
+  font-size: ${({ theme }) => theme.common.fontSizeSmaller};
   position: relative;
   transform: translateX(16.5px) translateY(-17px);
   text-align: center;
@@ -98,7 +98,7 @@ const Tooltip = styled.div`
     left: 0px;
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-top: 4px solid ${themeCommon.colorKey};
+    border-top: 4px solid ${({ theme }) => theme.common.colorKey};
     transform: translateX(12px) translateY(8px);
   }
 `

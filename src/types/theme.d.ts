@@ -77,6 +77,40 @@ export type Theme = {
       monitoringFailed: string
     }
   }
+
+  common: Common
+}
+
+export type Common = {
+  backgroundMysterium: string
+
+  colorKey: string
+  colorKeyLight: string
+  colorDarkBlue: string
+  colorGrayBlue: string
+  colorGrayBlue2: string
+  colorWhite: string
+  colorGreen: string
+  colorLightGreen: string
+  colorBlue: string
+  colorLightBlue: string
+
+  colorNavStroke: string
+  colorNavActiveStroke: string
+
+  color221E39: string
+  color2F2A48: string
+  color393453: string
+  color4e1c67: string
+  color231F3A: string
+
+  fontSizeSmallest: string
+  fontSizeSmaller: string
+  fontSizeSmall: string
+  fontSizeNormal: string
+  fontSizeBigger: string
+  fontSizeBig: string
+  fontSizeHuge: string
 }
 
 declare module 'styled-components' {

@@ -7,6 +7,7 @@
 import light from './light'
 import dark from './dark'
 import { themeCommon } from './themeCommon'
+import { Theme } from '../types/theme'
 
 export const screenSizes = {
   mobileS: '320px',
@@ -29,10 +30,12 @@ export const devices = {
   desktopL: `(min-width: ${screenSizes.desktop})`,
 }
 
-const themes = {
-  dark,
-  light,
-  common: themeCommon,
+const themes: {
+  dark: Theme
+  light: Theme
+} = {
+  dark: { ...dark, common: themeCommon },
+  light: { ...light, common: themeCommon },
 }
 
 export default themes

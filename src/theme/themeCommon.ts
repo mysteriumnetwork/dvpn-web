@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { Common } from '../types/theme'
 
 export const alphaToHex = (value: number) => {
   return ((value * 255) | (1 << 8)).toString(16).slice(1)
 }
 
-export const themeCommon = {
+export const themeCommon: Common = {
   backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
 
   colorKey: '#D61F85',
