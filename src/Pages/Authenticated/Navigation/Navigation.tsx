@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import {
@@ -17,17 +17,26 @@ import {
   TRANSACTIONS,
 } from '../../../constants/routes'
 
-import './Navigation.scss'
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
 import {
-  ChatNavIcon,
   DashboardNavIcon,
   SessionsNavIcon,
   SettingsNavIcon,
   WalletNavIcon,
 } from '../../../Components/Icons/NavigationIcons'
 import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
+import { LiveChat } from '../Components/LiveChat/LiveChat'
+
+const IntercomGlobalCSS = createGlobalStyle`
+ //.intercom-lightweight-app {
+ //   display: none;
+ // }
+
+ //#intercom-container > div > iframe {
+   //display: none;
+ //}
+`
 
 const Content = styled.div`
   background: ${({ theme }) => theme.bgNavigation};
@@ -61,16 +70,17 @@ const Margin = styled.div`
 const Navigation = () => {
   const { pathname } = useLocation()
 
-  // useEffect(() => {
-  //   // Load intercom chat
-  //   // @ts-ignore
-  //   window.Intercom('boot', {
-  //     app_id: 'h7hlm9on',
-  //   })
-  // }, [])
+  useEffect(() => {
+    // Load intercom chat
+    // @ts-ignore
+    window.Intercom('boot', {
+      app_id: 'h7hlm9on',
+    })
+  }, [])
 
   return (
     <Content>
+      <IntercomGlobalCSS />
       <LogoLink to={DASHBOARD}>
         <Logo />
       </LogoLink>
@@ -90,7 +100,7 @@ const Navigation = () => {
       </PlainLink>
       <FlexGrow />
       <ReportIssue />
-      <ChatNavIcon $active={false} />
+      <LiveChat />
       <ThemeSwitch />
       <Margin />
     </Content>

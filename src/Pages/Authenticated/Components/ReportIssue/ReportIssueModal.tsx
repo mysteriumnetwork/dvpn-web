@@ -68,6 +68,12 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
     setMessage('')
   }
 
+  const handleOpenIntercom = () => {
+    // @ts-ignore
+    window.Intercom('showNewMessage', 'Hi there! I need some assistance.')
+    handleClose()
+  }
+
   return (
     <Modal
       show={show}
@@ -109,6 +115,7 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
                 <ChatIcon /> Talk to us via live chat
               </Row>
             }
+            onClick={handleOpenIntercom}
           />
           <Button rounded label="Send" />
         </Footer>
