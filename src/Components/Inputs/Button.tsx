@@ -100,14 +100,14 @@ const LoadingOverlay = styled.div`
 
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  z-index: 10;
 `
 
 const Spinner = styled(CircularSpinner)`
   width: 8px;
   height: 8px;
   border: 6px solid ${themes.common.colorWhite};
-  z-index: 1001;
+  z-index: 11;
 `
 
 interface Props {

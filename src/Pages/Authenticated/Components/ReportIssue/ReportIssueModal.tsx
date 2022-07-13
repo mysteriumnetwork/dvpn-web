@@ -13,6 +13,7 @@ import { Button } from '../../../../Components/Inputs/Button'
 import themes from '../../../../commons/themes'
 import { ChatIcon } from '../../../../Components/Icons/Icons'
 import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
+import { TextArea } from '../../../../Components/Inputs/TextArea'
 
 interface Props {
   show: boolean
@@ -81,10 +82,12 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
           input={<TextField value={email} placeholder="node@runner.com" onChange={(v) => setEmail(v)} />}
         />
         <InputGroup
+          fluid
           title={`Your message (${message.length})`}
           input={
-            <TextField
+            <TextArea
               textarea
+              rows={5}
               value={message}
               placeholder="Describe what went wrong (minimum 30 characters)"
               onChange={(v) => setMessage(v)}
