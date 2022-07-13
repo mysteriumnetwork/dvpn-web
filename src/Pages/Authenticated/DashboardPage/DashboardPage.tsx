@@ -8,7 +8,6 @@
 import React from 'react'
 
 import { Layout, LayoutCard, LayoutHeroCardRow, LayoutUnstyledRow } from '../Components/Layout/Layout'
-import { ServiceCard } from '../Components/Service/ServiceCard'
 import { Report } from './Report/Report'
 import { DashboardHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { IdleStat } from '../Components/IdleStat/IdleStat'

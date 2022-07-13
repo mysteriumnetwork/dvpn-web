@@ -99,6 +99,19 @@ const light: Theme = {
     textColor: common.colorGrayBlue2,
     background: common.colorLightBlue + alphaToHex(0.5),
   },
+
+  nodeStatus: {
+    background: {
+      monitoringFailed: common.colorKey,
+      offline: common.colorGrayBlue,
+      online: common.colorGreen,
+    },
+    textColor: {
+      monitoringFailed: common.colorWhite,
+      offline: common.colorWhite,
+      online: common.colorWhite,
+    },
+  },
 }
 
 const dark: Theme = {
@@ -106,20 +119,19 @@ const dark: Theme = {
   bgLayout: common.color2F2A48,
   bgLayoutHeroRow: common.color221E39,
   bgLayoutCardCss: common.color393453,
-
   bgServiceCardHeader: common.color393453,
-  bgServiceCardContent: common.color393453,
 
+  bgServiceCardContent: common.color393453,
   bgSettingsCard: common.color393453,
 
   bgReportChartRow: common.color393453,
-  bgReportChartRowBoxShadow: '0 10px 20px ' + common.color221E39 + alphaToHex(0.4),
 
+  bgReportChartRowBoxShadow: '0 10px 20px ' + common.color221E39 + alphaToHex(0.4),
   bgReportCardDiffPositive: common.colorGreen + alphaToHex(0.1),
 
   bgTransactionPageCard: common.color393453,
-  bgTransactionPageCardBoxShadow: '0px 10px 20px ' + common.color221E39 + alphaToHex(0.4),
 
+  bgTransactionPageCardBoxShadow: '0px 10px 20px ' + common.color221E39 + alphaToHex(0.4),
   text: {
     colorMain: common.colorLightBlue,
     colorSecondary: common.colorGrayBlue,
@@ -157,6 +169,19 @@ const dark: Theme = {
   dndList: {
     textColor: common.colorLightBlue,
     background: common.colorGrayBlue + alphaToHex(0.1),
+  },
+
+  nodeStatus: {
+    background: {
+      monitoringFailed: common.colorKey,
+      offline: common.colorGrayBlue2,
+      online: common.colorGreen,
+    },
+    textColor: {
+      monitoringFailed: common.colorWhite,
+      offline: common.colorGrayBlue,
+      online: common.colorWhite,
+    },
   },
 }
 

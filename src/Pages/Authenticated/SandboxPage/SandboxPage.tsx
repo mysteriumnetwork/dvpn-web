@@ -13,6 +13,8 @@ import { ProgressBar } from '../../../Components/ProgressBar/ProgressBar'
 import { Slider } from '../../../Components/Slider/Slider'
 import { useState } from 'react'
 import styled from 'styled-components'
+import { Indicator, IndicatorVariants } from '../Components/NodeStatus/NodeStatus'
+
 
 const Container = styled.div`
   display: flex;
@@ -60,11 +62,17 @@ export const SandboxPage = () => {
           <Button label="Test" variant={v} rounded loading />
         </LayoutUnstyledRow>
       ))}
+      <LayoutUnstyledRow>
+        {NODE_STATUS.map((ns) => (
+          <Indicator $variant={ns}>{ns}</Indicator>
+        ))}
+      </LayoutUnstyledRow>
     </Layout>
   )
 }
 
 const BUTTON_VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'outlined', 'blue']
+const NODE_STATUS: IndicatorVariants[] = ['online', 'offline', 'monitoringFailed']
 
 const Test = () => {
   const [earnings, setEarnings] = useState(0)
