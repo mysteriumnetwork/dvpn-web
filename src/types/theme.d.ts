@@ -35,6 +35,30 @@ export type Theme = {
     colorMain: string
     colorSecondary: string
   }
+
+  inputIcon: {
+    fill: string
+    fillDisabled: string
+    fillError: string
+
+    stroke: string
+    strokeDisabled: string
+    strokeError: string
+  }
+
+  textInput: {
+    textColor: string
+    textColorDisabled: string
+    textColorError: string
+
+    background: string
+    backgroundDisabled: string
+    backgroundError: string
+
+    border: string
+    borderDisabled: string
+    borderError: string
+  }
 }
 
 declare module 'styled-components' {

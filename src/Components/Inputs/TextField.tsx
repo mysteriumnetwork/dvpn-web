@@ -4,41 +4,48 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled from 'styled-components'
-import themes from '../../commons/themes'
 import { ReactNode } from 'react'
+import styled, { css } from 'styled-components'
+import themes from '../../commons/themes'
 
-interface StyledInputProps {
-  $icon?: boolean
-  $error?: boolean
-}
+const errorCSS = css`
+  background: ${({ theme }) => theme.textInput.backgroundError} !important;
+  color: ${({ theme }) => theme.textInput.textColorError} !important;
+  border: ${({ theme }) => theme.textInput.borderError} !important;
+`
 
 const StyledInput = styled.input<StyledInputProps>`
-  box-sizing: border-box;
-  width: 100%;
   height: 35px;
+  border-radius: 5px;
+  width: 100%;
 
   font-weight: 400;
   font-size: ${themes.common.fontSizeNormal};
   line-height: 16px;
   padding-left: 5px;
 
-  color: ${({ $error }) => ($error ? `${themes.common.colorKey}` : themes.common.colorGrayBlue2)};
-  background: ${({ $error }) => ($error ? `${themes.common.colorKey}1A` : themes.common.colorWhite)};
-  border: 1px solid ${({ $error }) => ($error ? themes.common.colorKey : themes.common.colorGrayBlue)};
-
-  border-radius: 5px;
-
-  padding-right: ${({ $icon }) => ($icon ? '35px' : '0')};
+  color: ${({ theme }) => theme.textInput.textColor};
+  background: ${({ theme }) => theme.textInput.background};
+  border: ${({ theme }) => theme.textInput.border};
 
   :focus {
     outline: 1px solid ${themes.common.colorGrayBlue2};
   }
 
   :disabled {
-    background: ${themes.common.colorGrayBlue}1A;
+    color: ${({ theme }) => theme.textInput.textColorDisabled};
+    background: ${({ theme }) => theme.textInput.backgroundDisabled};
+    border: ${({ theme }) => theme.textInput.borderDisabled};
   }
+
+  ${({ $error }) => $error && errorCSS};
+  padding-right: ${({ $icon }) => ($icon ? '35px' : '0')};
 `
+
+interface StyledInputProps {
+  $icon?: boolean
+  $error?: boolean
+}
 
 const Container = styled.div`
   position: relative;
@@ -61,6 +68,8 @@ const IconSize = styled.div`
   height: 20px;
 `
 
+export type TextFieldVariant = ''
+
 interface Props {
   icon?: ReactNode
   value: string
@@ -70,6 +79,7 @@ interface Props {
   type?: 'text' | 'password'
   error?: boolean
   textarea?: boolean
+  variant?: TextFieldVariant
 }
 
 export const TextField = ({ icon, value, onChange = () => {}, disabled, type = 'text', error, placeholder }: Props) => {

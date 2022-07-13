@@ -71,6 +71,29 @@ const light: Theme = {
     bgColor: common.colorWhite,
     boxShadow: '0px 5px 20px ' + common.color221E39 + alphaToHex(0.1),
   },
+
+  textInput: {
+    textColor: common.colorGrayBlue2,
+    textColorDisabled: common.colorGrayBlue,
+    background: common.colorWhite,
+    backgroundDisabled: common.colorLightBlue,
+    border: '1px solid ' + common.colorGrayBlue2,
+    borderDisabled: '1px solid ' + common.colorGrayBlue,
+
+    textColorError: common.colorKey,
+    backgroundError: common.colorKey + alphaToHex(0.1),
+    borderError: '1px solid ' + common.colorKey,
+  },
+
+  inputIcon: {
+    fill: common.colorGrayBlue2,
+    fillDisabled: common.colorLightBlue,
+    fillError: common.colorKey,
+
+    stroke: common.colorWhite,
+    strokeDisabled: common.colorGrayBlue,
+    strokeError: common.colorWhite,
+  },
 }
 
 const dark: Theme = {
@@ -101,6 +124,29 @@ const dark: Theme = {
     bgOverlay: common.color231F3A + alphaToHex(0.8),
     bgColor: common.color393453,
     boxShadow: '0px 10px 20px ' + common.color221E39 + alphaToHex(0.4),
+  },
+
+  textInput: {
+    textColor: common.colorGrayBlue,
+    textColorDisabled: '',
+    background: common.colorDarkBlue,
+    backgroundDisabled: common.colorDarkBlue,
+    border: '1px solid ' + common.colorGrayBlue,
+    borderDisabled: '1px solid ' + common.colorGrayBlue2,
+
+    textColorError: common.colorKey,
+    backgroundError: common.colorKeyLight + alphaToHex(0.1),
+    borderError: '1px solid ' + common.colorKey,
+  },
+
+  inputIcon: {
+    fill: common.colorGrayBlue2,
+    fillDisabled: common.colorGrayBlue2,
+    fillError: common.colorKey,
+
+    stroke: common.colorGrayBlue,
+    strokeDisabled: common.colorGrayBlue,
+    strokeError: common.colorWhite,
   },
 }
 
