@@ -8,11 +8,11 @@ import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { TextField } from '../../../Components/Inputs/TextField'
 import { InputGroup } from '../../../Components/Inputs/InputGroup'
 import { InputLockIcon } from '../../../Components/Icons/InputIcons'
+import { Button, ButtonVariant } from '../../../Components/Inputs/Button'
 import { ProgressBar } from '../../../Components/ProgressBar/ProgressBar'
 import { Slider } from '../../../Components/Slider/Slider'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Button } from '../../../Components/Inputs/Button'
 
 const Container = styled.div`
   display: flex;
@@ -52,9 +52,19 @@ export const SandboxPage = () => {
       <LayoutUnstyledRow>
         <Test />
       </LayoutUnstyledRow>
+      {BUTTON_VARIANTS.map((v) => (
+        <LayoutUnstyledRow>
+          <Button label="Test" variant={v} />
+          <Button label="Test" variant={v} rounded />
+          <Button label="Test" variant={v} loading />
+          <Button label="Test" variant={v} rounded loading />
+        </LayoutUnstyledRow>
+      ))}
     </Layout>
   )
 }
+
+const BUTTON_VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'outlined', 'blue']
 
 const Test = () => {
   const [earnings, setEarnings] = useState(0)
