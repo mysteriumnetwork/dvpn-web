@@ -7,7 +7,7 @@
 import { Theme } from '../types/theme'
 import { alphaToHex, themeCommon } from './themeCommon'
 
-const light: Theme = {
+const light: Omit<Theme, 'common'> = {
   bgNavigation: themeCommon.backgroundMysterium,
   bgLayout: themeCommon.colorLightBlue,
   bgLayoutHeroRow: themeCommon.colorGrayBlue + alphaToHex(0.1),
