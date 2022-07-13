@@ -10,12 +10,40 @@ import styled from 'styled-components'
 import themes from '../../../../commons/themes'
 import { InfoCard } from './InfoCard'
 import { ClockIcon, DataIcon, InfoIcon, PeopleIcon, WalletIcon } from '../../../../Components/Icons/Icons'
+import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
+import { useState } from 'react'
+import { useAppSelector } from '../../../../commons/hooks'
+import { selectors } from '../../../../redux/selectors'
+import calls from '../../../../commons/calls'
+import { tequila } from '../../../../api/tequila'
 
 const Card = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   color: ${themes.common.colorDarkBlue};
+`
+
+const Overlay = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background: ${themes.common.colorDarkBlue}6A;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Spinner = styled(CircularSpinner)`
+  width: 50px;
+  height: 50px;
+  border: 6px solid ${themes.common.colorWhite};
+  z-index: 1001;
 `
 
 const Header = styled.div`
@@ -60,9 +88,8 @@ const Content = styled.div`
 interface Props {
   name: string
   description: string
-  enabled: boolean
+  serviceType: string
   approvalPending?: boolean
-  onChange: () => void
   priceGiB?: string | number
   priceHour?: string | number
   earnings?: string | number
@@ -72,21 +99,47 @@ interface Props {
 export const ServiceCard = ({
   name,
   description,
-  enabled,
-  onChange,
+  serviceType,
   approvalPending = false,
   priceGiB = 0,
   priceHour = 0,
   earnings = 0,
   totalEarning = 0,
 }: Props) => {
+  const { id } = useAppSelector(selectors.currentIdentitySelector)
+  const serviceInfo = useAppSelector(selectors.serviceInfoSelector).find((si) => si.type === serviceType)
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const enabled = !!serviceInfo
+
+  const handleSwitch = async () => {
+    setLoading(true)
+    const sid = serviceInfo?.id
+    if (sid) {
+      await calls.tryTo(() => tequila.api.serviceStop(sid))
+    } else {
+      await calls.tryTo(() =>
+        tequila.api.serviceStart({
+          providerId: id,
+          type: serviceType,
+        }),
+      )
+    }
+    setLoading(false)
+  }
+
   return (
     <Card>
+      {loading && (
+        <Overlay>
+          <Spinner />
+        </Overlay>
+      )}
       <Header>
         {approvalPending && <PendingApproval />}
         <Controls>
           {name}
-          <Switch checked={enabled} onChange={onChange} />
+          <Switch checked={enabled} onChange={handleSwitch} />
         </Controls>
         <Description>{description}</Description>
       </Header>
