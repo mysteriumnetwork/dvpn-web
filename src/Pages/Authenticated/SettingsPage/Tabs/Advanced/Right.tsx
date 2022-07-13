@@ -68,7 +68,7 @@ export const Right = ({ handleSave, loading, onChange, form }: Props) => {
     >
       <InputGroup
         title="NAT Traversal Order"
-        titleRight={<SubTitle>Drag items to reorder</SubTitle>}
+        subTitle={<SubTitle>Drag items to reorder</SubTitle>}
         input={
           <>
             <MarginTop />

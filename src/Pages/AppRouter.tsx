@@ -22,6 +22,7 @@ import {
   SETTINGS_ACCOUNT,
   SETTINGS_ADVANCED,
   SETTINGS_TRAFFIC,
+  SANDBOX,
 } from '../constants/routes'
 import {
   fetchChainSummaryAsync,
@@ -54,6 +55,7 @@ import { HistoryPage } from './Authenticated/HistoryPage/HistoryPage'
 import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
 import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
 import PageNotFound from './Error/PageNotFound'
+import { SandboxPage } from './Authenticated/SandboxPage/SandboxPage'
 
 const { api } = tequila
 const { parseToastError } = errors
@@ -240,6 +242,14 @@ const AppRouter = () => {
         element={
           <Protected redirects={[{ condition: !loggedIn, to: LOGIN }]}>
             <WithNavigation content={<AdminPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={SANDBOX}
+        element={
+          <Protected redirects={[{ condition: !loggedIn, to: LOGIN }]}>
+            <WithNavigation content={<SandboxPage />} />
           </Protected>
         }
       />

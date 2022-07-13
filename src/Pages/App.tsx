@@ -20,9 +20,12 @@ import FontUbuntuMedium from '../assets/fonts/Ubuntu/Ubuntu-Medium.ttf'
 import FontUbuntuMediumItalic from '../assets/fonts/Ubuntu/Ubuntu-MediumItalic.ttf'
 import FontUbuntuItalic from '../assets/fonts/Ubuntu/Ubuntu-Italic.ttf'
 import FontUbuntuRegular from '../assets/fonts/Ubuntu/Ubuntu-Regular.ttf'
+import remoteStorage from '../commons/remoteStorage'
+import { UI_THEME_KEY } from '../constants/remote-storage.keys'
 
 export const App = () => {
-  const theme = useAppSelector(({ app }) => app.theme)
+  const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
+
   return (
     <ThemeProvider theme={theme === 'dark' ? themes.dark : themes.light}>
       <GlobalStyle />

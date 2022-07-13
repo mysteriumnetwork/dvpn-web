@@ -9,8 +9,9 @@ import styled from 'styled-components'
 import themes from '../../../../commons/themes'
 import { MoonNavIcon, SunNavIcon } from '../../../../Components/Icons/NavigationIcons'
 import { Switch } from '../../../../Components/Switch/Switch'
-import { useAppDispatch, useAppSelector } from '../../../../commons/hooks'
-import { updateTheme } from '../../../../redux/app.slice'
+import { useAppSelector } from '../../../../commons/hooks'
+import remoteStorage from '../../../../commons/remoteStorage'
+import { UI_THEME_KEY } from '../../../../constants/remote-storage.keys'
 
 const Container = styled.div`
   display: flex;
@@ -22,9 +23,7 @@ const Container = styled.div`
 `
 
 export const ThemeSwitch = () => {
-  const theme = useAppSelector(({ app }) => app.theme)
-  const dispatch = useAppDispatch()
-
+  const theme = useAppSelector(remoteStorage.selector<string>(UI_THEME_KEY))
   const isDark = theme === 'dark'
 
   return (
@@ -34,7 +33,9 @@ export const ThemeSwitch = () => {
         variant="key"
         size="small"
         checked={isDark}
-        onChange={() => dispatch(updateTheme(isDark ? 'light' : 'dark'))}
+        onChange={async () => {
+          await remoteStorage.put<string>(UI_THEME_KEY, isDark ? 'light' : 'dark')
+        }}
       />
     </Container>
   )
