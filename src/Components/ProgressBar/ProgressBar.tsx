@@ -6,8 +6,8 @@
  */
 
 import styled from 'styled-components'
-import themes from '../../commons/themes'
 import { useMemo } from 'react'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface BarProps {
   $size?: 'big' | 'small'
@@ -23,7 +23,7 @@ export const Bar = styled.div<BarProps>`
     return $size === 'big' ? '347px' : '126px'
   }};
   border-radius: 10px;
-  background-color: ${themes.common.colorGrayBlue};
+  background-color: ${themeCommon.colorGrayBlue};
 `
 const Container = styled.div`
   width: 200px;
@@ -39,7 +39,7 @@ const Progress = styled.div<BarProps>`
   flex-direction: column;
   height: 100%;
   border-radius: 10px;
-  background-color: ${themes.common.colorKey};
+  background-color: ${themeCommon.colorKey};
 `
 const Circle = styled.span`
   position: absolute;
@@ -47,7 +47,7 @@ const Circle = styled.span`
   width: 8px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid ${themes.common.colorKeyLight};
+  border: 3px solid ${themeCommon.colorKeyLight};
   transform: translateY(2.5px) translateX(28.5px);
 `
 const Mark = styled.span<BarProps>`
@@ -58,7 +58,7 @@ const Mark = styled.span<BarProps>`
   border-radius: ${({ $size }) => {
     return $size === 'big' ? '10px' : '50%'
   }};
-  background-color: ${({ $primary }) => ($primary ? themes.common.colorGrayBlue : `${themes.common.colorGrayBlue2}10`)};
+  background-color: ${({ $primary }) => ($primary ? themeCommon.colorGrayBlue : `${themeCommon.colorGrayBlue2}10`)};
 `
 const MarkContainer = styled.div<BarProps>`
   width: ${({ $size }) => {
@@ -74,10 +74,10 @@ const MarkContainer = styled.div<BarProps>`
 const Tooltip = styled.div`
   height: 13px;
   width: 32px;
-  background-color: ${themes.common.colorKey};
-  color: ${themes.common.colorWhite};
+  background-color: ${themeCommon.colorKey};
+  color: ${themeCommon.colorWhite};
   border-radius: 100px;
-  font-size: ${themes.common.fontSizeSmaller};
+  font-size: ${themeCommon.fontSizeSmaller};
   position: relative;
   transform: translateX(16.5px) translateY(-17px);
   text-align: center;
@@ -98,7 +98,7 @@ const Tooltip = styled.div`
     left: 0px;
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
-    border-top: 4px solid ${themes.common.colorKey};
+    border-top: 4px solid ${themeCommon.colorKey};
     transform: translateX(12px) translateY(8px);
   }
 `
@@ -114,7 +114,7 @@ export const ProgressBar = ({ max, value, size }: Props) => {
   const marks = useMemo(
     () =>
       [...Array(max * 2 + 1)].map((_, i) => {
-        return <Mark $size={size} $primary={i % 2 === 0} />
+        return <Mark key={`m-${i}`} $size={size} $primary={i % 2 === 0} />
       }),
     [max],
   )

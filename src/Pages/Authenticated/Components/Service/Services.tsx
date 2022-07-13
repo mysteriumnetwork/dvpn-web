@@ -11,7 +11,7 @@ export const Services = () => {
   return (
     <>
       {AVAILABLE_SERVICES.map((sd) => (
-        <ServiceCard name={sd.name} description={sd.description} serviceType={sd.key} />
+        <ServiceCard key={sd.key} name={sd.name} description={sd.description} serviceType={sd.key} />
       ))}
     </>
   )

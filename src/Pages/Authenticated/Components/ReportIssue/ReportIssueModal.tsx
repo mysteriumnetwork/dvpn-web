@@ -10,10 +10,10 @@ import { TextField } from '../../../../Components/Inputs/TextField'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '../../../../Components/Inputs/Button'
-import themes from '../../../../commons/themes'
 import { ChatIcon } from '../../../../Components/Icons/Icons'
 import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 interface Props {
   show: boolean
@@ -31,7 +31,7 @@ const Content = styled.div`
 
 const Note = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${themes.common.fontSizeSmaller};
+  font-size: ${themeCommon.fontSizeSmaller};
 `
 
 const Footer = styled.div`
@@ -49,7 +49,7 @@ const Row = styled.div`
 
 const StyledBugButtonIcon = styled(BugButtonIcon)`
   rect {
-    fill: ${themes.common.colorKey};
+    fill: ${themeCommon.colorKey};
     opacity: 1;
   }
 `

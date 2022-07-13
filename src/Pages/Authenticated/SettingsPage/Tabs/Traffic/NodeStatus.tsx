@@ -7,7 +7,7 @@
 import { SettingsCard } from '../../SettingsCard'
 import styled from 'styled-components'
 import { Switch } from '../../../../../Components/Switch/Switch'
-import themes from '../../../../../commons/themes'
+import { themeCommon } from '../../../../../theme/themeCommon'
 
 const Row = styled.div`
   display: flex;
@@ -16,8 +16,8 @@ const Row = styled.div`
 
 const Title = styled.div`
   font-weight: 700;
-  font-size: ${themes.common.fontSizeNormal};
-  color: ${themes.common.colorDarkBlue};
+  font-size: ${themeCommon.fontSizeNormal};
+  color: ${themeCommon.colorDarkBlue};
 `
 
 interface StatusProps {}

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes from '../../commons/themes'
+import { themeCommon } from '../../theme/themeCommon'
 
 export const CircularSpinner = styled.div`
   -webkit-animation: rotation 1s infinite linear;
@@ -23,7 +23,7 @@ export const CircularSpinner = styled.div`
     top: -6px;
     height: 100%;
     width: 100%;
-    border-top: 6px solid ${themes.common.colorKey};
+    border-top: 6px solid ${themeCommon.colorKey};
     border-left: 6px solid transparent;
     border-bottom: 6px solid transparent;
     border-right: 6px solid transparent;

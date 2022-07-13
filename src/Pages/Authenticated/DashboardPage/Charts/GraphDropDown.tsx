@@ -5,16 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes from '../../../../commons/themes'
 import { Option } from '../../../../types/common'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const StyledSelect = styled.select`
-  background: ${themes.common.colorDarkBlue};
-  color: ${themes.common.colorWhite};
+  background: ${themeCommon.colorDarkBlue};
+  color: ${themeCommon.colorWhite};
   padding: 5px;
   border-radius: 100px;
   min-width: 100px;
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
 `
 
 interface Props {

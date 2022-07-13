@@ -6,7 +6,6 @@
  */
 import { SettingsCard } from '../../SettingsCard'
 import styled from 'styled-components'
-import themes from '../../../../../commons/themes'
 import { Switch } from '../../../../../Components/Switch/Switch'
 import { Slider } from '../../../../../Components/Slider/Slider'
 import { useEffect, useState } from 'react'
@@ -16,6 +15,7 @@ import { configs } from '../../../../../commons/config'
 import { tequila } from '../../../../../api/tequila'
 import conversions from '../../../../../commons/conversions'
 import errors from '../../../../../commons/errors'
+import { themeCommon } from '../../../../../theme/themeCommon'
 
 const GroupedTitle = styled.div`
   display: flex;
@@ -30,8 +30,8 @@ const Row = styled.div`
 `
 
 const LimitTarget = styled.div`
-  color: ${themes.common.colorKey};
-  font-size: ${themes.common.fontSizeBig};
+  color: ${themeCommon.colorKey};
+  font-size: ${themeCommon.fontSizeBig};
   font-weight: 700;
   margin-left: 20px;
 `

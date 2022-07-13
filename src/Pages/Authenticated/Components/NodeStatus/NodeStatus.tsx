@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import themes from '../../../../commons/themes'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const Status = styled.div`
   display: flex;
@@ -14,7 +14,7 @@ const Status = styled.div`
 `
 const Title = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
   font-weight: 400;
 `
 
@@ -27,7 +27,7 @@ interface IndicatorProps {
 export const Indicator = styled.div<IndicatorProps>`
   background: ${({ theme, $variant }) => theme.nodeStatus.background[$variant]};
   color: ${({ theme, $variant }) => theme.nodeStatus.textColor[$variant]};
-  font-size: ${themes.common.fontSizeSmaller};
+  font-size: ${themeCommon.fontSizeSmaller};
   font-weight: 400;
   padding: 5px 10px 5px 10px;
   border-radius: 10px;

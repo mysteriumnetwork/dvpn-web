@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip'
 import { ReactNode, useMemo } from 'react'
 import { nanoid } from 'nanoid'
 import styled from 'styled-components'
-import themes from '../../commons/themes'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface ReactTooltipStyledProps {
   $position?: 'top' | 'right' | 'bottom' | 'left'
@@ -18,16 +18,16 @@ interface ReactTooltipStyledProps {
 // @ts-ignore
 export const ReactTooltipStyled = styled(ReactTooltip)<ReactTooltipStyledProps>`
   &.type-dark.place-${({ $position }) => $position} {
-    background-color: ${themes.common.colorWhite};
+    background-color: ${themeCommon.colorWhite};
     padding: 0.3rem 1rem;
-    color: ${themes.common.colorGrayBlue};
-    font-size: ${themes.common.fontSizeSmaller};
+    color: ${themeCommon.colorGrayBlue};
+    font-size: ${themeCommon.fontSizeSmaller};
     font-family: Ubuntu;
     font-weight: 400;
     border-radius: 10px;
 
     &:after {
-      border-${({ $position }) => $position}-color: ${themes.common.colorWhite};
+      border-${({ $position }) => $position}-color: ${themeCommon.colorWhite};
     }
   }
 `

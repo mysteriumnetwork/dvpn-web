@@ -6,19 +6,19 @@
  */
 
 import styled from 'styled-components'
-import themes from '../../../../commons/themes'
 import { MoonNavIcon, SunNavIcon } from '../../../../Components/Icons/NavigationIcons'
 import { Switch } from '../../../../Components/Switch/Switch'
 import { useAppSelector } from '../../../../commons/hooks'
 import remoteStorage from '../../../../commons/remoteStorage'
 import { UI_THEME_KEY } from '../../../../constants/remote-storage.keys'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 40px;
-  background: ${themes.common.colorWhite}10;
+  background: ${themeCommon.colorWhite}10;
   padding-bottom: 20px;
 `
 

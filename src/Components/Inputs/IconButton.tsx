@@ -6,7 +6,7 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import themes from '../../commons/themes'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface Props {
   icon: ReactNode
@@ -19,7 +19,7 @@ const IButton = styled.div`
 
   border-radius: 100px;
   :active {
-    background: ${themes.common.colorWhite}1A;
+    background: ${themeCommon.colorWhite}1A;
   }
 `
 

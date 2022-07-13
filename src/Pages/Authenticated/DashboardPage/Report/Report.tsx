@@ -12,8 +12,8 @@ import { SessionStats } from 'mysterium-vpn-js/lib/session/session'
 import { useMemo } from 'react'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
-import themes from '../../../../commons/themes'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const { api } = tequila
 
@@ -45,7 +45,7 @@ const ChartRow = styled.div`
 `
 
 const BorderRight = styled.div`
-  border-right: 1px dashed ${themes.common.colorGrayBlue2}80;
+  border-right: 1px dashed ${themeCommon.colorGrayBlue2}80;
 `
 
 export const Report = () => {

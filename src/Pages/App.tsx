@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import themes from '../commons/themes'
+import themes from '../theme/themes'
 import { Hotkeys } from './Authenticated/Components/Hotkeys/Hotkeys'
 import { NodeHealthcheckBarrier } from './NodeHealthcheckBarrier'
 import AppRouter from './AppRouter'
@@ -22,6 +22,7 @@ import FontUbuntuItalic from '../assets/fonts/Ubuntu/Ubuntu-Italic.ttf'
 import FontUbuntuRegular from '../assets/fonts/Ubuntu/Ubuntu-Regular.ttf'
 import remoteStorage from '../commons/remoteStorage'
 import { UI_THEME_KEY } from '../constants/remote-storage.keys'
+import { themeCommon } from '../theme/themeCommon'
 
 export const App = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
@@ -127,11 +128,11 @@ const GlobalStyle = createGlobalStyle`
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: ${themes.common.colorLightBlue};
+    background: ${themeCommon.colorLightBlue};
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: ${themes.common.colorDarkBlue};
+    background: ${themeCommon.colorDarkBlue};
   }
 `

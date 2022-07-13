@@ -6,8 +6,8 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import themes from '../../../commons/themes'
 import { CircularSpinner } from '../../../Components/CircularSpinner/CircularSpinner'
+import { themeCommon } from '../../../theme/themeCommon'
 
 const Container = styled.div`
   position: relative;
@@ -41,7 +41,7 @@ const LoadingOverlay = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${themes.common.colorWhite}AA;
+  background: ${themeCommon.colorWhite}AA;
 `
 
 const Spinner = styled(CircularSpinner)`
@@ -59,7 +59,7 @@ const TitleText = styled.div`
   display: flex;
   width: 100%;
   color: ${({ theme }) => theme.text.colorMain};
-  font-size: ${themes.common.fontSizeBig};
+  font-size: ${themeCommon.fontSizeBig};
   font-weight: 700;
 `
 

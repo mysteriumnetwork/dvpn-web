@@ -7,9 +7,9 @@
 
 import styled from 'styled-components'
 import * as React from 'react'
-import themes from '../../commons/themes'
 import RCSlider from 'rc-slider'
 import 'rc-slider/assets/index.css'
+import { themeCommon } from '../../theme/themeCommon'
 
 const Content = styled.div`
   position: relative;
@@ -19,23 +19,23 @@ const Content = styled.div`
 
 const StyledRCSlider = styled(RCSlider)`
   .rc-slider-rail {
-    background: ${themes.common.colorGrayBlue}33;
+    background: ${themeCommon.colorGrayBlue}33;
   }
 
   .rc-slider-track {
-    background: ${themes.common.colorKey};
+    background: ${themeCommon.colorKey};
   }
 
   .rc-slider-handle {
     //width: 8px;
     //height: 8px;
     //margin-top: -2.5px;
-    border: solid 5px ${themes.common.colorKey};
+    border: solid 5px ${themeCommon.colorKey};
   }
 
   .rc-slider-handle:active {
-    border-color: ${themes.common.colorKeyLight};
-    box-shadow: 0 0 5px ${themes.common.colorKeyLight};
+    border-color: ${themeCommon.colorKeyLight};
+    box-shadow: 0 0 5px ${themeCommon.colorKeyLight};
     cursor: -webkit-grabbing;
     cursor: grabbing;
   }
@@ -46,30 +46,30 @@ const StyledRCSlider = styled(RCSlider)`
     width: 0;
     height: 0;
     vertical-align: middle;
-    background-color: ${themes.common.colorGrayBlue};
-    border: 1px dashed ${themes.common.colorGrayBlue} !important;
+    background-color: ${themeCommon.colorGrayBlue};
+    border: 1px dashed ${themeCommon.colorGrayBlue} !important;
     border-radius: 10px;
     cursor: pointer;
   }
 
   .rc-slider-dot-active {
-    border-color: ${themes.common.colorGrayBlue};
+    border-color: ${themeCommon.colorGrayBlue};
   }
 
   .rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
-    border-color: ${themes.common.colorKeyLight};
-    box-shadow: 0 0 5px ${themes.common.colorKeyLight};
+    border-color: ${themeCommon.colorKeyLight};
+    box-shadow: 0 0 5px ${themeCommon.colorKeyLight};
   }
   .rc-slider-mark-text {
-    color: ${themes.common.colorGrayBlue2};
-    font-size: ${themes.common.fontSizeSmall};
+    color: ${themeCommon.colorGrayBlue2};
+    font-size: ${themeCommon.fontSizeSmall};
     font-weight: 400;
     width: 80px;
   }
 
   .rc-slider-mark-text-active {
-    color: ${themes.common.colorGrayBlue2};
-    font-size: ${themes.common.fontSizeSmall};
+    color: ${themeCommon.colorGrayBlue2};
+    font-size: ${themeCommon.fontSizeSmall};
     font-weight: 400;
   }
 `

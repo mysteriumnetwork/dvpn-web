@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled, { css } from 'styled-components'
-import themes from '../../commons/themes'
 import { ReactComponent as DashboardNavSvg } from '../../assets/images/navigation/dashboard.svg'
 import { ReactComponent as SettingsNavSvg } from '../../assets/images/navigation/settings.svg'
 import { ReactComponent as HistoryNavSvg } from '../../assets/images/navigation/history.svg'
 import { ReactComponent as TransactionsNavSvg } from '../../assets/images/navigation/transactions.svg'
+import { themeCommon } from '../../theme/themeCommon'
 
 const headerCSS = css`
   //width: 100%;
@@ -17,7 +17,7 @@ const headerCSS = css`
 
   rect {
     opacity: 1;
-    fill: ${themes.common.colorKey};
+    fill: ${themeCommon.colorKey};
   }
 `
 

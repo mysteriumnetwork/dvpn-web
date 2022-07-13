@@ -6,8 +6,8 @@
  */
 import { QualityBarsIcon } from '../../../../Components/Icons/Icons'
 import styled from 'styled-components'
-import themes from '../../../../commons/themes'
 import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const Content = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ const Content = styled.div`
 
 const Title = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
 `
 
 export const Quality = () => {

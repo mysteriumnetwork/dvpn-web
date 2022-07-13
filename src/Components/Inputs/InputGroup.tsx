@@ -6,7 +6,7 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import themes from '../../commons/themes'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface ContainerProps {
   $fluid?: boolean
@@ -29,20 +29,20 @@ const Header = styled.div`
 
 const Title = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
-  font-size: ${themes.common.fontSizeNormal};
+  font-size: ${themeCommon.fontSizeNormal};
   font-weight: 500;
 `
 
 const SubTitle = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
   font-weight: 400;
 `
 
 const Error = styled.div`
   display: flex;
-  color: ${themes.common.colorKey};
-  font-size: ${themes.common.fontSizeSmallest};
+  color: ${themeCommon.colorKey};
+  font-size: ${themeCommon.fontSizeSmallest};
   margin-top: 4px;
 `
 

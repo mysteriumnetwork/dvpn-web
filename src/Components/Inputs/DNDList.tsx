@@ -7,8 +7,8 @@
 import { useState } from 'react'
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
 import styled from 'styled-components'
-import themes from '../../commons/themes'
 import { DragIndicatorIcon } from '../Icons/Icons'
+import { themeCommon } from '../../theme/themeCommon'
 
 const DraggableContainer = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const StyledDraggable = styled.div`
   border-radius: 5px;
   padding: 10px;
   font-weight: 400;
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
 `
 
 export type DNDListItem = {

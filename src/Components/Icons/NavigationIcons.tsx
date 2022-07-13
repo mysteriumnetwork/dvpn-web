@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled, { css } from 'styled-components'
-import themes from '../../commons/themes'
 import { ReactComponent as DashboardNavSvg } from '../../assets/images/navigation/dashboard.svg'
 import { ReactComponent as HistoryNavSvg } from '../../assets/images/navigation/history.svg'
 import { ReactComponent as TransactionsNavSvg } from '../../assets/images/navigation/transactions.svg'
@@ -14,6 +13,7 @@ import { ReactComponent as BugNavSvg } from '../../assets/images/navigation/bug.
 import { ReactComponent as ChatNavSvg } from '../../assets/images/navigation/chat.svg'
 import { ReactComponent as SunSvg } from '../../assets/images/navigation/sun.svg'
 import { ReactComponent as MoonSvg } from '../../assets/images/navigation/moon.svg'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface NavProps {
   $active?: boolean
@@ -24,7 +24,7 @@ const navIconCss = css<NavProps>`
     opacity: ${({ $active }) => ($active ? 1 : 0.05)};
   }
   path {
-    stroke: ${({ $active }) => ($active ? themes.common.colorNavActiveStroke : themes.common.colorNavStroke)};
+    stroke: ${({ $active }) => ($active ? themeCommon.colorNavActiveStroke : themeCommon.colorNavStroke)};
   }
 `
 

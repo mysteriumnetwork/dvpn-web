@@ -6,12 +6,12 @@
  */
 
 import styled from 'styled-components'
-import themes from '../../../../commons/themes'
 import { useAppSelector } from '../../../../commons/hooks'
 import { selectors } from '../../../../redux/selectors'
 import { configs } from '../../../../commons/config'
 import { myst } from '../../../../commons/mysts'
 import { ProgressBar } from '../../../../Components/ProgressBar/ProgressBar'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const Content = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const Content = styled.div`
 
 const Title = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
-  font-size: ${themes.common.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmall};
   font-style: normal;
   font-weight: 400;
 `
