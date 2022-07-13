@@ -38,7 +38,6 @@ const Progress = styled.div<BarProps>`
   justify-content: center;
   flex-direction: column;
   height: 100%;
-  width: ${({ $width }) => `${$width}%`};
   border-radius: 10px;
   background-color: ${themes.common.colorKey};
 `
@@ -120,11 +119,15 @@ export const ProgressBar = ({ max, value, size }: Props) => {
     [max],
   )
 
+  const actualSize = useMemo(() => size, [])
+
+  // doing line below over styled components causes re-rendering artifacts
+  // style={{ width: `${width}%` }}
   return (
     <Container>
-      <Bar $size={size}>
-        <Progress $width={width}>
-          {size === 'small' && (
+      <Bar $size={actualSize}>
+        <Progress $width={width} style={{ width: `${width}%` }}>
+          {actualSize === 'small' && (
             <div>
               <Circle />
               <Tooltip data-tooltip={value} />
@@ -132,7 +135,7 @@ export const ProgressBar = ({ max, value, size }: Props) => {
           )}
         </Progress>
       </Bar>
-      <MarkContainer $size={size}>{marks}</MarkContainer>
+      <MarkContainer $size={actualSize}>{marks}</MarkContainer>
     </Container>
   )
 }
