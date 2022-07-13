@@ -7,6 +7,7 @@
 
 import styled from 'styled-components'
 import themes from '../../commons/themes'
+import { useMemo } from 'react'
 
 interface BarProps {
   $size?: 'big' | 'small'
@@ -77,7 +78,6 @@ const Tooltip = styled.div`
   background-color: ${themes.common.colorKey};
   color: ${themes.common.colorWhite};
   border-radius: 100px;
-  font-family: Ubuntu;
   font-size: ${themes.common.fontSizeSmaller};
   position: relative;
   transform: translateX(16.5px) translateY(-17px);
@@ -104,15 +104,22 @@ const Tooltip = styled.div`
   }
 `
 interface Props {
-  settleThresholdMyst: number
-  earningsTokens: number
+  max: number
+  value: number
   size: 'big' | 'small'
 }
 
-export const ProgressBar = ({ settleThresholdMyst, earningsTokens, size }: Props) => {
-  console.log(settleThresholdMyst, earningsTokens)
-  const width = (earningsTokens / settleThresholdMyst) * 100
-  console.log(width)
+export const ProgressBar = ({ max, value, size }: Props) => {
+  const width = (value / max) * 100
+
+  const marks = useMemo(
+    () =>
+      [...Array(max * 2 + 1)].map((_, i) => {
+        return <Mark $size={size} $primary={i % 2 === 0} />
+      }),
+    [max],
+  )
+
   return (
     <Container>
       <Bar $size={size}>
@@ -120,16 +127,12 @@ export const ProgressBar = ({ settleThresholdMyst, earningsTokens, size }: Props
           {size === 'small' && (
             <div>
               <Circle />
-              <Tooltip data-tooltip={earningsTokens} />
+              <Tooltip data-tooltip={value} />
             </div>
           )}
         </Progress>
       </Bar>
-      <MarkContainer $size={size}>
-        {[...Array(11)].map((_, i) => {
-          return <Mark $size={size} $primary={i % 2 ? false : true} />
-        })}
-      </MarkContainer>
+      <MarkContainer $size={size}>{marks}</MarkContainer>
     </Container>
   )
 }

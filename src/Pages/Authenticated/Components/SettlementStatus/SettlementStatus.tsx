@@ -40,11 +40,7 @@ export const SettlementStatus = () => {
   return (
     <Content>
       <Title>Next auto settlement ({myst.display(myst.toWeiBig(settleThresholdMyst), { fractionDigits: 1 })})</Title>
-      <ProgressBar
-        size={'small'}
-        settleThresholdMyst={myst.toBig(settleThresholdMyst).toNumber()}
-        earningsTokens={4.56}
-      />
+      <ProgressBar size={'small'} max={myst.toBig(settleThresholdMyst).toNumber()} value={4.56} />
     </Content>
   )
 }
