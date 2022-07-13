@@ -8,8 +8,9 @@ import styled from 'styled-components'
 import { ReactNode } from 'react'
 import themes from '../../commons/themes'
 import { XButtonIcon } from '../Icons/ButtonIcons'
+import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 
-const Overlay = styled.div`
+const PageOverlay = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
@@ -81,6 +82,27 @@ const SubTitle = styled.div`
   color: ${themes.common.colorKey};
 `
 
+const SpinnerOverlay = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background: ${themes.common.colorDarkBlue}6A;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Spinner = styled(CircularSpinner)`
+  width: 50px;
+  height: 50px;
+  border: 6px solid ${themes.common.colorWhite};
+  z-index: 1001;
+`
+
 interface Props {
   show: boolean
   icon?: ReactNode
@@ -88,18 +110,24 @@ interface Props {
   subTitle?: string
   children?: ReactNode
   onClickX?: () => void
+  loading?: boolean
 }
 
-export const Modal = ({ show, icon, title, children, onClickX }: Props) => {
+export const Modal = ({ show, icon, title, children, onClickX, loading }: Props) => {
   if (!show) {
     return <></>
   }
 
   return (
     <>
-      <Overlay />
+      <PageOverlay />
       <StyledModal>
         <Container>
+          {loading && (
+            <SpinnerOverlay>
+              <Spinner />
+            </SpinnerOverlay>
+          )}
           <Icon>{icon}</Icon>
           <CloseButtonPlacement>
             <XButtonIcon onClick={onClickX} />

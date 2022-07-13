@@ -8,6 +8,9 @@ import { Card } from './Card'
 import styled from 'styled-components'
 import { WalletIcon } from '../../../Components/Icons/Icons'
 import themes from '../../../commons/themes'
+import { useAppSelector } from '../../../commons/hooks'
+import { selectors } from '../../../redux/selectors'
+import { myst } from '../../../commons/mysts'
 
 const Row = styled.div`
   display: flex;
@@ -33,13 +36,15 @@ const Value = styled.div`
 `
 
 export const TotalSettled = () => {
+  const identity = useAppSelector(selectors.currentIdentitySelector)
+
   return (
     <Card>
       <Row>
         <WalletIcon $accented />
         <Column>
           <Title>Total settled</Title>
-          <Value>35.34 MYST</Value>
+          <Value>{myst.display(identity.earningsTotalTokens.wei, { fractionDigits: 2 })}</Value>
         </Column>
       </Row>
     </Card>

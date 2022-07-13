@@ -59,6 +59,24 @@ export type Theme = {
     borderDisabled: string
     borderError: string
   }
+
+  dndList: {
+    textColor: string
+    background: string
+  }
+
+  nodeStatus: {
+    background: {
+      online: string
+      offline: string
+      monitoringFailed: string
+    }
+    textColor: {
+      online: string
+      offline: string
+      monitoringFailed: string
+    }
+  }
 }
 
 declare module 'styled-components' {

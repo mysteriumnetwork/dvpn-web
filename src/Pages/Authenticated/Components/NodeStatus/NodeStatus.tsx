@@ -18,12 +18,18 @@ const Title = styled.div`
   font-weight: 400;
 `
 
-const OnlineStatus = styled.div`
-  background: ${themes.common.colorGreen};
+export type IndicatorVariants = 'online' | 'offline' | 'monitoringFailed'
+
+interface IndicatorProps {
+  $variant: IndicatorVariants
+}
+
+export const Indicator = styled.div<IndicatorProps>`
+  background: ${({ theme, $variant }) => theme.nodeStatus.background[$variant]};
+  color: ${({ theme, $variant }) => theme.nodeStatus.textColor[$variant]};
   font-size: ${themes.common.fontSizeSmaller};
-  color: ${({ theme }) => theme.text.colorMain};
   font-weight: 400;
-  padding: 5px;
+  padding: 5px 10px 5px 10px;
   border-radius: 10px;
 `
 
@@ -31,7 +37,7 @@ export const NodeStatus = () => {
   return (
     <Status>
       <Title>Status:</Title>
-      <OnlineStatus>Online</OnlineStatus>
+      <Indicator $variant="online">Online</Indicator>
     </Status>
   )
 }
