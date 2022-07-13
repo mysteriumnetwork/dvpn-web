@@ -43,7 +43,7 @@ export const SettlementStatus = () => {
       <ProgressBar
         size={'small'}
         settleThresholdMyst={myst.toBig(settleThresholdMyst).toNumber()}
-        earningsTokens={3.78}
+        earningsTokens={4.56}
       />
     </Content>
   )

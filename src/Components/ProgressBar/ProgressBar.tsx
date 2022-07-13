@@ -9,11 +9,8 @@ import styled from 'styled-components'
 import themes from '../../commons/themes'
 
 interface BarProps {
-  $size: 'big' | 'small'
+  $size?: 'big' | 'small'
   $primary?: boolean
-}
-
-interface ProgressProps {
   $width?: number
 }
 
@@ -34,9 +31,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `
-const Progress = styled.div<ProgressProps>`
+const Progress = styled.div<BarProps>`
   display: flex;
-  justify-content: flex-end;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
   height: 100%;
   width: ${({ $width }) => `${$width}%`};
   border-radius: 10px;
@@ -49,7 +48,7 @@ const Circle = styled.span`
   border-radius: 50%;
   background: #fff;
   border: 3px solid ${themes.common.colorKeyLight};
-  transform: translateY(-2px) translateX(4px);
+  transform: translateY(2.5px) translateX(28.5px);
 `
 const Mark = styled.span<BarProps>`
   height: ${({ $size }) => {
@@ -72,6 +71,38 @@ const MarkContainer = styled.div<BarProps>`
   }};
   justify-content: space-between;
 `
+const Tooltip = styled.div`
+  height: 13px;
+  width: 32px;
+  background-color: ${themes.common.colorKey};
+  color: ${themes.common.colorWhite};
+  border-radius: 100px;
+  font-family: Ubuntu;
+  font-size: ${themes.common.fontSizeSmaller};
+  position: relative;
+  transform: translateX(16.5px) translateY(-17px);
+  text-align: center;
+  display: flex;
+  align-items: center;
+
+  &:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    left: 0px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid ${themes.common.colorKey};
+    transform: translateX(12px) translateY(8px);
+  }
+`
 interface Props {
   settleThresholdMyst: number
   earningsTokens: number
@@ -85,7 +116,14 @@ export const ProgressBar = ({ settleThresholdMyst, earningsTokens, size }: Props
   return (
     <Container>
       <Bar $size={size}>
-        <Progress $width={width}>{size === 'small' && <Circle />}</Progress>
+        <Progress $width={width}>
+          {size === 'small' && (
+            <div>
+              <Circle />
+              <Tooltip data-tooltip={earningsTokens} />
+            </div>
+          )}
+        </Progress>
       </Bar>
       <MarkContainer $size={size}>
         {[...Array(11)].map((_, i) => {
