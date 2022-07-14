@@ -73,11 +73,15 @@ const StyledButton = styled.button<ButtonStyleProps>`
 
   border: 0;
   border-radius: ${({ $rounded }) => ($rounded ? '100px' : '5px')};
-
+  white-space: nowrap;
   min-width: 70px;
   min-height: 32px;
   max-height: 32px;
-  padding: 8px 12px 8px 12px;
+  padding: 8px 18px 8px 18px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   :hover {
     cursor: pointer;

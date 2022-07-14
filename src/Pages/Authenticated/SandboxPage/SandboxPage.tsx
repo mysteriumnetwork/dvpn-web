@@ -27,6 +27,9 @@ const Container = styled.div`
 export const SandboxPage = () => {
   return (
     <Layout>
+      <LayoutUnstyledRow style={{ justifyContent: 'center' }}>
+        <Notifications />
+      </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <InputGroup title="Speed" subTitle="Mb" input={<TextField disabled value="test" />} />
         <InputGroup

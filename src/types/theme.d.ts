@@ -83,6 +83,30 @@ export type Theme = {
     }
   }
 
+  notifications: {
+    background: string
+    border: string
+
+    list: {
+      background: string
+      boxShadow: string
+    }
+
+    card: {
+      subjectTextColor: string
+      messageTextColor: string
+      positive: {
+        background: string
+      }
+      negative: {
+        background: string
+      }
+      neutral: {
+        background: string
+      }
+    }
+  }
+
   common: Common
 }
 
@@ -108,6 +132,7 @@ export type Common = {
   color393453: string
   color4e1c67: string
   color231F3A: string
+  color3B3755: string
 
   fontSizeSmallest: string
   fontSizeSmaller: string

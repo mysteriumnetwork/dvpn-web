@@ -32,6 +32,7 @@ export const themeCommon: Common = {
   color393453: '#393453',
   color4e1c67: '#4e1c67',
   color231F3A: '#231F3A',
+  color3B3755: '#3B3755',
 
   fontSizeSmallest: '8px',
   fontSizeSmaller: '10px',
