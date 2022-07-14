@@ -109,7 +109,10 @@ interface Props {
 }
 
 export const ProgressBar = ({ max, value, size }: Props) => {
-  const width = (value / max) * 100
+  const width = useMemo(() => {
+    const width = (value / max) * 100
+    return width > 100 ? 100 : width
+  }, [max, value])
 
   const marks = useMemo(
     () =>
