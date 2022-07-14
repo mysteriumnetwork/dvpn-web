@@ -18,12 +18,12 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  min-width: 300px;
 `
 
-// const ProgressContainer = styled.div`
-//   width: 200px;
-//   display: none;
-// `
+const ProgressContainer = styled.div`
+  width: 30%;
+`
 
 const Title = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
@@ -42,7 +42,9 @@ export const SettlementStatus = () => {
   return (
     <Content>
       <Title>Next auto settlement ({myst.display(myst.toWeiBig(settleThresholdMyst), { fractionDigits: 1 })})</Title>
-      <ProgressBar size={'small'} max={settleThresholdMyst} value={value} />
+      <ProgressContainer>
+        <ProgressBar size="small" max={settleThresholdMyst} value={value} />
+      </ProgressContainer>
     </Content>
   )
 }

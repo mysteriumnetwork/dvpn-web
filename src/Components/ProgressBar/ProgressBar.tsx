@@ -18,14 +18,12 @@ export const Bar = styled.div<BarProps>`
   height: ${({ $size }) => {
     return $size === 'big' ? '9px' : '4px'
   }};
-  width: ${({ $size }) => {
-    return $size === 'big' ? '347px' : '126px'
-  }};
+  width: 100%;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.common.colorGrayBlue};
 `
 const Container = styled.div`
-  width: 200px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,9 +59,7 @@ const Mark = styled.span<BarProps>`
     $primary ? theme.common.colorGrayBlue : `${theme.common.colorGrayBlue2}10`};
 `
 const MarkContainer = styled.div<BarProps>`
-  width: ${({ $size }) => {
-    return $size === 'big' ? '343px' : '124px'
-  }};
+  width: 100%;
   box-sizing: border-box;
   display: flex;
   margin: ${({ $size }) => {

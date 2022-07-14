@@ -7,16 +7,16 @@
 import { Layout, LayoutHeroCardRow, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Table } from '../../../Components/Table/Table'
-import { Card } from './Card'
 import { DownloadTransactionCSV } from './DownloadTransactionCSV'
 import { TotalSettled } from './TotalSettled'
+import { SettlementCard } from './SettlementCard'
 
 export const TransactionsPage = () => {
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
       <LayoutHeroCardRow>
         <TotalSettled />
-        <Card grow={10}>Two</Card>
+        <SettlementCard />
         <DownloadTransactionCSV />
       </LayoutHeroCardRow>
       <LayoutUnstyledRow>
