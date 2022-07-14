@@ -15,6 +15,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Indicator, IndicatorVariants } from '../Components/NodeStatus/NodeStatus'
 import { TextArea } from '../../../Components/Inputs/TextArea'
+
 import { Notifications } from '../Components/Notifications/Notifications'
 
 const Container = styled.div`
