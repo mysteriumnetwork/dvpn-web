@@ -13,6 +13,7 @@ import { Quality } from '../Quality/Quality'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
+import { Notifications } from '../Notifications/Notifications'
 
 const Main = styled.main`
   position: relative;
@@ -28,8 +29,9 @@ const Main = styled.main`
 const Header = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 20px 0 20px 32px;
+  margin: 20px 32px 20px 32px;
   align-items: center;
+  justify-content: space-between;
   gap: 20px;
 `
 
@@ -90,6 +92,7 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
         <NodeStatus />
         <Quality />
         <SettlementStatus />
+        <Notifications />
       </Header>
       <Content>{children}</Content>
     </Main>

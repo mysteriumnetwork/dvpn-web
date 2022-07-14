@@ -17,9 +17,14 @@ const IButton = styled.div`
   width: 48px;
   height: 48px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   border-radius: 100px;
+
   :active {
-    background: ${themeCommon.colorWhite}1A;
+    //background: ${themeCommon.colorWhite}1A;
   }
 `
 
