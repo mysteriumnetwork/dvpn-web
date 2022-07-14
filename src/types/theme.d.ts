@@ -24,8 +24,12 @@ export type Theme = {
 
   bgTransactionPageCard: string
   bgTransactionPageCardBoxShadow: string
-  bgHistoryTable: string
 
+  table: {
+    bgBody: string
+    bgRowOdd: string
+    bgRowEven: string
+  }
   modal: {
     bgOverlay: string
     bgColor: string

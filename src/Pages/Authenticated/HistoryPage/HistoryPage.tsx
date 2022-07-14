@@ -15,11 +15,13 @@ const PrimaryCell = styled.div`
   padding: 1em;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   font-weight: 600;
+  text-align: center;
 `
 const SecondaryCell = styled.div`
   padding: 1em;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   font-weight: 400;
+  text-align: center;
 `
 
 export const HistoryPage = () => {
@@ -29,37 +31,31 @@ export const HistoryPage = () => {
         header: 'Country',
         accessorKey: 'country',
         cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
-        width: 80,
       },
       {
         header: 'Duration',
         accessorKey: 'duration',
         cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
-        width: 80,
       },
       {
         header: 'Started',
         accessorKey: 'started',
         cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
-        width: 80,
       },
       {
         header: 'Services',
         accessorKey: 'services',
         cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
-        width: 80,
       },
       {
         header: 'Earnings',
         accessorKey: 'earnings',
         cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
-        width: 80,
       },
       {
         header: 'Transfered',
         accessorKey: 'transfered',
         cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
-        width: 80,
       },
       {
         header: 'Session ID',

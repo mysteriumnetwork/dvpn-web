@@ -26,7 +26,12 @@ const dark: Omit<Theme, 'common'> = {
   bgTransactionPageCard: themeCommon.color393453,
 
   bgTransactionPageCardBoxShadow: '0px 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
-  bgHistoryTable: themeCommon.color393453,
+
+  table: {
+    bgBody: themeCommon.color393453,
+    bgRowOdd: themeCommon.colorGrayBlue2 + alphaToHex(0.1),
+    bgRowEven: themeCommon.colorGrayBlue2 + alphaToHex(0.3),
+  },
 
   text: {
     colorMain: themeCommon.colorLightBlue,

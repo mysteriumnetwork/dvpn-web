@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import { alphaToHex } from '../../theme/themeCommon'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
 const Container = styled.div`
@@ -21,7 +20,11 @@ const HeaderRow = styled.div`
 const Header = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue};
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  text-align: left;
+  width: 10%;
+  align-self: center;
+  &:not(:nth-of-type(1), :nth-of-type(2)) {
+    text-align: right;
+  }
 `
 const Row = styled.div`
   display: flex;
@@ -29,17 +32,17 @@ const Row = styled.div`
   padding: 5px;
   border-radius: 10px;
   &:nth-of-type(odd) {
-    background-color: ${({ theme }) => `${theme.common.colorLightBlue}${alphaToHex(0.2)}`};
+    background-color: ${({ theme }) => theme.table.bgRowOdd};
   }
   &:nth-of-type(even) {
-    background-color: ${({ theme }) => `${theme.common.colorLightBlue}${alphaToHex(0.5)}`};
+    background-color: ${({ theme }) => theme.table.bgRowEven};
   }
 `
 const Body = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.bgHistoryTable};
-  padding: 20px;
+  background-color: ${({ theme }) => theme.table.bgBody};
+  padding: 16px 20px 24px 20px;
   border-radius: 20px;
   gap: 5px;
 `
