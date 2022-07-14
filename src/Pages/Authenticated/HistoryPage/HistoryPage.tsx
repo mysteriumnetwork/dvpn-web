@@ -4,21 +4,68 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import styled from 'styled-components'
 import { useMemo } from 'react'
 import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Table } from '../../../Components/Table/Table'
+import { ColumnDef } from '@tanstack/react-table'
+
+const PrimaryCell = styled.div`
+  padding: 1em;
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+  font-weight: 600;
+`
+const SecondaryCell = styled.div`
+  padding: 1em;
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  font-weight: 400;
+`
 
 export const HistoryPage = () => {
-  const Columns = useMemo(
+  const Columns: ColumnDef<any>[] = useMemo(
     () => [
-      { Header: 'Country', accessor: 'country' },
-      { Header: 'Duration', accessor: 'duration' },
-      { Header: 'Started', accessor: 'started' },
-      { Header: 'Services', accessor: 'services' },
-      { Header: 'Earnings', accessor: 'earnings' },
-      { Header: 'Transfered', accessor: 'transfered' },
-      { Header: 'Session ID', accessor: 'sessionid' },
+      {
+        header: 'Country',
+        accessorKey: 'country',
+        cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
+        width: 80,
+      },
+      {
+        header: 'Duration',
+        accessorKey: 'duration',
+        cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
+        width: 80,
+      },
+      {
+        header: 'Started',
+        accessorKey: 'started',
+        cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
+        width: 80,
+      },
+      {
+        header: 'Services',
+        accessorKey: 'services',
+        cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
+        width: 80,
+      },
+      {
+        header: 'Earnings',
+        accessorKey: 'earnings',
+        cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
+        width: 80,
+      },
+      {
+        header: 'Transfered',
+        accessorKey: 'transfered',
+        cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
+        width: 80,
+      },
+      {
+        header: 'Session ID',
+        accessorKey: 'sessionid',
+        cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
+      },
     ],
     [],
   )

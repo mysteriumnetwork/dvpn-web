@@ -4,81 +4,70 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useTable } from 'react-table'
 import styled from 'styled-components'
+import { alphaToHex } from '../../theme/themeCommon'
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
+const Container = styled.div`
+  width: 100%;
+`
+const HeaderRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 20px;
+  justify-content: space-between;
+`
+const Header = styled.div`
+  color: ${({ theme }) => theme.common.colorGrayBlue};
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  text-align: left;
+`
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-radius: 10px;
+  &:nth-of-type(odd) {
+    background-color: ${({ theme }) => `${theme.common.colorLightBlue}${alphaToHex(0.2)}`};
+  }
+  &:nth-of-type(even) {
+    background-color: ${({ theme }) => `${theme.common.colorLightBlue}${alphaToHex(0.5)}`};
+  }
+`
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.bgHistoryTable};
+  padding: 20px;
+  border-radius: 20px;
+  gap: 5px;
+`
 interface Props {
   columns: any[]
   data: any[]
   loading?: boolean
 }
-const Container = styled.table`
-  width: 90%;
-  display: block;
-  border-collapse: collapse;
-  thead {
-    width: 80%;
-    display: flex;
-    align-items: space-between;
-    justify-content: space-between;
-  }
-  th {
-    color: ${({ theme }) => theme.common.colorGrayBlue};
-    font-size: ${({ theme }) => theme.common.fontSizeSmall};
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 18px;
-    text-align: left;
-    padding: 1em 0 1em 0.75em;
-  }
-  tr {
-    width: 100%;
-  }
-  tbody {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 1em;
-    background-color: ${({ theme }) => theme.bgHistoryTable};
-    box-shadow: ${({ theme }) => theme.bgReportChartRowBoxShadow};
-    border-radius: 20px;
-  }
-  td {
-    font-size: 10px;
-    padding: 1em;
-  }
-`
 export const Table = ({ columns, data }: Props) => {
-  const tableInstance = useTable({ columns, data })
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance
-
+  const tableInstance = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() })
   return (
-    <Container {...getTableProps()}>
-      <thead>
-        {headerGroups.map((hg) => (
-          <tr {...hg.getHeaderGroupProps()}>
-            {hg.headers.map((column) => (
-              <th {...column.getHeaderProps}>{column.render('Header')}</th>
+    <Container>
+      {tableInstance.getHeaderGroups().map((headerGroup) => (
+        <HeaderRow key={headerGroup.id}>
+          {headerGroup.headers.map((header) => (
+            <Header key={header.id}>{flexRender(header.column.columnDef.header, header.getContext())}</Header>
+          ))}
+        </HeaderRow>
+      ))}
+      <Body>
+        {tableInstance.getRowModel().rows.map((row) => (
+          <Row key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <div key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
             ))}
-          </tr>
+          </Row>
         ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-              })}
-            </tr>
-          )
-        })}
-      </tbody>
+      </Body>
     </Container>
   )
 }
