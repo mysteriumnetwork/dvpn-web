@@ -77,6 +77,29 @@ const dark: Omit<Theme, 'common'> = {
       online: themeCommon.colorWhite,
     },
   },
+
+  notifications: {
+    background: themeCommon.colorKeyLight,
+    border: '6px solid ' + themeCommon.colorKeyLight,
+    list: {
+      background: themeCommon.color3B3755,
+      boxShadow: '0px 5px 20px ' + themeCommon.color2F2A48 + alphaToHex(0.2),
+    },
+
+    card: {
+      subjectTextColor: themeCommon.colorLightBlue,
+      messageTextColor: themeCommon.colorGrayBlue,
+      positive: {
+        background: themeCommon.colorGreen + alphaToHex(0.2),
+      },
+      negative: {
+        background: themeCommon.colorKey + alphaToHex(0.2),
+      },
+      neutral: {
+        background: themeCommon.colorGrayBlue + alphaToHex(0.2),
+      },
+    },
+  },
 }
 
 export default dark
