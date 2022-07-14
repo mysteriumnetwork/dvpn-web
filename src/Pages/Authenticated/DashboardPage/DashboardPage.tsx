@@ -12,7 +12,7 @@ import { Report } from './Report/Report'
 import { DashboardHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { IdleStat } from '../Components/IdleStat/IdleStat'
 import { Services } from '../Components/Service/Services'
-
+import { Table } from '../../../Components/Table/Table'
 const DashboardPage = () => {
   return (
     <Layout title="Dashboard" logo={<DashboardHeaderIcon />} isLoading={false}>
@@ -59,6 +59,9 @@ const DashboardPage = () => {
         <LayoutCard>
           <IdleStat />
         </LayoutCard>
+      </LayoutUnstyledRow>
+      <LayoutUnstyledRow>
+        <Table columns={[]} data={[]} />
       </LayoutUnstyledRow>
     </Layout>
   )
