@@ -12,6 +12,20 @@ interface Props {
   data: any[]
   loading?: boolean
 }
+export const PrimaryCell = styled.div`
+  color: ${({ theme }) => theme.table.textColorPrimary};
+  padding: 1em;
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+  font-weight: 600;
+  text-align: center;
+`
+export const SecondaryCell = styled.div`
+  color: ${({ theme }) => theme.table.textColorSecondary};
+  padding: 1em;
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  font-weight: 400;
+  text-align: center;
+`
 const Container = styled.div`
   width: 100%;
 `

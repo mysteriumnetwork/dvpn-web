@@ -30,6 +30,8 @@ const light: Omit<Theme, 'common'> = {
     bgBody: themeCommon.colorWhite,
     bgRowOdd: themeCommon.colorLightBlue + alphaToHex(0.2),
     bgRowEven: themeCommon.colorLightBlue + alphaToHex(0.5),
+    textColorPrimary: themeCommon.colorDarkBlue,
+    textColorSecondary: themeCommon.colorDarkBlue,
   },
   text: {
     colorMain: themeCommon.colorDarkBlue,

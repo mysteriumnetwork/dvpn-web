@@ -4,26 +4,86 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled from 'styled-components'
 import { useMemo } from 'react'
 import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
 // import { Table } from '../../../Components/Table/Table'
 import { Column } from 'react-table'
-import { Table } from '../../../Components/Table/Table'
-const PrimaryCell = styled.div`
-  padding: 1em;
-  font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  font-weight: 600;
-  text-align: center;
-`
-const SecondaryCell = styled.div`
-  padding: 1em;
-  font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  font-weight: 400;
-  text-align: center;
-`
-
+import { Table, PrimaryCell, SecondaryCell } from '../../../Components/Table/Table'
+const data = [
+  {
+    country: 'Australia',
+    duration: '2:34:15',
+    started: '19/05/2022, 09:37:24',
+    services: 'Data scraping',
+    earnings: '1.038 MYST',
+    transfered: '26.5GB',
+    sessionid: '30c973d',
+  },
+  {
+    country: 'Australia',
+    duration: '2:34:15',
+    started: '19/05/2022, 09:37:24',
+    services: 'Data scraping',
+    earnings: '1.038 MYST',
+    transfered: '26.5GB',
+    sessionid: '30c973d',
+  },
+  {
+    country: 'Australia',
+    duration: '2:34:15',
+    started: '19/05/2022, 09:37:24',
+    services: 'Data scraping',
+    earnings: '1.038 MYST',
+    transfered: '26.5GB',
+    sessionid: '30c973d',
+  },
+  {
+    country: 'Australia',
+    duration: '2:34:15',
+    started: '19/05/2022, 09:37:24',
+    services: 'Data scraping',
+    earnings: '1.038 MYST',
+    transfered: '26.5GB',
+    sessionid: '30c973d',
+  },
+  {
+    country: 'Australia',
+    duration: '2:34:15',
+    started: '19/05/2022, 09:37:24',
+    services: 'Data scraping',
+    earnings: '1.038 MYST',
+    transfered: '26.5GB',
+    sessionid: '30c973d',
+  },
+  {
+    country: 'Australia',
+    duration: '2:34:15',
+    started: '19/05/2022, 09:37:24',
+    services: 'Data scraping',
+    earnings: '1.038 MYST',
+    transfered: '26.5GB',
+    sessionid: '30c973d',
+  },
+  {
+    country: 'Australia',
+    duration: '2:34:15',
+    started: '19/05/2022, 09:37:24',
+    services: 'Data scraping',
+    earnings: '1.038 MYST',
+    transfered: '26.5GB',
+    sessionid: '30c973d',
+  },
+  {
+    country: 'Australia',
+    duration: '2:34:15',
+    started: '19/05/2022, 09:37:24',
+    services: 'Data scraping',
+    earnings: '1.038 MYST',
+    transfered: '26.5GB',
+    sessionid: '30c973d',
+  },
+]
 export const HistoryPage = () => {
   const Columns: Column<any>[] = useMemo(
     () => [
@@ -65,80 +125,7 @@ export const HistoryPage = () => {
     ],
     [],
   )
-  const data = [
-    {
-      country: 'Australia',
-      duration: '2:34:15',
-      started: '19/05/2022, 09:37:24',
-      services: 'Data scraping',
-      earnings: '1.038 MYST',
-      transfered: '26.5GB',
-      sessionid: '30c973d',
-    },
-    {
-      country: 'Australia',
-      duration: '2:34:15',
-      started: '19/05/2022, 09:37:24',
-      services: 'Data scraping',
-      earnings: '1.038 MYST',
-      transfered: '26.5GB',
-      sessionid: '30c973d',
-    },
-    {
-      country: 'Australia',
-      duration: '2:34:15',
-      started: '19/05/2022, 09:37:24',
-      services: 'Data scraping',
-      earnings: '1.038 MYST',
-      transfered: '26.5GB',
-      sessionid: '30c973d',
-    },
-    {
-      country: 'Australia',
-      duration: '2:34:15',
-      started: '19/05/2022, 09:37:24',
-      services: 'Data scraping',
-      earnings: '1.038 MYST',
-      transfered: '26.5GB',
-      sessionid: '30c973d',
-    },
-    {
-      country: 'Australia',
-      duration: '2:34:15',
-      started: '19/05/2022, 09:37:24',
-      services: 'Data scraping',
-      earnings: '1.038 MYST',
-      transfered: '26.5GB',
-      sessionid: '30c973d',
-    },
-    {
-      country: 'Australia',
-      duration: '2:34:15',
-      started: '19/05/2022, 09:37:24',
-      services: 'Data scraping',
-      earnings: '1.038 MYST',
-      transfered: '26.5GB',
-      sessionid: '30c973d',
-    },
-    {
-      country: 'Australia',
-      duration: '2:34:15',
-      started: '19/05/2022, 09:37:24',
-      services: 'Data scraping',
-      earnings: '1.038 MYST',
-      transfered: '26.5GB',
-      sessionid: '30c973d',
-    },
-    {
-      country: 'Australia',
-      duration: '2:34:15',
-      started: '19/05/2022, 09:37:24',
-      services: 'Data scraping',
-      earnings: '1.038 MYST',
-      transfered: '26.5GB',
-      sessionid: '30c973d',
-    },
-  ]
+
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
       <LayoutUnstyledRow>

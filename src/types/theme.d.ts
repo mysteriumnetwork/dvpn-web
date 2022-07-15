@@ -29,6 +29,8 @@ export type Theme = {
     bgBody: string
     bgRowOdd: string
     bgRowEven: string
+    textColorPrimary: string
+    textColorSecondary: string
   }
   modal: {
     bgOverlay: string
