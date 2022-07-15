@@ -10,6 +10,7 @@ import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
 // import { Table } from '../../../Components/Table/Table'
 import { Column } from 'react-table'
 import { Table, PrimaryCell, SecondaryCell } from '../../../Components/Table/Table'
+import { Pagination } from '../../../Components/Pagination/Pagination'
 const data = [
   {
     country: 'Australia',
@@ -131,6 +132,9 @@ export const HistoryPage = () => {
     <Layout logo={<HistoryHeaderIcon />} title="History">
       <LayoutUnstyledRow>
         <Table columns={Columns} data={data} />
+      </LayoutUnstyledRow>
+      <LayoutUnstyledRow>
+        <Pagination />
       </LayoutUnstyledRow>
     </Layout>
   )

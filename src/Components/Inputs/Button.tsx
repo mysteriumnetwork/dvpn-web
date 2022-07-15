@@ -45,6 +45,7 @@ const BLUE_CSS = css`
 
   :active {
     background: ${themeCommon.colorBlue}BB;
+  }
 `
 
 const resolveCSS = (variant: ButtonVariant) => {
@@ -119,6 +120,7 @@ interface Props {
   variant?: ButtonVariant
   loading?: boolean
   rounded?: boolean
+  round?: boolean
   onClick?: () => void
   type?: 'submit' | 'reset' | 'button'
 }
