@@ -12,7 +12,6 @@ import { Report } from './Report/Report'
 import { DashboardHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { IdleStat } from '../Components/IdleStat/IdleStat'
 import { Services } from '../Components/Service/Services'
-
 const DashboardPage = () => {
   return (
     <Layout title="Dashboard" logo={<DashboardHeaderIcon />} isLoading={false}>

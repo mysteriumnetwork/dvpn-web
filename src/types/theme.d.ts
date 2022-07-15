@@ -25,6 +25,13 @@ export type Theme = {
   bgTransactionPageCard: string
   bgTransactionPageCardBoxShadow: string
 
+  table: {
+    bgBody: string
+    bgRowOdd: string
+    bgRowEven: string
+    textColorPrimary: string
+    textColorSecondary: string
+  }
   modal: {
     bgOverlay: string
     bgColor: string
