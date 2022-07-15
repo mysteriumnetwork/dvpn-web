@@ -3078,18 +3078,6 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@tanstack/react-table@^8.2.6":
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.2.6.tgz#a44855d1958d9e8fa7a34280f81f08d2ef7f8d4f"
-  integrity sha512-hHEKSqRPSojhFLosSpqKMRNDX8mk/UVvFdekXHai86NAg1WaLYB51hWVg18IqFe9PCaPZNpTPNguJ7u54ed8Gg==
-  dependencies:
-    "@tanstack/table-core" "8.2.6"
-
-"@tanstack/table-core@8.2.6":
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.2.6.tgz#7240ac14a43cc43adbe01fbc6ae4d8a2bf82541a"
-  integrity sha512-yHjKksyq5ZI4GoVJgR/+X8Z1gaZdOL1om3G9M4af6yTTyRP5ZquMlU5318MBtx2NzXl4BxtENLXBWYrcz5WKSA==
-
 "@testing-library/dom@^8.5.0":
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.13.0.tgz#bc00bdd64c7d8b40841e27a70211399ad3af46f5"
@@ -10866,6 +10854,11 @@ react-switch@^7.0.0:
   integrity sha512-KkDeW+cozZXI6knDPyUt3KBN1rmhoVYgAdCJqAh7st7tk8YE6N0iR89zjCWO8T8dUTeJGTR0KU+5CHCRMRffiA==
   dependencies:
     prop-types "^15.7.2"
+
+react-table@^7.8.0:
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.8.0.tgz#07858c01c1718c09f7f1aed7034fcfd7bda907d2"
+  integrity sha512-hNaz4ygkZO4bESeFfnfOft73iBUj8K5oKi1EcSHPAibEydfsX2MyU6Z8KCr3mv3C9Kqqh71U+DhZkFvibbnPbA==
 
 react-toastify@^9.0.5:
   version "9.0.5"
