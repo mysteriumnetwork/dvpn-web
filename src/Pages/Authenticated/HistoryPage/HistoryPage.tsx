@@ -91,6 +91,7 @@ export const HistoryPage = () => {
         Header: 'Country',
         accessor: 'country',
         Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>,
+        maxWidth: 100,
       },
       {
         Header: 'Duration',

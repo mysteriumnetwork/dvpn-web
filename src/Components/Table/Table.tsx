@@ -18,6 +18,7 @@ export const PrimaryCell = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   font-weight: 600;
   text-align: center;
+  white-space: nowrap;
 `
 export const SecondaryCell = styled.div`
   color: ${({ theme }) => theme.table.textColorSecondary};

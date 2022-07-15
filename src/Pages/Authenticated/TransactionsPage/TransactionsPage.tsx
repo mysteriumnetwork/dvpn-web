@@ -89,23 +89,33 @@ const data = [
 export const TransactionsPage = () => {
   const Columns: Column<any>[] = useMemo(
     () => [
-      { Header: 'Date', accessor: 'date', Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell> },
+      { Header: 'Date', accessor: 'date', Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>, minWidth: 50 },
       {
         Header: 'External Wallet Address',
         accessor: 'extwallet',
         Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
+        minWidth: 300,
       },
       {
         Header: 'Transaction ID',
-        accessor: 'transacation_id',
+        accessor: 'transaction_id',
         Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
+        minWidth: 300,
       },
       {
         Header: 'Fee',
         accessor: 'fee',
         Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>,
+        minWidth: 50,
+        maxWidth: 100,
       },
-      { Header: 'Received ammount', accessor: 'ammount', Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell> },
+      {
+        Header: 'Received ammount',
+        accessor: 'ammount',
+        Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>,
+        minWidth: 50,
+        maxWidth: 100,
+      },
     ],
     [],
   )
