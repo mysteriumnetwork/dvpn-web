@@ -78,7 +78,7 @@ const SessionsPage = () => {
     setState((cs) => ({ ...cs, page, pageSize }))
   }
 
-  const columns = useMemo(
+  const Columns: Column<any>[] = useMemo(
     () => [
       {
         Header: 'Country',

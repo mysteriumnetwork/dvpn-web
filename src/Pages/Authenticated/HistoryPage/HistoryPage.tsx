@@ -8,9 +8,9 @@ import styled from 'styled-components'
 import { useMemo } from 'react'
 import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
+// import { Table } from '../../../Components/Table/Table'
+import { Column } from 'react-table'
 import { Table } from '../../../Components/Table/Table'
-import { ColumnDef } from '@tanstack/react-table'
-
 const PrimaryCell = styled.div`
   padding: 1em;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
@@ -25,42 +25,42 @@ const SecondaryCell = styled.div`
 `
 
 export const HistoryPage = () => {
-  const Columns: ColumnDef<any>[] = useMemo(
+  const Columns: Column<any>[] = useMemo(
     () => [
       {
-        header: 'Country',
-        accessorKey: 'country',
-        cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
+        Header: 'Country',
+        accessor: 'country',
+        Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>,
       },
       {
-        header: 'Duration',
-        accessorKey: 'duration',
-        cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
+        Header: 'Duration',
+        accessor: 'duration',
+        Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
       },
       {
-        header: 'Started',
-        accessorKey: 'started',
-        cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
+        Header: 'Started',
+        accessor: 'started',
+        Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
       },
       {
-        header: 'Services',
-        accessorKey: 'services',
-        cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
+        Header: 'Services',
+        accessor: 'services',
+        Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
       },
       {
-        header: 'Earnings',
-        accessorKey: 'earnings',
-        cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
+        Header: 'Earnings',
+        accessor: 'earnings',
+        Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>,
       },
       {
-        header: 'Transfered',
-        accessorKey: 'transfered',
-        cell: (c) => <PrimaryCell>{c.getValue()}</PrimaryCell>,
+        Header: 'Transfered',
+        accessor: 'transfered',
+        Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>,
       },
       {
-        header: 'Session ID',
-        accessorKey: 'sessionid',
-        cell: (c) => <SecondaryCell>{c.getValue()}</SecondaryCell>,
+        Header: 'Session ID',
+        accessor: 'sessionid',
+        Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
       },
     ],
     [],

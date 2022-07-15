@@ -4,27 +4,25 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled from 'styled-components'
-import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { useTable, useFlexLayout, Column } from 'react-table'
 
+import styled from 'styled-components'
+interface Props {
+  columns: Column[]
+  data: any[]
+  loading?: boolean
+}
 const Container = styled.div`
   width: 100%;
 `
 const HeaderRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
   padding: 20px;
-  justify-content: space-between;
 `
 const Header = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue};
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   width: 10%;
-  align-self: center;
-  &:not(:nth-of-type(1), :nth-of-type(2)) {
-    text-align: right;
-  }
+  text-align: center;
 `
 const Row = styled.div`
   display: flex;
@@ -46,30 +44,33 @@ const Body = styled.div`
   border-radius: 20px;
   gap: 5px;
 `
-interface Props {
-  columns: any[]
-  data: any[]
-  loading?: boolean
-}
 export const Table = ({ columns, data }: Props) => {
-  const tableInstance = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() })
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    { data, columns },
+    useFlexLayout,
+  )
   return (
-    <Container>
-      {tableInstance.getHeaderGroups().map((headerGroup) => (
-        <HeaderRow key={headerGroup.id}>
-          {headerGroup.headers.map((header) => (
-            <Header key={header.id}>{flexRender(header.column.columnDef.header, header.getContext())}</Header>
-          ))}
-        </HeaderRow>
-      ))}
-      <Body>
-        {tableInstance.getRowModel().rows.map((row) => (
-          <Row key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <div key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
+    <Container {...getTableProps()}>
+      <HeaderRow>
+        {headerGroups.map((headerGroup) => (
+          <div {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <Header {...column.getHeaderProps()}>{column.render('Header')}</Header>
             ))}
-          </Row>
+          </div>
         ))}
+      </HeaderRow>
+      <Body {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row)
+          return (
+            <Row {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                return <div {...cell.getCellProps()}>{cell.render('Cell')}</div>
+              })}
+            </Row>
+          )
+        })}
       </Body>
     </Container>
   )
