@@ -113,7 +113,7 @@ interface Props {
   loading?: boolean
 }
 
-export const Modal = ({ show, icon, title, children, onClickX, loading }: Props) => {
+export const Modal = ({ show, icon, title, subTitle, children, onClickX, loading }: Props) => {
   if (!show) {
     return <></>
   }
@@ -133,7 +133,7 @@ export const Modal = ({ show, icon, title, children, onClickX, loading }: Props)
             <XButtonIcon onClick={onClickX} />
           </CloseButtonPlacement>
           <Title>{title}</Title>
-          <SubTitle>{title}</SubTitle>
+          <SubTitle>{subTitle}</SubTitle>
           {children}
         </Container>
       </StyledModal>
