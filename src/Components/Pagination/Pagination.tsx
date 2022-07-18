@@ -45,7 +45,7 @@ interface Props {
 
 export const Pagination = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const [pages, setPages]: Array<any> = useState([1, 2, 3, 4, 5])
+  const [pages]: Array<any> = useState([1, 2, 3, 4, 5])
 
   return (
     <Container>
