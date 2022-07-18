@@ -12,6 +12,7 @@ import { DownloadTransactionCSV } from './DownloadTransactionCSV'
 import { TotalSettled } from './TotalSettled'
 import { SettlementCard } from './SettlementCard'
 import { Column } from 'react-table'
+import { Pagination } from '../../../Components/Pagination/Pagination'
 
 const data = [
   {
@@ -128,6 +129,9 @@ export const TransactionsPage = () => {
       </LayoutHeroCardRow>
       <LayoutUnstyledRow>
         <Table columns={Columns} data={data} />
+      </LayoutUnstyledRow>
+      <LayoutUnstyledRow>
+        <Pagination />
       </LayoutUnstyledRow>
     </Layout>
   )
