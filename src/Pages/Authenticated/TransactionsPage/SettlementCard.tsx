@@ -11,8 +11,9 @@ import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
 import { configs } from '../../../commons/config'
 import { myst } from '../../../commons/mysts'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Button } from '../../../Components/Inputs/Button'
+import { SettleModal } from '../Components/SettleModal/SettleModal'
 
 const Progress = styled.div`
   display: flex;
@@ -48,11 +49,13 @@ export const SettlementCard = () => {
   const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
   const config = useAppSelector(selectors.configSelector)
   const thresholdMyst = configs.zeroStakeSettlementThreshold(config)
+  const [showModal, setShowModal] = useState(false)
 
   const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
 
   return (
     <Card>
+      <SettleModal show={showModal} onClose={() => setShowModal(false)} />
       <Content>
         <Progress>
           <Row>
@@ -61,7 +64,7 @@ export const SettlementCard = () => {
           </Row>
           <ProgressBar max={thresholdMyst} value={value} size="big" />
         </Progress>
-        <Button label="Settle now" rounded />
+        <Button label="Settle now" rounded onClick={() => setShowModal(true)} />
       </Content>
     </Card>
   )

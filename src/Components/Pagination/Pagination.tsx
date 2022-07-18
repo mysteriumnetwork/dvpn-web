@@ -49,7 +49,15 @@ export const Pagination = () => {
 
   return (
     <Container>
-      <Button variant="outlined" label="Prev" rounded />
+      <Button
+        variant="outlined"
+        label="Prev"
+        rounded
+        onClick={() => {
+          // Rethink else call
+          currentPage - 1 >= 1 ? setCurrentPage(currentPage - 1) : setCurrentPage(currentPage)
+        }}
+      />
       <Pages>
         {pages.map((_: any, i: number) => (
           <PageButton
@@ -64,7 +72,15 @@ export const Pagination = () => {
           </PageButton>
         ))}
       </Pages>
-      <Button variant="outlined" label="Next" rounded />
+      <Button
+        variant="outlined"
+        label="Next"
+        rounded
+        onClick={() => {
+          // Rethink else call
+          currentPage + 1 <= pages.length ? setCurrentPage(currentPage + 1) : setCurrentPage(currentPage)
+        }}
+      />
     </Container>
   )
 }

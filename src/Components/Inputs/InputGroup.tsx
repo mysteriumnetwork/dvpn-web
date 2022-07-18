@@ -47,7 +47,7 @@ const Error = styled.div`
 `
 
 interface Props {
-  title: string
+  title?: string
   subTitle?: ReactNode
   input: ReactNode
   fluid?: boolean

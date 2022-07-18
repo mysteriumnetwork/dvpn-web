@@ -6,6 +6,7 @@
  */
 import { ReactComponent as XSvg } from '../../assets/images/input/x.svg'
 import { ReactComponent as BugNavSvg } from '../../assets/images/navigation/bug.svg'
+import { ReactComponent as SettleSvg } from '../../assets/images/navigation/settle.svg'
 import styled from 'styled-components'
 
 export const XButtonIcon = styled(XSvg)`
@@ -13,6 +14,10 @@ export const XButtonIcon = styled(XSvg)`
   height: 100%;
 `
 export const BugButtonIcon = styled(BugNavSvg)`
+  width: 100%;
+  height: 100%;
+`
+export const SettleButtonIcon = styled(SettleSvg)`
   width: 100%;
   height: 100%;
 `

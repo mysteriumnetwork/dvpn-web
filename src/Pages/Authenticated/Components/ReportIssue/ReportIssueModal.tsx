@@ -13,7 +13,6 @@ import { Button } from '../../../../Components/Inputs/Button'
 import { ChatIcon } from '../../../../Components/Icons/Icons'
 import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
-import { themeCommon } from '../../../../theme/themeCommon'
 
 interface Props {
   show: boolean
@@ -31,7 +30,7 @@ const Content = styled.div`
 
 const Note = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${themeCommon.fontSizeSmaller};
+  font-size: ${({ theme }) => theme.common.fontSizeSmaller};
 `
 
 const Footer = styled.div`
@@ -49,7 +48,7 @@ const Row = styled.div`
 
 const StyledBugButtonIcon = styled(BugButtonIcon)`
   rect {
-    fill: ${themeCommon.colorKey};
+    fill: ${({ theme }) => theme.common.colorKey};
     opacity: 1;
   }
 `
