@@ -65,6 +65,7 @@ const resolveCSS = (variant: ButtonVariant) => {
 interface ButtonStyleProps {
   $variant: ButtonVariant
   $rounded?: boolean
+  loading?: boolean
 }
 
 const StyledButton = styled.button<ButtonStyleProps>`
@@ -88,6 +89,10 @@ const StyledButton = styled.button<ButtonStyleProps>`
   }
 
   ${({ $variant }) => resolveCSS($variant)}
+  :disabled {
+    background-color: ${themeCommon.colorGrayBlue};
+    cursor: not-allowed;
+  }
 `
 
 const LoadingOverlay = styled.div`
@@ -115,6 +120,7 @@ const Spinner = styled(CircularSpinner)`
 `
 
 interface Props {
+  disabled?: boolean
   label: ReactNode
   variant?: ButtonVariant
   loading?: boolean
@@ -124,9 +130,16 @@ interface Props {
   type?: 'submit' | 'reset' | 'button'
 }
 
-export const Button = ({ loading, label, variant = 'primary', onClick, type, rounded }: Props) => {
+export const Button = ({ disabled, loading, label, variant = 'primary', onClick, type, rounded }: Props) => {
   return (
-    <StyledButton $rounded={rounded} $variant={variant} type={type} disabled={loading} onClick={onClick}>
+    <StyledButton
+      $rounded={rounded}
+      $variant={variant}
+      type={type}
+      loading={loading}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {loading && (
         <LoadingOverlay>
           <Spinner />
