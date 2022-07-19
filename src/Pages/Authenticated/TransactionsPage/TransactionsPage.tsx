@@ -32,8 +32,9 @@ export const TransactionsPage = () => {
     setState((p) => ({ ...p, page }))
   }
 
-  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY] = useFetch(() =>
-    api.settlementHistory({ pageSize: state.pageSize, page: state.page }),
+  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY] = useFetch(
+    () => api.settlementHistory({ pageSize: state.pageSize, page: state.page }),
+    [state.pageSize, state.page],
   )
 
   console.log(data.items)

@@ -4,27 +4,38 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
+// TODO: TEST THE API hookup
 import { Modal } from '../../../../Components/Modals/Modal'
 import { InputGroup } from '../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../Components/Inputs/TextField'
 import { selectors } from '../../../../redux/selectors'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { feez } from '../../../../commons/fees'
 import styled from 'styled-components'
 import { Button } from '../../../../Components/Inputs/Button'
 import { SettleButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { ReactComponent as EditIcon } from '../../../../assets/images/edit.svg'
 import { useAppSelector } from '../../../../commons/hooks'
-import { alphaToHex } from '../../../../theme/themeCommon'
+import { Card } from './Card'
 import { myst } from '../../../../commons/mysts'
+import Error from '../../../../Components/Validation/Error'
+import toasts from '../../../../commons/toasts'
+import { tequila } from '../../../../api/tequila'
+import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
+import identities from '../../../../commons/identities'
+import errors from '../../../../commons/errors'
+import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
+
 interface Props {
   show: boolean
   onClose?: () => void
 }
 
-interface CardProps {
-  $primary?: boolean
-}
+// TODO Figure out why styling override doesnt work for this component
+const ErrorNote = styled(Error)`
+  color: red;
+  font-size: 12px;
+`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -34,31 +45,6 @@ const Content = styled.div`
   box-sizing: border-box;
   height: 80%;
 `
-const Card = styled.div<CardProps>`
-  background-color: ${({ $primary, theme }) =>
-    $primary ? theme.common.colorKeyLight + alphaToHex(0.05) : theme.common.colorGrayBlue + alphaToHex(0.05)};
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  align-items: flex-start;
-  padding: 15px;
-`
-const CardTitle = styled.div<CardProps>`
-  font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  color: ${({ $primary, theme }) => ($primary ? theme.common.colorKeyLight : theme.common.colorGrayBlue2)};
-  margin-bottom: 5px;
-`
-const Ammount = styled.span<CardProps>`
-  font-size: ${({ theme }) => theme.common.fontSizeBig};
-  color: ${({ $primary, theme }) => ($primary ? theme.common.colorKey : theme.common.colorDarkBlue)};
-`
-const Myst = styled.span<CardProps>`
-  font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  color: ${({ $primary, theme }) => ($primary ? theme.common.colorKeyLight : theme.common.colorGrayBlue2)};
-  text-transform: uppercase;
-`
-
 const Note = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeSmaller};
@@ -84,15 +70,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `
-
-const RowStart = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 10px;
-  width: 100%;
-  gap: 20px;
-`
 const RowCenter = styled.div`
   display: flex;
   align-items: center;
@@ -104,36 +81,97 @@ const RowCenter = styled.div`
 const StyledEditIcon = styled(EditIcon)`
   cursor: pointer;
 `
+
+const { api } = tequila
+const { toastSuccess } = toasts
+interface State {
+  externalWalletAddress: string
+  loading: boolean
+  disabled?: boolean
+  txStatus?: BeneficiaryTxStatus
+  errors: string[]
+}
+
 export const SettleModal = ({ show, onClose }: Props) => {
-  const [address, setAddress] = useState('')
-  const [disabled, setDisabled] = useState(true)
+  const [state, setState] = useState<State>({
+    externalWalletAddress: '',
+    loading: true,
+    disabled: true,
+    errors: [],
+  })
+
   const handleClose = () => {
     if (!onClose) {
       return
     }
     onClose()
   }
-  const { beneficiary } = useAppSelector(selectors.beneficiarySelector)
+  const { isChannelAddress, beneficiary } = useAppSelector(selectors.beneficiarySelector)
   const { current, hermesPercent } = useAppSelector(selectors.feesSelector)
-  const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
+  const identity = useAppSelector(selectors.currentIdentitySelector)
 
-  const earnings = useMemo(() => Number(myst.display(earningsTokens.wei, { fractionDigits: 6, showCurrency: false })), [
-    earningsTokens.wei,
+  const calculatedFees = useMemo(() => feez.calculateEarnings(identity.earningsTokens, current, hermesPercent), [
+    hermesPercent,
+    current.settlement.wei,
+    identity.earningsTokens,
   ])
-  const networkFee = useMemo(() => {
-    const fee = Number(earningsTokens.wei) * Number(hermesPercent)
-    return Number(myst.display(fee, { fractionDigits: 6, showCurrency: false }))
-  }, [earningsTokens.wei])
-  const polygonFee = useMemo(
-    () => Number(myst.display(current.settlement.wei, { fractionDigits: 6, showCurrency: false })),
-    [current.settlement.wei],
-  )
-  const total = useMemo(() => {
-    const sum =
-      Number(earningsTokens.wei) - Number(earningsTokens.wei) * Number(hermesPercent) - Number(current.settlement.wei)
-    return Number(myst.display(sum, { fractionDigits: 6, showCurrency: false }))
-  }, [earningsTokens.wei, current.settlement.wei])
-  // TODO: Move out card as seperate reusable???
+  useEffect(() => {
+    ;(async () => {
+      if (identities.isEmpty(identity)) {
+        return
+      }
+      try {
+        const txStatus = await api.beneficiaryTxStatus(identity.id).catch(() => undefined)
+        setState((p) => ({
+          ...p,
+          externalWalletAddress: isChannelAddress ? '' : beneficiary,
+          txStatus,
+          loading: false,
+        }))
+      } catch (e: any) {
+        errors.parseToastError(e)
+      }
+    })()
+  }, [identity.id, beneficiary])
+
+  const isProfitsBelowZero = calculatedFees.profitsWei.lt(0)
+
+  useEffect(() => {
+    const errors: string[] = []
+    if (isProfitsBelowZero) {
+      errors.push(
+        `You don’t have enough earnings to cover settlement costs. At least ${myst.display(
+          calculatedFees.totalFeesWei,
+        )} is required`,
+      )
+    }
+    if (!isValidEthereumAddress(state.externalWalletAddress)) {
+      errors.push('Invalid external wallet address')
+    }
+    setState((p) => ({ ...p, errors: errors }))
+  }, [state.externalWalletAddress, calculatedFees.profitsWei])
+
+  const handleExternalWalletChange = (v: string) => setState((p) => ({ ...p, externalWalletAddress: v }))
+  const handleDisableChange = (v: boolean) => setState((p) => ({ ...p, disabled: v }))
+  const setLoading = (b: boolean = true) => setState((p) => ({ ...p, loading: b }))
+
+  const handleSettle = async () => {
+    setLoading()
+    try {
+      await api.settleWithBeneficiary({
+        providerId: identity.id,
+        hermesId: '',
+        beneficiary: state.externalWalletAddress,
+      })
+      toastSuccess(`Automatic withdrawal to ${state.externalWalletAddress} request submitted`)
+      await tequila.refreshBeneficiary(identity.id)
+    } catch (err: any) {
+      errors.parseToastError(err)
+    }
+    setLoading(false)
+  }
+  const isNegativeProfit = calculatedFees.profitsWei.lte(0)
+
   return (
     <Modal show={show} title="Settle" icon={<SettleButtonIcon />} onClickX={handleClose}>
       <Content>
@@ -143,14 +181,13 @@ export const SettleModal = ({ show, onClose }: Props) => {
             fluid
             input={
               <TextField
-                disabled={disabled}
-                placeholder={beneficiary}
-                value={address}
-                onChange={(v) => setAddress(v)}
+                disabled={state.disabled}
+                value={state.externalWalletAddress}
+                onChange={handleExternalWalletChange}
                 icon={
                   <StyledEditIcon
                     onClick={() => {
-                      setDisabled(!disabled)
+                      handleDisableChange(!state.disabled)
                     }}
                   />
                 }
@@ -159,40 +196,26 @@ export const SettleModal = ({ show, onClose }: Props) => {
           />
         </Container>
         <RowCenter>
-          {/* TODO: Rethink layout?????? */}
-          <Card>
-            <CardTitle>Amount</CardTitle>
-            <RowStart>
-              <Ammount>{earnings}</Ammount>
-              <Myst>myst</Myst>
-            </RowStart>
-          </Card>
-          <Card>
-            <CardTitle>{`Network fee (${Number(hermesPercent) * 100}%)`}</CardTitle>
-            <RowStart>
-              <Ammount>{networkFee}</Ammount>
-              <Myst>myst</Myst>
-            </RowStart>
-          </Card>
-          <Card>
-            <CardTitle>Polygon Mainnet fee</CardTitle>
-            <RowStart>
-              <Ammount>{polygonFee}</Ammount>
-              <Myst>myst</Myst>
-            </RowStart>
-          </Card>
-          <Card $primary>
-            <CardTitle $primary>You will get</CardTitle>
-            <RowStart>
-              <Ammount $primary>{total}</Ammount>
-              <Myst $primary>myst</Myst>
-            </RowStart>
-          </Card>
+          <Card title="Amount" amount={myst.display(calculatedFees.earningsWei, { fractionDigits: 6 })} />
+          <Card
+            title={`Network fee ${calculatedFees.hermesCutPercent * 100}%`}
+            amount={myst.display(calculatedFees.hermesCutWei, { fractionDigits: 6 })}
+          />
+          <Card
+            title="Polygon mainnet fee"
+            amount={myst.display(calculatedFees.blockchainFeeWei, { fractionDigits: 6 })}
+          />
+          <Card $primary title="You will get" amount={myst.display(calculatedFees.profitsWei, { fractionDigits: 6 })} />
         </RowCenter>
         <Note>
           Please click SETTLE to proceed with settlement to External wallet. Note: Settlement transaction may take a few
           minutes to complete.
         </Note>
+        <div>
+          {state.errors.map((message, idx) => (
+            <ErrorNote key={idx} show errorMessage={message} />
+          ))}
+        </div>
         <Footer>
           <Button
             label="Cancel"
@@ -202,8 +225,15 @@ export const SettleModal = ({ show, onClose }: Props) => {
               handleClose()
             }}
           />
-          {/* TODO: Add API call to invoke beneficiary change */}
-          <Button label="Settle" rounded type={'submit'} />
+          <Button
+            label="Settle"
+            rounded
+            loading={state.loading}
+            disabled={isNegativeProfit}
+            onClick={async () => {
+              await handleSettle()
+            }}
+          />
         </Footer>
       </Content>
     </Modal>
