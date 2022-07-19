@@ -23,9 +23,10 @@ const { api } = tequila
 const { date2human, seconds2Time } = dates
 const { countryName } = countries
 const { format, add } = bytes
-interface State {
+
+export interface PaginationState {
   page: number
-  pageSize: number
+  pageSize?: number
 }
 
 // TODO: Improve switch statement once its clear what other services are named
@@ -39,16 +40,21 @@ const session2human = (session: string) => {
   return session.split('-')[0]
 }
 export const HistoryPage = () => {
-  const [state, setState] = useState<State>({
+  const [state, setState] = useState<PaginationState>({
     page: 1,
-    pageSize: 20,
+    pageSize: 10,
   })
 
-  const [data = SESSIONS_LIST_RESPONSE_EMPTY, loading] = useFetch(
+  const [data = SESSIONS_LIST_RESPONSE_EMPTY] = useFetch(
     () => api.sessions({ pageSize: state.pageSize, page: state.page }),
     [state.pageSize, state.page],
   )
-  console.log(data.items)
+
+  const handlePageChange = ({ page }: PaginationState) => {
+    setState((p) => ({ ...p, page }))
+  }
+
+  console.log(data.totalPages)
   const Columns: Column<any>[] = useMemo(
     () => [
       {
@@ -97,7 +103,7 @@ export const HistoryPage = () => {
         <Table columns={Columns} data={data.items} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Pagination />
+        <Pagination currentPage={state.page} totalPages={data.totalPages} handlePageChange={handlePageChange} />
       </LayoutUnstyledRow>
     </Layout>
   )

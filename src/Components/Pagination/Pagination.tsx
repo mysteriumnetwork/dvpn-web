@@ -4,16 +4,21 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Button } from '../Inputs/Button'
 import { themeCommon } from '../../theme/themeCommon'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { PaginationState } from '../../Pages/Authenticated/HistoryPage/HistoryPage'
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 20px 10px;
+`
+const activeCSS = css`
+  background: ${themeCommon.colorGrayBlue}51;
+  cursor: not-allowed;
 `
 const PageButton = styled.button<Props>`
   height: 32px;
@@ -31,6 +36,7 @@ const PageButton = styled.button<Props>`
   :disabled {
     background: ${themeCommon.colorGrayBlue}51;
   }
+  ${({ $active }) => $active && activeCSS}
 `
 const Pages = styled.div`
   display: flex;
@@ -40,13 +46,35 @@ const Pages = styled.div`
 `
 interface Props {
   onClick?: () => void
+  $active: boolean
+}
+interface PaginationProps {
+  currentPage: number
+  totalPages: number
+  handlePageChange: (page: PaginationState) => void
 }
 // TODO: Hook up to API, rinse logic for displaying active page
 
-export const Pagination = () => {
-  const [currentPage, setCurrentPage] = useState(1)
+export const Pagination = ({ currentPage, totalPages, handlePageChange }: PaginationProps) => {
   const [pages]: Array<any> = useState([1, 2, 3, 4, 5])
-
+  const PageButtons = useMemo(
+    () =>
+      [...Array(totalPages)].map((_, i) => {
+        return (
+          <PageButton
+            $active={i + 1 === currentPage}
+            key={i}
+            onClick={() => {
+              handlePageChange({ page: i + 1 })
+              console.log(currentPage)
+            }}
+          >
+            {i + 1}
+          </PageButton>
+        )
+      }),
+    [totalPages, currentPage],
+  )
   return (
     <Container>
       <Button
@@ -55,30 +83,17 @@ export const Pagination = () => {
         rounded
         onClick={() => {
           // Rethink else call
-          currentPage - 1 >= 1 ? setCurrentPage(currentPage - 1) : setCurrentPage(currentPage)
+          currentPage - 1 >= 1 && handlePageChange({ page: currentPage - 1 })
         }}
       />
-      <Pages>
-        {pages.map((_: any, i: number) => (
-          <PageButton
-            disabled={i + 1 === currentPage}
-            key={i}
-            onClick={() => {
-              setCurrentPage(i + 1)
-              console.log(currentPage)
-            }}
-          >
-            {i + 1}
-          </PageButton>
-        ))}
-      </Pages>
+      <Pages>{PageButtons}</Pages>
       <Button
         variant="outlined"
         label="Next"
         rounded
         onClick={() => {
           // Rethink else call
-          currentPage + 1 <= pages.length ? setCurrentPage(currentPage + 1) : setCurrentPage(currentPage)
+          currentPage + 1 <= pages.length && handlePageChange({ page: currentPage + 1 })
         }}
       />
     </Container>
