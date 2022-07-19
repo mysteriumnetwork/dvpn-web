@@ -7,10 +7,9 @@
 import { useMemo, useState } from 'react'
 import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
-// import { Table } from '../../../Components/Table/Table'
 import { Column } from 'react-table'
 import { Table, PrimaryCell, SecondaryCell } from '../../../Components/Table/Table'
-import { Pagination } from '../../../Components/Pagination/Pagination'
+import { Pagination, PaginationState } from '../../../Components/Pagination/Pagination'
 import { tequila } from '../../../api/tequila'
 import { SESSIONS_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 import dates from '../../../commons/dates'
@@ -23,11 +22,6 @@ const { api } = tequila
 const { date2human, seconds2Time } = dates
 const { countryName } = countries
 const { format, add } = bytes
-
-export interface PaginationState {
-  page: number
-  pageSize?: number
-}
 
 // TODO: Improve switch statement once its clear what other services are named
 const service2human = (service: string) => {
@@ -54,7 +48,7 @@ export const HistoryPage = () => {
     setState((p) => ({ ...p, page }))
   }
 
-  console.log(data.totalPages)
+  console.log(data.items)
   const Columns: Column<any>[] = useMemo(
     () => [
       {

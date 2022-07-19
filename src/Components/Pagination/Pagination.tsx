@@ -8,8 +8,11 @@ import styled, { css } from 'styled-components'
 import { Button } from '../Inputs/Button'
 import { themeCommon } from '../../theme/themeCommon'
 import { useState, useMemo } from 'react'
-import { PaginationState } from '../../Pages/Authenticated/HistoryPage/HistoryPage'
 
+export interface PaginationState {
+  page: number
+  pageSize?: number
+}
 const Container = styled.div`
   width: 100%;
   display: flex;

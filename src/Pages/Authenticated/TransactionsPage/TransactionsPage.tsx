@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Layout, LayoutHeroCardRow, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Table, PrimaryCell, SecondaryCell } from '../../../Components/Table/Table'
@@ -12,108 +12,62 @@ import { DownloadTransactionCSV } from './DownloadTransactionCSV'
 import { TotalSettled } from './TotalSettled'
 import { SettlementCard } from './SettlementCard'
 import { Column } from 'react-table'
-import { Pagination } from '../../../Components/Pagination/Pagination'
+import { Pagination, PaginationState } from '../../../Components/Pagination/Pagination'
+import { tequila } from '../../../api/tequila'
+import { myst } from '../../../commons/mysts'
+import { useFetch } from '../../../commons/hooks'
+import { SETTLEMENT_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
+import dates from '../../../commons/dates'
 
-const data = [
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-  {
-    date: '19/05/2022, 09:37:24',
-    extwallet: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    transaction_id: '0x045f95f2df037539bb8a242b87d820ff58460fc1',
-    fee: '1.038 MYST',
-    ammount: '1.038 MYST',
-  },
-]
+const { api } = tequila
+const { date2human } = dates
 
 export const TransactionsPage = () => {
+  const [state, setState] = useState<PaginationState>({
+    page: 1,
+    pageSize: 10,
+  })
+
+  const handlePageChange = ({ page }: PaginationState) => {
+    setState((p) => ({ ...p, page }))
+  }
+
+  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY] = useFetch(() =>
+    api.settlementHistory({ pageSize: state.pageSize, page: state.page }),
+  )
+
+  console.log(data.items)
   const Columns: Column<any>[] = useMemo(
     () => [
-      { Header: 'Date', accessor: 'date', Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>, minWidth: 50 },
+      {
+        Header: 'Date',
+        accessor: 'settledAt',
+        Cell: (c) => <PrimaryCell>{date2human(c.value)}</PrimaryCell>,
+        minWidth: 50,
+      },
       {
         Header: 'External Wallet Address',
-        accessor: 'extwallet',
+        accessor: 'beneficiary',
         Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
         minWidth: 300,
       },
       {
         Header: 'Transaction ID',
-        accessor: 'transaction_id',
+        accessor: 'txHash',
         Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
         minWidth: 300,
       },
       {
         Header: 'Fee',
-        accessor: 'fee',
-        Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>,
+        accessor: 'fees',
+        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractionDigits: 3 })}</PrimaryCell>,
         minWidth: 50,
         maxWidth: 100,
       },
       {
-        Header: 'Received ammount',
-        accessor: 'ammount',
-        Cell: (c) => <PrimaryCell>{c.value}</PrimaryCell>,
+        Header: 'Received amount',
+        accessor: 'amount',
+        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractionDigits: 3 })}</PrimaryCell>,
         minWidth: 50,
         maxWidth: 100,
       },
@@ -128,10 +82,10 @@ export const TransactionsPage = () => {
         <DownloadTransactionCSV />
       </LayoutHeroCardRow>
       <LayoutUnstyledRow>
-        <Table columns={Columns} data={data} />
+        <Table columns={Columns} data={data.items} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Pagination />
+        <Pagination currentPage={state.page} totalPages={data.totalPages} handlePageChange={handlePageChange} />
       </LayoutUnstyledRow>
     </Layout>
   )
