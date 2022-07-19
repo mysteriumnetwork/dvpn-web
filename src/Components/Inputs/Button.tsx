@@ -38,7 +38,6 @@ const OUTLINES_CSS = css`
     background: ${themeCommon.colorGrayBlue}51;
   }
 `
-
 const BLUE_CSS = css`
   color: ${themeCommon.colorWhite};
   background: ${themeCommon.colorBlue};
