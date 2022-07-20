@@ -14,8 +14,12 @@ interface CardProps {
 
 const PaddedContent = styled.div<CardProps>`
   padding: 26px 30px 26px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 20px;
-  min-width: 400px;
+  min-width: 300px;
+  max-height: 100px;
   width: ${({ $fluid }) => $fluid && '100%'};
   flex-grow: ${({ $flexGrow }) => ($flexGrow ? $flexGrow : 1)};
   background: ${({ theme }) => theme.bgTransactionPageCard};

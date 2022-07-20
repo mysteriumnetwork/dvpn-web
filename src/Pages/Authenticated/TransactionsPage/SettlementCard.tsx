@@ -20,22 +20,23 @@ const Progress = styled.div`
   flex-direction: column;
   gap: 5px;
   width: 100%;
-  min-width: 400px;
 `
 
 const Row = styled.div`
   display: flex;
-  width: 100%;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  flex-wrap: nowrap;
 `
 
 const Content = styled.div`
   display: flex;
-  width: 100%;
   justify-content: space-between;
   align-items: center;
   gap: 60px;
+  min-width: 400px;
+  width: 100%;
 `
 
 const Info = styled.div`
@@ -54,7 +55,7 @@ export const SettlementCard = () => {
   const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
 
   return (
-    <Card>
+    <Card grow={2}>
       <SettleModal show={showModal} onClose={() => setShowModal(false)} />
       <Content>
         <Progress>
@@ -64,7 +65,7 @@ export const SettlementCard = () => {
           </Row>
           <ProgressBar max={thresholdMyst} value={value} size="big" />
         </Progress>
-        <Button label="Settle now" rounded onClick={() => setShowModal(true)} />
+        <Button label="Settle now" size="medium" rounded onClick={() => setShowModal(true)} />
       </Content>
     </Card>
   )

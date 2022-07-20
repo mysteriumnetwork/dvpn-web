@@ -10,6 +10,7 @@ import { ReactNode } from 'react'
 import { themeCommon } from '../../theme/themeCommon'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'blue'
+export type ButtonSize = 'small' | 'medium' | 'large'
 
 const PRIMARY_CSS = css`
   color: ${themeCommon.colorWhite};
@@ -19,7 +20,9 @@ const PRIMARY_CSS = css`
     background: ${themeCommon.colorKey}BB;
   }
 `
-
+const MEDIUM_CSS = css`
+  padding: 16px 50px 16px 50px;
+`
 const SECONDARY_CSS = css`
   color: ${themeCommon.colorWhite};
   background: ${themeCommon.colorGrayBlue};
@@ -47,7 +50,7 @@ const BLUE_CSS = css`
   }
 `
 
-const resolveCSS = (variant: ButtonVariant) => {
+const resolveVariant = (variant: ButtonVariant) => {
   switch (variant) {
     case 'primary':
       return PRIMARY_CSS
@@ -61,9 +64,15 @@ const resolveCSS = (variant: ButtonVariant) => {
       return PRIMARY_CSS
   }
 }
-
+const resolveSize = (size: ButtonSize) => {
+  switch (size) {
+    case 'medium':
+      return MEDIUM_CSS
+  }
+}
 interface ButtonStyleProps {
   $variant: ButtonVariant
+  $size: ButtonSize
   $rounded?: boolean
   loading?: boolean
 }
@@ -87,8 +96,8 @@ const StyledButton = styled.button<ButtonStyleProps>`
   :hover {
     cursor: pointer;
   }
-
-  ${({ $variant }) => resolveCSS($variant)}
+  ${({ $size }) => resolveSize($size)}
+  ${({ $variant }) => resolveVariant($variant)}
   :disabled {
     background-color: ${themeCommon.colorGrayBlue};
     cursor: not-allowed;
@@ -123,6 +132,7 @@ interface Props {
   disabled?: boolean
   label: ReactNode
   variant?: ButtonVariant
+  size?: ButtonSize
   loading?: boolean
   rounded?: boolean
   round?: boolean
@@ -130,9 +140,19 @@ interface Props {
   type?: 'submit' | 'reset' | 'button'
 }
 
-export const Button = ({ disabled, loading, label, variant = 'primary', onClick, type, rounded }: Props) => {
+export const Button = ({
+  size = 'small',
+  disabled,
+  loading,
+  label,
+  variant = 'primary',
+  onClick,
+  type,
+  rounded,
+}: Props) => {
   return (
     <StyledButton
+      $size={size}
       $rounded={rounded}
       $variant={variant}
       type={type}

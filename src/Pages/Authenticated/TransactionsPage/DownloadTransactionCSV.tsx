@@ -22,7 +22,7 @@ const Title = styled.div`
 
 export const DownloadTransactionCSV = () => {
   return (
-    <Card>
+    <Card grow={0} fluid={false}>
       <Row>
         <FileIcon />
         <Title>Record of transactions</Title>
