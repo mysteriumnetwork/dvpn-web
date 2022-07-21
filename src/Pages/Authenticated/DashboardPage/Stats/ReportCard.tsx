@@ -14,7 +14,6 @@ const Card = styled.div`
   background: ${({ theme }) => theme.bgLayoutCardCss};
   padding: 20px;
   color: ${({ theme }) => theme.text.colorMain};
-}
 `
 
 const Content = styled.div`

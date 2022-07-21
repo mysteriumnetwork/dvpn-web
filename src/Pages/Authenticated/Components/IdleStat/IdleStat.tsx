@@ -113,7 +113,7 @@ export const IdleStat = () => {
           <Bubble value="45%" />
         </Column>
         <Column $marginLeft="40px">
-          <Bubble value="Online" color="green" />
+          <Bubble value="Online" color="green" line />
           <Bubble value="Offline" color="no-background" />
         </Column>
         <Column $marginLeft="40px" />
