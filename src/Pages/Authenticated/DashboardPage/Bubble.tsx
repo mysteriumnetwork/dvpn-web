@@ -14,21 +14,6 @@ interface BubbleProps {
   value?: string
   $line?: boolean
 }
-// const lineCss = css<BubbleProps>`
-//   :after {
-//     content: '';
-//     position: absolute;
-//     width: 0px;
-//     height: 0px;
-//     left: 0px;
-//     border-radius: 12px;
-//     border-top: 12px solid transparent;
-//     border-bottom: 12px solid transparent;
-//     border-left: 12px solid
-//       ${({ $primary }) => ($primary ? themeCommon.colorGreen : `${themeCommon.colorGreen}${alphaToHex(0.1)}`)};
-//     transform: translateX(55px) translateY(1px);
-//   }
-// `
 const greenAfterCss = css<BubbleProps>`
   :after {
     content: '';
