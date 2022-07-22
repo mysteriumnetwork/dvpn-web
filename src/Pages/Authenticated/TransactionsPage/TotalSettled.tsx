@@ -39,7 +39,7 @@ export const TotalSettled = () => {
   const identity = useAppSelector(selectors.currentIdentitySelector)
 
   return (
-    <Card>
+    <Card grow={0} fluid={false}>
       <Row>
         <WalletIcon $accented />
         <Column>

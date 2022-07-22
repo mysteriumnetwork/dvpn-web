@@ -7,7 +7,9 @@
 const date2human = (ds: string): string => {
   return new Date(Date.parse(ds)).toLocaleString('en-GB')
 }
-
+const date2Locale = (d: Date): string => {
+  return d.toLocaleString('en-GB')
+}
 const seconds2Time = (seconds: number): string => {
   let days = Math.floor(seconds / 86400)
   seconds %= 86400
@@ -32,6 +34,7 @@ const seconds2Time = (seconds: number): string => {
 const dates = {
   date2human,
   seconds2Time,
+  date2Locale,
 }
 
 export default dates

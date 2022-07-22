@@ -17,7 +17,7 @@ import { useFetch } from '../../../commons/hooks'
 import countries from '../../../commons/countries'
 import { myst } from '../../../commons/mysts'
 import bytes from '../../../commons/bytes'
-
+import { CustomDatePicker } from './CustomDatePicker'
 const { api } = tequila
 const { date2human, seconds2Time } = dates
 const { countryName } = countries
@@ -33,7 +33,20 @@ const service2human = (service: string) => {
 const session2human = (session: string) => {
   return session.split('-')[0]
 }
+interface DateState {
+  startDate: Date
+  endDate: Date
+}
+
 export const HistoryPage = () => {
+  const handleDateChange = (dates: any) => {
+    const [start, end] = dates
+    setDateState((p) => ({ ...p, startDate: start, endDate: end }))
+  }
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => {
+    setOpen(!open)
+  }
   const [state, setState] = useState<PaginationState>({
     page: 1,
     pageSize: 10,
@@ -47,8 +60,10 @@ export const HistoryPage = () => {
   const handlePageChange = ({ page }: PaginationState) => {
     setState((p) => ({ ...p, page }))
   }
-
-  console.log(data.items)
+  const [dateState, setDateState] = useState<DateState>({
+    startDate: new Date(),
+    endDate: new Date(),
+  })
   const Columns: Column<any>[] = useMemo(
     () => [
       {
@@ -93,6 +108,15 @@ export const HistoryPage = () => {
 
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
+      <LayoutUnstyledRow>
+        <CustomDatePicker
+          onChange={handleDateChange}
+          startDate={dateState.startDate}
+          endDate={dateState.endDate}
+          onClick={handleOpen}
+          open={open}
+        />
+      </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <Table columns={Columns} data={data.items} />
       </LayoutUnstyledRow>
