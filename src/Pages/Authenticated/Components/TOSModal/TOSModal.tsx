@@ -46,7 +46,7 @@ const Container = styled.div`
   max-width: 90%;
   font-weight: 500;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  color: ${({ theme }) => theme.common.colorDarkBlue};
+  color: ${({ theme }) => theme.TOSModal.textColor};
   display: flex;
   flex-direction: column;
   align-items: baseline;

@@ -50,6 +50,7 @@ const dark: Omit<Theme, 'common'> = {
     bgHeader: themeCommon.colorGrayBlue2,
     bgBody: themeCommon.colorGrayBlue2,
     textColor: themeCommon.colorLightBlue,
+    inputColor: themeCommon.colorGrayBlue,
   },
   TOSModal: {
     textColor: themeCommon.colorLightBlue,

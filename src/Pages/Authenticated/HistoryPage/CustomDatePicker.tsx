@@ -44,7 +44,6 @@ const PickerOverrides = styled.div`
   }
   .react-datepicker__navigation {
     margin: 13px 5px;
-    /* Figure out how to change either icon or its color */
   }
   .react-datepicker__navigation-icon {
     :before {
@@ -110,7 +109,7 @@ const PickerOverrides = styled.div`
         background-color: transparent;
       }
     }
-    /* These do not work for some unknown reason, needs investigation */
+    /* TODO: These do not work for some unknown reason, needs investigation */
     &--selecting-range-start {
       background-color: ${({ theme }) => theme.common.colorKey};
       border-radius: 20px;
@@ -123,7 +122,7 @@ const PickerOverrides = styled.div`
   }
 `
 const CustomPickerInput = styled.button`
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.calendar.inputColor};
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   border: none;
   background: none;
@@ -135,12 +134,20 @@ interface IconProps {
   $clicked: boolean
 }
 const InputIcon = styled(TriangleDown)<IconProps>`
+  border-color: ${({ theme }) => theme.calendar.inputColor};
   margin-left: 10px;
   margin-bottom: 1px;
   transform: ${({ $clicked }) => ($clicked ? 'rotate(180deg)' : '')};
 `
-// TODO: Create Props interface
-export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }: any) => {
+interface Props {
+  onClick: () => void
+  onChange: (dates: any) => void
+  startDate: Date
+  endDate: Date
+  open: boolean
+}
+
+export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }: Props) => {
   const CustomInput = forwardRef(({ value, onClick }: any, ref: any) => {
     return (
       <CustomPickerInput onClick={onClick} ref={ref}>
@@ -157,7 +164,7 @@ export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }
         startDate={startDate}
         endDate={endDate}
         selectsRange
-        // Arrow gets bugged when date is selected, investigate more later
+        // TODO: Arrow gets bugged when date is selected, investigate more later
         onInputClick={onClick}
         onClickOutside={onClick}
         customInput={<CustomInput />}

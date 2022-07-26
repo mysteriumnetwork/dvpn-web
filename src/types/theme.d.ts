@@ -41,6 +41,7 @@ export type Theme = {
     bgHeader: string
     bgBody: string
     textColor: string
+    inputColor: string
   }
   table: {
     bgBody: string
