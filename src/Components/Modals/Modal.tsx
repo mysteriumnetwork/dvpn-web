@@ -113,7 +113,7 @@ interface Props {
   loading?: boolean
 }
 
-export const Modal = ({ show, icon, title, subTitle, children, onClickX, loading }: Props) => {
+export const Modal = ({ show = false, icon, title, subTitle, children, onClickX, loading }: Props) => {
   if (!show) {
     return <></>
   }

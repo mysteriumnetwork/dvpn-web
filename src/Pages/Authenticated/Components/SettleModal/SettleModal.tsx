@@ -84,6 +84,7 @@ const StyledEditIcon = styled(EditIcon)`
 
 const { api } = tequila
 const { toastSuccess } = toasts
+
 interface State {
   externalWalletAddress: string
   loading: boolean

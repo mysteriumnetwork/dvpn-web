@@ -23,15 +23,20 @@ import FontUbuntuRegular from '../assets/fonts/Ubuntu/Ubuntu-Regular.ttf'
 import remoteStorage from '../commons/remoteStorage'
 import { UI_THEME_KEY } from '../constants/remote-storage.keys'
 import { themeCommon } from '../theme/themeCommon'
+import { selectors } from '../redux/selectors'
+import { TOSModal } from './Authenticated/Components/TOSModal/TOSModal'
 
 export const App = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
+  const { needsAgreedTerms } = useAppSelector(selectors.onBoardingStateSelector)
+  console.log(needsAgreedTerms)
 
   return (
     <ThemeProvider theme={theme === 'dark' ? themes.dark : themes.light}>
       <GlobalStyle />
       <Hotkeys>
         <NodeHealthcheckBarrier>
+          <TOSModal show={needsAgreedTerms} />
           <AppRouter />
         </NodeHealthcheckBarrier>
       </Hotkeys>
