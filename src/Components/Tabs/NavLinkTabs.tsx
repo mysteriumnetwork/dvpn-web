@@ -23,7 +23,7 @@ const activeCSS = css`
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-top: 6px solid #d61f85;
-    transform: translateX(42px) translateY(27px);
+    transform: translateX(42px) translateY(25px);
   }
 `
 const Tab = styled(Link)<TabProps>`
