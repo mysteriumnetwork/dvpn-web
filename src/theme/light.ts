@@ -46,6 +46,11 @@ const light: Omit<Theme, 'common'> = {
   settleCard: {
     earningsColor: themeCommon.colorDarkBlue,
   },
+  calendar: {
+    bgBody: themeCommon.colorWhite,
+    bgHeader: themeCommon.colorWhite,
+    textColor: themeCommon.colorGrayBlue2,
+  },
   modal: {
     bgOverlay: themeCommon.colorDarkBlue + alphaToHex(0.5),
     bgColor: themeCommon.colorWhite,

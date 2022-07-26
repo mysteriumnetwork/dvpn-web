@@ -11,38 +11,51 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { ReactComponent as TriangleDown } from '../../../assets/images/triangle-down.svg'
 
 const PickerOverrides = styled.div`
+  .react-datepicker__current-month {
+    color: ${({ theme }) => theme.calendar.textColor};
+  }
   .react-datepicker__header {
-    background-color: ${({ theme }) => theme.common.colorWhite};
+    background-color: ${({ theme }) => theme.calendar.bgHeader};
     padding: 10px 5px 20px 5px;
     border: none;
+    color: ${({ theme }) => theme.calendar.textColor}!important;
   }
   .react-datepicker {
     border: none;
     border-radius: 10px;
     box-shadow: 0px 5px 40px rgba(0, 0, 69, 0.1);
+    background-color: ${({ theme }) => theme.calendar.bgBody};
+    color: ${({ theme }) => theme.calendar.textColor};
     padding: 10px;
   }
   .react-datepicker__triangle {
-    background-color: ${({ theme }) => theme.common.colorWhite};
-    border-color: ${({ theme }) => theme.common.colorWhite};
+    background-color: ${({ theme }) => theme.calendar.bgBody};
+    border-color: ${({ theme }) => theme.calendar.bgBody};
     ::after {
-      border-bottom-color: ${({ theme }) => theme.common.colorWhite}!important;
+      border-bottom-color: ${({ theme }) => theme.calendar.bgBody}!important;
       left: 68px !important;
       top: 1px !important;
     }
     ::before {
-      border-bottom-color: ${({ theme }) => theme.common.colorWhite}!important;
-
+      border-bottom-color: ${({ theme }) => theme.calendar.bgBody}!important;
       left: 68px !important;
       top: 1px !important;
     }
   }
   .react-datepicker__navigation {
-    margin: 12px 5px;
+    margin: 13px 5px;
     /* Figure out how to change either icon or its color */
+  }
+  .react-datepicker__navigation-icon {
+    :before {
+      border-color: ${({ theme }) => theme.calendar.textColor};
+      height: 4px;
+      width: 4px;
+    }
   }
   .react-datepicker__day {
     cursor: pointer;
+    color: ${({ theme }) => theme.calendar.textColor};
 
     &:hover {
       border-radius: 50% !important;
@@ -58,7 +71,7 @@ const PickerOverrides = styled.div`
     &--highlighted {
       border-radius: 50%;
       background-color: ${({ theme }) => theme.common.colorKey};
-      color: #fff;
+      color: ${({ theme }) => theme.common.colorWhite};
 
       &:hover {
         background-color: ${({ theme }) => theme.common.colorKey};
@@ -69,14 +82,14 @@ const PickerOverrides = styled.div`
     &--in-range {
       border-radius: 50%;
       background-color: ${({ theme }) => theme.common.colorKey};
-      color: #fff;
-
+      color: ${({ theme }) => theme.common.colorWhite};
       &:hover {
       }
     }
 
     &--in-selecting-range:not(.--in-range) {
       background-color: ${({ theme }) => theme.common.colorKeyLight};
+      color: ${({ theme }) => theme.common.colorWhite};
       border-radius: 50%;
     }
 

@@ -46,6 +46,11 @@ const dark: Omit<Theme, 'common'> = {
     titleColor: themeCommon.colorLightBlue,
     boxShadow: '0px 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
   },
+  calendar: {
+    bgHeader: themeCommon.colorGrayBlue2,
+    bgBody: themeCommon.colorGrayBlue2,
+    textColor: themeCommon.colorLightBlue,
+  },
   settleModal: {
     card: {
       titleColor: themeCommon.colorGrayBlue,
