@@ -44,7 +44,9 @@ const Info = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue};
 `
 
-const CurrentEarnings = styled.div``
+const CurrentEarnings = styled.div`
+  color: ${({ theme }) => theme.settleCard.earningsColor};
+`
 
 export const SettlementCard = () => {
   const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)

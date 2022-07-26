@@ -31,6 +31,9 @@ export type Theme = {
       amountColor: string
     }
   }
+  settleCard: {
+    earningsColor: string
+  }
   table: {
     bgBody: string
     bgRowOdd: string
