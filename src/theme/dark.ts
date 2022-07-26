@@ -43,9 +43,27 @@ const dark: Omit<Theme, 'common'> = {
   modal: {
     bgOverlay: themeCommon.color231F3A + alphaToHex(0.8),
     bgColor: themeCommon.color393453,
+    titleColor: themeCommon.colorLightBlue,
     boxShadow: '0px 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
   },
-
+  calendar: {
+    bgHeader: themeCommon.colorGrayBlue2,
+    bgBody: themeCommon.colorGrayBlue2,
+    textColor: themeCommon.colorLightBlue,
+    inputColor: themeCommon.colorGrayBlue,
+  },
+  TOSModal: {
+    textColor: themeCommon.colorLightBlue,
+  },
+  settleModal: {
+    card: {
+      titleColor: themeCommon.colorGrayBlue,
+      amountColor: themeCommon.colorLightBlue,
+    },
+  },
+  settleCard: {
+    earningsColor: themeCommon.colorLightBlue,
+  },
   textInput: {
     textColor: themeCommon.colorGrayBlue,
     textColorDisabled: '',

@@ -11,38 +11,50 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { ReactComponent as TriangleDown } from '../../../assets/images/triangle-down.svg'
 
 const PickerOverrides = styled.div`
+  .react-datepicker__current-month {
+    color: ${({ theme }) => theme.calendar.textColor};
+  }
   .react-datepicker__header {
-    background-color: ${({ theme }) => theme.common.colorWhite};
+    background-color: ${({ theme }) => theme.calendar.bgHeader};
     padding: 10px 5px 20px 5px;
     border: none;
+    color: ${({ theme }) => theme.calendar.textColor}!important;
   }
   .react-datepicker {
     border: none;
     border-radius: 10px;
     box-shadow: 0px 5px 40px rgba(0, 0, 69, 0.1);
+    background-color: ${({ theme }) => theme.calendar.bgBody};
+    color: ${({ theme }) => theme.calendar.textColor};
     padding: 10px;
   }
   .react-datepicker__triangle {
-    background-color: ${({ theme }) => theme.common.colorWhite};
-    border-color: ${({ theme }) => theme.common.colorWhite};
+    background-color: ${({ theme }) => theme.calendar.bgBody};
+    border-color: ${({ theme }) => theme.calendar.bgBody};
     ::after {
-      border-bottom-color: ${({ theme }) => theme.common.colorWhite}!important;
+      border-bottom-color: ${({ theme }) => theme.calendar.bgBody}!important;
       left: 68px !important;
       top: 1px !important;
     }
     ::before {
-      border-bottom-color: ${({ theme }) => theme.common.colorWhite}!important;
-
+      border-bottom-color: ${({ theme }) => theme.calendar.bgBody}!important;
       left: 68px !important;
       top: 1px !important;
     }
   }
   .react-datepicker__navigation {
-    margin: 12px 5px;
-    /* Figure out how to change either icon or its color */
+    margin: 13px 5px;
+  }
+  .react-datepicker__navigation-icon {
+    :before {
+      border-color: ${({ theme }) => theme.calendar.textColor};
+      height: 4px;
+      width: 4px;
+    }
   }
   .react-datepicker__day {
     cursor: pointer;
+    color: ${({ theme }) => theme.calendar.textColor};
 
     &:hover {
       border-radius: 50% !important;
@@ -58,7 +70,7 @@ const PickerOverrides = styled.div`
     &--highlighted {
       border-radius: 50%;
       background-color: ${({ theme }) => theme.common.colorKey};
-      color: #fff;
+      color: ${({ theme }) => theme.common.colorWhite};
 
       &:hover {
         background-color: ${({ theme }) => theme.common.colorKey};
@@ -69,14 +81,14 @@ const PickerOverrides = styled.div`
     &--in-range {
       border-radius: 50%;
       background-color: ${({ theme }) => theme.common.colorKey};
-      color: #fff;
-
+      color: ${({ theme }) => theme.common.colorWhite};
       &:hover {
       }
     }
 
     &--in-selecting-range:not(.--in-range) {
       background-color: ${({ theme }) => theme.common.colorKeyLight};
+      color: ${({ theme }) => theme.common.colorWhite};
       border-radius: 50%;
     }
 
@@ -97,7 +109,7 @@ const PickerOverrides = styled.div`
         background-color: transparent;
       }
     }
-    /* These do not work for some unknown reason, needs investigation */
+    /* TODO: These do not work for some unknown reason, needs investigation */
     &--selecting-range-start {
       background-color: ${({ theme }) => theme.common.colorKey};
       border-radius: 20px;
@@ -110,7 +122,7 @@ const PickerOverrides = styled.div`
   }
 `
 const CustomPickerInput = styled.button`
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.calendar.inputColor};
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   border: none;
   background: none;
@@ -122,12 +134,20 @@ interface IconProps {
   $clicked: boolean
 }
 const InputIcon = styled(TriangleDown)<IconProps>`
+  border-color: ${({ theme }) => theme.calendar.inputColor};
   margin-left: 10px;
   margin-bottom: 1px;
   transform: ${({ $clicked }) => ($clicked ? 'rotate(180deg)' : '')};
 `
-// TODO: Create Props interface
-export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }: any) => {
+interface Props {
+  onClick: () => void
+  onChange: (dates: any) => void
+  startDate: Date
+  endDate: Date
+  open: boolean
+}
+
+export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }: Props) => {
   const CustomInput = forwardRef(({ value, onClick }: any, ref: any) => {
     return (
       <CustomPickerInput onClick={onClick} ref={ref}>
@@ -144,7 +164,7 @@ export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }
         startDate={startDate}
         endDate={endDate}
         selectsRange
-        // Arrow gets bugged when date is selected, investigate more later
+        // TODO: Arrow gets bugged when date is selected, investigate more later
         onInputClick={onClick}
         onClickOutside={onClick}
         customInput={<CustomInput />}

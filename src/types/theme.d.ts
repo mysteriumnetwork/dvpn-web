@@ -25,6 +25,24 @@ export type Theme = {
   bgTransactionPageCard: string
   bgTransactionPageCardBoxShadow: string
 
+  settleModal: {
+    card: {
+      titleColor: string
+      amountColor: string
+    }
+  }
+  TOSModal: {
+    textColor: string
+  }
+  settleCard: {
+    earningsColor: string
+  }
+  calendar: {
+    bgHeader: string
+    bgBody: string
+    textColor: string
+    inputColor: string
+  }
   table: {
     bgBody: string
     bgRowOdd: string
@@ -35,6 +53,7 @@ export type Theme = {
   modal: {
     bgOverlay: string
     bgColor: string
+    titleColor: string
     boxShadow: string
   }
 

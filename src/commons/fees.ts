@@ -34,7 +34,11 @@ const calculateEarnings = (earnings: Tokens, fees: FeesV2, hermesPercent: string
     totalFeesWei,
   }
 }
-
+const calculateSettled = (earnings: Tokens, earningsTotal: Tokens) => {
+  const { toBig } = myst
+  const totalSettled = toBig(earningsTotal.wei).minus(earnings.wei)
+  return totalSettled
+}
 const ZERO_DATE = new Date(0).toJSON()
 
 const isEmpty = (fees: FeesResponse): boolean => fees.serverTime === ZERO_DATE
@@ -42,5 +46,6 @@ const isEmpty = (fees: FeesResponse): boolean => fees.serverTime === ZERO_DATE
 // intentional typo
 export const feez = {
   calculateEarnings,
+  calculateSettled,
   isEmpty,
 }

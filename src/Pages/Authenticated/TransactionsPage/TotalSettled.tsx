@@ -11,6 +11,7 @@ import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
 import { myst } from '../../../commons/mysts'
 import { themeCommon } from '../../../theme/themeCommon'
+import { feez } from '../../../commons/fees'
 
 const Row = styled.div`
   display: flex;
@@ -34,17 +35,17 @@ const Value = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.text.colorMain};
 `
-
+const { calculateSettled } = feez
 export const TotalSettled = () => {
   const identity = useAppSelector(selectors.currentIdentitySelector)
-
+  const totalSettled = calculateSettled(identity.earningsTokens, identity.earningsTotalTokens)
   return (
     <Card grow={0} fluid={false}>
       <Row>
         <WalletIcon $accented />
         <Column>
           <Title>Total settled</Title>
-          <Value>{myst.display(identity.earningsTotalTokens.wei, { fractionDigits: 2 })}</Value>
+          <Value>{myst.display(totalSettled, { fractionDigits: 2 })}</Value>
         </Column>
       </Row>
     </Card>

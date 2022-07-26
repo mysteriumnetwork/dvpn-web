@@ -26,7 +26,7 @@ const Container = styled.div<Props>`
 
 const Title = styled.div<Props>`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  color: ${({ $primary, theme }) => ($primary ? theme.common.colorKeyLight : theme.common.colorGrayBlue2)};
+  color: ${({ $primary, theme }) => ($primary ? theme.common.colorKeyLight : theme.settleModal.card.titleColor)};
   margin-bottom: 5px;
 `
 
@@ -38,7 +38,7 @@ const Amount = styled.div<Props>`
   width: 100%;
   gap: 20px;
   font-size: ${({ theme }) => theme.common.fontSizeBig};
-  color: ${({ $primary, theme }) => ($primary ? theme.common.colorKey : theme.common.colorDarkBlue)};
+  color: ${({ $primary, theme }) => ($primary ? theme.common.colorKey : theme.settleModal.card.amountColor)};
 `
 
 export const Card = ({ $primary, title, amount }: Props) => {

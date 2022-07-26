@@ -72,6 +72,7 @@ const CloseButtonPlacement = styled.div`
 const Title = styled.div`
   font-size: 32px;
   font-weight: 700;
+  color: ${({ theme }) => theme.modal.titleColor};
   margin-top: 40px;
 `
 
@@ -113,7 +114,7 @@ interface Props {
   loading?: boolean
 }
 
-export const Modal = ({ show, icon, title, subTitle, children, onClickX, loading }: Props) => {
+export const Modal = ({ show = false, icon, title, subTitle, children, onClickX, loading }: Props) => {
   if (!show) {
     return <></>
   }
