@@ -7,7 +7,7 @@
 import styled, { css } from 'styled-components'
 import { Button } from '../Inputs/Button'
 import { themeCommon } from '../../theme/themeCommon'
-import { useState, useMemo } from 'react'
+import { usePagination, DOTS } from './usePagination'
 
 export interface PaginationState {
   page: number
@@ -51,33 +51,16 @@ interface Props {
   onClick?: () => void
   $active: boolean
 }
-interface PaginationProps {
+export interface PaginationProps {
   currentPage: number
   totalPages: number
   handlePageChange: (page: PaginationState) => void
 }
-// TODO: Hook up to API, rinse logic for displaying active page
+// TODO: Rinse logic for displaying active page
 
 export const Pagination = ({ currentPage, totalPages, handlePageChange }: PaginationProps) => {
-  const [pages]: Array<any> = useState([1, 2, 3, 4, 5])
-  const PageButtons = useMemo(
-    () =>
-      [...Array(totalPages)].map((_, i) => {
-        return (
-          <PageButton
-            $active={i + 1 === currentPage}
-            key={i}
-            onClick={() => {
-              handlePageChange({ page: i + 1 })
-              console.log(currentPage)
-            }}
-          >
-            {i + 1}
-          </PageButton>
-        )
-      }),
-    [totalPages, currentPage],
-  )
+  const paginationRange = usePagination({ currentPage, totalPages })
+
   return (
     <Container>
       <Button
@@ -89,14 +72,30 @@ export const Pagination = ({ currentPage, totalPages, handlePageChange }: Pagina
           currentPage - 1 >= 1 && handlePageChange({ page: currentPage - 1 })
         }}
       />
-      <Pages>{PageButtons}</Pages>
+      <Pages>
+        {paginationRange?.map((pageNumber) => {
+          if (pageNumber === DOTS) {
+            return <span>{DOTS}</span>
+          }
+          return (
+            <PageButton
+              $active={currentPage === pageNumber}
+              onClick={() => {
+                handlePageChange({ page: pageNumber as number })
+              }}
+            >
+              {pageNumber}
+            </PageButton>
+          )
+        })}
+      </Pages>
       <Button
         variant="outlined"
         label="Next"
         rounded
         onClick={() => {
           // Rethink else call
-          currentPage + 1 <= pages.length && handlePageChange({ page: currentPage + 1 })
+          currentPage + 1 <= totalPages && handlePageChange({ page: currentPage + 1 })
         }}
       />
     </Container>
