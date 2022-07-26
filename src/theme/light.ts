@@ -43,6 +43,9 @@ const light: Omit<Theme, 'common'> = {
       amountColor: themeCommon.colorDarkBlue,
     },
   },
+  TOSModal: {
+    textColor: themeCommon.colorDarkBlue,
+  },
   settleCard: {
     earningsColor: themeCommon.colorDarkBlue,
   },

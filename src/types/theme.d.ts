@@ -31,6 +31,9 @@ export type Theme = {
       amountColor: string
     }
   }
+  TOSModal: {
+    textColor: string
+  }
   settleCard: {
     earningsColor: string
   }

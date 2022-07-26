@@ -36,7 +36,7 @@ export const App = () => {
       <GlobalStyle />
       <Hotkeys>
         <NodeHealthcheckBarrier>
-          <TOSModal show={needsAgreedTerms} />
+          <TOSModal show={true} />
           <AppRouter />
         </NodeHealthcheckBarrier>
       </Hotkeys>

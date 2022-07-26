@@ -51,6 +51,9 @@ const dark: Omit<Theme, 'common'> = {
     bgBody: themeCommon.colorGrayBlue2,
     textColor: themeCommon.colorLightBlue,
   },
+  TOSModal: {
+    textColor: themeCommon.colorLightBlue,
+  },
   settleModal: {
     card: {
       titleColor: themeCommon.colorGrayBlue,
