@@ -25,18 +25,20 @@ import { UI_THEME_KEY } from '../constants/remote-storage.keys'
 import { themeCommon } from '../theme/themeCommon'
 import { selectors } from '../redux/selectors'
 import { TOSModal } from './Authenticated/Components/TOSModal/TOSModal'
+import identities from '../commons/identities'
 
 export const App = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
+  const identity = useAppSelector(selectors.currentIdentitySelector)
   const { needsAgreedTerms } = useAppSelector(selectors.onBoardingStateSelector)
-  console.log(needsAgreedTerms)
 
   return (
     <ThemeProvider theme={theme === 'dark' ? themes.dark : themes.light}>
       <GlobalStyle />
       <Hotkeys>
         <NodeHealthcheckBarrier>
-          <TOSModal show={needsAgreedTerms} />
+          {/* TODO: REVISE LOGIC WHEN THROWING AWAY OLD ONBOARDING */}
+          <TOSModal show={needsAgreedTerms && !identities.isEmpty(identity)} />
           <AppRouter />
         </NodeHealthcheckBarrier>
       </Hotkeys>
