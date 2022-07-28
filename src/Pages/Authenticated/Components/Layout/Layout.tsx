@@ -14,6 +14,8 @@ import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import { Notifications } from '../Notifications/Notifications'
+import { devices } from '../../../../theme/themes'
+import { Media } from '../../../../commons/media'
 
 const Main = styled.main`
   position: relative;
@@ -24,6 +26,10 @@ const Main = styled.main`
   background-color: ${({ theme }) => theme.bgLayout};
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
+  @media ${devices.tablet} {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 `
 
 const Header = styled.div`
@@ -39,6 +45,12 @@ const Content = styled.div`
   height: 100vh;
   width: 100%;
   overflow-y: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  @media ${devices.tablet} {
+    padding-top: 150px;
+  }
 `
 
 const Overlay = styled.div`
@@ -87,14 +99,22 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
   return (
     <Main>
       {showSpinner && <PageSpinner />}
-      <Header>
-        <PageHeader logo={logo} name={title} />
-        <NodeStatus />
-        <Quality />
-        <SettlementStatus />
-        <Notifications />
-      </Header>
-      <Content>{children}</Content>
+      <Media.Desktop>
+        <Header>
+          <PageHeader logo={logo} name={title} />
+          <NodeStatus />
+          <Quality />
+          <SettlementStatus />
+          <Notifications />
+        </Header>
+        <Content>{children}</Content>
+      </Media.Desktop>
+      <Media.Mobile>
+        <Content>
+          <PageHeader logo={logo} name={title} />
+          {children}
+        </Content>
+      </Media.Mobile>
     </Main>
   )
 }
@@ -102,7 +122,6 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
 const sharedRowCss = css`
   display: flex;
   flex-direction: row;
-  min-width: 1200px;
   gap: 20px;
 `
 
@@ -110,6 +129,9 @@ const cardCss = css`
   background: ${({ theme }) => theme.bgLayoutCardCss};
   border-radius: 20px;
   padding: 20px;
+  @media ${devices.tablet} {
+    width: 100%;
+  }
 `
 
 export const LayoutHeroCardRow = styled.div`
@@ -123,6 +145,11 @@ export const LayoutHeroCardRow = styled.div`
 
   border-radius: 35px;
   ${sharedRowCss};
+
+  @media ${devices.tablet} {
+    flex-direction: column;
+    min-width: 375px;
+  }
 `
 export const LayoutCardRow = styled.div`
   margin: 25px 32px 0 32px;
@@ -133,6 +160,9 @@ export const LayoutCardRow = styled.div`
 export const LayoutUnstyledRow = styled.div`
   margin: 25px 32px 0 32px;
   ${sharedRowCss};
+  @media ${devices.tablet} {
+    margin: 25px 15px 0 15px;
+  }
 `
 
 export const LayoutCard = styled.div`

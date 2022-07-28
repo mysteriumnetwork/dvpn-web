@@ -7,12 +7,13 @@
 import React, { useMemo, useState } from 'react'
 import { SessionStats } from 'mysterium-vpn-js'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-
+import { Media } from '../../../../commons/media'
 import charts, { ChartType, Pair, types } from './chart.utils'
 import styled from 'styled-components'
 import { RangePicker } from './RangePicker'
 import { GraphDropDown } from './GraphDropDown'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { devices } from '../../../../theme/themes'
 
 interface Props {
   statsDaily: {
@@ -63,15 +64,26 @@ const Charts = ({ statsDaily }: Props) => {
 
   return (
     <Chart>
-      <Header>
-        <Title>Earnings Report</Title>
-        <RangePicker options={RANGES} active={state.selectedRange} onChange={handleRange} />
-        <FlexGrow />
-        <GraphDropDown options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
-      </Header>
-
+      <Media.Desktop>
+        <Header>
+          <Title>Earnings Report</Title>
+          <RangePicker options={RANGES} active={state.selectedRange} onChange={handleRange} />
+          <FlexGrow />
+          <GraphDropDown options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
+        </Header>
+      </Media.Desktop>
+      <Media.Mobile>
+        <Header>
+          <Row>
+            <Title>Earnings Report</Title>
+            {/* TODO: Figure out why select options bug and show in the wrong place */}
+            <GraphDropDown options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
+          </Row>
+          <RangePicker options={RANGES} active={state.selectedRange} onChange={handleRange} />
+        </Header>
+      </Media.Mobile>
       <ChartOverrides>
-        <ResponsiveContainer width="100%" maxHeight={320} aspect={4.0 / 3.0}>
+        <ResponsiveContainer width="100%" minWidth={700} maxHeight={320} aspect={4.0 / 3.0}>
           <AreaChart
             width={500}
             height={300}
@@ -123,12 +135,22 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    width: 100%;
+  }
 `
 
 const FlexGrow = styled.div`
   flex-grow: 1;
 `
-
+const Row = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`
 const Title = styled.div`
   font-size: ${themeCommon.fontSizeBig};
   font-weight: 700;
@@ -137,6 +159,8 @@ const Title = styled.div`
 `
 
 const ChartOverrides = styled.div`
+  overflow-x: auto;
+  overflow-y: hidden;
   .recharts-curve.recharts-area-area {
   }
 

@@ -6,16 +6,22 @@
  */
 import styled from 'styled-components'
 import { themeCommon } from '../../../../theme/themeCommon'
-
+import { devices } from '../../../../theme/themes'
 const Status = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  @media ${devices.tablet} {
+    margin-bottom: 25px;
+  }
 `
 const Title = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
   font-size: ${themeCommon.fontSizeSmall};
   font-weight: 400;
+  @media ${devices.tablet} {
+    color: ${themeCommon.colorWhite};
+  }
 `
 
 export type IndicatorVariants = 'online' | 'offline' | 'monitoringFailed'

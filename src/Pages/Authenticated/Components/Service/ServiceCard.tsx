@@ -16,6 +16,7 @@ import { selectors } from '../../../../redux/selectors'
 import calls from '../../../../commons/calls'
 import { tequila } from '../../../../api/tequila'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { devices } from '../../../../theme/themes'
 
 const Card = styled.div`
   position: relative;
@@ -23,6 +24,10 @@ const Card = styled.div`
   flex-direction: column;
   width: 100%;
   color: ${themeCommon.colorDarkBlue};
+  @media ${devices.tablet} {
+    flex-direction: column;
+    min-width: 325px;
+  }
 `
 
 const Overlay = styled.div`
@@ -52,7 +57,13 @@ const Header = styled.div`
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   padding: 24px;
+  font-size: ${themeCommon.fontSizeBig};
+  font-weight: 700;
   height: 100%;
+  @media ${devices.tablet} {
+    padding-top: 12px;
+    box-shadow: ${({ theme }) => theme.bgServiceCardHeaderBoxShadow};
+  }
 `
 
 const Controls = styled.div`
@@ -71,18 +82,25 @@ const Description = styled.div`
 
 const Row = styled.div`
   display: flex;
-  width: 100%;
   justify-content: space-between;
+  @media ${devices.tablet} {
+    align-items: center;
+  }
 `
 const Content = styled.div`
   background: ${({ theme }) => theme.bgServiceCardContent};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   padding: 31px;
-
   display: flex;
   flex-direction: column;
   gap: 24px;
+  @media ${devices.tablet} {
+    padding: 20px;
+    gap: 12px;
+    box-shadow: ${({ theme }) => theme.bgServiceCardContentBoxShadow};
+    background-color: ${({ theme }) => theme.bgServiceCardContentMobile};
+  }
 `
 
 interface Props {

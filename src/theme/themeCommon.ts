@@ -27,12 +27,21 @@ export const themeCommon: Common = {
   colorNavStroke: '#FFFFFF',
   colorNavActiveStroke: '#3C3857',
 
+  // yankeeblue
   color221E39: '#221E39',
+  // gunmetal
   color2F2A48: '#2F2A48',
+  // jakarta
   color393453: '#393453',
+  // american purple
   color4e1c67: '#4e1c67',
+  // yankee blue
   color231F3A: '#231F3A',
+  // jakarta
   color3B3755: '#3B3755',
+  // american blue
+  color444161: '#444161',
+  color000065: '#000065',
 
   fontSizeSmallest: '8px',
   fontSizeSmaller: '10px',

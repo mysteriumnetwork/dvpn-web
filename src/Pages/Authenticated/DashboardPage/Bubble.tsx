@@ -46,7 +46,7 @@ const commonBubbleCss = css`
 const BlueBubble = styled.div<BubbleProps>`
   ${commonBubbleCss};
   background: ${({ $primary }) => ($primary ? themeCommon.colorBlue : `${themeCommon.colorBlue}${alphaToHex(0.2)}`)};
-  color: ${({ $primary }) => ($primary ? themeCommon.colorWhite : themeCommon.colorDarkBlue)};
+  color: ${({ $primary, theme }) => ($primary ? themeCommon.colorWhite : theme.idleStat.bubbleTextColor)};
   :after {
     content: '';
     position: absolute;
@@ -64,7 +64,7 @@ const BlueBubble = styled.div<BubbleProps>`
 const GreenBubble = styled.div<BubbleProps>`
   ${commonBubbleCss};
   background: ${({ $primary }) => ($primary ? themeCommon.colorGreen : `${themeCommon.colorGreen}${alphaToHex(0.1)}`)};
-  color: ${({ $primary }) => ($primary ? themeCommon.colorWhite : themeCommon.colorDarkBlue)};
+  color: ${({ $primary, theme }) => ($primary ? themeCommon.colorWhite : theme.idleStat.bubbleTextColor)};
   /* Leaving this for when we do the line if we need to */
   ${({ $line }) => !$line && greenAfterCss}
 `

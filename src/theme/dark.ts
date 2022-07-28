@@ -13,16 +13,20 @@ const dark: Omit<Theme, 'common'> = {
   bgLayout: themeCommon.color2F2A48,
   bgLayoutHeroRow: themeCommon.color221E39,
   bgLayoutCardCss: themeCommon.color393453,
-  bgServiceCardHeader: themeCommon.color393453,
 
+  bgServiceCardHeader: themeCommon.color393453,
+  bgServiceCardHeaderBoxShadow: '0 10px 20px' + themeCommon.color221E39 + alphaToHex(0.4),
   bgServiceCardContent: themeCommon.color393453,
+  bgServiceCardContentBoxShadow: '0 5px 20px' + themeCommon.color000065 + alphaToHex(0.02),
+  bgServiceCardContentMobile: themeCommon.color393453,
+
   bgSettingsCard: themeCommon.color393453,
 
   bgReportChartRow: themeCommon.color393453,
 
   bgReportChartRowBoxShadow: '0 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
   bgReportCardDiffPositive: themeCommon.colorGreen + alphaToHex(0.1),
-
+  bgSettlementMobile: themeCommon.color444161,
   bgTransactionPageCard: themeCommon.color393453,
 
   bgTransactionPageCardBoxShadow: '0px 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
@@ -54,6 +58,9 @@ const dark: Omit<Theme, 'common'> = {
   },
   TOSModal: {
     textColor: themeCommon.colorLightBlue,
+  },
+  idleStat: {
+    bubbleTextColor: themeCommon.colorWhite,
   },
   settleModal: {
     card: {

@@ -14,15 +14,17 @@ const light: Omit<Theme, 'common'> = {
   bgLayoutCardCss: themeCommon.colorWhite,
 
   bgServiceCardHeader: themeCommon.colorWhite,
+  bgServiceCardHeaderBoxShadow: '0 10px 30px' + themeCommon.color000065 + alphaToHex(0.05),
   bgServiceCardContent: themeCommon.colorLightBlue,
-
+  bgServiceCardContentBoxShadow: '0 5px 20px' + themeCommon.color000065 + alphaToHex(0.02),
+  bgServiceCardContentMobile: themeCommon.colorWhite,
   bgSettingsCard: themeCommon.colorWhite,
 
   bgReportChartRow: themeCommon.colorWhite,
   bgReportChartRowBoxShadow: '0 10px 30px ' + themeCommon.color4e1c67 + alphaToHex(0.05),
 
   bgReportCardDiffPositive: themeCommon.colorGreen + alphaToHex(0.1),
-
+  bgSettlementMobile: themeCommon.colorWhite,
   bgTransactionPageCard: themeCommon.colorWhite,
   bgTransactionPageCardBoxShadow: '0px 5px 20px ' + themeCommon.color221E39 + alphaToHex(0.02),
 
@@ -42,6 +44,9 @@ const light: Omit<Theme, 'common'> = {
       titleColor: themeCommon.colorGrayBlue2,
       amountColor: themeCommon.colorDarkBlue,
     },
+  },
+  idleStat: {
+    bubbleTextColor: themeCommon.colorDarkBlue,
   },
   TOSModal: {
     textColor: themeCommon.colorDarkBlue,
