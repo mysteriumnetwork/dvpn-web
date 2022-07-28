@@ -6,26 +6,30 @@
  */
 import { useTable, useFlexLayout, Column } from 'react-table'
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 interface Props {
   columns: Column[]
   data: any[]
   loading?: boolean
 }
+const cellCss = css`
+  white-space: no-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  padding: 1em;
+`
 export const PrimaryCell = styled.div`
   color: ${({ theme }) => theme.table.textColorPrimary};
-  padding: 1em;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   font-weight: 600;
-  text-align: center;
-  white-space: nowrap;
+  ${cellCss}
 `
 export const SecondaryCell = styled.div`
   color: ${({ theme }) => theme.table.textColorSecondary};
-  padding: 1em;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   font-weight: 400;
-  text-align: center;
+  ${cellCss}
 `
 const Container = styled.div`
   width: 100%;
