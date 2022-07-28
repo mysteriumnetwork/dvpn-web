@@ -6,11 +6,15 @@
  */
 import styled from 'styled-components'
 import React from 'react'
-
+import { devices } from '../../theme/themes'
 const Content = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  @media ${devices.tablet} {
+    margin-bottom: 20px;
+    margin-left: 25px;
+  }
 `
 
 const Logo = styled.div`

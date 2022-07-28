@@ -13,8 +13,10 @@ export type Theme = {
   bgLayoutCardCss: string
 
   bgServiceCardHeader: string
+  bgServiceCardHeaderBoxShadow: string
   bgServiceCardContent: string
-
+  bgServiceCardContentBoxShadow: string
+  bgServiceCardContentMobile: string
   bgSettingsCard: string
 
   bgReportChartRow: string
@@ -24,7 +26,7 @@ export type Theme = {
 
   bgTransactionPageCard: string
   bgTransactionPageCardBoxShadow: string
-
+  bgSettlementMobile: string
   settleModal: {
     card: {
       titleColor: string
@@ -42,6 +44,9 @@ export type Theme = {
     bgBody: string
     textColor: string
     inputColor: string
+  }
+  idleStat: {
+    bubbleTextColor: string
   }
   table: {
     bgBody: string
@@ -154,6 +159,8 @@ export type Common = {
   color4e1c67: string
   color231F3A: string
   color3B3755: string
+  color444161: string
+  color000065: string
 
   fontSizeSmallest: string
   fontSizeSmaller: string

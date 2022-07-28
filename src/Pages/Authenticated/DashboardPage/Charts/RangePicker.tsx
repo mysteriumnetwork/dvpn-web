@@ -6,15 +6,21 @@
  */
 import styled from 'styled-components'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { devices } from '../../../../theme/themes'
 
 const Content = styled.div`
   display: flex;
   gap: 5px;
+  @media ${devices.tablet} {
+    align-self: center;
+    gap: 20px;
+    margin: 0 10px 10px 10px;
+  }
 `
 
 const Option = styled.div`
   width: 120px;
-  padding: 2px 0 2px 0;
+  padding: 4px 0 4px 0;
   color: ${({ active }) => (active ? themeCommon.colorWhite : themeCommon.colorGrayBlue)};
   font-size: ${themeCommon.fontSizeSmall};
   font-weight: 400;
@@ -28,6 +34,9 @@ const Option = styled.div`
     border-radius: 100px;
     background: ${themeCommon.colorKey};
   `}
+  @media ${devices.tablet} {
+    width: 90px;
+  }
 `
 
 interface Props {

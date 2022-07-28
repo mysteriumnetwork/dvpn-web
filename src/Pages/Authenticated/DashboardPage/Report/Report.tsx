@@ -14,6 +14,7 @@ import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { devices } from '../../../../theme/themes'
 
 const { api } = tequila
 
@@ -33,6 +34,9 @@ const CardRow = styled.div`
 
   padding-top: 20px;
   padding-bottom: 20px;
+  @media ${devices.tablet} {
+    flex-direction: column;
+  }
 `
 const ChartRow = styled.div`
   border-top-left-radius: 20px;
@@ -42,6 +46,10 @@ const ChartRow = styled.div`
 
   z-index: 1;
   box-shadow: ${({ theme }) => theme.bgReportChartRowBoxShadow};
+  @media ${devices.tablet} {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
 `
 
 const BorderRight = styled.div`

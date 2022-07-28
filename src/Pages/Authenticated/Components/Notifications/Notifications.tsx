@@ -9,6 +9,7 @@ import { IconButton } from '../../../../Components/Inputs/IconButton'
 import styled from 'styled-components'
 import { useState } from 'react'
 import { List } from './List'
+import { devices } from '../../../../theme/themes'
 
 const BellIcon = styled(BellSvg)`
   width: 80%;
@@ -22,6 +23,9 @@ const BellIcon = styled(BellSvg)`
 
 const Container = styled.div`
   position: relative;
+  @media ${devices.tablet} {
+    margin-bottom: 20px;
+  }
 `
 
 const Dot = styled.div`

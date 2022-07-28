@@ -6,7 +6,8 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import { themeCommon } from '../../../../theme/themeCommon'
+import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
+import { devices } from '../../../../theme/themes'
 
 const Card = styled.div`
   display: flex;
@@ -14,6 +15,13 @@ const Card = styled.div`
   background: ${({ theme }) => theme.bgLayoutCardCss};
   padding: 20px;
   color: ${({ theme }) => theme.text.colorMain};
+  @media ${devices.tablet} {
+    justify-content: space-around;
+    border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
+    padding: 20px 0px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 `
 
 const Content = styled.div`

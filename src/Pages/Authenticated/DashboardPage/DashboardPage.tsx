@@ -12,12 +12,14 @@ import { Report } from './Report/Report'
 import { DashboardHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { IdleStat } from '../Components/IdleStat/IdleStat'
 import { Services } from '../Components/Service/Services'
+import { Media } from '../../../commons/media'
 const DashboardPage = () => {
   return (
     <Layout title="Dashboard" logo={<DashboardHeaderIcon />} isLoading={false}>
-      <LayoutHeroCardRow>
-        <Services />
-        {/*{[
+      <Media.Desktop>
+        <LayoutHeroCardRow>
+          <Services />
+          {/*{[
           {
             name: 'Public',
             description: 'Open to the whole network -dVPN app, independent builders etc.',
@@ -42,23 +44,37 @@ const DashboardPage = () => {
           },
         ].map((s) => (
           <ServiceCard
-            key={s.name}
-            name={s.name}
-            description={s.description}
-            enabled={s.enabled}
-            onChange={s.onChange}
-            approvalPending={s.approvalPending}
+          key={s.name}
+          name={s.name}
+          description={s.description}
+          enabled={s.enabled}
+          onChange={s.onChange}
+          approvalPending={s.approvalPending}
           />
         ))}*/}
-      </LayoutHeroCardRow>
-      <LayoutUnstyledRow>
-        <Report />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
-        <LayoutCard>
-          <IdleStat />
-        </LayoutCard>
-      </LayoutUnstyledRow>
+        </LayoutHeroCardRow>
+        <LayoutUnstyledRow>
+          <Report />
+        </LayoutUnstyledRow>
+        <LayoutUnstyledRow>
+          <LayoutCard>
+            <IdleStat />
+          </LayoutCard>
+        </LayoutUnstyledRow>
+      </Media.Desktop>
+      <Media.Mobile>
+        <LayoutUnstyledRow>
+          <Services />
+        </LayoutUnstyledRow>
+        <LayoutUnstyledRow>
+          <Report />
+        </LayoutUnstyledRow>
+        <LayoutUnstyledRow>
+          <LayoutCard>
+            <IdleStat />
+          </LayoutCard>
+        </LayoutUnstyledRow>
+      </Media.Mobile>
     </Layout>
   )
 }

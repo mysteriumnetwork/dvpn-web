@@ -9,6 +9,8 @@ import { StopwatchSimpleIcon } from '../../../../Components/Icons/Icons'
 import { DoughnutChart } from './DoughnutChart'
 import { Bubble } from '../../DashboardPage/Bubble'
 import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
+import { devices } from '../../../../theme/themes'
+import { Media } from '../../../../commons/media'
 
 const Statistics = styled.div`
   display: flex;
@@ -39,6 +41,11 @@ const SubTitle = styled.div`
 const Content = styled.div`
   display: flex;
   align-items: center;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
 `
 
 const Column = styled.div<{ $marginLeft?: string }>`
@@ -48,6 +55,9 @@ const Column = styled.div<{ $marginLeft?: string }>`
   justify-content: center;
   align-content: center;
   margin-left: ${({ $marginLeft }) => $marginLeft || '0'};
+  @media ${devices.tablet} {
+    height: 100%;
+  }
 `
 
 const GreenBackground = styled.div`
@@ -56,6 +66,11 @@ const GreenBackground = styled.div`
   border-radius: 15px;
   padding-right: 30px;
   padding-left: 30px;
+
+  @media ${devices.tablet} {
+    width: 100%;
+    padding: 5px 30px;
+  }
 `
 
 const Row = styled.div`
@@ -63,11 +78,21 @@ const Row = styled.div`
   gap: 20px;
   align-items: center;
   width: 100%;
+
+  @media ${devices.tablet} {
+    align-items: flex-start;
+    padding: 5px 0;
+  }
 `
 
 const SmallText = styled.div`
   font-weight: 400;
   font-size: ${themeCommon.fontSizeSmall};
+  @media ${devices.tablet} {
+    :nth-of-type(1) {
+      margin-bottom: 10px;
+    }
+  }
 `
 
 export const IdleStat = () => {
@@ -103,36 +128,78 @@ export const IdleStat = () => {
       </Header>
 
       <Content>
-        <DoughnutChart
-          data={statusData}
-          colorA={themeCommon.colorBlue}
-          colorB={`${themeCommon.colorBlue}${alphaToHex(0.2)}`}
-        />
-        <Column $marginLeft="40px">
-          <Bubble value="30%" primary />
-          <Bubble value="45%" />
-        </Column>
-        <Column $marginLeft="40px">
-          <Bubble value="Online" color="green" line />
-          <Bubble value="Offline" color="no-background" />
-        </Column>
-        <Column $marginLeft="40px" />
-        <GreenBackground>
+        <Media.Desktop>
           <DoughnutChart
-            data={idleData}
-            colorA={themeCommon.colorGreen}
-            colorB={`${themeCommon.colorGreen}${alphaToHex(0.2)}`}
+            data={statusData}
+            colorA={themeCommon.colorBlue}
+            colorB={`${themeCommon.colorBlue}${alphaToHex(0.2)}`}
           />
           <Column $marginLeft="40px">
-            <Row>
-              <Bubble value="30%" color="green" primary />
-              <SmallText>Connected</SmallText>
-            </Row>
-            <Row>
-              <Bubble value="70%" color="green" />
-              <SmallText>Idle</SmallText>
-            </Row>
+            <Bubble value="30%" primary />
+            <Bubble value="45%" />
           </Column>
+          <Column $marginLeft="40px">
+            <Bubble value="Online" color="green" line />
+            <Bubble value="Offline" color="no-background" />
+          </Column>
+        </Media.Desktop>
+        <Media.Mobile>
+          <Row>
+            <Column $marginLeft="30px">
+              <DoughnutChart
+                data={statusData}
+                colorA={themeCommon.colorBlue}
+                colorB={`${themeCommon.colorBlue}${alphaToHex(0.2)}`}
+              />
+            </Column>
+            <Column $marginLeft="20px">
+              <Bubble value="30%" primary />
+              <Bubble value="45%" />
+            </Column>
+            <Column>
+              <Bubble value="Offline" color="no-background" />
+              <Bubble value="Online" color="green" line />
+            </Column>
+          </Row>
+        </Media.Mobile>
+        <Column $marginLeft="40px" />
+        <GreenBackground>
+          <Media.Desktop>
+            <DoughnutChart
+              data={idleData}
+              colorA={themeCommon.colorGreen}
+              colorB={`${themeCommon.colorGreen}${alphaToHex(0.2)}`}
+            />
+            <Column $marginLeft="40px">
+              <Row>
+                <Bubble value="30%" color="green" primary />
+                <SmallText>Connected</SmallText>
+              </Row>
+              <Row>
+                <Bubble value="70%" color="green" />
+                <SmallText>Idle</SmallText>
+              </Row>
+            </Column>
+          </Media.Desktop>
+          <Media.Mobile>
+            <Row>
+              <Column>
+                <DoughnutChart
+                  data={idleData}
+                  colorA={themeCommon.colorGreen}
+                  colorB={`${themeCommon.colorGreen}${alphaToHex(0.2)}`}
+                />
+              </Column>
+              <Column $marginLeft="20px">
+                <Bubble value="30%" color="green" primary />
+                <Bubble value="70%" color="green" />
+              </Column>
+              <Column $marginLeft="10px">
+                <SmallText>Connected</SmallText>
+                <SmallText>Idle</SmallText>
+              </Column>
+            </Row>
+          </Media.Mobile>
         </GreenBackground>
       </Content>
     </Statistics>
