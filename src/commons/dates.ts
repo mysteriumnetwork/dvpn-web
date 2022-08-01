@@ -30,11 +30,16 @@ const seconds2Time = (seconds: number): string => {
   }
   return res
 }
+const days2Ms = (days: number): number => {
+  const milliseconds = days * 86400 * 1000
+  return milliseconds
+}
 
 const dates = {
   date2human,
   seconds2Time,
   date2Locale,
+  days2Ms,
 }
 
 export default dates

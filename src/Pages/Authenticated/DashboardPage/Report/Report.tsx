@@ -9,14 +9,17 @@ import { useFetch } from '../../../../commons/hooks'
 import { tequila } from '../../../../api/tequila'
 import Charts from '../Charts/Charts'
 import { SessionStats } from 'mysterium-vpn-js/lib/session/session'
-import { useMemo } from 'react'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
+import { useState, useMemo } from 'react'
+import dates from '../../../../commons/dates'
+import { SESSION_STATS_EMPTY } from '../../../../constants/instances'
 
 const { api } = tequila
+const { days2Ms } = dates
 
 const Column = styled.div`
   display: flex;
@@ -55,8 +58,20 @@ const ChartRow = styled.div`
 const BorderRight = styled.div`
   border-right: 1px dashed ${themeCommon.colorGrayBlue2}80;
 `
+const RANGES = [7, 30, 90]
+
+interface StateProps {
+  selectedRange: number
+  dateTo: string
+  dateFrom: string
+}
 
 export const Report = () => {
+  const [state, setState] = useState<StateProps>({
+    selectedRange: RANGES[0],
+    dateTo: new Date(Date.now()).toISOString().split('T')[0],
+    dateFrom: new Date(Date.now() - days2Ms(RANGES[0] * 2)).toISOString().split('T')[0],
+  })
   useFetch(() => Promise.all([api.sessionStatsDaily()]))
 
   const sd: { [k: string]: SessionStats } = useMemo(() => {
@@ -80,10 +95,21 @@ export const Report = () => {
     return res
   }, [])
 
+  const data = useFetch(() => api.sessionStatsDaily({ dateFrom: state.dateFrom, dateTo: state.dateTo }), [
+    state.dateFrom,
+  ])
+  const handleRange = (range: number) => {
+    setState((p) => ({
+      ...p,
+      selectedRange: range,
+      dateFrom: new Date(Date.now() - days2Ms(range * 2)).toISOString().split('T')[0],
+    }))
+  }
+  useMemo(() => console.log(Object.entries(data)), [state.dateFrom])
   return (
     <Column>
       <ChartRow>
-        <Charts statsDaily={sd} />
+        <Charts statsDaily={sd} handleRange={handleRange} selectedRange={state.selectedRange} />
       </ChartRow>
       <CardRow>
         <ReportCard icon={<WalletIcon $accented />} value="35.34" title="Total Settled earnings" diff={0.56} />
