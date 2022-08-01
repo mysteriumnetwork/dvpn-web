@@ -8,6 +8,8 @@ import { SessionStats } from 'mysterium-vpn-js'
 import { add } from '../../../../commons/bytes'
 import { myst } from '../../../../commons/mysts'
 import { currentCurrency } from '../../../../commons/currency'
+import { DateToSessionStats } from '../../../../types/api'
+import { SESSION_STATS_EMPTY } from '../../../../constants/instances'
 
 export interface Pair {
   x: string
@@ -40,10 +42,9 @@ export const sessionDailyStatsToData = (statsDaily: StatsDaily): Pair[] => {
 }
 
 const formatDate = (malformed: string): string => {
-  return malformed
-  // const month = malformed.substring(4, 2)
-  // const day = malformed.substring(6, 2)
-  // return `${month}-${day}`
+  const month = malformed.substring(4, 6)
+  const day = malformed.substring(6, 8)
+  return `${month}-${day}`
 }
 
 export const types: {
@@ -113,6 +114,63 @@ const ceilingOf2 = (n: number): number => {
   return Math.ceil(n / 2) * 2
 }
 
+const calculateDiffs = (a: DateToSessionStats, b: DateToSessionStats): SessionStats => {
+  const accA = Object.entries(a).reduce(
+    (acc, next) => {
+      acc[1].count += next[1].count
+      acc[1].countConsumers += next[1].countConsumers
+      acc[1].sumBytesReceived += next[1].sumBytesReceived
+      acc[1].sumBytesSent += next[1].sumBytesSent
+      acc[1].sumDuration += next[1].sumDuration
+      acc[1].sumTokens += next[1].sumTokens
+      return ['', acc[1]]
+    },
+    [
+      '',
+      {
+        count: 0,
+        countConsumers: 0,
+        sumBytesReceived: 0,
+        sumBytesSent: 0,
+        sumDuration: 0,
+        sumTokens: 0,
+      },
+    ],
+  )[1]
+
+  const accB = Object.entries(b).reduce(
+    (acc, next) => {
+      acc[1].count += next[1].count
+      acc[1].countConsumers += next[1].countConsumers
+      acc[1].sumBytesReceived += next[1].sumBytesReceived
+      acc[1].sumBytesSent += next[1].sumBytesSent
+      acc[1].sumDuration += next[1].sumDuration
+      acc[1].sumTokens += next[1].sumTokens
+      return ['', acc[1]]
+    },
+    [
+      '',
+      {
+        count: 0,
+        countConsumers: 0,
+        sumBytesReceived: 0,
+        sumBytesSent: 0,
+        sumDuration: 0,
+        sumTokens: 0,
+      },
+    ],
+  )[1]
+
+  return {
+    count: accA.count - accB.count,
+    countConsumers: accA.countConsumers - accB.countConsumers,
+    sumBytesReceived: accA.sumBytesReceived - accB.sumBytesReceived,
+    sumBytesSent: accA.sumBytesSent - accB.sumBytesSent,
+    sumDuration: accA.sumDuration - accB.sumDuration,
+    sumTokens: accA.sumTokens - accB.sumTokens,
+  }
+}
+
 const charts = {
   sessionDailyStatsToEarningGraph,
   sessionDailyStatsToSessionsGraph,
@@ -121,5 +179,7 @@ const charts = {
   types,
   ticks,
   ceilingOf2,
+  calculateDiffs,
 }
+
 export default charts
