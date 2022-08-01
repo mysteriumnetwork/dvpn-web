@@ -16,7 +16,7 @@ import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 
 interface Props {
-  statsDaily: {
+  sessionStats: {
     [date: string]: SessionStats
   }
   handleRange: (a: number) => void
@@ -31,7 +31,7 @@ interface StateProps {
 
 const RANGES = [7, 30, 90]
 
-const Charts = ({ statsDaily, handleRange, selectedRange }: Props) => {
+const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
   const [state, setState] = useState<StateProps>({
     active: 'earnings',
     data: charts.configByType('earnings').dataFunction,
@@ -45,14 +45,14 @@ const Charts = ({ statsDaily, handleRange, selectedRange }: Props) => {
   }
 
   const rangedStats = useMemo(() => {
-    const dates = Object.keys(statsDaily)
+    const dates = Object.keys(sessionStats)
 
     const ranged: { [date: string]: SessionStats } = {}
     for (let i = 0; i < selectedRange; i++) {
       if (!dates[i]) {
         break
       }
-      ranged[dates[i]] = statsDaily[dates[i]]
+      ranged[dates[i]] = sessionStats[dates[i]]
     }
 
     return ranged

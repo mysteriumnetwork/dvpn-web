@@ -19,6 +19,7 @@ import {
   NodeMonitoringStatusResponse,
   SessionListResponse,
   SessionStats,
+  SessionStatsDailyResponse,
   SettlementListResponse,
 } from 'mysterium-vpn-js'
 
@@ -136,4 +137,9 @@ export const NODE_HEALTH_CHECK_EMPTY: NodeHealthcheck = Object.freeze({
     branch: '',
     buildNumber: '',
   },
+})
+
+export const SESSIONS_STATS_DAILY_RESPONSE_EMPTY: SessionStatsDailyResponse = Object.freeze({
+  items: {},
+  stats: SESSION_STATS_EMPTY,
 })
