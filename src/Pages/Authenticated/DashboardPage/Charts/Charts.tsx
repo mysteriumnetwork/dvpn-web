@@ -19,23 +19,23 @@ interface Props {
   statsDaily: {
     [date: string]: SessionStats
   }
+  handleRange: (a: number) => void
+  selectedRange: number
 }
 
 interface StateProps {
   active: ChartType
   data: (arg: { [p: string]: SessionStats }) => Pair[]
   dataName: string
-  selectedRange: number
 }
 
 const RANGES = [7, 30, 90]
 
-const Charts = ({ statsDaily }: Props) => {
+const Charts = ({ statsDaily, handleRange, selectedRange }: Props) => {
   const [state, setState] = useState<StateProps>({
     active: 'earnings',
     data: charts.configByType('earnings').dataFunction,
     dataName: charts.configByType('earnings').dataName,
-    selectedRange: RANGES[0],
   })
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -44,15 +44,11 @@ const Charts = ({ statsDaily }: Props) => {
     setState({ ...state, active: active, data: config.dataFunction, dataName: config.dataName })
   }
 
-  const handleRange = (range: number) => {
-    setState((p) => ({ ...p, selectedRange: range }))
-  }
-
   const rangedStats = useMemo(() => {
     const dates = Object.keys(statsDaily)
 
     const ranged: { [date: string]: SessionStats } = {}
-    for (let i = 0; i < state.selectedRange; i++) {
+    for (let i = 0; i < selectedRange; i++) {
       if (!dates[i]) {
         break
       }
@@ -60,14 +56,14 @@ const Charts = ({ statsDaily }: Props) => {
     }
 
     return ranged
-  }, [state.selectedRange])
+  }, [selectedRange])
 
   return (
     <Chart>
       <Media.Desktop>
         <Header>
           <Title>Earnings Report</Title>
-          <RangePicker options={RANGES} active={state.selectedRange} onChange={handleRange} />
+          <RangePicker options={RANGES} active={selectedRange} onChange={handleRange} />
           <FlexGrow />
           <GraphDropDown options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
         </Header>
@@ -79,7 +75,7 @@ const Charts = ({ statsDaily }: Props) => {
             {/* TODO: Figure out why select options bug and show in the wrong place */}
             <GraphDropDown options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
           </Row>
-          <RangePicker options={RANGES} active={state.selectedRange} onChange={handleRange} />
+          <RangePicker options={RANGES} active={selectedRange} onChange={handleRange} />
         </Header>
       </Media.Mobile>
       <ChartOverrides>
