@@ -8,13 +8,7 @@ import { SettingsCard } from '../../SettingsCard'
 import { Button } from '../../../../../Components/Inputs/Button'
 import { DNDList, DNDListItem } from '../../../../../Components/Inputs/DNDList'
 import styled from 'styled-components'
-import calls from '../../../../../commons/calls'
-import { tequila } from '../../../../../api/tequila'
-import { useAppSelector } from '../../../../../commons/hooks'
-import { selectors } from '../../../../../redux/selectors'
 import { AdvancedSettingsForms } from './AdvancedSettings'
-import { useEffect } from 'react'
-import { configs } from '../../../../../commons/config'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { themeCommon } from '../../../../../theme/themeCommon'
 
@@ -38,20 +32,10 @@ interface Props {
   form: AdvancedSettingsForms
   onChange: (traversals: string) => void
   handleSave: () => void
+  handleReset: () => void
 }
 
-export const Right = ({ handleSave, loading, onChange, form }: Props) => {
-  const config = useAppSelector(selectors.configSelector)
-  const defaultConfig = useAppSelector(selectors.defaultConfigSelector)
-
-  const resetToDefaults = async () => {
-    await calls.tryTo(() => tequila.setUserConfig(defaultConfig.data), { success: 'Settings reset' })
-  }
-
-  useEffect(() => {
-    onChange(configs.natTraversals(config))
-  }, [])
-
+export const NATTraversalOrder = ({ handleSave, loading, onChange, form, handleReset }: Props) => {
   const handleChange = (items: DNDListItem[]) => {
     onChange(items.map((i) => i.id).join(','))
   }
@@ -61,7 +45,7 @@ export const Right = ({ handleSave, loading, onChange, form }: Props) => {
       loading={loading}
       footer={
         <Controls>
-          <Button variant="outlined" label="Restore default" onClick={resetToDefaults} />
+          <Button variant="outlined" label="Restore default" onClick={handleReset} />
           <Button variant="secondary" label="Save" onClick={handleSave} />
         </Controls>
       }
@@ -72,13 +56,9 @@ export const Right = ({ handleSave, loading, onChange, form }: Props) => {
         input={
           <>
             <MarginTop />
-            <DNDList
-              items={configs
-                .natTraversals(config)
-                .split(',')
-                .map((v) => ({ id: v, label: v }))}
-              onChange={handleChange}
-            />
+            {!loading && form.traversals && (
+              <DNDList items={form.traversals.split(',').map((v) => ({ id: v, label: v }))} onChange={handleChange} />
+            )}
           </>
         }
       />
