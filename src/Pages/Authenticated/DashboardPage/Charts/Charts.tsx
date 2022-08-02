@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useMemo, useState } from 'react'
-import { SessionStats } from 'mysterium-vpn-js'
+import { useState } from 'react'
+
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { Media } from '../../../../commons/media'
 import charts, { ChartType, Pair, types } from './chart.utils'
@@ -14,18 +14,17 @@ import { RangePicker } from './RangePicker'
 import { GraphDropDown } from './GraphDropDown'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
+import { SessionStatsWithDate } from '../../../../types/api'
 
 interface Props {
-  sessionStats: {
-    [date: string]: SessionStats
-  }
+  sessionStats: SessionStatsWithDate[]
   handleRange: (a: number) => void
   selectedRange: number
 }
 
 interface StateProps {
   active: ChartType
-  data: (arg: { [p: string]: SessionStats }) => Pair[]
+  data: (arg: SessionStatsWithDate[]) => Pair[]
   dataName: string
 }
 
@@ -38,25 +37,24 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
     dataName: charts.configByType('earnings').dataName,
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const changeGraph = (active: ChartType) => {
     const config = charts.configByType(active)
     setState({ ...state, active: active, data: config.dataFunction, dataName: config.dataName })
+    console.log(state)
   }
+  // const rangedStats = useMemo(() => {
+  //   const dates = Object.keys(sessionStats)
 
-  const rangedStats = useMemo(() => {
-    const dates = Object.keys(sessionStats)
+  //   const ranged: { [date: string]: SessionStats } = {}
+  //   for (let i = 0; i < selectedRange; i++) {
+  //     if (!dates[i]) {
+  //       break
+  //     }
+  //     ranged[dates[i]] = sessionStats[dates[i]]
+  //   }
 
-    const ranged: { [date: string]: SessionStats } = {}
-    for (let i = 0; i < selectedRange; i++) {
-      if (!dates[i]) {
-        break
-      }
-      ranged[dates[i]] = sessionStats[dates[i]]
-    }
-
-    return ranged
-  }, [selectedRange])
+  //   return ranged
+  // }, [selectedRange])
 
   return (
     <Chart>
@@ -65,7 +63,7 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
           <Title>Earnings Report</Title>
           <RangePicker options={RANGES} active={selectedRange} onChange={handleRange} />
           <FlexGrow />
-          <GraphDropDown options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
+          <GraphDropDown onChange={changeGraph} options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
         </Header>
       </Media.Desktop>
       <Media.Mobile>
@@ -73,7 +71,7 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
           <Row>
             <Title>Earnings Report</Title>
             {/* TODO: Figure out why select options bug and show in the wrong place */}
-            <GraphDropDown options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
+            <GraphDropDown onChange={changeGraph} options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
           </Row>
           <RangePicker options={RANGES} active={selectedRange} onChange={handleRange} />
         </Header>
@@ -83,7 +81,7 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
           <AreaChart
             width={500}
             height={300}
-            data={state.data(rangedStats)}
+            data={state.data(sessionStats)}
             margin={{
               top: 5,
               right: 50,
@@ -102,7 +100,7 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
             <YAxis
               tick={{ width: 250 }}
               tickMargin={10}
-              ticks={charts.ticks(state.data(rangedStats))}
+              ticks={charts.ticks(state.data(sessionStats))}
               dataKey="y"
               unit={state.dataName}
             />

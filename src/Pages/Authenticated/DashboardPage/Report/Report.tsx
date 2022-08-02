@@ -16,12 +16,15 @@ import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 import { useMemo, useState } from 'react'
 import dates from '../../../../commons/dates'
-import { SESSIONS_STATS_DAILY_RESPONSE_EMPTY } from '../../../../constants/instances'
-import _ from 'lodash'
+import { SESSIONS_STATS_DAILY_RESPONSE_EMPTY, SESSION_STATS_EMPTY } from '../../../../constants/instances'
 import charts from '../Charts/chart.utils'
+import { SessionStatsWithDate } from '../../../../types/api'
+import { myst } from '../../../../commons/mysts'
+import bytes from '../../../../commons/bytes'
 
 const { api } = tequila
-const { days2Ms } = dates
+const { days2Ms, seconds2Time } = dates
+const { format, add, bytes2Gb } = bytes
 
 const Column = styled.div`
   display: flex;
@@ -67,6 +70,10 @@ interface StateProps {
   dateTo: string
   dateFrom: string
 }
+interface ReportStats {
+  totals: SessionStats
+  diff: SessionStats
+}
 
 export const Report = () => {
   const [state, setState] = useState<StateProps>({
@@ -74,6 +81,12 @@ export const Report = () => {
     dateTo: new Date(Date.now()).toISOString().split('T')[0],
     dateFrom: new Date(Date.now() - days2Ms(RANGES[0] * 2 - 1)).toISOString().split('T')[0],
   })
+  const [chartStats, setChartStats] = useState<SessionStatsWithDate[]>([])
+  const [reportStats, setReportStats] = useState<ReportStats>({
+    totals: SESSION_STATS_EMPTY,
+    diff: SESSION_STATS_EMPTY,
+  })
+
   useFetch(() => Promise.all([api.sessionStatsDaily()]))
 
   // const chartStats: { [k: string]: SessionStats } = useMemo(() => {
@@ -97,8 +110,6 @@ export const Report = () => {
   //   return res
   // }, [])
 
-  const [chartStats, setChartStats] = useState<{ [date: string]: SessionStats }>({})
-
   const [data = SESSIONS_STATS_DAILY_RESPONSE_EMPTY, loading] = useFetch(
     () => api.sessionStatsDaily({ dateFrom: state.dateFrom, dateTo: state.dateTo }),
     [state.dateFrom],
@@ -111,20 +122,33 @@ export const Report = () => {
     }))
   }
 
-  const halfPeriodSlice = (items: { [p: string]: SessionStats }) => ({
-    diffStats: _.chain(Object.entries(items).slice(0, state.selectedRange)).keyBy('0').mapValues('1').value(),
-    displayStats: _.chain(Object.entries(items).slice(state.selectedRange, state.selectedRange * 2))
-      .keyBy('0')
-      .mapValues('1')
-      .value(),
-  })
+  const sliceDisplayItems = (items: Array<SessionStatsWithDate>) => {
+    const displayItems = items.slice(state.selectedRange, state.selectedRange * 2)
+    return displayItems
+  }
+  const remmapedItems = useMemo(() => {
+    const remaped = Object.entries(data.items).map((item) => {
+      return { ...item[1], date: item[0] } as SessionStatsWithDate
+    })
+    console.log('Remaped', remaped)
+    return remaped
+  }, [state.dateFrom, loading])
 
   useMemo(() => {
     if (!loading) {
-      const halfPeriodStats = halfPeriodSlice(data.items)
-      const diffs = charts.calculateDiffs(halfPeriodStats.diffStats, halfPeriodStats.displayStats)
-
-      setChartStats(halfPeriodStats.displayStats)
+      const itemsToDisplay = sliceDisplayItems(remmapedItems)
+      const displayTotals = charts.calculateDisplayTotals(itemsToDisplay)
+      const diffs = charts.calculateDiffs(data.stats, displayTotals)
+      console.log('Items to display:', itemsToDisplay)
+      console.log('Diffs: ', diffs)
+      console.log('Stats from API', data.stats)
+      console.log('Display totals: ', displayTotals)
+      setChartStats(itemsToDisplay)
+      setReportStats((p) => ({
+        ...p,
+        totals: displayTotals,
+        diff: diffs,
+      }))
     }
   }, [state.dateFrom, loading])
 
@@ -134,13 +158,33 @@ export const Report = () => {
         <Charts sessionStats={chartStats} handleRange={handleRange} selectedRange={state.selectedRange} />
       </ChartRow>
       <CardRow>
-        <ReportCard icon={<WalletIcon $accented />} value="35.34" title="Total Settled earnings" diff={0.56} />
+        <ReportCard
+          icon={<WalletIcon $accented />}
+          value={myst.display(reportStats.totals.sumTokens, { fractionDigits: 3 })}
+          title="Total Earnings"
+          diff={Number(myst.display(reportStats.diff.sumTokens, { fractionDigits: 3, showCurrency: false }))}
+        />
         <BorderRight />
-        <ReportCard icon={<SessionsIcon />} value="35.34" title="Total Settled earnings" diff={0.56} />
+        <ReportCard
+          icon={<SessionsIcon />}
+          value={reportStats.totals.count}
+          title="Sessions"
+          diff={reportStats.diff.count}
+        />
         <BorderRight />
-        <ReportCard icon={<StopwatchIcon />} value="35.34" title="Total Settled earnings" diff={0.56} />
+        <ReportCard
+          icon={<StopwatchIcon />}
+          value={seconds2Time(reportStats.totals.sumDuration)}
+          title="Session time"
+          diff={Math.floor(reportStats.diff.sumDuration / 3600)}
+        />
         <BorderRight />
-        <ReportCard icon={<CloudIcon />} value="-35.34" title="Total Settled earnings" diff={-0.56} />
+        <ReportCard
+          icon={<CloudIcon />}
+          value={format(add(reportStats.totals.sumBytesReceived, reportStats.totals.sumBytesSent))}
+          title="Transferred"
+          diff={bytes2Gb(add(reportStats.diff.sumBytesReceived, reportStats.diff.sumBytesSent))}
+        />
       </CardRow>
     </Column>
   )

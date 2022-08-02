@@ -5,40 +5,48 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { SessionStats } from 'mysterium-vpn-js'
-import { add } from '../../../../commons/bytes'
+import bytes from '../../../../commons/bytes'
 import { myst } from '../../../../commons/mysts'
 import { currentCurrency } from '../../../../commons/currency'
-import { DateToSessionStats } from '../../../../types/api'
-import { SESSION_STATS_EMPTY } from '../../../../constants/instances'
+import { SessionStatsWithDate } from '../../../../types/api'
 
+const { add, bytes2Gb } = bytes
 export interface Pair {
   x: string
   y: number | string
 }
 
-interface StatsDaily {
-  [name: string]: SessionStats
+export const sessionDailyStatsToEarningGraph = (statsDaily: SessionStatsWithDate[]): Pair[] => {
+  return statsDaily.map((stats) => ({
+    x: formatDate(stats.date),
+    y: myst.display(stats.sumTokens, { fractionDigits: 3, showCurrency: false }),
+  }))
+  // return Object.keys(statsDaily).map<Pair>((k) => ({
+  //   x: formatDate(k),
+  //   y: myst.display(statsDaily[k].sumTokens, { fractionDigits: 3, showCurrency: false }),
+  // }))
 }
 
-export const sessionDailyStatsToEarningGraph = (statsDaily: StatsDaily): Pair[] => {
-  return Object.keys(statsDaily).map<Pair>((k) => ({
-    x: formatDate(k),
-    y: myst.display(statsDaily[k].sumTokens, { fractionDigits: 3, showCurrency: false }),
+export const sessionDailyStatsToSessionsGraph = (statsDaily: SessionStatsWithDate[]): Pair[] => {
+  return statsDaily.map((stats) => ({
+    x: formatDate(stats.date),
+    y: stats.count,
   }))
+  // return Object.keys(statsDaily).map<Pair>((k) => ({
+  //   x: formatDate(k),
+  //   y: statsDaily[k].count,
+  // }))
 }
 
-export const sessionDailyStatsToSessionsGraph = (statsDaily: StatsDaily): Pair[] => {
-  return Object.keys(statsDaily).map<Pair>((k) => ({
-    x: formatDate(k),
-    y: statsDaily[k].count,
+export const sessionDailyStatsToData = (statsDaily: SessionStatsWithDate[]): Pair[] => {
+  return statsDaily.map((stats) => ({
+    x: formatDate(stats.date),
+    y: bytes2Gb(add(stats.sumBytesReceived, stats.sumBytesSent)),
   }))
-}
-
-export const sessionDailyStatsToData = (statsDaily: StatsDaily): Pair[] => {
-  return Object.keys(statsDaily).map<Pair>((k) => ({
-    x: formatDate(k),
-    y: (add(statsDaily[k].sumBytesReceived, statsDaily[k].sumBytesSent) / 1_000_000_000).toFixed(2),
-  }))
+  // return Object.keys(statsDaily).map<Pair>((k) => ({
+  //   x: formatDate(k),
+  //   y: (add(statsDaily[k].sumBytesReceived, statsDaily[k].sumBytesSent) / 1_000_000_000).toFixed(2),
+  // }))
 }
 
 const formatDate = (malformed: string): string => {
@@ -53,18 +61,18 @@ export const types: {
   }
 } = {
   earnings: {
-    name: 'Earnings',
+    name: 'earnings',
   },
   sessions: {
-    name: 'Sessions',
+    name: 'sessions',
   },
   data: {
-    name: 'Data',
+    name: 'data',
   },
 }
 
 interface Config {
-  dataFunction: (arg: { [p: string]: SessionStats }) => Pair[]
+  dataFunction: (arg: SessionStatsWithDate[]) => Pair[]
   dataName: string
 }
 
@@ -114,60 +122,46 @@ const ceilingOf2 = (n: number): number => {
   return Math.ceil(n / 2) * 2
 }
 
-const calculateDiffs = (a: DateToSessionStats, b: DateToSessionStats): SessionStats => {
-  const accA = Object.entries(a).reduce(
+const calculateDisplayTotals = (a: SessionStatsWithDate[]): SessionStats => {
+  const acc = a.reduce(
     (acc, next) => {
-      acc[1].count += next[1].count
-      acc[1].countConsumers += next[1].countConsumers
-      acc[1].sumBytesReceived += next[1].sumBytesReceived
-      acc[1].sumBytesSent += next[1].sumBytesSent
-      acc[1].sumDuration += next[1].sumDuration
-      acc[1].sumTokens += next[1].sumTokens
-      return ['', acc[1]]
+      return {
+        count: acc.count += next.count,
+        countConsumers: acc.countConsumers += next.countConsumers,
+        sumBytesReceived: acc.sumBytesReceived += next.sumBytesReceived,
+        sumBytesSent: acc.sumBytesReceived += next.sumBytesSent,
+        sumDuration: acc.sumDuration += next.sumDuration,
+        sumTokens: acc.sumTokens += next.sumTokens,
+      }
     },
-    [
-      '',
-      {
-        count: 0,
-        countConsumers: 0,
-        sumBytesReceived: 0,
-        sumBytesSent: 0,
-        sumDuration: 0,
-        sumTokens: 0,
-      },
-    ],
-  )[1]
-
-  const accB = Object.entries(b).reduce(
-    (acc, next) => {
-      acc[1].count += next[1].count
-      acc[1].countConsumers += next[1].countConsumers
-      acc[1].sumBytesReceived += next[1].sumBytesReceived
-      acc[1].sumBytesSent += next[1].sumBytesSent
-      acc[1].sumDuration += next[1].sumDuration
-      acc[1].sumTokens += next[1].sumTokens
-      return ['', acc[1]]
+    {
+      count: 0,
+      countConsumers: 0,
+      sumBytesReceived: 0,
+      sumBytesSent: 0,
+      sumDuration: 0,
+      sumTokens: 0,
     },
-    [
-      '',
-      {
-        count: 0,
-        countConsumers: 0,
-        sumBytesReceived: 0,
-        sumBytesSent: 0,
-        sumDuration: 0,
-        sumTokens: 0,
-      },
-    ],
-  )[1]
+  )
+  return acc
+}
 
+const calculateDiffs = (a: SessionStats, b: SessionStats): SessionStats => {
+  const diffTotals: SessionStats = {
+    count: a.count - b.count,
+    countConsumers: a.countConsumers - b.countConsumers,
+    sumBytesReceived: a.sumBytesReceived - b.sumBytesReceived,
+    sumBytesSent: a.sumBytesSent - b.sumBytesSent,
+    sumDuration: a.sumDuration - b.sumDuration,
+    sumTokens: a.sumTokens - b.sumTokens,
+  }
   return {
-    count: accA.count - accB.count,
-    countConsumers: accA.countConsumers - accB.countConsumers,
-    sumBytesReceived: accA.sumBytesReceived - accB.sumBytesReceived,
-    sumBytesSent: accA.sumBytesSent - accB.sumBytesSent,
-    sumDuration: accA.sumDuration - accB.sumDuration,
-    sumTokens: accA.sumTokens - accB.sumTokens,
+    count: b.count - diffTotals.count,
+    countConsumers: b.countConsumers - diffTotals.countConsumers,
+    sumBytesReceived: b.sumBytesReceived - diffTotals.sumBytesReceived,
+    sumBytesSent: b.sumBytesSent - diffTotals.sumBytesSent,
+    sumDuration: b.sumDuration - diffTotals.sumDuration,
+    sumTokens: b.sumTokens - diffTotals.sumTokens,
   }
 }
 
@@ -179,6 +173,7 @@ const charts = {
   types,
   ticks,
   ceilingOf2,
+  calculateDisplayTotals,
   calculateDiffs,
 }
 
