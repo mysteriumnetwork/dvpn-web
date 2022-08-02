@@ -27,6 +27,11 @@ export type Theme = {
   bgTransactionPageCard: string
   bgTransactionPageCardBoxShadow: string
   bgSettlementMobile: string
+
+  buttons: {
+    disabledOpacity: string
+  }
+
   settleModal: {
     card: {
       titleColor: string

@@ -64,6 +64,8 @@ export const SandboxPage = () => {
           <Button label="Test" variant={v} rounded />
           <Button label="Test" variant={v} loading />
           <Button label="Test" variant={v} rounded loading />
+          <Button label="Test" variant={v} disabled />
+          <Button label="Test" variant={v} disabled rounded />
         </LayoutUnstyledRow>
       ))}
       <LayoutUnstyledRow>

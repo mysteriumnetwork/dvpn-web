@@ -31,6 +31,10 @@ const dark: Omit<Theme, 'common'> = {
 
   bgTransactionPageCardBoxShadow: '0px 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
 
+  buttons: {
+    disabledOpacity: '0.3',
+  },
+
   table: {
     bgBody: themeCommon.color393453,
     bgRowOdd: themeCommon.colorGrayBlue2 + alphaToHex(0.1),
