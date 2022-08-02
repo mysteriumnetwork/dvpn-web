@@ -47,6 +47,7 @@ export const PowerOffButton = () => {
     <>
       <IconButton icon={<h1>X</h1>} onClick={() => setShowConfirmation(true)} />
       <ConfirmationDialog
+        disableBackdrop={isCountdown}
         title="Restart"
         message={
           isCountdown
