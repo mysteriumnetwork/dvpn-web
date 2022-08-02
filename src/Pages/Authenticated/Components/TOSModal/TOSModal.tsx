@@ -68,7 +68,7 @@ export const TOSModal = ({ show = false, onClose }: Props) => {
     await tequila.acceptWithTermsAndConditions()
   }
   return (
-    <Modal show={show} title="Terms and Conditions Update" onClickX={onClose} icon={<InfoIcon />}>
+    <Modal disableBackdrop show={show} title="Terms and Conditions Update" onClickX={onClose} icon={<InfoIcon />}>
       <Content>
         <HeaderNote>We have updated our Terms and Conditions. Please click agree to access NODE UI</HeaderNote>
         <HeaderNote>

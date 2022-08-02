@@ -112,16 +112,17 @@ interface Props {
   children?: ReactNode
   onClickX?: () => void
   loading?: boolean
+  disableBackdrop?: boolean
 }
 
-export const Modal = ({ show = false, icon, title, subTitle, children, onClickX, loading }: Props) => {
+export const Modal = ({ show, icon, title, subTitle, children, onClickX, loading, disableBackdrop }: Props) => {
   if (!show) {
     return <></>
   }
 
   return (
     <>
-      <PageOverlay />
+      <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />
       <StyledModal>
         <Container>
           {loading && (
