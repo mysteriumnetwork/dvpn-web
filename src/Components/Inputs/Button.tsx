@@ -99,7 +99,7 @@ const StyledButton = styled.button<ButtonStyleProps>`
   ${({ $size }) => resolveSize($size)}
   ${({ $variant }) => resolveVariant($variant)}
   :disabled {
-    background-color: ${themeCommon.colorGrayBlue};
+    opacity: ${({ theme }) => theme.buttons.disabledOpacity};
     cursor: not-allowed;
   }
 `

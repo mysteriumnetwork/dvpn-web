@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { tequila } from '../../api/tequila'
 import page from '../../commons/page'
 import errors from '../../commons/errors'
+import { IconButton } from '../Inputs/IconButton'
+import { ConfirmationDialog } from '../ConfirmationDialog/ConfirmationDialog'
 
 const { parseToastError } = errors
 
@@ -42,17 +44,20 @@ export const PowerOffButton = () => {
   }
 
   return (
-    <h3>WIP</h3>
-    // <IconButton style={{ color: '#FFF' }} onClick={() => setShowConfirmation(true)} disabled={showConfirmation}>
-    //   <Icon />
-    //   <ConfirmationDialog
-    //     confirmText="Restart"
-    //     message="Are you sure you want to restart your node?"
-    //     open={showConfirmation}
-    //     onCancel={() => setShowConfirmation(false)}
-    //     onConfirm={handleStop}
-    //     content={<div>{isCountdown && <p>Page will be automatically refreshed in: {timer.toFixed(1)}</p>}</div>}
-    //   />
-    // </IconButton>
+    <>
+      <IconButton icon={<h1>X</h1>} onClick={() => setShowConfirmation(true)} />
+      <ConfirmationDialog
+        title="Restart"
+        message={
+          isCountdown
+            ? `Page will be automatically refreshed in: ${timer.toFixed(1)}`
+            : 'Are you sure you want to restart your node?'
+        }
+        loading={isCountdown}
+        show={showConfirmation}
+        onCancel={() => setShowConfirmation(false)}
+        onConfirm={handleStop}
+      />
+    </>
   )
 }
