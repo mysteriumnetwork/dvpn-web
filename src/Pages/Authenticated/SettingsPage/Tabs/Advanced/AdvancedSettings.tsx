@@ -8,8 +8,8 @@ import { useAppSelector } from '../../../../../commons/hooks'
 import { selectors } from '../../../../../redux/selectors'
 import calls from '../../../../../commons/calls'
 import { tequila } from '../../../../../api/tequila'
-import { Right } from './Right'
-import { useEffect, useState } from 'react'
+import { NATTraversalOrder } from './NATTraversalOrder'
+import { useEffect, useMemo, useState } from 'react'
 import { configs } from '../../../../../commons/config'
 import { SettingsCard } from '../../SettingsCard'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
@@ -50,6 +50,7 @@ export const AdvancedSettings = () => {
       udpRange: configs.udpPorts(config),
       l2RPCurls: rpcl2UrlsWithoutDefaults(config, defaultConfig).join(','),
       stunServerURLS: configs.stunServers(config).join(','),
+      traversals: configs.natTraversals(config),
     }))
   }, [])
 
@@ -58,12 +59,15 @@ export const AdvancedSettings = () => {
     return [...rpcl2, ...defaultData['ether.client.rpcl2']]
   }
 
-  const defaultData = {
-    'stun-servers': configs.stunServers(defaultConfig),
-    'udp.ports': configs.udpPorts(defaultConfig),
-    traversal: configs.natTraversals(defaultConfig),
-    'ether.client.rpcl2': configs.rpcl2(defaultConfig),
-  }
+  const defaultData = useMemo(
+    () => ({
+      'stun-servers': configs.stunServers(defaultConfig),
+      'udp.ports': configs.udpPorts(defaultConfig),
+      traversal: configs.natTraversals(defaultConfig),
+      'ether.client.rpcl2': configs.rpcl2(defaultConfig),
+    }),
+    [],
+  )
 
   const data = {
     'stun-servers': form.stunServerURLS.split(','),
@@ -83,6 +87,20 @@ export const AdvancedSettings = () => {
     await calls.tryTo(() => tequila.setUserConfig(data), { success: 'Settings saved' })
     setLoading(false)
   }
+
+  const resetToDefaults = async () => {
+    setLoading(true)
+    await calls.tryTo(() => tequila.setUserConfig(defaultData), { success: 'Settings reset' })
+    setForm((p) => ({
+      ...p,
+      udpRange: defaultData['udp.ports'],
+      l2RPCurls: '',
+      stunServerURLS: defaultData['stun-servers'].join(','),
+      traversals: configs.natTraversals(defaultConfig),
+    }))
+    setLoading(false)
+  }
+
   return (
     <>
       <SettingsCard loading={loading} title="Advanced Settings">
@@ -99,13 +117,13 @@ export const AdvancedSettings = () => {
           input={<TextField value={form.stunServerURLS} onChange={handleStunServersChange} />}
         />
       </SettingsCard>
-      <Right loading={loading} form={form} onChange={handleChangeRight} handleSave={handleSave} />
-      {/*      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <div>{data['stun-servers']}</div>
-        <div>{data['udp.ports']}</div>
-        <div>{data['ether.client.rpcl2']}</div>
-        <div>{data.traversal}</div>
-      </div>*/}
+      <NATTraversalOrder
+        loading={loading}
+        form={form}
+        onChange={handleChangeRight}
+        handleSave={handleSave}
+        handleReset={resetToDefaults}
+      />
     </>
   )
 }
