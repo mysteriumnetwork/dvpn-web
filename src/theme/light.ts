@@ -28,6 +28,10 @@ const light: Omit<Theme, 'common'> = {
   bgTransactionPageCard: themeCommon.colorWhite,
   bgTransactionPageCardBoxShadow: '0px 5px 20px ' + themeCommon.color221E39 + alphaToHex(0.02),
 
+  buttons: {
+    disabledOpacity: '0.7',
+  },
+
   table: {
     bgBody: themeCommon.colorWhite,
     bgRowOdd: themeCommon.colorLightBlue + alphaToHex(0.2),
