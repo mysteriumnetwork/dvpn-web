@@ -7,7 +7,7 @@
 import styled from 'styled-components'
 import { Option } from '../../../../types/common'
 import { themeCommon } from '../../../../theme/themeCommon'
-
+import { ChartType } from './chart.utils'
 const StyledSelect = styled.select`
   background: ${themeCommon.colorDarkBlue};
   color: ${themeCommon.colorWhite};
@@ -18,18 +18,19 @@ const StyledSelect = styled.select`
 `
 
 interface Props {
-  onChange?: (value: string) => void
+  onChange: (value: ChartType) => void
   options?: Option[]
 }
 
-export const GraphDropDown = ({ onChange = () => {}, options = [] }: Props) => {
+export const GraphDropDown = ({ onChange, options = [] }: Props) => {
   return (
     <StyledSelect
       name="graphs"
       id="graphs"
       onChange={(e) => {
-        const { value } = e.target
+        const value = e.target.value as ChartType
         onChange(value)
+        console.log(value)
       }}
     >
       {options?.map((o) => (
