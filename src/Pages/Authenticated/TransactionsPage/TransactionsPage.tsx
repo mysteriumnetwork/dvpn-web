@@ -79,7 +79,7 @@ export const TransactionsPage = () => {
       <LayoutHeroCardRow>
         <TotalSettled />
         <SettlementCard />
-        <DownloadTransactionCSV />
+        <DownloadTransactionCSV data={data} />
       </LayoutHeroCardRow>
       <LayoutUnstyledRow>
         <Table columns={Columns} data={data.items} />
