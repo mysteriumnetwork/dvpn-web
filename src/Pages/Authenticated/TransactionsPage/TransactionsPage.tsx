@@ -37,7 +37,6 @@ export const TransactionsPage = () => {
     [state.pageSize, state.page],
   )
 
-  console.log(data.items)
   const Columns: Column<any>[] = useMemo(
     () => [
       {
@@ -80,7 +79,7 @@ export const TransactionsPage = () => {
       <LayoutHeroCardRow>
         <TotalSettled />
         <SettlementCard />
-        <DownloadTransactionCSV />
+        <DownloadTransactionCSV data={data} />
       </LayoutHeroCardRow>
       <LayoutUnstyledRow>
         <Table columns={Columns} data={data.items} />
