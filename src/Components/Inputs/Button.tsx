@@ -151,15 +151,7 @@ export const Button = ({
   rounded,
 }: Props) => {
   return (
-    <StyledButton
-      $size={size}
-      $rounded={rounded}
-      $variant={variant}
-      type={type}
-      loading={loading}
-      disabled={disabled}
-      onClick={onClick}
-    >
+    <StyledButton $size={size} $rounded={rounded} $variant={variant} type={type} disabled={disabled} onClick={onClick}>
       {loading && (
         <LoadingOverlay>
           <Spinner />
