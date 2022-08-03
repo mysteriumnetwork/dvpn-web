@@ -159,7 +159,7 @@ const Navigation = () => {
         </PlainLink>
         <FlexGrow />
         <ReportIssue />
-        <LiveChat />
+        {/*<LiveChat />*/}
         <ThemeSwitch />
         <Margin />
       </Media.Desktop>
