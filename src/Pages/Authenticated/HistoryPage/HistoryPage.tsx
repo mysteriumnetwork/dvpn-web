@@ -93,7 +93,7 @@ export const HistoryPage = () => {
         Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractionDigits: 3 })}</PrimaryCell>,
       },
       {
-        Header: 'Transfered',
+        Header: 'Transferred',
         accessor: (row): any => add(row.bytesSent, row.bytesReceived),
         Cell: (c) => <PrimaryCell>{format(c.value)}</PrimaryCell>,
       },

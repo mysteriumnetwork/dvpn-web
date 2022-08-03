@@ -44,6 +44,7 @@ const Title = styled.div`
   font-style: normal;
 `
 // TODO: Make overflow hidden if livesession is empty
+// TODO: Mobile view for component :)
 const Container = styled.div`
   display: flex;
   max-height: 150px;
