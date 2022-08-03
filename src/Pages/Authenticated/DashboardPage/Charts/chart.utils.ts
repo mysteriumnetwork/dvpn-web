@@ -9,7 +9,6 @@ import bytes from '../../../../commons/bytes'
 import { myst } from '../../../../commons/mysts'
 import { currentCurrency } from '../../../../commons/currency'
 import { SessionStatsWithByteTotal, SessionStatsWithDate } from '../../../../types/api'
-import BigNumber from 'bignumber.js'
 
 const { add, bytes2Gb, subtract } = bytes
 export interface Pair {

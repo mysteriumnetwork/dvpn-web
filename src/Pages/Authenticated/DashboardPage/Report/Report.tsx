@@ -8,7 +8,6 @@
 import { useFetch } from '../../../../commons/hooks'
 import { tequila } from '../../../../api/tequila'
 import Charts from '../Charts/Charts'
-import { SessionStats } from 'mysterium-vpn-js/lib/session/session'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
@@ -27,7 +26,7 @@ import bytes from '../../../../commons/bytes'
 
 const { api } = tequila
 const { days2Ms, seconds2Time } = dates
-const { format, add, bytes2Gb } = bytes
+const { format } = bytes
 
 const Column = styled.div`
   display: flex;
