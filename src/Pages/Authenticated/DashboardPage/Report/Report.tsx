@@ -16,8 +16,8 @@ import { devices } from '../../../../theme/themes'
 import { useMemo, useState } from 'react'
 import dates from '../../../../commons/dates'
 import {
-  SESSIONS_STATS_DAILY_RESPONSE_EMPTY,
   SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
+  SESSIONS_STATS_DAILY_RESPONSE_EMPTY,
 } from '../../../../constants/instances'
 import charts from '../Charts/chart.utils'
 import { SessionStatsWithByteTotal, SessionStatsWithDate } from '../../../../types/api'
@@ -72,6 +72,7 @@ interface StateProps {
   dateTo: string
   dateFrom: string
 }
+
 interface ReportStats {
   totals: SessionStatsWithByteTotal
   diff: SessionStatsWithByteTotal
@@ -124,10 +125,9 @@ export const Report = () => {
     }))
   }
 
-  const sliceDisplayItems = (items: Array<SessionStatsWithDate>) => {
-    const displayItems = items.slice(state.selectedRange, state.selectedRange * 2)
-    return displayItems
-  }
+  const sliceDisplayItems = (items: Array<SessionStatsWithDate>) =>
+    items.slice(state.selectedRange, state.selectedRange * 2)
+
   const remmapedItems = useMemo(() => {
     const remaped = Object.entries(data.items).map((item) => {
       return { ...item[1], date: item[0] } as SessionStatsWithDate
@@ -142,6 +142,7 @@ export const Report = () => {
       const displayTotals = charts.calculateDisplayTotals(itemsToDisplay)
       const diffs = charts.calculateDiffs(data.stats, displayTotals)
       setChartStats(itemsToDisplay)
+      console.log('data.stats', data.stats)
       console.log('Items to display', itemsToDisplay)
       console.log('Display totals', displayTotals)
       console.log('Diffs', diffs)

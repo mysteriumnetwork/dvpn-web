@@ -122,19 +122,17 @@ const ceilingOf2 = (n: number): number => {
   return Math.ceil(n / 2) * 2
 }
 
-const calculateDisplayTotals = (a: SessionStatsWithDate[]): SessionStatsWithByteTotal => {
-  const acc = a.reduce(
-    (acc, next) => {
-      return {
-        count: acc.count + next.count,
-        countConsumers: acc.countConsumers + next.countConsumers,
-        sumBytesReceived: add(acc.sumBytesReceived + next.sumBytesReceived),
-        sumBytesSent: add(acc.sumBytesReceived + next.sumBytesSent),
-        sumDuration: acc.sumDuration + next.sumDuration,
-        sumTokens: acc.sumTokens + next.sumTokens,
-        byteTotal: add(add(acc.sumBytesReceived + acc.sumBytesSent) + add(next.sumBytesReceived + next.sumBytesSent)),
-      }
-    },
+const calculateDisplayTotals = (stats: SessionStatsWithDate[]): SessionStatsWithByteTotal => {
+  const acc = stats.reduce(
+    (acc, next) => ({
+      count: acc.count + next.count,
+      countConsumers: acc.countConsumers + next.countConsumers,
+      sumBytesReceived: acc.sumBytesReceived + next.sumBytesReceived,
+      sumBytesSent: acc.sumBytesSent + next.sumBytesSent,
+      sumDuration: acc.sumDuration + next.sumDuration,
+      sumTokens: acc.sumTokens + next.sumTokens,
+      byteTotal: acc.sumBytesReceived + acc.sumBytesSent + next.sumBytesReceived + next.sumBytesSent,
+    }),
     {
       count: 0,
       countConsumers: 0,
@@ -145,27 +143,31 @@ const calculateDisplayTotals = (a: SessionStatsWithDate[]): SessionStatsWithByte
       byteTotal: 0,
     },
   )
+  console.log('acc', acc)
   return acc
 }
 
-const calculateDiffs = (a: SessionStats, b: SessionStatsWithByteTotal): SessionStatsWithByteTotal => {
+const calculateDiffs = (
+  totalPeriodStats: SessionStats,
+  displayStats: SessionStatsWithByteTotal,
+): SessionStatsWithByteTotal => {
   const diffTotals: SessionStatsWithByteTotal = {
-    count: a.count - b.count,
-    countConsumers: a.countConsumers - b.countConsumers,
-    sumBytesReceived: subtract(a.sumBytesReceived - b.sumBytesReceived),
-    sumBytesSent: subtract(a.sumBytesSent - b.sumBytesSent),
-    sumDuration: a.sumDuration - b.sumDuration,
-    sumTokens: a.sumTokens - b.sumTokens,
-    byteTotal: a.sumBytesReceived + a.sumBytesSent - b.byteTotal,
+    count: totalPeriodStats.count - displayStats.count,
+    countConsumers: totalPeriodStats.countConsumers - displayStats.countConsumers,
+    sumBytesReceived: subtract(totalPeriodStats.sumBytesReceived - displayStats.sumBytesReceived),
+    sumBytesSent: subtract(totalPeriodStats.sumBytesSent - displayStats.sumBytesSent),
+    sumDuration: totalPeriodStats.sumDuration - displayStats.sumDuration,
+    sumTokens: totalPeriodStats.sumTokens - displayStats.sumTokens,
+    byteTotal: totalPeriodStats.sumBytesReceived + totalPeriodStats.sumBytesSent - displayStats.byteTotal,
   }
   return {
-    count: b.count - diffTotals.count,
-    countConsumers: b.countConsumers - diffTotals.countConsumers,
-    sumBytesReceived: subtract(b.sumBytesReceived - diffTotals.sumBytesReceived),
-    sumBytesSent: subtract(b.sumBytesSent - diffTotals.sumBytesSent),
-    sumDuration: b.sumDuration - diffTotals.sumDuration,
-    sumTokens: b.sumTokens - diffTotals.sumTokens,
-    byteTotal: subtract(b.byteTotal - diffTotals.byteTotal),
+    count: displayStats.count - diffTotals.count,
+    countConsumers: displayStats.countConsumers - diffTotals.countConsumers,
+    sumBytesReceived: subtract(displayStats.sumBytesReceived - diffTotals.sumBytesReceived),
+    sumBytesSent: subtract(displayStats.sumBytesSent - diffTotals.sumBytesSent),
+    sumDuration: displayStats.sumDuration - diffTotals.sumDuration,
+    sumTokens: displayStats.sumTokens - diffTotals.sumTokens,
+    byteTotal: subtract(displayStats.byteTotal - diffTotals.byteTotal),
   }
 }
 
