@@ -75,10 +75,11 @@ export const Pagination = ({ currentPage, totalPages, handlePageChange }: Pagina
       <Pages>
         {paginationRange?.map((pageNumber) => {
           if (pageNumber === DOTS) {
-            return <span>{DOTS}</span>
+            return <span key={pageNumber}>{DOTS}</span>
           }
           return (
             <PageButton
+              key={pageNumber}
               $active={currentPage === pageNumber}
               onClick={() => {
                 handlePageChange({ page: pageNumber as number })
