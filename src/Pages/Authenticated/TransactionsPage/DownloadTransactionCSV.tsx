@@ -9,7 +9,8 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { FileIcon } from '../../../Components/Icons/Icons'
 import { Button } from '../../../Components/Inputs/Button'
-import { SettlementListResponse, Settlement } from 'mysterium-vpn-js'
+import { SettlementListResponse } from 'mysterium-vpn-js'
+import { toCsv } from './csv.mapper'
 const Row = styled.div`
   display: flex;
   align-items: center;
@@ -20,35 +21,7 @@ const Title = styled.div`
   max-width: 8em;
   color: ${({ theme }) => theme.text.colorSecondary};
 `
-const newLine = '\n'
 
-const aliases: { [key: string]: string } = {
-  beneficiary: 'externalWalletAddress',
-}
-
-const alias = (original: string): string => {
-  const a = aliases[original]
-  if (a) {
-    return a
-  }
-  return original
-}
-
-const toCsv = (response: SettlementListResponse): string => {
-  const { items } = response
-  if (items.length === 0) {
-    return 'No settlement history'
-  }
-
-  const columns = Object.keys(items[0]) as [keyof Settlement]
-
-  let csv = `"${columns.map(alias).join(',')}"${newLine}`
-  items.forEach((item) => {
-    const values = columns.map((column) => `"${item[column]}"`).join(',')
-    csv += `${values}${newLine}`
-  })
-  return csv
-}
 interface Props {
   data: SettlementListResponse
 }
