@@ -22,11 +22,14 @@ const bytes2Gb = (a?: number, b = 2): number => {
 export const add = (a?: number, b?: number): number => {
   return (a || 0) + (b || 0)
 }
-
+const subtract = (a?: number, b?: number): number => {
+  return (a || 0) - (b || 0)
+}
 const bytes = {
   format,
   add,
   bytes2Gb,
+  subtract,
 }
 
 export default bytes

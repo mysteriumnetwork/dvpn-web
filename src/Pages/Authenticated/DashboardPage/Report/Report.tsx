@@ -16,9 +16,12 @@ import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 import { useMemo, useState } from 'react'
 import dates from '../../../../commons/dates'
-import { SESSIONS_STATS_DAILY_RESPONSE_EMPTY, SESSION_STATS_EMPTY } from '../../../../constants/instances'
+import {
+  SESSIONS_STATS_DAILY_RESPONSE_EMPTY,
+  SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
+} from '../../../../constants/instances'
 import charts from '../Charts/chart.utils'
-import { SessionStatsWithDate } from '../../../../types/api'
+import { SessionStatsWithByteTotal, SessionStatsWithDate } from '../../../../types/api'
 import { myst } from '../../../../commons/mysts'
 import bytes from '../../../../commons/bytes'
 
@@ -71,8 +74,8 @@ interface StateProps {
   dateFrom: string
 }
 interface ReportStats {
-  totals: SessionStats
-  diff: SessionStats
+  totals: SessionStatsWithByteTotal
+  diff: SessionStatsWithByteTotal
 }
 
 export const Report = () => {
@@ -83,8 +86,8 @@ export const Report = () => {
   })
   const [chartStats, setChartStats] = useState<SessionStatsWithDate[]>([])
   const [reportStats, setReportStats] = useState<ReportStats>({
-    totals: SESSION_STATS_EMPTY,
-    diff: SESSION_STATS_EMPTY,
+    totals: SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
+    diff: SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
   })
 
   useFetch(() => Promise.all([api.sessionStatsDaily()]))
@@ -139,11 +142,10 @@ export const Report = () => {
       const itemsToDisplay = sliceDisplayItems(remmapedItems)
       const displayTotals = charts.calculateDisplayTotals(itemsToDisplay)
       const diffs = charts.calculateDiffs(data.stats, displayTotals)
-      console.log('Items to display:', itemsToDisplay)
-      console.log('Diffs: ', diffs)
-      console.log('Stats from API', data.stats)
-      console.log('Display totals: ', displayTotals)
       setChartStats(itemsToDisplay)
+      console.log('Items to display', itemsToDisplay)
+      console.log('Display totals', displayTotals)
+      console.log('Diffs', diffs)
       setReportStats((p) => ({
         ...p,
         totals: displayTotals,
@@ -181,9 +183,9 @@ export const Report = () => {
         <BorderRight />
         <ReportCard
           icon={<CloudIcon />}
-          value={format(add(reportStats.totals.sumBytesReceived, reportStats.totals.sumBytesSent))}
+          value={format(reportStats.totals.byteTotal)}
           title="Transferred"
-          diff={bytes2Gb(add(reportStats.diff.sumBytesReceived, reportStats.diff.sumBytesSent))}
+          diff={parseFloat((reportStats.diff.byteTotal / 1_000_000_000).toFixed(2))}
         />
       </CardRow>
     </Column>

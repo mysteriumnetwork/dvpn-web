@@ -22,6 +22,7 @@ import {
   SessionStatsDailyResponse,
   SettlementListResponse,
 } from 'mysterium-vpn-js'
+import { SessionStatsWithByteTotal } from '../types/api'
 
 export const TOKENS_EMPTY = Object.freeze({
   wei: '0',
@@ -84,6 +85,15 @@ export const SESSION_STATS_EMPTY: SessionStats = Object.freeze({
   sumBytesSent: 0,
   sumDuration: 0,
   sumTokens: 0,
+})
+export const SESSION_STATS_WITH_BYTE_TOTAL_EMPTY: SessionStatsWithByteTotal = Object.freeze({
+  count: 0,
+  countConsumers: 0,
+  sumBytesReceived: 0,
+  sumBytesSent: 0,
+  sumDuration: 0,
+  sumTokens: 0,
+  byteTotal: 0,
 })
 
 export const CONFIG_EMPTY: Config = Object.freeze({ data: {} })

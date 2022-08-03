@@ -8,9 +8,10 @@ import { SessionStats } from 'mysterium-vpn-js'
 import bytes from '../../../../commons/bytes'
 import { myst } from '../../../../commons/mysts'
 import { currentCurrency } from '../../../../commons/currency'
-import { SessionStatsWithDate } from '../../../../types/api'
+import { SessionStatsWithByteTotal, SessionStatsWithDate } from '../../../../types/api'
+import BigNumber from 'bignumber.js'
 
-const { add, bytes2Gb } = bytes
+const { add, bytes2Gb, subtract } = bytes
 export interface Pair {
   x: string
   y: number | string
@@ -122,16 +123,17 @@ const ceilingOf2 = (n: number): number => {
   return Math.ceil(n / 2) * 2
 }
 
-const calculateDisplayTotals = (a: SessionStatsWithDate[]): SessionStats => {
+const calculateDisplayTotals = (a: SessionStatsWithDate[]): SessionStatsWithByteTotal => {
   const acc = a.reduce(
     (acc, next) => {
       return {
-        count: acc.count += next.count,
-        countConsumers: acc.countConsumers += next.countConsumers,
-        sumBytesReceived: acc.sumBytesReceived += next.sumBytesReceived,
-        sumBytesSent: acc.sumBytesReceived += next.sumBytesSent,
-        sumDuration: acc.sumDuration += next.sumDuration,
-        sumTokens: acc.sumTokens += next.sumTokens,
+        count: acc.count + next.count,
+        countConsumers: acc.countConsumers + next.countConsumers,
+        sumBytesReceived: add(acc.sumBytesReceived + next.sumBytesReceived),
+        sumBytesSent: add(acc.sumBytesReceived + next.sumBytesSent),
+        sumDuration: acc.sumDuration + next.sumDuration,
+        sumTokens: acc.sumTokens + next.sumTokens,
+        byteTotal: add(add(acc.sumBytesReceived + acc.sumBytesSent) + add(next.sumBytesReceived + next.sumBytesSent)),
       }
     },
     {
@@ -141,27 +143,30 @@ const calculateDisplayTotals = (a: SessionStatsWithDate[]): SessionStats => {
       sumBytesSent: 0,
       sumDuration: 0,
       sumTokens: 0,
+      byteTotal: 0,
     },
   )
   return acc
 }
 
-const calculateDiffs = (a: SessionStats, b: SessionStats): SessionStats => {
-  const diffTotals: SessionStats = {
+const calculateDiffs = (a: SessionStats, b: SessionStatsWithByteTotal): SessionStatsWithByteTotal => {
+  const diffTotals: SessionStatsWithByteTotal = {
     count: a.count - b.count,
     countConsumers: a.countConsumers - b.countConsumers,
-    sumBytesReceived: a.sumBytesReceived - b.sumBytesReceived,
-    sumBytesSent: a.sumBytesSent - b.sumBytesSent,
+    sumBytesReceived: subtract(a.sumBytesReceived - b.sumBytesReceived),
+    sumBytesSent: subtract(a.sumBytesSent - b.sumBytesSent),
     sumDuration: a.sumDuration - b.sumDuration,
     sumTokens: a.sumTokens - b.sumTokens,
+    byteTotal: a.sumBytesReceived + a.sumBytesSent - b.byteTotal,
   }
   return {
     count: b.count - diffTotals.count,
     countConsumers: b.countConsumers - diffTotals.countConsumers,
-    sumBytesReceived: b.sumBytesReceived - diffTotals.sumBytesReceived,
-    sumBytesSent: b.sumBytesSent - diffTotals.sumBytesSent,
+    sumBytesReceived: subtract(b.sumBytesReceived - diffTotals.sumBytesReceived),
+    sumBytesSent: subtract(b.sumBytesSent - diffTotals.sumBytesSent),
     sumDuration: b.sumDuration - diffTotals.sumDuration,
     sumTokens: b.sumTokens - diffTotals.sumTokens,
+    byteTotal: subtract(b.byteTotal - diffTotals.byteTotal),
   }
 }
 
