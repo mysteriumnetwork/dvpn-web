@@ -13,12 +13,15 @@ interface Props {
   colorB: string
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  width: 70px;
+  height: 70px;
+`
 
 export const DoughnutChart = ({ data, colorA, colorB }: Props) => {
   return (
     <Wrapper>
-      <ResponsiveContainer width={70} height={70}>
+      <ResponsiveContainer width="100%">
         <PieChart>
           <Pie data={data} stroke="none" innerRadius={12} outerRadius={30} dataKey="value">
             {data.map((entry, index) => (

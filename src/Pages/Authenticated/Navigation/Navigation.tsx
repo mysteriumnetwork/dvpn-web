@@ -26,7 +26,6 @@ import {
   WalletNavIcon,
 } from '../../../Components/Icons/NavigationIcons'
 import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
-import { LiveChat } from '../Components/LiveChat/LiveChat'
 import { devices } from '../../../theme/themes'
 import { Media } from '../../../commons/media'
 import { Notifications } from '../Components/Notifications/Notifications'
@@ -159,7 +158,7 @@ const Navigation = () => {
         </PlainLink>
         <FlexGrow />
         <ReportIssue />
-        <LiveChat />
+        {/*<LiveChat />*/}
         <ThemeSwitch />
         <Margin />
       </Media.Desktop>
