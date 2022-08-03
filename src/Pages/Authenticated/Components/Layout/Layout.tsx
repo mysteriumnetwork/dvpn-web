@@ -16,6 +16,7 @@ import { CircularSpinner } from '../../../../Components/CircularSpinner/Circular
 import { Notifications } from '../Notifications/Notifications'
 import { devices } from '../../../../theme/themes'
 import { Media } from '../../../../commons/media'
+import { Profile } from '../Profile/Profile'
 
 const Main = styled.main`
   position: relative;
@@ -39,6 +40,12 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+`
+
+const HeaderGroup = styled.div`
+  display: flex;
+  gap: 26px;
+  align-items: center;
 `
 
 const Content = styled.div`
@@ -105,7 +112,10 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
           <NodeStatus />
           <Quality />
           <SettlementStatus />
-          <Notifications />
+          <HeaderGroup>
+            <Notifications />
+            <Profile />
+          </HeaderGroup>
         </Header>
         <Content>{children}</Content>
       </Media.Desktop>
