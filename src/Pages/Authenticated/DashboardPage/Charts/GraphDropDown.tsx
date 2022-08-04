@@ -35,7 +35,7 @@ export const GraphDropDown = ({ onChange, options = [] }: Props) => {
     >
       {options?.map((o) => (
         <option key={o.value} value={o.value}>
-          {o.name}
+          {o.label}
         </option>
       ))}
     </StyledSelect>

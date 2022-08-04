@@ -4,30 +4,35 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import React, { Suspense, useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { RegistrationPaymentResponse, Tokens } from 'mysterium-vpn-js'
-import { useEffect, useMemo, useState } from 'react'
-import { tequila } from '../../../api/tequila'
-import { currentCurrency } from '../../../commons/currency'
-import { myst } from '../../../commons/mysts'
-import Button from '../../../Components/Buttons/Button'
-import { Payments } from '../../../Components/Payments/Payments'
-import { selectors } from '../../../redux/selectors'
-import { StepLayout } from '../Components/StepLayout'
-import { feez } from '../../../commons/fees'
+import { tequila } from '../../../../../api/tequila'
+import { GatewayProps } from './Gateways/types'
+import { RegistrationStepProps } from '../types'
+import { SUPPORTED_GATEWAYS } from '../gateways'
+import { useAppSelector } from '../../../../../commons/hooks'
+import { selectors } from '../../../../../redux/selectors'
+import { feez } from '../../../../../commons/fees'
+import { myst } from '../../../../../commons/mysts'
 import BigNumber from 'bignumber.js'
-import { useAppSelector } from '../../../commons/hooks'
 
 const { api } = tequila
+
+const Content = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`
 
 const FEE_SPIKE_MULTIPLIER = 1.5
 
 const isPaid = (balance: Tokens, registrationPayment: RegistrationPaymentResponse, feeEther: string): boolean =>
   myst.toEtherBig(balance.wei).gte(feeEther) || registrationPayment.paid
 
-const NetworkRegistration = ({ nextStep }: StepProps) => {
+const Payment = ({ gateway, allGateways, back, next }: RegistrationStepProps) => {
   const identity = useAppSelector(selectors.currentIdentitySelector)
   const fees = useAppSelector(selectors.feesSelector)
-
   const {
     current: { registration },
   } = fees
@@ -41,6 +46,10 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
 
   const [registrationPayment, setRegistrationPayment] = useState<RegistrationPaymentResponse>({ paid: false })
 
+  const Gateway = useMemo(() => React.lazy(() => import(`./Gateways/${SUPPORTED_GATEWAYS[gateway].component}`)), [
+    gateway,
+  ])
+
   useEffect(() => {
     const skipIfPaid = async () => {
       const [registrationPayment] = await Promise.all([
@@ -48,7 +57,7 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
         api.identityBalanceRefresh(identity.id),
       ])
       if (!isEmptyFees && isPaid(identity.balanceTokens, registrationPayment, registration.ether)) {
-        nextStep()
+        next()
       }
     }
     skipIfPaid()
@@ -65,18 +74,21 @@ const NetworkRegistration = ({ nextStep }: StepProps) => {
   const isRegistrationPaymentReceived =
     myst.toEtherBig(identity.balanceTokens.wei).gte(registration.ether) || registrationPayment.paid
 
+  const gatewayProps: GatewayProps = {
+    gateway: allGateways.find((gw) => gw.name === gateway)!,
+    payments: { isCompleted: isRegistrationPaymentReceived, amountRequiredWei: myst.toWeiBig(minimalAmountEther) },
+    back,
+    next,
+    backText: 'Back To Payment Method',
+  }
+
   return (
-    <StepLayout
-      title="Network Registration"
-      description={`To register your node on blockchain you can either transfer required amount of ${currentCurrency()} or pay 1 USD`}
-      controls={<>{isRegistrationPaymentReceived && !isEmptyFees && <Button onClick={nextStep}>Next</Button>}</>}
-      controlsCentered
-      fixed
-    >
-      {isEmptyFees && <div>Could not retrieve blockchain fees please refresh page and try again...</div>}
-      <Payments amountRequiredWei={myst.toWeiBig(minimalAmountEther)} isCompleted={isRegistrationPaymentReceived} />
-    </StepLayout>
+    <Content>
+      <Suspense>
+        <Gateway {...gatewayProps} />
+      </Suspense>
+    </Content>
   )
 }
 
-export default NetworkRegistration
+export default Payment

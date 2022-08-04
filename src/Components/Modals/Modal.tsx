@@ -4,11 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { ReactNode } from 'react'
 import { XButtonIcon } from '../Icons/ButtonIcons'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { themeCommon } from '../../theme/themeCommon'
+
+type ModalSize = 'xl'
 
 const PageOverlay = styled.div`
   position: fixed;
@@ -22,16 +24,29 @@ const PageOverlay = styled.div`
   background: ${({ theme }) => theme.modal.bgOverlay};
 `
 
-const StyledModal = styled.div`
-  position: fixed;
-  z-index: 1000;
-
+const normalSize = css`
   width: 900px;
   height: 440px;
-
   left: 50%;
   top: 20%;
   transform: translate(-50%, 0);
+`
+
+const xlSize = css`
+  width: 90%;
+
+  min-width: 900px;
+
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, 0);
+`
+
+const StyledModal = styled.div<{ $size?: ModalSize }>`
+  position: fixed;
+  z-index: 1000;
+
+  ${({ $size }) => ($size ? xlSize : normalSize)}
 
   background: ${({ theme }) => theme.modal.bgColor};
   box-shadow: ${({ theme }) => theme.modal.boxShadow};
@@ -105,7 +120,7 @@ const Spinner = styled(CircularSpinner)`
 `
 
 interface Props {
-  show: boolean
+  show?: boolean
   icon?: ReactNode
   title?: string
   subTitle?: string
@@ -113,9 +128,22 @@ interface Props {
   onClickX?: () => void
   loading?: boolean
   disableBackdrop?: boolean
+  disableX?: boolean
+  size?: ModalSize
 }
 
-export const Modal = ({ show, icon, title, subTitle, children, onClickX, loading, disableBackdrop }: Props) => {
+export const Modal = ({
+  show,
+  icon,
+  title,
+  subTitle,
+  children,
+  onClickX,
+  loading,
+  disableBackdrop,
+  disableX,
+  size,
+}: Props) => {
   if (!show) {
     return <></>
   }
@@ -123,7 +151,7 @@ export const Modal = ({ show, icon, title, subTitle, children, onClickX, loading
   return (
     <>
       <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />
-      <StyledModal>
+      <StyledModal $size={size}>
         <Container>
           {loading && (
             <SpinnerOverlay>
@@ -131,11 +159,9 @@ export const Modal = ({ show, icon, title, subTitle, children, onClickX, loading
             </SpinnerOverlay>
           )}
           <Icon>{icon}</Icon>
-          <CloseButtonPlacement>
-            <XButtonIcon onClick={onClickX} />
-          </CloseButtonPlacement>
-          <Title>{title}</Title>
-          <SubTitle>{subTitle}</SubTitle>
+          <CloseButtonPlacement>{!disableX && <XButtonIcon onClick={onClickX} />}</CloseButtonPlacement>
+          {title && <Title>{title}</Title>}
+          {subTitle && <SubTitle>{subTitle}</SubTitle>}
           {children}
         </Container>
       </StyledModal>

@@ -30,6 +30,10 @@ const light: Omit<Theme, 'common'> = {
 
   buttons: {
     disabledOpacity: '0.7',
+
+    outlined: {
+      hoverBackgroundColor: themeCommon.colorKeyLight + alphaToHex(0.1),
+    },
   },
 
   table: {

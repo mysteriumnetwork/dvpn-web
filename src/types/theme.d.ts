@@ -30,6 +30,10 @@ export type Theme = {
 
   buttons: {
     disabledOpacity: string
+
+    outlined: {
+      hoverBackgroundColor: string
+    }
   }
 
   settleModal: {
@@ -174,6 +178,7 @@ export type Common = {
   fontSizeBigger: string
   fontSizeBig: string
   fontSizeHuge: string
+  fontSizeHumongous: string
 }
 
 declare module 'styled-components' {

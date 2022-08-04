@@ -8,7 +8,7 @@ import BigNumber from 'bignumber.js'
 import { PaymentGateway } from 'mysterium-vpn-js'
 
 export type PaymentProps = {
-  amountRequiredWei?: BigNumber
+  amountRequiredWei: BigNumber
   isCompleted: boolean
 }
 
@@ -16,4 +16,7 @@ export type GatewayProps = {
   gateway: PaymentGateway
   payments: PaymentProps
   note?: string
+  back?: () => void
+  next?: () => void
+  backText?: string
 }

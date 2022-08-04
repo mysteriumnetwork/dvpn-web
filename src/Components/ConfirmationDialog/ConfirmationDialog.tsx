@@ -65,13 +65,21 @@ interface Props {
   title: string
   message: string
   show: boolean
-  onConfirm: () => void
-  onCancel: () => void
+  onConfirm?: () => void
+  onCancel?: () => void
   loading?: boolean
   disableBackdrop?: boolean
 }
 
-export const ConfirmationDialog = ({ loading, show, onCancel, title, message, onConfirm, disableBackdrop }: Props) => {
+export const ConfirmationDialog = ({
+  loading,
+  show,
+  onCancel = () => {},
+  title,
+  message,
+  onConfirm,
+  disableBackdrop,
+}: Props) => {
   if (!show) {
     return <></>
   }

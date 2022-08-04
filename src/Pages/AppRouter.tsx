@@ -13,16 +13,16 @@ import { localStorageKeys } from '../constants/local_storage_keys'
 import {
   ADMIN,
   DASHBOARD,
-  LOGIN,
-  ON_BOARDING_HOME,
   HISTORY,
+  HOME,
+  NEW_PASSWORD,
+  SANDBOX,
   SESSIONS_SIDE,
   SETTINGS,
-  TRANSACTIONS,
   SETTINGS_ACCOUNT,
   SETTINGS_ADVANCED,
   SETTINGS_TRAFFIC,
-  SANDBOX,
+  TRANSACTIONS,
 } from '../constants/routes'
 import {
   fetchChainSummaryAsync,
@@ -50,19 +50,18 @@ import DashboardPage from './Authenticated/DashboardPage/DashboardPage'
 import { AdminPage } from './Authenticated/AdminPage/AdminPage'
 import identities from '../commons/identities'
 import { useAppDispatch, useAppSelector } from '../commons/hooks'
-import OnBoardingPage from './Onboarding/OnBoardingPage'
 import { HistoryPage } from './Authenticated/HistoryPage/HistoryPage'
 import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
 import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
 import PageNotFound from './Error/PageNotFound'
 import { SandboxPage } from './Authenticated/SandboxPage/SandboxPage'
+import { PasswordPage } from './Authenticated/Onboarding/PasswordPage'
 
 const { api } = tequila
 const { parseToastError } = errors
 const SECOND = 1000
 
 const AppRouter = () => {
-  // const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const actions = {
     fetchIdentityAsync: async () => fetchIdentityAsync(),
@@ -168,20 +167,20 @@ const AppRouter = () => {
     return <></>
   }
 
-  const toLoginOrOnBoarding = [
-    { condition: !loggedIn, to: LOGIN },
-    { condition: onBoarding.needsOnBoarding, to: ON_BOARDING_HOME },
-  ]
+  const toLoginOrOnBoarding = [{ condition: !loggedIn, to: HOME }]
 
-  const toDashboardIfLoggedIn = [{ condition: loggedIn, to: DASHBOARD }]
+  const toPasswordChangeOrDashboard = [
+    { condition: onBoarding.needsPasswordChange, to: NEW_PASSWORD },
+    { condition: loggedIn, to: DASHBOARD },
+  ]
 
   return (
     <Routes>
       <Route
         index={true}
         element={
-          <Protected redirects={toDashboardIfLoggedIn}>
-            <LoginPage onSuccessLogin={() => authenticatedActions(false)} />
+          <Protected redirects={toPasswordChangeOrDashboard}>
+            <LoginPage onSuccess={() => authenticatedActions(false)} />
           </Protected>
         }
       />
@@ -230,17 +229,17 @@ const AppRouter = () => {
         }
       />
       <Route
-        path={ON_BOARDING_HOME}
+        path={NEW_PASSWORD}
         element={
-          <Protected redirects={[{ condition: !onBoarding.needsOnBoarding, to: LOGIN }]}>
-            <OnBoardingPage />
+          <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
+            <PasswordPage />
           </Protected>
         }
       />
       <Route
         path={ADMIN}
         element={
-          <Protected redirects={[{ condition: !loggedIn, to: LOGIN }]}>
+          <Protected redirects={[{ condition: !loggedIn, to: HOME }]}>
             <WithNavigation content={<AdminPage />} />
           </Protected>
         }
@@ -248,7 +247,7 @@ const AppRouter = () => {
       <Route
         path={SANDBOX}
         element={
-          <Protected redirects={[{ condition: !loggedIn, to: LOGIN }]}>
+          <Protected redirects={[{ condition: !loggedIn, to: HOME }]}>
             <WithNavigation content={<SandboxPage />} />
           </Protected>
         }
