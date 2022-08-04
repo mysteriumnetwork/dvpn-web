@@ -10,6 +10,7 @@ import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
 import { CircularSpinner } from '../../../Components/CircularSpinner/CircularSpinner'
 import identities from '../../../commons/identities'
+import CopyToClipboard from '../../../Components/CopyToClipboard/CopyToClipboard'
 
 const Content = styled.div`
   height: 400px;
@@ -26,6 +27,9 @@ const Text = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeHuge};
 `
 const Identity = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: ${({ theme }) => theme.common.fontSizeBig};
 `
 const Spinner = styled(CircularSpinner)`
@@ -52,7 +56,10 @@ export const RegistrationInProgressModal = ({ show }: Props) => {
       <Content>
         <Spinner />
         <Text>Your identity is being registered, please be patient...</Text>
-        <Identity>{identity.id}</Identity>
+        <Identity>
+          {identity.id}
+          <CopyToClipboard text={identity.id} />
+        </Identity>
         {isError && <Error>Registration Error</Error>}
       </Content>
     </Modal>
