@@ -7,13 +7,15 @@
 import { ReactNode } from 'react'
 
 interface Props {
+  id?: string
   children?: ReactNode
   onSubmit?: () => void
 }
 
-export const Form = ({ children, onSubmit }: Props) => {
+export const Form = ({ children, onSubmit, id }: Props) => {
   return (
     <form
+      id={id}
       onSubmit={(e) => {
         e.preventDefault()
         onSubmit && onSubmit()

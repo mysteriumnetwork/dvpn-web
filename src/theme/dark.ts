@@ -33,6 +33,10 @@ const dark: Omit<Theme, 'common'> = {
 
   buttons: {
     disabledOpacity: '0.3',
+
+    outlined: {
+      hoverBackgroundColor: themeCommon.colorKeyLight + alphaToHex(0.1),
+    },
   },
 
   table: {

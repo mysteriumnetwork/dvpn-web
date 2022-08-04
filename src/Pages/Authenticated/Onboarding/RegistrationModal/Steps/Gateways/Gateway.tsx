@@ -7,17 +7,18 @@
 import classNames from 'classnames'
 import { PaymentOrder } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
-import { tequila } from '../../../api/tequila'
-import countries from '../../../commons/countries'
-import errors from '../../../commons/errors'
-import { selectors } from '../../../redux/selectors'
-import Button from '../../Buttons/Button'
-import { Option, Select } from '../../Select/Select'
+import { tequila } from '../../../../../../api/tequila'
+import countries from '../../../../../../commons/countries'
+import errors from '../../../../../../commons/errors'
+import { selectors } from '../../../../../../redux/selectors'
 import { validateAndReturnCheckoutUrl } from './fiat'
 import styles from './Gateway.module.scss'
 import { GatewayProps } from './types'
-import { useAppSelector } from '../../../commons/hooks'
-import { CircularSpinner } from '../../CircularSpinner/CircularSpinner'
+import { useAppSelector } from '../../../../../../commons/hooks'
+import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
+import { Button } from '../../../../../../Components/Inputs/Button'
+import { Select } from '../../../../../../Components/Select/Select'
+import { Option } from '../../../../../../types/common'
 
 const { parseToastError } = errors
 const { countryNames } = countries
@@ -42,7 +43,7 @@ const initialState: State = {
   isLoadingPayNow: false,
 }
 
-const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => {
+const Gateway = ({ payments: { isCompleted }, gateway, note, back }: GatewayProps) => {
   const { name: gatewayName } = gateway
 
   const identity = useAppSelector(selectors.currentIdentitySelector)
@@ -139,13 +140,12 @@ const Gateway = ({ payments: { isCompleted }, gateway, note }: GatewayProps) => 
       <Select options={countryOptions} value={taxCountry} onChange={(o) => handleTaxCountryChange(o as Option)} />
       {showPayNow() && (
         <div className={styles.payNow}>
-          <Button extraStyle="outline-primary" onClick={handlePayNow} isLoading={state.isLoadingPayNow}>
-            Pay Now
-          </Button>
+          <Button variant="outlined" onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay Now" />
         </div>
       )}
       <WaitingPayment showPayNow={showPayNow()} isRegistrationPaymentReceived={isCompleted} />
       {showInvoiceLink && <DownloadInvoice id={identity.id} orderId={state.order?.id} />}
+      <Button onClick={back} variant="outlined" rounded label="Back To Payment2 Methods" />
     </div>
   )
 }
@@ -162,10 +162,10 @@ const WaitingPayment = ({ isRegistrationPaymentReceived, showPayNow }: WaitingPa
   return (
     <div className={styles.waitingPayment}>
       {isRegistrationPaymentReceived ? (
-        <>Payment successful! Click Next to proceed.</>
+        <>Payment2 successful! Click Next to proceed.</>
       ) : (
         <div className={styles.waitingPaymentVerification}>
-          Payment verification in progress (may take a few minutes)...
+          Payment2 verification in progress (may take a few minutes)...
           <CircularSpinner />
         </div>
       )}

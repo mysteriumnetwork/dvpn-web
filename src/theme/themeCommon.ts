@@ -50,4 +50,5 @@ export const themeCommon: Common = {
   fontSizeBigger: '16px',
   fontSizeBig: '18px',
   fontSizeHuge: '24px',
+  fontSizeHumongous: '32px',
 }

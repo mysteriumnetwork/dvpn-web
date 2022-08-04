@@ -40,6 +40,10 @@ const OUTLINES_CSS = css`
   :active {
     background: ${themeCommon.colorGrayBlue}51;
   }
+
+  :hover {
+    background-color: ${({ theme }) => theme.buttons.outlined.hoverBackgroundColor};
+  }
 `
 const BLUE_CSS = css`
   color: ${themeCommon.colorWhite};
@@ -135,7 +139,6 @@ interface Props {
   size?: ButtonSize
   loading?: boolean
   rounded?: boolean
-  round?: boolean
   onClick?: () => void
   type?: 'submit' | 'reset' | 'button'
 }

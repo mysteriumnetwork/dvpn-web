@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 export type Option = {
-  name: string
+  label: string
   value: string | number
 }

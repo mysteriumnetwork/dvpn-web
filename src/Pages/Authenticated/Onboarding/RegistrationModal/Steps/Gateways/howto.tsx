@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react'
-import { DOCS_METAMASK } from '../../../constants/urls'
+import { DOCS_METAMASK } from '../../../../../../constants/urls'
 
 export const HowToGetMyst = () => {
   return (
