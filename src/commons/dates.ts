@@ -7,6 +7,12 @@
 const date2human = (ds: string): string => {
   return new Date(Date.parse(ds)).toLocaleString('en-GB')
 }
+const localDate = (date: Date | undefined): string | undefined => {
+  if (date === undefined) {
+    return
+  }
+  return date.toISOString().split('T')[0]
+}
 const date2Locale = (d: Date): string => {
   return d.toLocaleString('en-GB')
 }
@@ -40,6 +46,7 @@ const dates = {
   seconds2Time,
   date2Locale,
   days2Ms,
+  localDate,
 }
 
 export default dates
