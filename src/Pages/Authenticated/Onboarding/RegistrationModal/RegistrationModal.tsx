@@ -10,10 +10,12 @@ import { PaymentGateway } from 'mysterium-vpn-js'
 import { tequila } from '../../../../api/tequila'
 import styled from 'styled-components'
 import { ReactComponent as PaymentSVG } from '../../../../assets/images/onboarding/payment.svg'
+import { ReactComponent as WalletSVG } from '../../../../assets/images/onboarding/wallet.svg'
 import { BreadCrumbs } from './BreadCrumbs'
 import { toast } from 'react-toastify'
 import { RegistrationStepProps } from './types'
 import errors from '../../../../commons/errors'
+import { SUPPORTED_GATEWAYS } from './gateways'
 
 const { api } = tequila
 
@@ -62,12 +64,21 @@ const Image = styled.div`
 const steps = [
   {
     component: `PaymentMethod`,
+    logo: () => <PaymentSVG />,
   },
   {
     component: `Payment`,
+    logo: (gateway: string) => {
+      const Logo = SUPPORTED_GATEWAYS[gateway].logo
+      if (!Logo) {
+        return <PaymentSVG />
+      }
+      return <Logo />
+    },
   },
   {
     component: `Wallet`,
+    logo: () => <WalletSVG />,
   },
 ]
 
@@ -77,6 +88,7 @@ interface Props {
 
 export const RegistrationModal = ({ show }: Props) => {
   const [loading, setLoading] = useState(true)
+  const [stepLoading, setStepLoading] = useState(false)
   const [step, setStep] = useState(0)
   const [allGateways, setAllGateways] = useState<PaymentGateway[]>([])
   const [gateway, setGateway] = useState('empty')
@@ -106,19 +118,19 @@ export const RegistrationModal = ({ show }: Props) => {
     setBeneficiary: (beneficiary: string) => setBeneficiary(beneficiary),
     next: () => setStep((p) => p + 1),
     back: () => setStep((p) => p - 1),
-    loading,
-    setLoading,
+    loading: stepLoading,
+    setLoading: setStepLoading,
   }
 
   return (
-    <Modal disableBackdrop disableX show={show} size="xl" loading={loading}>
+    <Modal disableBackdrop disableX show={show} size="xl" loading={loading || stepLoading}>
       <Content>
         <Row>
           <BreadCrumbs current={step} />
         </Row>
         <Row>
           <Image>
-            <PaymentSVG />
+            {steps[step]?.logo(gateway) || <PaymentSVG />}
             <StepNumber>{step + 1}</StepNumber>
           </Image>
 

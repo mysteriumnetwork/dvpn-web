@@ -39,14 +39,16 @@ const Options = styled.div`
 
 const DIRECT_GATEWAY_OPTION: Option = { value: 'direct', label: SUPPORTED_GATEWAYS.direct.summary }
 
-const PaymentMethod = ({ selectGateway, next, allGateways }: RegistrationStepProps) => {
+const PaymentMethod = ({ setLoading, selectGateway, next, allGateways }: RegistrationStepProps) => {
   const [availableGatewayOptions, setAvailableGatewayOptions] = useState<Option[]>([])
   useEffect(() => {
+    setLoading(true)
     const options: Option[] = allGateways
       .filter((gw) => Object.keys(SUPPORTED_GATEWAYS).includes(gw.name))
       .map((gw) => ({ value: gw.name, label: SUPPORTED_GATEWAYS[gw.name].summary }))
     setAvailableGatewayOptions([DIRECT_GATEWAY_OPTION, ...options])
-  }, [])
+    setLoading(false)
+  }, [allGateways])
 
   const handleSelect = (value: string) => {
     selectGateway(value)

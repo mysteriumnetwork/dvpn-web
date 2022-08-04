@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import classNames from 'classnames'
 import { PaymentOrder } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { tequila } from '../../../../../../api/tequila'
@@ -12,13 +11,15 @@ import countries from '../../../../../../commons/countries'
 import errors from '../../../../../../commons/errors'
 import { selectors } from '../../../../../../redux/selectors'
 import { validateAndReturnCheckoutUrl } from './fiat'
-import styles from './Gateway.module.scss'
 import { GatewayProps } from './types'
 import { useAppSelector } from '../../../../../../commons/hooks'
 import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
 import { Button } from '../../../../../../Components/Inputs/Button'
 import { Select } from '../../../../../../Components/Select/Select'
 import { Option } from '../../../../../../types/common'
+import styled from 'styled-components'
+import { SUPPORTED_GATEWAYS } from '../../gateways'
+import { InputGroup } from '../../../../../../Components/Inputs/InputGroup'
 
 const { parseToastError } = errors
 const { countryNames } = countries
@@ -43,7 +44,58 @@ const initialState: State = {
   isLoadingPayNow: false,
 }
 
-const Gateway = ({ payments: { isCompleted }, gateway, note, back }: GatewayProps) => {
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+`
+
+const FlexGrow = styled.div`
+  flex-grow: 1;
+`
+
+const Spinner = styled(CircularSpinner)`
+  width: 50px;
+  height: 50px;
+  align-self: center;
+  justify-self: center;
+  top: 50%;
+`
+
+const Title = styled.div`
+  display: flex;
+  font-size: ${({ theme }) => theme.common.fontSizeHumongous};
+  font-weight: 600;
+`
+
+const Description = styled.div`
+  display: flex;
+  margin-top: 30px;
+  font-weight: 400;
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+  line-height: 22px;
+  color: ${({ theme }) => theme.common.colorGrayBlue2};
+`
+
+const Note = styled.div`
+  margin-top: 8px;
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  color: ${({ theme }) => theme.common.colorGrayBlue};
+`
+
+const Controls = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`
+
+const Input = styled.div`
+  margin-top: 8px;
+`
+
+const Gateway = ({ payments: { isCompleted }, next, gateway, back, backText }: GatewayProps) => {
   const { name: gatewayName } = gateway
 
   const identity = useAppSelector(selectors.currentIdentitySelector)
@@ -127,26 +179,35 @@ const Gateway = ({ payments: { isCompleted }, gateway, note, back }: GatewayProp
 
   if (isLoading) {
     return (
-      <div className={styles.content}>
-        <CircularSpinner className={styles.spinner} />
-      </div>
+      <Content>
+        <Spinner />
+      </Content>
     )
   }
 
   return (
-    <div className={styles.content}>
-      <p>You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed.</p>
-      {note && <p>{note}</p>}
-      <Select options={countryOptions} value={taxCountry} onChange={(o) => handleTaxCountryChange(o as Option)} />
-      {showPayNow() && (
-        <div className={styles.payNow}>
-          <Button variant="outlined" onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay Now" />
-        </div>
-      )}
+    <Content>
+      <Title>{SUPPORTED_GATEWAYS[gateway.name].title}</Title>
+      <Description>{SUPPORTED_GATEWAYS[gateway.name].description}</Description>
+      <Input>
+        {' '}
+        <InputGroup
+          title="Country"
+          input={
+            <Select options={countryOptions} value={taxCountry} onChange={(o) => handleTaxCountryChange(o as Option)} />
+          }
+        />
+      </Input>
+      <Note>{SUPPORTED_GATEWAYS[gateway.name].note}</Note>
+      <FlexGrow />
       <WaitingPayment showPayNow={showPayNow()} isRegistrationPaymentReceived={isCompleted} />
       {showInvoiceLink && <DownloadInvoice id={identity.id} orderId={state.order?.id} />}
-      <Button onClick={back} variant="outlined" rounded label="Back To Payment2 Methods" />
-    </div>
+      <Controls>
+        {showPayNow() && <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay 1 USD" />}
+        {isCompleted && <Button label="Continue" rounded onClick={next} />}
+        <Button onClick={back} variant="outlined" rounded label={backText || 'Back'} />
+      </Controls>
+    </Content>
   )
 }
 
@@ -155,21 +216,34 @@ interface WaitingPaymentProps {
   showPayNow: boolean
 }
 
+const WaitingSpinner = styled(CircularSpinner)`
+  width: 30px;
+  height: 30px;
+`
+
+const Waiting = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  gap: 5px;
+`
+
 const WaitingPayment = ({ isRegistrationPaymentReceived, showPayNow }: WaitingPaymentProps) => {
   if (showPayNow) {
     return <></>
   }
   return (
-    <div className={styles.waitingPayment}>
+    <>
       {isRegistrationPaymentReceived ? (
-        <>Payment2 successful! Click Next to proceed.</>
+        <>Payment successful! Click Next to proceed.</>
       ) : (
-        <div className={styles.waitingPaymentVerification}>
-          Payment2 verification in progress (may take a few minutes)...
-          <CircularSpinner />
-        </div>
+        <Waiting>
+          <WaitingSpinner />
+          Wait for confirmation (might take couple of minutes)
+        </Waiting>
       )}
-    </div>
+    </>
   )
 }
 
@@ -177,6 +251,10 @@ const openInNewTab = (url: string) => {
   const win = window.open(url, '_blank')
   win?.focus()
 }
+
+const InvoiceLink = styled.a`
+  align-self: center;
+`
 
 const DownloadInvoice = ({ id, orderId }: { id: string; orderId?: string }) => {
   const [url, setUrl] = useState<string>()
@@ -204,10 +282,14 @@ const DownloadInvoice = ({ id, orderId }: { id: string; orderId?: string }) => {
     }
   }, [id, orderId])
 
+  if (isLoading) {
+    return <></>
+  }
+
   return (
-    <a download={name} href={url} className={classNames(styles.invoice, isLoading && styles.invoiceDisplayNonde)}>
+    <InvoiceLink download={name} href={url}>
       Download Invoice
-    </a>
+    </InvoiceLink>
   )
 }
 

@@ -15,7 +15,6 @@ export type PaymentProps = {
 export type GatewayProps = {
   gateway: PaymentGateway
   payments: PaymentProps
-  note?: string
   back?: () => void
   next?: () => void
   backText?: string
