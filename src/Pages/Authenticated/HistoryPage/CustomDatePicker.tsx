@@ -151,7 +151,7 @@ export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }
   const CustomInput = forwardRef(({ value, onClick }: any, ref: any) => {
     return (
       <CustomPickerInput onClick={onClick} ref={ref}>
-        {value}
+        {value.split('-')[0]}
         <InputIcon $clicked={open} />
       </CustomPickerInput>
     )
@@ -167,7 +167,7 @@ export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }
         // TODO: Arrow gets bugged when date is selected, investigate more later
         onInputClick={onClick}
         onClickOutside={onClick}
-        customInput={<CustomInput />}
+        customInput={<CustomInput value={startDate} />}
       />
     </PickerOverrides>
   )

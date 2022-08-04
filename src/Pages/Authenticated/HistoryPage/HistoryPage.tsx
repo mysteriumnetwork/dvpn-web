@@ -47,6 +47,10 @@ export const HistoryPage = () => {
   const handleOpen = () => {
     setOpen(!open)
   }
+  const [dateState, setDateState] = useState<DateState>({
+    startDate: new Date(),
+    endDate: new Date(),
+  })
   const [state, setState] = useState<PaginationState>({
     page: 1,
     pageSize: 10,
@@ -60,10 +64,6 @@ export const HistoryPage = () => {
   const handlePageChange = ({ page }: PaginationState) => {
     setState((p) => ({ ...p, page }))
   }
-  const [dateState, setDateState] = useState<DateState>({
-    startDate: new Date(),
-    endDate: new Date(),
-  })
   const Columns: Column<any>[] = useMemo(
     () => [
       {
