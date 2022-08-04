@@ -42,6 +42,7 @@ const Title = styled.div`
   font-size: ${themeCommon.fontSizeBig};
   font-weight: 700;
   font-style: normal;
+  color: ${({ theme }) => theme.text.colorMain};
 `
 // TODO: Make overflow hidden if livesession is empty
 // TODO: Mobile view for component :)
