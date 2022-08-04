@@ -20,7 +20,7 @@ import bytes from '../../../commons/bytes'
 import { CustomDatePicker } from './CustomDatePicker'
 import styled from 'styled-components'
 const { api } = tequila
-const { date2human, seconds2Time, date2api } = dates
+const { date2human, seconds2Time, localDate } = dates
 const { countryName } = countries
 const { format, add } = bytes
 
@@ -35,8 +35,8 @@ const session2human = (session: string) => {
   return session.split('-')[0]
 }
 interface DateState {
-  startDate: Date | null
-  endDate: Date | null
+  startDate?: Date
+  endDate?: Date
   reset: boolean
 }
 const ResetButton = styled.button`
@@ -61,11 +61,9 @@ export const HistoryPage = () => {
     setOpen(!open)
   }
   const resetDates = () => {
-    setDateState((p) => ({ ...p, startDate: null, endDate: null, reset: false }))
+    setDateState((p) => ({ ...p, startDate: undefined, endDate: undefined, reset: false }))
   }
   const [dateState, setDateState] = useState<DateState>({
-    startDate: null,
-    endDate: null,
     reset: false,
   })
 
@@ -79,8 +77,8 @@ export const HistoryPage = () => {
       api.sessions({
         pageSize: state.pageSize,
         page: state.page,
-        dateFrom: date2api(dateState.startDate),
-        dateTo: date2api(dateState.endDate),
+        dateFrom: localDate(dateState.startDate),
+        dateTo: localDate(dateState.endDate),
       }),
     [state.pageSize, state.page, dateState.endDate, dateState.startDate],
   )

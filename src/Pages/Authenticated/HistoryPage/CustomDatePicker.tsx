@@ -142,8 +142,8 @@ const InputIcon = styled(TriangleDown)<IconProps>`
 interface Props {
   onClick: () => void
   onChange: (dates: any) => void
-  startDate: Date | null
-  endDate: Date | null
+  startDate?: Date
+  endDate?: Date
   open: boolean
 }
 
