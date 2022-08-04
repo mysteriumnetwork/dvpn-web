@@ -92,27 +92,6 @@ export const Report = () => {
 
   useFetch(() => Promise.all([api.sessionStatsDaily()]))
 
-  // const chartStats: { [k: string]: SessionStats } = useMemo(() => {
-  //   const day = 1000 * 60 * 60 * 24
-  //
-  //   const period = 60
-  //
-  //   const res: { [k: string]: SessionStats } = {}
-  //   for (let i = 0; i < period; i++) {
-  //     const d = new Date(Date.now() - day * (period / 2) + day * (i + 1)).toISOString().split('T')[0]
-  //     res[d] = {
-  //       count: Math.floor(Math.random() * 20),
-  //       countConsumers: Math.floor(Math.random() * 30),
-  //       sumBytesReceived: Math.floor(Math.random() * 100) * 1000,
-  //       sumBytesSent: Math.floor(Math.random() * 100) * 500000,
-  //       sumDuration: Math.floor(Math.random() * 100) * 10,
-  //       sumTokens: Math.floor(Math.random() * 100) * 10000000000000000,
-  //     }
-  //   }
-  //
-  //   return res
-  // }, [])
-
   const [data = SESSIONS_STATS_DAILY_RESPONSE_EMPTY, loading] = useFetch(
     () => api.sessionStatsDaily({ dateFrom: state.dateFrom, dateTo: state.dateTo }),
     [state.dateFrom],
@@ -132,7 +111,6 @@ export const Report = () => {
     const remaped = Object.entries(data.items).map((item) => {
       return { ...item[1], date: item[0] } as SessionStatsWithDate
     })
-    console.log('Remaped', remaped)
     return remaped
   }, [state.dateFrom, loading])
 
@@ -142,10 +120,6 @@ export const Report = () => {
       const displayTotals = charts.calculateDisplayTotals(itemsToDisplay)
       const diffs = charts.calculateDiffs(data.stats, displayTotals)
       setChartStats(itemsToDisplay)
-      console.log('data.stats', data.stats)
-      console.log('Items to display', itemsToDisplay)
-      console.log('Display totals', displayTotals)
-      console.log('Diffs', diffs)
       setReportStats((p) => ({
         ...p,
         totals: displayTotals,

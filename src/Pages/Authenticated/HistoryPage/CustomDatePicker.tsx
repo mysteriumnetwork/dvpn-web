@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -33,12 +33,12 @@ const PickerOverrides = styled.div`
     border-color: ${({ theme }) => theme.calendar.bgBody};
     ::after {
       border-bottom-color: ${({ theme }) => theme.calendar.bgBody}!important;
-      left: 36px !important;
+      left: 66px !important;
       top: 1px !important;
     }
     ::before {
       border-bottom-color: ${({ theme }) => theme.calendar.bgBody}!important;
-      left: 36px !important;
+      left: 66px !important;
       top: 1px !important;
     }
   }
@@ -142,17 +142,19 @@ const InputIcon = styled(TriangleDown)<IconProps>`
 interface Props {
   onClick: () => void
   onChange: (dates: any) => void
-  startDate: Date
-  endDate: Date
+  startDate: Date | null
+  endDate: Date | null
   open: boolean
 }
 
 export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }: Props) => {
+  const now = useMemo(() => {
+    return new Date().toISOString().split('T')[0]
+  }, [])
   const CustomInput = forwardRef(({ value, onClick }: any, ref: any) => {
     return (
       <CustomPickerInput onClick={onClick} ref={ref}>
-        {/* {value.split('-')[0]} */}
-        {value}
+        {value ? value : `Begginning - ${now}`}
         <InputIcon $clicked={open} />
       </CustomPickerInput>
     )
@@ -165,6 +167,7 @@ export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }
         startDate={startDate}
         endDate={endDate}
         selectsRange
+        dateFormat={'yyyy-MM-dd'}
         // TODO: Arrow gets bugged when date is selected, investigate more later
         onInputClick={onClick}
         onClickOutside={onClick}

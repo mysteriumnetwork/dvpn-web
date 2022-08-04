@@ -18,8 +18,9 @@ import countries from '../../../commons/countries'
 import { myst } from '../../../commons/mysts'
 import bytes from '../../../commons/bytes'
 import { CustomDatePicker } from './CustomDatePicker'
+import styled from 'styled-components'
 const { api } = tequila
-const { date2human, seconds2Time } = dates
+const { date2human, seconds2Time, date2api } = dates
 const { countryName } = countries
 const { format, add } = bytes
 
@@ -34,24 +35,38 @@ const session2human = (session: string) => {
   return session.split('-')[0]
 }
 interface DateState {
-  startDate: Date
-  endDate: Date
+  startDate: Date | null
+  endDate: Date | null
+  reset: boolean
 }
-
+const ResetButton = styled.button`
+  border: none;
+  background: none;
+  color: ${({ theme }) => theme.calendar.inputColor};
+  :hover {
+    cursor: pointer;
+  }
+  :active {
+    cursor: pointer;
+  }
+`
 export const HistoryPage = () => {
   const handleDateChange = (dates: any) => {
     const [start, end] = dates
-    setDateState((p) => ({ ...p, startDate: start, endDate: end }))
+    setDateState((p) => ({ ...p, startDate: start, endDate: end, reset: true }))
   }
 
   const [open, setOpen] = useState(false)
   const handleOpen = () => {
     setOpen(!open)
   }
-
+  const resetDates = () => {
+    setDateState((p) => ({ ...p, startDate: null, endDate: null, reset: false }))
+  }
   const [dateState, setDateState] = useState<DateState>({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: null,
+    endDate: null,
+    reset: false,
   })
 
   const [state, setState] = useState<PaginationState>({
@@ -64,25 +79,15 @@ export const HistoryPage = () => {
       api.sessions({
         pageSize: state.pageSize,
         page: state.page,
-        dateFrom:
-          dateState.startDate.toISOString().split('T')[0] === dateState.endDate.toISOString().split('T')[0]
-            ? ''
-            : dateState.startDate.toISOString().split('T')[0],
-        dateTo: dateState.endDate.toISOString().split('T')[0],
+        dateFrom: date2api(dateState.startDate),
+        dateTo: date2api(dateState.endDate),
       }),
-    [state.pageSize, state.page, dateState.endDate],
+    [state.pageSize, state.page, dateState.endDate, dateState.startDate],
   )
 
   const handlePageChange = ({ page }: PaginationState) => {
     setState((p) => ({ ...p, page }))
   }
-  // useMemo(() => {
-  //   setDateState((p) => ({
-  //     ...p,
-  //     startDate: new Date(data.items[0].createdAt),
-  //     endDate: new Date(data.items[data.items.length - 1].createdAt),
-  //   }))
-  // }, [data.items])
   const Columns: Column<any>[] = useMemo(
     () => [
       {
@@ -134,6 +139,15 @@ export const HistoryPage = () => {
           onClick={handleOpen}
           open={open}
         />
+        {dateState.reset && (
+          <ResetButton
+            onClick={() => {
+              resetDates()
+            }}
+          >
+            Reset
+          </ResetButton>
+        )}
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <Table columns={Columns} data={data.items} />
