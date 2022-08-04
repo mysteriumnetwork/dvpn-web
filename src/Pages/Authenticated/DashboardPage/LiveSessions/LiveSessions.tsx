@@ -51,7 +51,6 @@ const Container = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   align-items: center;
-  justify-content: center;
 `
 const SubTitle = styled(Link)`
   display: flex;
