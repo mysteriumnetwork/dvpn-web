@@ -33,12 +33,12 @@ const PickerOverrides = styled.div`
     border-color: ${({ theme }) => theme.calendar.bgBody};
     ::after {
       border-bottom-color: ${({ theme }) => theme.calendar.bgBody}!important;
-      left: 68px !important;
+      left: 36px !important;
       top: 1px !important;
     }
     ::before {
       border-bottom-color: ${({ theme }) => theme.calendar.bgBody}!important;
-      left: 68px !important;
+      left: 36px !important;
       top: 1px !important;
     }
   }
@@ -151,7 +151,8 @@ export const CustomDatePicker = ({ onClick, onChange, startDate, endDate, open }
   const CustomInput = forwardRef(({ value, onClick }: any, ref: any) => {
     return (
       <CustomPickerInput onClick={onClick} ref={ref}>
-        {value.split('-')[0]}
+        {/* {value.split('-')[0]} */}
+        {value}
         <InputIcon $clicked={open} />
       </CustomPickerInput>
     )

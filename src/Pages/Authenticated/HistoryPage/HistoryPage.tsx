@@ -43,27 +43,46 @@ export const HistoryPage = () => {
     const [start, end] = dates
     setDateState((p) => ({ ...p, startDate: start, endDate: end }))
   }
+
   const [open, setOpen] = useState(false)
   const handleOpen = () => {
     setOpen(!open)
   }
+
   const [dateState, setDateState] = useState<DateState>({
     startDate: new Date(),
     endDate: new Date(),
   })
+
   const [state, setState] = useState<PaginationState>({
     page: 1,
     pageSize: 10,
   })
 
   const [data = SESSIONS_LIST_RESPONSE_EMPTY] = useFetch(
-    () => api.sessions({ pageSize: state.pageSize, page: state.page }),
-    [state.pageSize, state.page],
+    () =>
+      api.sessions({
+        pageSize: state.pageSize,
+        page: state.page,
+        dateFrom:
+          dateState.startDate.toISOString().split('T')[0] === dateState.endDate.toISOString().split('T')[0]
+            ? ''
+            : dateState.startDate.toISOString().split('T')[0],
+        dateTo: dateState.endDate.toISOString().split('T')[0],
+      }),
+    [state.pageSize, state.page, dateState.endDate],
   )
 
   const handlePageChange = ({ page }: PaginationState) => {
     setState((p) => ({ ...p, page }))
   }
+  // useMemo(() => {
+  //   setDateState((p) => ({
+  //     ...p,
+  //     startDate: new Date(data.items[0].createdAt),
+  //     endDate: new Date(data.items[data.items.length - 1].createdAt),
+  //   }))
+  // }, [data.items])
   const Columns: Column<any>[] = useMemo(
     () => [
       {
@@ -105,7 +124,6 @@ export const HistoryPage = () => {
     ],
     [],
   )
-
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
       <LayoutUnstyledRow>
