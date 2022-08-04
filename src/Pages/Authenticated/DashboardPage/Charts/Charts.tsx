@@ -63,7 +63,7 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
           <Title>Earnings Report</Title>
           <RangePicker options={RANGES} active={selectedRange} onChange={handleRange} />
           <FlexGrow />
-          <GraphDropDown onChange={changeGraph} options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
+          <GraphDropDown onChange={changeGraph} options={Object.keys(types).map((t) => ({ value: t, label: t }))} />
         </Header>
       </Media.Desktop>
       <Media.Mobile>
@@ -71,7 +71,7 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
           <Row>
             <Title>Earnings Report</Title>
             {/* TODO: Figure out why select options bug and show in the wrong place */}
-            <GraphDropDown onChange={changeGraph} options={Object.keys(types).map((t) => ({ value: t, name: t }))} />
+            <GraphDropDown onChange={changeGraph} options={Object.keys(types).map((t) => ({ value: t, label: t }))} />
           </Row>
           <RangePicker options={RANGES} active={selectedRange} onChange={handleRange} />
         </Header>

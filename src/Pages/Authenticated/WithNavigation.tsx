@@ -4,9 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ADMIN } from '../../constants/routes'
 import Navigation from './Navigation/Navigation'
-import { Identity } from 'mysterium-vpn-js'
 import React, { ReactElement } from 'react'
 
 import styled from 'styled-components'
