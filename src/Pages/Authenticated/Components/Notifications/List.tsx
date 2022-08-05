@@ -7,7 +7,9 @@
 
 import styled from 'styled-components'
 import { Card } from './Card'
-
+import { Notification } from '../../../../commons/notifications'
+import { useMemo } from 'react'
+import { CardVariant } from './Card'
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -22,25 +24,20 @@ const Container = styled.div`
   box-shadow: ${({ theme }) => theme.notifications.list.boxShadow};
   border-radius: 20px;
 `
-
-export const List = () => {
-  return (
-    <Container>
-      <Card
-        variant="negative"
-        subject="Warning Notification heading"
-        message="Small description for warning notification"
-      />
-      <Card
-        variant="neutral"
-        subject="Warning Notification heading"
-        message="Small description for warning notification"
-      />
-      <Card
-        variant="positive"
-        subject="Warning Notification heading"
-        message="Small description for warning notification"
-      />
-    </Container>
-  )
+interface Props {
+  list: Notification[]
+}
+export const List = ({ list }: Props) => {
+  const Notifications = useMemo(() => {
+    return list.map((notification) => {
+      return (
+        <Card
+          variant={notification.variant as CardVariant}
+          subject={notification.subject}
+          message={notification.message}
+        />
+      )
+    })
+  }, [list])
+  return <Container>{Notifications}</Container>
 }
