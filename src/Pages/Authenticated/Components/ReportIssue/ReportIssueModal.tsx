@@ -8,11 +8,14 @@ import { Modal } from '../../../../Components/Modals/Modal'
 import { InputGroup } from '../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../Components/Inputs/TextField'
 import { useState } from 'react'
+import { tequila } from '../../../../api/tequila'
 import styled from 'styled-components'
 import { Button } from '../../../../Components/Inputs/Button'
 import { ChatIcon } from '../../../../Components/Icons/Icons'
 import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
+
+const { api } = tequila
 
 interface Props {
   show: boolean
@@ -54,9 +57,9 @@ const StyledBugButtonIcon = styled(BugButtonIcon)`
 `
 
 export const ReportIssueModal = ({ show, onClose }: Props) => {
-  const [email, setEmail] = useState<string>('')
-  const [message, setMessage] = useState<string>('')
-
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [sending, setSending] = useState(false)
   const handleClose = () => {
     if (!onClose) {
       return
@@ -66,7 +69,21 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
     setEmail('')
     setMessage('')
   }
-
+  const reportIssue = async () => {
+    setSending(true)
+    try {
+      // @ts-ignore
+      const userId = window.Intercom('getVisitorId')
+      await api.reportIssueIntercom({ email: email, description: message, userId: userId, userType: 'provider' }, 60000)
+      // @ts-ignore
+      window.Intercom('update')
+      // @ts-ignore
+      window.Intercom('showMessages')
+    } catch (e) {
+      console.log(e)
+    }
+    setSending(false)
+  }
   const handleOpenIntercom = () => {
     // @ts-ignore
     window.Intercom('showNewMessage', 'Hi there! I need some assistance.')
@@ -116,7 +133,7 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
             }
             onClick={handleOpenIntercom}
           />
-          <Button rounded label="Send" />
+          <Button loading={sending} rounded label="Send" onClick={reportIssue} />
         </Footer>
       </Content>
     </Modal>
