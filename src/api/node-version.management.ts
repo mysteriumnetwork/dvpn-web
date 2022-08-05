@@ -5,18 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const checkNodeVersion = async () => {
+export const fetchLatestNodeVersion = async () => {
   try {
-    const currentReleaseResponse = await fetch('https://api.github.com/repos/mysteriumnetwork/node/releases/latest', {
+    const latestReleaseResponse = await fetch('https://api.github.com/repos/mysteriumnetwork/node/releases/latest', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
       },
     })
 
-    const currentRelease = await currentReleaseResponse.json()
-    return currentRelease.tag_name
+    const latestRelease = await latestReleaseResponse.json()
+    return latestRelease.tag_name
   } catch (err) {
-    return err
+    throw err
   }
 }

@@ -17,7 +17,8 @@ import { Notification, KEY_CURRENT_NODE_VERSION_LAST_CHECK } from '../../../../c
 import { useMemo } from 'react'
 import { toast } from 'react-toastify'
 import errors from '../../../../commons/errors'
-import { checkNodeVersion } from '../../../../api/node-version.management'
+import { fetchLatestNodeVersion } from '../../../../api/node-version.management'
+const TWO_HOURS_MS = 2 * 60 * 60 * 1000
 const { api } = tequila
 const BellIcon = styled(BellSvg)`
   width: 80%;
@@ -86,10 +87,10 @@ export const Notifications = () => {
   useEffect(() => {
     ;(async () => {
       try {
-        if (!lastCheck || now > lastCheck + 7200000) {
+        if (!lastCheck || now > lastCheck + TWO_HOURS_MS) {
           const healthCheck = await api.healthCheck()
-          const currentRelease = await checkNodeVersion()
-          if (healthCheck.version.toString() !== currentRelease) {
+          const latestRelease = await fetchLatestNodeVersion()
+          if (healthCheck.version.toString() !== latestRelease) {
             const updateNotification: Notification = {
               variant: 'update',
               subject: 'New version released',
