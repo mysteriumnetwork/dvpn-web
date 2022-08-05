@@ -9,15 +9,16 @@ import styled from 'styled-components'
 import { ReactComponent as PositiveSvg } from '../../../../assets/images/notifications/positive.svg'
 import { ReactComponent as NeutralSvg } from '../../../../assets/images/notifications/neutral.svg'
 import { ReactComponent as NegativeSvg } from '../../../../assets/images/notifications/negative.svg'
-
-export type CardVariant = 'positive' | 'neutral' | 'negative'
+import { ReactComponent as UpdateSvg } from '../../../../assets/images/notifications/update.svg'
+import { Button } from '../../../../Components/Inputs/Button'
+export type CardVariant = 'positive' | 'neutral' | 'negative' | 'update'
 
 interface StyleProps {
   $variant: CardVariant
 }
 
 const Container = styled.div<StyleProps>`
-  height: 88px;
+  height: ${({ $variant }) => ($variant === 'update' ? '125px' : '88px')};
   display: flex;
   width: 100%;
   border-radius: 15px;
@@ -44,7 +45,10 @@ const Column = styled.div`
   flex-direction: column;
   gap: 14px;
 `
-
+const UpdateButton = styled(Button)`
+  height: 24px;
+  width: 80px;
+`
 const Subject = styled.div`
   font-weight: 400;
   color: ${({ theme }) => theme.notifications.card.subjectTextColor};
@@ -70,6 +74,8 @@ const icon = (variant: CardVariant) => {
       return <NeutralSvg />
     case 'positive':
       return <PositiveSvg />
+    case 'update':
+      return <UpdateSvg />
   }
 }
 
@@ -83,6 +89,7 @@ export const Card = ({ variant, subject, message }: Props) => {
         <Column>
           <Subject>{subject}</Subject>
           <Message>{message}</Message>
+          {variant === 'update' && <UpdateButton rounded label="Update" />}
         </Column>
       </Row>
     </Container>
