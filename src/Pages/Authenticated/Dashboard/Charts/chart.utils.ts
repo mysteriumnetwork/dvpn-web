@@ -44,7 +44,7 @@ export const sessionDailyStatsToData = (statsDaily: StatsDaily): Pair[] => {
 }
 
 const formatDate = (malformed: string): string => {
-  const month = malformed.substring(4, 2)
-  const day = malformed.substring(6, 2)
+  const month = malformed.substring(4, 6)
+  const day = malformed.substring(6, 8)
   return `${month}-${day}`
 }
