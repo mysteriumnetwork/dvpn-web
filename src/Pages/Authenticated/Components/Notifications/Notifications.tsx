@@ -15,7 +15,9 @@ import { useAppSelector } from '../../../../commons/hooks'
 import remoteStorage from '../../../../commons/remoteStorage'
 import { Notification, KEY_CURRENT_NODE_VERSION_LAST_CHECK } from '../../../../commons/notifications'
 import { useMemo } from 'react'
-
+import { toast } from 'react-toastify'
+import errors from '../../../../commons/errors'
+import { checkNodeVersion } from '../../../../api/node-version.management'
 const { api } = tequila
 const BellIcon = styled(BellSvg)`
   width: 80%;
@@ -81,24 +83,13 @@ export const Notifications = () => {
   }, [])
 
   const lastCheck = useAppSelector(remoteStorage.selector<number>(KEY_CURRENT_NODE_VERSION_LAST_CHECK))
-  console.log(useAppSelector(remoteStorage.selector<number>(KEY_CURRENT_NODE_VERSION_LAST_CHECK)))
   useEffect(() => {
     ;(async () => {
       try {
-        if (!lastCheck || now > lastCheck + 2000) {
+        if (!lastCheck || now > lastCheck + 7200000) {
           const healthCheck = await api.healthCheck()
-          const currentReleaseResponse = await fetch(
-            'https://api.github.com/repos/mysteriumnetwork/node/releases/latest',
-            {
-              method: 'GET',
-              headers: {
-                'Content-type': 'application/json',
-              },
-            },
-          )
-
-          const currentRelease = await currentReleaseResponse.json()
-          if (healthCheck.version.toString() !== currentRelease.tag_name) {
+          const currentRelease = await checkNodeVersion()
+          if (healthCheck.version.toString() !== currentRelease) {
             const updateNotification: Notification = {
               variant: 'update',
               subject: 'New version released',
@@ -109,7 +100,7 @@ export const Notifications = () => {
           }
         }
       } catch (e: any) {
-        console.log(e)
+        toast.error(errors.apiError(e).human())
       }
     })()
   }, [])
