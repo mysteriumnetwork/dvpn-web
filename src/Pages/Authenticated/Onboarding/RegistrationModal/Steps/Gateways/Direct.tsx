@@ -16,6 +16,8 @@ import { Button } from '../../../../../../Components/Inputs/Button'
 import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
 import { SUPPORTED_GATEWAYS } from '../../gateways'
 import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyToClipboard'
+import { Tooltip } from '../../../../../../Components/Tooltip/Tooltip'
+import { HowToGetMyst } from './howto'
 
 const QR = styled.div`
   width: 150px;
@@ -31,6 +33,8 @@ const Content = styled.div`
 `
 const Description = styled.div`
   display: flex;
+  align-items: center;
+  gap: 2px;
   margin-top: 30px;
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
@@ -91,7 +95,10 @@ const Direct = ({ back, next, backText, payments: { amountRequiredWei } }: Gatew
       <Title>{SUPPORTED_GATEWAYS.direct.title}</Title>
       <Description>
         Send no less than {myst.display(amountRequiredWei, { fractionDigits: 2 })} to the address below. Important: only
-        Polygon blockchain {currentCurrency()} is supported! Dont’t have any MYST? Read here now to get it.
+        Polygon blockchain {currentCurrency()} is supported!{' '}
+        <Tooltip content={<HowToGetMyst />} position="bottom" delayHideMs={2000}>
+          <a href={''}>Don't have any MYST? Read here how to get it.</a>
+        </Tooltip>
       </Description>
       <Centered>
         <QR>
