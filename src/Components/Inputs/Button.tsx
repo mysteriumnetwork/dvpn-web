@@ -23,6 +23,10 @@ const PRIMARY_CSS = css`
 const MEDIUM_CSS = css`
   padding: 16px 50px 16px 50px;
 `
+const LARGE_CSS = css`
+  padding: 25px 50px;
+  font-size: ${({ theme }) => theme.common.fontSizeBigger};
+`
 const SECONDARY_CSS = css`
   color: ${themeCommon.colorWhite};
   background: ${themeCommon.colorGrayBlue};
@@ -72,6 +76,8 @@ const resolveSize = (size: ButtonSize) => {
   switch (size) {
     case 'medium':
       return MEDIUM_CSS
+    case 'large':
+      return LARGE_CSS
   }
 }
 interface ButtonStyleProps {
