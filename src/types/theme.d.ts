@@ -139,6 +139,9 @@ export type Theme = {
       neutral: {
         background: string
       }
+      update: {
+        background: string
+      }
     }
   }
 
@@ -158,6 +161,7 @@ export type Common = {
   colorLightGreen: string
   colorBlue: string
   colorLightBlue: string
+  colorYellow: string
 
   colorNavStroke: string
   colorNavActiveStroke: string

@@ -136,6 +136,9 @@ const light: Omit<Theme, 'common'> = {
       neutral: {
         background: themeCommon.colorGrayBlue + alphaToHex(0.2),
       },
+      update: {
+        background: themeCommon.colorYellow + alphaToHex(0.1),
+      },
     },
   },
 }
