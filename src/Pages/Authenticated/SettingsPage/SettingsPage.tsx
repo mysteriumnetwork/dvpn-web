@@ -16,7 +16,7 @@ import { NODE_HEALTH_CHECK_EMPTY } from '../../../constants/instances'
 import { Issue } from './Issue'
 import styled from 'styled-components'
 import packageJson from '../../../../package.json'
-import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
+// import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 
 const FlexGrow = styled.div`
   flex-grow: 1;
@@ -58,7 +58,7 @@ export const SettingsPage = () => {
             },
           ]}
         />
-        <PowerOffButton />
+        {/*<PowerOffButton />*/}
         <FlexGrow />
         <Issue nodeUIVersion={packageJson.version} nodeVersion={data.version} />
       </LayoutUnstyledRow>

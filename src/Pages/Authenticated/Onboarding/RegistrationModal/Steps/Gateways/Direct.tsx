@@ -14,6 +14,9 @@ import { useAppSelector } from '../../../../../../commons/hooks'
 import styled from 'styled-components'
 import { Button } from '../../../../../../Components/Inputs/Button'
 import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
+import { SUPPORTED_GATEWAYS } from '../../gateways'
+import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyToClipboard'
+import { DOCS_METAMASK } from '../../../../../../constants/urls'
 
 const QR = styled.div`
   width: 150px;
@@ -29,6 +32,8 @@ const Content = styled.div`
 `
 const Description = styled.div`
   display: flex;
+  align-items: center;
+  gap: 2px;
   margin-top: 30px;
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
@@ -46,6 +51,9 @@ const Centered = styled.div`
 `
 
 const ChannelAddress = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
   margin-top: 10px;
   font-weight: 500;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
@@ -64,6 +72,18 @@ const Waiting = styled.div`
   height: 30px;
   gap: 5px;
 `
+const Title = styled.div`
+  display: flex;
+  font-size: ${({ theme }) => theme.common.fontSizeHumongous};
+  font-weight: 600;
+`
+
+const Controls = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`
 
 const Direct = ({ back, next, backText, payments: { amountRequiredWei } }: GatewayProps) => {
   const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
@@ -71,15 +91,22 @@ const Direct = ({ back, next, backText, payments: { amountRequiredWei } }: Gatew
 
   return (
     <Content>
+      <Title>{SUPPORTED_GATEWAYS.direct.title}</Title>
       <Description>
         Send no less than {myst.display(amountRequiredWei, { fractionDigits: 2 })} to the address below. Important: only
-        Polygon blockchain {currentCurrency()} is supported! Dont’t have any MYST? Read here now to get it.
+        Polygon blockchain {currentCurrency()} is supported!{' '}
+        <a href={DOCS_METAMASK} target="_blank" rel="noreferrer">
+          Don't have any MYST? Read here how to get it.
+        </a>
       </Description>
       <Centered>
         <QR>
           <QRCode value={channelAddress} />
         </QR>
-        <ChannelAddress>{channelAddress}</ChannelAddress>
+        <ChannelAddress>
+          {channelAddress}
+          <CopyToClipboard text={channelAddress} />
+        </ChannelAddress>
       </Centered>
       {!isRegistrationFeeReceived && (
         <Waiting>
@@ -87,10 +114,12 @@ const Direct = ({ back, next, backText, payments: { amountRequiredWei } }: Gatew
           Wait for confirmation (might take couple of minutes)
         </Waiting>
       )}
-      {next && isRegistrationFeeReceived && <Button label="Continue" onClick={next} />}
-      {back && !isRegistrationFeeReceived && (
-        <Button onClick={back} variant="outlined" rounded label={backText || 'Back'} />
-      )}
+      <Controls>
+        {next && isRegistrationFeeReceived && <Button label="Continue" onClick={next} />}
+        {back && !isRegistrationFeeReceived && (
+          <Button onClick={back} variant="outlined" rounded label={backText || 'Back'} />
+        )}
+      </Controls>
     </Content>
   )
 }

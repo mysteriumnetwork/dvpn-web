@@ -5,18 +5,47 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import Clipboard from 'clipboard'
 import toasts from '../../commons/toasts'
+import { nanoid } from 'nanoid'
+import { ReactComponent as CopySVG } from '../../assets/images/input/copy-to-clipboard.svg'
+import styled from 'styled-components'
+import { themeCommon } from '../../theme/themeCommon'
 
 interface Props {
   text: string
   noToast?: boolean
 }
 
+const Icon = styled(CopySVG)`
+  :hover {
+    circle {
+      fill: ${themeCommon.colorKeyLight}1A;
+    }
+  }
+
+  :active {
+    circle {
+      fill: ${themeCommon.colorKeyLight}FF;
+    }
+  }
+`
+
+const StyledButton = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const CopyToClipboard = ({ text, noToast }: Props) => {
+  const uid = useMemo(() => nanoid(), [])
+
   useEffect(() => {
-    const clipboard = new Clipboard('.c2c-btn')
+    const clipboard = new Clipboard(`.${uid}`)
     return () => clipboard.destroy()
   }, [])
 
@@ -27,9 +56,9 @@ const CopyToClipboard = ({ text, noToast }: Props) => {
   }
 
   return (
-    <div className="c2c-btn" data-clipboard-text={text} onClick={handleOnClick}>
-      copy
-    </div>
+    <StyledButton className={uid} data-clipboard-text={text} onClick={handleOnClick}>
+      <Icon />
+    </StyledButton>
   )
 }
 
