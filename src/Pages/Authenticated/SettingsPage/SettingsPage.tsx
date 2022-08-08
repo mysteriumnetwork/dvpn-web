@@ -58,7 +58,7 @@ export const SettingsPage = () => {
             },
           ]}
         />
-        <PowerOffButton />
+        {/*<PowerOffButton />*/}
         <FlexGrow />
         <Issue nodeUIVersion={packageJson.version} nodeVersion={data.version} />
       </LayoutUnstyledRow>

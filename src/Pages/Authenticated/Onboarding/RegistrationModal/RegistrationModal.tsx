@@ -26,6 +26,7 @@ const Content = styled.div`
   height: 100%;
 
   align-items: center;
+  justify-content: space-between;
   padding: 48px;
   gap: 38px;
 `

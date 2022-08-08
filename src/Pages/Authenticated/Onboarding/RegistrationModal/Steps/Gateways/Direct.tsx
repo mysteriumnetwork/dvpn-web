@@ -16,8 +16,7 @@ import { Button } from '../../../../../../Components/Inputs/Button'
 import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
 import { SUPPORTED_GATEWAYS } from '../../gateways'
 import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyToClipboard'
-import { Tooltip } from '../../../../../../Components/Tooltip/Tooltip'
-import { HowToGetMyst } from './howto'
+import { DOCS_METAMASK } from '../../../../../../constants/urls'
 
 const QR = styled.div`
   width: 150px;
@@ -96,9 +95,9 @@ const Direct = ({ back, next, backText, payments: { amountRequiredWei } }: Gatew
       <Description>
         Send no less than {myst.display(amountRequiredWei, { fractionDigits: 2 })} to the address below. Important: only
         Polygon blockchain {currentCurrency()} is supported!{' '}
-        <Tooltip content={<HowToGetMyst />} position="bottom" delayHideMs={2000}>
-          <a href={''}>Don't have any MYST? Read here how to get it.</a>
-        </Tooltip>
+        <a href={DOCS_METAMASK} target="_blank" rel="noreferrer">
+          Don't have any MYST? Read here how to get it.
+        </a>
       </Description>
       <Centered>
         <QR>

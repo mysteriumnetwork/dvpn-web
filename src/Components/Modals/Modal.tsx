@@ -34,8 +34,7 @@ const normalSize = css`
 
 const xlSize = css`
   width: 90%;
-
-  min-width: 900px;
+  min-width: 50%;
 
   left: 50%;
   top: 10%;

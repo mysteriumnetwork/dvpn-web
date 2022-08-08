@@ -34,7 +34,6 @@ const Options = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 60%;
 `
 
 const DIRECT_GATEWAY_OPTION: Option = { value: 'direct', label: SUPPORTED_GATEWAYS.direct.summary }
