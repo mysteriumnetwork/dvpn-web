@@ -111,11 +111,11 @@ export const Notifications = () => {
     return Date.now()
   }, [])
 
-  const lastCheck = useAppSelector(remoteStorage.selector<number>(KEY_CURRENT_NODE_VERSION_LAST_CHECK))
+  const lastChecked = useAppSelector(remoteStorage.selector<number>(KEY_CURRENT_NODE_VERSION_LAST_CHECK))
   useEffect(() => {
     ;(async () => {
       try {
-        if (!lastCheck || now > lastCheck + TWO_HOURS_MS) {
+        if (!lastChecked || now > lastChecked + TWO_HOURS_MS) {
           const latestNodeVersion = await fetchLatestNodeVersion()
           remoteStorage.put(KEY_CURRENT_NODE_VERSION_LAST_CHECK, now)
           remoteStorage.put(KEY_LATEST_NODE_VERSION, latestNodeVersion)
