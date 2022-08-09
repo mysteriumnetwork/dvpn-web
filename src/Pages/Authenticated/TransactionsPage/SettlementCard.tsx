@@ -12,8 +12,10 @@ import { selectors } from '../../../redux/selectors'
 import { configs } from '../../../commons/config'
 import { myst } from '../../../commons/mysts'
 import { useMemo, useState } from 'react'
-import { Button } from '../../../Components/Inputs/Button'
 import { SettleModal } from '../Components/SettleModal/SettleModal'
+import { lockouts } from '../../../commons/lockout'
+import { LockoutButton } from '../../../Components/Inputs/LockoutButton'
+import { ReactComponent as WarningSVG } from '../../../assets/images/notifications/negative.svg'
 
 const Progress = styled.div`
   display: flex;
@@ -48,8 +50,20 @@ const CurrentEarnings = styled.div`
   color: ${({ theme }) => theme.settleCard.earningsColor};
 `
 
+const WarningIcon = styled(WarningSVG)`
+  width: 34px;
+  margin-left: 4px;
+  path,
+  circle {
+    stroke: white;
+  }
+`
+
+const SETTLE_LOCKOUT_ID = 'SETTLE_LOCKOUT_ID'
+
 export const SettlementCard = () => {
   const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
+  const { error } = useAppSelector(selectors.beneficiaryTxStatus)
   const config = useAppSelector(selectors.configSelector)
   const thresholdMyst = configs.zeroStakeSettlementThreshold(config)
   const [showModal, setShowModal] = useState(false)
@@ -58,7 +72,11 @@ export const SettlementCard = () => {
 
   return (
     <Card grow={2}>
-      <SettleModal show={showModal} onClose={() => setShowModal(false)} />
+      <SettleModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onSave={() => lockouts.lock({ id: SETTLE_LOCKOUT_ID, seconds: 60, refreshPage: true })}
+      />
       <Content>
         <Progress>
           <Row>
@@ -67,7 +85,18 @@ export const SettlementCard = () => {
           </Row>
           <ProgressBar max={thresholdMyst} value={value} size="big" />
         </Progress>
-        <Button label="Settle now" size="medium" rounded onClick={() => setShowModal(true)} />
+        <LockoutButton
+          id={SETTLE_LOCKOUT_ID}
+          label={
+            <>
+              Settle Now
+              {error && <WarningIcon />}
+            </>
+          }
+          size="medium"
+          rounded
+          onClick={() => setShowModal(true)}
+        />
       </Content>
     </Card>
   )
