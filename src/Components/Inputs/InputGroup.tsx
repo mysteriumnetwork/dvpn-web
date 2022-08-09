@@ -35,14 +35,14 @@ const Title = styled.div`
 
 const SubTitle = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${themeCommon.fontSizeSmall};
+  font-size: ${themeCommon.fontSizeSmaller};
   font-weight: 400;
 `
 
 const Error = styled.div`
   display: flex;
   color: ${themeCommon.colorKey};
-  font-size: ${themeCommon.fontSizeSmallest};
+  font-size: ${themeCommon.fontSizeSmall};
   margin-top: 4px;
 `
 
