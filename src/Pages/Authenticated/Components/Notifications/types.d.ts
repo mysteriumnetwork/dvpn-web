@@ -7,6 +7,7 @@
 import { CardVariant } from './Card'
 
 export interface NotificationCardProps {
+  id: string
   variant: CardVariant
   subject: string
   message: string

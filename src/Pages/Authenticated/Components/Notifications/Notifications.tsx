@@ -61,25 +61,33 @@ const ListContainer = styled.div`
   left: -260px;
 `
 
+const ID_BENEFICIARY_TX_ERROR = 'ID_BENEFICIARY_TX_ERROR'
+const ID_NODE_UPDATE = 'ID_NODE_UPDATE'
+
 export const Notifications = () => {
   const [open, setOpen] = useState(false)
   const beneficiaryTxStatus = useAppSelector(selectors.beneficiaryTxStatus)
 
   const [notificationList, setNotificationList] = useState<NotificationCardProps[]>([])
 
+  const addNotification = (notification: NotificationCardProps) => {
+    if (notificationList.find((n) => n.id === notification.id)) {
+      return
+    }
+
+    setNotificationList((p) => [...p, notification])
+  }
+
   useEffect(() => {
     if (!beneficiaryTxStatus.error) {
       return
     }
-
-    setNotificationList((p) => [
-      ...p,
-      {
-        variant: 'negative',
-        subject: 'External Wallet address change failed',
-        message: beneficiaryTxStatus.error,
-      },
-    ])
+    addNotification({
+      id: ID_BENEFICIARY_TX_ERROR,
+      variant: 'negative',
+      subject: 'External Wallet address change failed',
+      message: beneficiaryTxStatus.error,
+    })
   }, [beneficiaryTxStatus.error])
 
   const latestNodeVersion = useAppSelector(remoteStorage.selector(KEY_LATEST_NODE_VERSION))
@@ -88,14 +96,12 @@ export const Notifications = () => {
       // TODO store this in app.slice
       const healthCheck = await api.healthCheck()
       if (healthCheck.version.toString() !== latestNodeVersion) {
-        setNotificationList((p) => [
-          ...p,
-          {
-            variant: 'update',
-            subject: 'New version released',
-            message: 'Update app to experience new features',
-          },
-        ])
+        addNotification({
+          id: ID_NODE_UPDATE,
+          variant: 'update',
+          subject: 'New version released',
+          message: 'Update app to experience new features',
+        })
       }
     })()
   }, [latestNodeVersion])
