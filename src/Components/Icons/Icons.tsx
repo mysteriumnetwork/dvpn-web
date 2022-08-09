@@ -18,6 +18,8 @@ import { ReactComponent as QualityBarsSvg } from '../../assets/images/quality-ba
 import { ReactComponent as DragIndicatorSvg } from '../../assets/images/drag-indicator.svg'
 import { ReactComponent as FileSvg } from '../../assets/images/file.svg'
 import { ReactComponent as ChatSvg } from '../../assets/images/chat.svg'
+import { ReactComponent as QuestionSvg } from '../../assets/images/question.svg'
+
 import { themeCommon } from '../../theme/themeCommon'
 
 interface InfoProps {
@@ -121,3 +123,5 @@ export const DragIndicatorIcon = styled(DragIndicatorSvg)``
 export const FileIcon = styled(FileSvg)``
 
 export const ChatIcon = styled(ChatSvg)``
+
+export const QuestionIcon = styled(QuestionSvg)``

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { InfoIcon } from '../Icons/Icons'
+import { InfoIcon, QuestionIcon } from '../Icons/Icons'
 import ReactTooltip from 'react-tooltip'
 import React, { ReactElement, ReactNode, useMemo } from 'react'
 import { nanoid } from 'nanoid'
@@ -21,10 +21,12 @@ export const ReactTooltipStyled = styled(ReactTooltip)<ReactTooltipStyledProps>`
     background-color: ${themeCommon.colorWhite};
     padding: 0.3rem 1rem;
     color: ${themeCommon.colorGrayBlue};
-    font-size: ${themeCommon.fontSizeSmaller};
+    font-size: ${themeCommon.fontSizeSmall};
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+    font-family: Ubuntu;
     font-weight: 400;
     border-radius: 10px;
-
+    width: 250px;
     &:after {
       border-${({ $position }) => $position}-color: ${themeCommon.colorWhite};
     }
@@ -40,21 +42,27 @@ export const ReactTooltipStyled = styled(ReactTooltip)<ReactTooltipStyledProps>`
 `
 
 interface Props {
+  icon?: 'question' | 'info'
   content: ReactNode
   children?: ReactElement
   position?: 'top' | 'right' | 'bottom' | 'left'
   delayHideMs?: number
 }
 
-export const Tooltip = ({ content, position = 'top', children, delayHideMs }: Props) => {
+export const Tooltip = ({ icon = 'info', content, position = 'top', delayHideMs }: Props) => {
   const uid = useMemo(() => nanoid(), [])
+
+  const Icon = useMemo(() => {
+    switch (icon) {
+      case 'info':
+        return <InfoIcon data-for={uid} data-tip="" data-event="click" />
+      case 'question':
+        return <QuestionIcon data-for={uid} data-tip="" data-event="click" />
+    }
+  }, [])
   return (
     <>
-      {children ? (
-        React.cloneElement(children, { 'data-for': uid, 'data-tip': true })
-      ) : (
-        <InfoIcon data-for={uid} data-tip />
-      )}
+      {Icon}
       <ReactTooltipStyled
         $position={position}
         delayHide={delayHideMs}
