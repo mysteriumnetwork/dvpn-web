@@ -18,7 +18,8 @@ import { toast } from 'react-toastify'
 import errors from '../../../../commons/errors'
 import { fetchLatestNodeVersion } from '../../../../api/node-version.management'
 import { selectors } from '../../../../redux/selectors'
-import { NotificationCardProps } from './types'
+import { NotificationProps } from './types'
+import { UpdateCardMessage } from './Card'
 
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000
 const { api } = tequila
@@ -68,9 +69,9 @@ export const Notifications = () => {
   const [open, setOpen] = useState(false)
   const beneficiaryTxStatus = useAppSelector(selectors.beneficiaryTxStatus)
 
-  const [notificationList, setNotificationList] = useState<NotificationCardProps[]>([])
+  const [notificationList, setNotificationList] = useState<NotificationProps[]>([])
 
-  const addNotification = (notification: NotificationCardProps) => {
+  const addNotification = (notification: NotificationProps) => {
     if (notificationList.find((n) => n.id === notification.id)) {
       return
     }
@@ -100,7 +101,7 @@ export const Notifications = () => {
           id: ID_NODE_UPDATE,
           variant: 'update',
           subject: 'New version released',
-          message: 'Update app to experience new features',
+          message: <UpdateCardMessage />,
         })
       }
     })()

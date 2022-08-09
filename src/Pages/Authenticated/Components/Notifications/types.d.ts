@@ -5,10 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CardVariant } from './Card'
+import { ReactNode } from 'react'
 
-export interface NotificationCardProps {
+export type CardVariant = 'positive' | 'neutral' | 'negative' | 'update'
+
+export type NotificationProps = {
   id: string
+} & NotificationCardProps
+
+export type NotificationCardProps = {
   variant: CardVariant
   subject: string
-  message: string
+  message: ReactNode
 }

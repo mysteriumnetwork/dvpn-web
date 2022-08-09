@@ -10,15 +10,15 @@ import { ReactComponent as PositiveSvg } from '../../../../assets/images/notific
 import { ReactComponent as NeutralSvg } from '../../../../assets/images/notifications/neutral.svg'
 import { ReactComponent as NegativeSvg } from '../../../../assets/images/notifications/negative.svg'
 import { ReactComponent as UpdateSvg } from '../../../../assets/images/notifications/update.svg'
-import { Button } from '../../../../Components/Inputs/Button'
-export type CardVariant = 'positive' | 'neutral' | 'negative' | 'update'
+import { CardVariant, NotificationCardProps } from './types'
+import { DOCS_UPDATE_NODE } from '../../../../constants/urls'
 
 interface StyleProps {
   $variant: CardVariant
 }
 
 const Container = styled.div<StyleProps>`
-  height: ${({ $variant }) => ($variant === 'update' ? '125px' : '88px')};
+  min-height: 88px;
   display: flex;
   width: 100%;
   border-radius: 15px;
@@ -45,26 +45,22 @@ const Column = styled.div`
   flex-direction: column;
   gap: 14px;
 `
-const UpdateButton = styled(Button)`
-  height: 24px;
-  width: 80px;
-`
+
 const Subject = styled.div`
   font-weight: 400;
+  line-height: 21px;
   color: ${({ theme }) => theme.notifications.card.subjectTextColor};
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
 `
 const Message = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  line-height: 14px;
   font-weight: 400;
   color: ${({ theme }) => theme.notifications.card.messageTextColor};
   font-size: ${({ theme }) => theme.common.fontSizeSmaller};
 `
-
-interface Props {
-  variant: CardVariant
-  subject: string
-  message: string
-}
 
 const icon = (variant: CardVariant) => {
   switch (variant) {
@@ -79,7 +75,7 @@ const icon = (variant: CardVariant) => {
   }
 }
 
-export const Card = ({ variant, subject, message }: Props) => {
+export const Card = ({ variant, subject, message }: NotificationCardProps) => {
   return (
     <Container $variant={variant}>
       <Row>
@@ -88,10 +84,27 @@ export const Card = ({ variant, subject, message }: Props) => {
         </Column>
         <Column>
           <Subject>{subject}</Subject>
-          <Message>{message}</Message>
-          {variant === 'update' && <UpdateButton rounded label="Update" />}
+          {typeof message === 'string' ? <Message>{message}</Message> : message}
         </Column>
       </Row>
     </Container>
+  )
+}
+
+const StyledLink = styled.a`
+  text-decoration: underline;
+  color: ${({ theme }) => theme.common.colorKey};
+  font-weight: 700;
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+`
+
+export const UpdateCardMessage = () => {
+  return (
+    <Message>
+      <span>Update app to experience new features</span>
+      <StyledLink href={DOCS_UPDATE_NODE} target="_blank" rel="noopener noreferrer">
+        Update
+      </StyledLink>
+    </Message>
   )
 }
