@@ -7,9 +7,16 @@
 import termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { createSlice } from '@reduxjs/toolkit'
 import _ from 'lodash'
-import { ChainSummary, FeesResponse, Identity, IdentityBeneficiaryResponse, IdentityRef } from 'mysterium-vpn-js'
+import {
+  BeneficiaryTxStatus,
+  ChainSummary,
+  FeesResponse,
+  Identity,
+  IdentityBeneficiaryResponse,
+  IdentityRef,
+} from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { FEES_RESPONSE_EMPTY } from '../constants/instances'
+import { BENEFICIARY_TX_STATUS_EMPTY, FEES_RESPONSE_EMPTY } from '../constants/instances'
 import identities from '../commons/identities'
 
 const { isUnregistered } = identities
@@ -40,6 +47,7 @@ export interface AppState {
   fees: FeesResponse
   chainSummary: ChainSummary
   beneficiary: IdentityBeneficiaryResponse
+  beneficiaryTxStatus: BeneficiaryTxStatus
 }
 
 const INITIAL_STATE: AppState = {
@@ -68,6 +76,7 @@ const INITIAL_STATE: AppState = {
     beneficiary: '',
     isChannelAddress: false,
   },
+  beneficiaryTxStatus: BENEFICIARY_TX_STATUS_EMPTY,
 }
 
 const slice = createSlice({
@@ -100,6 +109,9 @@ const slice = createSlice({
     },
     updateDefaultConfigStore: (state, action) => {
       state.defaultConfig = action.payload
+    },
+    updateBeneficiaryTxStatusStore: (state, action) => {
+      state.beneficiaryTxStatus = action.payload
     },
   },
 })
@@ -141,6 +153,7 @@ export const {
   updateFeesStore,
   updateChainSummaryStore,
   updateBeneficiaryStore,
+  updateBeneficiaryTxStatusStore,
 } = slice.actions
 
 export default slice.reducer

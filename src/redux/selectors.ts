@@ -41,6 +41,8 @@ const beneficiarySelector = ({ app }: RootState) => app.beneficiary
 
 const isSSELoading = ({ sse }: RootState) => sse.isLoading
 
+const beneficiaryTxStatus = ({ app }: RootState) => app.beneficiaryTxStatus
+
 export const selectors = {
   currentIdentitySelector,
   feesSelector,
@@ -53,4 +55,5 @@ export const selectors = {
   serviceInfoSelector,
   beneficiarySelector,
   isSSELoading,
+  beneficiaryTxStatus,
 }
