@@ -46,7 +46,6 @@ const Header = styled.div`
 const Title = styled.h1`
   font-size: 80px;
   line-height: 80px;
-  width: 70%;
   color: ${({ theme }) => theme.common.colorGrayBlue2};
 `
 const SubTitle = styled.div`
@@ -58,10 +57,11 @@ const PrimaryText = styled.span`
 `
 const Card = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
+  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
   height: 550px;
   gap: 100px;
-  width: 60%;
+  width: 50%;
   display: flex;
   align-items: center;
   padding: 40px;
