@@ -7,8 +7,9 @@
 
 import styled from 'styled-components'
 import { Card } from './Card'
-import { Notification } from '../../../../commons/notifications'
 import { useMemo } from 'react'
+import { NotificationCardProps } from './types'
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -24,7 +25,7 @@ const Container = styled.div`
   border-radius: 20px;
 `
 interface Props {
-  list: Notification[]
+  list: NotificationCardProps[]
 }
 export const List = ({ list }: Props) => {
   const Notifications = useMemo(() => {

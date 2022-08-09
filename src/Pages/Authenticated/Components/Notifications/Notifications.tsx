@@ -7,17 +7,19 @@
 import { ReactComponent as BellSvg } from '../../../../assets/images/bell.svg'
 import { IconButton } from '../../../../Components/Inputs/IconButton'
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { List } from './List'
 import { devices } from '../../../../theme/themes'
 import { tequila } from '../../../../api/tequila'
 import { useAppSelector } from '../../../../commons/hooks'
 import remoteStorage from '../../../../commons/remoteStorage'
-import { Notification, KEY_CURRENT_NODE_VERSION_LAST_CHECK } from '../../../../commons/notifications'
-import { useMemo } from 'react'
+import { KEY_CURRENT_NODE_VERSION_LAST_CHECK, KEY_LATEST_NODE_VERSION } from '../../../../commons/notifications'
 import { toast } from 'react-toastify'
 import errors from '../../../../commons/errors'
 import { fetchLatestNodeVersion } from '../../../../api/node-version.management'
+import { selectors } from '../../../../redux/selectors'
+import { NotificationCardProps } from './types'
+
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000
 const { api } = tequila
 const BellIcon = styled(BellSvg)`
@@ -61,23 +63,42 @@ const ListContainer = styled.div`
 
 export const Notifications = () => {
   const [open, setOpen] = useState(false)
-  const [notificationList, setNotificationList] = useState<Notification[]>([
-    {
-      variant: 'negative',
-      subject: 'Warning Notification heading',
-      message: 'Small description for warning notification',
-    },
-    {
-      variant: 'neutral',
-      subject: 'Neutral Notification heading',
-      message: 'Small description for neutral notification',
-    },
-    {
-      variant: 'positive',
-      subject: 'Positive Notification heading',
-      message: 'Small description for positive notification',
-    },
-  ])
+  const beneficiaryTxStatus = useAppSelector(selectors.beneficiaryTxStatus)
+
+  const [notificationList, setNotificationList] = useState<NotificationCardProps[]>([])
+
+  useEffect(() => {
+    if (!beneficiaryTxStatus.error) {
+      return
+    }
+
+    setNotificationList((p) => [
+      ...p,
+      {
+        variant: 'negative',
+        subject: 'External Wallet address change failed',
+        message: beneficiaryTxStatus.error,
+      },
+    ])
+  }, [beneficiaryTxStatus.error])
+
+  const latestNodeVersion = useAppSelector(remoteStorage.selector(KEY_LATEST_NODE_VERSION))
+  useEffect(() => {
+    ;(async () => {
+      // TODO store this in app.slice
+      const healthCheck = await api.healthCheck()
+      if (healthCheck.version.toString() !== latestNodeVersion) {
+        setNotificationList((p) => [
+          ...p,
+          {
+            variant: 'update',
+            subject: 'New version released',
+            message: 'Update app to experience new features',
+          },
+        ])
+      }
+    })()
+  }, [latestNodeVersion])
 
   const now = useMemo(() => {
     return Date.now()
@@ -88,17 +109,9 @@ export const Notifications = () => {
     ;(async () => {
       try {
         if (!lastCheck || now > lastCheck + TWO_HOURS_MS) {
-          const healthCheck = await api.healthCheck()
-          const latestRelease = await fetchLatestNodeVersion()
-          if (healthCheck.version.toString() !== latestRelease) {
-            const updateNotification: Notification = {
-              variant: 'update',
-              subject: 'New version released',
-              message: 'Update app to experience new features',
-            }
-            setNotificationList((p) => [...p, updateNotification])
-            remoteStorage.put(KEY_CURRENT_NODE_VERSION_LAST_CHECK, now)
-          }
+          const latestNodeVersion = await fetchLatestNodeVersion()
+          remoteStorage.put(KEY_CURRENT_NODE_VERSION_LAST_CHECK, now)
+          remoteStorage.put(KEY_LATEST_NODE_VERSION, latestNodeVersion)
         }
       } catch (e: any) {
         toast.error(errors.apiError(e).human())
@@ -108,7 +121,7 @@ export const Notifications = () => {
 
   return (
     <Container>
-      <Dot />
+      {notificationList.length > 0 && <Dot />}
       <IconButton icon={<BellIcon />} onClick={() => setOpen((p) => !p)} />
       {open && (
         <ListContainer>
