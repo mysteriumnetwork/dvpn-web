@@ -140,7 +140,7 @@ const LoginPage = ({ onSuccess }: Props) => {
           </Container>
         </Card>
         <ButtonRow>
-          <Button type="submit" variant="primary" label="LOGIN" loading={loading} />
+          <Button rounded size="large" type="submit" variant="primary" label="LOGIN" loading={loading} />
         </ButtonRow>
       </Page>
     </Form>
