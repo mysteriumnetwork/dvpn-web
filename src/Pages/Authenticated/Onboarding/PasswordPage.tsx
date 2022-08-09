@@ -4,10 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
+import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Form } from '../../../Components/Inputs/Form'
 import { InputGroup } from '../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../Components/Inputs/TextField'
@@ -22,7 +22,7 @@ import { validatePassword } from '../../../commons/passwords'
 import { Checkbox } from '../../../Components/Inputs/Checkbox'
 import Background from '../../../assets/images/onboarding/background.png'
 import { ReactComponent as Lock } from '../../../assets/images/onboarding/password.svg'
-import { ReactComponent as QuestionMark } from '../../../assets/images/question.svg'
+
 const { api } = tequila
 
 const Page = styled.div`
@@ -64,6 +64,7 @@ const Card = styled.div`
   border-radius: 30px;
   height: 550px;
   gap: 100px;
+  box-shadow: 0 2px 50px rgba(0, 0, 0, 0.09);
   width: 60%;
   display: flex;
   align-items: center;
@@ -90,6 +91,8 @@ interface State {
   claim: boolean
   tos: boolean
   mmnApiKey: string
+  mmnError: string
+  passwordError: string
 }
 
 const INITIAL_STATE: State = {
@@ -98,6 +101,8 @@ const INITIAL_STATE: State = {
   claim: false,
   tos: false,
   mmnApiKey: '',
+  mmnError: '',
+  passwordError: '',
 }
 
 export const PasswordPage = () => {
@@ -110,30 +115,54 @@ export const PasswordPage = () => {
     mmnApiKey: mmnApiKey !== null ? mmnApiKey : '',
   })
   const [loading, setLoading] = useState(false)
-
+  const TooltipContent = useMemo(() => {
+    return (
+      <div>
+        Get your key from
+        <Link href="https://mystnodes.com/me" target="_blank">
+          mystnodes.com/me{' '}
+        </Link>
+        and connect your node to
+        <Link href="https://mystnodes.com/" target="_blank">
+          mystnodes.com
+        </Link>
+        , to manage and see your statistics
+      </div>
+    )
+  }, [])
   const handlePassword = (value: string) => setState((p) => ({ ...p, password: value }))
   const handleConfirmPassword = (value: string) => setState((p) => ({ ...p, confirmPassword: value }))
   const handleTOS = (value: boolean) => setState((p) => ({ ...p, tos: value }))
   const handleMmnApiKey = (value: string) => setState((p) => ({ ...p, mmnApiKey: value }))
+  const handleMmnError = (value: string) => setState((p) => ({ ...p, mmnError: value }))
+  const handlePasswordError = (value: string) => setState((p) => ({ ...p, passwordError: value }))
+
   const handleClaim = (value: string) => {
     handleMmnApiKey(value)
-    if (value.length === 40) {
-      setState((p) => ({ ...p, claim: true }))
+    if (value.length === 40 || value.length === 0) {
+      if (state.mmnError) {
+        handleMmnError('')
+      }
     }
     if (value.length !== 40) {
       setState((p) => ({ ...p, claim: false }))
+      handleMmnError('Invalid API key')
     }
   }
+  const shouldClaim = state.mmnApiKey.length > 0
+  const passwordError = state.passwordError.length > 0
+  const mmnError = state.mmnError.length > 0
   const handleSubmit = async () => {
     const validationResult = validatePassword(state.password, state.confirmPassword)
     if (!validationResult.success) {
       toasts.toastError(validationResult.errorMessage)
+      handlePasswordError(validationResult.errorMessage)
       return
     }
 
     try {
       setLoading(true)
-      if (state.claim) {
+      if (shouldClaim) {
         await api.setMMNApiKey(state.mmnApiKey)
       }
 
@@ -166,14 +195,25 @@ export const PasswordPage = () => {
             </Header>
             <InputContainer>
               <InputGroup
+                error={state.passwordError}
                 title="Password"
                 fluid={true}
-                input={<TextField type="password" value={state.password} onChange={handlePassword} />}
+                input={
+                  <TextField error={passwordError} type="password" value={state.password} onChange={handlePassword} />
+                }
               />
               <InputGroup
+                error={state.passwordError}
                 title="Confirm password"
                 fluid
-                input={<TextField type="password" value={state.confirmPassword} onChange={handleConfirmPassword} />}
+                input={
+                  <TextField
+                    error={passwordError}
+                    type="password"
+                    value={state.confirmPassword}
+                    onChange={handleConfirmPassword}
+                  />
+                }
               />
               <span>
                 <Checkbox checked={state.tos} onChange={handleTOS} /> I agree to
@@ -184,9 +224,14 @@ export const PasswordPage = () => {
             </InputContainer>
             <Footer>
               <h2>
-                Connect your node to mystnodes.com <QuestionMark />
+                Connect your node to mystnodes.com
+                <Tooltip icon="question" content={TooltipContent} />
               </h2>
-              <InputGroup fluid input={<TextField value={state.mmnApiKey} onChange={handleClaim} />} />
+              <InputGroup
+                error={state.mmnError}
+                fluid
+                input={<TextField error={mmnError} value={state.mmnApiKey} onChange={handleClaim} />}
+              />
             </Footer>
           </Container>
         </Card>
