@@ -7,6 +7,7 @@
 import styled from 'styled-components'
 import React from 'react'
 import { devices } from '../../theme/themes'
+
 const Content = styled.div`
   display: flex;
   justify-content: flex-start;

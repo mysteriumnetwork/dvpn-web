@@ -7,9 +7,9 @@
 import styled from 'styled-components'
 import { Button } from '../../../../../Components/Inputs/Button'
 import React, { useEffect, useState } from 'react'
-import { Option } from '../../../../../Components/Radio/Radio'
 import { SUPPORTED_GATEWAYS } from '../gateways'
 import { RegistrationStepProps } from '../types'
+import { Option } from '../../../../../types/common'
 
 const Content = styled.div`
   width: 100%;
@@ -62,7 +62,7 @@ const PaymentMethod = ({ setLoading, selectGateway, next, allGateways }: Registr
       </Description>
       <Options>
         {availableGatewayOptions.map((o) => (
-          <Button key={o.value} variant="outlined" label={o.label} onClick={() => handleSelect(o.value)} />
+          <Button key={o.value} variant="outlined" label={o.label} onClick={() => handleSelect(o.value as string)} />
         ))}
       </Options>
     </Content>
