@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import {
+  BeneficiaryTxState,
+  BeneficiaryTxStatus,
   Config,
   CurrentPricesResponse,
   Fees,
@@ -152,4 +154,9 @@ export const NODE_HEALTH_CHECK_EMPTY: NodeHealthcheck = Object.freeze({
 export const SESSIONS_STATS_DAILY_RESPONSE_EMPTY: SessionStatsDailyResponse = Object.freeze({
   items: {},
   stats: SESSION_STATS_EMPTY,
+})
+
+export const BENEFICIARY_TX_STATUS_EMPTY: BeneficiaryTxStatus = Object.freeze({
+  state: BeneficiaryTxState.COMPLETED,
+  error: '',
 })

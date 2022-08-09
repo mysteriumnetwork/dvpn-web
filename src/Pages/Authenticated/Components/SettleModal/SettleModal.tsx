@@ -4,38 +4,35 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-// TODO: TEST THE API hookup
 import { Modal } from '../../../../Components/Modals/Modal'
 import { InputGroup } from '../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../Components/Inputs/TextField'
 import { selectors } from '../../../../redux/selectors'
-import { useState, useMemo, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { feez } from '../../../../commons/fees'
 import styled from 'styled-components'
 import { Button } from '../../../../Components/Inputs/Button'
 import { SettleButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { ReactComponent as EditIcon } from '../../../../assets/images/edit.svg'
-import { useAppSelector } from '../../../../commons/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../commons/hooks'
 import { Card } from './Card'
 import { myst } from '../../../../commons/mysts'
-import Error from '../../../../Components/Validation/Error'
 import toasts from '../../../../commons/toasts'
 import { tequila } from '../../../../api/tequila'
-import { BeneficiaryTxStatus } from 'mysterium-vpn-js'
 import identities from '../../../../commons/identities'
 import errors from '../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
+import { updateBeneficiaryTxStatusStore } from '../../../../redux/app.slice'
 
-interface Props {
-  show: boolean
-  onClose?: () => void
-}
-
-// TODO Figure out why styling override doesnt work for this component
-const ErrorNote = styled(Error)`
+const Error = styled.div`
   color: red;
   font-size: 12px;
 `
+
+const Errors = styled.div`
+  height: 40px;
+`
+
 const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,29 +82,33 @@ const StyledEditIcon = styled(EditIcon)`
 const { api } = tequila
 const { toastSuccess } = toasts
 
+interface Props {
+  show: boolean
+  onClose?: () => void
+  onSave?: () => void
+}
+
 interface State {
-  externalWalletAddress: string
-  loading: boolean
-  disabled?: boolean
-  txStatus?: BeneficiaryTxStatus
   errors: string[]
 }
 
-export const SettleModal = ({ show, onClose }: Props) => {
+export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Props) => {
+  const dispatch = useAppDispatch()
+  const txStatus = useAppSelector(selectors.beneficiaryTxStatus)
+
+  const [externalWalletAddress, setExternalWalletAddress] = useState('')
+  const [inputDisabled, setInputDisabled] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [state, setState] = useState<State>({
-    externalWalletAddress: '',
-    loading: true,
-    disabled: true,
     errors: [],
   })
 
   const handleClose = () => {
-    if (!onClose) {
-      return
-    }
     onClose()
+    setInputDisabled(true)
   }
-  const { isChannelAddress, beneficiary } = useAppSelector(selectors.beneficiarySelector)
+
+  const { beneficiary } = useAppSelector(selectors.beneficiarySelector)
   const { current, hermesPercent } = useAppSelector(selectors.feesSelector)
   const identity = useAppSelector(selectors.currentIdentitySelector)
 
@@ -116,24 +117,26 @@ export const SettleModal = ({ show, onClose }: Props) => {
     current.settlement.wei,
     identity.earningsTokens,
   ])
+
+  const isExternalWalletChanged = beneficiary !== externalWalletAddress
+
   useEffect(() => {
     ;(async () => {
       if (identities.isEmpty(identity)) {
         return
       }
+
+      setExternalWalletAddress(beneficiary)
+
       try {
-        const txStatus = await api.beneficiaryTxStatus(identity.id).catch(() => undefined)
-        setState((p) => ({
-          ...p,
-          externalWalletAddress: isChannelAddress ? '' : beneficiary,
-          txStatus,
-          loading: false,
-        }))
+        const status = await api.beneficiaryTxStatus(identity.id).catch(() => undefined)
+        dispatch(updateBeneficiaryTxStatusStore(status))
       } catch (e: any) {
         errors.parseToastError(e)
       }
+      setLoading(false)
     })()
-  }, [identity.id, beneficiary])
+  }, [identity.id, beneficiary, show])
 
   const isProfitsBelowZero = calculatedFees.profitsWei.lt(0)
 
@@ -146,29 +149,36 @@ export const SettleModal = ({ show, onClose }: Props) => {
         )} is required`,
       )
     }
-    if (!isValidEthereumAddress(state.externalWalletAddress)) {
+    if (!isValidEthereumAddress(externalWalletAddress)) {
       errors.push('Invalid external wallet address')
     }
     setState((p) => ({ ...p, errors: errors }))
-  }, [state.externalWalletAddress, calculatedFees.profitsWei])
+  }, [externalWalletAddress, calculatedFees.profitsWei])
 
-  const handleExternalWalletChange = (v: string) => setState((p) => ({ ...p, externalWalletAddress: v }))
-  const handleDisableChange = (v: boolean) => setState((p) => ({ ...p, disabled: v }))
-  const setLoading = (b: boolean = true) => setState((p) => ({ ...p, loading: b }))
+  const handleExternalWalletChange = (v: string) => setExternalWalletAddress(v)
+  const handleDisableChange = (v: boolean) => setInputDisabled(v)
 
   const handleSettle = async () => {
-    setLoading()
+    setLoading(true)
+
     try {
-      await api.settleWithBeneficiary({
-        providerId: identity.id,
-        hermesId: '',
-        beneficiary: state.externalWalletAddress,
-      })
-      toastSuccess(`Automatic withdrawal to ${state.externalWalletAddress} request submitted`)
+      if (isExternalWalletChanged) {
+        api.settleWithBeneficiary({
+          providerId: identity.id,
+          hermesId: '',
+          beneficiary: externalWalletAddress,
+        })
+      } else {
+        api.settleAsync({ providerId: identity.id, hermesIds: identities.hermesIds(identity) })
+      }
+
+      toastSuccess(`Automatic withdrawal to ${externalWalletAddress} request submitted`)
       await tequila.refreshBeneficiary(identity.id)
     } catch (err: any) {
       errors.parseToastError(err)
     }
+    onSave()
+    handleClose()
     setLoading(false)
   }
   const isNegativeProfit = calculatedFees.profitsWei.lte(0)
@@ -182,13 +192,13 @@ export const SettleModal = ({ show, onClose }: Props) => {
             fluid
             input={
               <TextField
-                disabled={state.disabled}
-                value={state.externalWalletAddress}
+                disabled={inputDisabled}
+                value={externalWalletAddress}
                 onChange={handleExternalWalletChange}
                 icon={
                   <StyledEditIcon
                     onClick={() => {
-                      handleDisableChange(!state.disabled)
+                      handleDisableChange(!inputDisabled)
                     }}
                   />
                 }
@@ -212,11 +222,12 @@ export const SettleModal = ({ show, onClose }: Props) => {
           Please click SETTLE to proceed with settlement to External wallet. Note: Settlement transaction may take a few
           minutes to complete.
         </Note>
-        <div>
+        <Errors>
           {state.errors.map((message, idx) => (
-            <ErrorNote key={idx} show errorMessage={message} />
+            <Error key={idx}>{message}</Error>
           ))}
-        </div>
+          {txStatus?.error && <Error>Fail to change wallet address. Please try again.</Error>}
+        </Errors>
         <Footer>
           <Button
             label="Cancel"
@@ -227,9 +238,9 @@ export const SettleModal = ({ show, onClose }: Props) => {
             }}
           />
           <Button
-            label="Settle"
+            label={isExternalWalletChanged ? 'Settle and change wallet address' : 'Settle'}
             rounded
-            loading={state.loading}
+            loading={loading}
             disabled={isNegativeProfit}
             onClick={async () => {
               await handleSettle()

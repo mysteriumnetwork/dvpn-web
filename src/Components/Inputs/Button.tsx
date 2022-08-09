@@ -6,8 +6,8 @@
  */
 import styled, { css } from 'styled-components'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
-import { ReactNode } from 'react'
 import { themeCommon } from '../../theme/themeCommon'
+import { ButtonProps } from './types'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'blue'
 export type ButtonSize = 'small' | 'medium' | 'large'
@@ -132,17 +132,6 @@ const Spinner = styled(CircularSpinner)`
   z-index: 11;
 `
 
-interface Props {
-  disabled?: boolean
-  label: ReactNode
-  variant?: ButtonVariant
-  size?: ButtonSize
-  loading?: boolean
-  rounded?: boolean
-  onClick?: () => void
-  type?: 'submit' | 'reset' | 'button'
-}
-
 export const Button = ({
   size = 'small',
   disabled,
@@ -152,7 +141,7 @@ export const Button = ({
   onClick,
   type,
   rounded,
-}: Props) => {
+}: ButtonProps) => {
   return (
     <StyledButton $size={size} $rounded={rounded} $variant={variant} type={type} disabled={disabled} onClick={onClick}>
       {loading && (

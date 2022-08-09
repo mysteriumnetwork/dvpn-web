@@ -14,7 +14,7 @@ export const fetchLatestNodeVersion = async () => {
       },
     })
 
-    const latestRelease = await latestReleaseResponse.json()
+    const latestRelease = (await latestReleaseResponse.json()) as { tag_name: string }
     return latestRelease.tag_name
   } catch (err) {
     throw err
