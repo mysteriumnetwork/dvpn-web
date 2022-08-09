@@ -49,7 +49,11 @@ interface Props {
   delayHideMs?: number
 }
 
+<<<<<<< HEAD
 export const Tooltip = ({ icon = 'info', content, position = 'top', delayHideMs }: Props) => {
+=======
+export const Tooltip = ({ icon = 'info', content, position = 'top' }: Props) => {
+>>>>>>> b27c05a25b050765e729ff42759608db483d1907
   const uid = useMemo(() => nanoid(), [])
 
   const Icon = useMemo(() => {
