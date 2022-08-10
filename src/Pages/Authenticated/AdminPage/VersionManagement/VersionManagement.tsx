@@ -15,9 +15,9 @@ import {
 } from '../../../../api/ui-version-management'
 import page from '../../../../commons/page'
 import errors from '../../../../commons/errors'
-import Button from '../../../../Components/Buttons/Button'
 import styles from './VersionManagement.module.scss'
 import { VersionCard } from './VersionCard'
+import { Button } from '../../../../Components/Inputs/Button'
 
 const { parseToastError } = errors
 
@@ -185,13 +185,9 @@ export const VersionManagement = () => {
           {infoRow('Used:', state.ui.usedVersion)}
         </div>
         <div className={styles.controls}>
-          <Button onClick={() => init(true)} isLoading={state.isLoading} extraStyle="outline">
-            Flush Cache
-          </Button>
+          <Button onClick={() => init(true)} loading={state.isLoading} variant="outlined" label="Flush Cache" />
           {state.ui.usedVersion !== 'bundled' && (
-            <Button onClick={() => switchVersion('bundled')} isLoading={state.isLoading}>
-              Switch Back
-            </Button>
+            <Button onClick={() => switchVersion('bundled')} loading={state.isLoading} label="Switch Back" />
           )}
         </div>
       </div>

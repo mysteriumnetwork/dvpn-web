@@ -8,7 +8,7 @@
 import styled from 'styled-components'
 import { Card } from './Card'
 import { useMemo } from 'react'
-import { NotificationCardProps } from './types'
+import { NotificationProps } from './types'
 
 const Container = styled.div`
   width: 100%;
@@ -24,8 +24,18 @@ const Container = styled.div`
   box-shadow: ${({ theme }) => theme.notifications.list.boxShadow};
   border-radius: 20px;
 `
+
+const NoNotifications = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  font-size: ${({ theme }) => theme.common.fontSizeBig};
+  color: ${({ theme }) => theme.common.colorGrayBlue};
+`
+
 interface Props {
-  list: NotificationCardProps[]
+  list: NotificationProps[]
 }
 export const List = ({ list }: Props) => {
   const Notifications = useMemo(() => {
@@ -33,5 +43,10 @@ export const List = ({ list }: Props) => {
       return <Card variant={notification.variant} subject={notification.subject} message={notification.message} />
     })
   }, [list])
-  return <Container>{Notifications}</Container>
+
+  return (
+    <Container>
+      {Notifications.length === 0 ? <NoNotifications>No notification yet.</NoNotifications> : Notifications}
+    </Container>
+  )
 }

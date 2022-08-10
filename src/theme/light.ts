@@ -125,8 +125,8 @@ const light: Omit<Theme, 'common'> = {
     },
 
     card: {
-      subjectTextColor: '',
-      messageTextColor: 'string',
+      subjectTextColor: themeCommon.colorDarkBlue,
+      messageTextColor: themeCommon.colorGrayBlue,
       positive: {
         background: themeCommon.colorGreen + alphaToHex(0.2),
       },

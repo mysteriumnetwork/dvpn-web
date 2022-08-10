@@ -8,10 +8,10 @@ import { useState } from 'react'
 import { tequila } from '../../../../api/tequila'
 import { configs } from '../../../../commons/config'
 import FEATURES from '../../../../commons/features'
-import Button from '../../../../Components/Buttons/Button'
 import { selectors } from '../../../../redux/selectors'
 import styles from './FeatureToggle.module.scss'
 import { useAppSelector } from '../../../../commons/hooks'
+import { Button } from '../../../../Components/Inputs/Button'
 
 export const FeatureToggle = () => {
   const { setFeatures } = tequila
@@ -44,9 +44,7 @@ export const FeatureToggle = () => {
           <p className={styles.name}>{feature.name}</p>
           <p className={styles.description}>{feature.description}</p>
         </div>
-        <Button onClick={() => toggle(feature.name)} isLoading={isLoading} extraStyle="outline">
-          Toggle
-        </Button>
+        <Button onClick={() => toggle(feature.name)} loading={isLoading} variant="outlined" label="Toggle" />
       </div>
     )
   })

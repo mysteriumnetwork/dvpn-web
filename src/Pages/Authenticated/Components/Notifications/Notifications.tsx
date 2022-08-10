@@ -18,7 +18,8 @@ import { toast } from 'react-toastify'
 import errors from '../../../../commons/errors'
 import { fetchLatestNodeVersion } from '../../../../api/node-version.management'
 import { selectors } from '../../../../redux/selectors'
-import { NotificationCardProps } from './types'
+import { NotificationProps } from './types'
+import { UpdateCardMessage } from './Card'
 
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000
 const { api } = tequila
@@ -61,25 +62,33 @@ const ListContainer = styled.div`
   left: -260px;
 `
 
+const ID_BENEFICIARY_TX_ERROR = 'ID_BENEFICIARY_TX_ERROR'
+const ID_NODE_UPDATE = 'ID_NODE_UPDATE'
+
 export const Notifications = () => {
   const [open, setOpen] = useState(false)
   const beneficiaryTxStatus = useAppSelector(selectors.beneficiaryTxStatus)
 
-  const [notificationList, setNotificationList] = useState<NotificationCardProps[]>([])
+  const [notificationList, setNotificationList] = useState<NotificationProps[]>([])
+
+  const addNotification = (notification: NotificationProps) => {
+    if (notificationList.find((n) => n.id === notification.id)) {
+      return
+    }
+
+    setNotificationList((p) => [...p, notification])
+  }
 
   useEffect(() => {
     if (!beneficiaryTxStatus.error) {
       return
     }
-
-    setNotificationList((p) => [
-      ...p,
-      {
-        variant: 'negative',
-        subject: 'External Wallet address change failed',
-        message: beneficiaryTxStatus.error,
-      },
-    ])
+    addNotification({
+      id: ID_BENEFICIARY_TX_ERROR,
+      variant: 'negative',
+      subject: 'External Wallet address change failed',
+      message: beneficiaryTxStatus.error,
+    })
   }, [beneficiaryTxStatus.error])
 
   const latestNodeVersion = useAppSelector(remoteStorage.selector(KEY_LATEST_NODE_VERSION))
@@ -88,14 +97,12 @@ export const Notifications = () => {
       // TODO store this in app.slice
       const healthCheck = await api.healthCheck()
       if (healthCheck.version.toString() !== latestNodeVersion) {
-        setNotificationList((p) => [
-          ...p,
-          {
-            variant: 'update',
-            subject: 'New version released',
-            message: 'Update app to experience new features',
-          },
-        ])
+        addNotification({
+          id: ID_NODE_UPDATE,
+          variant: 'update',
+          subject: 'New version released',
+          message: <UpdateCardMessage />,
+        })
       }
     })()
   }, [latestNodeVersion])
@@ -104,11 +111,11 @@ export const Notifications = () => {
     return Date.now()
   }, [])
 
-  const lastCheck = useAppSelector(remoteStorage.selector<number>(KEY_CURRENT_NODE_VERSION_LAST_CHECK))
+  const lastChecked = useAppSelector(remoteStorage.selector<number>(KEY_CURRENT_NODE_VERSION_LAST_CHECK))
   useEffect(() => {
     ;(async () => {
       try {
-        if (!lastCheck || now > lastCheck + TWO_HOURS_MS) {
+        if (!lastChecked || now > lastChecked + TWO_HOURS_MS) {
           const latestNodeVersion = await fetchLatestNodeVersion()
           remoteStorage.put(KEY_CURRENT_NODE_VERSION_LAST_CHECK, now)
           remoteStorage.put(KEY_LATEST_NODE_VERSION, latestNodeVersion)

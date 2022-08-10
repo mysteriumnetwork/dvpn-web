@@ -7,8 +7,8 @@
 import { LocalVersion, RemoteVersion } from '../../../../api/ui-version-management'
 import styles from './VersionManagement.module.scss'
 import dates from '../../../../commons/dates'
-import Button from '../../../../Components/Buttons/Button'
 import React from 'react'
+import { Button } from '../../../../Components/Inputs/Button'
 
 const { date2human } = dates
 
@@ -52,25 +52,21 @@ export const VersionCard = ({
       <div>
         {!local && (
           <Button
-            isLoading={isLoading}
-            className={styles.control}
+            loading={isLoading}
             onClick={onDownload}
             disabled={isDownloadInProgress}
-            extraStyle="outline"
-          >
-            Download
-          </Button>
+            variant="outlined"
+            label="Download"
+          />
         )}
         {canSwitchTo && (
           <Button
-            isLoading={isLoading}
-            className={styles.control}
+            loading={isLoading}
             onClick={onSwitchVersion}
             disabled={isDownloadInProgress}
-            extraStyle="outline-primary"
-          >
-            Switch
-          </Button>
+            variant="blue"
+            label="Switch"
+          />
         )}
       </div>
     </div>

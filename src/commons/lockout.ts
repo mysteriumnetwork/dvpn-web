@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { LockoutButtonInfo } from '../Components/Buttons/types'
 import page from './page'
 import remoteStorage from './remoteStorage'
+import { LockoutButtonInfo } from '../Components/Inputs/types'
 
 export type LockConfig = {
   id: string
