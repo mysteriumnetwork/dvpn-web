@@ -9,10 +9,6 @@ import { ReactNode } from 'react'
 
 export type CardVariant = 'positive' | 'neutral' | 'negative' | 'update'
 
-export type NotificationProps = {
-  id: string
-} & NotificationCardProps
-
 export type NotificationCardProps = {
   variant: CardVariant
   subject: string

@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 import errors from '../../../../commons/errors'
 import { fetchLatestNodeVersion } from '../../../../api/node-version.management'
 import { selectors } from '../../../../redux/selectors'
-import { NotificationProps } from './types'
+import { NotificationCardProps } from './types'
 import { UpdateCardMessage } from './Card'
 
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000
@@ -69,22 +69,17 @@ export const Notifications = () => {
   const [open, setOpen] = useState(false)
   const beneficiaryTxStatus = useAppSelector(selectors.beneficiaryTxStatus)
 
-  const [notificationList, setNotificationList] = useState<NotificationProps[]>([])
+  const [notifications, setNotifications] = useState(new Map<string, NotificationCardProps>())
 
-  const addNotification = (notification: NotificationProps) => {
-    if (notificationList.find((n) => n.id === notification.id)) {
-      return
-    }
-
-    setNotificationList((p) => [...p, notification])
+  const addNotification = (id: string, notification: NotificationCardProps) => {
+    setNotifications(new Map(notifications.set(id, notification)))
   }
 
   useEffect(() => {
     if (!beneficiaryTxStatus.error) {
       return
     }
-    addNotification({
-      id: ID_BENEFICIARY_TX_ERROR,
+    addNotification(ID_BENEFICIARY_TX_ERROR, {
       variant: 'negative',
       subject: 'External Wallet address change failed',
       message: beneficiaryTxStatus.error,
@@ -97,8 +92,7 @@ export const Notifications = () => {
       // TODO store this in app.slice
       const healthCheck = await api.healthCheck()
       if (healthCheck.version.toString() !== latestNodeVersion) {
-        addNotification({
-          id: ID_NODE_UPDATE,
+        addNotification(ID_NODE_UPDATE, {
           variant: 'update',
           subject: 'New version released',
           message: <UpdateCardMessage />,
@@ -112,6 +106,7 @@ export const Notifications = () => {
   }, [])
 
   const lastChecked = useAppSelector(remoteStorage.selector<number>(KEY_CURRENT_NODE_VERSION_LAST_CHECK))
+
   useEffect(() => {
     ;(async () => {
       try {
@@ -128,11 +123,11 @@ export const Notifications = () => {
 
   return (
     <Container>
-      {notificationList.length > 0 && <Dot />}
+      {notifications.size > 0 && <Dot />}
       <IconButton icon={<BellIcon />} onClick={() => setOpen((p) => !p)} />
       {open && (
         <ListContainer>
-          <List list={notificationList} />
+          <List list={Array.from(notifications.values())} />
         </ListContainer>
       )}
     </Container>
