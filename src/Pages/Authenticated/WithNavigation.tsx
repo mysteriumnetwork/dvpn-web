@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import Navigation from './Navigation/Navigation'
-import React, { ReactElement } from 'react'
-
+import { ReactElement, useState } from 'react'
+import { MobileMenu } from './Navigation/MobileMenu'
 import styled from 'styled-components'
 import { Onboarding } from './Onboarding/Onboarding'
 
@@ -29,11 +29,17 @@ interface Props {
 }
 
 const WithNavigation = ({ content }: Props) => {
+  const [showMenu, setShowMenu] = useState(false)
+  const handleMobileMenu = () => {
+    setShowMenu(!showMenu)
+    console.log('LOGOCLICK')
+  }
   return (
     <Page>
-      <Navigation />
+      <Navigation handleMenu={handleMobileMenu} />
       <Content>{content}</Content>
       <Onboarding />
+      <MobileMenu show={showMenu} handleOpen={handleMobileMenu} />
     </Page>
   )
 }

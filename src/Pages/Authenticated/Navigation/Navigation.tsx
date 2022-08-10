@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import {
@@ -36,6 +36,7 @@ import { myst } from '../../../commons/mysts'
 import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
 import { alphaToHex, themeCommon } from '../../../theme/themeCommon'
+
 const IntercomGlobalCSS = createGlobalStyle`
  //.intercom-lightweight-app {
  //   display: none;
@@ -119,8 +120,10 @@ const Info = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.common.colorGrayBlue};
 `
-
-const Navigation = () => {
+interface Props {
+  handleMenu: () => void
+}
+const Navigation = ({ handleMenu }: Props) => {
   const { pathname } = useLocation()
   const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
   const config = useAppSelector(selectors.configSelector)
@@ -163,9 +166,8 @@ const Navigation = () => {
         <Margin />
       </Media.Desktop>
       <Media.Mobile>
-        <LogoLink to={DASHBOARD}>
-          <StyledLogo />
-        </LogoLink>
+        {/* TODO: Convert to BOOORGER */}
+        <StyledLogo onClick={handleMenu} />
         <NodeStatus />
         {/* TODO: CREATE WRAPPER WHEN WE HAVE MORE ICONS*/}
         <Notifications />
