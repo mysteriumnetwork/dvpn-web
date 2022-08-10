@@ -7,7 +7,7 @@
 import { PaymentOrder } from 'mysterium-vpn-js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { tequila } from '../../../../../../api/tequila'
-import countries from '../../../../../../commons/countries'
+import location, { stateNames } from '../../../../../../commons/location'
 import errors from '../../../../../../commons/errors'
 import { selectors } from '../../../../../../redux/selectors'
 import { validateAndReturnCheckoutUrl } from './fiat'
@@ -22,7 +22,7 @@ import { SUPPORTED_GATEWAYS } from '../../gateways'
 import { InputGroup } from '../../../../../../Components/Inputs/InputGroup'
 
 const { parseToastError } = errors
-const { countryNames } = countries
+const { countryNames } = location
 const { api } = tequila
 
 const PROJECT_ID = 'mystnodes'
@@ -30,6 +30,7 @@ const PROJECT_ID = 'mystnodes'
 interface State {
   currency: string
   taxCountry: Option
+  taxState?: Option
   isLoading: boolean
   isRedirected: boolean
   order?: PaymentOrder
@@ -95,16 +96,21 @@ const Input = styled.div`
   margin-top: 8px;
 `
 
-const Gateway = ({ payments: { isCompleted }, next, gateway, back, backText }: GatewayProps) => {
+const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProps) => {
   const { name: gatewayName } = gateway
 
   const identity = useAppSelector(selectors.currentIdentitySelector)
 
   const [state, setState] = useState<State>(initialState)
-  const { taxCountry, isLoading, isRedirected } = state
+  const { taxCountry, taxState, isLoading, isRedirected } = state
 
   const countryOptions = useMemo(
     () => Object.keys(countryNames).map((key) => ({ value: key.toUpperCase(), label: countryNames[key] })),
+    [],
+  )
+
+  const stateOptions = useMemo(
+    () => Object.keys(stateNames['US']).map((key) => ({ value: key.toUpperCase(), label: stateNames['US'][key] })),
     [],
   )
 
@@ -131,7 +137,9 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back, backText }: G
   }, [gatewayName])
 
   const markRedirected = () => setState((p) => ({ ...p, isRedirected: true }))
-  const handleTaxCountryChange = (taxCountry: Option) => setState((p) => ({ ...p, taxCountry }))
+  const handleTaxCountryChange = (taxCountry: Option) =>
+    setState((p) => ({ ...p, taxCountry, taxState: taxCountry.value === 'US' ? p.taxState : undefined }))
+  const handleTaxStateChange = (taxState: Option) => setState((p) => ({ ...p, taxState }))
 
   const handlePayNow = async () => {
     try {
@@ -152,10 +160,13 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back, backText }: G
       return state.order
     }
 
-    const country = state.taxCountry.value as string
+    const country = state.taxCountry.value
+    const taxState = state.taxState?.value || ''
+
     const order = await api.payment.createOrder(identity.id, gatewayName, {
       payCurrency: state.currency,
       country,
+      state: taxState,
       projectId: PROJECT_ID,
       amountUsd: '1',
       gatewayCallerData: {},
@@ -164,7 +175,6 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back, backText }: G
     return order
   }
 
-  const showInvoiceLink = isCompleted && state.order?.id
   const showPayNow = (): boolean => {
     if (isCompleted) {
       return false
@@ -190,7 +200,6 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back, backText }: G
       <Title>{SUPPORTED_GATEWAYS[gateway.name].title}</Title>
       <Description>{SUPPORTED_GATEWAYS[gateway.name].description}</Description>
       <Input>
-        {' '}
         <InputGroup
           title="Country"
           input={
@@ -198,14 +207,24 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back, backText }: G
           }
         />
       </Input>
+      {taxCountry.value === 'US' && (
+        <Input>
+          <InputGroup
+            title="State"
+            input={
+              <Select options={stateOptions} value={taxState} onChange={(o) => handleTaxStateChange(o as Option)} />
+            }
+          />
+        </Input>
+      )}
       <Note>{SUPPORTED_GATEWAYS[gateway.name].note}</Note>
       <FlexGrow />
       <WaitingPayment showPayNow={showPayNow()} isRegistrationPaymentReceived={isCompleted} />
-      {showInvoiceLink && <DownloadInvoice id={identity.id} orderId={state.order?.id} />}
+      <DownloadInvoice identity={identity.id} order={state.order} />
       <Controls>
         {showPayNow() && <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay 1 USD" />}
         {isCompleted && <Button label="Continue" rounded onClick={next} />}
-        <Button onClick={back} variant="outlined" rounded label={backText || 'Back'} />
+        <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
       </Controls>
     </Content>
   )
@@ -233,17 +252,13 @@ const WaitingPayment = ({ isRegistrationPaymentReceived, showPayNow }: WaitingPa
   if (showPayNow) {
     return <></>
   }
-  return (
-    <>
-      {isRegistrationPaymentReceived ? (
-        <>Payment successful! Click Next to proceed.</>
-      ) : (
-        <Waiting>
-          <WaitingSpinner />
-          Wait for confirmation (might take couple of minutes)
-        </Waiting>
-      )}
-    </>
+  return isRegistrationPaymentReceived ? (
+    <Waiting>Payment successful! Click Next to proceed.</Waiting>
+  ) : (
+    <Waiting>
+      <WaitingSpinner />
+      Wait for confirmation (might take couple of minutes)
+    </Waiting>
   )
 }
 
@@ -253,36 +268,37 @@ const openInNewTab = (url: string) => {
 }
 
 const InvoiceLink = styled.a`
+  margin-top: 12px;
   align-self: center;
 `
 
-const DownloadInvoice = ({ id, orderId }: { id: string; orderId?: string }) => {
-  const [url, setUrl] = useState<string>()
-  const [name, setName] = useState<string>()
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+const DownloadInvoice = ({ identity, order }: { identity: string; order?: PaymentOrder }) => {
+  const [url, setUrl] = useState('')
+  const [name, setName] = useState('')
+  const [hide, setHide] = useState(true)
 
   useEffect(() => {
-    const generate = async () => {
+    const generate = async (order: PaymentOrder) => {
       try {
-        const data = await api.payment.invoice(id, orderId!)
+        const data = await api.payment.invoice(identity, order.id)
         const blob = new Blob([data], { type: 'application/pdf' })
         if (url && url !== '') {
           window.URL.revokeObjectURL(url)
         }
         setUrl(window.URL.createObjectURL(blob))
-        setName(`MystNodes-order-${orderId}.pdf`)
+        setName(`MystNodes-order-${order.id}.pdf`)
       } catch (err) {
         parseToastError(err)
       }
     }
-    if (orderId) {
-      setIsLoading(true)
-      generate()
-      setIsLoading(false)
+    if (order) {
+      setHide(true)
+      generate(order)
+      setHide(false)
     }
-  }, [id, orderId])
+  }, [identity, order?.id])
 
-  if (isLoading) {
+  if (hide || !order || order.status !== 'paid') {
     return <></>
   }
 

@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import { useMemo } from 'react'
 import { myst } from '../../../../commons/mysts'
 import bytes from '../../../../commons/bytes'
-import countries from '../../../../commons/countries'
+import location from '../../../../commons/location'
 import dates from '../../../../commons/dates'
 import { useAppSelector } from '../../../../commons/hooks'
 import { selectors } from '../../../../redux/selectors'
@@ -20,7 +20,7 @@ import { HISTORY } from '../../../../constants/routes'
 import _ from 'lodash'
 
 const { seconds2Time } = dates
-const { countryName } = countries
+const { countryName } = location
 const { format, add } = bytes
 // TODO: Move these to commons
 const session2human = (session: string) => {

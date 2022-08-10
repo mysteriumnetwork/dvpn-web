@@ -85,7 +85,7 @@ const Controls = styled.div`
   gap: 32px;
 `
 
-const Direct = ({ back, next, backText, payments: { amountRequiredWei } }: GatewayProps) => {
+const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) => {
   const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
   const isRegistrationFeeReceived = myst.toWeiBig(balanceTokens.wei).gte(amountRequiredWei)
 
@@ -117,7 +117,7 @@ const Direct = ({ back, next, backText, payments: { amountRequiredWei } }: Gatew
       <Controls>
         {next && isRegistrationFeeReceived && <Button label="Continue" onClick={next} />}
         {back && !isRegistrationFeeReceived && (
-          <Button onClick={back} variant="outlined" rounded label={backText || 'Back'} />
+          <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
         )}
       </Controls>
     </Content>

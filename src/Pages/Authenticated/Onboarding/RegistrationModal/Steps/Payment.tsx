@@ -79,7 +79,6 @@ const Payment = ({ gateway, allGateways, back, next }: RegistrationStepProps) =>
     payments: { isCompleted: isRegistrationPaymentReceived, amountRequiredWei: myst.toWeiBig(minimalAmountEther) },
     back,
     next,
-    backText: 'Back To Payment Method',
   }
 
   return (

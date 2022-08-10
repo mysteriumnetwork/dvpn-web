@@ -123,7 +123,7 @@ const ceilingOf2 = (n: number): number => {
 }
 
 const calculateDisplayTotals = (stats: SessionStatsWithDate[]): SessionStatsWithByteTotal => {
-  const acc = stats.reduce(
+  return stats.reduce(
     (acc, next) => ({
       count: acc.count + next.count,
       countConsumers: acc.countConsumers + next.countConsumers,
@@ -143,8 +143,6 @@ const calculateDisplayTotals = (stats: SessionStatsWithDate[]): SessionStatsWith
       byteTotal: 0,
     },
   )
-  console.log('acc', acc)
-  return acc
 }
 
 const calculateDiffs = (
