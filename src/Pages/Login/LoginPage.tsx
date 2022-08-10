@@ -23,9 +23,26 @@ import { Button } from '../../Components/Inputs/Button'
 import { toast } from 'react-toastify'
 import errors from '../../commons/errors'
 import Background from '../../assets/images/onboarding/background.png'
-import { ReactComponent as Logo } from '../../assets/images/onboarding/login.svg'
+import { ReactComponent as LoginLogo } from '../../assets/images/onboarding/login.svg'
+import { devices } from '../../theme/themes'
 const { api } = tequila
 
+const Logo = styled(LoginLogo)`
+  height: 500px;
+  width: 500px;
+  @media ${devices.tablet} {
+    height: 300px;
+    width: 300px;
+  }
+`
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media ${devices.tablet} {
+    align-self: center;
+  }
+`
 const Page = styled.div`
   display: flex;
   flex-direction: column;
@@ -36,24 +53,44 @@ const Page = styled.div`
   justify-content: center;
   background-image: url(${Background});
   background-color: ${({ theme }) => theme.common.colorLightBlue};
+  @media ${devices.tablet} {
+    padding-top: 30px;
+    height: 100%;
+    width: 100%;
+  }
 `
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0px;
   margin-bottom: 40px;
+  @media ${devices.tablet} {
+    align-self: flex-start;
+  }
 `
-const Title = styled.h1`
+const SubTitle = styled.h1`
   font-size: 80px;
+  margin-top: 0;
   line-height: 80px;
   color: ${({ theme }) => theme.common.colorGrayBlue2};
+  @media ${devices.tablet} {
+    font-size: 60px;
+    line-height: 60px;
+  }
 `
-const SubTitle = styled.div`
+const Comment = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue2};
+  margin-top: 10px;
 `
-const PrimaryText = styled.span`
+const Title = styled.h1`
   color: ${({ theme }) => theme.common.colorKey};
   line-height: 88px;
+  font-size: 80px;
+  @media ${devices.tablet} {
+    text-align: left;
+    font-size: 60px;
+    line-height: 60px;
+  }
 `
 const Card = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
@@ -61,20 +98,36 @@ const Card = styled.div`
   border-radius: 30px;
   height: 550px;
   gap: 100px;
-  width: 50%;
   display: flex;
   align-items: center;
   padding: 40px;
-  justify-content: space-evenly;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    height: 700px;
+    width: 300px;
+    padding: 10px;
+  }
 `
 const Container = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
   height: 100%;
+  @media ${devices.tablet} {
+    justify-content: flex-start;
+    padding: 0 10px;
+    width: 100%;
+  }
 `
+
 const ButtonRow = styled.div`
   margin-top: 20px;
+  @media ${devices.tablet} {
+    margin-bottom: 20px;
+  }
 `
 const Link = styled.a`
   color: ${({ theme }) => theme.common.colorKey};
@@ -87,6 +140,9 @@ const Footer = styled.div`
   flex-direction: column;
   margin-top: 20px;
   align-items: flex-end;
+  @media ${devices.tablet} {
+    align-items: flex-start;
+  }
 `
 interface Props {
   onSuccess: () => void
@@ -119,19 +175,23 @@ const LoginPage = ({ onSuccess }: Props) => {
     <Form onSubmit={handleLogin}>
       <Page>
         <Card>
-          <Logo />
+          <LogoContainer>
+            <Logo />
+          </LogoContainer>
           <Container>
             <Header>
-              <Title>
-                <PrimaryText>Welcome</PrimaryText> node runner!
-              </Title>
-              <SubTitle>Welcome Back! Please enter your NODE UI password.</SubTitle>
+              <Title>Welcome</Title>
+              <SubTitle>node runner!</SubTitle>
+              <Comment>Welcome Back! Please enter your NODE UI password.</Comment>
             </Header>
+
             <InputGroup
               title="Password"
               error={error}
+              fluid
               input={<TextField type="password" error={inputError} value={password} onChange={handlePassword} />}
             />
+
             <Footer>
               <Link href="https://docs.mysterium.network/troubleshooting/forgot-password" target="_blank">
                 Forgot password?

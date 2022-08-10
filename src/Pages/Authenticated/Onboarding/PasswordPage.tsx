@@ -22,24 +22,66 @@ import { validatePassword } from '../../../commons/passwords'
 import { Checkbox } from '../../../Components/Inputs/Checkbox'
 import Background from '../../../assets/images/onboarding/background.png'
 import { ReactComponent as Lock } from '../../../assets/images/onboarding/password.svg'
+import { devices } from '../../../theme/themes'
 
 const { api } = tequila
-
+const Logo = styled(Lock)`
+  height: 500px;
+  width: 500px;
+  @media ${devices.tablet} {
+    height: 250px;
+    width: 250px;
+  }
+`
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media ${devices.tablet} {
+    align-self: center;
+  }
+`
+const Title = styled.h1`
+  color: ${({ theme }) => theme.common.colorDarkBlue};
+  font-size: 28px;
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+  }
+`
+const SecondaryTitle = styled.h2`
+  color: ${({ theme }) => theme.common.colorDarkBlue};
+  font-size: ${({ theme }) => theme.common.fontSizeBig};
+`
+const Comment = styled.p`
+  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeNormal};
+  }
+`
 const Page = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 100vh;
   width: 100vw;
   align-items: center;
   justify-content: center;
   background-image: url(${Background});
   background-color: ${({ theme }) => theme.common.colorLightBlue};
+  @media ${devices.tablet} {
+    padding-top: 30px;
+    height: 100%;
+    width: 100%;
+  }
 `
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 30px;
+  @media ${devices.tablet} {
+    align-self: flex-start;
+  }
 `
 const Footer = styled.div`
   display: flex;
@@ -51,7 +93,10 @@ const InputContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
-  margin-bottom: 100px;
+  margin-bottom: 70px;
+  @media ${devices.tablet} {
+    margin-bottom: 20px;
+  }
 `
 const Link = styled.a`
   color: ${({ theme }) => theme.common.colorKey};
@@ -61,24 +106,39 @@ const Link = styled.a`
 `
 const Card = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
+  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
   height: 550px;
   gap: 100px;
-  box-shadow: 0 2px 50px rgba(0, 0, 0, 0.09);
-  width: 60%;
   display: flex;
   align-items: center;
   padding: 40px;
-  justify-content: space-evenly;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    height: 750px;
+    width: 350px;
+    padding: 10px;
+  }
 `
 const Container = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
   height: 100%;
+  @media ${devices.tablet} {
+    justify-content: flex-start;
+    padding: 0 10px;
+    width: 100%;
+  }
 `
 const ButtonRow = styled.div`
   margin-top: 20px;
+  @media ${devices.tablet} {
+    margin-bottom: 20px;
+  }
 `
 const useQuery = () => {
   const { search } = useLocation()
@@ -187,11 +247,13 @@ export const PasswordPage = () => {
     <Form onSubmit={handleSubmit}>
       <Page>
         <Card>
-          <Lock />
+          <LogoContainer>
+            <Logo />
+          </LogoContainer>
           <Container>
             <Header>
-              <h1>Create Password</h1>
-              <p>Please set your Node UI password. Your password must contain at least 10 characters.</p>
+              <Title>Create Password</Title>
+              <Comment>Please set your Node UI password. Your password must contain at least 10 characters.</Comment>
             </Header>
             <InputContainer>
               <InputGroup
@@ -223,10 +285,10 @@ export const PasswordPage = () => {
               </span>
             </InputContainer>
             <Footer>
-              <h2>
+              <SecondaryTitle>
                 Connect your node to mystnodes.com
                 <Tooltip icon="question" content={TooltipContent} />
-              </h2>
+              </SecondaryTitle>
               <InputGroup
                 error={state.mmnError}
                 fluid
