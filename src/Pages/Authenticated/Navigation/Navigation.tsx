@@ -29,13 +29,15 @@ import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
 import { devices } from '../../../theme/themes'
 import { Media } from '../../../commons/media'
 import { Notifications } from '../Components/Notifications/Notifications'
-import { NodeStatus } from '../Components/NodeStatus/NodeStatus'
 import { ProgressBar } from '../../../Components/ProgressBar/ProgressBar'
 import { configs } from '../../../commons/config'
 import { myst } from '../../../commons/mysts'
 import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
 import { alphaToHex, themeCommon } from '../../../theme/themeCommon'
+import { Profile } from '../Components/Profile/Profile'
+import { IconButton } from '../../../Components/Inputs/IconButton'
+import { ReactComponent as Burger } from '../../../assets/images/input/burger.svg'
 
 const IntercomGlobalCSS = createGlobalStyle`
  //.intercom-lightweight-app {
@@ -79,6 +81,7 @@ const LogoLink = styled(Link)`
   margin-bottom: 41px;
   @media ${devices.tablet} {
     margin-top: 15px;
+    margin-right: 30px;
   }
 `
 const PlainLink = styled(NavLink)`
@@ -114,6 +117,13 @@ const Progress = styled.div`
 const ProgressBarContainer = styled.div`
   width: 35%;
   margin-top: 5px;
+`
+const InputGroup = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
 `
 const Info = styled.div`
   color: ${({ theme }) => theme.common.fontSizeSmall};
@@ -167,8 +177,13 @@ const Navigation = ({ handleMenu }: Props) => {
       </Media.Desktop>
       <Media.Mobile>
         {/* TODO: Convert to BOOORGER */}
-        <StyledLogo onClick={handleMenu} />
-        <NodeStatus />
+        <InputGroup>
+          <IconButton onClick={handleMenu} icon={<Burger />} />
+          <Profile />
+        </InputGroup>
+        <LogoLink to={DASHBOARD}>
+          <StyledLogo />
+        </LogoLink>
         {/* TODO: CREATE WRAPPER WHEN WE HAVE MORE ICONS*/}
         <Notifications />
         <Progress>

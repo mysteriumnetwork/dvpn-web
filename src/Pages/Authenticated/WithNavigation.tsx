@@ -32,7 +32,6 @@ const WithNavigation = ({ content }: Props) => {
   const [showMenu, setShowMenu] = useState(false)
   const handleMobileMenu = () => {
     setShowMenu(!showMenu)
-    console.log('LOGOCLICK')
   }
   return (
     <Page>
