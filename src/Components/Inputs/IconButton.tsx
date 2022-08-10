@@ -23,6 +23,10 @@ const IButton = styled.div`
 
   border-radius: 100px;
 
+  :hover {
+    cursor: pointer;
+  }
+
   :active {
     //background: ${themeCommon.colorWhite}1A;
   }
