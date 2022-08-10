@@ -35,10 +35,10 @@ const WithNavigation = ({ content }: Props) => {
   }
   return (
     <Page>
-      <Navigation handleMenu={handleMobileMenu} />
+      <Navigation openMenu={handleMobileMenu} />
       <Content>{content}</Content>
       <Onboarding />
-      <MobileMenu show={showMenu} handleOpen={handleMobileMenu} />
+      <MobileMenu show={showMenu} closeMenu={handleMobileMenu} />
     </Page>
   )
 }

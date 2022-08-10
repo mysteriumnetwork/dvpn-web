@@ -107,36 +107,36 @@ const Header = styled.div`
 `
 interface Props {
   show: boolean
-  handleOpen: () => void
+  closeMenu: () => void
 }
 
-export const MobileMenu = ({ show, handleOpen }: Props) => {
+export const MobileMenu = ({ show, closeMenu }: Props) => {
   const { pathname } = useLocation()
   return (
     <>
-      <Overlay $display={show} onClick={handleOpen} />
+      <Overlay $display={show} onClick={closeMenu} />
       <Menu $display={show}>
         <Header>
           <Container>
             <Logo />
             <Title>Node UI</Title>
           </Container>
-          <Arrow onClick={handleOpen} />
+          <Arrow onClick={closeMenu} />
         </Header>
         <Group>
-          <PlainLink to={DASHBOARD} onClick={handleOpen}>
+          <PlainLink to={DASHBOARD} onClick={closeMenu}>
             <DashboardNavIcon $active={pathname === DASHBOARD} />
             Dashboard
           </PlainLink>
-          <PlainLink to={HISTORY} onClick={handleOpen}>
+          <PlainLink to={HISTORY} onClick={closeMenu}>
             <SessionsNavIcon $active={pathname === HISTORY} />
             History
           </PlainLink>
-          <PlainLink to={TRANSACTIONS} onClick={handleOpen}>
+          <PlainLink to={TRANSACTIONS} onClick={closeMenu}>
             <WalletNavIcon $active={pathname === TRANSACTIONS} />
             Transactions
           </PlainLink>
-          <PlainLink to={SETTINGS} onClick={handleOpen}>
+          <PlainLink to={SETTINGS} onClick={closeMenu}>
             <SettingsNavIcon
               $active={[SETTINGS, SETTINGS_TRAFFIC, SETTINGS_ADVANCED, SETTINGS_ACCOUNT].includes(pathname)}
             />
