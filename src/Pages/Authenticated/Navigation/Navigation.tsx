@@ -131,9 +131,9 @@ const Info = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue};
 `
 interface Props {
-  handleMenu: () => void
+  openMenu: () => void
 }
-const Navigation = ({ handleMenu }: Props) => {
+const Navigation = ({ openMenu }: Props) => {
   const { pathname } = useLocation()
   const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
   const config = useAppSelector(selectors.configSelector)
@@ -178,7 +178,7 @@ const Navigation = ({ handleMenu }: Props) => {
       <Media.Mobile>
         {/* TODO: Convert to BOOORGER */}
         <InputGroup>
-          <IconButton onClick={handleMenu} icon={<Burger />} />
+          <IconButton onClick={openMenu} icon={<Burger />} />
           <Profile />
         </InputGroup>
         <LogoLink to={DASHBOARD}>
