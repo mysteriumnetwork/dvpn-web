@@ -17,5 +17,4 @@ export type GatewayProps = {
   payments: PaymentProps
   back?: () => void
   next?: () => void
-  backText?: string
 }

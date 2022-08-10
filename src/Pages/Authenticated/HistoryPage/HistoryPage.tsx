@@ -14,14 +14,14 @@ import { tequila } from '../../../api/tequila'
 import { SESSIONS_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 import dates from '../../../commons/dates'
 import { useFetch } from '../../../commons/hooks'
-import countries from '../../../commons/countries'
+import location from '../../../commons/location'
 import { myst } from '../../../commons/mysts'
 import bytes from '../../../commons/bytes'
 import { CustomDatePicker } from './CustomDatePicker'
 import styled from 'styled-components'
 const { api } = tequila
 const { date2human, seconds2Time, localDate } = dates
-const { countryName } = countries
+const { countryName } = location
 const { format, add } = bytes
 
 // TODO: Improve switch statement once its clear what other services are named

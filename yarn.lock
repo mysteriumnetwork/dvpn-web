@@ -2832,10 +2832,10 @@
     outvariant "^1.2.1"
     strict-event-emitter "^0.2.4"
 
-"@mysteriumnetwork/terms@0.0.40":
-  version "0.0.40"
-  resolved "https://registry.yarnpkg.com/@mysteriumnetwork/terms/-/terms-0.0.40.tgz#585960b6b260d54858c3c31ec3789c3ce1d4988a"
-  integrity sha512-xmLt6VDmGy8qADH+to2KZpk8gCA1koBEtJnZBpF+4jSPPQvfndCPjLgJu6l3fAplwyfHsrWkJYtmtk/1Sp8ubw==
+"@mysteriumnetwork/terms@0.0.50":
+  version "0.0.50"
+  resolved "https://registry.yarnpkg.com/@mysteriumnetwork/terms/-/terms-0.0.50.tgz#4f2e9dea7add6dbc462e3f353866cafd434d35c3"
+  integrity sha512-Jm6gQfu52IpG3+lxhuiNgYPPl+shZK15rOhMAXclj9A/HbXKpHBPJL+AVEDYEa1cs8mdjYrDJMGxFRccgYrKEg==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -9146,10 +9146,10 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-mysterium-vpn-js@24.0.0:
-  version "24.0.0"
-  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-24.0.0.tgz#d0d372bd2ec92709b4acce5e980ef18dc7ef18bb"
-  integrity sha512-WV7gowJO7LVwaEXFuPZN5QlR4CtwJWVWqGUWT2/v91IFj+e0EAvCEtcEoFxP/gbu1H4RRJW83vlbsRlELRI+XQ==
+mysterium-vpn-js@24.1.0:
+  version "24.1.0"
+  resolved "https://registry.yarnpkg.com/mysterium-vpn-js/-/mysterium-vpn-js-24.1.0.tgz#1708844d40c1e53aadf8e687b8277f4001629766"
+  integrity sha512-fgk8WnNzZ9Tch3Vh88t3oTadd7g/JVCby6invtO3ROEyiqx/4IQNWUp/WUefCKSbtplJxlhC6xBMKBX0ZXIrzA==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     axios "^0.26.1"

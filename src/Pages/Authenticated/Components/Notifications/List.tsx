@@ -8,7 +8,7 @@
 import styled from 'styled-components'
 import { Card } from './Card'
 import { useMemo } from 'react'
-import { NotificationProps } from './types'
+import { NotificationCardProps } from './types'
 
 const Container = styled.div`
   width: 100%;
@@ -35,12 +35,19 @@ const NoNotifications = styled.div`
 `
 
 interface Props {
-  list: NotificationProps[]
+  list: NotificationCardProps[]
 }
 export const List = ({ list }: Props) => {
   const Notifications = useMemo(() => {
-    return list.map((notification) => {
-      return <Card variant={notification.variant} subject={notification.subject} message={notification.message} />
+    return list.map((notification, index) => {
+      return (
+        <Card
+          key={`notification-${index}`}
+          variant={notification.variant}
+          subject={notification.subject}
+          message={notification.message}
+        />
+      )
     })
   }, [list])
 

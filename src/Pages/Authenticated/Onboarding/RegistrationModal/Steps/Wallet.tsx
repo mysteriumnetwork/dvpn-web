@@ -33,6 +33,7 @@ const Title = styled.div`
 const Description = styled.div`
   display: flex;
   margin-top: 30px;
+  margin-bottom: 30px;
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.common.colorGrayBlue2};
@@ -42,6 +43,10 @@ const Description = styled.div`
 const Input = styled.div`
   margin-top: 45px;
   margin-bottom: 45px;
+`
+
+const FlexGrow = styled.div`
+  flex-grow: 1;
 `
 
 const NetworkRegistration = ({ next, beneficiary, setBeneficiary, loading, setLoading }: RegistrationStepProps) => {
@@ -90,6 +95,7 @@ const NetworkRegistration = ({ next, beneficiary, setBeneficiary, loading, setLo
       <a href={DOCS_METAMASK} target="_blank" rel="noreferrer">
         Check here for instructions how to setup MYST token on MetaMask
       </a>
+      <FlexGrow />
       <Button rounded label="Finish" onClick={handleFinish} />
     </Content>
   )

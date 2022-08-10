@@ -6,11 +6,7 @@
  */
 import { default as RSelect } from 'react-select'
 import styles from './Select.module.scss'
-
-export interface Option {
-  value: string | number
-  label: string
-}
+import { Option } from '../../types/common'
 
 interface Props {
   id?: string
