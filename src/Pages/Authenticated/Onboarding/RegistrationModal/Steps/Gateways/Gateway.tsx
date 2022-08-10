@@ -12,7 +12,7 @@ import errors from '../../../../../../commons/errors'
 import { selectors } from '../../../../../../redux/selectors'
 import { validateAndReturnCheckoutUrl } from './fiat'
 import { GatewayProps } from './types'
-import { useAppSelector } from '../../../../../../commons/hooks'
+import { useAppSelector, useFetch } from '../../../../../../commons/hooks'
 import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
 import { Button } from '../../../../../../Components/Inputs/Button'
 import { Select } from '../../../../../../Components/Select/Select'
@@ -141,6 +141,17 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
     setState((p) => ({ ...p, taxCountry, taxState: taxCountry.value === 'US' ? p.taxState : undefined }))
   const handleTaxStateChange = (taxState: Option) => setState((p) => ({ ...p, taxState }))
 
+  useEffect(() => {
+    if (state.taxCountry.value === 'US' && !state.taxState) {
+      setState((p) => ({ ...p, taxState: stateOptions[0] }))
+      return
+    }
+
+    if (state.taxState) {
+      setState((p) => ({ ...p, taxState: undefined }))
+    }
+  }, [state.taxCountry.value])
+
   const handlePayNow = async () => {
     try {
       setState((p) => ({ ...p, isLoadingPayNow: true }))
@@ -220,7 +231,7 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
       <Note>{SUPPORTED_GATEWAYS[gateway.name].note}</Note>
       <FlexGrow />
       <WaitingPayment showPayNow={showPayNow()} isRegistrationPaymentReceived={isCompleted} />
-      <DownloadInvoice identity={identity.id} order={state.order} />
+      <DownloadInvoice identity={identity.id} />
       <Controls>
         {showPayNow() && <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay 1 USD" />}
         {isCompleted && <Button label="Continue" rounded onClick={next} />}
@@ -272,10 +283,17 @@ const InvoiceLink = styled.a`
   align-self: center;
 `
 
-const DownloadInvoice = ({ identity, order }: { identity: string; order?: PaymentOrder }) => {
+const DownloadInvoice = ({ identity, isCompleted }: { identity: string; isCompleted?: boolean }) => {
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
-  const [hide, setHide] = useState(true)
+
+  const [paidOrder] = useFetch(async () => {
+    if (!isCompleted) {
+      return
+    }
+    const orders = await api.payment.orders(identity)
+    return orders.find((o) => o.status === 'paid')
+  }, [isCompleted])
 
   useEffect(() => {
     const generate = async (order: PaymentOrder) => {
@@ -291,14 +309,12 @@ const DownloadInvoice = ({ identity, order }: { identity: string; order?: Paymen
         parseToastError(err)
       }
     }
-    if (order) {
-      setHide(true)
-      generate(order)
-      setHide(false)
+    if (paidOrder) {
+      generate(paidOrder)
     }
-  }, [identity, order?.id])
+  }, [paidOrder?.id])
 
-  if (hide || !order || order.status !== 'paid') {
+  if (paidOrder) {
     return <></>
   }
 
