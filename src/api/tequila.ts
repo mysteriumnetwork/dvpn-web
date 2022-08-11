@@ -125,8 +125,42 @@ const setFeatures = async (features: string[]): Promise<Config> => {
     .then(refreshStoreConfig)
 }
 
-export const setUserConfig = async (data: any): Promise<Config> => {
+const setUserConfig = async (data: any): Promise<Config> => {
   return await tequilaClient.updateUserConfig({ data }).then(refreshStoreConfig)
+}
+
+const stopAllServices = async () => {
+  const services = await tequilaClient.serviceList()
+  await Promise.all([services.filter((s) => s.status === 'Running').map((s) => tequilaClient.serviceStop(s.id!))])
+}
+
+const startAllServices = async (identity: string) => {
+  const services = await tequilaClient.serviceList()
+  await Promise.all([
+    services
+      .filter((s) => s.status === 'NotRunning')
+      .map((s) =>
+        tequilaClient.serviceStart({
+          providerId: identity,
+          type: s.type,
+        }),
+      ),
+  ])
+}
+
+const restartRunningServices = async (identity: string) => {
+  const services = await tequilaClient.serviceList()
+  const running = services.filter((s) => s.status === 'Running')
+
+  await Promise.all([running.map((s) => tequilaClient.serviceStop(s.id!))])
+  await Promise.all([
+    running.map((s) =>
+      tequilaClient.serviceStart({
+        providerId: identity,
+        type: s.type,
+      }),
+    ),
+  ])
 }
 
 export const tequila = {
@@ -142,4 +176,7 @@ export const tequila = {
   setUserConfig,
   setFeatures,
   refreshBeneficiary,
+  startAllServices,
+  stopAllServices,
+  restartRunningServices,
 }
