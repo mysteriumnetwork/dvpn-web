@@ -130,12 +130,12 @@ const setUserConfig = async (data: any): Promise<Config> => {
 }
 
 const stopAllServices = async () => {
-  const services = await tequilaClient.serviceList()
+  const services = await tequilaClient.serviceList({ includeAll: true })
   await Promise.all([services.filter((s) => s.status === 'Running').map((s) => tequilaClient.serviceStop(s.id!))])
 }
 
 const startAllServices = async (identity: string) => {
-  const services = await tequilaClient.serviceList()
+  const services = await tequilaClient.serviceList({ includeAll: true })
   await Promise.all([
     services
       .filter((s) => s.status === 'NotRunning')
@@ -149,7 +149,7 @@ const startAllServices = async (identity: string) => {
 }
 
 const restartRunningServices = async (identity: string) => {
-  const services = await tequilaClient.serviceList()
+  const services = await tequilaClient.serviceList({ includeAll: true })
   const running = services.filter((s) => s.status === 'Running')
 
   await Promise.all([running.map((s) => tequilaClient.serviceStop(s.id!))])

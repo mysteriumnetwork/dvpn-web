@@ -16,6 +16,7 @@ import { tequila } from '../../../../../api/tequila'
 import conversions from '../../../../../commons/conversions'
 import errors from '../../../../../commons/errors'
 import { themeCommon } from '../../../../../theme/themeCommon'
+import { ConfirmationDialog } from '../../../../../Components/ConfirmationDialog/ConfirmationDialog'
 
 const GroupedTitle = styled.div`
   display: flex;
@@ -36,26 +37,32 @@ const LimitTarget = styled.div`
   margin-left: 20px;
 `
 
+const ONE_SECOND_MS = 1000
+
 export const BandwidthControl = () => {
   const config = useAppSelector(selectors.configSelector)
+  const { id } = useAppSelector(selectors.currentIdentitySelector)
   const shapingEnabled = configs.isTrafficShapingEnabled(config)
   const configShapingKBps = configs.trafficShapingBandwidthKBps(config)
 
   const [loading, setLoading] = useState<boolean>(true)
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false)
   const [bandwidthMBps, setBandwidthMBps] = useState<number>(150)
 
-  const handleChange = (v: number | number[]) => {
-    setBandwidthMBps(v as number)
-  }
+  const handleChange = (v: number | number[]) => setBandwidthMBps(v as number)
 
-  const enableShaping = async (value: boolean) => {
+  const changeShapingConfig = async (enabled: boolean, bandwidthMBps: number) =>
+    await tequila.setTrafficShaping(enabled, conversions.kbps(bandwidthMBps))
+
+  const toggleShaping = async (checked: boolean, mbps: number) => {
     setLoading(true)
     try {
-      await tequila.setTrafficShaping(value, conversions.kbps(bandwidthMBps))
+      await changeShapingConfig(checked, mbps)
+      await tequila.restartRunningServices(id)
     } catch (err: any) {
       errors.parseToastError(err)
     }
-    setLoading(false)
+    setTimeout(() => setLoading(false), ONE_SECOND_MS)
   }
 
   useEffect(() => {
@@ -71,7 +78,7 @@ export const BandwidthControl = () => {
           <GroupedTitle>
             Limit bandwidth to<LimitTarget>{bandwidthMBps} Mb/s</LimitTarget>
           </GroupedTitle>
-          <Switch checked={shapingEnabled} onChange={enableShaping} disabled={loading} />
+          <Switch checked={shapingEnabled} onChange={() => setShowConfirmation(true)} disabled={loading} />
         </Row>
       }
     >
@@ -80,9 +87,29 @@ export const BandwidthControl = () => {
         max={1000}
         value={bandwidthMBps}
         onChange={handleChange}
+        onAfterChange={async (mbps) => {
+          if (!shapingEnabled) {
+            await changeShapingConfig(false, mbps as number)
+            return
+          }
+          setShowConfirmation(true)
+        }}
         marks={{
           15: '15 Mb/s',
           1000: '1000 Mb/s',
+        }}
+      />
+      <ConfirmationDialog
+        title="Restart Services"
+        message="To enable or change bandwidth limit all running services need to be restarted"
+        show={showConfirmation}
+        onConfirm={async () => {
+          setShowConfirmation(false)
+          await toggleShaping(!shapingEnabled, bandwidthMBps)
+        }}
+        onCancel={() => {
+          setBandwidthMBps(conversions.mbps(configShapingKBps))
+          setShowConfirmation(false)
         }}
       />
     </SettingsCard>
