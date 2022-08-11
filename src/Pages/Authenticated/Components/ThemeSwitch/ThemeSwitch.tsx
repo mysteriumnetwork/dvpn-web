@@ -22,23 +22,21 @@ const Container = styled.div`
   padding-bottom: 20px;
 `
 
-export const ThemeSwitch = () => {
+export const ThemeSwitch = ({}: { variant?: 'full' | 'compact'; transition?: boolean }) => {
   const theme = useAppSelector(remoteStorage.selector<string>(UI_THEME_KEY))
   const isDark = theme === 'dark'
 
   return (
-    <>
-      <Container>
-        {isDark ? <MoonNavIcon /> : <SunNavIcon />}
-        <Switch
-          variant="key"
-          size="small"
-          checked={isDark}
-          onChange={async () => {
-            await remoteStorage.put<string>(UI_THEME_KEY, isDark ? 'light' : 'dark')
-          }}
-        />
-      </Container>
-    </>
+    <Container>
+      {isDark ? <MoonNavIcon /> : <SunNavIcon />}
+      <Switch
+        variant="key"
+        size="small"
+        checked={isDark}
+        onChange={async () => {
+          await remoteStorage.put<string>(UI_THEME_KEY, isDark ? 'light' : 'dark')
+        }}
+      />
+    </Container>
   )
 }

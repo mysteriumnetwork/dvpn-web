@@ -30,16 +30,27 @@ const Content = styled.div`
 interface HoverProps {
   $hover: boolean
 }
-const ComponentContainer = styled.div<HoverProps>`
+
+const ThemeSwitcherContainer = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  color: ${({ theme }) => theme.common.colorWhite};
-  font-size: ${({ theme }) => theme.common.fontSizeBig};
-  gap: ${({ $hover }) => ($hover ? '40px' : 0)};
-  padding-right: ${({ $hover }) => ($hover ? '20px' : 0)};
-  transition: gap 0.3s, padding-right 0.3s;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  justify-content: center;
+  padding-bottom: 20px;
 `
+const ThemeStatus = styled.div``
+const Title = styled.div``
+const Linkz = styled.div`
+  margin-top: 30px;
+`
+const FlexGrow = styled.div`
+  flex-grow: 1;
+`
+const Margin = styled.div`
+  margin-bottom: 70px;
+`
+
 const PlainLink = styled(NavLink)<HoverProps>`
   display: flex;
   justify-content: flex-start;
@@ -51,42 +62,49 @@ const PlainLink = styled(NavLink)<HoverProps>`
   gap: ${({ $hover }) => ($hover ? '40px' : 0)};
   padding-right: ${({ $hover }) => ($hover ? '20px' : 0)};
   transition: gap 0.3s, padding-right 0.3s;
+
+  ${Title} {
+    text-decoration: none;
+    color: ${({ theme }) => theme.common.colorWhite};
+    font-size: ${({ theme }) => theme.common.fontSizeBig};
+    opacity: ${({ $hover }) => ($hover ? 1 : 0)};
+    max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s, max-width 0.3s;
+  }
 `
-const ThemeSwitcherContainer = styled.div`
+
+const ComponentContainer = styled.div<HoverProps>`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-  justify-content: center;
-  padding-bottom: 20px;
-`
-const ThemeStatus = styled.div<HoverProps>`
-  font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  color: ${themeCommon.colorWhite + alphaToHex(0.5)};
-  opacity: ${({ $hover }) => ($hover ? 1 : 0)};
-  max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
-  transition: opacity 0.3s, max-width 0.3s;
-`
-const Title = styled.div<HoverProps>`
-  text-decoration: none;
+  justify-content: flex-start;
+  align-items: center;
   color: ${({ theme }) => theme.common.colorWhite};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
-  opacity: ${({ $hover }) => ($hover ? 1 : 0)};
-  max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
-  overflow: hidden;
-  white-space: nowrap;
-  transition: opacity 0.3s, max-width 0.3s;
+  gap: ${({ $hover }) => ($hover ? '40px' : 0)};
+  padding-right: ${({ $hover }) => ($hover ? '20px' : 0)};
+  transition: gap 0.3s, padding-right 0.3s;
+
+  ${Title} {
+    text-decoration: none;
+    color: ${({ theme }) => theme.common.colorWhite};
+    font-size: ${({ theme }) => theme.common.fontSizeBig};
+    opacity: ${({ $hover }) => ($hover ? 1 : 0)};
+    max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s, max-width 0.3s;
+  }
+
+  ${ThemeStatus} {
+    font-size: ${({ theme }) => theme.common.fontSizeNormal};
+    color: ${themeCommon.colorWhite + alphaToHex(0.5)};
+    opacity: ${({ $hover }) => ($hover ? 1 : 0)};
+    max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
+    transition: opacity 0.3s, max-width 0.3s;
+  }
 `
-const LogoLink = styled(Link)`
-  margin-top: 30px;
-  margin-bottom: 41px;
-`
-const FlexGrow = styled.div`
-  flex-grow: 1;
-`
-const Margin = styled.div`
-  margin-bottom: 70px;
-`
+
 export const Navigation2 = () => {
   const theme = useAppSelector(remoteStorage.selector<string>(UI_THEME_KEY))
   const { pathname } = useLocation()
@@ -96,38 +114,30 @@ export const Navigation2 = () => {
   const thresholdMyst = configs.zeroStakeSettlementThreshold(config)
   const [hover, setHover] = useState(false)
 
-  const Links = useMemo(() => {
-    return LINK_DEFINITIONS.map(({ icon: Icon, path, name, subPaths }) => {
-      const hasSubPaths = subPaths !== undefined
-      if (hasSubPaths) {
-        subPaths?.push(path)
-      }
-      return name === 'Logo' ? (
-        <LogoLink to={path}>
-          <Icon />
-        </LogoLink>
-      ) : (
+  const Links = useMemo(
+    () =>
+      LINK_DEFINITIONS.map(({ icon: Icon, path, name, subPaths = [] }) => (
         <PlainLink $hover={hover} to={path}>
-          <Icon $active={hasSubPaths ? subPaths.includes(pathname) : path === pathname} />
-          <Title $hover={hover}>{name}</Title>
+          <Icon $active={[...subPaths, path].includes(pathname)} />
+          {name && <Title>{name}</Title>}
         </PlainLink>
-      )
-    })
-  }, [pathname, hover])
+      )),
+    [pathname, hover],
+  )
   const Controllers = useMemo(() => {
     return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
       return name === 'Dark Mode' ? (
         <ComponentContainer $hover={hover}>
           <Component />
           <ThemeSwitcherContainer>
-            <Title $hover={hover}>{name}</Title>
-            <ThemeStatus $hover={hover}>{theme === 'dark' ? 'On' : 'Off'}</ThemeStatus>
+            <Title>{name}</Title>
+            <ThemeStatus>{theme === 'dark' ? 'On' : 'Off'}</ThemeStatus>
           </ThemeSwitcherContainer>
         </ComponentContainer>
       ) : (
         <ComponentContainer $hover={hover}>
           <Component />
-          {<Title $hover={hover}>{name}</Title>}
+          <Title>{name}</Title>
         </ComponentContainer>
       )
     })
@@ -141,7 +151,7 @@ export const Navigation2 = () => {
         setHover(false)
       }}
     >
-      {Links}
+      <Linkz>{Links}</Linkz>
       <FlexGrow />
       {Controllers}
       <Margin />

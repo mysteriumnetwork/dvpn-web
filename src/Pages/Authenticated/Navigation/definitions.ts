@@ -10,6 +10,7 @@ import {
   SettingsNavIcon,
   WalletNavIcon,
 } from '../../../Components/Icons/NavigationIcons'
+
 import {
   DASHBOARD,
   HISTORY,
@@ -24,7 +25,7 @@ import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.s
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
 
 interface LinkDefinition {
-  name: string
+  name?: string
   icon: any
   path: string
   subPaths?: string[]
@@ -36,7 +37,6 @@ interface ControllerDefinition {
 
 export const LINK_DEFINITIONS: LinkDefinition[] = [
   {
-    name: 'Logo',
     icon: Logo,
     path: DASHBOARD,
   },
