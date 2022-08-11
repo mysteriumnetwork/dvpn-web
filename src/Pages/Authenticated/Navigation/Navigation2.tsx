@@ -8,15 +8,9 @@
 import styled from 'styled-components'
 import { LINK_DEFINITIONS, CONTROLLER_DEFINITIONS } from './definitions'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Media } from '../../../commons/media'
-import { useAppSelector } from '../../../commons/hooks'
+import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import { useMemo, useState } from 'react'
-import { myst } from '../../../commons/mysts'
-import { configs } from '../../../commons/config'
-import { selectors } from '../../../redux/selectors'
-import { alphaToHex, themeCommon } from '../../../theme/themeCommon'
-import { UI_THEME_KEY } from '../../../constants/remote-storage.keys'
-import remoteStorage from '../../../commons/remoteStorage'
+import { DASHBOARD } from '../../../constants/routes'
 
 const Content = styled.div`
   background: ${({ theme }) => theme.bgNavigation};
@@ -31,17 +25,11 @@ interface HoverProps {
   $hover: boolean
 }
 
-const ThemeSwitcherContainer = styled.div`
+const Title = styled.div``
+const LinkContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-  justify-content: center;
-  padding-bottom: 20px;
-`
-const ThemeStatus = styled.div``
-const Title = styled.div``
-const Linkz = styled.div`
+  gap: 10px;
   margin-top: 30px;
 `
 const FlexGrow = styled.div`
@@ -50,13 +38,31 @@ const FlexGrow = styled.div`
 const Margin = styled.div`
   margin-bottom: 70px;
 `
-
+const LogoLink = styled(Link)<HoverProps>`
+  display: flex;
+  margin-top: 30px;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 40px;
+  gap: ${({ $hover }) => ($hover ? '40px' : 0)};
+  transition: gap 0.3s;
+  ${Title} {
+    text-decoration: none;
+    color: ${({ theme }) => theme.common.colorWhite};
+    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+    font-weight: 900;
+    opacity: ${({ $hover }) => ($hover ? 1 : 0)};
+    max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s, max-width 0.3s;
+  }
+`
 const PlainLink = styled(NavLink)<HoverProps>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   text-decoration: none;
-  transition: width 1s;
   color: ${({ theme }) => theme.common.colorWhite};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   gap: ${({ $hover }) => ($hover ? '40px' : 0)};
@@ -71,47 +77,13 @@ const PlainLink = styled(NavLink)<HoverProps>`
     max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
     overflow: hidden;
     white-space: nowrap;
-    transition: opacity 0.3s, max-width 0.3s;
-  }
-`
-
-const ComponentContainer = styled.div<HoverProps>`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  color: ${({ theme }) => theme.common.colorWhite};
-  font-size: ${({ theme }) => theme.common.fontSizeBig};
-  gap: ${({ $hover }) => ($hover ? '40px' : 0)};
-  padding-right: ${({ $hover }) => ($hover ? '20px' : 0)};
-  transition: gap 0.3s, padding-right 0.3s;
-
-  ${Title} {
-    text-decoration: none;
-    color: ${({ theme }) => theme.common.colorWhite};
-    font-size: ${({ theme }) => theme.common.fontSizeBig};
-    opacity: ${({ $hover }) => ($hover ? 1 : 0)};
-    max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
-    overflow: hidden;
-    white-space: nowrap;
-    transition: opacity 0.3s, max-width 0.3s;
-  }
-
-  ${ThemeStatus} {
-    font-size: ${({ theme }) => theme.common.fontSizeNormal};
-    color: ${themeCommon.colorWhite + alphaToHex(0.5)};
-    opacity: ${({ $hover }) => ($hover ? 1 : 0)};
-    max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
     transition: opacity 0.3s, max-width 0.3s;
   }
 `
 
 export const Navigation2 = () => {
-  const theme = useAppSelector(remoteStorage.selector<string>(UI_THEME_KEY))
   const { pathname } = useLocation()
-  const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
-  const config = useAppSelector(selectors.configSelector)
-  const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
-  const thresholdMyst = configs.zeroStakeSettlementThreshold(config)
+
   const [hover, setHover] = useState(false)
 
   const Links = useMemo(
@@ -126,22 +98,9 @@ export const Navigation2 = () => {
   )
   const Controllers = useMemo(() => {
     return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
-      return name === 'Dark Mode' ? (
-        <ComponentContainer $hover={hover}>
-          <Component />
-          <ThemeSwitcherContainer>
-            <Title>{name}</Title>
-            <ThemeStatus>{theme === 'dark' ? 'On' : 'Off'}</ThemeStatus>
-          </ThemeSwitcherContainer>
-        </ComponentContainer>
-      ) : (
-        <ComponentContainer $hover={hover}>
-          <Component />
-          <Title>{name}</Title>
-        </ComponentContainer>
-      )
+      return <Component transition={hover} title={name} />
     })
-  }, [hover, theme])
+  }, [hover])
   return (
     <Content
       onMouseEnter={() => {
@@ -151,7 +110,11 @@ export const Navigation2 = () => {
         setHover(false)
       }}
     >
-      <Linkz>{Links}</Linkz>
+      <LogoLink $hover={hover} to={DASHBOARD}>
+        <Logo />
+        <Title>Node UI</Title>
+      </LogoLink>
+      <LinkContainer>{Links}</LinkContainer>
       <FlexGrow />
       {Controllers}
       <Margin />

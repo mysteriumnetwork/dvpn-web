@@ -21,7 +21,6 @@ import {
   TRANSACTIONS,
 } from '../../../constants/routes'
 import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
-import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
 
 interface LinkDefinition {
@@ -36,10 +35,6 @@ interface ControllerDefinition {
 }
 
 export const LINK_DEFINITIONS: LinkDefinition[] = [
-  {
-    icon: Logo,
-    path: DASHBOARD,
-  },
   {
     name: 'Dashboard',
     icon: DashboardNavIcon,

@@ -6,35 +6,47 @@
  */
 import { ReportIssueModal } from './ReportIssueModal'
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { IconButton } from '../../../../Components/Inputs/IconButton'
-import { Media } from '../../../../commons/media'
 
-const MobileLink = styled.div`
+interface TransitionProps {
+  $transition: boolean
+}
+const Title = styled.div``
+const Container = styled.div<TransitionProps>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  text-decoration: none;
   color: ${({ theme }) => theme.common.colorWhite};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
-  gap: 40px;
-  margin-bottom: 30px;
+  gap: ${({ $transition }) => ($transition ? '40px' : 0)};
+  padding-right: ${({ $transition }) => ($transition ? '20px' : 0)};
+  transition: gap 0.3s, padding-right 0.3s;
+  ${Title} {
+    text-decoration: none;
+    color: ${({ theme }) => theme.common.colorWhite};
+    font-size: ${({ theme }) => theme.common.fontSizeBig};
+    opacity: ${({ $transition }) => ($transition ? 1 : 0)};
+    max-width: ${({ $transition }) => ($transition ? '200px' : 0)};
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s, max-width 0.3s;
+  }
 `
-export const ReportIssue = () => {
+interface Props {
+  title: string
+  transition: boolean
+}
+
+export const ReportIssue = ({ title, transition }: Props) => {
   const [showModal, setShowModal] = useState<boolean>(false)
   return (
-    <>
-      <Media.Desktop>
-        <IconButton onClick={() => setShowModal(true)} icon={<BugButtonIcon />} />
-        <ReportIssueModal show={showModal} onClose={() => setShowModal(false)} />
-      </Media.Desktop>
-      <Media.Mobile>
-        <MobileLink onClick={() => setShowModal(true)}>
-          <IconButton icon={<BugButtonIcon />} />
-          Report Issue
-        </MobileLink>
-        <ReportIssueModal show={showModal} onClose={() => setShowModal(false)} />
-      </Media.Mobile>
-    </>
+    <Container $transition={transition}>
+      <IconButton onClick={() => setShowModal(true)} icon={<BugButtonIcon />} />
+      <ReportIssueModal show={showModal} onClose={() => setShowModal(false)} />
+      <Title>{title}</Title>
+    </Container>
   )
 }
