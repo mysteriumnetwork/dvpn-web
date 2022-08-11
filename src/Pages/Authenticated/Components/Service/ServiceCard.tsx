@@ -17,6 +17,7 @@ import calls from '../../../../commons/calls'
 import { tequila } from '../../../../api/tequila'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
+import { Prices } from './types'
 
 const Card = styled.div`
   position: relative;
@@ -94,7 +95,7 @@ const Content = styled.div`
   padding: 31px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+
   @media ${devices.tablet} {
     padding: 20px;
     gap: 12px;
@@ -112,26 +113,32 @@ interface Props {
   priceHour?: string | number
   earnings?: string | number
   totalEarning?: string | number
+  prices?: Prices
+  loading?: boolean
+  onChange?: () => {}
+  enabled?: boolean
 }
+
+const CLICK_COOLDOWN_MS = 1_000
 
 export const ServiceCard = ({
   name,
   description,
   serviceType,
   approvalPending = false,
-  priceGiB = 0,
-  priceHour = 0,
   earnings = 0,
   totalEarning = 0,
+  prices = { pricePerGibWei: '0', pricePerHourWei: '0' },
+  loading,
 }: Props) => {
   const { id } = useAppSelector(selectors.currentIdentitySelector)
   const serviceInfo = useAppSelector(selectors.serviceInfoSelector).find((si) => si.type === serviceType)
-  const [loading, setLoading] = useState<boolean>(false)
+  const [internalLoading, setInternalLoading] = useState<boolean>(false)
 
   const enabled = !!serviceInfo
 
   const handleSwitch = async () => {
-    setLoading(true)
+    setInternalLoading(true)
     const sid = serviceInfo?.id
     if (sid) {
       await calls.tryTo(() => tequila.api.serviceStop(sid))
@@ -143,12 +150,12 @@ export const ServiceCard = ({
         }),
       )
     }
-    setLoading(false)
+    setTimeout(() => setInternalLoading(false), CLICK_COOLDOWN_MS)
   }
 
   return (
     <Card>
-      {loading && (
+      {(internalLoading || loading) && (
         <Overlay>
           <Spinner />
         </Overlay>
@@ -165,12 +172,12 @@ export const ServiceCard = ({
         <Row>
           <InfoCard
             title="Price per GiB"
-            value={myst.display(priceGiB, { fractionDigits: 4 })}
+            value={myst.display(prices.pricePerGibWei, { fractionDigits: 4 })}
             icon={<DataIcon $inactive={!enabled} />}
           />
           <InfoCard
             title="Price per hour"
-            value={myst.display(priceHour, { fractionDigits: 4 })}
+            value={myst.display(prices.pricePerHourWei, { fractionDigits: 4 })}
             icon={<ClockIcon $inactive={!enabled} />}
           />
         </Row>

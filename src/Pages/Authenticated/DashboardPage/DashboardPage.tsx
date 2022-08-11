@@ -20,39 +20,6 @@ const DashboardPage = () => {
       <Media.Desktop>
         <LayoutHeroCardRow>
           <Services />
-          {/*{[
-          {
-            name: 'Public',
-            description: 'Open to the whole network -dVPN app, independent builders etc.',
-            enabled: true,
-            approvalPending: false,
-            serviceName: 'wireguard',
-            onChange: () => {},
-          },
-          {
-            name: 'B2B VPN and data transfer',
-            description: 'Streaming and data transfer traffic from B2B clients',
-            enabled: true,
-            approvalPending: true,
-            onChange: () => {},
-          },
-          {
-            name: 'B2B Data Scrapping',
-            description: 'Data scrapping traffic from B2B clients',
-            enabled: false,
-            approvalPending: false,
-            onChange: () => {},
-          },
-        ].map((s) => (
-          <ServiceCard
-          key={s.name}
-          name={s.name}
-          description={s.description}
-          enabled={s.enabled}
-          onChange={s.onChange}
-          approvalPending={s.approvalPending}
-          />
-        ))}*/}
         </LayoutHeroCardRow>
         <LayoutUnstyledRow>
           <Report />
