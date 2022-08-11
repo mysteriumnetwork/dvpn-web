@@ -9,6 +9,7 @@ import { ReactElement, useState } from 'react'
 import { MobileMenu } from './Navigation/MobileMenu'
 import styled from 'styled-components'
 import { Onboarding } from './Onboarding/Onboarding'
+import { Navigation2 } from './Navigation/Navigation2'
 
 const Page = styled.div`
   display: flex;
@@ -30,15 +31,16 @@ interface Props {
 
 const WithNavigation = ({ content }: Props) => {
   const [showMenu, setShowMenu] = useState(false)
-  const handleMobileMenu = () => {
+  const toggleMobileMenu = () => {
     setShowMenu(!showMenu)
   }
   return (
     <Page>
-      <Navigation openMenu={handleMobileMenu} />
+      {/* <Navigation openMenu={toggleMobileMenu} /> */}
+      <Navigation2 />
       <Content>{content}</Content>
       <Onboarding />
-      <MobileMenu show={showMenu} closeMenu={handleMobileMenu} />
+      <MobileMenu show={showMenu} closeMenu={toggleMobileMenu} />
     </Page>
   )
 }
