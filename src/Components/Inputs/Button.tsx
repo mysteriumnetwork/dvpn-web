@@ -6,7 +6,7 @@
  */
 import styled, { css } from 'styled-components'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
-import { themeCommon } from '../../theme/themeCommon'
+import { alphaToHex, themeCommon } from '../../theme/themeCommon'
 import { ButtonProps } from './types'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'blue'
@@ -114,14 +114,13 @@ const StyledButton = styled.button<ButtonStyleProps>`
   }
 `
 
-const LoadingOverlay = styled.div`
+const LoadingOverlay = styled.div<ButtonStyleProps>`
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background: ${themeCommon.colorGrayBlue};
-  border-radius: 5px;
+  background-color: ${themeCommon.colorGrayBlue + alphaToHex(0.3)};
 
   top: 0;
   left: 0;
@@ -129,13 +128,22 @@ const LoadingOverlay = styled.div`
   width: 100%;
   height: 100%;
   z-index: 10;
+  border-radius: ${({ $rounded }) => ($rounded ? '100px' : '5px')};
 `
 
 const Spinner = styled(CircularSpinner)`
-  width: 8px;
-  height: 8px;
-  border: 6px solid ${themeCommon.colorWhite};
+  width: 24px;
+  height: 24px;
+  border-color: ${themeCommon.colorWhite};
   z-index: 11;
+  border-width: 2px;
+
+  :before {
+    border-top-color: ${themeCommon.colorDarkBlue};
+    border-width: 2px;
+    left: -2px;
+    top: -2px;
+  }
 `
 
 export const Button = ({
@@ -151,7 +159,7 @@ export const Button = ({
   return (
     <StyledButton $size={size} $rounded={rounded} $variant={variant} type={type} disabled={disabled} onClick={onClick}>
       {loading && (
-        <LoadingOverlay>
+        <LoadingOverlay $size={size} $rounded={rounded} $variant={variant}>
           <Spinner />
         </LoadingOverlay>
       )}
