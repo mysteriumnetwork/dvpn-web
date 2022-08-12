@@ -40,6 +40,7 @@ export const StateInitializer = ({ children }: Props) => {
 
       if (isAuthenticated) {
         await loadAppStateAfterAuthenticationAsync({ isDefaultPassword })
+        return
       }
 
       await actions.updateLoadingStore(false)

@@ -35,6 +35,7 @@ import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsP
 import PageNotFound from './Error/PageNotFound'
 import { SandboxPage } from './Authenticated/SandboxPage/SandboxPage'
 import { PasswordPage } from './Authenticated/Onboarding/PasswordPage'
+import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 
 const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)
@@ -42,7 +43,7 @@ const AppRouter = () => {
   const onBoarding = useAppSelector(selectors.onBoarding)
 
   if (loading) {
-    return <></>
+    return <FullPageSpinner />
   }
 
   const toLoginOrOnBoarding = [{ condition: !loggedIn, to: HOME }]
