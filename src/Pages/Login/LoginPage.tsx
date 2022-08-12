@@ -13,8 +13,6 @@
 import React, { useState } from 'react'
 import { tequila } from '../../api/tequila'
 import { DEFAULT_USERNAME } from '../../constants/defaults'
-import { updateAuthenticatedStore } from '../../redux/app.slice'
-import { store } from '../../redux/store'
 import styled from 'styled-components'
 import { InputGroup } from '../../Components/Inputs/InputGroup'
 import { TextField } from '../../Components/Inputs/TextField'
@@ -25,6 +23,8 @@ import errors from '../../commons/errors'
 import Background from '../../assets/images/onboarding/background.png'
 import { ReactComponent as LoginLogo } from '../../assets/images/onboarding/login.svg'
 import { devices } from '../../theme/themes'
+import { loadAppStateAfterAuthenticationAsync } from '../../redux/app.async.actions'
+
 const { api } = tequila
 
 const Logo = styled(LoginLogo)`
@@ -145,10 +145,10 @@ const Footer = styled.div`
   }
 `
 interface Props {
-  onSuccess: () => void
+  onSuccess?: () => void
 }
 
-const LoginPage = ({ onSuccess }: Props) => {
+const LoginPage = ({ onSuccess = () => {} }: Props) => {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -162,8 +162,7 @@ const LoginPage = ({ onSuccess }: Props) => {
         username: DEFAULT_USERNAME,
         password: password,
       })
-      store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
-      await onSuccess()
+      await loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
     } catch (err: any) {
       toast.error(errors.apiError(err).human())
       setError(err.message)

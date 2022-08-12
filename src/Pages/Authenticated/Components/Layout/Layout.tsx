@@ -99,9 +99,10 @@ interface Props {
 }
 
 export const Layout = ({ logo, title, children, isLoading }: Props) => {
+  const isAppLoading = useAppSelector(selectors.isAppLoading)
   const isSSELoading = useAppSelector(selectors.isSSELoading)
 
-  const showSpinner = isLoading || isSSELoading
+  const showSpinner = isLoading || isSSELoading || isAppLoading
 
   return (
     <Main>

@@ -23,6 +23,7 @@ import FontUbuntuRegular from '../assets/fonts/Ubuntu/Ubuntu-Regular.ttf'
 import remoteStorage from '../commons/remoteStorage'
 import { UI_THEME_KEY } from '../constants/remote-storage.keys'
 import { themeCommon } from '../theme/themeCommon'
+import { StateInitializer } from './StateInitializer'
 
 export const App = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
@@ -32,7 +33,9 @@ export const App = () => {
       <GlobalStyle />
       <Hotkeys>
         <NodeHealthcheckBarrier>
-          <AppRouter />
+          <StateInitializer>
+            <AppRouter />
+          </StateInitializer>
         </NodeHealthcheckBarrier>
       </Hotkeys>
       <ToastContainer position="bottom-right" />

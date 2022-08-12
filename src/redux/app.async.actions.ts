@@ -9,10 +9,12 @@ import { tequila } from '../api/tequila'
 import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
 import {
+  updateAuthenticatedStore,
   updateBeneficiaryTxStatusStore,
   updateChainSummaryStore,
   updateConfigStore,
   updateDefaultConfigStore,
+  updateFeesStore,
   updateIdentityRefStore,
   updateTermsStore,
 } from './app.slice'
@@ -64,5 +66,40 @@ export const fetchChainSummaryAsync = async () => {
     dispatch(updateChainSummaryStore(chainSummary))
   } catch (err: any) {
     errors.parseToastError(err)
+  }
+}
+
+export const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }: { isDefaultPassword: boolean }) => {
+  await store.dispatch(
+    updateAuthenticatedStore({
+      authenticated: true,
+      withDefaultCredentials: isDefaultPassword,
+    }),
+  )
+  await updateTermsStoreAsync()
+  await fetchIdentityAndRelativeInformationAsync()
+  await fetchConfigAsync()
+  await fetchDefaultConfigAsync()
+  await fetchChainSummaryAsync()
+  await updateFees()
+}
+
+const SECOND = 1000
+
+const updateFees = async () => {
+  if (!store.getState().app.auth.authenticated) {
+    return
+  }
+  try {
+    const response = await api.transactorFeesV2()
+    const {
+      current: { validUntil },
+      serverTime,
+    } = response
+    const staleInMs = new Date(validUntil).getTime() - new Date(serverTime).getTime()
+    store.dispatch(updateFeesStore(response))
+    setTimeout(() => updateFees(), staleInMs - SECOND * 10)
+  } catch (ignored: any) {
+    setTimeout(() => updateFees(), SECOND * 10)
   }
 }
