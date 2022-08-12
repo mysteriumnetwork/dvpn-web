@@ -139,7 +139,7 @@ export const MobileMenu = ({ show, toggleMenu }: Props) => {
   const Links = useMemo(
     () =>
       LINK_DEFINITIONS.map(({ icon: Icon, path, name, subPaths = [] }) => (
-        <PlainLink $display={show} to={path} onClick={toggleMenu}>
+        <PlainLink key={`mobile-menu-item-${path}`} $display={show} to={path} onClick={toggleMenu}>
           <Icon $active={[...subPaths, path].includes(pathname)} />
           {name && <Title>{name}</Title>}
         </PlainLink>
@@ -148,7 +148,7 @@ export const MobileMenu = ({ show, toggleMenu }: Props) => {
   )
   const Controllers = useMemo(() => {
     return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
-      return <Component transition={show} title={name} />
+      return <Component key={`mobile-menu-controller-${name}`} transition={show} title={name} />
     })
   }, [show])
   return (

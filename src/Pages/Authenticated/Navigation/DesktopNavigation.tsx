@@ -21,8 +21,8 @@ const Content = styled.div`
   gap: 10px;
   position: relative;
 `
-interface HoverProps {
-  $hover: boolean
+interface openProps {
+  $open: boolean
 }
 
 const Title = styled.div``
@@ -38,43 +38,43 @@ const FlexGrow = styled.div`
 const Margin = styled.div`
   margin-bottom: 70px;
 `
-const LogoLink = styled(Link)<HoverProps>`
+const LogoLink = styled(Link)<openProps>`
   display: flex;
   margin-top: 30px;
   justify-content: flex-start;
+  text-decoration: none;
   align-items: center;
   margin-bottom: 40px;
-  gap: ${({ $hover }) => ($hover ? '40px' : 0)};
+  gap: ${({ $open }) => ($open ? '40px' : 0)};
   transition: gap 0.3s;
   ${Title} {
-    text-decoration: none;
     color: ${({ theme }) => theme.common.colorWhite};
     font-size: ${({ theme }) => theme.common.fontSizeHuge};
     font-weight: 900;
-    opacity: ${({ $hover }) => ($hover ? 1 : 0)};
-    max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
+    opacity: ${({ $open }) => ($open ? 1 : 0)};
+    max-width: ${({ $open }) => ($open ? '200px' : 0)};
     overflow: hidden;
     white-space: nowrap;
     transition: opacity 0.3s, max-width 0.3s;
   }
 `
-const PlainLink = styled(NavLink)<HoverProps>`
+const PlainLink = styled(NavLink)<openProps>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   text-decoration: none;
   color: ${({ theme }) => theme.common.colorWhite};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
-  gap: ${({ $hover }) => ($hover ? '40px' : 0)};
-  padding-right: ${({ $hover }) => ($hover ? '20px' : 0)};
+  gap: ${({ $open }) => ($open ? '40px' : 0)};
+  padding-right: ${({ $open }) => ($open ? '20px' : 0)};
   transition: gap 0.3s, padding-right 0.3s;
 
   ${Title} {
     text-decoration: none;
     color: ${({ theme }) => theme.common.colorWhite};
     font-size: ${({ theme }) => theme.common.fontSizeBig};
-    opacity: ${({ $hover }) => ($hover ? 1 : 0)};
-    max-width: ${({ $hover }) => ($hover ? '200px' : 0)};
+    opacity: ${({ $open }) => ($open ? 1 : 0)};
+    max-width: ${({ $open }) => ($open ? '200px' : 0)};
     overflow: hidden;
     white-space: nowrap;
     transition: opacity 0.3s, max-width 0.3s;
@@ -83,33 +83,35 @@ const PlainLink = styled(NavLink)<HoverProps>`
 
 export const DesktopNavigation = () => {
   const { pathname } = useLocation()
-  const [hover, setHover] = useState(false)
-
+  const [open, setOpen] = useState(false)
+  const toggleMenu = () => {
+    setOpen(!open)
+  }
   const Links = useMemo(
     () =>
       LINK_DEFINITIONS.map(({ icon: Icon, path, name, subPaths = [] }) => (
-        <PlainLink $hover={hover} to={path}>
+        <PlainLink
+          key={`desktop-menu-item-${path}`}
+          $open={open}
+          to={path}
+          onClick={() => {
+            setOpen(false)
+          }}
+        >
           <Icon $active={[...subPaths, path].includes(pathname)} />
           {name && <Title>{name}</Title>}
         </PlainLink>
       )),
-    [pathname, hover],
+    [pathname, open],
   )
   const Controllers = useMemo(() => {
     return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
-      return <Component transition={hover} title={name} />
+      return <Component key={`desktop-menu-controller-${name}`} transition={open} title={name} />
     })
-  }, [hover])
+  }, [open])
   return (
-    <Content
-      onMouseEnter={() => {
-        setHover(true)
-      }}
-      onMouseLeave={() => {
-        setHover(false)
-      }}
-    >
-      <LogoLink $hover={hover} to={DASHBOARD}>
+    <Content>
+      <LogoLink $open={open} to={DASHBOARD} onClick={toggleMenu}>
         <Logo />
         <Title>Node UI</Title>
       </LogoLink>
