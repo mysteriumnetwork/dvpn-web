@@ -57,8 +57,21 @@ const ListContainer = styled.div`
   width: 280px;
   z-index: 10;
 
-  top: 48px;
-  left: -260px;
+  top: 56px;
+  left: -210px;
+`
+
+const Arrow = styled.div`
+  position: absolute;
+  width: 4px;
+  z-index: 10;
+
+  top: -16px;
+  left: 226px;
+  border-top: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid ${({ theme }) => theme.notifications.list.background};
+  border-left: 8px solid transparent;
 `
 
 const ID_BENEFICIARY_TX_ERROR = 'ID_BENEFICIARY_TX_ERROR'
@@ -124,9 +137,12 @@ export const Notifications = () => {
       {notifications.size > 0 && <Dot />}
       <IconButton icon={<BellIcon />} onClick={() => setOpen((p) => !p)} />
       {open && (
-        <ListContainer>
-          <List list={Array.from(notifications.values())} />
-        </ListContainer>
+        <>
+          <ListContainer>
+            <Arrow />
+            <List list={Array.from(notifications.values())} />
+          </ListContainer>
+        </>
       )}
     </Container>
   )
