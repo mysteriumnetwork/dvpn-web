@@ -5,10 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { tequila } from '../api/tequila'
-import { useFetch } from '../commons/hooks'
+import { useAppDispatch, useFetch } from '../commons/hooks'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import styled from 'styled-components'
+import { HEALTHCHECK_EMPTY } from '../constants/instances'
+import { updateHealthCheckResponseStore } from '../redux/app.slice'
 
 const { api } = tequila
 
@@ -30,7 +32,14 @@ const SadMessage = styled.h1`
 `
 
 export const NodeHealthcheckBarrier = ({ children }: Props) => {
-  const [, loading, error] = useFetch(() => api.healthCheck(), [])
+  const dispatch = useAppDispatch()
+  const [healthCheckResponse = HEALTHCHECK_EMPTY, loading, error] = useFetch(() => api.healthCheck(), [])
+
+  useEffect(() => {
+    if (!loading) {
+      dispatch(updateHealthCheckResponseStore(healthCheckResponse))
+    }
+  }, [loading])
 
   if (loading) {
     return <FullPageSpinner />

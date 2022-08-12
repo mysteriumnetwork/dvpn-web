@@ -5,15 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 export interface ServiceDescriptor {
-  key: string
+  type: string
   name: string
   description: string
 }
 
-export const AVAILABLE_SERVICES: ServiceDescriptor[] = [
+export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
   {
     name: 'Public',
-    key: 'wireguard',
+    type: 'wireguard',
     description: 'Open to the whole network -dVPN app, independent builders etc.',
+  },
+  {
+    name: 'B2B VPN and data transfer',
+    type: 'data_transfer',
+    description: 'Streaming and data transfer traffic from B2B clients',
+  },
+  {
+    name: 'B2B Data Scrapping',
+    type: 'scraping',
+    description: 'Data scrapping traffic from B2B clients',
   },
 ]

@@ -10,12 +10,11 @@ import { NavLinkTabs } from '../../../Components/Tabs/NavLinkTabs'
 import React, { useMemo } from 'react'
 import { SETTINGS, SETTINGS_ACCOUNT, SETTINGS_ADVANCED, SETTINGS_TRAFFIC } from '../../../constants/routes'
 import { useLocation } from 'react-router-dom'
-import { useFetch } from '../../../commons/hooks'
-import { tequila } from '../../../api/tequila'
-import { NODE_HEALTH_CHECK_EMPTY } from '../../../constants/instances'
+import { useAppSelector } from '../../../commons/hooks'
 import { Issue } from './Issue'
 import styled from 'styled-components'
 import packageJson from '../../../../package.json'
+import { selectors } from '../../../redux/selectors'
 // import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 
 const FlexGrow = styled.div`
@@ -30,9 +29,8 @@ const PATH_TO_TAB = {
 }
 
 export const SettingsPage = () => {
+  const healthCheck = useAppSelector(selectors.healthCheck)
   const location = useLocation()
-
-  const [data = NODE_HEALTH_CHECK_EMPTY, loading] = useFetch(() => tequila.api.healthCheck())
 
   const TabComponent = useMemo(
     () => React.lazy(() => import(`${PATH_TO_TAB[location.pathname]}`).catch(() => import('./Tabs/NotFoundTab'))),
@@ -40,7 +38,7 @@ export const SettingsPage = () => {
   )
 
   return (
-    <Layout isLoading={loading} logo={<SettingsHeaderIcon />} title="Settings">
+    <Layout logo={<SettingsHeaderIcon />} title="Settings">
       <LayoutUnstyledRow>
         <NavLinkTabs
           tabs={[
@@ -60,7 +58,7 @@ export const SettingsPage = () => {
         />
         {/*<PowerOffButton />*/}
         <FlexGrow />
-        <Issue nodeUIVersion={packageJson.version} nodeVersion={data.version} />
+        <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />
       </LayoutUnstyledRow>
       <React.Suspense>
         <TabComponent />

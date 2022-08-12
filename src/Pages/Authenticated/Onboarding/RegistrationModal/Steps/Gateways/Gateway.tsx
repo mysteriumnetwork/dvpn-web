@@ -12,7 +12,7 @@ import errors from '../../../../../../commons/errors'
 import { selectors } from '../../../../../../redux/selectors'
 import { validateAndReturnCheckoutUrl } from './fiat'
 import { GatewayProps } from './types'
-import { useAppSelector, useFetch } from '../../../../../../commons/hooks'
+import { useAppSelector } from '../../../../../../commons/hooks'
 import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
 import { Button } from '../../../../../../Components/Inputs/Button'
 import { Select } from '../../../../../../Components/Select/Select'
@@ -20,30 +20,13 @@ import { Option } from '../../../../../../types/common'
 import styled from 'styled-components'
 import { SUPPORTED_GATEWAYS } from '../../gateways'
 import { InputGroup } from '../../../../../../Components/Inputs/InputGroup'
+import gatewaysUtils from './gateways.utils'
+import { InvoiceLink } from './Components/InvoiceLink'
+import { WaitingFiatPayment } from './Components/WaitingFiatPayment'
 
 const { parseToastError } = errors
 const { countryNames } = location
 const { api } = tequila
-
-const PROJECT_ID = 'mystnodes'
-
-interface State {
-  currency: string
-  taxCountry: Option
-  taxState?: Option
-  isLoading: boolean
-  isRedirected: boolean
-  order?: PaymentOrder
-  isLoadingPayNow: boolean
-}
-
-const initialState: State = {
-  currency: 'USD',
-  taxCountry: { label: '', value: '' },
-  isLoading: true,
-  isRedirected: false,
-  isLoadingPayNow: false,
-}
 
 const Content = styled.div`
   display: flex;
@@ -96,23 +79,36 @@ const Input = styled.div`
   margin-top: 8px;
 `
 
+const PROJECT_ID = 'mystnodes'
+
+interface State {
+  currency: string
+  taxCountry: Option
+  taxState?: Option
+  loading: boolean
+  redirected: boolean
+  order?: PaymentOrder
+  isLoadingPayNow: boolean
+}
+
+const initialState: State = {
+  currency: 'USD',
+  taxCountry: { label: '', value: '' },
+  loading: true,
+  redirected: false,
+  isLoadingPayNow: false,
+}
+
 const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProps) => {
   const { name: gatewayName } = gateway
 
   const identity = useAppSelector(selectors.currentIdentitySelector)
 
   const [state, setState] = useState<State>(initialState)
-  const { taxCountry, taxState, isLoading, isRedirected } = state
+  const { taxCountry, taxState, loading, redirected } = state
 
-  const countryOptions = useMemo(
-    () => Object.keys(countryNames).map((key) => ({ value: key.toUpperCase(), label: countryNames[key] })),
-    [],
-  )
-
-  const stateOptions = useMemo(
-    () => Object.keys(stateNames['US']).map((key) => ({ value: key.toUpperCase(), label: stateNames['US'][key] })),
-    [],
-  )
+  const countryOptions = useMemo(() => gatewaysUtils.toOptions(countryNames), [])
+  const stateOptions = useMemo(() => gatewaysUtils.toOptions(stateNames['US']), [])
 
   useEffect(() => {
     ;(async () => {
@@ -130,34 +126,33 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
         }))
       } catch (e: any) {
         parseToastError(e)
-      } finally {
-        setState((p) => ({ ...p, isLoading: false }))
       }
+      setState((p) => ({ ...p, loading: false }))
     })()
   }, [gatewayName])
 
-  const markRedirected = () => setState((p) => ({ ...p, isRedirected: true }))
-  const handleTaxCountryChange = (taxCountry: Option) =>
-    setState((p) => ({ ...p, taxCountry, taxState: taxCountry.value === 'US' ? p.taxState : undefined }))
+  const markRedirected = () => setState((p) => ({ ...p, redirected: true }))
+  const handleTaxCountryChange = (taxCountry: Option) => setState((p) => ({ ...p, taxCountry }))
   const handleTaxStateChange = (taxState: Option) => setState((p) => ({ ...p, taxState }))
 
   useEffect(() => {
-    if (state.taxCountry.value === 'US' && !state.taxState) {
+    if (taxCountry.value === 'US' && !taxState) {
       setState((p) => ({ ...p, taxState: stateOptions[0] }))
       return
     }
 
-    if (state.taxState) {
+    if (taxCountry.value !== 'US' && taxState) {
       setState((p) => ({ ...p, taxState: undefined }))
+      return
     }
-  }, [state.taxCountry.value])
+  }, [taxCountry.value])
 
   const handlePayNow = async () => {
     try {
       setState((p) => ({ ...p, isLoadingPayNow: true }))
       const order = await createOrRetrieveOrder()
       const checkoutUrl = validateAndReturnCheckoutUrl(order, gatewayName)
-      openInNewTab(checkoutUrl)
+      gatewaysUtils.openInNewTab(checkoutUrl)
       markRedirected()
     } catch (err: any) {
       parseToastError(err)
@@ -186,19 +181,19 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
     return order
   }
 
-  const showPayNow = (): boolean => {
+  const showPayNow = ((): boolean => {
     if (isCompleted) {
       return false
     }
 
-    if (isRedirected) {
+    if (redirected) {
       return false
     }
 
     return true
-  }
+  })()
 
-  if (isLoading) {
+  if (loading) {
     return (
       <Content>
         <Spinner />
@@ -230,98 +225,14 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
       )}
       <Note>{SUPPORTED_GATEWAYS[gateway.name].note}</Note>
       <FlexGrow />
-      <WaitingPayment showPayNow={showPayNow()} isRegistrationPaymentReceived={isCompleted} />
-      <DownloadInvoice identity={identity.id} />
+      <WaitingFiatPayment visible={showPayNow} isCompleted={isCompleted} />
+      <InvoiceLink identity={identity.id} isCompleted={isCompleted} />
       <Controls>
-        {showPayNow() && <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay 1 USD" />}
+        {showPayNow && <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay 1 USD" />}
         {isCompleted && <Button label="Continue" rounded onClick={next} />}
         <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
       </Controls>
     </Content>
-  )
-}
-
-interface WaitingPaymentProps {
-  isRegistrationPaymentReceived: boolean
-  showPayNow: boolean
-}
-
-const WaitingSpinner = styled(CircularSpinner)`
-  width: 30px;
-  height: 30px;
-`
-
-const Waiting = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  gap: 5px;
-`
-
-const WaitingPayment = ({ isRegistrationPaymentReceived, showPayNow }: WaitingPaymentProps) => {
-  if (showPayNow) {
-    return <></>
-  }
-  return isRegistrationPaymentReceived ? (
-    <Waiting>Payment successful! Click Next to proceed.</Waiting>
-  ) : (
-    <Waiting>
-      <WaitingSpinner />
-      Wait for confirmation (might take couple of minutes)
-    </Waiting>
-  )
-}
-
-const openInNewTab = (url: string) => {
-  const win = window.open(url, '_blank')
-  win?.focus()
-}
-
-const InvoiceLink = styled.a`
-  margin-top: 12px;
-  align-self: center;
-`
-
-const DownloadInvoice = ({ identity, isCompleted }: { identity: string; isCompleted?: boolean }) => {
-  const [url, setUrl] = useState('')
-  const [name, setName] = useState('')
-
-  const [paidOrder] = useFetch(async () => {
-    if (!isCompleted) {
-      return
-    }
-    const orders = await api.payment.orders(identity)
-    return orders.find((o) => o.status === 'paid')
-  }, [isCompleted])
-
-  useEffect(() => {
-    const generate = async (order: PaymentOrder) => {
-      try {
-        const data = await api.payment.invoice(identity, order.id)
-        const blob = new Blob([data], { type: 'application/pdf' })
-        if (url && url !== '') {
-          window.URL.revokeObjectURL(url)
-        }
-        setUrl(window.URL.createObjectURL(blob))
-        setName(`MystNodes-order-${order.id}.pdf`)
-      } catch (err) {
-        parseToastError(err)
-      }
-    }
-    if (paidOrder) {
-      generate(paidOrder)
-    }
-  }, [paidOrder?.id])
-
-  if (paidOrder) {
-    return <></>
-  }
-
-  return (
-    <InvoiceLink download={name} href={url}>
-      Download Invoice
-    </InvoiceLink>
   )
 }
 

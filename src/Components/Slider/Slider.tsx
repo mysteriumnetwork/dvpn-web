@@ -79,13 +79,14 @@ interface Props {
   max?: number
   value?: number | number[]
   onChange?: (v: number | number[]) => void
+  onAfterChange?: (v: number | number[]) => void
   dots?: boolean
   disabled?: boolean
   step?: number
   marks?: Record<string | number, React.ReactNode>
 }
 
-export const Slider = ({ min, max, value, onChange, dots, disabled, marks, step = 1 }: Props) => {
+export const Slider = ({ min, max, value, onChange, dots, disabled, marks, step = 1, onAfterChange }: Props) => {
   return (
     <Content>
       <StyledRCSlider
@@ -93,6 +94,10 @@ export const Slider = ({ min, max, value, onChange, dots, disabled, marks, step 
         max={max}
         value={value}
         onChange={onChange}
+        onAfterChange={onAfterChange}
+        onBlur={() => {
+          console.log('blured')
+        }}
         dots={dots}
         disabled={disabled}
         marks={marks}

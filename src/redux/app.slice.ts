@@ -14,9 +14,10 @@ import {
   Identity,
   IdentityBeneficiaryResponse,
   IdentityRef,
+  NodeHealthcheck,
 } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { BENEFICIARY_TX_STATUS_EMPTY, FEES_RESPONSE_EMPTY } from '../constants/instances'
+import { BENEFICIARY_TX_STATUS_EMPTY, FEES_RESPONSE_EMPTY, HEALTHCHECK_EMPTY } from '../constants/instances'
 import identities from '../commons/identities'
 
 const { isUnregistered } = identities
@@ -48,6 +49,7 @@ export interface AppState {
   chainSummary: ChainSummary
   beneficiary: IdentityBeneficiaryResponse
   beneficiaryTxStatus: BeneficiaryTxStatus
+  healthCheckResponse: NodeHealthcheck
 }
 
 const INITIAL_STATE: AppState = {
@@ -77,6 +79,7 @@ const INITIAL_STATE: AppState = {
     isChannelAddress: false,
   },
   beneficiaryTxStatus: BENEFICIARY_TX_STATUS_EMPTY,
+  healthCheckResponse: HEALTHCHECK_EMPTY,
 }
 
 const slice = createSlice({
@@ -112,6 +115,9 @@ const slice = createSlice({
     },
     updateBeneficiaryTxStatusStore: (state, action) => {
       state.beneficiaryTxStatus = action.payload
+    },
+    updateHealthCheckResponseStore: (state, action) => {
+      state.healthCheckResponse = action.payload
     },
   },
 })
@@ -154,6 +160,7 @@ export const {
   updateChainSummaryStore,
   updateBeneficiaryStore,
   updateBeneficiaryTxStatusStore,
+  updateHealthCheckResponseStore,
 } = slice.actions
 
 export default slice.reducer

@@ -43,6 +43,8 @@ const isSSELoading = ({ sse }: RootState) => sse.isLoading
 
 const beneficiaryTxStatus = ({ app }: RootState) => app.beneficiaryTxStatus
 
+const healthCheck = ({ app }: RootState) => app.healthCheckResponse
+
 export const selectors = {
   currentIdentitySelector,
   feesSelector,
@@ -56,4 +58,5 @@ export const selectors = {
   beneficiarySelector,
   isSSELoading,
   beneficiaryTxStatus,
+  healthCheck,
 }

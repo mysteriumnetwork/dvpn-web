@@ -24,7 +24,6 @@ const StyledConfirmationDialog = styled.div`
   z-index: 1000;
 
   width: 400px;
-  height: 160px;
 
   left: 50%;
   top: 40%;
@@ -49,7 +48,7 @@ const Title = styled.h2`
 `
 
 const Message = styled.div`
-  margin-top: 16px;
+  padding: 16px;
 `
 
 const FlexGrow = styled.div`

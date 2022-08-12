@@ -10,7 +10,6 @@ import styled from 'styled-components'
 import { useEffect, useMemo, useState } from 'react'
 import { List } from './List'
 import { devices } from '../../../../theme/themes'
-import { tequila } from '../../../../api/tequila'
 import { useAppSelector } from '../../../../commons/hooks'
 import remoteStorage from '../../../../commons/remoteStorage'
 import { KEY_CURRENT_NODE_VERSION_LAST_CHECK, KEY_LATEST_NODE_VERSION } from '../../../../commons/notifications'
@@ -22,7 +21,7 @@ import { NotificationCardProps } from './types'
 import { UpdateCardMessage } from './Card'
 
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000
-const { api } = tequila
+
 const BellIcon = styled(BellSvg)`
   width: 80%;
   height: 80%;
@@ -66,6 +65,7 @@ const ID_BENEFICIARY_TX_ERROR = 'ID_BENEFICIARY_TX_ERROR'
 const ID_NODE_UPDATE = 'ID_NODE_UPDATE'
 
 export const Notifications = () => {
+  const healthCheck = useAppSelector(selectors.healthCheck)
   const [open, setOpen] = useState(false)
   const beneficiaryTxStatus = useAppSelector(selectors.beneficiaryTxStatus)
 
@@ -89,8 +89,6 @@ export const Notifications = () => {
   const latestNodeVersion = useAppSelector(remoteStorage.selector(KEY_LATEST_NODE_VERSION))
   useEffect(() => {
     ;(async () => {
-      // TODO store this in app.slice
-      const healthCheck = await api.healthCheck()
       if (healthCheck.version.toString() !== latestNodeVersion) {
         addNotification(ID_NODE_UPDATE, {
           variant: 'update',
