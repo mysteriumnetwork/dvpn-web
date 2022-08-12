@@ -13,11 +13,10 @@ import { Quality } from '../Quality/Quality'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
-import { Notifications } from '../Notifications/Notifications'
 import { devices } from '../../../../theme/themes'
 import { Media } from '../../../../commons/media'
 import { Profile } from '../Profile/Profile'
-
+import { Notifications } from '../Notifications/Notifications'
 const Main = styled.main`
   position: relative;
   display: flex;
@@ -134,6 +133,11 @@ const sharedRowCss = css`
   display: flex;
   flex-direction: row;
   gap: 20px;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
 `
 
 const cardCss = css`
