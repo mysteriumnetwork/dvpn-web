@@ -89,7 +89,7 @@ const slice = createSlice({
     updateTermsStore: (state, action) => {
       state.terms = action.payload
     },
-    updateAuthFlowLoadingStore: (state, action) => {
+    updateLoadingStore: (state, action) => {
       state.loading = action.payload
     },
     updateConfigStore: (state, action) => {
@@ -120,7 +120,7 @@ export const {
   updateAuthenticatedStore,
   updateIdentityRefStore,
   updateTermsStore,
-  updateAuthFlowLoadingStore,
+  updateLoadingStore,
   updateConfigStore,
   updateDefaultConfigStore,
   updateFeesStore,

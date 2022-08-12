@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ReactElement, useEffect } from 'react'
+import { ReactElement } from 'react'
 import styled from 'styled-components'
 import { Onboarding } from './Onboarding/Onboarding'
 import { DesktopNavigation } from './Navigation/DesktopNavigation'
 import { MobileNavigation } from './Navigation/MobileNavigation'
 import { Media } from '../../commons/media'
+
 const Page = styled.div`
   display: flex;
   min-height: 100vh;
@@ -29,13 +30,6 @@ interface Props {
 }
 
 const WithNavigation = ({ content }: Props) => {
-  useEffect(() => {
-    // Load intercom chat
-    // @ts-ignore
-    window.Intercom('boot', {
-      app_id: 'h7hlm9on',
-    })
-  }, [])
   return (
     <Page>
       {/* <Navigation openMenu={toggleMobileMenu} /> */}

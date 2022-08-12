@@ -62,7 +62,9 @@ const runningServices = ({ sse }: RootState) => sse.appState?.serviceInfo || []
 
 const beneficiary = ({ app }: RootState) => app.beneficiary
 
-const isSSELoading = ({ sse }: RootState) => sse.isLoading
+const isSSELoading = ({ sse }: RootState) => sse.loading
+
+const isAppLoading = ({ app }: RootState) => app.loading
 
 const beneficiaryTxStatus = ({ app }: RootState) => app.beneficiaryTxStatus
 
@@ -82,6 +84,7 @@ export const selectors = {
   runningServices,
   beneficiary,
   isSSELoading,
+  isAppLoading,
   beneficiaryTxStatus,
   healthCheck,
   auth,
