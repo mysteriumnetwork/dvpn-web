@@ -53,6 +53,7 @@ const Container = styled.div<TransitionProps>`
     justify-content: center;
     opacity: ${({ $transition }) => ($transition ? 1 : 0)};
     max-width: ${({ $transition }) => ($transition ? '200px' : 0)};
+    margin-bottom: 10px;
   }
 `
 const SwitchContainer = styled.div`

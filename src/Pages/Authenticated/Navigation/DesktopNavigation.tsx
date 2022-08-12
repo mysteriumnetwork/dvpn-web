@@ -81,9 +81,8 @@ const PlainLink = styled(NavLink)<HoverProps>`
   }
 `
 
-export const Navigation2 = () => {
+export const DesktopNavigation = () => {
   const { pathname } = useLocation()
-
   const [hover, setHover] = useState(false)
 
   const Links = useMemo(

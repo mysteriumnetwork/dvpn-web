@@ -4,13 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import Navigation from './Navigation/Navigation'
-import { ReactElement, useState } from 'react'
+import { ReactElement, useState, useEffect } from 'react'
 import { MobileMenu } from './Navigation/MobileMenu'
 import styled from 'styled-components'
 import { Onboarding } from './Onboarding/Onboarding'
-import { Navigation2 } from './Navigation/Navigation2'
-
+import { DesktopNavigation } from './Navigation/DesktopNavigation'
+import { MobileNavigation } from './Navigation/MobileNavigation'
+import { Media } from '../../commons/media'
 const Page = styled.div`
   display: flex;
   min-height: 100vh;
@@ -30,17 +30,24 @@ interface Props {
 }
 
 const WithNavigation = ({ content }: Props) => {
-  const [showMenu, setShowMenu] = useState(false)
-  const toggleMobileMenu = () => {
-    setShowMenu(!showMenu)
-  }
+  useEffect(() => {
+    // Load intercom chat
+    // @ts-ignore
+    window.Intercom('boot', {
+      app_id: 'h7hlm9on',
+    })
+  }, [])
   return (
     <Page>
       {/* <Navigation openMenu={toggleMobileMenu} /> */}
-      <Navigation2 />
+      <Media.Desktop>
+        <DesktopNavigation />
+      </Media.Desktop>
+      <Media.Mobile>
+        <MobileNavigation />
+      </Media.Mobile>
       <Content>{content}</Content>
       <Onboarding />
-      <MobileMenu show={showMenu} closeMenu={toggleMobileMenu} />
     </Page>
   )
 }
