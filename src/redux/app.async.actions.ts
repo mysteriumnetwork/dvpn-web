@@ -16,6 +16,7 @@ import {
   updateDefaultConfigStore,
   updateFeesStore,
   updateIdentityRefStore,
+  updateLoadingStore,
   updateTermsStore,
 } from './app.slice'
 import { store } from './store'
@@ -70,6 +71,7 @@ export const fetchChainSummaryAsync = async () => {
 }
 
 export const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }: { isDefaultPassword: boolean }) => {
+  await store.dispatch(updateLoadingStore(true))
   await store.dispatch(
     updateAuthenticatedStore({
       authenticated: true,
@@ -82,6 +84,7 @@ export const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }
   await fetchDefaultConfigAsync()
   await fetchChainSummaryAsync()
   await updateFees()
+  await store.dispatch(updateLoadingStore(false))
 }
 
 const SECOND = 1000
