@@ -4,26 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { createSlice } from '@reduxjs/toolkit'
-import _ from 'lodash'
 import {
   BeneficiaryTxStatus,
   ChainSummary,
   FeesResponse,
-  Identity,
   IdentityBeneficiaryResponse,
   IdentityRef,
   NodeHealthcheck,
 } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { BENEFICIARY_TX_STATUS_EMPTY, FEES_RESPONSE_EMPTY, HEALTHCHECK_EMPTY } from '../constants/instances'
-import identities from '../commons/identities'
-
-const { isUnregistered } = identities
 
 export interface Auth {
-  authenticated?: boolean
+  authenticated: boolean
   withDefaultCredentials: boolean
 }
 
@@ -121,33 +115,6 @@ const slice = createSlice({
     },
   },
 })
-
-// Hot identity details (from SSE).
-const currentIdentity = (identityRef?: IdentityRef, identities?: Identity[]): Identity | undefined => {
-  const result = (identities || []).filter((si) => si.id === identityRef?.id)
-  return _.head(result)
-}
-
-const onBoarding = (auth: Auth, terms: Terms, currentIdentity: Identity): Onboarding => {
-  const onBoarding = {
-    needsAgreedTerms: !termsAccepted(terms),
-    needsPasswordChange: auth.withDefaultCredentials,
-    needsRegisteredIdentity: isUnregistered(currentIdentity),
-  } as Onboarding
-
-  onBoarding.needsOnBoarding = onBoarding.needsPasswordChange
-  return onBoarding
-}
-
-const isLoggedIn = (auth: Auth): boolean => {
-  return !!auth.authenticated
-}
-
-const termsAccepted = (terms: Terms): boolean => {
-  return !!terms.acceptedVersion && terms.acceptedVersion === termsPackageJson.version
-}
-
-export { currentIdentity, onBoarding, isLoggedIn, termsAccepted }
 
 export const {
   updateAuthenticatedStore,

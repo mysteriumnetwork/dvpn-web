@@ -4,40 +4,63 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ChainSummary, FeesResponse, Identity } from 'mysterium-vpn-js'
+import { ChainSummary, FeesResponse, Identity, IdentityRef } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { IDENTITY_EMPTY } from '../constants/instances'
-import { AppState, currentIdentity, onBoarding } from './app.slice'
+import { AppState, Auth, Onboarding, Terms } from './app.slice'
 import { SSEState } from './sse.slice'
+import _ from 'lodash'
+import termsPackageJson from '@mysteriumnetwork/terms/package.json'
+import identities from '../commons/identities'
 
 interface RootState {
   app: AppState
   sse: SSEState
 }
 
-const currentIdentitySelector = ({ app, sse }: RootState): Identity => {
-  const identity = currentIdentity(app.currentIdentityRef, sse.appState?.identities)
+// Hot identity details (from SSE).
+const currentIdentityFromSSE = (identityRef?: IdentityRef, identities?: Identity[]): Identity | undefined => {
+  const result = (identities || []).filter((si) => si.id === identityRef?.id)
+  return _.head(result)
+}
+
+const currentIdentity = ({ app, sse }: RootState): Identity => {
+  const identity = currentIdentityFromSSE(app.currentIdentityRef, sse.appState?.identities)
   return identity || IDENTITY_EMPTY
 }
 
-const feesSelector = ({ app }: RootState): FeesResponse => app.fees
+const fees = ({ app }: RootState): FeesResponse => app.fees
 
-const chainSummarySelector = ({ app }: RootState): ChainSummary => app.chainSummary
+const chainSummary = ({ app }: RootState): ChainSummary => app.chainSummary
 
-const configSelector = ({ app }: RootState): Config => app.config
+const currentConfig = ({ app }: RootState): Config => app.config
 
-const defaultConfigSelector = ({ app }: RootState): Config => app.defaultConfig
+const defaultConfig = ({ app }: RootState): Config => app.defaultConfig
 
-const onBoardingStateSelector = ({ app, sse }: RootState) =>
-  onBoarding(app.auth, app.terms, currentIdentitySelector({ app, sse }))
+const termsAccepted = (terms: Terms): boolean => {
+  return !!terms.acceptedVersion && terms.acceptedVersion === termsPackageJson.version
+}
 
-const liveSessionsSelector = ({ sse }: RootState) => sse.appState?.sessions || []
+const buildOnBoarding = (auth: Auth, terms: Terms, currentIdentity: Identity): Onboarding => {
+  const onBoarding = {
+    needsAgreedTerms: !termsAccepted(terms),
+    needsPasswordChange: auth.withDefaultCredentials,
+    needsRegisteredIdentity: identities.isUnregistered(currentIdentity),
+  } as Onboarding
 
-const liveSessionStatsSelector = ({ sse }: RootState) => sse.appState?.sessionsStats || {}
+  onBoarding.needsOnBoarding = onBoarding.needsPasswordChange
+  return onBoarding
+}
 
-const serviceInfoSelector = ({ sse }: RootState) => sse.appState?.serviceInfo || []
+const onBoarding = ({ app, sse }: RootState) => buildOnBoarding(app.auth, app.terms, currentIdentity({ app, sse }))
 
-const beneficiarySelector = ({ app }: RootState) => app.beneficiary
+const liveSessions = ({ sse }: RootState) => sse.appState?.sessions || []
+
+const liveSessionStats = ({ sse }: RootState) => sse.appState?.sessionsStats || {}
+
+const runningServices = ({ sse }: RootState) => sse.appState?.serviceInfo || []
+
+const beneficiary = ({ app }: RootState) => app.beneficiary
 
 const isSSELoading = ({ sse }: RootState) => sse.isLoading
 
@@ -45,18 +68,21 @@ const beneficiaryTxStatus = ({ app }: RootState) => app.beneficiaryTxStatus
 
 const healthCheck = ({ app }: RootState) => app.healthCheckResponse
 
+const auth = ({ app }: RootState) => app.auth
+
 export const selectors = {
-  currentIdentitySelector,
-  feesSelector,
-  configSelector,
-  defaultConfigSelector,
-  onBoardingStateSelector,
-  chainSummarySelector,
-  liveSessionsSelector,
-  liveSessionStatsSelector,
-  serviceInfoSelector,
-  beneficiarySelector,
+  currentIdentity,
+  fees,
+  currentConfig,
+  defaultConfig,
+  onBoarding,
+  chainSummary,
+  liveSessions,
+  liveSessionStats,
+  runningServices,
+  beneficiary,
   isSSELoading,
   beneficiaryTxStatus,
   healthCheck,
+  auth,
 }

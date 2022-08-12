@@ -41,8 +41,8 @@ export const AdvancedSettings = () => {
   const [form, setForm] = useState<AdvancedSettingsForms>(INITIAL_FORM)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const config = useAppSelector(selectors.configSelector)
-  const defaultConfig = useAppSelector(selectors.defaultConfigSelector)
+  const config = useAppSelector(selectors.currentConfig)
+  const defaultConfig = useAppSelector(selectors.defaultConfig)
 
   useEffect(() => {
     setForm((p) => ({

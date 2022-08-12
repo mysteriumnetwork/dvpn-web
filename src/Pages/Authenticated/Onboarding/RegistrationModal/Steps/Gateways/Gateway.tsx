@@ -102,7 +102,7 @@ const initialState: State = {
 const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProps) => {
   const { name: gatewayName } = gateway
 
-  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const identity = useAppSelector(selectors.currentIdentity)
 
   const [state, setState] = useState<State>(initialState)
   const { taxCountry, taxState, loading, redirected } = state

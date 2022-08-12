@@ -62,7 +62,7 @@ const SubTitle = styled(Link)`
   color: ${({ theme }) => theme.text.colorSecondary};
 `
 export const LiveSessions = () => {
-  const liveSessions = useAppSelector(selectors.liveSessionsSelector)
+  const liveSessions = useAppSelector(selectors.liveSessions)
   const Columns: Column<any>[] = useMemo(
     () => [
       {

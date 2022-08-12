@@ -14,8 +14,8 @@ import { RegistrationModal } from './RegistrationModal/RegistrationModal'
 import { RegistrationInProgressModal } from './RegistrationInProgressModal'
 
 export const Onboarding = () => {
-  const identity = useAppSelector(selectors.currentIdentitySelector)
-  const { needsAgreedTerms, needsRegisteredIdentity } = useAppSelector(selectors.onBoardingStateSelector)
+  const identity = useAppSelector(selectors.currentIdentity)
+  const { needsAgreedTerms, needsRegisteredIdentity } = useAppSelector(selectors.onBoarding)
 
   // TODO should not happen but maybe prettier exposition is in order
   if (identities.isEmpty(identity)) {

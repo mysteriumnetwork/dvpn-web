@@ -23,8 +23,8 @@ import CopyToClipboardButtonIcon from '../../../../../Components/Inputs/CopyToCl
 const { api } = tequila
 
 export const MystNodesClaim = () => {
-  const identity = useAppSelector(selectors.currentIdentitySelector)
-  const config = useAppSelector(selectors.configSelector)
+  const identity = useAppSelector(selectors.currentIdentity)
+  const config = useAppSelector(selectors.currentConfig)
   const mmnWebAddress = configs.mmnWebAddress(config)
 
   const [token, setToken] = useState<string>('')

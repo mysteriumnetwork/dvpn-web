@@ -14,7 +14,7 @@ import identities from '../../../../../commons/identities'
 import CopyToClipboardButtonIcon from '../../../../../Components/Inputs/CopyToClipboardButtonIcon'
 
 export const YourIdentity = () => {
-  const { id } = useAppSelector(selectors.currentIdentitySelector)
+  const { id } = useAppSelector(selectors.currentIdentity)
 
   return (
     <SettingsCard loading={identities.isEmpty(id)} title="Identity">

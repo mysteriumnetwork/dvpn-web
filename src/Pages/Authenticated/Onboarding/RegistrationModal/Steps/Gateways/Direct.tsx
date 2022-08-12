@@ -86,7 +86,7 @@ const Controls = styled.div`
 `
 
 const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) => {
-  const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentitySelector)
+  const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentity)
   const isRegistrationFeeReceived = myst.toWeiBig(balanceTokens.wei).gte(amountRequiredWei)
 
   return (

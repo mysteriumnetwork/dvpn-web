@@ -79,8 +79,8 @@ const Info = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue};
 `
 export const MobileNavigation = () => {
-  const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
-  const config = useAppSelector(selectors.configSelector)
+  const { earningsTokens } = useAppSelector(selectors.currentIdentity)
+  const config = useAppSelector(selectors.currentConfig)
   const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
   const thresholdMyst = configs.zeroStakeSettlementThreshold(config)
   const [showMenu, setShowMenu] = useState(false)

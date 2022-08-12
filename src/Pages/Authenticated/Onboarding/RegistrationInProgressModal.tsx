@@ -48,7 +48,7 @@ interface Props {
 }
 
 export const RegistrationInProgressModal = ({ show }: Props) => {
-  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const identity = useAppSelector(selectors.currentIdentity)
   const isError = identities.isRegistrationError(identity)
 
   return (

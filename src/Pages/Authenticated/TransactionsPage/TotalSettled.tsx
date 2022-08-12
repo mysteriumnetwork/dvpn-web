@@ -37,7 +37,7 @@ const Value = styled.div`
 `
 const { calculateSettled } = feez
 export const TotalSettled = () => {
-  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const identity = useAppSelector(selectors.currentIdentity)
   const totalSettled = calculateSettled(identity.earningsTokens, identity.earningsTotalTokens)
   return (
     <Card grow={0} fluid={false}>

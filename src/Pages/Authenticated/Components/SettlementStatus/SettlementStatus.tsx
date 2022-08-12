@@ -33,8 +33,8 @@ const Title = styled.div`
 `
 
 export const SettlementStatus = () => {
-  const config = useAppSelector(selectors.configSelector)
-  const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
+  const config = useAppSelector(selectors.currentConfig)
+  const { earningsTokens } = useAppSelector(selectors.currentIdentity)
   const settleThresholdMyst = configs.zeroStakeSettlementThreshold(config)
 
   const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
