@@ -16,17 +16,19 @@ const Card = styled.div`
   padding: 20px;
   color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.tablet} {
-    justify-content: space-around;
+    justify-content: space-between;
     border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
     padding: 20px 0px;
-    margin-left: 20px;
-    margin-right: 20px;
+    align-items: center;
+    margin: 0 20px;
   }
 `
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  width: 150px;
 `
 
 const Value = styled.div`
@@ -49,7 +51,11 @@ const Meta = styled.div`
 interface DiffValueProps {
   positive: boolean
 }
-
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 const DiffValue = styled.div<DiffValueProps>`
   display: flex;
   justify-content: center;
@@ -73,7 +79,7 @@ interface Props {
 export const ReportCard = ({ icon, value, title, tooltip, diff = 0 }: Props) => {
   return (
     <Card>
-      <div>{icon}</div>
+      <IconContainer>{icon}</IconContainer>
       <Content>
         <Value>{value}</Value>
         <Title>{title}</Title>
