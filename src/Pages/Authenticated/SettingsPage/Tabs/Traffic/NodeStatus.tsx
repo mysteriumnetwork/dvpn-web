@@ -34,8 +34,8 @@ const FlexGrow = styled.div`
 const COOL_DOWN_MS = 2000
 
 export const NodeStatus = () => {
-  const services = useAppSelector(selectors.serviceInfoSelector)
-  const { id } = useAppSelector(selectors.currentIdentitySelector)
+  const services = useAppSelector(selectors.runningServices)
+  const { id } = useAppSelector(selectors.currentIdentity)
 
   const [loading, setLoading] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)

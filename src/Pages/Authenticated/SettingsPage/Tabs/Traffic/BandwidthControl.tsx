@@ -40,8 +40,8 @@ const LimitTarget = styled.div`
 const ONE_SECOND_MS = 1000
 
 export const BandwidthControl = () => {
-  const config = useAppSelector(selectors.configSelector)
-  const { id } = useAppSelector(selectors.currentIdentitySelector)
+  const config = useAppSelector(selectors.currentConfig)
+  const { id } = useAppSelector(selectors.currentIdentity)
   const shapingEnabled = configs.isTrafficShapingEnabled(config)
   const configShapingKBps = configs.trafficShapingBandwidthKBps(config)
 

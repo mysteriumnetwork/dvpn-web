@@ -7,33 +7,9 @@
 import toasts from './toasts'
 import errors from './errors'
 
-const { toastError, toastSuccess } = toasts
-
 export interface Msg {
   success?: string
   error?: string
-}
-
-/**
- * @deprecated not useful
- * @param fn
- * @param msg
- */
-export const callWithToast = async <T>(fn: () => Promise<T>, msg?: Msg): Promise<T> => {
-  try {
-    const result = await fn()
-    if (msg?.success && msg?.success.length > 0) {
-      toastSuccess(msg.success)
-    }
-    return result
-  } catch (err: any) {
-    if (msg?.error && msg?.error.length > 0) {
-      toastError(msg.error)
-    } else {
-      errors.parseToastError(err)
-    }
-    return Promise.reject(err)
-  }
 }
 
 const tryTo = async <T>(fn: () => Promise<T>, msg?: Msg): Promise<T | undefined> => {

@@ -31,13 +31,7 @@ import {
   fetchIdentityAndRelativeInformationAsync,
   updateTermsStoreAsync,
 } from '../redux/app.async.actions'
-import {
-  Auth,
-  isLoggedIn,
-  updateAuthenticatedStore,
-  updateAuthFlowLoadingStore,
-  updateFeesStore,
-} from '../redux/app.slice'
+import { Auth, updateAuthenticatedStore, updateAuthFlowLoadingStore, updateFeesStore } from '../redux/app.slice'
 import { selectors } from '../redux/selectors'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
 import ConnectToSSE from '../sse/server-sent-events'
@@ -76,9 +70,9 @@ const AppRouter = () => {
   }
 
   const loading = useAppSelector(({ app }) => app.loading)
-  const loggedIn = useAppSelector(({ app }) => isLoggedIn(app.auth))
-  const identity = useAppSelector(selectors.currentIdentitySelector)
-  const onBoarding = useAppSelector(selectors.onBoardingStateSelector)
+  const { authenticated: loggedIn } = useAppSelector(selectors.auth)
+  const identity = useAppSelector(selectors.currentIdentity)
+  const onBoarding = useAppSelector(selectors.onBoarding)
 
   const authenticatedActions = async (defaultCredentials: boolean) => {
     await actions.updateAuthenticatedStore({

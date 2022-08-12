@@ -31,8 +31,8 @@ const isPaid = (balance: Tokens, registrationPayment: RegistrationPaymentRespons
   myst.toEtherBig(balance.wei).gte(feeEther) || registrationPayment.paid
 
 const Payment = ({ gateway, allGateways, back, next }: RegistrationStepProps) => {
-  const identity = useAppSelector(selectors.currentIdentitySelector)
-  const fees = useAppSelector(selectors.feesSelector)
+  const identity = useAppSelector(selectors.currentIdentity)
+  const fees = useAppSelector(selectors.fees)
   const {
     current: { registration },
   } = fees

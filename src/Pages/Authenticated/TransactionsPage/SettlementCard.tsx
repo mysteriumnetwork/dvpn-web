@@ -62,9 +62,9 @@ const WarningIcon = styled(WarningSVG)`
 const SETTLE_LOCKOUT_ID = 'SETTLE_LOCKOUT_ID'
 
 export const SettlementCard = () => {
-  const { earningsTokens } = useAppSelector(selectors.currentIdentitySelector)
+  const { earningsTokens } = useAppSelector(selectors.currentIdentity)
   const { error } = useAppSelector(selectors.beneficiaryTxStatus)
-  const config = useAppSelector(selectors.configSelector)
+  const config = useAppSelector(selectors.currentConfig)
   const thresholdMyst = configs.zeroStakeSettlementThreshold(config)
   const [showModal, setShowModal] = useState(false)
 

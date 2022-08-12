@@ -50,7 +50,7 @@ const FlexGrow = styled.div`
 `
 
 const NetworkRegistration = ({ next, beneficiary, setBeneficiary, loading, setLoading }: RegistrationStepProps) => {
-  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const identity = useAppSelector(selectors.currentIdentity)
 
   const isInvalidWithdrawalAddress = () => {
     return !isValidEthereumAddress(beneficiary)

@@ -15,7 +15,7 @@ import { Button } from '../../../../Components/Inputs/Button'
 
 export const FeatureToggle = () => {
   const { setFeatures } = tequila
-  const config = useAppSelector(selectors.configSelector)
+  const config = useAppSelector(selectors.currentConfig)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const toggle = async (name: string) => {

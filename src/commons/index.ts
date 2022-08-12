@@ -13,5 +13,3 @@ export const DEFAULT_MONEY_DISPLAY_OPTIONS: Required<DisplayMoneyOptions> = Obje
   removeInsignificantZeros: false,
   decimalPart: DECIMAL_PART,
 })
-
-export const WIREGUARD = 'wireguard'

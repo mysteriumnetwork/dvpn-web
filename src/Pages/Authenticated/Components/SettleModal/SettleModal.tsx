@@ -108,9 +108,9 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
     setInputDisabled(true)
   }
 
-  const { beneficiary } = useAppSelector(selectors.beneficiarySelector)
-  const { current, hermesPercent } = useAppSelector(selectors.feesSelector)
-  const identity = useAppSelector(selectors.currentIdentitySelector)
+  const { beneficiary } = useAppSelector(selectors.beneficiary)
+  const { current, hermesPercent } = useAppSelector(selectors.fees)
+  const identity = useAppSelector(selectors.currentIdentity)
 
   const calculatedFees = useMemo(() => feez.calculateEarnings(identity.earningsTokens, current, hermesPercent), [
     hermesPercent,

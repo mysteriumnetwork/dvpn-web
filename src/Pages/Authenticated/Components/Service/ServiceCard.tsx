@@ -131,8 +131,8 @@ export const ServiceCard = ({
   prices = { pricePerGibWei: '0', pricePerHourWei: '0' },
   loading,
 }: Props) => {
-  const { id } = useAppSelector(selectors.currentIdentitySelector)
-  const serviceInfo = useAppSelector(selectors.serviceInfoSelector).find((si) => si.type === serviceType)
+  const { id } = useAppSelector(selectors.currentIdentity)
+  const serviceInfo = useAppSelector(selectors.runningServices).find((si) => si.type === serviceType)
   const [internalLoading, setInternalLoading] = useState<boolean>(false)
 
   const enabled = !!serviceInfo
