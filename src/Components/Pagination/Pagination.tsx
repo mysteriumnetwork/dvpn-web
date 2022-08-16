@@ -7,12 +7,8 @@
 import styled, { css } from 'styled-components'
 import { Button } from '../Inputs/Button'
 import { themeCommon } from '../../theme/themeCommon'
-import { usePagination, DOTS } from './usePagination'
+import { usePagination, DOTS_R, DOTS_L } from './usePagination'
 
-export interface PaginationState {
-  page: number
-  pageSize?: number
-}
 const Container = styled.div`
   width: 100%;
   display: flex;
@@ -54,7 +50,7 @@ interface Props {
 export interface PaginationProps {
   currentPage: number
   totalPages: number
-  handlePageChange: (page: PaginationState) => void
+  handlePageChange: (page: number) => void
 }
 // TODO: Rinse logic for displaying active page
 
@@ -69,20 +65,20 @@ export const Pagination = ({ currentPage, totalPages, handlePageChange }: Pagina
         rounded
         onClick={() => {
           // Rethink else call
-          currentPage - 1 >= 1 && handlePageChange({ page: currentPage - 1 })
+          currentPage - 1 >= 1 && handlePageChange(currentPage - 1)
         }}
       />
       <Pages>
         {paginationRange?.map((pageNumber) => {
-          if (pageNumber === DOTS) {
-            return <span key={pageNumber}>{DOTS}</span>
+          if ([DOTS_R, DOTS_L].includes(pageNumber as string)) {
+            return <span key={`page-${pageNumber}`}>...</span>
           }
           return (
             <PageButton
-              key={pageNumber}
+              key={`page-${pageNumber}`}
               $active={currentPage === pageNumber}
               onClick={() => {
-                handlePageChange({ page: pageNumber as number })
+                handlePageChange(pageNumber as number)
               }}
             >
               {pageNumber}
@@ -96,7 +92,7 @@ export const Pagination = ({ currentPage, totalPages, handlePageChange }: Pagina
         rounded
         onClick={() => {
           // Rethink else call
-          currentPage + 1 <= totalPages && handlePageChange({ page: currentPage + 1 })
+          currentPage + 1 <= totalPages && handlePageChange(currentPage + 1)
         }}
       />
     </Container>
