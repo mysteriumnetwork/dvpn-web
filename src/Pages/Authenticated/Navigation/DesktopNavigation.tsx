@@ -10,7 +10,6 @@ import { LINK_DEFINITIONS, CONTROLLER_DEFINITIONS } from './definitions'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import { useMemo, useState } from 'react'
-import { DASHBOARD } from '../../../constants/routes'
 
 const Content = styled.div`
   background: ${({ theme }) => theme.bgNavigation};
@@ -111,7 +110,7 @@ export const DesktopNavigation = () => {
   }, [open])
   return (
     <Content>
-      <LogoLink $open={open} to={DASHBOARD} onClick={toggleMenu}>
+      <LogoLink $open={open} to="" onClick={toggleMenu}>
         <Logo />
         <Title>Node UI</Title>
       </LogoLink>
