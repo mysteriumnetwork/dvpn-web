@@ -19,11 +19,16 @@ import { useFetch } from '../../../commons/hooks'
 import { SETTLEMENT_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 import dates from '../../../commons/dates'
 import { cells } from '../../../Components/Table/cells'
+import { media } from '../../../commons/media'
+import { useMediaQuery } from 'react-responsive'
+
+const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
 const { PrimaryCell, SecondaryCell } = cells
 
 export const TransactionsPage = () => {
+  const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState(1)
 
   const handlePageChange = (page: number) => setState(page)
@@ -69,13 +74,20 @@ export const TransactionsPage = () => {
   )
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
-      <LayoutHeroCardRow>
-        <TotalSettled />
-        <SettlementCard />
-        <DownloadTransactionCSV data={data} />
-      </LayoutHeroCardRow>
+      {isDesktop ? (
+        <LayoutHeroCardRow>
+          <TotalSettled />
+          <SettlementCard />
+          <DownloadTransactionCSV data={data} />
+        </LayoutHeroCardRow>
+      ) : (
+        <LayoutUnstyledRow>
+          <TotalSettled />
+          <DownloadTransactionCSV data={data} />
+        </LayoutUnstyledRow>
+      )}
       <LayoutUnstyledRow>
-        <Table columns={Columns} data={data.items} />
+        <Table columns={Columns} data={data.items} isDesktop={isDesktop} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />

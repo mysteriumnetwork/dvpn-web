@@ -35,10 +35,12 @@ const MobileCell = styled.div`
 const CardHeaderPrimary = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
+  font-weight: 700;
 `
 const CardHeaderSecondary = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
+  font-weight: 700;
 `
 const CellHeader = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};

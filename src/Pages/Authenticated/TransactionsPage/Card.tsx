@@ -6,9 +6,11 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
+import { devices } from '../../../theme/themes'
 
 interface CardProps {
   $flexGrow?: number
+  $flexShrink?: number
   $fluid?: boolean
 }
 
@@ -18,23 +20,28 @@ const PaddedContent = styled.div<CardProps>`
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  min-width: 300px;
   max-height: 100px;
   width: ${({ $fluid }) => $fluid && '100%'};
   flex-grow: ${({ $flexGrow }) => ($flexGrow ? $flexGrow : 1)};
+  flex-shrink: ${({ $flexShrink }) => ($flexShrink ? $flexShrink : 1)};
   background: ${({ theme }) => theme.bgTransactionPageCard};
   box-shadow: ${({ theme }) => theme.bgTransactionPageCardBoxShadow};
+  @media ${devices.tablet} {
+    width: 100%;
+    justify-content: flex-start;
+  }
 `
 
 interface Props {
   grow?: number
+  shrink?: number
   fluid?: boolean
   children?: ReactNode
 }
 
-export const Card = ({ children, grow, fluid }: Props) => {
+export const Card = ({ children, grow, fluid, shrink }: Props) => {
   return (
-    <PaddedContent $fluid={fluid} $flexGrow={grow}>
+    <PaddedContent $fluid={fluid} $flexGrow={grow} $flexShrink={shrink}>
       {children}
     </PaddedContent>
   )

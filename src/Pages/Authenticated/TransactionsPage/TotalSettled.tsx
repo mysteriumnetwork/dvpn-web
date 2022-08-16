@@ -12,6 +12,12 @@ import { selectors } from '../../../redux/selectors'
 import { myst } from '../../../commons/mysts'
 import { themeCommon } from '../../../theme/themeCommon'
 import { feez } from '../../../commons/fees'
+import { LockoutButton } from '../../../Components/Inputs/LockoutButton'
+import { lockouts } from '../../../commons/lockout'
+import { SettleModal } from '../Components/SettleModal/SettleModal'
+import { useState } from 'react'
+import { ReactComponent as WarningSVG } from '../../../assets/images/notifications/negative.svg'
+import { Media } from '../../../commons/media'
 
 const Row = styled.div`
   display: flex;
@@ -35,18 +41,51 @@ const Value = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.text.colorMain};
 `
+const WarningIcon = styled(WarningSVG)`
+  width: 34px;
+  margin-left: 4px;
+  path,
+  circle {
+    stroke: white;
+  }
+`
+const SETTLE_LOCKOUT_ID = 'SETTLE_LOCKOUT_ID'
+
 const { calculateSettled } = feez
 export const TotalSettled = () => {
   const identity = useAppSelector(selectors.currentIdentity)
   const totalSettled = calculateSettled(identity.earningsTokens, identity.earningsTotalTokens)
+  const { error } = useAppSelector(selectors.beneficiaryTxStatus)
+  const [showModal, setShowModal] = useState(false)
   return (
     <Card grow={0} fluid={false}>
+      <Media.Mobile>
+        <SettleModal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          onSave={() => lockouts.lock({ id: SETTLE_LOCKOUT_ID, seconds: 60, refreshPage: true })}
+        />
+      </Media.Mobile>
       <Row>
         <WalletIcon $accented />
         <Column>
           <Title>Total settled</Title>
           <Value>{myst.display(totalSettled, { fractionDigits: 2 })}</Value>
         </Column>
+        <Media.Mobile>
+          <LockoutButton
+            id={SETTLE_LOCKOUT_ID}
+            label={
+              <>
+                Settle Now
+                {error && <WarningIcon />}
+              </>
+            }
+            size="medium"
+            rounded
+            onClick={() => setShowModal(true)}
+          />
+        </Media.Mobile>
       </Row>
     </Card>
   )

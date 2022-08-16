@@ -150,10 +150,8 @@ const cardCss = css`
 `
 
 export const LayoutHeroCardRow = styled.div`
-  position: relative;
   display: flex;
   box-sizing: border-box;
-  justify-content: space-around;
   margin: 0 16px 0 16px;
   padding: 16px;
   background: ${({ theme }) => theme.bgLayoutHeroRow};
