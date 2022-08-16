@@ -10,18 +10,12 @@ import { DNDList, DNDListItem } from '../../../../../Components/Inputs/DNDList'
 import styled from 'styled-components'
 import { AdvancedSettingsForms } from './AdvancedSettings'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
-import { themeCommon } from '../../../../../theme/themeCommon'
 import { NAT } from './NAT'
 
 const Controls = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-`
-
-const SubTitle = styled.div`
-  color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${themeCommon.fontSizeSmall};
 `
 
 const MarginTop = styled.div`
@@ -64,8 +58,7 @@ export const NATTraversalOrder = ({ handleSave, loading, onChange, form, handleR
       }
     >
       <InputGroup
-        title="NAT Traversal Order"
-        subTitle={<SubTitle>Drag items to reorder</SubTitle>}
+        title="Drag items to reorder"
         input={
           <>
             <MarginTop />
