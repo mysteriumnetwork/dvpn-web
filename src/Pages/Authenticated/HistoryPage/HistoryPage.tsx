@@ -30,7 +30,7 @@ const session2human = (session: string) => {
   return session.split('-')[0]
 }
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 2
 const RANGE_OPTIONS = ['1d', '7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
 
 export const HistoryPage = () => {
