@@ -8,7 +8,7 @@ import { useTable, useFlexLayout, Column } from 'react-table'
 
 import styled, { css } from 'styled-components'
 interface Props {
-  columns: Column[]
+  columns: Column<any>[]
   data: any[]
   loading?: boolean
 }

@@ -12,7 +12,7 @@ import { DownloadTransactionCSV } from './DownloadTransactionCSV'
 import { TotalSettled } from './TotalSettled'
 import { SettlementCard } from './SettlementCard'
 import { Column } from 'react-table'
-import { Pagination, PaginationState } from '../../../Components/Pagination/Pagination'
+import { Pagination } from '../../../Components/Pagination/Pagination'
 import { tequila } from '../../../api/tequila'
 import { myst } from '../../../commons/mysts'
 import { useFetch } from '../../../commons/hooks'
@@ -23,19 +23,11 @@ const { api } = tequila
 const { date2human } = dates
 
 export const TransactionsPage = () => {
-  const [state, setState] = useState<PaginationState>({
-    page: 1,
-    pageSize: 10,
-  })
+  const [state, setState] = useState(1)
 
-  const handlePageChange = ({ page }: PaginationState) => {
-    setState((p) => ({ ...p, page }))
-  }
+  const handlePageChange = (page: number) => setState(page)
 
-  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY] = useFetch(
-    () => api.settlementHistory({ pageSize: state.pageSize, page: state.page }),
-    [state.pageSize, state.page],
-  )
+  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY] = useFetch(() => api.settlementHistory({ page: state }), [state])
 
   const Columns: Column<any>[] = useMemo(
     () => [
@@ -85,7 +77,7 @@ export const TransactionsPage = () => {
         <Table columns={Columns} data={data.items} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Pagination currentPage={state.page} totalPages={data.totalPages} handlePageChange={handlePageChange} />
+        <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />
       </LayoutUnstyledRow>
     </Layout>
   )

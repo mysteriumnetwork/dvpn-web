@@ -4,89 +4,54 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Column } from 'react-table'
-import { Table, PrimaryCell, SecondaryCell } from '../../../Components/Table/Table'
-import { Pagination, PaginationState } from '../../../Components/Pagination/Pagination'
+import { PrimaryCell, SecondaryCell, Table } from '../../../Components/Table/Table'
+import { Pagination } from '../../../Components/Pagination/Pagination'
 import { tequila } from '../../../api/tequila'
-import { SESSIONS_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 import dates from '../../../commons/dates'
 import { useFetch } from '../../../commons/hooks'
 import location from '../../../commons/location'
 import { myst } from '../../../commons/mysts'
 import bytes from '../../../commons/bytes'
-import { CustomDatePicker } from './CustomDatePicker'
-import styled from 'styled-components'
-const { api } = tequila
-const { date2human, seconds2Time, localDate } = dates
-const { countryName } = location
-const { format, add } = bytes
+import { SessionV2 } from 'mysterium-vpn-js'
+import { Option } from '../../../types/common'
+import { RangePicker } from '../../../Components/Inputs/RangePicker'
+import services from '../../../commons/services'
 
-// TODO: Improve switch statement once its clear what other services are named
-const service2human = (service: string) => {
-  switch (service) {
-    case 'wireguard':
-      return 'Public'
-  }
-}
+const { api } = tequila
+const { date2human, seconds2Time } = dates
+const { countryName } = location
+const { format } = bytes
+
 const session2human = (session: string) => {
   return session.split('-')[0]
 }
-interface DateState {
-  startDate?: Date
-  endDate?: Date
-  reset: boolean
-}
-const ResetButton = styled.button`
-  border: none;
-  background: none;
-  color: ${({ theme }) => theme.calendar.inputColor};
-  :hover {
-    cursor: pointer;
-  }
-  :active {
-    cursor: pointer;
-  }
-`
+
+const PAGE_SIZE = 10
+const RANGE_OPTIONS = ['1d', '7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
+
 export const HistoryPage = () => {
-  const handleDateChange = (dates: any) => {
-    const [start, end] = dates
-    setDateState((p) => ({ ...p, startDate: start, endDate: end, reset: true }))
-  }
+  const [range, setRange] = useState<Option>(RANGE_OPTIONS[RANGE_OPTIONS.length - 1])
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [sessions, setSessions] = useState<SessionV2[]>([])
 
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => {
-    setOpen(!open)
-  }
-  const resetDates = () => {
-    setDateState((p) => ({ ...p, startDate: undefined, endDate: undefined, reset: false }))
-  }
-  const [dateState, setDateState] = useState<DateState>({
-    reset: false,
-  })
+  const [data = { sessions: [] }, loading] = useFetch(() => api.provider.sessions({ range: range.value }), [
+    range.value,
+  ])
 
-  const [state, setState] = useState<PaginationState>({
-    page: 1,
-    pageSize: 10,
-  })
+  useEffect(() => {
+    if (data.sessions.length < 1 || loading) {
+      return
+    }
+    setTotalPages(Math.ceil(data.sessions.length / PAGE_SIZE))
+    setSessions(data.sessions.slice(PAGE_SIZE * (page - 1), PAGE_SIZE * page))
+  }, [data.sessions.length, page, loading])
 
-  const [data = SESSIONS_LIST_RESPONSE_EMPTY] = useFetch(
-    () =>
-      api.sessions({
-        pageSize: state.pageSize,
-        page: state.page,
-        dateFrom: localDate(dateState.startDate),
-        dateTo: localDate(dateState.endDate),
-      }),
-    [state.pageSize, state.page, dateState.endDate, dateState.startDate],
-  )
-
-  const handlePageChange = ({ page }: PaginationState) => {
-    setState((p) => ({ ...p, page }))
-  }
-  const Columns: Column<any>[] = useMemo(
+  const Columns: Column<SessionV2>[] = useMemo(
     () => [
       {
         Header: 'Country',
@@ -96,27 +61,27 @@ export const HistoryPage = () => {
       },
       {
         Header: 'Duration',
-        accessor: 'duration',
+        accessor: 'durationSeconds',
         Cell: (c) => <SecondaryCell>{seconds2Time(c.value)}</SecondaryCell>,
       },
       {
         Header: 'Started',
-        accessor: 'createdAt',
+        accessor: 'startedAt',
         Cell: (c) => <SecondaryCell>{date2human(c.value)}</SecondaryCell>,
       },
       {
         Header: 'Services',
         accessor: 'serviceType',
-        Cell: (c) => <SecondaryCell>{service2human(c.value)}</SecondaryCell>,
+        Cell: (c) => <SecondaryCell>{services.name(c.value)}</SecondaryCell>,
       },
       {
         Header: 'Earnings',
-        accessor: 'tokens',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractionDigits: 3 })}</PrimaryCell>,
+        accessor: 'earnings',
+        Cell: (c) => <PrimaryCell>{myst.display(c.value.wei, { fractionDigits: 3 })}</PrimaryCell>,
       },
       {
         Header: 'Transferred',
-        accessor: (row): any => add(row.bytesSent, row.bytesReceived),
+        accessor: 'transferredBytes',
         Cell: (c) => <PrimaryCell>{format(c.value)}</PrimaryCell>,
       },
       {
@@ -130,28 +95,13 @@ export const HistoryPage = () => {
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
       <LayoutUnstyledRow>
-        <CustomDatePicker
-          onChange={handleDateChange}
-          startDate={dateState.startDate}
-          endDate={dateState.endDate}
-          onClick={handleOpen}
-          open={open}
-        />
-        {dateState.reset && (
-          <ResetButton
-            onClick={() => {
-              resetDates()
-            }}
-          >
-            Reset
-          </ResetButton>
-        )}
+        <RangePicker options={RANGE_OPTIONS} value={range} onChange={(option: Option) => setRange(option)} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Table columns={Columns} data={data.items} />
+        <Table columns={Columns} data={sessions} loading={loading} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Pagination currentPage={state.page} totalPages={data.totalPages} handlePageChange={handlePageChange} />
+        <Pagination currentPage={page} totalPages={totalPages} handlePageChange={(page: number) => setPage(page)} />
       </LayoutUnstyledRow>
     </Layout>
   )

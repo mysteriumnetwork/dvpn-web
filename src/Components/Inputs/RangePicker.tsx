@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import { themeCommon } from '../../../../theme/themeCommon'
-import { devices } from '../../../../theme/themes'
+import { themeCommon } from '../../theme/themeCommon'
+import { devices } from '../../theme/themes'
+import { Option } from '../../types/common'
 
 const Content = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const Content = styled.div`
   }
 `
 
-const Option = styled.div`
+const StyledOption = styled.div`
   width: 120px;
   padding: 4px 0 4px 0;
   color: ${({ active }) => (active ? themeCommon.colorWhite : themeCommon.colorGrayBlue)};
@@ -39,19 +40,19 @@ const Option = styled.div`
 `
 
 interface Props {
-  options?: number[]
+  options?: Option[]
   name?: string
-  onChange?: (o: number) => void
-  active?: number
+  onChange?: (o: Option) => void
+  value?: Option
 }
 
-export const RangePicker = ({ active, options = [], name = 'days', onChange = () => {} }: Props) => {
+export const RangePicker = ({ value, options = [], onChange = () => {} }: Props) => {
   return (
     <Content>
       {options?.map((o) => (
-        <Option key={o} active={active === o} onClick={() => onChange(o)}>
-          {'Last ' + o + ' days'}
-        </Option>
+        <StyledOption key={o.value} active={value === o} onClick={() => onChange(o)}>
+          {o.label}
+        </StyledOption>
       ))}
     </Content>
   )
