@@ -11,6 +11,7 @@ import styled from 'styled-components'
 import { AdvancedSettingsForms } from './AdvancedSettings'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { themeCommon } from '../../../../../theme/themeCommon'
+import { NAT } from './NAT'
 
 const Controls = styled.div`
   display: flex;
@@ -25,6 +26,12 @@ const SubTitle = styled.div`
 
 const MarginTop = styled.div`
   margin-top: 20px;
+`
+
+const TitleRow = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 `
 
 interface Props {
@@ -43,6 +50,12 @@ export const NATTraversalOrder = ({ handleSave, loading, onChange, form, handleR
   return (
     <SettingsCard
       loading={loading}
+      title={
+        <TitleRow>
+          <div>NAT Traversal Order</div>
+          <NAT />
+        </TitleRow>
+      }
       footer={
         <Controls>
           <Button variant="outlined" label="Restore default" onClick={handleReset} />
