@@ -29,7 +29,7 @@ const { date2human, seconds2Time } = dates
 const { countryName } = location
 const { format } = bytes
 const { isDesktopQuery } = media
-const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData } = cells
+const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CardHeaderPrimary, CardHeaderSecondary } = cells
 
 const session2human = (session: string) => {
   return session.split('-')[0]
@@ -106,7 +106,7 @@ export const HistoryPage = () => {
         accessor: 'consumerCountry',
         Cell: (c) => (
           <MobileCell>
-            <CellData>{countryName(c.value)}</CellData>
+            <CardHeaderPrimary>{countryName(c.value)}</CardHeaderPrimary>
           </MobileCell>
         ),
       },
@@ -115,7 +115,7 @@ export const HistoryPage = () => {
         accessor: 'id',
         Cell: (c) => (
           <MobileCell>
-            <CellHeader>{session2human(c.value)}</CellHeader>
+            <CardHeaderSecondary>{session2human(c.value)}</CardHeaderSecondary>
           </MobileCell>
         ),
       },

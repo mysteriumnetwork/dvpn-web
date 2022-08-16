@@ -7,7 +7,7 @@
 import { useMemo, useState } from 'react'
 import { Layout, LayoutHeroCardRow, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
-import { Table, PrimaryCell, SecondaryCell } from '../../../Components/Table/Table'
+import { Table } from '../../../Components/Table/Table'
 import { DownloadTransactionCSV } from './DownloadTransactionCSV'
 import { TotalSettled } from './TotalSettled'
 import { SettlementCard } from './SettlementCard'
@@ -18,9 +18,10 @@ import { myst } from '../../../commons/mysts'
 import { useFetch } from '../../../commons/hooks'
 import { SETTLEMENT_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 import dates from '../../../commons/dates'
-
+import { cells } from '../../../Components/Table/cells'
 const { api } = tequila
 const { date2human } = dates
+const { PrimaryCell, SecondaryCell } = cells
 
 export const TransactionsPage = () => {
   const [state, setState] = useState(1)

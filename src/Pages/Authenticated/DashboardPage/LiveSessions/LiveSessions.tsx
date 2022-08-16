@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Table, PrimaryCell, SecondaryCell } from '../../../../Components/Table/Table'
+import { Table } from '../../../../Components/Table/Table'
 import { Column } from 'react-table'
 import { Link } from 'react-router-dom'
 import { useMemo } from 'react'
@@ -18,7 +18,9 @@ import styled from 'styled-components'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { HISTORY } from '../../../../constants/routes'
 import _ from 'lodash'
+import { cells } from '../../../../Components/Table/cells'
 
+const { PrimaryCell, SecondaryCell } = cells
 const { seconds2Time } = dates
 const { countryName } = location
 const { format, add } = bytes

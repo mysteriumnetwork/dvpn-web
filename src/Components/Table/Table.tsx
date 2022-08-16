@@ -39,14 +39,14 @@ const Row = styled.div`
     background-color: ${({ theme }) => theme.table.bgRowEven};
   }
   @media ${devices.tablet} {
-    background-color: ${({ theme }) => theme.common.colorWhite} !important;
-    max-width: 400px;
-    max-height: 200px;
+    background-color: ${({ theme }) => theme.table.bgBody} !important;
     display: grid !important;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    margin-bottom: 100px;
     border-radius: 30px;
+    padding: 20px;
+    grid-gap: 20px 80px;
+    min-width: 300px;
   }
 `
 const Body = styled.div`
@@ -57,7 +57,10 @@ const Body = styled.div`
   border-radius: 20px;
   gap: 5px;
   @media ${devices.tablet} {
-    background-color: none;
+    background: none !important;
+    gap: 20px;
+    padding: 0;
+    min-width: 300px;
   }
 `
 export const Table = ({ columns, data, isDesktop }: Props) => {

@@ -32,13 +32,22 @@ const MobileCell = styled.div`
   justify-content: flex-start;
   gap: 5px;
 `
+const CardHeaderPrimary = styled.div`
+  color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
+  font-size: ${({ theme }) => theme.common.fontSizeBig};
+`
+const CardHeaderSecondary = styled.div`
+  color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
+  font-size: ${({ theme }) => theme.common.fontSizeBig};
+`
 const CellHeader = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  color: ${({ theme }) => theme.table.textColorSecondary};
+  color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
 `
 const CellData = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  color: ${({ theme }) => theme.table.textColorPrimary};
+  color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
+  font-weight: 500;
 `
 export const cells = {
   PrimaryCell,
@@ -46,4 +55,6 @@ export const cells = {
   MobileCell,
   CellHeader,
   CellData,
+  CardHeaderPrimary,
+  CardHeaderSecondary,
 }
