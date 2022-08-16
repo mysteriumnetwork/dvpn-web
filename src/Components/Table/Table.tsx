@@ -5,32 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useTable, useFlexLayout, Column } from 'react-table'
+import styled from 'styled-components'
+import { devices } from '../../theme/themes'
 
-import styled, { css } from 'styled-components'
 interface Props {
   columns: Column<any>[]
   data: any[]
   loading?: boolean
+  isDesktop?: boolean
 }
-const cellCss = css`
-  white-space: no-wrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  padding: 1em;
-`
-export const PrimaryCell = styled.div`
-  color: ${({ theme }) => theme.table.textColorPrimary};
-  font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  font-weight: 600;
-  ${cellCss}
-`
-export const SecondaryCell = styled.div`
-  color: ${({ theme }) => theme.table.textColorSecondary};
-  font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  font-weight: 400;
-  ${cellCss}
-`
+
 const Container = styled.div`
   width: 100%;
 `
@@ -54,6 +38,16 @@ const Row = styled.div`
   &:nth-of-type(even) {
     background-color: ${({ theme }) => theme.table.bgRowEven};
   }
+  @media ${devices.tablet} {
+    background-color: ${({ theme }) => theme.common.colorWhite} !important;
+    max-width: 400px;
+    max-height: 200px;
+    display: grid !important;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    margin-bottom: 100px;
+    border-radius: 30px;
+  }
 `
 const Body = styled.div`
   display: flex;
@@ -62,23 +56,28 @@ const Body = styled.div`
   padding: 16px 20px 24px 20px;
   border-radius: 20px;
   gap: 5px;
+  @media ${devices.tablet} {
+    background-color: none;
+  }
 `
-export const Table = ({ columns, data }: Props) => {
+export const Table = ({ columns, data, isDesktop }: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { data, columns },
     useFlexLayout,
   )
   return (
     <Container {...getTableProps()}>
-      <HeaderRow>
-        {headerGroups.map((headerGroup) => (
-          <div {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <Header {...column.getHeaderProps()}>{column.render('Header')}</Header>
-            ))}
-          </div>
-        ))}
-      </HeaderRow>
+      {isDesktop && (
+        <HeaderRow>
+          {headerGroups.map((headerGroup) => (
+            <div {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <Header {...column.getHeaderProps()}>{column.render('Header')}</Header>
+              ))}
+            </div>
+          ))}
+        </HeaderRow>
+      )}
       <Body {...getTableBodyProps()}>
         {rows.map((row) => {
           prepareRow(row)
