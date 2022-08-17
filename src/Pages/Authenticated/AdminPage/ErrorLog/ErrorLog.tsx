@@ -55,8 +55,8 @@ const RowContent = styled.div`
 
   display: grid;
   grid-template-areas:
-    'time tag code'
-    'm    m    m';
+    'time       tag         code'
+    'message    message     message';
 `
 
 const Time = styled.div`
@@ -73,7 +73,7 @@ const Tag = styled.div`
   //font-size: $smaller-size;
 `
 const Message = styled.div`
-  grid-area: m;
+  grid-area: message;
 
   //font-size: $normal-size;
 
