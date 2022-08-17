@@ -49,6 +49,9 @@ const Title = styled.h1`
   }
 `
 const SecondaryTitle = styled.h2`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   color: ${({ theme }) => theme.common.colorDarkBlue};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
 `
@@ -149,7 +152,7 @@ interface State {
   password: string
   confirmPassword: string
   claim: boolean
-  tos: boolean
+  agreeTos: boolean
   mmnApiKey: string
   mmnError: string
   passwordError: string
@@ -159,13 +162,13 @@ const INITIAL_STATE: State = {
   password: '',
   confirmPassword: '',
   claim: false,
-  tos: false,
+  agreeTos: false,
   mmnApiKey: '',
   mmnError: '',
   passwordError: '',
 }
 
-export const PasswordPage = () => {
+export const PasswordChangePage = () => {
   const query = useQuery()
   const mmnApiKey = query.get('mmnApiKey')
 
@@ -192,7 +195,7 @@ export const PasswordPage = () => {
   }, [])
   const handlePassword = (value: string) => setState((p) => ({ ...p, password: value }))
   const handleConfirmPassword = (value: string) => setState((p) => ({ ...p, confirmPassword: value }))
-  const handleTOS = (value: boolean) => setState((p) => ({ ...p, tos: value }))
+  const handleTOS = (value: boolean) => setState((p) => ({ ...p, agreeTos: value }))
   const handleMmnApiKey = (value: string) => setState((p) => ({ ...p, mmnApiKey: value }))
   const handleMmnError = (value: string) => setState((p) => ({ ...p, mmnError: value }))
   const handlePasswordError = (value: string) => setState((p) => ({ ...p, passwordError: value }))
@@ -220,6 +223,11 @@ export const PasswordPage = () => {
       return
     }
 
+    if (!state.agreeTos) {
+      toasts.toastError('You must agree to Terms and Conditions to proceed')
+      return
+    }
+
     try {
       setLoading(true)
       if (shouldClaim) {
@@ -232,7 +240,7 @@ export const PasswordPage = () => {
         newPassword: state.password,
       })
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
-      if (state.tos) {
+      if (state.agreeTos) {
         await tequila.acceptWithTermsAndConditions()
       }
     } catch (err: any) {
@@ -278,7 +286,7 @@ export const PasswordPage = () => {
                 }
               />
               <span>
-                <Checkbox checked={state.tos} onChange={handleTOS} /> I agree to
+                <Checkbox checked={state.agreeTos} onChange={handleTOS} /> I agree to
                 <Link href="https://mystnodes.com/terms" target="_blank">
                   Terms and Conditions
                 </Link>

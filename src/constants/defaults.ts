@@ -12,4 +12,4 @@ export const DEFAULT_STAKE_AMOUNT = 20
 
 export const NEW_PASSWORD_ERROR_TO_SHORT = 'Your password should be at least 10 characters.'
 export const NEW_PASSWORD_ERROR_BLANK = 'Password fields cannot be blank.'
-export const NEW_PASSWORD_ERROR_NOT_SAME = 'Passwords have to match.'
+export const NEW_PASSWORD_ERROR_NOT_SAME = "Passwords don't match"

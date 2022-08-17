@@ -34,7 +34,7 @@ import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
 import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
 import PageNotFound from './Error/PageNotFound'
 import { SandboxPage } from './Authenticated/SandboxPage/SandboxPage'
-import { PasswordPage } from './Authenticated/Onboarding/PasswordPage'
+import { PasswordChangePage } from './Authenticated/Onboarding/PasswordChangePage'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 
 const AppRouter = () => {
@@ -111,7 +111,7 @@ const AppRouter = () => {
         path={NEW_PASSWORD}
         element={
           <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
-            <PasswordPage />
+            <PasswordChangePage />
           </Protected>
         }
       />

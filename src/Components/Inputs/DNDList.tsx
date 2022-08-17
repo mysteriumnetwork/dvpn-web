@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import { DragIndicatorIcon } from '../Icons/Icons'
-import { themeCommon } from '../../theme/themeCommon'
 
 const DraggableContainer = styled.div`
   display: flex;
@@ -18,7 +17,7 @@ const DraggableContainer = styled.div`
 
 const StyledDraggable = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
   align-items: center;
 
   color: ${({ theme }) => theme.dndList.textColor};
@@ -26,7 +25,7 @@ const StyledDraggable = styled.div`
   border-radius: 5px;
   padding: 10px;
   font-weight: 400;
-  font-size: ${themeCommon.fontSizeSmall};
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
 `
 
 export type DNDListItem = {
@@ -49,7 +48,7 @@ const reorder = (list: DNDListItem[], startIndex: number, endIndex: number) => {
 }
 
 export const DNDList = ({ items, onChange = () => {} }: Props) => {
-  const [ditems, setDitems] = useState<DNDListItem[]>(items)
+  const [dndItems, setDndItems] = useState<DNDListItem[]>(items)
 
   const onDragEnd = (result: DropResult) => {
     // dropped outside
@@ -57,8 +56,8 @@ export const DNDList = ({ items, onChange = () => {} }: Props) => {
       return
     }
 
-    const reorderedItems = reorder(ditems, result.source.index, result.destination.index)
-    setDitems(reorderedItems)
+    const reorderedItems = reorder(dndItems, result.source.index, result.destination.index)
+    setDndItems(reorderedItems)
     onChange(reorderedItems)
   }
 
@@ -67,12 +66,12 @@ export const DNDList = ({ items, onChange = () => {} }: Props) => {
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
           <DraggableContainer {...provided.droppableProps} ref={provided.innerRef}>
-            {ditems.map((item, idx) => (
+            {dndItems.map((item, idx) => (
               <Draggable key={item.id} draggableId={item.id} index={idx}>
                 {(provided, snapshot) => (
                   <StyledDraggable ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                    {item.label}
                     <DragIndicatorIcon />
+                    {item.label}
                   </StyledDraggable>
                 )}
               </Draggable>

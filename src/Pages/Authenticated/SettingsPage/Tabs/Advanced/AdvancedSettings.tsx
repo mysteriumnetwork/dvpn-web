@@ -37,6 +37,7 @@ const rpcl2UrlsWithoutDefaults = (config: Config, defaultConfig: Config): string
   return all.filter((u) => !defaults.includes(u))
 }
 
+// TODO split this into actual two separate cards with separate controls
 export const AdvancedSettings = () => {
   const [form, setForm] = useState<AdvancedSettingsForms>(INITIAL_FORM)
   const [loading, setLoading] = useState<boolean>(false)

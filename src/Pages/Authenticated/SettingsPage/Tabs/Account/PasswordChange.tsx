@@ -52,8 +52,6 @@ export const PasswordChange = () => {
   const handleNewPassword = (v: string) => setForm((p) => ({ ...p, newPassword: v }))
   const handleRepeatNewPassword = (v: string) => setForm((p) => ({ ...p, repeatNewPassword: v }))
   const handlePasswordChange = async () => {
-    setLoading(true)
-
     const validation = validatePassword(form.newPassword, form.repeatNewPassword)
 
     if (!validation.success) {
@@ -61,6 +59,7 @@ export const PasswordChange = () => {
       return
     }
 
+    setLoading(true)
     try {
       await api.authChangePassword({
         username: DEFAULT_USERNAME,
@@ -86,7 +85,7 @@ export const PasswordChange = () => {
           <Row>
             <InputGroup
               fluid
-              title="Old password"
+              title="Current password"
               input={
                 <TextField
                   type="password"
@@ -113,7 +112,7 @@ export const PasswordChange = () => {
             />
             <InputGroup
               fluid
-              title="Repeat new password"
+              title="Confirm new password"
               input={
                 <TextField
                   type="password"

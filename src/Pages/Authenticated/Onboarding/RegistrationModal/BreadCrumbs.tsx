@@ -57,7 +57,7 @@ interface Props {
   current: number
 }
 
-const STEPS = ['Payment Method', 'Payment', 'Set withdrawal address']
+const STEPS = ['Select payment method', 'Payment', 'Set withdrawal address']
 
 export const BreadCrumbs = ({ current }: Props) => {
   return (
