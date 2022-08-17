@@ -5,13 +5,43 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { LocalVersion, RemoteVersion } from '../../../../api/ui-version-management'
-import styles from './VersionManagement.module.scss'
 import dates from '../../../../commons/dates'
 import React from 'react'
 import { Button } from '../../../../Components/Inputs/Button'
+import styled from 'styled-components'
 
 const { date2human } = dates
 
+const Row = styled.div`
+  padding: 35px;
+  border-radius: 5px;
+  background: #ffffff;
+
+  width: 500px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const VersionBlock = styled.div`
+  display: flex;
+`
+const ReleaseBlock = styled.div`
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  width: 200px;
+`
+
+const PreRelease = styled.div`
+  color: red;
+`
+const Name = styled.div`
+  margin-right: 15px;
+`
 interface Props {
   remote: RemoteVersion
   local?: LocalVersion
@@ -37,17 +67,17 @@ export const VersionCard = ({
 }: Props) => {
   const canSwitchTo = local && !isInUse
   return (
-    <div key={remote.name} className={styles.row}>
+    <Row key={remote.name}>
       <div>
-        <div className={styles.versionBlock}>
-          <div className={styles.name}>{remote.name}</div>
-          {remote.name === bundledVersion && <div className={styles.preRelease}>(bundled)</div>}
-          {remote.isPreRelease && <div className={styles.preRelease}>(pre-release)</div>}
-        </div>
-        <div className={styles.releaseBlock}>
-          <div className={styles.released}>({date2human(remote.releasedAt)})</div>
+        <VersionBlock>
+          <Name>{remote.name}</Name>
+          {remote.name === bundledVersion && <PreRelease>(bundled)</PreRelease>}
+          {remote.isPreRelease && <PreRelease>(pre-release)</PreRelease>}
+        </VersionBlock>
+        <ReleaseBlock>
+          <div>({date2human(remote.releasedAt)})</div>
           {/*{releaseNotes && <Tooltip title={releaseNotes} />}*/}
-        </div>
+        </ReleaseBlock>
       </div>
       <div>
         {!local && (
@@ -69,6 +99,6 @@ export const VersionCard = ({
           />
         )}
       </div>
-    </div>
+    </Row>
   )
 }
