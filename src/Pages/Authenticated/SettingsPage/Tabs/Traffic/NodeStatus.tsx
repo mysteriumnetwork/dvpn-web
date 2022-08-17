@@ -19,12 +19,12 @@ const Row = styled.div`
   display: flex;
   align-items: center;
   gap: 40px;
+  width: 100%;
 `
 
 const Title = styled.div`
   font-weight: 700;
   font-size: ${themeCommon.fontSizeNormal};
-  color: ${themeCommon.colorDarkBlue};
 `
 
 const FlexGrow = styled.div`
@@ -58,13 +58,17 @@ export const NodeStatus = () => {
   }
 
   return (
-    <SettingsCard loading={loading}>
-      <Row>
-        <Title>Node Status</Title>
-        <FlexGrow />
-        On
-        <Switch checked={on} onChange={() => setShowConfirmation(true)} />
-      </Row>
+    <SettingsCard
+      loading={loading}
+      title={
+        <Row>
+          <Title>Node Status</Title>
+          <FlexGrow />
+          On
+          <Switch checked={on} onChange={() => setShowConfirmation(true)} />
+        </Row>
+      }
+    >
       <ConfirmationDialog
         title={on ? 'Stop Services' : 'Start Services'}
         message={on ? 'This will stop all running services!' : 'This will start all stopped services!'}
