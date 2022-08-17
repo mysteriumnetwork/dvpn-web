@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MMN_SITE } from '../../../../../constants/names'
+import { MMN_SITE, MMN_SITE_URL } from '../../../../../constants/names'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
 import { SettingsCard } from '../../SettingsCard'
@@ -20,8 +20,17 @@ import errors from '../../../../../commons/errors'
 import { Form } from '../../../../../Components/Inputs/Form'
 import CopyToClipboardButtonIcon from '../../../../../Components/Inputs/CopyToClipboardButtonIcon'
 import { capitalizeFirstLetter } from '../../../../../commons'
+import { ReactComponent as ExternalSVG } from '../../../../../assets/images/input/external.svg'
+import styled from 'styled-components'
 
 const { api } = tequila
+
+const Title = styled.div`
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+`
 
 export const MystNodesClaim = () => {
   const identity = useAppSelector(selectors.currentIdentity)
@@ -41,7 +50,24 @@ export const MystNodesClaim = () => {
     }
   }, [apiToken?.apiKey])
 
+  const valid = (token: string): boolean => {
+    if (token.length === 0) {
+      toasts.toastError('Please enter API key')
+      return false
+    }
+
+    if (token.length !== 40) {
+      toasts.toastError('Token should be 40 characters long')
+      return false
+    }
+
+    return true
+  }
+
   const handleClaim = async () => {
+    if (!valid(token)) {
+      return
+    }
     setLoading(true)
     try {
       await api.setMMNApiKey(token)
@@ -57,7 +83,14 @@ export const MystNodesClaim = () => {
   return (
     <SettingsCard
       loading={fetchLoading}
-      title={`${capitalizeFirstLetter(MMN_SITE)} Integrations`}
+      title={
+        <Title>
+          <div>{capitalizeFirstLetter(MMN_SITE)} Integrations</div>
+          <a href={MMN_SITE_URL} target="_blank" rel="noreferrer">
+            <ExternalSVG />
+          </a>
+        </Title>
+      }
       footer={<Button type="submit" variant="secondary" loading={resolvedLoading} onClick={handleClaim} label="Save" />}
     >
       <Form onSubmit={handleClaim}>
