@@ -50,7 +50,7 @@ export const RangePicker = ({ value, options = [], onChange = () => {} }: Props)
   return (
     <Content>
       {options?.map((o) => (
-        <StyledOption key={o.value} active={value === o} onClick={() => onChange(o)}>
+        <StyledOption key={o.value} active={value?.value === o.value} onClick={() => onChange(o)}>
           {o.label}
         </StyledOption>
       ))}

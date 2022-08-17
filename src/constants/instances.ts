@@ -22,6 +22,7 @@ import {
   SessionListResponse,
   SessionStats,
   SessionStatsDailyResponse,
+  SessionsV2Response,
   SettlementListResponse,
 } from 'mysterium-vpn-js'
 import { SessionStatsWithByteTotal } from '../types/api'
@@ -151,9 +152,16 @@ export const NODE_HEALTH_CHECK_EMPTY: NodeHealthcheck = Object.freeze({
   },
 })
 
+/**
+ * @deprecated
+ */
 export const SESSIONS_STATS_DAILY_RESPONSE_EMPTY: SessionStatsDailyResponse = Object.freeze({
   items: {},
   stats: SESSION_STATS_EMPTY,
+})
+
+export const SESSIONS_V2_RESPONSE_EMPTY: SessionsV2Response = Object.freeze({
+  sessions: [],
 })
 
 export const BENEFICIARY_TX_STATUS_EMPTY: BeneficiaryTxStatus = Object.freeze({

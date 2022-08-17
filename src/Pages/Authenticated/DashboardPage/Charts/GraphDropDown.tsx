@@ -7,8 +7,9 @@
 import styled from 'styled-components'
 import { Option } from '../../../../types/common'
 import { themeCommon } from '../../../../theme/themeCommon'
-import { ChartType } from './chart.utils'
-const StyledSelect = styled.select`
+import { Select } from '../../../../Components/Inputs/Select'
+
+const StyledSelect = styled(Select)`
   background: ${themeCommon.colorDarkBlue};
   color: ${themeCommon.colorWhite};
   padding: 5px;
@@ -18,26 +19,11 @@ const StyledSelect = styled.select`
 `
 
 interface Props {
-  onChange: (value: ChartType) => void
+  onChange: (o: Option) => void
   options?: Option[]
+  value: Option
 }
 
-export const GraphDropDown = ({ onChange, options = [] }: Props) => {
-  return (
-    <StyledSelect
-      name="graphs"
-      id="graphs"
-      onChange={(e) => {
-        const value = e.target.value as ChartType
-        onChange(value)
-        console.log(value)
-      }}
-    >
-      {options?.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </StyledSelect>
-  )
+export const GraphDropDown = ({ onChange, options = [], value }: Props) => {
+  return <StyledSelect id="graphs" value={value} options={options} onChange={(e) => onChange(e as Option)} />
 }

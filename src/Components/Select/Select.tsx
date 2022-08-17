@@ -18,6 +18,17 @@ interface Props {
   isClearable?: boolean
 }
 
+/**
+ * @deprecated use Select or MultiSelect from Inputs
+ * @param options
+ * @param onChange
+ * @param value
+ * @param id
+ * @param isClearable
+ * @param isMulti
+ * @param placeholder
+ * @constructor
+ */
 export const Select = ({ options = [], onChange = () => {}, value, id, isClearable, isMulti, placeholder }: Props) => {
   return (
     <div className={styles.select}>
