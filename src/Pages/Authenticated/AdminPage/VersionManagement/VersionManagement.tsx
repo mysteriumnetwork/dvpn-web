@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import {
   LocalVersion,
@@ -15,9 +14,9 @@ import {
 } from '../../../../api/ui-version-management'
 import page from '../../../../commons/page'
 import errors from '../../../../commons/errors'
-import styles from './VersionManagement.module.scss'
 import { VersionCard } from './VersionCard'
 import { Button } from '../../../../Components/Inputs/Button'
+import styled from 'styled-components'
 
 const { parseToastError } = errors
 
@@ -46,6 +45,60 @@ const initialState: State = {
     versions: [],
   },
 }
+
+const Info = styled.div`
+  display: flex;
+  width: 100%;
+  height: 6rem;
+  justify-content: center;
+  gap: 25px;
+`
+const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  gap: 15px;
+`
+const Controls = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+  height: 100%;
+  width: 10rem;
+`
+const Progress = styled.div`
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const Bar = styled.progress`
+  width: 60%;
+`
+const Versions = styled.div`
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+
+  height: 60vh;
+  overflow-y: auto;
+`
+const InfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const ReleaseNotes = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 
 export const VersionManagement = () => {
   const { info, localVersions, remoteVersions, downloadUi, downloadStatus, switchUi } = uiVersionManager
@@ -136,11 +189,11 @@ export const VersionManagement = () => {
       return undefined
     }
     return (
-      <div className={styles.releaseNotes}>
+      <ReleaseNotes>
         {notes.split('\r\n').map((it, index) => (
           <p key={index}>{it}</p>
         ))}
-      </div>
+      </ReleaseNotes>
     )
   }
 
@@ -179,32 +232,27 @@ export const VersionManagement = () => {
   }
   return (
     <>
-      <div className={styles.info}>
-        <div className={styles.infoCard}>
+      <Info>
+        <Card>
           {infoRow('Bundled:', state.ui.bundledVersion)}
           {infoRow('Used:', state.ui.usedVersion)}
-        </div>
-        <div className={styles.controls}>
+        </Card>
+        <Controls>
           <Button onClick={() => init(true)} loading={state.isLoading} variant="outlined" label="Flush Cache" />
           {state.ui.usedVersion !== 'bundled' && (
             <Button onClick={() => switchVersion('bundled')} loading={state.isLoading} label="Switch Back" />
           )}
-        </div>
-      </div>
-      <div className={styles.progress}>
-        <progress
-          className={classNames(styles.bar, state.isDownloadInProgress ? '' : styles.invisible)}
-          value={state.downloadProgress / 100}
-        />
-      </div>
-      <div className={styles.versions}>{versionList}</div>
+        </Controls>
+      </Info>
+      <Progress>{state.isDownloadInProgress && <Bar value={state.downloadProgress / 100} />}</Progress>
+      <Versions>{versionList}</Versions>
     </>
   )
 }
 
 const infoRow = (key: string, value: string): JSX.Element => (
-  <div className={styles.row}>
-    <div className={styles.key}>{key}</div>
-    <div className={styles.value}>{value}</div>
-  </div>
+  <InfoRow>
+    <div>{key}</div>
+    <div>{value}</div>
+  </InfoRow>
 )

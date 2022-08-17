@@ -4,66 +4,47 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useState } from 'react'
-
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { Media } from '../../../../commons/media'
-import charts, { ChartType, Pair, types } from './chart.utils'
+import charts from './chart.utils'
 import styled from 'styled-components'
-import { RangePicker } from './RangePicker'
 import { GraphDropDown } from './GraphDropDown'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
-import { SessionStatsWithDate } from '../../../../types/api'
+import { RangePicker } from '../../../../Components/Inputs/RangePicker'
+import { Option } from '../../../../types/common'
+import { capitalizeFirstLetter } from '../../../../commons'
+import { ChartData } from './types'
 
 interface Props {
-  sessionStats: SessionStatsWithDate[]
-  handleRange: (a: number) => void
-  selectedRange: number
+  chartData: ChartData
+
+  graphOptions: Option[]
+  onGraphChange: (o: Option) => void
+  selectedGraph: Option
+
+  rangeOptions: Option[]
+  onRangeChange: (o: Option) => void
+  selectedRange: Option
 }
 
-interface StateProps {
-  active: ChartType
-  data: (arg: SessionStatsWithDate[]) => Pair[]
-  dataName: string
-}
-
-const RANGES = [7, 30, 90]
-
-const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
-  const [state, setState] = useState<StateProps>({
-    active: 'earnings',
-    data: charts.configByType('earnings').dataFunction,
-    dataName: charts.configByType('earnings').dataName,
-  })
-
-  const changeGraph = (active: ChartType) => {
-    const config = charts.configByType(active)
-    setState({ ...state, active: active, data: config.dataFunction, dataName: config.dataName })
-    console.log(state)
-  }
-  // const rangedStats = useMemo(() => {
-  //   const dates = Object.keys(sessionStats)
-
-  //   const ranged: { [date: string]: SessionStats } = {}
-  //   for (let i = 0; i < selectedRange; i++) {
-  //     if (!dates[i]) {
-  //       break
-  //     }
-  //     ranged[dates[i]] = sessionStats[dates[i]]
-  //   }
-
-  //   return ranged
-  // }, [selectedRange])
-
+const ReportGraph = ({
+  chartData,
+  onRangeChange,
+  selectedRange,
+  rangeOptions,
+  graphOptions,
+  selectedGraph,
+  onGraphChange,
+}: Props) => {
   return (
     <Chart>
       <Media.Desktop>
         <Header>
-          <Title>Earnings Report</Title>
-          <RangePicker options={RANGES} active={selectedRange} onChange={handleRange} />
+          <Title>{capitalizeFirstLetter(selectedGraph.value)} Report</Title>
+          <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
           <FlexGrow />
-          <GraphDropDown onChange={changeGraph} options={Object.keys(types).map((t) => ({ value: t, label: t }))} />
+          <GraphDropDown onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
         </Header>
       </Media.Desktop>
       <Media.Mobile>
@@ -71,9 +52,9 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
           <Row>
             <Title>Earnings Report</Title>
             {/* TODO: Figure out why select options bug and show in the wrong place */}
-            <GraphDropDown onChange={changeGraph} options={Object.keys(types).map((t) => ({ value: t, label: t }))} />
+            <GraphDropDown onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
           </Row>
-          <RangePicker options={RANGES} active={selectedRange} onChange={handleRange} />
+          <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
         </Header>
       </Media.Mobile>
       <ChartOverrides>
@@ -81,7 +62,7 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
           <AreaChart
             width={500}
             height={300}
-            data={state.data(sessionStats)}
+            data={chartData.series}
             margin={{
               top: 5,
               right: 50,
@@ -100,13 +81,12 @@ const Charts = ({ sessionStats, handleRange, selectedRange }: Props) => {
             <YAxis
               tick={{ width: 250 }}
               tickMargin={10}
-              ticks={charts.ticks(state.data(sessionStats))}
+              ticks={charts.ticks(chartData.series)}
               dataKey="y"
-              unit={state.dataName}
+              unit={chartData.units}
             />
             <Tooltip />
             <Area
-              // style={{ strokeDasharray: `40% 60%` }}
               type="monotone"
               dataKey="y"
               fill="url(#colorUv)"
@@ -207,4 +187,4 @@ const ChartOverrides = styled.div`
   }
 `
 
-export default Charts
+export default ReportGraph

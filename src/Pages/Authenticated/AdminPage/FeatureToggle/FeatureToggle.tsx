@@ -9,9 +9,35 @@ import { tequila } from '../../../../api/tequila'
 import { configs } from '../../../../commons/config'
 import FEATURES from '../../../../commons/features'
 import { selectors } from '../../../../redux/selectors'
-import styles from './FeatureToggle.module.scss'
 import { useAppSelector } from '../../../../commons/hooks'
 import { Button } from '../../../../Components/Inputs/Button'
+import styled from 'styled-components'
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  gap: 15px;
+
+  overflow-y: auto;
+`
+const Feature = styled.div`
+  display: grid;
+  grid-template-columns: 0.25fr 2fr 1fr;
+  justify-content: space-between;
+  width: 500px;
+  gap: 15px;
+`
+const Enabled = styled.div``
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+const Name = styled.div`
+  margin-bottom: 5px;
+`
+const Description = styled.div``
 
 export const FeatureToggle = () => {
   const { setFeatures } = tequila
@@ -38,16 +64,16 @@ export const FeatureToggle = () => {
     const feature = FEATURES[f]
     const isEnabled = configs.isFeatureEnabled(config, feature.name)
     return (
-      <div key={feature.name} className={styles.feature}>
-        <div className={styles.enabled}>{isEnabled && <div>X</div>}</div>
-        <div className={styles.info}>
-          <p className={styles.name}>{feature.name}</p>
-          <p className={styles.description}>{feature.description}</p>
-        </div>
+      <Feature key={feature.name}>
+        <Enabled>{isEnabled && 'X'}</Enabled>
+        <Info>
+          <Name>{feature.name}</Name>
+          <Description>{feature.description}</Description>
+        </Info>
         <Button onClick={() => toggle(feature.name)} loading={isLoading} variant="outlined" label="Toggle" />
-      </div>
+      </Feature>
     )
   })
 
-  return <div className={styles.features}>{featureList}</div>
+  return <Content>{featureList}</Content>
 }

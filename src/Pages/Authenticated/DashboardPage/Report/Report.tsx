@@ -7,25 +7,25 @@
 
 import { useFetch } from '../../../../commons/hooks'
 import { tequila } from '../../../../api/tequila'
-import Charts from '../Charts/Charts'
+import ReportGraph from '../Charts/ReportGraph'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import dates from '../../../../commons/dates'
-import {
-  SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
-  SESSIONS_STATS_DAILY_RESPONSE_EMPTY,
-} from '../../../../constants/instances'
-import charts from '../Charts/chart.utils'
-import { SessionStatsWithByteTotal, SessionStatsWithDate } from '../../../../types/api'
+import { SESSION_STATS_WITH_BYTE_TOTAL_EMPTY, SESSIONS_V2_RESPONSE_EMPTY } from '../../../../constants/instances'
+import { SessionStatsWithByteTotal } from '../../../../types/api'
 import { myst } from '../../../../commons/mysts'
 import bytes from '../../../../commons/bytes'
+import { Option } from '../../../../types/common'
+import { ChartData } from '../Charts/types'
+import series from './series'
+import { ChartType } from './types'
 
 const { api } = tequila
-const { days2Ms, seconds2Time } = dates
+const { seconds2Time } = dates
 const { format } = bytes
 
 const Column = styled.div`
@@ -65,13 +65,8 @@ const ChartRow = styled.div`
 const BorderRight = styled.div`
   border-right: 1px dashed ${themeCommon.colorGrayBlue2}80;
 `
-const RANGES = [7, 30, 90]
-
-interface StateProps {
-  selectedRange: number
-  dateTo: string
-  dateFrom: string
-}
+const RANGE_OPTIONS = ['7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
+const GRAPH_OPTIONS = ['earnings', 'sessions', 'data'].map<Option>((r) => ({ value: r, label: r }))
 
 interface ReportStats {
   totals: SessionStatsWithByteTotal
@@ -79,59 +74,44 @@ interface ReportStats {
 }
 
 export const Report = () => {
-  const [state, setState] = useState<StateProps>({
-    selectedRange: RANGES[0],
-    dateTo: new Date(Date.now()).toISOString().split('T')[0],
-    dateFrom: new Date(Date.now() - days2Ms(RANGES[0] * 2 - 1)).toISOString().split('T')[0],
-  })
-  const [chartStats, setChartStats] = useState<SessionStatsWithDate[]>([])
-  const [reportStats, setReportStats] = useState<ReportStats>({
+  const [selectedRange, setSelectedRange] = useState(RANGE_OPTIONS[0])
+  const [selectedGraph, setSelectedGraph] = useState(GRAPH_OPTIONS[0])
+  const [chartData, setChartData] = useState<ChartData>({ series: [] })
+  const [reportStats] = useState<ReportStats>({
     totals: SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
     diff: SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
   })
 
   useFetch(() => Promise.all([api.sessionStatsDaily()]))
 
-  const [data = SESSIONS_STATS_DAILY_RESPONSE_EMPTY, loading] = useFetch(
-    () => api.sessionStatsDaily({ dateFrom: state.dateFrom, dateTo: state.dateTo }),
-    [state.dateFrom],
+  const [data = SESSIONS_V2_RESPONSE_EMPTY, loading] = useFetch(
+    () => api.provider.sessions({ range: selectedRange.value }),
+    [selectedRange],
   )
-  const handleRange = (range: number) => {
-    setState((p) => ({
-      ...p,
-      selectedRange: range,
-      dateFrom: new Date(Date.now() - days2Ms(range * 2 - 1)).toISOString().split('T')[0],
-    }))
-  }
 
-  const sliceDisplayItems = (items: Array<SessionStatsWithDate>) =>
-    items.slice(state.selectedRange, state.selectedRange * 2)
-
-  const remmapedItems = useMemo(() => {
-    const remaped = Object.entries(data.items).map((item) => {
-      return { ...item[1], date: item[0] } as SessionStatsWithDate
-    })
-    return remaped
-  }, [state.dateFrom, loading])
-
-  useMemo(() => {
-    if (!loading) {
-      const itemsToDisplay = sliceDisplayItems(remmapedItems)
-      const displayTotals = charts.calculateDisplayTotals(itemsToDisplay)
-      const diffs = charts.calculateDiffs(data.stats, displayTotals)
-      setChartStats(itemsToDisplay)
-      setReportStats((p) => ({
-        ...p,
-        totals: displayTotals,
-        diff: diffs,
-      }))
+  useEffect(() => {
+    if (loading) {
+      return
     }
-  }, [state.dateFrom, loading])
+    setChartData((p) => ({
+      ...p,
+      series: series.pairs(data.sessions, selectedGraph.value as ChartType, selectedRange.value),
+      units: series.units(selectedGraph.value as ChartType),
+    }))
+  }, [selectedRange, selectedGraph, loading])
 
   return (
     <Column>
       <ChartRow>
-        <Charts sessionStats={chartStats} handleRange={handleRange} selectedRange={state.selectedRange} />
+        <ReportGraph
+          chartData={chartData}
+          rangeOptions={RANGE_OPTIONS}
+          onRangeChange={(o: Option) => setSelectedRange(o)}
+          selectedRange={selectedRange}
+          graphOptions={GRAPH_OPTIONS}
+          onGraphChange={(o) => setSelectedGraph(o)}
+          selectedGraph={selectedGraph}
+        />
       </ChartRow>
       <CardRow>
         <ReportCard

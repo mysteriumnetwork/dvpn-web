@@ -95,9 +95,6 @@ export const Slider = ({ min, max, value, onChange, dots, disabled, marks, step 
         value={value}
         onChange={onChange}
         onAfterChange={onAfterChange}
-        onBlur={() => {
-          console.log('blured')
-        }}
         dots={dots}
         disabled={disabled}
         marks={marks}

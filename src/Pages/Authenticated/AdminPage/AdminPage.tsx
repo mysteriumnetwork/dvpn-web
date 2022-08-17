@@ -6,25 +6,36 @@
  */
 import React from 'react'
 import { Layout } from '../Components/Layout/Layout'
-import styles from './Admin.module.scss'
 import { FeatureToggle } from './FeatureToggle/FeatureToggle'
 import { VersionManagement } from './VersionManagement/VersionManagement'
 import { ErrorLog } from './ErrorLog/ErrorLog'
+import styled from 'styled-components'
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 15px;
+`
+
+const Column = styled.div`
+  border: solid 1px ${({ theme }) => theme.common.colorGrayBlue2};
+`
 
 export const AdminPage = () => {
   return (
     <Layout title="Admin" isLoading={false}>
-      <div className={styles.page}>
-        <div className={styles.versionManagement}>
+      <Row>
+        <Column>
           <VersionManagement />
-        </div>
-        <div className={styles.versionManagement}>
+        </Column>
+        <Column>
           <FeatureToggle />
-        </div>
-        <div className={styles.versionManagement}>
+        </Column>
+        <Column>
           <ErrorLog />
-        </div>
-      </div>
+        </Column>
+      </Row>
     </Layout>
   )
 }
