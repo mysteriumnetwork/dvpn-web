@@ -168,7 +168,12 @@ export const HistoryPage = () => {
         <RangePicker options={RANGE_OPTIONS} value={range} onChange={(option: Option) => setRange(option)} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Table columns={isDesktop ? DesktopColumns : MobileColumns} data={sessions} loading={loading} />
+        <Table
+          columns={isDesktop ? DesktopColumns : MobileColumns}
+          data={sessions}
+          loading={loading}
+          isDesktop={isDesktop}
+        />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <Pagination currentPage={page} totalPages={totalPages} handlePageChange={(page: number) => setPage(page)} />

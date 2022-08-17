@@ -44,9 +44,18 @@ const Row = styled.div`
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     border-radius: 30px;
-    padding: 20px;
+    padding: 30px;
     grid-gap: 20px 80px;
-    min-width: 300px;
+  }
+`
+const Cell = styled.div`
+  &&&.grid-full {
+    display: grid;
+    grid-column: 1 / 3;
+  }
+  &&&.grid-half {
+    display: grid;
+    grid-column: 1 / 2;
   }
 `
 const Body = styled.div`
@@ -87,7 +96,11 @@ export const Table = ({ columns, data, isDesktop }: Props) => {
           return (
             <Row {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                return <div {...cell.getCellProps()}>{cell.render('Cell')}</div>
+                return (
+                  <Cell {...cell.getCellProps({ className: (cell.column as any).className })}>
+                    {cell.render('Cell')}
+                  </Cell>
+                )
               })}
             </Row>
           )

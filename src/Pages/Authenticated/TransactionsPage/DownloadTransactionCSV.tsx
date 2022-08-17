@@ -66,6 +66,7 @@ export const DownloadTransactionCSV = ({ data }: Props) => {
           variant="blue"
           label="Download CSV"
           rounded
+          size="medium"
           onClick={() => {
             handleDownload(data)
           }}

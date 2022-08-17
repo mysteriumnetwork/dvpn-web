@@ -25,7 +25,7 @@ import { useMediaQuery } from 'react-responsive'
 const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
-const { PrimaryCell, SecondaryCell } = cells
+const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CellDataOverflow } = cells
 
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
@@ -72,6 +72,63 @@ export const TransactionsPage = () => {
     ],
     [],
   )
+  const MobileColumns: Column<any>[] = useMemo(
+    () => [
+      {
+        Header: 'Transaction ID',
+        accessor: 'txHash',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Transaction ID</CellHeader>
+            <CellDataOverflow>{c.value}</CellDataOverflow>
+          </MobileCell>
+        ),
+        className: 'grid-half',
+      },
+      {
+        Header: 'Date',
+        accessor: 'settledAt',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>{date2human(c.value)}</CellHeader>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'External Wallet Address',
+        accessor: 'beneficiary',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>External Wallet</CellHeader>
+            <CellDataOverflow>{c.value}</CellDataOverflow>
+          </MobileCell>
+        ),
+        className: 'grid-full',
+      },
+      {
+        Header: 'Fee',
+        accessor: 'fees',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Fees</CellHeader>
+            <CellData>{myst.display(c.value, { fractionDigits: 3 })}</CellData>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Received amount',
+        accessor: 'amount',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Received amount</CellHeader>
+            <CellData>{myst.display(c.value, { fractionDigits: 3 })}</CellData>
+          </MobileCell>
+        ),
+      },
+    ],
+    [],
+  )
+
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
       {isDesktop ? (
@@ -87,7 +144,7 @@ export const TransactionsPage = () => {
         </LayoutUnstyledRow>
       )}
       <LayoutUnstyledRow>
-        <Table columns={Columns} data={data.items} isDesktop={isDesktop} />
+        <Table columns={isDesktop ? Columns : MobileColumns} data={data.items} isDesktop={isDesktop} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />

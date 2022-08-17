@@ -51,6 +51,15 @@ const CellData = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
   font-weight: 500;
 `
+const CellDataOverflow = styled.div`
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+  color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
+  font-weight: 500;
+  overflow: hidden;
+  white-space: no-wrap;
+  text-overflow: ellipsis;
+  width: 50%;
+`
 export const cells = {
   PrimaryCell,
   SecondaryCell,
@@ -59,4 +68,5 @@ export const cells = {
   CellData,
   CardHeaderPrimary,
   CardHeaderSecondary,
+  CellDataOverflow,
 }
