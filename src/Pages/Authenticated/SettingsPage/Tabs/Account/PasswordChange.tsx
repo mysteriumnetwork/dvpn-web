@@ -86,7 +86,7 @@ export const PasswordChange = () => {
           <Row>
             <InputGroup
               fluid
-              title="Old password"
+              title="Current password"
               input={
                 <TextField
                   type="password"
@@ -113,7 +113,7 @@ export const PasswordChange = () => {
             />
             <InputGroup
               fluid
-              title="Repeat new password"
+              title="Confirm new password"
               input={
                 <TextField
                   type="password"
