@@ -21,6 +21,7 @@ import dates from '../../../commons/dates'
 import { cells } from '../../../Components/Table/cells'
 import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
+import { ReactComponent as Clock } from '../../../assets/images/clock.svg'
 
 const { isDesktopQuery } = media
 const { api } = tequila

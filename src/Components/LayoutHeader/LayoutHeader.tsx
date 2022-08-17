@@ -33,7 +33,7 @@ const PageName = styled.div`
   margin-left: 25px;
   font-weight: 500;
   max-width: 200px;
-  min-width: 200px;
+  min-width: 100px;
   color: ${({ theme }) => theme.text.colorMain};
 `
 
