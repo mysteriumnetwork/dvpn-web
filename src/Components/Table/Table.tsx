@@ -44,11 +44,14 @@ const Row = styled.div`
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     border-radius: 30px;
+    min-width: 350px;
     padding: 30px;
-    grid-gap: 20px 80px;
+    overflow: hidden;
+    grid-gap: 20px 10px;
   }
 `
 const Cell = styled.div`
+  margin-right: 20px;
   &&&.grid-full {
     display: grid;
     grid-column: 1 / 3;

@@ -133,14 +133,14 @@ export const TransactionsPage = () => {
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
       {isDesktop ? (
         <LayoutHeroCardRow>
-          <TotalSettled />
+          <TotalSettled isDesktop={isDesktop} />
           <SettlementCard />
-          <DownloadTransactionCSV data={data} />
+          <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
         </LayoutHeroCardRow>
       ) : (
         <LayoutUnstyledRow>
-          <TotalSettled />
-          <DownloadTransactionCSV data={data} />
+          <TotalSettled isDesktop={isDesktop} />
+          <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
         </LayoutUnstyledRow>
       )}
       <LayoutUnstyledRow>

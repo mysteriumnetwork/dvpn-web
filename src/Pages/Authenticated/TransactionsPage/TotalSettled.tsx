@@ -18,13 +18,21 @@ import { SettleModal } from '../Components/SettleModal/SettleModal'
 import { useState } from 'react'
 import { ReactComponent as WarningSVG } from '../../../assets/images/notifications/negative.svg'
 import { Media } from '../../../commons/media'
+import { devices } from '../../../theme/themes'
 
 const Row = styled.div`
   display: flex;
   align-items: center;
   gap: 26px;
+  @media ${devices.tablet} {
+    gap: 40px;
+  }
 `
-
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 const Column = styled.div`
   display: flex;
   gap: 4px;
@@ -50,15 +58,17 @@ const WarningIcon = styled(WarningSVG)`
   }
 `
 const SETTLE_LOCKOUT_ID = 'SETTLE_LOCKOUT_ID'
-
+interface Props {
+  isDesktop: boolean
+}
 const { calculateSettled } = feez
-export const TotalSettled = () => {
+export const TotalSettled = ({ isDesktop }: Props) => {
   const identity = useAppSelector(selectors.currentIdentity)
   const totalSettled = calculateSettled(identity.earningsTokens, identity.earningsTotalTokens)
   const { error } = useAppSelector(selectors.beneficiaryTxStatus)
   const [showModal, setShowModal] = useState(false)
   return (
-    <Card grow={0} fluid={false}>
+    <Card>
       <Media.Mobile>
         <SettleModal
           show={showModal}
@@ -67,7 +77,11 @@ export const TotalSettled = () => {
         />
       </Media.Mobile>
       <Row>
-        <WalletIcon $accented />
+        {isDesktop && (
+          <IconContainer>
+            <WalletIcon $accented />
+          </IconContainer>
+        )}
         <Column>
           <Title>Total settled</Title>
           <Value>{myst.display(totalSettled, { fractionDigits: 2 })}</Value>
@@ -81,7 +95,7 @@ export const TotalSettled = () => {
                 {error && <WarningIcon />}
               </>
             }
-            size="medium"
+            size={isDesktop ? 'medium' : 'small'}
             rounded
             onClick={() => setShowModal(true)}
           />
