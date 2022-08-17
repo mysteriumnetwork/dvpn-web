@@ -6,6 +6,8 @@
  */
 import { DECIMAL_PART, DisplayMoneyOptions } from 'mysterium-vpn-js'
 
+export const capitalizeFirstLetter = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1)
+
 // TODO use custom type for MYST formatting functions instead of vpn js
 export const DEFAULT_MONEY_DISPLAY_OPTIONS: Required<DisplayMoneyOptions> = Object.freeze({
   showCurrency: true,

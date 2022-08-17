@@ -19,6 +19,7 @@ import toasts from '../../../../../commons/toasts'
 import errors from '../../../../../commons/errors'
 import { Form } from '../../../../../Components/Inputs/Form'
 import CopyToClipboardButtonIcon from '../../../../../Components/Inputs/CopyToClipboardButtonIcon'
+import { capitalizeFirstLetter } from '../../../../../commons'
 
 const { api } = tequila
 
@@ -56,7 +57,7 @@ export const MystNodesClaim = () => {
   return (
     <SettingsCard
       loading={fetchLoading}
-      title={`${MMN_SITE} Integrations`}
+      title={`${capitalizeFirstLetter(MMN_SITE)} Integrations`}
       footer={<Button type="submit" variant="secondary" loading={resolvedLoading} onClick={handleClaim} label="Save" />}
     >
       <Form onSubmit={handleClaim}>
