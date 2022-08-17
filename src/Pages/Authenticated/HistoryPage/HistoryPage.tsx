@@ -8,7 +8,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Column } from 'react-table'
-import { PrimaryCell, SecondaryCell, Table } from '../../../Components/Table/Table'
+import { Table } from '../../../Components/Table/Table'
+import { cells } from '../../../Components/Table/cells'
 import { Pagination } from '../../../Components/Pagination/Pagination'
 import { tequila } from '../../../api/tequila'
 import dates from '../../../commons/dates'
@@ -16,15 +17,19 @@ import { useFetch } from '../../../commons/hooks'
 import location from '../../../commons/location'
 import { myst } from '../../../commons/mysts'
 import bytes from '../../../commons/bytes'
-import { SessionV2 } from 'mysterium-vpn-js'
 import { Option } from '../../../types/common'
-import { RangePicker } from '../../../Components/Inputs/RangePicker'
+import { media } from '../../../commons/media'
+import { useMediaQuery } from 'react-responsive'
+import { SessionV2 } from 'mysterium-vpn-js'
 import services from '../../../commons/services'
+import { RangePicker } from '../../../Components/Inputs/RangePicker'
 
 const { api } = tequila
 const { date2human, seconds2Time } = dates
 const { countryName } = location
 const { format } = bytes
+const { isDesktopQuery } = media
+const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CardHeaderPrimary, CardHeaderSecondary } = cells
 
 const session2human = (session: string) => {
   return session.split('-')[0]
@@ -34,6 +39,8 @@ const PAGE_SIZE = 10
 const RANGE_OPTIONS = ['1d', '7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
 
 export const HistoryPage = () => {
+  const isDesktop = useMediaQuery(isDesktopQuery)
+
   const [range, setRange] = useState<Option>(RANGE_OPTIONS[RANGE_OPTIONS.length - 1])
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -51,7 +58,7 @@ export const HistoryPage = () => {
     setSessions(data.sessions.slice(PAGE_SIZE * (page - 1), PAGE_SIZE * page))
   }, [data.sessions.length, page, loading])
 
-  const Columns: Column<SessionV2>[] = useMemo(
+  const DesktopColumns: Column<SessionV2>[] = useMemo(
     () => [
       {
         Header: 'Country',
@@ -92,13 +99,81 @@ export const HistoryPage = () => {
     ],
     [],
   )
+  const MobileColumns: Column<SessionV2>[] = useMemo(
+    () => [
+      {
+        Header: 'Country',
+        accessor: 'consumerCountry',
+        Cell: (c) => (
+          <MobileCell>
+            <CardHeaderPrimary>{countryName(c.value)}</CardHeaderPrimary>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Session ID',
+        accessor: 'id',
+        Cell: (c) => (
+          <MobileCell>
+            <CardHeaderSecondary>{session2human(c.value)}</CardHeaderSecondary>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Started',
+        accessor: 'startedAt',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Started</CellHeader>
+            <CellData>{date2human(c.value)}</CellData>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Duration',
+        accessor: 'durationSeconds',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Duration</CellHeader>
+            <CellData>{seconds2Time(c.value)}</CellData>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Earnings',
+        accessor: 'earnings',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Earnings</CellHeader>
+            <CellData>{myst.display(c.value.wei, { fractionDigits: 3 })}</CellData>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Transferred',
+        accessor: 'transferredBytes',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Transferred</CellHeader>
+            <CellData>{format(c.value)}</CellData>
+          </MobileCell>
+        ),
+      },
+    ],
+    [],
+  )
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
       <LayoutUnstyledRow>
         <RangePicker options={RANGE_OPTIONS} value={range} onChange={(option: Option) => setRange(option)} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Table columns={Columns} data={sessions} loading={loading} />
+        <Table
+          columns={isDesktop ? DesktopColumns : MobileColumns}
+          data={sessions}
+          loading={loading}
+          isDesktop={isDesktop}
+        />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <Pagination currentPage={page} totalPages={totalPages} handlePageChange={(page: number) => setPage(page)} />

@@ -7,7 +7,7 @@
 import { useMemo, useState } from 'react'
 import { Layout, LayoutHeroCardRow, LayoutUnstyledRow } from '../Components/Layout/Layout'
 import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
-import { Table, PrimaryCell, SecondaryCell } from '../../../Components/Table/Table'
+import { Table } from '../../../Components/Table/Table'
 import { DownloadTransactionCSV } from './DownloadTransactionCSV'
 import { TotalSettled } from './TotalSettled'
 import { SettlementCard } from './SettlementCard'
@@ -18,11 +18,17 @@ import { myst } from '../../../commons/mysts'
 import { useFetch } from '../../../commons/hooks'
 import { SETTLEMENT_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 import dates from '../../../commons/dates'
+import { cells } from '../../../Components/Table/cells'
+import { media } from '../../../commons/media'
+import { useMediaQuery } from 'react-responsive'
 
+const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
+const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CellDataOverflow } = cells
 
 export const TransactionsPage = () => {
+  const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState(1)
 
   const handlePageChange = (page: number) => setState(page)
@@ -66,15 +72,79 @@ export const TransactionsPage = () => {
     ],
     [],
   )
+  const MobileColumns: Column<any>[] = useMemo(
+    () => [
+      {
+        Header: 'Transaction ID',
+        accessor: 'txHash',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Transaction ID</CellHeader>
+            <CellDataOverflow>{c.value}</CellDataOverflow>
+          </MobileCell>
+        ),
+        className: 'grid-half',
+      },
+      {
+        Header: 'Date',
+        accessor: 'settledAt',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>{date2human(c.value)}</CellHeader>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'External Wallet Address',
+        accessor: 'beneficiary',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>External Wallet</CellHeader>
+            <CellDataOverflow>{c.value}</CellDataOverflow>
+          </MobileCell>
+        ),
+        className: 'grid-full',
+      },
+      {
+        Header: 'Fee',
+        accessor: 'fees',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Fees</CellHeader>
+            <CellData>{myst.display(c.value, { fractionDigits: 3 })}</CellData>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Received amount',
+        accessor: 'amount',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Received amount</CellHeader>
+            <CellData>{myst.display(c.value, { fractionDigits: 3 })}</CellData>
+          </MobileCell>
+        ),
+      },
+    ],
+    [],
+  )
+
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
-      <LayoutHeroCardRow>
-        <TotalSettled />
-        <SettlementCard />
-        <DownloadTransactionCSV data={data} />
-      </LayoutHeroCardRow>
+      {isDesktop ? (
+        <LayoutHeroCardRow>
+          <TotalSettled isDesktop={isDesktop} />
+          <SettlementCard />
+          <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
+        </LayoutHeroCardRow>
+      ) : (
+        <LayoutUnstyledRow>
+          <TotalSettled isDesktop={isDesktop} />
+          <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
+        </LayoutUnstyledRow>
+      )}
       <LayoutUnstyledRow>
-        <Table columns={Columns} data={data.items} />
+        <Table columns={isDesktop ? Columns : MobileColumns} data={data.items} isDesktop={isDesktop} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />

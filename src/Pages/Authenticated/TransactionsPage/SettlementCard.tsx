@@ -37,7 +37,6 @@ const Content = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 60px;
-  min-width: 400px;
   width: 100%;
 `
 
@@ -71,7 +70,7 @@ export const SettlementCard = () => {
   const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
 
   return (
-    <Card grow={2}>
+    <Card scale={true}>
       <SettleModal
         show={showModal}
         onClose={() => setShowModal(false)}

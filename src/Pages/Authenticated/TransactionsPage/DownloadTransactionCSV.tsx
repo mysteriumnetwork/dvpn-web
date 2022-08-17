@@ -21,15 +21,21 @@ const Title = styled.div`
   max-width: 8em;
   color: ${({ theme }) => theme.text.colorSecondary};
 `
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 interface Props {
   data: SettlementListResponse
+  isDesktop: boolean
 }
 interface State {
   isLoading: boolean
   downloadLink: string
 }
-export const DownloadTransactionCSV = ({ data }: Props) => {
+export const DownloadTransactionCSV = ({ data, isDesktop }: Props) => {
   const [state, setState] = useState<State>({
     isLoading: true,
     downloadLink: '',
@@ -58,14 +64,19 @@ export const DownloadTransactionCSV = ({ data }: Props) => {
   }
 
   return (
-    <Card grow={0} fluid={false}>
+    <Card>
       <Row>
-        <FileIcon />
+        {isDesktop && (
+          <IconContainer>
+            <FileIcon />
+          </IconContainer>
+        )}
         <Title>Record of transactions</Title>
         <Button
           variant="blue"
           label="Download CSV"
           rounded
+          size={isDesktop ? 'medium' : 'small'}
           onClick={() => {
             handleDownload(data)
           }}

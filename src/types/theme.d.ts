@@ -63,6 +63,10 @@ export type Theme = {
     bgRowEven: string
     textColorPrimary: string
     textColorSecondary: string
+    mobileCard: {
+      textColorPrimary: string
+      textColorSecondary: string
+    }
   }
   modal: {
     bgOverlay: string
