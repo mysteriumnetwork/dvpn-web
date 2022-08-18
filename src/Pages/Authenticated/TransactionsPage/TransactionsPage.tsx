@@ -61,7 +61,9 @@ export const TransactionsPage = () => {
 
   const handlePageChange = (page: number) => setState(page)
 
-  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY] = useFetch(() => api.settlementHistory({ page: state }), [state])
+  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY, loading] = useFetch(() => api.settlementHistory({ page: state }), [
+    state,
+  ])
   const noData = data.items.length === 0
   const Columns: Column<any>[] = useMemo(
     () => [
@@ -178,7 +180,12 @@ export const TransactionsPage = () => {
             <PlaceholderText>No transactions in Your history yet</PlaceholderText>
           </Placeholder>
         ) : (
-          <Table columns={isDesktop ? Columns : MobileColumns} data={data.items} isDesktop={isDesktop} />
+          <Table
+            columns={isDesktop ? Columns : MobileColumns}
+            isLoading={loading}
+            data={data.items}
+            isDesktop={isDesktop}
+          />
         )}
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>

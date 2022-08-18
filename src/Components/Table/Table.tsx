@@ -6,17 +6,43 @@
  */
 import { useTable, useFlexLayout, Column } from 'react-table'
 import styled from 'styled-components'
+import { themeCommon } from '../../theme/themeCommon'
+import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { devices } from '../../theme/themes'
 
 interface Props {
   columns: Column<any>[]
   data: any[]
-  loading?: boolean
+  isLoading?: boolean
   isDesktop?: boolean
 }
 
 const Container = styled.div`
   width: 100%;
+`
+
+const Spinner = styled(CircularSpinner)`
+  width: 50px;
+  height: 50px;
+  border: 6px solid ${themeCommon.colorWhite};
+  z-index: 1001;
+`
+const Overlay = styled.div`
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  min-height: 550px;
+  height: 100%;
+  background: ${themeCommon.colorDarkBlue}6A;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media ${devices.tablet} {
+    min-height: 200px;
+  }
 `
 const HeaderRow = styled.div`
   padding: 20px;
@@ -29,6 +55,7 @@ const Header = styled.div`
 `
 const Row = styled.div`
   display: flex;
+  position: relative;
   justify-content: space-between;
   padding: 5px;
   border-radius: 10px;
@@ -62,6 +89,7 @@ const Cell = styled.div`
   }
 `
 const Body = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.table.bgBody};
@@ -73,13 +101,21 @@ const Body = styled.div`
     gap: 20px;
     padding: 0;
     min-width: 300px;
+    min-height: 200px;
   }
 `
-export const Table = ({ columns, data, isDesktop }: Props) => {
+const TableSpinner = () => (
+  <Overlay>
+    <Spinner />
+  </Overlay>
+)
+export const Table = ({ columns, data, isDesktop, isLoading }: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { data, columns },
     useFlexLayout,
   )
+  const showSpinner = isLoading
+
   return (
     <Container {...getTableProps()}>
       {isDesktop && (
@@ -94,6 +130,7 @@ export const Table = ({ columns, data, isDesktop }: Props) => {
         </HeaderRow>
       )}
       <Body {...getTableBodyProps()}>
+        {showSpinner && <TableSpinner />}
         {rows.map((row) => {
           prepareRow(row)
           return (

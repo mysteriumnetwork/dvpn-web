@@ -171,7 +171,7 @@ export const HistoryPage = () => {
         <Table
           columns={isDesktop ? DesktopColumns : MobileColumns}
           data={sessions}
-          loading={loading}
+          isLoading={loading}
           isDesktop={isDesktop}
         />
       </LayoutUnstyledRow>
