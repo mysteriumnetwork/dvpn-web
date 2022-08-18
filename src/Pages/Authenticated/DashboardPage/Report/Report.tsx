@@ -82,8 +82,6 @@ export const Report = () => {
     diff: SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
   })
 
-  useFetch(() => Promise.all([api.sessionStatsDaily()]))
-
   const [data = SESSIONS_V2_RESPONSE_EMPTY, loading] = useFetch(
     () => api.provider.sessions({ range: selectedRange.value }),
     [selectedRange],
@@ -140,6 +138,7 @@ export const Report = () => {
           value={format(reportStats.totals.byteTotal)}
           title="Transferred"
           diff={parseFloat((reportStats.diff.byteTotal / 1_000_000_000).toFixed(2))}
+          tooltip="Total transferred data"
         />
       </CardRow>
     </Column>

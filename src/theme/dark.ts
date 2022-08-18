@@ -149,6 +149,12 @@ const dark: Omit<Theme, 'common'> = {
       },
     },
   },
+
+  tooltip: {
+    textColor: themeCommon.colorGrayBlue,
+    background: themeCommon.colorGrayBlue2,
+    boxShadow: '0 4px 4px' + themeCommon.color4e1c67 + alphaToHex(0.4),
+  },
 }
 
 export default dark

@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
 import React, { useMemo, useState } from 'react'
@@ -24,6 +23,7 @@ import Background from '../../../assets/images/onboarding/background.png'
 import { ReactComponent as Lock } from '../../../assets/images/onboarding/password.svg'
 import { devices } from '../../../theme/themes'
 import { TOSModal } from '../Components/TOSModal/TOSModal'
+import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 
 const { api } = tequila
 const Logo = styled(Lock)`
@@ -310,7 +310,7 @@ export const PasswordChangePage = () => {
               <Footer>
                 <SecondaryTitle>
                   Connect your node to mystnodes.com
-                  <Tooltip icon="question" content={TooltipContent} />
+                  <Tooltip variant="?" content={TooltipContent} />
                 </SecondaryTitle>
                 <InputGroup
                   error={state.mmnError}

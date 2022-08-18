@@ -145,6 +145,12 @@ const light: Omit<Theme, 'common'> = {
       },
     },
   },
+
+  tooltip: {
+    textColor: themeCommon.colorGrayBlue,
+    background: themeCommon.colorWhite,
+    boxShadow: '0 4px 4px' + themeCommon.color000065 + alphaToHex(0.5),
+  },
 }
 
 export default light

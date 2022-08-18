@@ -4,74 +4,62 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import Tippy from '@tippyjs/react/headless'
+import * as React from 'react'
 import { InfoIcon, QuestionIcon } from '../Icons/Icons'
-import ReactTooltip from 'react-tooltip'
-import React, { ReactElement, ReactNode, useMemo } from 'react'
-import { nanoid } from 'nanoid'
 import styled from 'styled-components'
-import { themeCommon } from '../../theme/themeCommon'
+import { useId } from 'react'
 
-interface ReactTooltipStyledProps {
-  $position?: 'top' | 'right' | 'bottom' | 'left'
-}
+const StyledTooltip = styled.div`
+  position: relative;
+  background-color: ${({ theme }) => theme.tooltip.background};
+  box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
+  color: ${({ theme }) => theme.tooltip.textColor};
+  padding: 10px;
+  border-radius: 10px;
 
-// @ts-ignore
-export const ReactTooltipStyled = styled(ReactTooltip)<ReactTooltipStyledProps>`
-  &.type-dark.place-${({ $position }) => $position} {
-    background-color: ${themeCommon.colorWhite};
-    padding: 0.3rem 1rem;
-    color: ${themeCommon.colorGrayBlue};
-    font-size: ${themeCommon.fontSizeSmall};
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
-    font-family: Ubuntu;
-    font-weight: 400;
-    border-radius: 10px;
-    width: 250px;
-    &:after {
-      border-${({ $position }) => $position}-color: ${themeCommon.colorWhite};
-    }
-
-    opacity: 1 !important;
-    
-    pointer-events: auto !important;
-    &:hover {
-      visibility: visible !important;
-      opacity: 1 !important;
-    }
-  }
+  font-weight: 400;
+  line-height: 14px;
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  max-width: 300px;
 `
 
+type Variant = '!' | '?'
+
 interface Props {
-  icon?: 'question' | 'info'
-  content: ReactNode
-  children?: ReactElement
-  position?: 'top' | 'right' | 'bottom' | 'left'
-  delayHideMs?: number
+  variant?: Variant
+  interactive?: boolean
+  children?: React.ReactElement<any>
+  content?: React.ReactNode
 }
 
-export const Tooltip = ({ icon = 'info', content, position = 'top', delayHideMs }: Props) => {
-  const uid = useMemo(() => nanoid(), [])
-
-  const Icon = useMemo(() => {
-    switch (icon) {
-      case 'info':
-        return <InfoIcon data-for={uid} data-tip="" data-event="click" />
-      case 'question':
-        return <QuestionIcon data-for={uid} data-tip="" data-event="click" />
-    }
-  }, [])
+export const Tooltip = ({ children, content, variant = '!', interactive = true }: Props) => {
+  const id = useId()
+  if (!content) {
+    return <>{children}</>
+  }
   return (
-    <>
-      {Icon}
-      <ReactTooltipStyled
-        $position={position}
-        delayHide={delayHideMs}
-        globalEventOff="click"
-        id={uid}
-        place={position}
-        getContent={() => content}
-        effect="solid"
-      />
-    </>
+    <Tippy
+      placement="top"
+      interactive={interactive}
+      render={(attributes) => (
+        <StyledTooltip id={`tooltip-${id}`} role="tooltip" tabIndex={-1} {...attributes}>
+          {content}
+        </StyledTooltip>
+      )}
+    >
+      {children ? children : resolveVariant(variant)}
+    </Tippy>
   )
+}
+
+const resolveVariant = (variant: Variant) => {
+  switch (variant) {
+    case '!':
+      return <InfoIcon />
+    case '?':
+      return <QuestionIcon />
+    default:
+      return <InfoIcon />
+  }
 }

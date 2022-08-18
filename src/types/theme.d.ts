@@ -149,6 +149,12 @@ export type Theme = {
     }
   }
 
+  tooltip: {
+    textColor: string
+    background: string
+    boxShadow: string
+  }
+
   common: Common
 }
 

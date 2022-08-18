@@ -6,8 +6,8 @@
  */
 import { QualityBarsIcon } from '../../../../Components/Icons/Icons'
 import styled from 'styled-components'
-import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 
 const Content = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ export const Quality = () => {
     <Content>
       <Title>Quality</Title>
       <QualityBarsIcon $quality={2} />
-      <Tooltip content="Blah Blah" position="bottom" />
+      <Tooltip content={'Indicates averaged quality as seen by consumers in your continent'} />
     </Content>
   )
 }
