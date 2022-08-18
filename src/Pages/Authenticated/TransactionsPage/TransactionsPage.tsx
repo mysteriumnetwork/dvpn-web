@@ -21,13 +21,40 @@ import dates from '../../../commons/dates'
 import { cells } from '../../../Components/Table/cells'
 import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
-import { ReactComponent as Clock } from '../../../assets/images/clock.svg'
+import { ReactComponent as Wallet } from '../../../assets/images/transactions.svg'
+import styled from 'styled-components'
+import { devices } from '../../../theme/themes'
 
 const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
 const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CellDataOverflow } = cells
 
+const Placeholder = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  width: 100%;
+  background-color: ${({ theme }) => theme.common.colorWhite};
+  border-radius: 30px;
+  @media ${devices.tablet} {
+    height: 40vh;
+  }
+`
+const PlaceholderIcon = styled(Wallet)`
+  width: 350px;
+  @media ${devices.tablet} {
+    width: 300px;
+  }
+`
+const PlaceholderText = styled.div`
+  color: ${({ theme }) => theme.common.colorGrayBlue};
+  font-size: ${({ theme }) => theme.common.fontSizeBig};
+  font-weight: 700;
+  margin-top: 20px;
+`
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState(1)
@@ -35,7 +62,7 @@ export const TransactionsPage = () => {
   const handlePageChange = (page: number) => setState(page)
 
   const [data = SETTLEMENT_LIST_RESPONSE_EMPTY] = useFetch(() => api.settlementHistory({ page: state }), [state])
-
+  const noData = data.items.length === 0
   const Columns: Column<any>[] = useMemo(
     () => [
       {
@@ -145,10 +172,17 @@ export const TransactionsPage = () => {
         </LayoutUnstyledRow>
       )}
       <LayoutUnstyledRow>
-        <Table columns={isDesktop ? Columns : MobileColumns} data={data.items} isDesktop={isDesktop} />
+        {noData ? (
+          <Placeholder>
+            <PlaceholderIcon />
+            <PlaceholderText>No transactions in Your history yet</PlaceholderText>
+          </Placeholder>
+        ) : (
+          <Table columns={isDesktop ? Columns : MobileColumns} data={data.items} isDesktop={isDesktop} />
+        )}
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />
+        {!noData && <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />}
       </LayoutUnstyledRow>
     </Layout>
   )
