@@ -23,6 +23,7 @@ import { Checkbox } from '../../../Components/Inputs/Checkbox'
 import Background from '../../../assets/images/onboarding/background.png'
 import { ReactComponent as Lock } from '../../../assets/images/onboarding/password.svg'
 import { devices } from '../../../theme/themes'
+import { TOSModal } from '../Components/TOSModal/TOSModal'
 
 const { api } = tequila
 const Logo = styled(Lock)`
@@ -107,6 +108,19 @@ const Link = styled.a`
   text-decoration: none;
   margin-left: 0.2em;
 `
+const LinkButton = styled.div`
+  color: ${({ theme }) => theme.common.colorKey};
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 0.2em;
+  cursor: pointer;
+`
+
+const Row = styled.div`
+  display: flex;
+  gap: 5px;
+`
+
 const Card = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
   box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
@@ -151,21 +165,21 @@ const useQuery = () => {
 interface State {
   password: string
   confirmPassword: string
-  claim: boolean
   agreeTos: boolean
   mmnApiKey: string
   mmnError: string
   passwordError: string
+  showTos: boolean
 }
 
 const INITIAL_STATE: State = {
   password: '',
   confirmPassword: '',
-  claim: false,
   agreeTos: false,
   mmnApiKey: '',
   mmnError: '',
   passwordError: '',
+  showTos: false,
 }
 
 export const PasswordChangePage = () => {
@@ -193,23 +207,25 @@ export const PasswordChangePage = () => {
       </div>
     )
   }, [])
-  const handlePassword = (value: string) => setState((p) => ({ ...p, password: value }))
-  const handleConfirmPassword = (value: string) => setState((p) => ({ ...p, confirmPassword: value }))
+
+  const handlePassword = (value: string) => setState((p) => ({ ...p, password: value, passwordError: '' }))
+  const handleConfirmPassword = (value: string) =>
+    setState((p) => ({ ...p, confirmPassword: value, passwordError: '' }))
   const handleTOS = (value: boolean) => setState((p) => ({ ...p, agreeTos: value }))
   const handleMmnApiKey = (value: string) => setState((p) => ({ ...p, mmnApiKey: value }))
-  const handleMmnError = (value: string) => setState((p) => ({ ...p, mmnError: value }))
+  const setMmnError = (value: string) => setState((p) => ({ ...p, mmnError: value }))
   const handlePasswordError = (value: string) => setState((p) => ({ ...p, passwordError: value }))
+  const showTos = (b: boolean = true) => setState((p) => ({ ...p, showTos: b }))
 
   const handleClaim = (value: string) => {
     handleMmnApiKey(value)
     if (value.length === 40 || value.length === 0) {
-      if (state.mmnError) {
-        handleMmnError('')
-      }
+      setMmnError('')
+      return
     }
     if (value.length !== 40) {
-      setState((p) => ({ ...p, claim: false }))
-      handleMmnError('Invalid API key')
+      setMmnError('API key myst be 40 characters')
+      return
     }
   }
   const shouldClaim = state.mmnApiKey.length > 0
@@ -252,68 +268,69 @@ export const PasswordChangePage = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Page>
-        <Card>
-          <LogoContainer>
-            <Logo />
-          </LogoContainer>
-          <Container>
-            <Header>
-              <Title>Create Password</Title>
-              <Comment>Please set your Node UI password. Your password must contain at least 10 characters.</Comment>
-            </Header>
-            <InputContainer>
-              <InputGroup
-                error={state.passwordError}
-                title="Password"
-                fluid={true}
-                input={
-                  <TextField error={passwordError} type="password" value={state.password} onChange={handlePassword} />
-                }
-              />
-              <InputGroup
-                error={state.passwordError}
-                title="Confirm password"
-                fluid
-                input={
-                  <TextField
-                    error={passwordError}
-                    type="password"
-                    value={state.confirmPassword}
-                    onChange={handleConfirmPassword}
-                  />
-                }
-              />
-              <span>
-                <Checkbox checked={state.agreeTos} onChange={handleTOS} /> I agree to
-                <Link href="https://mystnodes.com/terms" target="_blank">
-                  Terms and Conditions
-                </Link>
-              </span>
-            </InputContainer>
-            <Footer>
-              <SecondaryTitle>
-                Connect your node to mystnodes.com
-                <Tooltip icon="question" content={TooltipContent} />
-              </SecondaryTitle>
-              <InputGroup
-                error={state.mmnError}
-                fluid
-                input={<TextField error={mmnError} value={state.mmnApiKey} onChange={handleClaim} />}
-              />
-            </Footer>
-          </Container>
-        </Card>
-        <ButtonRow>
-          <Button
-            size="large"
-            rounded
-            loading={loading}
-            label={state.claim ? 'Set Password and Claim' : 'Set password'}
-          />
-        </ButtonRow>
-      </Page>
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit}>
+        <Page>
+          <Card>
+            <LogoContainer>
+              <Logo />
+            </LogoContainer>
+            <Container>
+              <Header>
+                <Title>Create Password</Title>
+                <Comment>Please set your Node UI password. Your password must contain at least 10 characters.</Comment>
+              </Header>
+              <InputContainer>
+                <InputGroup
+                  error={state.passwordError}
+                  title="Password"
+                  fluid={true}
+                  input={
+                    <TextField error={passwordError} type="password" value={state.password} onChange={handlePassword} />
+                  }
+                />
+                <InputGroup
+                  error={state.passwordError}
+                  title="Confirm password"
+                  fluid
+                  input={
+                    <TextField
+                      error={passwordError}
+                      type="password"
+                      value={state.confirmPassword}
+                      onChange={handleConfirmPassword}
+                    />
+                  }
+                />
+                <Row>
+                  <Checkbox checked={state.agreeTos} onChange={handleTOS} /> I agree to
+                  <LinkButton onClick={() => showTos()}>Terms and Conditions</LinkButton>
+                </Row>
+              </InputContainer>
+              <Footer>
+                <SecondaryTitle>
+                  Connect your node to mystnodes.com
+                  <Tooltip icon="question" content={TooltipContent} />
+                </SecondaryTitle>
+                <InputGroup
+                  error={state.mmnError}
+                  fluid
+                  input={<TextField error={mmnError} value={state.mmnApiKey} onChange={handleClaim} />}
+                />
+              </Footer>
+            </Container>
+          </Card>
+          <ButtonRow>
+            <Button
+              size="large"
+              rounded
+              loading={loading}
+              label={state.claim ? 'Set Password and Claim' : 'Set password'}
+            />
+          </ButtonRow>
+        </Page>
+      </Form>
+      <TOSModal show={state.showTos} hideAgree onClose={() => showTos(false)} onCloseLabel="Close" />
+    </>
   )
 }
