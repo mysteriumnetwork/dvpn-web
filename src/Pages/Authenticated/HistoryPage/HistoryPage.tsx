@@ -57,7 +57,7 @@ const PlaceholderText = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
-  margin-top: 20px;
+  margin-top: 50px;
 `
 const session2human = (session: string) => {
   return session.split('-')[0]

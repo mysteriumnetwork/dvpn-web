@@ -53,7 +53,7 @@ const PlaceholderText = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
-  margin-top: 20px;
+  margin-top: 50px;
 `
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
