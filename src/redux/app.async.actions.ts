@@ -39,7 +39,7 @@ export const fetchIdentityAndRelativeInformationAsync = async () => {
   const identityRef = await api.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
   dispatch(updateIdentityRefStore(identityRef))
   await api.identityBalanceRefresh(identityRef.id)
-
+  await tequila.refreshBeneficiary(identityRef.id)
   await api
     .beneficiaryTxStatus(identityRef.id)
     .then((txStatus) => dispatch(updateBeneficiaryTxStatusStore(txStatus)))
