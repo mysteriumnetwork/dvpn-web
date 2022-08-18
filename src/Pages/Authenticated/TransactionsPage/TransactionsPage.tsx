@@ -37,7 +37,7 @@ const Placeholder = styled.div`
   justify-content: center;
   height: 50vh;
   width: 100%;
-  background-color: ${({ theme }) => theme.common.colorWhite};
+  background-color: ${({ theme }) => theme.table.bgBody};
   border-radius: 30px;
   @media ${devices.tablet} {
     height: 40vh;
@@ -64,7 +64,7 @@ export const TransactionsPage = () => {
   const [data = SETTLEMENT_LIST_RESPONSE_EMPTY, loading] = useFetch(() => api.settlementHistory({ page: state }), [
     state,
   ])
-  const noData = data.items.length === 0
+  const noData = data.items.length === 0 && !loading
   const Columns: Column<any>[] = useMemo(
     () => [
       {

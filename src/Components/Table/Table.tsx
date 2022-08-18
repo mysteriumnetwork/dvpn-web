@@ -95,6 +95,7 @@ const Body = styled.div`
   background-color: ${({ theme }) => theme.table.bgBody};
   padding: 16px 20px 24px 20px;
   border-radius: 20px;
+  min-height: 550px;
   gap: 5px;
   @media ${devices.tablet} {
     background: none !important;
