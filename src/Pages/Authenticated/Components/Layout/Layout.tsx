@@ -39,12 +39,17 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  @media ${devices.laptopL} {
+    gap: 15px;
+  }
 `
-
 const HeaderGroup = styled.div`
   display: flex;
   gap: 26px;
   align-items: center;
+  @media ${devices.laptopL} {
+    gap: 15px;
+  }
 `
 
 const Content = styled.div`
@@ -155,8 +160,17 @@ export const LayoutHeroCardRow = styled.div`
   margin: 0 16px 0 16px;
   padding: 16px;
   background: ${({ theme }) => theme.bgLayoutHeroRow};
-
+  overflow-x: scroll;
+  overflow-y: hidden;
   border-radius: 35px;
+  &&::-webkit-scrollbar {
+    display: none;
+  }
+  @media ${devices.laptopL} {
+    &&::-webkit-scrollbar {
+      display: block;
+    }
+  }
   ${sharedRowCss};
 
   @media ${devices.tablet} {

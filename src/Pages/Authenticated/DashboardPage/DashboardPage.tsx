@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react'
-
 import { Layout, LayoutCard, LayoutHeroCardRow, LayoutUnstyledRow, TableCard } from '../Components/Layout/Layout'
 import { Report } from './Report/Report'
 import { DashboardHeaderIcon } from '../../../Components/Icons/PageIcons'
