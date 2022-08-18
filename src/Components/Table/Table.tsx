@@ -9,12 +9,14 @@ import styled from 'styled-components'
 import { themeCommon } from '../../theme/themeCommon'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { devices } from '../../theme/themes'
+import { ReactNode } from 'react'
 
 interface Props {
   columns: Column<any>[]
   data: any[]
-  isLoading?: boolean
+  loading: boolean
   isDesktop?: boolean
+  noContent: ReactNode
 }
 
 const Container = styled.div`
@@ -88,21 +90,27 @@ const Cell = styled.div`
     grid-column: 1 / 2;
   }
 `
-const Body = styled.div`
+interface TableProps {
+  $noContent: boolean
+  $loading: boolean
+}
+const Body = styled.div<TableProps>`
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: ${({ $noContent }) => ($noContent ? 'center' : '')};
+  justify-content: ${({ $noContent }) => ($noContent ? 'center' : '')};
   background-color: ${({ theme }) => theme.table.bgBody};
   padding: 16px 20px 24px 20px;
   border-radius: 20px;
-  min-height: 550px;
+  min-height: ${({ $noContent, $loading }) => ($noContent || $loading ? '550px' : '')};
   gap: 5px;
   @media ${devices.tablet} {
-    background: none !important;
+    background: ${({ $noContent }) => !$noContent && 'none'} !important;
     gap: 20px;
     padding: 0;
     min-width: 300px;
-    min-height: 200px;
+    min-height: ${({ $noContent, $loading }) => ($noContent || $loading ? '200px' : '')};
   }
 `
 const TableSpinner = () => (
@@ -110,13 +118,13 @@ const TableSpinner = () => (
     <Spinner />
   </Overlay>
 )
-export const Table = ({ columns, data, isDesktop, isLoading }: Props) => {
+export const Table = ({ columns, data, isDesktop, loading, noContent }: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { data, columns },
     useFlexLayout,
   )
-  const showSpinner = isLoading
-
+  const showSpinner = loading
+  const showNoContent = data.length === 0 && !loading
   return (
     <Container {...getTableProps()}>
       {isDesktop && (
@@ -130,7 +138,8 @@ export const Table = ({ columns, data, isDesktop, isLoading }: Props) => {
           ))}
         </HeaderRow>
       )}
-      <Body {...getTableBodyProps()}>
+      <Body $noContent={showNoContent} $loading={loading} {...getTableBodyProps()}>
+        {showNoContent && noContent}
         {showSpinner && <TableSpinner />}
         {rows.map((row) => {
           prepareRow(row)

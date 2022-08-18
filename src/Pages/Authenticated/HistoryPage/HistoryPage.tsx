@@ -34,18 +34,13 @@ const { format } = bytes
 const { isDesktopQuery } = media
 const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CardHeaderPrimary, CardHeaderSecondary } = cells
 
-const Placeholder = styled.div`
+const PlaceholderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  height: 100%;
   width: 100%;
-  background-color: ${({ theme }) => theme.table.bgBody};
-  border-radius: 30px;
-  @media ${devices.tablet} {
-    height: 40vh;
-  }
 `
 const PlaceholderIcon = styled(Clock)`
   width: 350px;
@@ -58,6 +53,7 @@ const PlaceholderText = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
   margin-top: 50px;
+  margin-bottom: 50px;
 `
 const session2human = (session: string) => {
   return session.split('-')[0]
@@ -65,7 +61,12 @@ const session2human = (session: string) => {
 
 const PAGE_SIZE = 10
 const RANGE_OPTIONS = ['1d', '7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
-
+const Placeholder = () => (
+  <PlaceholderContainer>
+    <PlaceholderIcon />
+    <PlaceholderText>No sessions in Your history yet</PlaceholderText>
+  </PlaceholderContainer>
+)
 export const HistoryPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
 
@@ -85,7 +86,7 @@ export const HistoryPage = () => {
     setTotalPages(Math.ceil(data.sessions.length / PAGE_SIZE))
     setSessions(data.sessions.slice(PAGE_SIZE * (page - 1), PAGE_SIZE * page))
   }, [data.sessions.length, page, loading])
-  const noData = data.sessions.length === 0 && !loading
+  const noData = data.sessions.length === 0
 
   const DesktopColumns: Column<SessionV2>[] = useMemo(
     () => [
@@ -197,22 +198,18 @@ export const HistoryPage = () => {
         <RangePicker options={RANGE_OPTIONS} value={range} onChange={(option: Option) => setRange(option)} />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        {noData ? (
-          <Placeholder>
-            <PlaceholderIcon />
-            <PlaceholderText>No session history</PlaceholderText>
-          </Placeholder>
-        ) : (
-          <Table
-            columns={isDesktop ? DesktopColumns : MobileColumns}
-            data={sessions}
-            isLoading={loading}
-            isDesktop={isDesktop}
-          />
-        )}
+        <Table
+          noContent={<Placeholder />}
+          columns={isDesktop ? DesktopColumns : MobileColumns}
+          data={sessions}
+          loading={loading}
+          isDesktop={isDesktop}
+        />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
-        <Pagination currentPage={page} totalPages={totalPages} handlePageChange={(page: number) => setPage(page)} />
+        {!noData && (
+          <Pagination currentPage={page} totalPages={totalPages} handlePageChange={(page: number) => setPage(page)} />
+        )}
       </LayoutUnstyledRow>
     </Layout>
   )

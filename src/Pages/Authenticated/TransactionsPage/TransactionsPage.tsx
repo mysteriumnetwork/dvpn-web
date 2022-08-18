@@ -30,18 +30,13 @@ const { api } = tequila
 const { date2human } = dates
 const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CellDataOverflow } = cells
 
-const Placeholder = styled.div`
+const PlaceholderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  height: 100%;
   width: 100%;
-  background-color: ${({ theme }) => theme.table.bgBody};
-  border-radius: 30px;
-  @media ${devices.tablet} {
-    height: 40vh;
-  }
 `
 const PlaceholderIcon = styled(Wallet)`
   width: 350px;
@@ -54,7 +49,15 @@ const PlaceholderText = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
   margin-top: 50px;
+  margin-bottom: 50px;
 `
+const Placeholder = () => (
+  <PlaceholderContainer>
+    <PlaceholderIcon />
+    <PlaceholderText>No transactions in Your history yet</PlaceholderText>
+  </PlaceholderContainer>
+)
+
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState(1)
@@ -64,7 +67,8 @@ export const TransactionsPage = () => {
   const [data = SETTLEMENT_LIST_RESPONSE_EMPTY, loading] = useFetch(() => api.settlementHistory({ page: state }), [
     state,
   ])
-  const noData = data.items.length === 0 && !loading
+  const noData = data.items.length === 0
+
   const Columns: Column<any>[] = useMemo(
     () => [
       {
@@ -102,6 +106,7 @@ export const TransactionsPage = () => {
     ],
     [],
   )
+
   const MobileColumns: Column<any>[] = useMemo(
     () => [
       {
@@ -174,19 +179,13 @@ export const TransactionsPage = () => {
         </LayoutUnstyledRow>
       )}
       <LayoutUnstyledRow>
-        {noData ? (
-          <Placeholder>
-            <PlaceholderIcon />
-            <PlaceholderText>No transactions in Your history yet</PlaceholderText>
-          </Placeholder>
-        ) : (
-          <Table
-            columns={isDesktop ? Columns : MobileColumns}
-            isLoading={loading}
-            data={data.items}
-            isDesktop={isDesktop}
-          />
-        )}
+        <Table
+          noContent={<Placeholder />}
+          columns={isDesktop ? Columns : MobileColumns}
+          loading={loading}
+          data={data.items}
+          isDesktop={isDesktop}
+        />
       </LayoutUnstyledRow>
       <LayoutUnstyledRow>
         {!noData && <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />}
