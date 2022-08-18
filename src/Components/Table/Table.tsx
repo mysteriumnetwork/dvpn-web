@@ -14,9 +14,9 @@ import { ReactNode } from 'react'
 interface Props {
   columns: Column<any>[]
   data: any[]
-  loading: boolean
+  loading?: boolean
   isDesktop?: boolean
-  noContent: ReactNode
+  noContent?: ReactNode
 }
 
 const Container = styled.div`
@@ -92,7 +92,7 @@ const Cell = styled.div`
 `
 interface TableProps {
   $noContent: boolean
-  $loading: boolean
+  $loading?: boolean
 }
 const Body = styled.div<TableProps>`
   position: relative;
