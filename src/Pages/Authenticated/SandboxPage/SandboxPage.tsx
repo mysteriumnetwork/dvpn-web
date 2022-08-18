@@ -13,9 +13,11 @@ import { ProgressBar } from '../../../Components/ProgressBar/ProgressBar'
 import { Slider } from '../../../Components/Slider/Slider'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Indicator, IndicatorVariants } from '../Components/NodeStatus/NodeStatus'
 import { TextArea } from '../../../Components/Inputs/TextArea'
 import { Notifications } from '../Components/Notifications/Notifications'
+import { CircleIndicator } from '../SettingsPage/Tabs/Advanced/CircleIndicator'
+import { NATType, Variant } from '../SettingsPage/Tabs/Advanced/types'
+import { NATTooltip } from '../SettingsPage/Tabs/Advanced/NATTooltip'
 
 const Container = styled.div`
   display: flex;
@@ -36,6 +38,18 @@ const TextAreas = styled.div`
 export const SandboxPage = () => {
   return (
     <Layout>
+      <LayoutUnstyledRow>
+        {['none', 'fullcone', 'rcone', 'prcone', 'symmetric'].map((nt) => (
+          <NATTooltip type={nt as NATType} />
+        ))}
+      </LayoutUnstyledRow>
+      {[12, 16, 20, 24].map((s) => (
+        <LayoutUnstyledRow style={{ justifyContent: 'center' }}>
+          {['ok', 'warning', 'error'].map((v) => (
+            <CircleIndicator variant={v as Variant} size={s} />
+          ))}
+        </LayoutUnstyledRow>
+      ))}
       <LayoutUnstyledRow style={{ justifyContent: 'center' }}>
         <Notifications />
       </LayoutUnstyledRow>
@@ -76,11 +90,11 @@ export const SandboxPage = () => {
           <Button label="Test" variant={v} disabled rounded />
         </LayoutUnstyledRow>
       ))}
-      <LayoutUnstyledRow>
-        {NODE_STATUS.map((ns) => (
-          <Indicator $variant={ns}>{ns}</Indicator>
-        ))}
-      </LayoutUnstyledRow>
+      {/*<LayoutUnstyledRow>*/}
+      {/*  {NODE_STATUS.map((ns) => (*/}
+      {/*    <Indicator $variant={ns}>{ns}</Indicator>*/}
+      {/*  ))}*/}
+      {/*</LayoutUnstyledRow>*/}
       <LayoutUnstyledRow>
         <TextAreas>
           <TextArea
@@ -101,7 +115,7 @@ export const SandboxPage = () => {
 }
 
 const BUTTON_VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'outlined', 'blue']
-const NODE_STATUS: IndicatorVariants[] = ['online', 'offline', 'monitoringFailed']
+// const NODE_STATUS: IndicatorVariants[] = ['online', 'offline', 'monitoringFailed']
 
 const Test = () => {
   const [earnings, setEarnings] = useState(0)

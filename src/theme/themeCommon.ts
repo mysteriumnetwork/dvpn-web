@@ -20,6 +20,7 @@ export const themeCommon: Common = {
   colorGrayBlue2: '#5A597D',
   colorWhite: '#FFFFFF',
   colorGreen: '#63B64E',
+  colorRed: '#F24236',
   colorLightGreen: '#EFF8ED',
   colorBlue: '#5BB1EF',
   colorLightBlue: '#F6F6FA',
