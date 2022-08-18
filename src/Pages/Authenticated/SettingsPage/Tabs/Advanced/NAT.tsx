@@ -6,16 +6,13 @@
  */
 
 import styled from 'styled-components'
-import { useFetch } from '../../../../../commons/hooks'
-import { tequila } from '../../../../../api/tequila'
-import { NAT_TYPE_RESPONSE_EMPTY } from '../../../../../constants/instances'
+import { useAppSelector } from '../../../../../commons/hooks'
 import { CircularSpinner } from '../../../../../Components/CircularSpinner/CircularSpinner'
 import { CircleIndicator } from './CircleIndicator'
 import { NATType } from './types'
 import { NATTooltip } from './NATTooltip'
 import { nat2Human } from './utils'
-
-const { api } = tequila
+import { selectors } from '../../../../../redux/selectors'
 
 const Container = styled.div`
   display: flex;
@@ -50,13 +47,15 @@ const Spinner = styled(CircularSpinner)`
   height: 10px;
 `
 
+const isLoading = (type: string, error?: string) => type === '' && error === ''
+
 export const NAT = () => {
-  const [{ type } = NAT_TYPE_RESPONSE_EMPTY, loading] = useFetch(() => api.natType())
+  const { type, error } = useAppSelector(selectors.natType)
   const natInfo = nat2Human(type)
   return (
     <Container>
       <Description>Accepting connections</Description>
-      {loading ? (
+      {isLoading(type, error) ? (
         <Spinner />
       ) : (
         <Nat>
