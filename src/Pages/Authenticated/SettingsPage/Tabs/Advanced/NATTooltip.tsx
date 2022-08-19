@@ -17,10 +17,10 @@ const TooltipContainer = styled.div`
   gap: 10px;
 `
 const TooltipTitle = styled.div`
-  color: ${({ theme }) => theme.common.colorGrayBlue};
+  color: ${({ theme }) => theme.text.colorSecondary};
 `
 const TooltipDescription = styled.div`
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   font-size: ${({ theme }) => theme.common.fontSizeSmaller};
   font-weight: 400;
 `
