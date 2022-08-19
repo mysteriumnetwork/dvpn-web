@@ -128,10 +128,6 @@ export const NODE_MONITORING_STATUS_RESPONSE_EMPTY: NodeMonitoringStatusResponse
   status: NodeMonitoringStatus.PASSED,
 })
 
-export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
-  type: '',
-})
-
 export const SETTLEMENT_LIST_RESPONSE_EMPTY: SettlementListResponse = Object.freeze({
   items: [],
   totalPages: 0,
@@ -169,7 +165,7 @@ export const BENEFICIARY_TX_STATUS_EMPTY: BeneficiaryTxStatus = Object.freeze({
   error: '',
 })
 
-export const NAT_TYPE_RESPONSE_EMPTYY: NatTypeResponse = Object.freeze({
+export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
   type: '',
   error: '',
 })
