@@ -10,6 +10,7 @@ import { NATType } from './types'
 import { ReactNode } from 'react'
 import { nat2Human } from './utils'
 import { Tooltip } from '../../../../../Components/Tooltip/Tooltip'
+import { Link } from '../../../../../Components/Common/Link'
 
 const TooltipContainer = styled.div`
   display: flex;
@@ -17,10 +18,10 @@ const TooltipContainer = styled.div`
   gap: 10px;
 `
 const TooltipTitle = styled.div`
-  color: ${({ theme }) => theme.common.colorGrayBlue};
+  color: ${({ theme }) => theme.text.colorSecondary};
 `
 const TooltipDescription = styled.div`
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   font-size: ${({ theme }) => theme.common.fontSizeSmaller};
   font-weight: 400;
 `
@@ -37,13 +38,6 @@ export const NATTooltip = ({ type }: { type: NATType }) => {
     />
   )
 }
-
-const Link = styled.a`
-  color: ${({ theme }) => theme.common.colorKey};
-  font-weight: 500;
-  text-decoration: none;
-  margin-left: 0.2em;
-`
 
 const description = (type: NATType): ReactNode => {
   switch (type) {

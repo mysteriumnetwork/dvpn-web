@@ -168,6 +168,10 @@ const light: Omit<Theme, 'common'> = {
     },
     holeBackground: themeCommon.colorWhite,
   },
+
+  a: {
+    textColor: themeCommon.colorKey,
+  },
 }
 
 export default light

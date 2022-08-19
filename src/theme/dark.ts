@@ -172,6 +172,10 @@ const dark: Omit<Theme, 'common'> = {
     },
     holeBackground: themeCommon.color393453,
   },
+
+  a: {
+    textColor: themeCommon.colorYellow,
+  },
 }
 
 export default dark

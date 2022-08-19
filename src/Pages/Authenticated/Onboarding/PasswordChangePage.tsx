@@ -24,6 +24,7 @@ import { ReactComponent as Lock } from '../../../assets/images/onboarding/passwo
 import { devices } from '../../../theme/themes'
 import { TOSModal } from '../Components/TOSModal/TOSModal'
 import { Tooltip } from '../../../Components/Tooltip/Tooltip'
+import { Link } from '../../../Components/Common/Link'
 
 const { api } = tequila
 const Logo = styled(Lock)`
@@ -102,12 +103,7 @@ const InputContainer = styled.div`
     margin-bottom: 20px;
   }
 `
-const Link = styled.a`
-  color: ${({ theme }) => theme.common.colorKey};
-  font-weight: 500;
-  text-decoration: none;
-  margin-left: 0.2em;
-`
+
 const LinkButton = styled.div`
   color: ${({ theme }) => theme.common.colorKey};
   font-weight: 500;
@@ -197,10 +193,12 @@ export const PasswordChangePage = () => {
       <div>
         Get your key from
         <Link href="https://mystnodes.com/me" target="_blank">
+          {' '}
           mystnodes.com/me{' '}
         </Link>
         and connect your node to
         <Link href="https://mystnodes.com/" target="_blank">
+          {' '}
           mystnodes.com
         </Link>
         , to manage and see your statistics
