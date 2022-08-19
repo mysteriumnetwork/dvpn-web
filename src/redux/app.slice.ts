@@ -19,7 +19,7 @@ import {
   BENEFICIARY_TX_STATUS_EMPTY,
   FEES_RESPONSE_EMPTY,
   HEALTHCHECK_EMPTY,
-  NAT_TYPE_RESPONSE_EMPTYY,
+  NAT_TYPE_RESPONSE_EMPTY,
 } from '../constants/instances'
 
 export interface Auth {
@@ -81,7 +81,7 @@ const INITIAL_STATE: AppState = {
   },
   beneficiaryTxStatus: BENEFICIARY_TX_STATUS_EMPTY,
   healthCheckResponse: HEALTHCHECK_EMPTY,
-  natType: NAT_TYPE_RESPONSE_EMPTYY,
+  natType: NAT_TYPE_RESPONSE_EMPTY,
 }
 
 const slice = createSlice({

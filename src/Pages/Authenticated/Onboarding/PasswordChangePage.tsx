@@ -222,7 +222,7 @@ export const PasswordChangePage = () => {
       return
     }
     if (value.length !== 40) {
-      setMmnError('API key myst be 40 characters')
+      setMmnError('API key must be 40 characters')
       return
     }
   }
