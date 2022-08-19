@@ -4,19 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import PageHeader from '../../../../Components/LayoutHeader/LayoutHeader'
 import React from 'react'
 import { selectors } from '../../../../redux/selectors'
 import { useAppSelector } from '../../../../commons/hooks'
 import styled, { css } from 'styled-components'
-import { Quality } from '../Quality/Quality'
-import { NodeStatus } from '../NodeStatus/NodeStatus'
-import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import { devices } from '../../../../theme/themes'
-import { Media } from '../../../../commons/media'
-import { Profile } from '../Profile/Profile'
-import { Notifications } from '../Notifications/Notifications'
+import { Header } from './Header'
 
 const Main = styled.main`
   position: relative;
@@ -30,26 +24,6 @@ const Main = styled.main`
   @media ${devices.tablet} {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-  }
-`
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 20px 32px 20px 32px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  @media ${devices.laptopL} {
-    gap: 15px;
-  }
-`
-const HeaderGroup = styled.div`
-  display: flex;
-  gap: 26px;
-  align-items: center;
-  @media ${devices.laptopL} {
-    gap: 15px;
   }
 `
 
@@ -112,25 +86,8 @@ export const Layout = ({ logo, title, children, isLoading }: Props) => {
   return (
     <Main>
       {showSpinner && <PageSpinner />}
-      <Media.Desktop>
-        <Header>
-          <PageHeader logo={logo} name={title} />
-          <NodeStatus />
-          <Quality />
-          <SettlementStatus />
-          <HeaderGroup>
-            <Notifications />
-            <Profile />
-          </HeaderGroup>
-        </Header>
-        <Content>{children}</Content>
-      </Media.Desktop>
-      <Media.Mobile>
-        <Content>
-          <PageHeader logo={logo} name={title} />
-          {children}
-        </Content>
-      </Media.Mobile>
+      <Header logo={logo} title={title} />
+      <Content>{children}</Content>
     </Main>
   )
 }
