@@ -17,23 +17,31 @@ import { selectors } from '../../../../redux/selectors'
 import styled from 'styled-components'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { HISTORY } from '../../../../constants/routes'
-import _ from 'lodash'
 import { cells } from '../../../../Components/Table/cells'
+import services from '../../../../commons/services'
+import { useMediaQuery } from 'react-responsive'
+import { media } from '../../../../commons/media'
 
-const { PrimaryCell, SecondaryCell } = cells
+const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CardHeaderPrimary, CardHeaderSecondary } = cells
 const { seconds2Time } = dates
 const { countryName } = location
 const { format, add } = bytes
+const { isDesktopQuery } = media
 // TODO: Move these to commons
 const session2human = (session: string) => {
   return session.split('-')[0]
 }
-const service2human = (service: string) => {
-  switch (service) {
-    case 'wireguard':
-      return 'Public'
-  }
+interface Props {
+  $show?: boolean
 }
+const Card = styled.div<Props>`
+  display: ${({ $show }) => ($show ? 'flex' : 'none')};
+  background: ${({ theme }) => theme.bgLayoutCardCss};
+  border-radius: 20px;
+  padding: 20px;
+  width: 100%;
+  flex-direction: column;
+`
 const Header = styled.div`
   display: flex;
   align-items: center;
@@ -48,13 +56,6 @@ const Title = styled.div`
 `
 // TODO: Make overflow hidden if livesession is empty
 // TODO: Mobile view for component :)
-const Container = styled.div`
-  display: flex;
-  max-height: 150px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  justify-content: center;
-`
 const SubTitle = styled(Link)`
   display: flex;
   align-items: center;
@@ -65,19 +66,21 @@ const SubTitle = styled(Link)`
 `
 export const LiveSessions = () => {
   const liveSessions = useAppSelector(selectors.liveSessions)
+  const isDesktop = useMediaQuery(isDesktopQuery)
+
+  const showContent = liveSessions.length > 0
   const Columns: Column<any>[] = useMemo(
     () => [
       {
         Header: 'Country',
         accessor: 'consumerCountry',
         Cell: (c) => <PrimaryCell>{countryName(c.value)}</PrimaryCell>,
-        maxWidth: 100,
       },
       { Header: 'Duration', accessor: 'duration', Cell: (c) => <SecondaryCell>{seconds2Time(c.value)}</SecondaryCell> },
       {
         Header: 'Services',
         accessor: 'serviceType',
-        Cell: (c) => <SecondaryCell>{service2human(c.value)}</SecondaryCell>,
+        Cell: (c) => <SecondaryCell>{services.name(c.value)}</SecondaryCell>,
       },
       {
         Header: 'Earnings',
@@ -95,19 +98,78 @@ export const LiveSessions = () => {
 
     [],
   )
+  const MobileColumns: Column<any>[] = useMemo(
+    () => [
+      {
+        Header: 'Country',
+        accessor: 'consumerCountry',
+        Cell: (c) => (
+          <MobileCell>
+            <CardHeaderPrimary>{countryName(c.value)}</CardHeaderPrimary>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Session ID',
+        accessor: 'id',
+        Cell: (c) => (
+          <MobileCell>
+            <CardHeaderSecondary>{session2human(c.value)}</CardHeaderSecondary>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Services',
+        accessor: 'serviceType',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Service</CellHeader>
+            <CellData>{services.name(c.value)}</CellData>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Duration',
+        accessor: 'duration',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Duration</CellHeader>
+            <CellData>{seconds2Time(c.value)}</CellData>
+          </MobileCell>
+        ),
+      },
+      {
+        Header: 'Earnings',
+        accessor: 'tokens',
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Earnings</CellHeader>
+            <CellData>{myst.display(c.value, { fractionDigits: 3 })}</CellData>
+          </MobileCell>
+        ),
+      },
+
+      {
+        Header: 'Data transferred',
+        accessor: (row): any => add(row.bytesSent, row.bytesReceived),
+        Cell: (c) => (
+          <MobileCell>
+            <CellHeader>Transferred</CellHeader>
+            <CellData>{format(c.value)}</CellData>
+          </MobileCell>
+        ),
+      },
+    ],
+
+    [],
+  )
   return (
-    <div>
+    <Card $show={showContent}>
       <Header>
-        <Title>Current Sessions</Title>
+        <Title>Ongoing Sessions</Title>
         <SubTitle to={HISTORY}>Session history</SubTitle>
       </Header>
-      <Container>
-        {!_.isEmpty(liveSessions) ? (
-          <Table columns={Columns} data={liveSessions} />
-        ) : (
-          <Title>No ongoing sessions</Title>
-        )}
-      </Container>
-    </div>
+      <Table columns={isDesktop ? Columns : MobileColumns} data={liveSessions} />
+    </Card>
   )
 }

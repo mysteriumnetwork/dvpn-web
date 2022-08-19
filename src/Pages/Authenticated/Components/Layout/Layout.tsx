@@ -194,8 +194,5 @@ export const LayoutUnstyledRow = styled.div`
 
 export const LayoutCard = styled.div`
   ${cardCss};
-`
-export const TableCard = styled.div`
-  ${cardCss};
-  width: 70%;
+  width: 100%;
 `
