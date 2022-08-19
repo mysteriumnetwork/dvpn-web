@@ -145,6 +145,29 @@ const light: Omit<Theme, 'common'> = {
       },
     },
   },
+
+  tooltip: {
+    textColor: themeCommon.colorGrayBlue,
+    background: themeCommon.colorWhite,
+    boxShadow: '0 4px 4px' + themeCommon.color000065 + alphaToHex(0.5),
+  },
+
+  nat: {
+    background: themeCommon.colorLightBlue,
+  },
+
+  indicator: {
+    ok: {
+      color: themeCommon.colorGreen,
+    },
+    warning: {
+      color: themeCommon.colorYellow,
+    },
+    error: {
+      color: themeCommon.colorRed,
+    },
+    holeBackground: themeCommon.colorWhite,
+  },
 }
 
 export default light

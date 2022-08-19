@@ -168,3 +168,8 @@ export const BENEFICIARY_TX_STATUS_EMPTY: BeneficiaryTxStatus = Object.freeze({
   state: BeneficiaryTxState.COMPLETED,
   error: '',
 })
+
+export const NAT_TYPE_RESPONSE_EMPTYY: NatTypeResponse = Object.freeze({
+  type: '',
+  error: '',
+})

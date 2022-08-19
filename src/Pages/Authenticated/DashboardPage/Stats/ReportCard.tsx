@@ -8,6 +8,7 @@ import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
+import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 
 const Card = styled.div`
   display: flex;
@@ -85,10 +86,12 @@ export const ReportCard = ({ icon, value, title, tooltip, diff = 0 }: Props) => 
         <Title>{title}</Title>
       </Content>
       <Meta>
-        <DiffValue positive={diff > 0}>
-          {diff > 0 ? '+ ' : '- '}
-          {Math.abs(diff)}
-        </DiffValue>
+        <Tooltip content={tooltip}>
+          <DiffValue positive={diff > 0}>
+            {diff > 0 ? '+ ' : '- '}
+            {Math.abs(diff)}
+          </DiffValue>
+        </Tooltip>
       </Meta>
     </Card>
   )

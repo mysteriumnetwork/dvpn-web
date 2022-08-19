@@ -11,10 +11,16 @@ import {
   FeesResponse,
   IdentityBeneficiaryResponse,
   IdentityRef,
+  NatTypeResponse,
   NodeHealthcheck,
 } from 'mysterium-vpn-js'
 import { Config } from 'mysterium-vpn-js/lib/config/config'
-import { BENEFICIARY_TX_STATUS_EMPTY, FEES_RESPONSE_EMPTY, HEALTHCHECK_EMPTY } from '../constants/instances'
+import {
+  BENEFICIARY_TX_STATUS_EMPTY,
+  FEES_RESPONSE_EMPTY,
+  HEALTHCHECK_EMPTY,
+  NAT_TYPE_RESPONSE_EMPTYY,
+} from '../constants/instances'
 
 export interface Auth {
   authenticated: boolean
@@ -44,6 +50,7 @@ export interface AppState {
   beneficiary: IdentityBeneficiaryResponse
   beneficiaryTxStatus: BeneficiaryTxStatus
   healthCheckResponse: NodeHealthcheck
+  natType: NatTypeResponse
 }
 
 const INITIAL_STATE: AppState = {
@@ -74,6 +81,7 @@ const INITIAL_STATE: AppState = {
   },
   beneficiaryTxStatus: BENEFICIARY_TX_STATUS_EMPTY,
   healthCheckResponse: HEALTHCHECK_EMPTY,
+  natType: NAT_TYPE_RESPONSE_EMPTYY,
 }
 
 const slice = createSlice({
@@ -113,6 +121,9 @@ const slice = createSlice({
     updateHealthCheckResponseStore: (state, action) => {
       state.healthCheckResponse = action.payload
     },
+    updateNatTypeResponseStore: (state, action) => {
+      state.natType = action.payload
+    },
   },
 })
 
@@ -128,6 +139,7 @@ export const {
   updateBeneficiaryStore,
   updateBeneficiaryTxStatusStore,
   updateHealthCheckResponseStore,
+  updateNatTypeResponseStore,
 } = slice.actions
 
 export default slice.reducer

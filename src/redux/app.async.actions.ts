@@ -17,6 +17,7 @@ import {
   updateFeesStore,
   updateIdentityRefStore,
   updateLoadingStore,
+  updateNatTypeResponseStore,
   updateTermsStore,
 } from './app.slice'
 import { store } from './store'
@@ -36,10 +37,12 @@ export const updateTermsStoreAsync = async () => {
 
 export const fetchIdentityAndRelativeInformationAsync = async () => {
   const { dispatch } = store
+  // nat type takes a lot of time to resolve
+  tequila.api.natType().then((response) => dispatch(updateNatTypeResponseStore(response)))
   const identityRef = await api.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
   dispatch(updateIdentityRefStore(identityRef))
   await api.identityBalanceRefresh(identityRef.id)
-
+  await tequila.refreshBeneficiary(identityRef.id)
   await api
     .beneficiaryTxStatus(identityRef.id)
     .then((txStatus) => dispatch(updateBeneficiaryTxStatusStore(txStatus)))

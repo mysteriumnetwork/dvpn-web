@@ -22,12 +22,6 @@ const MarginTop = styled.div`
   margin-top: 20px;
 `
 
-const TitleRow = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-`
-
 interface Props {
   loading?: boolean
   form: AdvancedSettingsForms
@@ -44,12 +38,7 @@ export const NATTraversalOrder = ({ handleSave, loading, onChange, form, handleR
   return (
     <SettingsCard
       loading={loading}
-      title={
-        <TitleRow>
-          <div>NAT Traversal Order</div>
-          <NAT />
-        </TitleRow>
-      }
+      title="NAT Traversal order"
       footer={
         <Controls>
           <Button variant="outlined" label="Restore default" onClick={handleReset} />
@@ -57,6 +46,7 @@ export const NATTraversalOrder = ({ handleSave, loading, onChange, form, handleR
         </Controls>
       }
     >
+      <NAT />
       <InputGroup
         title="Drag items to reorder"
         input={

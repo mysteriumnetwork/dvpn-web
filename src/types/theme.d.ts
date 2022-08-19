@@ -149,6 +149,29 @@ export type Theme = {
     }
   }
 
+  tooltip: {
+    textColor: string
+    background: string
+    boxShadow: string
+  }
+
+  nat: {
+    background: string
+  }
+
+  indicator: {
+    ok: {
+      color: string
+    }
+    warning: {
+      color: string
+    }
+    error: {
+      color: string
+    }
+    holeBackground: string
+  }
+
   common: Common
 }
 
@@ -162,6 +185,7 @@ export type Common = {
   colorGrayBlue2: string
   colorWhite: string
   colorGreen: string
+  colorRed: string
   colorLightGreen: string
   colorBlue: string
   colorLightBlue: string

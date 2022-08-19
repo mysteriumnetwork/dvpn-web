@@ -72,6 +72,8 @@ const healthCheck = ({ app }: RootState) => app.healthCheckResponse
 
 const auth = ({ app }: RootState) => app.auth
 
+const natType = ({ app }: RootState) => app.natType
+
 export const selectors = {
   currentIdentity,
   fees,
@@ -88,4 +90,5 @@ export const selectors = {
   beneficiaryTxStatus,
   healthCheck,
   auth,
+  natType,
 }

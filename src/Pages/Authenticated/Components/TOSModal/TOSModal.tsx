@@ -58,11 +58,13 @@ const Link = styled.a`
 `
 interface Props {
   show: boolean
+  hideAgree?: boolean
   onClose?: () => void
+  onCloseLabel?: string
 }
 const md = new showdown.Converter()
 
-export const TOSModal = ({ show = false, onClose }: Props) => {
+export const TOSModal = ({ show = false, onClose, hideAgree, onCloseLabel }: Props) => {
   const termsHtml = md.makeHtml(TermsExitNode)
   const agree = async () => {
     await tequila.acceptWithTermsAndConditions()
@@ -79,14 +81,16 @@ export const TOSModal = ({ show = false, onClose }: Props) => {
         </HeaderNote>
         <Container>{ReactHtmlParser(termsHtml)}</Container>
         <Footer>
-          <Button label="Cancel" rounded variant={'outlined'} />
-          <Button
-            label="Agree"
-            rounded
-            onClick={() => {
-              agree()
-            }}
-          />
+          {onClose && <Button label={onCloseLabel || 'Cancel'} rounded variant={'outlined'} onClick={onClose} />}
+          {!hideAgree && (
+            <Button
+              label="Agree"
+              rounded
+              onClick={() => {
+                agree()
+              }}
+            />
+          )}
         </Footer>
       </Content>
     </Modal>
