@@ -172,6 +172,10 @@ export type Theme = {
     holeBackground: string
   }
 
+  a: {
+    textColor: string
+  }
+
   common: Common
 }
 

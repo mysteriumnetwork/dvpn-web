@@ -18,6 +18,7 @@ import { Notifications } from '../Components/Notifications/Notifications'
 import { CircleIndicator } from '../SettingsPage/Tabs/Advanced/CircleIndicator'
 import { NATType, Variant } from '../SettingsPage/Tabs/Advanced/types'
 import { NATTooltip } from '../SettingsPage/Tabs/Advanced/NATTooltip'
+import { PasswordChangePage } from '../Onboarding/PasswordChangePage'
 
 const Container = styled.div`
   display: flex;
@@ -109,6 +110,9 @@ export const SandboxPage = () => {
             disabled
           />
         </TextAreas>
+      </LayoutUnstyledRow>
+      <LayoutUnstyledRow>
+        <PasswordChangePage />
       </LayoutUnstyledRow>
     </Layout>
   )
