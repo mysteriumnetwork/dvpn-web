@@ -103,7 +103,14 @@ const sharedRowCss = css`
   }
 `
 
-export const LayoutHeroRow = styled.div`
+const noneVariantCss = css`
+  margin: 25px 32px 0 32px;
+  @media ${devices.tablet} {
+    margin: 25px 15px 0 15px;
+  }
+`
+
+const heroVariantCss = css`
   display: flex;
   box-sizing: border-box;
   margin: 0 16px 0 16px;
@@ -129,10 +136,18 @@ export const LayoutHeroRow = styled.div`
   }
 `
 
-export const LayoutRow = styled.div`
-  margin: 25px 32px 0 32px;
-  ${sharedRowCss};
-  @media ${devices.tablet} {
-    margin: 25px 15px 0 15px;
+type Variant = 'plain' | 'hero'
+
+const resolveCss = (variant: Variant = 'plain') => {
+  switch (variant) {
+    case 'hero':
+      return heroVariantCss
+    default:
+      return noneVariantCss
   }
+}
+
+export const LayoutRow = styled.div<{ $variant?: Variant }>`
+  ${sharedRowCss};
+  ${({ $variant }) => resolveCss($variant)}
 `

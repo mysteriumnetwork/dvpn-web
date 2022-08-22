@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useMemo, useState } from 'react'
-import { Layout, LayoutHeroRow, LayoutRow } from '../Components/Layout/Layout'
+import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Table } from '../../../Components/Table/Table'
 import { DownloadTransactionCSV } from './DownloadTransactionCSV'
@@ -167,11 +167,11 @@ export const TransactionsPage = () => {
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
       {isDesktop ? (
-        <LayoutHeroRow>
+        <LayoutRow $variant="hero">
           <TotalSettled isDesktop={isDesktop} />
           <SettlementCard />
           <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
-        </LayoutHeroRow>
+        </LayoutRow>
       ) : (
         <LayoutRow>
           <TotalSettled isDesktop={isDesktop} />

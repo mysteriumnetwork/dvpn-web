@@ -6,8 +6,9 @@
  */
 import { useMediaQuery } from 'react-responsive'
 import { MediaQueryAllQueryable } from 'react-responsive/src/types'
+import { screenSizes } from '../theme/themes'
 
-const isMobileQuery: MediaQueryAllQueryable = { maxWidth: 768 }
+const isMobileQuery: MediaQueryAllQueryable = { maxWidth: screenSizes.tablet }
 const Mobile = ({ children }: any) => {
   const isMobile = useMediaQuery(isMobileQuery)
   return isMobile ? children : null
