@@ -26,13 +26,15 @@ import { RangePicker } from '../../../Components/Inputs/RangePicker'
 import { ReactComponent as Clock } from '../../../assets/images/sessions.svg'
 import styled from 'styled-components'
 import { devices } from '../../../theme/themes'
+import { List } from '../../../Components/List/List'
+import { SessionCard } from './SessionCard'
 
 const { api } = tequila
 const { date2human, seconds2Time } = dates
 const { countryName } = location
 const { format } = bytes
 const { isDesktopQuery } = media
-const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CardHeaderPrimary, CardHeaderSecondary } = cells
+const { PrimaryCell, SecondaryCell } = cells
 
 const PlaceholderContainer = styled.div`
   display: flex;
@@ -58,7 +60,7 @@ const PlaceholderText = styled.div`
 const session2human = (session: string) => {
   return session.split('-')[0]
 }
-
+const listMapper = (item: SessionV2) => <SessionCard item={item} />
 const PAGE_SIZE = 10
 const RANGE_OPTIONS = ['1d', '7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
 const Placeholder = () => (
@@ -129,82 +131,23 @@ export const HistoryPage = () => {
     ],
     [],
   )
-  const MobileColumns: Column<SessionV2>[] = useMemo(
-    () => [
-      {
-        Header: 'Country',
-        accessor: 'consumerCountry',
-        Cell: (c) => (
-          <MobileCell>
-            <CardHeaderPrimary>{countryName(c.value)}</CardHeaderPrimary>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Session ID',
-        accessor: 'id',
-        Cell: (c) => (
-          <MobileCell>
-            <CardHeaderSecondary>{session2human(c.value)}</CardHeaderSecondary>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Started',
-        accessor: 'startedAt',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Started</CellHeader>
-            <CellData>{date2human(c.value)}</CellData>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Duration',
-        accessor: 'durationSeconds',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Duration</CellHeader>
-            <CellData>{seconds2Time(c.value)}</CellData>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Earnings',
-        accessor: 'earnings',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Earnings</CellHeader>
-            <CellData>{myst.display(c.value.wei, { fractionDigits: 3 })}</CellData>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Transferred',
-        accessor: 'transferredBytes',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Transferred</CellHeader>
-            <CellData>{format(c.value)}</CellData>
-          </MobileCell>
-        ),
-      },
-    ],
-    [],
-  )
+
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
       <LayoutRow>
         <RangePicker options={RANGE_OPTIONS} value={range} onChange={(option: Option) => setRange(option)} />
       </LayoutRow>
       <LayoutRow>
-        <Table
-          noContent={<Placeholder />}
-          columns={isDesktop ? DesktopColumns : MobileColumns}
-          data={sessions}
-          loading={loading}
-          isDesktop={isDesktop}
-        />
+        {isDesktop && (
+          <Table
+            noContent={<Placeholder />}
+            columns={DesktopColumns}
+            data={sessions}
+            loading={loading}
+            isDesktop={isDesktop}
+          />
+        )}
+        {!isDesktop && <List items={sessions} mapper={listMapper} noContent={<Placeholder />} loading={loading} />}
       </LayoutRow>
       <LayoutRow>
         {!noData && (
