@@ -6,12 +6,13 @@
  */
 import { Button, ButtonVariant } from '../../../../Components/Inputs/Button'
 import { LayoutRow } from '../../Components/Layout/Layout'
+import { CenteredRow } from '../Components'
 
 const BUTTON_VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'outlined', 'blue']
 
 const ButtonsBook = () => {
   return (
-    <>
+    <CenteredRow>
       {BUTTON_VARIANTS.map((v) => (
         <LayoutRow key={v}>
           <Button label="Test" variant={v} />
@@ -22,7 +23,7 @@ const ButtonsBook = () => {
           <Button label="Test" variant={v} disabled rounded />
         </LayoutRow>
       ))}
-    </>
+    </CenteredRow>
   )
 }
 

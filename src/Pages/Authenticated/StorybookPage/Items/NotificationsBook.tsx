@@ -4,14 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { LayoutRow } from '../../Components/Layout/Layout'
 import { Notifications } from '../../Components/Notifications/Notifications'
+import { CenteredRow } from '../Components'
 
 const NotificationsBook = () => {
   return (
-    <LayoutRow style={{ justifyContent: 'center' }}>
+    <CenteredRow>
       <Notifications />
-    </LayoutRow>
+    </CenteredRow>
   )
 }
 

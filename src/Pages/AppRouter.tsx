@@ -32,9 +32,10 @@ import { HistoryPage } from './Authenticated/HistoryPage/HistoryPage'
 import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
 import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
 import PageNotFound from './Error/PageNotFound'
-import { StorybookPage, STORYBOOK_ROUTES } from './Authenticated/StorybookPage/StorybookPage'
+import { StorybookPage } from './Authenticated/StorybookPage/StorybookPage'
 import { PasswordChangePage } from './Authenticated/Onboarding/PasswordChangePage'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
+import { STORYBOOK_ROUTES } from './Authenticated/StorybookPage/storybook.utils'
 
 const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)
