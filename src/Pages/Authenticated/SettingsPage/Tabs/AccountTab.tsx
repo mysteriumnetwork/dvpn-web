@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { LayoutUnstyledRow } from '../../Components/Layout/Layout'
+import { LayoutRow } from '../../Components/Layout/Layout'
 import { YourIdentity } from './Account/YourIdentity'
 import { MystNodesClaim } from './Account/MystNodesClaim'
 import { PasswordChange } from './Account/PasswordChange'
@@ -14,14 +14,14 @@ import { AvatarChoice } from './Account/AvatarChoice'
 const AccountTab = () => {
   return (
     <>
-      <LayoutUnstyledRow>
+      <LayoutRow>
         <YourIdentity />
         <MystNodesClaim />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         <PasswordChange />
         <AvatarChoice />
-      </LayoutUnstyledRow>
+      </LayoutRow>
     </>
   )
 }

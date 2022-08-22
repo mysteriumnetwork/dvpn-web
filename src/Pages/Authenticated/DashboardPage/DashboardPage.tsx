@@ -5,30 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Layout, LayoutCard, LayoutHeroCardRow, LayoutUnstyledRow } from '../Components/Layout/Layout'
+import { Layout, LayoutHeroRow, LayoutRow } from '../Components/Layout/Layout'
 import { Report } from './Report/Report'
 import { DashboardHeaderIcon } from '../../../Components/Icons/PageIcons'
-import { IdleStat } from '../Components/IdleStat/IdleStat'
 import { Services } from '../Components/Service/Services'
 
 import { LiveSessions } from './LiveSessions/LiveSessions'
+
 const DashboardPage = () => {
   return (
     <Layout title="Dashboard" logo={<DashboardHeaderIcon />} isLoading={false}>
-      <LayoutHeroCardRow>
+      <LayoutHeroRow>
         <Services />
-      </LayoutHeroCardRow>
-      <LayoutUnstyledRow>
+      </LayoutHeroRow>
+      <LayoutRow>
         <Report />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
-        <LayoutCard>
-          <IdleStat />
-        </LayoutCard>
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         <LiveSessions />
-      </LayoutUnstyledRow>
+      </LayoutRow>
     </Layout>
   )
 }

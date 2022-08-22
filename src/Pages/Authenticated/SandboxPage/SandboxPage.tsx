@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
+import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { TextField } from '../../../Components/Inputs/TextField'
 import { InputGroup } from '../../../Components/Inputs/InputGroup'
 import { InputLockIcon } from '../../../Components/Icons/InputIcons'
@@ -39,64 +39,64 @@ const TextAreas = styled.div`
 export const SandboxPage = () => {
   return (
     <Layout>
-      <LayoutUnstyledRow>
+      <LayoutRow>
         {['none', 'fullcone', 'rcone', 'prcone', 'symmetric'].map((nt) => (
           <NATTooltip type={nt as NATType} />
         ))}
-      </LayoutUnstyledRow>
+      </LayoutRow>
       {[12, 16, 20, 24].map((s) => (
-        <LayoutUnstyledRow style={{ justifyContent: 'center' }}>
+        <LayoutRow style={{ justifyContent: 'center' }}>
           {['ok', 'warning', 'error'].map((v) => (
             <CircleIndicator variant={v as Variant} size={s} />
           ))}
-        </LayoutUnstyledRow>
+        </LayoutRow>
       ))}
-      <LayoutUnstyledRow style={{ justifyContent: 'center' }}>
+      <LayoutRow style={{ justifyContent: 'center' }}>
         <Notifications />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         <InputGroup title="Speed" subTitle="Mb" input={<TextField disabled value="test" />} />
         <InputGroup
           title="Speed"
           subTitle="Mb"
           input={<TextField value="test test test test test testaaaaaas" disabled icon={<InputLockIcon />} />}
         />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         <InputGroup title="Speed" subTitle="Mb" input={<TextField value="test" />} />
         <InputGroup
           title="Speed"
           subTitle="Mb"
           input={<TextField value="test test test test test testaaaaaas" icon={<InputLockIcon />} />}
         />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         <InputGroup title="Speed" subTitle="Mb" error="invalid data" input={<TextField error value="test" />} />
         <InputGroup
           title="Speed"
           subTitle="Mb"
           input={<TextField error value="test" icon={<InputLockIcon $variant="error" />} />}
         />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         <Test />
-      </LayoutUnstyledRow>
+      </LayoutRow>
       {BUTTON_VARIANTS.map((v) => (
-        <LayoutUnstyledRow>
+        <LayoutRow>
           <Button label="Test" variant={v} />
           <Button label="Test" variant={v} rounded />
           <Button label="Test" variant={v} loading />
           <Button label="Test" variant={v} rounded loading />
           <Button label="Test" variant={v} disabled />
           <Button label="Test" variant={v} disabled rounded />
-        </LayoutUnstyledRow>
+        </LayoutRow>
       ))}
       {/*<LayoutUnstyledRow>*/}
       {/*  {NODE_STATUS.map((ns) => (*/}
       {/*    <Indicator $variant={ns}>{ns}</Indicator>*/}
       {/*  ))}*/}
       {/*</LayoutUnstyledRow>*/}
-      <LayoutUnstyledRow>
+      <LayoutRow>
         <TextAreas>
           <TextArea
             value={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.`}
@@ -110,10 +110,10 @@ export const SandboxPage = () => {
             disabled
           />
         </TextAreas>
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         <PasswordChangePage />
-      </LayoutUnstyledRow>
+      </LayoutRow>
     </Layout>
   )
 }

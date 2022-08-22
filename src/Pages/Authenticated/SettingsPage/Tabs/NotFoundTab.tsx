@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { LayoutUnstyledRow } from '../../Components/Layout/Layout'
+import { LayoutRow } from '../../Components/Layout/Layout'
 
 const NotFoundTab = () => {
   return (
-    <LayoutUnstyledRow>
+    <LayoutRow>
       <h1>Tab not found ️😭</h1>
-    </LayoutUnstyledRow>
+    </LayoutRow>
   )
 }
 

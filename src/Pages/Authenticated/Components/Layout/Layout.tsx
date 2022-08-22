@@ -17,6 +17,7 @@ import { devices } from '../../../../theme/themes'
 import { Media } from '../../../../commons/media'
 import { Profile } from '../Profile/Profile'
 import { Notifications } from '../Notifications/Notifications'
+
 const Main = styled.main`
   position: relative;
   display: flex;
@@ -145,16 +146,7 @@ const sharedRowCss = css`
   }
 `
 
-const cardCss = css`
-  background: ${({ theme }) => theme.bgLayoutCardCss};
-  border-radius: 20px;
-  padding: 20px;
-  @media ${devices.tablet} {
-    width: 100%;
-  }
-`
-
-export const LayoutHeroCardRow = styled.div`
+export const LayoutHeroRow = styled.div`
   display: flex;
   box-sizing: border-box;
   margin: 0 16px 0 16px;
@@ -178,21 +170,11 @@ export const LayoutHeroCardRow = styled.div`
     min-width: 375px;
   }
 `
-export const LayoutCardRow = styled.div`
-  margin: 25px 32px 0 32px;
-  ${cardCss};
-  ${sharedRowCss};
-`
 
-export const LayoutUnstyledRow = styled.div`
+export const LayoutRow = styled.div`
   margin: 25px 32px 0 32px;
   ${sharedRowCss};
   @media ${devices.tablet} {
     margin: 25px 15px 0 15px;
   }
-`
-
-export const LayoutCard = styled.div`
-  ${cardCss};
-  width: 100%;
 `
