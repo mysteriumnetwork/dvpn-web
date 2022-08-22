@@ -24,11 +24,14 @@ import { useMediaQuery } from 'react-responsive'
 import { ReactComponent as Wallet } from '../../../assets/images/transactions.svg'
 import styled from 'styled-components'
 import { devices } from '../../../theme/themes'
+import { Settlement } from 'mysterium-vpn-js'
+import { TransactionCard } from './TransactionCard'
+import { List } from '../../../Components/List/List'
 
 const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
-const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CellDataOverflow } = cells
+const { PrimaryCell, SecondaryCell } = cells
 
 const PlaceholderContainer = styled.div`
   display: flex;
@@ -58,6 +61,8 @@ const Placeholder = () => (
   </PlaceholderContainer>
 )
 
+const listMapper = (item: Settlement) => <TransactionCard item={item} />
+
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState(1)
@@ -69,7 +74,7 @@ export const TransactionsPage = () => {
   ])
   const noData = data.items.length === 0
 
-  const Columns: Column<any>[] = useMemo(
+  const Columns: Column<Settlement>[] = useMemo(
     () => [
       {
         Header: 'Date',
@@ -107,63 +112,6 @@ export const TransactionsPage = () => {
     [],
   )
 
-  const MobileColumns: Column<any>[] = useMemo(
-    () => [
-      {
-        Header: 'Transaction ID',
-        accessor: 'txHash',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Transaction ID</CellHeader>
-            <CellDataOverflow>{c.value}</CellDataOverflow>
-          </MobileCell>
-        ),
-        className: 'grid-half',
-      },
-      {
-        Header: 'Date',
-        accessor: 'settledAt',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>{date2human(c.value)}</CellHeader>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'External Wallet Address',
-        accessor: 'beneficiary',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>External Wallet</CellHeader>
-            <CellDataOverflow>{c.value}</CellDataOverflow>
-          </MobileCell>
-        ),
-        className: 'grid-full',
-      },
-      {
-        Header: 'Fee',
-        accessor: 'fees',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Fees</CellHeader>
-            <CellData>{myst.display(c.value, { fractionDigits: 3 })}</CellData>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Received amount',
-        accessor: 'amount',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Received amount</CellHeader>
-            <CellData>{myst.display(c.value, { fractionDigits: 3 })}</CellData>
-          </MobileCell>
-        ),
-      },
-    ],
-    [],
-  )
-
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
       <LayoutRow $variant={isDesktop ? 'hero' : 'plain'}>
@@ -172,13 +120,16 @@ export const TransactionsPage = () => {
         <DownloadTransactionCSV data={data} />
       </LayoutRow>
       <LayoutRow>
-        <Table
-          noContent={<Placeholder />}
-          columns={isDesktop ? Columns : MobileColumns}
-          loading={loading}
-          data={data.items}
-          isDesktop={isDesktop}
-        />
+        {isDesktop && (
+          <Table
+            noContent={<Placeholder />}
+            columns={Columns}
+            loading={loading}
+            data={data.items}
+            isDesktop={isDesktop}
+          />
+        )}
+        {!isDesktop && <List items={data.items} mapper={listMapper} loading={loading} noContent={<Placeholder />} />}
       </LayoutRow>
       <LayoutRow>
         {!noData && <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />}
