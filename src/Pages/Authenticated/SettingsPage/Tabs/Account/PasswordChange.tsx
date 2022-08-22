@@ -18,18 +18,27 @@ import { tequila } from '../../../../../api/tequila'
 import { DEFAULT_USERNAME } from '../../../../../constants/defaults'
 import errors from '../../../../../commons/errors'
 import { validatePassword } from '../../../../../commons/passwords'
+import { devices } from '../../../../../theme/themes'
+import { Media } from '../../../../../commons/media'
 
 const { api } = tequila
 
 const Row = styled.div`
   display: flex;
   gap: 20px;
+  @media ${devices.tablet} {
+    width: 100%;
+  }
 `
 
 const FormContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  @media ${devices.tablet} {
+    align-items: flex-start;
+    justify-content: center;
+  }
 `
 
 interface FormState {
@@ -95,7 +104,6 @@ export const PasswordChange = () => {
                 />
               }
             />
-            <InputGroup title="" fluid input={null} />
           </Row>
           <Row>
             <InputGroup
@@ -110,19 +118,37 @@ export const PasswordChange = () => {
                 />
               }
             />
-            <InputGroup
-              fluid
-              title="Confirm new password"
-              input={
-                <TextField
-                  type="password"
-                  value={form.repeatNewPassword}
-                  onChange={handleRepeatNewPassword}
-                  icon={<InputLockIcon />}
-                />
-              }
-            />
+            <Media.Desktop>
+              <InputGroup
+                fluid
+                title="Confirm new password"
+                input={
+                  <TextField
+                    type="password"
+                    value={form.repeatNewPassword}
+                    onChange={handleRepeatNewPassword}
+                    icon={<InputLockIcon />}
+                  />
+                }
+              />
+            </Media.Desktop>
           </Row>
+          <Media.Mobile>
+            <Row>
+              <InputGroup
+                fluid
+                title="Confirm new password"
+                input={
+                  <TextField
+                    type="password"
+                    value={form.repeatNewPassword}
+                    onChange={handleRepeatNewPassword}
+                    icon={<InputLockIcon />}
+                  />
+                }
+              />
+            </Row>
+          </Media.Mobile>
         </FormContent>
       </Form>
     </SettingsCard>
