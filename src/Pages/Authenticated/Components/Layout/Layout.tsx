@@ -32,7 +32,7 @@ const Content = styled.div`
   width: 100%;
   overflow-y: auto;
   @media ${devices.tablet} {
-    padding-top: 150px;
+    padding-top: 120px;
   }
   ::-webkit-scrollbar {
     display: none;

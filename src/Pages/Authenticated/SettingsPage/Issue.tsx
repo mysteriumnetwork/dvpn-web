@@ -18,7 +18,9 @@ const Container = styled.div`
   gap: 50px;
   @media ${devices.tablet} {
     flex-direction: column;
+    align-self: flex-end;
     gap: 5px;
+    padding-bottom: 10px;
   }
 `
 const Title = styled.div`

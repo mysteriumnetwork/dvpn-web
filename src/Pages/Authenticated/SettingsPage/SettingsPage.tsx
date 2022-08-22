@@ -43,6 +43,7 @@ export const SettingsPage = () => {
   return (
     <Layout logo={<SettingsHeaderIcon />} title="Settings">
       <LayoutRow>
+        {isMobile && <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />}
         <NavLinkTabs
           tabs={[
             {
