@@ -15,7 +15,6 @@ interface Props {
   columns: Column<any>[]
   data: any[]
   loading?: boolean
-  isDesktop?: boolean
   noContent?: ReactNode
 }
 
@@ -67,29 +66,8 @@ const Row = styled.div`
   &:nth-of-type(even) {
     background-color: ${({ theme }) => theme.table.bgRowEven};
   }
-  @media ${devices.tablet} {
-    background-color: ${({ theme }) => theme.table.bgBody} !important;
-    display: grid !important;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    border-radius: 30px;
-    min-width: 350px;
-    padding: 30px;
-    overflow: hidden;
-    grid-gap: 20px 10px;
-  }
 `
-const Cell = styled.div`
-  margin-right: 20px;
-  &&&.grid-full {
-    display: grid;
-    grid-column: 1 / 3;
-  }
-  &&&.grid-half {
-    display: grid;
-    grid-column: 1 / 2;
-  }
-`
+
 interface TableProps {
   $noContent: boolean
   $loading?: boolean
@@ -105,20 +83,13 @@ const Body = styled.div<TableProps>`
   border-radius: 20px;
   min-height: ${({ $noContent, $loading }) => ($noContent || $loading ? '550px' : '')};
   gap: 5px;
-  @media ${devices.tablet} {
-    background: ${({ $noContent }) => !$noContent && 'none'} !important;
-    gap: 20px;
-    padding: 0;
-    min-width: 300px;
-    min-height: ${({ $noContent, $loading }) => ($noContent || $loading ? '200px' : '')};
-  }
 `
 const TableSpinner = () => (
   <Overlay>
     <Spinner />
   </Overlay>
 )
-export const Table = ({ columns, data, isDesktop, loading, noContent }: Props) => {
+export const Table = ({ columns, data, loading, noContent }: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { data, columns },
     useFlexLayout,
@@ -127,17 +98,16 @@ export const Table = ({ columns, data, isDesktop, loading, noContent }: Props) =
   const showNoContent = data.length === 0 && !loading
   return (
     <Container {...getTableProps()}>
-      {isDesktop && (
-        <HeaderRow>
-          {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <Header {...column.getHeaderProps()}>{column.render('Header')}</Header>
-              ))}
-            </div>
-          ))}
-        </HeaderRow>
-      )}
+      <HeaderRow>
+        {headerGroups.map((headerGroup) => (
+          <div {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <Header {...column.getHeaderProps()}>{column.render('Header')}</Header>
+            ))}
+          </div>
+        ))}
+      </HeaderRow>
+
       <Body $noContent={showNoContent} $loading={loading} {...getTableBodyProps()}>
         {showNoContent && noContent}
         {showSpinner && <TableSpinner />}
@@ -147,9 +117,7 @@ export const Table = ({ columns, data, isDesktop, loading, noContent }: Props) =
             <Row {...row.getRowProps()}>
               {row.cells.map((cell) => {
                 return (
-                  <Cell {...cell.getCellProps({ className: (cell.column as any).className })}>
-                    {cell.render('Cell')}
-                  </Cell>
+                  <div {...cell.getCellProps({ className: (cell.column as any).className })}>{cell.render('Cell')}</div>
                 )
               })}
             </Row>

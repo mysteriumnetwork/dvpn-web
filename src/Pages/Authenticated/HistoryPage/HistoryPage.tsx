@@ -140,15 +140,7 @@ export const HistoryPage = () => {
         <RangePicker options={RANGE_OPTIONS} value={range} onChange={(option: Option) => setRange(option)} />
       </LayoutRow>
       <LayoutRow>
-        {isDesktop && (
-          <Table
-            noContent={<Placeholder />}
-            columns={DesktopColumns}
-            data={sessions}
-            loading={loading}
-            isDesktop={isDesktop}
-          />
-        )}
+        {isDesktop && <Table noContent={<Placeholder />} columns={DesktopColumns} data={sessions} loading={loading} />}
         {!isDesktop && <List items={sessions} mapper={listMapper} noContent={<Placeholder />} loading={loading} />}
       </LayoutRow>
       <LayoutRow>

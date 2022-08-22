@@ -120,15 +120,7 @@ export const TransactionsPage = () => {
         <DownloadTransactionCSV data={data} />
       </LayoutRow>
       <LayoutRow>
-        {isDesktop && (
-          <Table
-            noContent={<Placeholder />}
-            columns={Columns}
-            loading={loading}
-            data={data.items}
-            isDesktop={isDesktop}
-          />
-        )}
+        {isDesktop && <Table noContent={<Placeholder />} columns={Columns} loading={loading} data={data.items} />}
         {!isDesktop && <List items={data.items} mapper={listMapper} loading={loading} noContent={<Placeholder />} />}
       </LayoutRow>
       <LayoutRow>
