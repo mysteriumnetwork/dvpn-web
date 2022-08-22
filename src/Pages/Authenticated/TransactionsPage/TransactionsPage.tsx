@@ -166,18 +166,11 @@ export const TransactionsPage = () => {
 
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
-      {isDesktop ? (
-        <LayoutRow $variant="hero">
-          <TotalSettled isDesktop={isDesktop} />
-          <SettlementCard />
-          <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
-        </LayoutRow>
-      ) : (
-        <LayoutRow>
-          <TotalSettled isDesktop={isDesktop} />
-          <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
-        </LayoutRow>
-      )}
+      <LayoutRow $variant={isDesktop ? 'hero' : 'plain'}>
+        <TotalSettled />
+        {isDesktop && <SettlementCard />}
+        <DownloadTransactionCSV data={data} />
+      </LayoutRow>
       <LayoutRow>
         <Table
           noContent={<Placeholder />}

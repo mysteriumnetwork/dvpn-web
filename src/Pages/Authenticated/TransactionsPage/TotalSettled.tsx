@@ -17,8 +17,11 @@ import { lockouts } from '../../../commons/lockout'
 import { SettleModal } from '../Components/SettleModal/SettleModal'
 import { useState } from 'react'
 import { ReactComponent as WarningSVG } from '../../../assets/images/notifications/negative.svg'
-import { Media } from '../../../commons/media'
+import { media, Media } from '../../../commons/media'
 import { devices } from '../../../theme/themes'
+import { useMediaQuery } from 'react-responsive'
+
+const { isDesktopQuery } = media
 
 const Row = styled.div`
   display: flex;
@@ -58,11 +61,11 @@ const WarningIcon = styled(WarningSVG)`
   }
 `
 const SETTLE_LOCKOUT_ID = 'SETTLE_LOCKOUT_ID'
-interface Props {
-  isDesktop: boolean
-}
+
 const { calculateSettled } = feez
-export const TotalSettled = ({ isDesktop }: Props) => {
+export const TotalSettled = () => {
+  const isDesktop = useMediaQuery(isDesktopQuery)
+
   const identity = useAppSelector(selectors.currentIdentity)
   const totalSettled = calculateSettled(identity.earningsTokens, identity.earningsTotalTokens)
   const { error } = useAppSelector(selectors.beneficiaryTxStatus)
