@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { themeCommon } from '../../theme/themeCommon'
+import { devices } from '../../theme/themes'
 
 interface TabProps {
   $active?: boolean
@@ -24,6 +25,9 @@ const activeCSS = css`
     border-right: 8px solid transparent;
     border-top: 6px solid #d61f85;
     transform: translateX(42px) translateY(25px);
+    @media ${devices.tablet} {
+      transform: translateX(53px) translateY(25px);
+    }
   }
 `
 const Tab = styled(Link)<TabProps>`
@@ -39,18 +43,26 @@ const Tab = styled(Link)<TabProps>`
     color: ${({ $active }) => ($active ? themeCommon.colorWhite : themeCommon.colorGrayBlue2)};
   }
   text-align: center;
-  background: ${({ $active }) => ($active ? themeCommon.colorKey : themeCommon.colorWhite)};
+  background: ${({ $active, theme }) => ($active ? themeCommon.colorKey : theme.navTab.bgColor)};
   border-radius: 100px;
-  color: ${({ $active }) => ($active ? themeCommon.colorWhite : themeCommon.colorGrayBlue2)};
+  color: ${({ $active, theme }) => ($active ? themeCommon.colorWhite : theme.navTab.textColor)};
   font-size: ${themeCommon.fontSizeBigger};
   padding: 8px 12px 8px 12px;
   cursor: pointer;
   ${({ $active }) => $active && activeCSS}
+  @media ${devices.tablet} {
+    width: 33%;
+  }
 `
 
 const TabContainer = styled.div`
   display: flex;
   gap: 8px;
+  @media ${devices.tablet} {
+    width: 100%;
+    align-items: stretch;
+    justify-content: center;
+  }
 `
 
 interface Props {

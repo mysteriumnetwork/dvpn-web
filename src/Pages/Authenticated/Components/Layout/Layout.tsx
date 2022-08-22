@@ -31,11 +31,11 @@ const Content = styled.div`
   height: 100vh;
   width: 100%;
   overflow-y: auto;
-  ::-webkit-scrollbar {
-    display: none;
-  }
   @media ${devices.tablet} {
     padding-top: 150px;
+  }
+  ::-webkit-scrollbar {
+    display: none;
   }
 `
 
@@ -74,14 +74,14 @@ interface Props {
   title?: string
   logo?: React.ReactNode
   children?: React.ReactNode
-  isLoading?: boolean
+  loading?: boolean
 }
 
-export const Layout = ({ logo, title, children, isLoading }: Props) => {
+export const Layout = ({ logo, title, children, loading }: Props) => {
   const isAppLoading = useAppSelector(selectors.isAppLoading)
   const isSSELoading = useAppSelector(selectors.isSSELoading)
 
-  const showSpinner = isLoading || isSSELoading || isAppLoading
+  const showSpinner = loading || isSSELoading || isAppLoading
 
   return (
     <Main>

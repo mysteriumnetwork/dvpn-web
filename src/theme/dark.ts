@@ -55,7 +55,10 @@ const dark: Omit<Theme, 'common'> = {
     colorMain: themeCommon.colorLightBlue,
     colorSecondary: themeCommon.colorGrayBlue,
   },
-
+  navTab: {
+    bgColor: themeCommon.colorDarkBlue,
+    textColor: themeCommon.colorGrayBlue,
+  },
   modal: {
     bgOverlay: themeCommon.color231F3A + alphaToHex(0.8),
     bgColor: themeCommon.color393453,

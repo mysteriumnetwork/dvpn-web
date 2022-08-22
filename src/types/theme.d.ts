@@ -74,7 +74,10 @@ export type Theme = {
     titleColor: string
     boxShadow: string
   }
-
+  navTab: {
+    bgColor: string
+    textColor: string
+  }
   text: {
     colorMain: string
     colorSecondary: string
