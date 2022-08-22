@@ -4,19 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import PageHeader from '../../../../Components/LayoutHeader/LayoutHeader'
 import React from 'react'
 import { selectors } from '../../../../redux/selectors'
 import { useAppSelector } from '../../../../commons/hooks'
 import styled, { css } from 'styled-components'
-import { Quality } from '../Quality/Quality'
-import { NodeStatus } from '../NodeStatus/NodeStatus'
-import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import { devices } from '../../../../theme/themes'
-import { Media } from '../../../../commons/media'
-import { Profile } from '../Profile/Profile'
-import { Notifications } from '../Notifications/Notifications'
+import { Header } from './Header'
 
 const Main = styled.main`
   position: relative;
@@ -33,35 +27,15 @@ const Main = styled.main`
   }
 `
 
-const Header = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 20px 32px 20px 32px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  @media ${devices.laptopL} {
-    gap: 15px;
-  }
-`
-const HeaderGroup = styled.div`
-  display: flex;
-  gap: 26px;
-  align-items: center;
-  @media ${devices.laptopL} {
-    gap: 15px;
-  }
-`
-
 const Content = styled.div`
   height: 100vh;
   width: 100%;
   overflow-y: auto;
+  @media ${devices.tablet} {
+    padding-top: 120px;
+  }
   ::-webkit-scrollbar {
     display: none;
-  }
-  @media ${devices.tablet} {
-    padding-top: 150px;
   }
 `
 
@@ -100,37 +74,20 @@ interface Props {
   title?: string
   logo?: React.ReactNode
   children?: React.ReactNode
-  isLoading?: boolean
+  loading?: boolean
 }
 
-export const Layout = ({ logo, title, children, isLoading }: Props) => {
+export const Layout = ({ logo, title, children, loading }: Props) => {
   const isAppLoading = useAppSelector(selectors.isAppLoading)
   const isSSELoading = useAppSelector(selectors.isSSELoading)
 
-  const showSpinner = isLoading || isSSELoading || isAppLoading
+  const showSpinner = loading || isSSELoading || isAppLoading
 
   return (
     <Main>
       {showSpinner && <PageSpinner />}
-      <Media.Desktop>
-        <Header>
-          <PageHeader logo={logo} name={title} />
-          <NodeStatus />
-          <Quality />
-          <SettlementStatus />
-          <HeaderGroup>
-            <Notifications />
-            <Profile />
-          </HeaderGroup>
-        </Header>
-        <Content>{children}</Content>
-      </Media.Desktop>
-      <Media.Mobile>
-        <Content>
-          <PageHeader logo={logo} name={title} />
-          {children}
-        </Content>
-      </Media.Mobile>
+      <Header logo={logo} title={title} />
+      <Content>{children}</Content>
     </Main>
   )
 }
@@ -168,6 +125,7 @@ export const LayoutHeroRow = styled.div`
   @media ${devices.tablet} {
     flex-direction: column;
     min-width: 375px;
+    margin-top: 40px;
   }
 `
 

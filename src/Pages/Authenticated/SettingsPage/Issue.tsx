@@ -6,6 +6,7 @@
  */
 import styled from 'styled-components'
 import { themeCommon } from '../../../theme/themeCommon'
+import { devices } from '../../../theme/themes'
 
 interface Props {
   nodeVersion: string
@@ -15,6 +16,12 @@ interface Props {
 const Container = styled.div`
   display: flex;
   gap: 50px;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    align-self: flex-end;
+    gap: 5px;
+    padding-bottom: 10px;
+  }
 `
 const Title = styled.div`
   font-size: ${themeCommon.fontSizeSmall};

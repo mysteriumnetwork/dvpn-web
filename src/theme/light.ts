@@ -51,6 +51,10 @@ const light: Omit<Theme, 'common'> = {
     colorMain: themeCommon.colorDarkBlue,
     colorSecondary: themeCommon.colorGrayBlue2,
   },
+  navTab: {
+    bgColor: themeCommon.colorWhite,
+    textColor: themeCommon.colorDarkBlue,
+  },
   settleModal: {
     card: {
       titleColor: themeCommon.colorGrayBlue2,

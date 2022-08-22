@@ -24,7 +24,7 @@ const Column = styled.div`
 
 export const AdminPage = () => {
   return (
-    <Layout title="Admin" isLoading={false}>
+    <Layout title="Admin" loading={false}>
       <Row>
         <Column>
           <VersionManagement />

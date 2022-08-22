@@ -14,7 +14,7 @@ import { LiveSessions } from './LiveSessions/LiveSessions'
 
 const DashboardPage = () => {
   return (
-    <Layout title="Dashboard" logo={<DashboardHeaderIcon />} isLoading={false}>
+    <Layout title="Dashboard" logo={<DashboardHeaderIcon />} loading={false}>
       <LayoutHeroRow>
         <Services />
       </LayoutHeroRow>
