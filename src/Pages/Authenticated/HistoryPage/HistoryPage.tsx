@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useEffect, useMemo, useState } from 'react'
-import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
+import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Column } from 'react-table'
 import { Table } from '../../../Components/Table/Table'
@@ -194,10 +194,10 @@ export const HistoryPage = () => {
   )
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
-      <LayoutUnstyledRow>
+      <LayoutRow>
         <RangePicker options={RANGE_OPTIONS} value={range} onChange={(option: Option) => setRange(option)} />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         <Table
           noContent={<Placeholder />}
           columns={isDesktop ? DesktopColumns : MobileColumns}
@@ -205,12 +205,12 @@ export const HistoryPage = () => {
           loading={loading}
           isDesktop={isDesktop}
         />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         {!noData && (
           <Pagination currentPage={page} totalPages={totalPages} handlePageChange={(page: number) => setPage(page)} />
         )}
-      </LayoutUnstyledRow>
+      </LayoutRow>
     </Layout>
   )
 }

@@ -16,4 +16,22 @@ export const SETTINGS_ADVANCED = `${SETTINGS}/advanced`
 export const SESSIONS_SIDE = '/sessions-side'
 export const ERROR = '/error'
 export const ADMIN = '/admin'
-export const SANDBOX = '/sandbox'
+const STORYBOOK = '/storybook'
+
+const ROUTES = {
+  HOME,
+  DASHBOARD,
+  NEW_PASSWORD,
+  HISTORY,
+  TRANSACTIONS,
+  SETTINGS,
+  SETTINGS_ACCOUNT,
+  SETTINGS_TRAFFIC,
+  SETTINGS_ADVANCED,
+  SESSIONS_SIDE,
+  ERROR,
+  ADMIN,
+  STORYBOOK,
+}
+
+export default ROUTES

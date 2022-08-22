@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useMemo, useState } from 'react'
-import { Layout, LayoutHeroCardRow, LayoutUnstyledRow } from '../Components/Layout/Layout'
+import { Layout, LayoutHeroRow, LayoutRow } from '../Components/Layout/Layout'
 import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Table } from '../../../Components/Table/Table'
 import { DownloadTransactionCSV } from './DownloadTransactionCSV'
@@ -167,18 +167,18 @@ export const TransactionsPage = () => {
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
       {isDesktop ? (
-        <LayoutHeroCardRow>
+        <LayoutHeroRow>
           <TotalSettled isDesktop={isDesktop} />
           <SettlementCard />
           <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
-        </LayoutHeroCardRow>
+        </LayoutHeroRow>
       ) : (
-        <LayoutUnstyledRow>
+        <LayoutRow>
           <TotalSettled isDesktop={isDesktop} />
           <DownloadTransactionCSV isDesktop={isDesktop} data={data} />
-        </LayoutUnstyledRow>
+        </LayoutRow>
       )}
-      <LayoutUnstyledRow>
+      <LayoutRow>
         <Table
           noContent={<Placeholder />}
           columns={isDesktop ? Columns : MobileColumns}
@@ -186,10 +186,10 @@ export const TransactionsPage = () => {
           data={data.items}
           isDesktop={isDesktop}
         />
-      </LayoutUnstyledRow>
-      <LayoutUnstyledRow>
+      </LayoutRow>
+      <LayoutRow>
         {!noData && <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />}
-      </LayoutUnstyledRow>
+      </LayoutRow>
     </Layout>
   )
 }

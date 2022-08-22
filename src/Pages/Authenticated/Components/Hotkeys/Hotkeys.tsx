@@ -6,7 +6,7 @@
  */
 
 import { ReactNode, useCallback, useEffect } from 'react'
-import { ADMIN, SANDBOX } from '../../../../constants/routes'
+import ROUTES from '../../../../constants/routes'
 import { useNavigate } from 'react-router-dom'
 
 interface Props {
@@ -18,12 +18,12 @@ export const Hotkeys = ({ children }: Props) => {
 
   const handleKeyPress = useCallback((event: any) => {
     if (event.key === 'F10') {
-      navigate(ADMIN)
+      navigate(ROUTES.ADMIN)
       return
     }
 
     if (event.key === 'F9') {
-      navigate(SANDBOX)
+      navigate(ROUTES.STORYBOOK)
       return
     }
   }, [])

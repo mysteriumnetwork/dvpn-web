@@ -4,15 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 import { LayoutRow } from '../../Components/Layout/Layout'
+import { Notifications } from '../../Components/Notifications/Notifications'
 
-const NotFoundTab = () => {
+const NotificationsBook = () => {
   return (
-    <LayoutRow>
-      <h1>Tab not found ️😭</h1>
+    <LayoutRow style={{ justifyContent: 'center' }}>
+      <Notifications />
     </LayoutRow>
   )
 }
 
-export default NotFoundTab
+export default NotificationsBook

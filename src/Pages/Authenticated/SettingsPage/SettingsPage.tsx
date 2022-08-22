@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Layout, LayoutUnstyledRow } from '../Components/Layout/Layout'
+import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { SettingsHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { NavLinkTabs } from '../../../Components/Tabs/NavLinkTabs'
 import React, { useMemo } from 'react'
@@ -39,7 +39,7 @@ export const SettingsPage = () => {
 
   return (
     <Layout logo={<SettingsHeaderIcon />} title="Settings">
-      <LayoutUnstyledRow>
+      <LayoutRow>
         <NavLinkTabs
           tabs={[
             {
@@ -59,7 +59,7 @@ export const SettingsPage = () => {
         {/*<PowerOffButton />*/}
         <FlexGrow />
         <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />
-      </LayoutUnstyledRow>
+      </LayoutRow>
       <React.Suspense>
         <TabComponent />
       </React.Suspense>
