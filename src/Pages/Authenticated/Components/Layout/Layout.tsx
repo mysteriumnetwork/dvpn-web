@@ -125,6 +125,7 @@ export const LayoutHeroRow = styled.div`
   @media ${devices.tablet} {
     flex-direction: column;
     min-width: 375px;
+    margin-top: 40px;
   }
 `
 
