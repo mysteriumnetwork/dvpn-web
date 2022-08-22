@@ -42,8 +42,4 @@ export const STORYBOOK_ROUTES: { [key: string]: RouteInfo } = {
     component: './Items/ProgressBarBook',
     title: 'Progress',
   },
-  [subRoute('/lists')]: {
-    component: './Items/ListBook',
-    title: 'Lists',
-  },
 }
