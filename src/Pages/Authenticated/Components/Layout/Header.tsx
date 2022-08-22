@@ -21,6 +21,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  @media ${devices.tablet} {
+    margin-top: 150px;
+    display: none;
+  }
   @media ${devices.laptopL} {
     gap: 15px;
   }
@@ -37,6 +41,7 @@ interface Props {
   logo?: ReactNode
   title?: string
 }
+
 export const Header = ({ logo, title }: Props) => {
   return (
     <Container>

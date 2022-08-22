@@ -6,23 +6,11 @@
  */
 import styled from 'styled-components'
 import React from 'react'
-import { devices } from '../../theme/themes'
 
 const Content = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  @media ${devices.tablet} {
-    margin-bottom: 20px;
-    margin-left: 25px;
-    margin-right: 25px;
-    justify-content: space-between;
-  }
-`
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
 `
 const Logo = styled.div`
   border-radius: 6px;
@@ -46,17 +34,13 @@ const PageName = styled.div`
 interface Props {
   logo: React.ReactNode
   name?: string
-  children?: React.ReactNode
 }
 
-const LayoutHeader = ({ logo, name, children }: Props) => {
+const LayoutHeader = ({ logo, name }: Props) => {
   return (
     <Content>
-      <Container>
-        <Logo>{logo}</Logo>
-        <PageName>{name}</PageName>
-      </Container>
-      {children}
+      <Logo>{logo}</Logo>
+      <PageName>{name}</PageName>
     </Content>
   )
 }
