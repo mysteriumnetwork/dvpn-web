@@ -5,19 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Layout, LayoutHeroRow, LayoutRow } from '../Components/Layout/Layout'
+import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { Report } from './Report/Report'
 import { DashboardHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Services } from '../Components/Service/Services'
 
 import { LiveSessions } from './LiveSessions/LiveSessions'
+import { useMediaQuery } from 'react-responsive'
+import { media } from '../../../commons/media'
+
+const { isDesktopQuery } = media
 
 const DashboardPage = () => {
+  const isDesktop = useMediaQuery(isDesktopQuery)
+
   return (
     <Layout title="Dashboard" logo={<DashboardHeaderIcon />} loading={false}>
-      <LayoutHeroRow>
+      <LayoutRow $variant={isDesktop ? 'hero' : 'plain'}>
         <Services />
-      </LayoutHeroRow>
+      </LayoutRow>
       <LayoutRow>
         <Report />
       </LayoutRow>

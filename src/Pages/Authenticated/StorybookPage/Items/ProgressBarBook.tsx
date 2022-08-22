@@ -4,18 +4,18 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { LayoutRow } from '../../Components/Layout/Layout'
 import React, { useState } from 'react'
 import { ProgressBar } from '../../../../Components/ProgressBar/ProgressBar'
 import { Button } from '../../../../Components/Inputs/Button'
 import { Slider } from '../../../../Components/Slider/Slider'
 import styled from 'styled-components'
+import { CenteredRow } from '../Components'
 
 const ProgressBarBook = () => {
   return (
-    <LayoutRow style={{ justifyContent: 'center' }}>
+    <CenteredRow>
       <Bars />
-    </LayoutRow>
+    </CenteredRow>
   )
 }
 

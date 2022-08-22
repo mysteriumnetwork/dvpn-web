@@ -11,7 +11,7 @@ import { Quality } from '../Quality/Quality'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { Profile } from '../Profile/Profile'
 import { Notifications } from '../Notifications/Notifications'
-import PageTitle from '../../../../Components/LayoutHeader/LayoutHeader'
+import PageTitle from '../../../../Components/LayoutHeader/PageTitle'
 import { ReactNode } from 'react'
 
 const Container = styled.div`
@@ -22,7 +22,6 @@ const Container = styled.div`
   justify-content: space-between;
   gap: 20px;
   @media ${devices.tablet} {
-    margin-top: 150px;
     display: none;
   }
   @media ${devices.laptopL} {

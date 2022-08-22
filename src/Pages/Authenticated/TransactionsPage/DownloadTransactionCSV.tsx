@@ -11,6 +11,11 @@ import { FileIcon } from '../../../Components/Icons/Icons'
 import { Button } from '../../../Components/Inputs/Button'
 import { SettlementListResponse } from 'mysterium-vpn-js'
 import { toCsv } from './csv.mapper'
+import { media } from '../../../commons/media'
+import { useMediaQuery } from 'react-responsive'
+
+const { isDesktopQuery } = media
+
 const Row = styled.div`
   display: flex;
   align-items: center;
@@ -29,13 +34,15 @@ const IconContainer = styled.div`
 
 interface Props {
   data: SettlementListResponse
-  isDesktop: boolean
 }
+
 interface State {
   isLoading: boolean
   downloadLink: string
 }
-export const DownloadTransactionCSV = ({ data, isDesktop }: Props) => {
+
+export const DownloadTransactionCSV = ({ data }: Props) => {
+  const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState<State>({
     isLoading: true,
     downloadLink: '',

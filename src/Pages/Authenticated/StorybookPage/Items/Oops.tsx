@@ -4,8 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { CenteredRow } from '../Components'
+
 const Oops = () => {
-  return <h3>Something wrong!</h3>
+  return (
+    <CenteredRow>
+      <h1>Something wrong!</h1>
+    </CenteredRow>
+  )
 }
 
 export default Oops
