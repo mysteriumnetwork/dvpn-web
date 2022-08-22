@@ -29,7 +29,7 @@ const activeCSS = css`
 const Tab = styled(Link)<TabProps>`
   text-decoration: none;
   position: relative;
-  width: 100px;
+  min-width: 100px;
   &:before {
     content: attr(data);
     position: relative;
@@ -54,26 +54,21 @@ const TabContainer = styled.div`
 `
 
 interface Props {
-  tabs?: { name: string; to: string; onChange?: (tab: string) => void }[]
+  tabs?: { name: string; to: string }[]
+  onChange?: (tab: string) => void
 }
 
-export const NavLinkTabs = ({ tabs = [] }: Props) => {
+export const NavLinkTabs = ({ tabs = [], onChange = () => {} }: Props) => {
   const { pathname } = useLocation()
   const [activeTab, setActiveTab] = useState<string>(tabs.find((t) => t.to === pathname)?.name || tabs[0].name || '')
 
-  const handleSwitch = (name: string) => setActiveTab(name)
+  const handleSwitch = (name: string) => {
+    setActiveTab(name)
+    onChange(name)
+  }
 
   const mappedTabs = tabs.map((t) => (
-    <Tab
-      to={t.to}
-      key={t.name}
-      data={t.name}
-      $active={t.name === activeTab}
-      onClick={() => {
-        handleSwitch(t.name)
-        t.onChange && t.onChange(t.name)
-      }}
-    />
+    <Tab to={t.to} key={t.name} data={t.name} $active={t.name === activeTab} onClick={() => handleSwitch(t.name)} />
   ))
   return <TabContainer>{mappedTabs}</TabContainer>
 }

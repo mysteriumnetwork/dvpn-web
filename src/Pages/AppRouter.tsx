@@ -4,15 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import {
+import ROUTES, {
   ADMIN,
   DASHBOARD,
   HISTORY,
   HOME,
   NEW_PASSWORD,
-  SANDBOX,
   SESSIONS_SIDE,
   SETTINGS,
   SETTINGS_ACCOUNT,
@@ -33,7 +32,7 @@ import { HistoryPage } from './Authenticated/HistoryPage/HistoryPage'
 import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
 import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
 import PageNotFound from './Error/PageNotFound'
-import { SandboxPage } from './Authenticated/SandboxPage/SandboxPage'
+import { StorybookPage, STORYBOOK_ROUTES } from './Authenticated/StorybookPage/StorybookPage'
 import { PasswordChangePage } from './Authenticated/Onboarding/PasswordChangePage'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 
@@ -41,6 +40,11 @@ const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)
   const { authenticated: loggedIn } = useAppSelector(selectors.auth)
   const onBoarding = useAppSelector(selectors.onBoarding)
+
+  const storybookRoutes = useMemo(
+    () => Object.keys(STORYBOOK_ROUTES).map((path) => <Route key={path} path={path} element={<StorybookPage />} />),
+    [STORYBOOK_ROUTES],
+  )
 
   if (loading) {
     return <FullPageSpinner />
@@ -124,13 +128,15 @@ const AppRouter = () => {
         }
       />
       <Route
-        path={SANDBOX}
+        path={ROUTES.STORYBOOK}
         element={
           <Protected redirects={[{ condition: !loggedIn, to: HOME }]}>
-            <WithNavigation content={<SandboxPage />} />
+            <WithNavigation content={<StorybookPage />} />
           </Protected>
         }
-      />
+      >
+        {storybookRoutes}
+      </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   )
