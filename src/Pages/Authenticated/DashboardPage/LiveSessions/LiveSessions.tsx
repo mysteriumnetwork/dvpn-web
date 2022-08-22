@@ -21,8 +21,11 @@ import { cells } from '../../../../Components/Table/cells'
 import services from '../../../../commons/services'
 import { useMediaQuery } from 'react-responsive'
 import { media } from '../../../../commons/media'
+import { LiveSessionCard } from './LiveSessionCard'
+import { List } from '../../../../Components/List/List'
+import { LiveSession } from '../../../../commons/liveSessions'
 
-const { PrimaryCell, SecondaryCell, MobileCell, CellHeader, CellData, CardHeaderPrimary, CardHeaderSecondary } = cells
+const { PrimaryCell, SecondaryCell } = cells
 const { seconds2Time } = dates
 const { countryName } = location
 const { format, add } = bytes
@@ -54,8 +57,6 @@ const Title = styled.div`
   font-style: normal;
   color: ${({ theme }) => theme.text.colorMain};
 `
-// TODO: Make overflow hidden if livesession is empty
-// TODO: Mobile view for component :)
 const SubTitle = styled(Link)`
   display: flex;
   align-items: center;
@@ -64,6 +65,8 @@ const SubTitle = styled(Link)`
   font-size: ${themeCommon.fontSizeSmaller};
   color: ${({ theme }) => theme.text.colorSecondary};
 `
+const listMapper = (item: LiveSession) => <LiveSessionCard item={item} />
+
 export const LiveSessions = () => {
   const liveSessions = useAppSelector(selectors.liveSessions)
   const isDesktop = useMediaQuery(isDesktopQuery)
@@ -98,78 +101,15 @@ export const LiveSessions = () => {
 
     [],
   )
-  const MobileColumns: Column<any>[] = useMemo(
-    () => [
-      {
-        Header: 'Country',
-        accessor: 'consumerCountry',
-        Cell: (c) => (
-          <MobileCell>
-            <CardHeaderPrimary>{countryName(c.value)}</CardHeaderPrimary>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Session ID',
-        accessor: 'id',
-        Cell: (c) => (
-          <MobileCell>
-            <CardHeaderSecondary>{session2human(c.value)}</CardHeaderSecondary>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Services',
-        accessor: 'serviceType',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Service</CellHeader>
-            <CellData>{services.name(c.value)}</CellData>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Duration',
-        accessor: 'duration',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Duration</CellHeader>
-            <CellData>{seconds2Time(c.value)}</CellData>
-          </MobileCell>
-        ),
-      },
-      {
-        Header: 'Earnings',
-        accessor: 'tokens',
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Earnings</CellHeader>
-            <CellData>{myst.display(c.value, { fractionDigits: 3 })}</CellData>
-          </MobileCell>
-        ),
-      },
 
-      {
-        Header: 'Data transferred',
-        accessor: (row): any => add(row.bytesSent, row.bytesReceived),
-        Cell: (c) => (
-          <MobileCell>
-            <CellHeader>Transferred</CellHeader>
-            <CellData>{format(c.value)}</CellData>
-          </MobileCell>
-        ),
-      },
-    ],
-
-    [],
-  )
   return (
     <Card $show={showContent}>
       <Header>
         <Title>Ongoing Sessions</Title>
         <SubTitle to={HISTORY}>Session history</SubTitle>
       </Header>
-      <Table columns={isDesktop ? Columns : MobileColumns} data={liveSessions} />
+      {isDesktop && <Table columns={Columns} data={liveSessions} />}
+      {!isDesktop && <List items={liveSessions} mapper={listMapper} />}
     </Card>
   )
 }
