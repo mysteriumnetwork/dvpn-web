@@ -129,7 +129,6 @@ const dark: Omit<Theme, 'common'> = {
 
   notifications: {
     background: themeCommon.colorKeyLight,
-    border: '6px solid ' + themeCommon.colorKeyLight,
     list: {
       background: themeCommon.color3B3755,
       boxShadow: '0px 5px 20px ' + themeCommon.color2F2A48 + alphaToHex(0.2),

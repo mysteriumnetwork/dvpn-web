@@ -41,15 +41,20 @@ const Container = styled.div`
 
 const Dot = styled.div`
   position: absolute;
-  width: 5px;
-  height: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
   border-radius: 100px;
-  border: ${({ theme }) => theme.notifications.border};
-  background: ${({ theme }) => theme.notifications.background};
+  background-color: ${({ theme }) => theme.notifications.background};
 
   right: 10%;
   top: 0;
   z-index: 1;
+  font-weight: 800;
+  font-size: 9px;
+  color: ${({ theme }) => theme.common.colorWhite};
 `
 
 const ListContainer = styled.div`
@@ -134,7 +139,7 @@ export const Notifications = () => {
 
   return (
     <Container>
-      {notifications.size > 0 && <Dot />}
+      {notifications.size > 0 && <Dot>{notifications.size}</Dot>}
       <IconButton icon={<BellIcon />} onClick={() => setOpen((p) => !p)} />
       {open && (
         <>

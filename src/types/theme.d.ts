@@ -127,7 +127,6 @@ export type Theme = {
 
   notifications: {
     background: string
-    border: string
 
     list: {
       background: string
