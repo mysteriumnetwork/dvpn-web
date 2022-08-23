@@ -14,7 +14,7 @@ import { ReactComponent as Download } from '../../../assets/images/download.svg'
 const { date2human } = dates
 
 const Body = styled.div`
-  background-color: ${({ theme }) => theme.table.bgBody} !important;
+  background-color: ${({ theme }) => theme.table.bgBody};
   border-radius: 30px;
   padding: 30px;
   display: flex;
@@ -40,7 +40,7 @@ const Row = styled.div`
   align-items: center;
   justify-content: space-between;
 `
-const DataColumn = styled.div`
+const Column = styled.div`
   display: flex;
   flex-direction: column;
   width: 150px;
@@ -53,7 +53,7 @@ const HeaderRow = styled(Row)`
   margin-top: 0;
   margin-bottom: 10px;
 `
-const DataHeader = styled.div`
+const Name = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
 `
@@ -72,13 +72,13 @@ const Hash = styled(Data)`
   white-space: no-wrap;
   text-overflow: ellipsis;
 `
-const AmountDataHeader = styled(DataHeader)`
+const NameIcon = styled(Name)`
   display: flex;
   align-items: center;
   gap: 5px;
   justify-content: flex-start;
 `
-const WalletColumn = styled(DataColumn)`
+const WideColumn = styled(Column)`
   width: 100%;
 `
 interface Props {
@@ -89,28 +89,28 @@ export const TransactionCard = ({ item }: Props) => {
     <Body>
       <Header>
         <HeaderRow>
-          <DataHeader>Transaction ID</DataHeader>
+          <Name>Transaction ID</Name>
           <Date>{date2human(item.settledAt)}</Date>
         </HeaderRow>
         <Hash>{item.txHash}</Hash>
       </Header>
       <Row>
-        <WalletColumn>
-          <DataHeader>External Wallet Address</DataHeader>
+        <WideColumn>
+          <Name>External Wallet Address</Name>
           <Hash>{item.beneficiary}</Hash>
-        </WalletColumn>
+        </WideColumn>
       </Row>
       <Row>
-        <DataColumn>
-          <AmountDataHeader>
+        <Column>
+          <NameIcon>
             Received amount <Download />
-          </AmountDataHeader>
+          </NameIcon>
           <Data>{myst.display(item.amount, { fractionDigits: 3 })}</Data>
-        </DataColumn>
-        <DataColumn>
-          <DataHeader>Fees</DataHeader>
+        </Column>
+        <Column>
+          <Name>Fees</Name>
           <Data>{myst.display(item.fees, { fractionDigits: 3 })}</Data>
-        </DataColumn>
+        </Column>
       </Row>
     </Body>
   )

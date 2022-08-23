@@ -19,7 +19,7 @@ const session2human = (session: string) => {
   return session.split('-')[0]
 }
 const Body = styled.div`
-  background-color: ${({ theme }) => theme.table.bgBody} !important;
+  background-color: ${({ theme }) => theme.table.bgBody};
   border-radius: 30px;
   padding: 30px;
   display: flex;
@@ -44,7 +44,7 @@ const Row = styled.div`
   align-items: center;
   justify-content: space-between;
 `
-const DataColumn = styled.div`
+const Column = styled.div`
   display: flex;
   flex-direction: column;
   width: 150px;
@@ -53,7 +53,7 @@ const DataColumn = styled.div`
     align-items: flex-end;
   }
 `
-const DataHeader = styled.div`
+const Name = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
 `
@@ -62,12 +62,12 @@ const Data = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
   font-weight: 500;
 `
-const HeaderTextPrimary = styled.div`
+const Left = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
 `
-const HeaderTextSecondary = styled.div`
+const Right = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
@@ -81,28 +81,28 @@ export const SessionCard = ({ item }: Props) => {
   return (
     <Body>
       <Header>
-        <HeaderTextPrimary>{countryName(item.consumerCountry)}</HeaderTextPrimary>
-        <HeaderTextSecondary>{session2human(item.id)}</HeaderTextSecondary>
+        <Left>{countryName(item.consumerCountry)}</Left>
+        <Right>{session2human(item.id)}</Right>
       </Header>
       <Row>
-        <DataColumn>
-          <DataHeader>Started</DataHeader>
+        <Column>
+          <Name>Started</Name>
           <Data>{date2human(item.startedAt)}</Data>
-        </DataColumn>
-        <DataColumn>
-          <DataHeader>Duration</DataHeader>
+        </Column>
+        <Column>
+          <Name>Duration</Name>
           <Data>{seconds2Time(item.durationSeconds)}</Data>
-        </DataColumn>
+        </Column>
       </Row>
       <Row>
-        <DataColumn>
-          <DataHeader>Earnings</DataHeader>
+        <Column>
+          <Name>Earnings</Name>
           <Data>{myst.display(item.earnings.wei, { fractionDigits: 3 })}</Data>
-        </DataColumn>
-        <DataColumn>
-          <DataHeader>Transferred</DataHeader>
+        </Column>
+        <Column>
+          <Name>Transferred</Name>
           <Data>{format(item.transferredBytes)}</Data>
-        </DataColumn>
+        </Column>
       </Row>
     </Body>
   )

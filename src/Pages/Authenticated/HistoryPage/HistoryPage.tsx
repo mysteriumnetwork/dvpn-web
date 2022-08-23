@@ -61,8 +61,6 @@ const session2human = (session: string) => {
   return session.split('-')[0]
 }
 
-const listMapper = (item: SessionV2) => <SessionCard item={item} />
-
 const PAGE_SIZE = 10
 const RANGE_OPTIONS = ['1d', '7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
 const Placeholder = () => (
@@ -141,7 +139,14 @@ export const HistoryPage = () => {
       </LayoutRow>
       <LayoutRow>
         {isDesktop && <Table noContent={<Placeholder />} columns={DesktopColumns} data={sessions} loading={loading} />}
-        {!isDesktop && <List items={sessions} mapper={listMapper} noContent={<Placeholder />} loading={loading} />}
+        {!isDesktop && (
+          <List
+            items={sessions}
+            mapper={(item) => <SessionCard item={item} />}
+            noContent={<Placeholder />}
+            loading={loading}
+          />
+        )}
       </LayoutRow>
       <LayoutRow>
         {!noData && (

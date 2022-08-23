@@ -61,8 +61,6 @@ const Placeholder = () => (
   </PlaceholderContainer>
 )
 
-const listMapper = (item: Settlement) => <TransactionCard item={item} />
-
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState(1)
@@ -121,7 +119,14 @@ export const TransactionsPage = () => {
       </LayoutRow>
       <LayoutRow>
         {isDesktop && <Table noContent={<Placeholder />} columns={Columns} loading={loading} data={data.items} />}
-        {!isDesktop && <List items={data.items} mapper={listMapper} loading={loading} noContent={<Placeholder />} />}
+        {!isDesktop && (
+          <List
+            items={data.items}
+            mapper={(item) => <TransactionCard item={item} />}
+            loading={loading}
+            noContent={<Placeholder />}
+          />
+        )}
       </LayoutRow>
       <LayoutRow>
         {!noData && <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />}

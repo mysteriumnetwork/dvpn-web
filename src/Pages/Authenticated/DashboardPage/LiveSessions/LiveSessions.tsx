@@ -23,7 +23,6 @@ import { useMediaQuery } from 'react-responsive'
 import { media } from '../../../../commons/media'
 import { LiveSessionCard } from './LiveSessionCard'
 import { List } from '../../../../Components/List/List'
-import { LiveSession } from '../../../../commons/liveSessions'
 
 const { PrimaryCell, SecondaryCell } = cells
 const { seconds2Time } = dates
@@ -65,7 +64,6 @@ const SubTitle = styled(Link)`
   font-size: ${themeCommon.fontSizeSmaller};
   color: ${({ theme }) => theme.text.colorSecondary};
 `
-const listMapper = (item: LiveSession) => <LiveSessionCard item={item} />
 
 export const LiveSessions = () => {
   const liveSessions = useAppSelector(selectors.liveSessions)
@@ -109,7 +107,7 @@ export const LiveSessions = () => {
         <SubTitle to={HISTORY}>Session history</SubTitle>
       </Header>
       {isDesktop && <Table columns={Columns} data={liveSessions} />}
-      {!isDesktop && <List items={liveSessions} mapper={listMapper} />}
+      {!isDesktop && <List items={liveSessions} mapper={(item) => <LiveSessionCard item={item} />} />}
     </Card>
   )
 }

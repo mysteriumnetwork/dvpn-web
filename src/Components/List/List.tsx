@@ -59,13 +59,12 @@ const ListSpinner = () => (
 )
 export const List = <T extends unknown>({ items, mapper, loading, noContent }: Props<T>) => {
   const id = useId()
-  const showSpinner = loading
   const showNoContent = items.length === 0 && !loading
 
   return (
     <ListBody $noContent={showNoContent} $loading={loading}>
       {showNoContent && noContent}
-      {showSpinner && <ListSpinner />}
+      {loading && <ListSpinner />}
       {items.map(mapper).map((mappedItem, index) => (
         <div key={`${id}-li-${index}`}>{mappedItem}</div>
       ))}

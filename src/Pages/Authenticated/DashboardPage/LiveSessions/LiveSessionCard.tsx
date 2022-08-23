@@ -7,8 +7,8 @@
 import styled from 'styled-components'
 import bytes from '../../../../commons/bytes'
 import dates from '../../../../commons/dates'
-import { LiveSession } from '../../../../commons/liveSessions'
 import location from '../../../../commons/location'
+import { Session } from 'mysterium-vpn-js'
 import { myst } from '../../../../commons/mysts'
 import { ReactComponent as Ongoing } from '../../../../assets/images/ongoing.svg'
 import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
@@ -21,7 +21,7 @@ const session2human = (session: string) => {
 }
 
 const Body = styled.div`
-  background-color: ${({ theme }) => theme.table.bgBody} !important;
+  background-color: ${({ theme }) => theme.table.bgBody};
   border-radius: 30px;
   display: flex;
   width: 100%;
@@ -46,7 +46,7 @@ const Row = styled.div`
   align-items: center;
   justify-content: space-between;
 `
-const DataColumn = styled.div`
+const Column = styled.div`
   display: flex;
   flex-direction: column;
   width: 150px;
@@ -55,7 +55,7 @@ const DataColumn = styled.div`
     align-items: flex-end;
   }
 `
-const DataHeader = styled.div`
+const Name = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
 `
@@ -64,46 +64,46 @@ const Data = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
   font-weight: 500;
 `
-const HeaderTextPrimary = styled.div`
+const Left = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorPrimary};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
 `
-const HeaderTextSecondary = styled.div`
+const Right = styled.div`
   color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
 `
 interface Props {
-  item: LiveSession
+  item: Session
 }
 export const LiveSessionCard = ({ item }: Props) => {
   return (
     <Body>
       <Header>
-        <HeaderTextPrimary>{countryName(item.consumerCountry)}</HeaderTextPrimary>
+        <Left>{countryName(item.consumerCountry)}</Left>
         <Ongoing />
-        <HeaderTextSecondary>{session2human(item.id)}</HeaderTextSecondary>
+        <Right>{session2human(item.id)}</Right>
       </Header>
       <Row>
-        <DataColumn>
-          <DataHeader>Started</DataHeader>
+        <Column>
+          <Name>Started</Name>
           <Data>{date2human(item.createdAt)}</Data>
-        </DataColumn>
-        <DataColumn>
-          <DataHeader>Duration</DataHeader>
+        </Column>
+        <Column>
+          <Name>Duration</Name>
           <Data>{seconds2Time(item.duration)}</Data>
-        </DataColumn>
+        </Column>
       </Row>
       <Row>
-        <DataColumn>
-          <DataHeader>Earnings</DataHeader>
+        <Column>
+          <Name>Earnings</Name>
           <Data>{myst.display(item.tokens, { fractionDigits: 3 })}</Data>
-        </DataColumn>
-        <DataColumn>
-          <DataHeader>Transferred</DataHeader>
+        </Column>
+        <Column>
+          <Name>Transferred</Name>
           <Data>{format(add(item.bytesReceived, item.bytesSent))}</Data>
-        </DataColumn>
+        </Column>
       </Row>
     </Body>
   )
