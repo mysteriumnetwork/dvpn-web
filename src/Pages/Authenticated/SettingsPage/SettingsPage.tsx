@@ -18,6 +18,10 @@ import { selectors } from '../../../redux/selectors'
 // import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 import { useMediaQuery } from 'react-responsive'
 import { media } from '../../../commons/media'
+import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
+import FEATURES from '../../../commons/features'
+import { configs } from '../../../commons/config'
+
 const { isMobileQuery } = media
 
 const FlexGrow = styled.div`
@@ -33,6 +37,10 @@ const PATH_TO_TAB = {
 
 export const SettingsPage = () => {
   const healthCheck = useAppSelector(selectors.healthCheck)
+
+  const config = useAppSelector(selectors.currentConfig)
+  const restartEnabled = configs.isFeatureEnabled(config, FEATURES.RESTART.name)
+
   const location = useLocation()
   const isMobile = useMediaQuery(isMobileQuery)
   const TabComponent = useMemo(
@@ -60,9 +68,9 @@ export const SettingsPage = () => {
             },
           ]}
         />
-        {/*<PowerOffButton />*/}
         <FlexGrow />
         {!isMobile && <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />}
+        {restartEnabled && <PowerOffButton />}
       </LayoutRow>
       <React.Suspense>
         <TabComponent />
