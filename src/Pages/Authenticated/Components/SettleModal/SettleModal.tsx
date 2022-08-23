@@ -23,6 +23,10 @@ import identities from '../../../../commons/identities'
 import errors from '../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
 import { updateBeneficiaryTxStatusStore } from '../../../../redux/app.slice'
+import { devices } from '../../../../theme/themes'
+import { useMediaQuery } from 'react-responsive'
+import { media } from '../../../../commons/media'
+const { isMobileQuery } = media
 
 const Error = styled.div`
   color: red;
@@ -41,19 +45,24 @@ const Content = styled.div`
   width: 100%;
   box-sizing: border-box;
   height: 80%;
+  @media ${devices.tablet} {
+    gap: 10px;
+  }
 `
 const Note = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeSmaller};
   margin-top: 20px;
+  @media ${devices.tablet} {
+    margin: 10px 30px 0 35px;
+    text-align: center;
+  }
 `
-const HeaderNote = styled.div`
+const HeaderNote = styled(Note)`
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 15px;
-  color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${({ theme }) => theme.common.fontSizeSmaller};
 `
 const Footer = styled.div`
   margin-top: 20px;
@@ -67,13 +76,18 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `
-const RowCenter = styled.div`
+const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 10px;
   width: 100%;
   gap: 20px;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+  }
 `
 const StyledEditIcon = styled(EditIcon)`
   cursor: pointer;
@@ -182,9 +196,16 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
     setLoading(false)
   }
   const isNegativeProfit = calculatedFees.profitsWei.lte(0)
-
+  const isMobile = useMediaQuery(isMobileQuery)
+  const showErrors = state.errors.length > 0
   return (
-    <Modal show={show} title="Settle" icon={<SettleButtonIcon />} onClickX={handleClose}>
+    <Modal
+      show={show}
+      title="Settle"
+      size={isMobile ? 'xl' : undefined}
+      icon={<SettleButtonIcon />}
+      onClickX={handleClose}
+    >
       <Content>
         <HeaderNote>External wallet address: </HeaderNote>
         <Container>
@@ -206,7 +227,7 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
             }
           />
         </Container>
-        <RowCenter>
+        <Row>
           <Card title="Amount" amount={myst.display(calculatedFees.earningsWei, { fractionDigits: 6 })} />
           <Card
             title={`Network fee ${calculatedFees.hermesCutPercent * 100}%`}
@@ -217,17 +238,19 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
             amount={myst.display(calculatedFees.blockchainFeeWei, { fractionDigits: 6 })}
           />
           <Card $primary title="You will get" amount={myst.display(calculatedFees.profitsWei, { fractionDigits: 6 })} />
-        </RowCenter>
+        </Row>
         <Note>
           Please click SETTLE to proceed with settlement to External wallet. Note: Settlement transaction may take a few
           minutes to complete.
         </Note>
-        <Errors>
-          {state.errors.map((message, idx) => (
-            <Error key={idx}>{message}</Error>
-          ))}
-          {txStatus?.error && <Error>Fail to change wallet address. Please try again.</Error>}
-        </Errors>
+        {showErrors && (
+          <Errors>
+            {state.errors.map((message, idx) => (
+              <Error key={idx}>{message}</Error>
+            ))}
+            {txStatus?.error && <Error>Fail to change wallet address. Please try again.</Error>}
+          </Errors>
+        )}
         <Footer>
           <Button
             label="Cancel"

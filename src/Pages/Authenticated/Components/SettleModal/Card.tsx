@@ -6,6 +6,7 @@
  */
 import styled from 'styled-components'
 import { alphaToHex } from '../../../../theme/themeCommon'
+import { devices } from '../../../../theme/themes'
 
 interface Props {
   $primary?: boolean
@@ -22,12 +23,16 @@ const Container = styled.div<Props>`
   width: 20%;
   align-items: flex-start;
   padding: 15px;
+  @media ${devices.tablet} {
+    width: 80%;
+    gap: 5px;
+    padding: 10px 15px;
+  }
 `
 
 const Title = styled.div<Props>`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ $primary, theme }) => ($primary ? theme.common.colorKeyLight : theme.settleModal.card.titleColor)};
-  margin-bottom: 5px;
 `
 
 const Amount = styled.div<Props>`
@@ -36,9 +41,12 @@ const Amount = styled.div<Props>`
   justify-content: flex-start;
   margin-top: 10px;
   width: 100%;
-  gap: 20px;
+  gap: 50px;
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   color: ${({ $primary, theme }) => ($primary ? theme.common.colorKey : theme.settleModal.card.amountColor)};
+  @media ${devices.tablet} {
+    width: 100%;
+  }
 `
 
 export const Card = ({ $primary, title, amount }: Props) => {
