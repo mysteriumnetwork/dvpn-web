@@ -4,19 +4,21 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import { ToastContainer } from 'react-toastify'
 
-export const StyledToastContainer = styled(ToastContainer)`
-  .Toastify__toast-container--bottom-right {
-  }
+export const OffsetToastsGlobalCSS = createGlobalStyle`
   .Toastify__toast-container {
-    padding: 0;
+    bottom: 4em;
   }
+`
+
+export const StyledToastContainer = styled(ToastContainer)`
   .Toastify__toast {
     padding: 0;
-    border-radius: 0;
-    min-height: 50px;
+    min-height: 0;
+    border-radius: 4px;
+    background-color: ${({ theme }) => theme.toasts.background};
   }
   .Toastify__toast-body {
     padding: 0;
@@ -26,7 +28,8 @@ export const StyledToastContainer = styled(ToastContainer)`
     svg {
       fill: ${({ theme }) => theme.toasts.closeButtonColor};
       stroke: ${({ theme }) => theme.toasts.closeButtonColor};
-      stroke-width: 0.1px;
+      stroke-width: 0.5px;
+      fill-opacity: 1;
       width: 10px;
       height: 10px;
     }

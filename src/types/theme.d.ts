@@ -191,7 +191,7 @@ export type Theme = {
     error: {
       iconBackground: string
     }
-    subjectTextColor: string
+    background: string
     contentTextColor: string
     closeButtonColor: string
   }

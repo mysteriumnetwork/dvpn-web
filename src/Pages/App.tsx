@@ -23,7 +23,7 @@ import remoteStorage from '../commons/remoteStorage'
 import { UI_THEME_KEY } from '../constants/remote-storage.keys'
 import { themeCommon } from '../theme/themeCommon'
 import { StateInitializer } from './StateInitializer'
-import { StyledToastContainer } from '../Components/Toasts/StyledToastContainer'
+import { OffsetToastsGlobalCSS, StyledToastContainer } from '../Components/Toasts/StyledToastContainer'
 
 export const App = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
@@ -31,6 +31,7 @@ export const App = () => {
   return (
     <ThemeProvider theme={theme === 'dark' ? themes.dark : themes.light}>
       <GlobalStyle />
+      <OffsetToastsGlobalCSS />
       <Hotkeys>
         <NodeHealthcheckBarrier>
           <StateInitializer>

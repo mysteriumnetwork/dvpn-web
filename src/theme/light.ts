@@ -189,7 +189,7 @@ const light: Omit<Theme, 'common'> = {
     error: {
       iconBackground: themeCommon.colorRed + alphaToHex(0.3),
     },
-    subjectTextColor: themeCommon.colorDarkBlue,
+    background: themeCommon.colorWhite,
     contentTextColor: themeCommon.colorGrayBlue2,
     closeButtonColor: themeCommon.colorGrayBlue2,
   },

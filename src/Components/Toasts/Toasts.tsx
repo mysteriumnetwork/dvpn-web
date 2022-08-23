@@ -14,9 +14,9 @@ import styled from 'styled-components'
 export type Variant = 'success' | 'warning' | 'info' | 'error'
 
 const Card = styled.div`
-  background-color: ${({ theme }) => theme.common.colorWhite};
+  background-color: ${({ theme }) => theme.toasts.background};
   display: flex;
-  min-height: 50px;
+  //min-height: 50px;
   height: 100%;
   width: 300px;
 `
@@ -38,12 +38,6 @@ const Message = styled.div`
   margin: 8px;
 `
 
-const Subject = styled.div`
-  font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  color: ${({ theme }) => theme.toasts.subjectTextColor};
-  font-weight: 500;
-  line-height: 14px;
-`
 const Content = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.toasts.contentTextColor};
@@ -56,12 +50,11 @@ type ToastProps = {
   variant: Variant
 } & Props
 
-const Toast = ({ icon, message, subject, variant }: ToastProps) => {
+const Toast = ({ icon, message, variant }: ToastProps) => {
   return (
     <Card>
       <IconContainer $variant={variant}>{icon}</IconContainer>
       <Message>
-        {subject && <Subject>{subject}</Subject>}
         <Content>{message}</Content>
       </Message>
     </Card>
@@ -69,21 +62,20 @@ const Toast = ({ icon, message, subject, variant }: ToastProps) => {
 }
 
 type Props = {
-  subject?: string
   message: string
 }
-export const SuccessToast = ({ message, subject }: Props) => {
-  return <Toast variant="success" icon={<SuccessSVG />} message={message} subject={subject} />
+export const SuccessToast = ({ message }: Props) => {
+  return <Toast variant="success" icon={<SuccessSVG />} message={message} />
 }
 
-export const WarningToast = ({ message, subject }: Props) => {
-  return <Toast variant="warning" icon={<WarningSVG />} message={message} subject={subject} />
+export const WarningToast = ({ message }: Props) => {
+  return <Toast variant="warning" icon={<WarningSVG />} message={message} />
 }
 
-export const ErrorToast = ({ message, subject }: Props) => {
-  return <Toast variant="error" icon={<ErrorSVG />} message={message} subject={subject} />
+export const ErrorToast = ({ message }: Props) => {
+  return <Toast variant="error" icon={<ErrorSVG />} message={message} />
 }
 
-export const InfoToast = ({ message, subject }: Props) => {
-  return <Toast variant="info" icon={<InfoSVG />} message={message} subject={subject} />
+export const InfoToast = ({ message }: Props) => {
+  return <Toast variant="info" icon={<InfoSVG />} message={message} />
 }
