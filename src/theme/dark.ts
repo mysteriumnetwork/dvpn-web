@@ -178,6 +178,24 @@ const dark: Omit<Theme, 'common'> = {
   a: {
     textColor: themeCommon.colorYellow,
   },
+
+  toasts: {
+    success: {
+      iconBackground: themeCommon.colorGreen + alphaToHex(0.3),
+    },
+    warning: {
+      iconBackground: themeCommon.colorYellow + alphaToHex(0.3),
+    },
+    info: {
+      iconBackground: themeCommon.colorBlue + alphaToHex(0.3),
+    },
+    error: {
+      iconBackground: themeCommon.colorRed + alphaToHex(0.3),
+    },
+    subjectTextColor: themeCommon.colorDarkBlue,
+    contentTextColor: themeCommon.colorGrayBlue2,
+    closeButtonColor: themeCommon.colorGrayBlue2,
+  },
 }
 
 export default dark

@@ -178,6 +178,24 @@ export type Theme = {
     textColor: string
   }
 
+  toasts: {
+    success: {
+      iconBackground: string
+    }
+    warning: {
+      iconBackground: string
+    }
+    info: {
+      iconBackground: string
+    }
+    error: {
+      iconBackground: string
+    }
+    subjectTextColor: string
+    contentTextColor: string
+    closeButtonColor: string
+  }
+
   common: Common
 }
 

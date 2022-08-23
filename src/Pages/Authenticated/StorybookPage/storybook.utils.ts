@@ -46,4 +46,8 @@ export const STORYBOOK_ROUTES: { [key: string]: RouteInfo } = {
     component: './Items/IconsBook',
     title: 'Icons',
   },
+  [subRoute('/toasts')]: {
+    component: './Items/ToastsBook',
+    title: 'Toasts',
+  },
 }
