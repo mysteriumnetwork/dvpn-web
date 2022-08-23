@@ -33,10 +33,16 @@ const clickableCSS = css`
   }
 `
 
-const IconButton = styled.div<IconButtonProps>`
+const IconButton = styled.div`
   width: 20px;
   height: 20px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const Clickable = styled.div<IconButtonProps>`
   ${({ $clickable }) => $clickable && clickableCSS}
 `
 
@@ -60,8 +66,10 @@ const CopyToClipboardButtonIcon = ({ text, noToast }: Props) => {
   }
 
   return (
-    <IconButton $clickable className={uid} data-clipboard-text={text} onClick={handleOnClick}>
-      <InputCopyToClipboardIcon />
+    <IconButton className={uid} data-clipboard-text={text} onClick={handleOnClick}>
+      <Clickable $clickable>
+        <InputCopyToClipboardIcon />
+      </Clickable>
     </IconButton>
   )
 }
