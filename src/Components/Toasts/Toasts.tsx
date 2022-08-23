@@ -16,7 +16,6 @@ export type Variant = 'success' | 'warning' | 'info' | 'error'
 const Card = styled.div`
   background-color: ${({ theme }) => theme.toasts.background};
   display: flex;
-  //min-height: 50px;
   height: 100%;
   width: 300px;
 `
