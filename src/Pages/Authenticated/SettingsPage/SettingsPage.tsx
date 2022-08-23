@@ -15,17 +15,23 @@ import { Issue } from './Issue'
 import styled from 'styled-components'
 import packageJson from '../../../../package.json'
 import { selectors } from '../../../redux/selectors'
-// import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
-import { useMediaQuery } from 'react-responsive'
-import { media } from '../../../commons/media'
 import { PowerOffButton } from '../../../Components/PowerOffButton/PowerOffButton'
 import FEATURES from '../../../commons/features'
 import { configs } from '../../../commons/config'
+import { devices } from '../../../theme/themes'
 
-const { isMobileQuery } = media
+const Row = styled(LayoutRow)`
+  justify-content: space-between;
 
-const FlexGrow = styled.div`
-  flex-grow: 1;
+  @media ${devices.tablet} {
+    flex-direction: column-reverse;
+  }
+`
+
+const Grouped = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const PATH_TO_TAB = {
@@ -42,7 +48,6 @@ export const SettingsPage = () => {
   const restartEnabled = configs.isFeatureEnabled(config, FEATURES.RESTART.name)
 
   const location = useLocation()
-  const isMobile = useMediaQuery(isMobileQuery)
   const TabComponent = useMemo(
     () => React.lazy(() => import(`${PATH_TO_TAB[location.pathname]}`).catch(() => import('./Tabs/NotFoundTab'))),
     [location.pathname],
@@ -50,8 +55,7 @@ export const SettingsPage = () => {
 
   return (
     <Layout logo={<SettingsHeaderIcon />} title="Settings">
-      <LayoutRow>
-        {isMobile && <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />}
+      <Row>
         <NavLinkTabs
           tabs={[
             {
@@ -68,10 +72,11 @@ export const SettingsPage = () => {
             },
           ]}
         />
-        <FlexGrow />
-        {!isMobile && <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />}
-        {restartEnabled && <PowerOffButton />}
-      </LayoutRow>
+        <Grouped>
+          <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />
+          {restartEnabled && <PowerOffButton />}
+        </Grouped>
+      </Row>
       <React.Suspense>
         <TabComponent />
       </React.Suspense>
