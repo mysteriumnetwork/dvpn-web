@@ -9,10 +9,8 @@ import { LayoutRow } from '../Components/Layout/Layout'
 
 export const CenteredRow = styled(LayoutRow)`
   flex-direction: column;
-  height: 80vh;
   overflow-y: scroll;
   scroll-behavior: smooth;
-  justify-content: center;
   align-items: center;
   border: 1px solid ${({ theme }) => theme.common.colorKey};
   border-radius: 10px;
