@@ -11,6 +11,7 @@ import { InputLockIcon } from '../../../../Components/Icons/InputIcons'
 import styled from 'styled-components'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
 import { CenteredRow } from '../Components'
+import { useState } from 'react'
 
 const TextAreas = styled.div`
   display: flex;
@@ -20,46 +21,47 @@ const TextAreas = styled.div`
 `
 
 const InputsBook = () => {
+  const [ipsum, setIpsum] = useState(
+    `Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.`,
+  )
+  const [short, setShort] = useState(`test string`)
+
   return (
     <>
       <CenteredRow>
         <LayoutRow>
-          <InputGroup title="Speed" subTitle="Mb" input={<TextField disabled value="test" />} />
+          <InputGroup title="Speed" subTitle="Mb" input={<TextField disabled value={short} onChange={setShort} />} />
           <InputGroup
             title="Speed"
             subTitle="Mb"
-            input={<TextField value="test test test test test testaaaaaas" disabled icon={<InputLockIcon />} />}
+            input={<TextField value={ipsum} onChange={setIpsum} disabled icon={<InputLockIcon />} />}
           />
         </LayoutRow>
         <LayoutRow>
-          <InputGroup title="Speed" subTitle="Mb" input={<TextField value="test" />} />
+          <InputGroup title="Speed" subTitle="Mb" input={<TextField value={short} onChange={setShort} />} />
           <InputGroup
             title="Speed"
             subTitle="Mb"
-            input={<TextField value="test test test test test testaaaaaas" icon={<InputLockIcon />} />}
+            input={<TextField value={ipsum} onChange={setIpsum} icon={<InputLockIcon />} />}
           />
         </LayoutRow>
         <LayoutRow>
-          <InputGroup title="Speed" subTitle="Mb" error="invalid data" input={<TextField error value="test" />} />
           <InputGroup
             title="Speed"
             subTitle="Mb"
-            input={<TextField error value="test" icon={<InputLockIcon $variant="error" />} />}
+            error="invalid data"
+            input={<TextField error value={short} onChange={setShort} />}
+          />
+          <InputGroup
+            title="Speed"
+            subTitle="Mb"
+            input={<TextField error value={ipsum} onChange={setIpsum} icon={<InputLockIcon $variant="error" />} />}
           />
         </LayoutRow>
         <LayoutRow style={{ width: '95%' }}>
           <TextAreas>
-            <TextArea
-              value={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.`}
-            />{' '}
-            <TextArea
-              value={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.`}
-              error
-            />
-            <TextArea
-              value={`Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.`}
-              disabled
-            />
+            <TextArea value={ipsum} onChange={setIpsum} /> <TextArea value={ipsum} error onChange={setIpsum} />
+            <TextArea value={ipsum} disabled onChange={setIpsum} />
           </TextAreas>
         </LayoutRow>
       </CenteredRow>
