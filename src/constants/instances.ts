@@ -9,7 +9,6 @@ import {
   BeneficiaryTxStatus,
   Config,
   CurrentPricesResponse,
-  Fees,
   FeesResponse,
   FeesV2,
   Identity,
@@ -19,9 +18,6 @@ import {
   NodeHealthcheck,
   NodeMonitoringStatus,
   NodeMonitoringStatusResponse,
-  SessionListResponse,
-  SessionStats,
-  SessionStatsDailyResponse,
   SessionsV2Response,
   SettlementListResponse,
 } from 'mysterium-vpn-js'
@@ -47,18 +43,6 @@ export const FEES_RESPONSE_EMPTY: FeesResponse = Object.freeze({
   serverTime: new Date(0).toJSON(),
 })
 
-export const FEES_EMPTY: Fees = Object.freeze({
-  registration: 0,
-  registrationTokens: TOKENS_EMPTY,
-  settlement: 0,
-  settlementTokens: TOKENS_EMPTY,
-  hermes: 0,
-  hermesTokens: TOKENS_EMPTY,
-  hermesPercent: '0.000',
-  decreaseStake: 0,
-  decreaseStakeTokens: TOKENS_EMPTY,
-})
-
 export const CURRENT_PRICES_EMPTY: CurrentPricesResponse = Object.freeze({
   pricePerHour: BigInt(0),
   pricePerGib: BigInt(0),
@@ -81,14 +65,6 @@ export const IDENTITY_EMPTY: Identity = Object.freeze({
   earningsPerHermes: {},
 })
 
-export const SESSION_STATS_EMPTY: SessionStats = Object.freeze({
-  count: 0,
-  countConsumers: 0,
-  sumBytesReceived: 0,
-  sumBytesSent: 0,
-  sumDuration: 0,
-  sumTokens: 0,
-})
 export const SESSION_STATS_WITH_BYTE_TOTAL_EMPTY: SessionStatsWithByteTotal = Object.freeze({
   count: 0,
   countConsumers: 0,
@@ -116,14 +92,6 @@ export const MMN_KEY_RESPONSE_EMPTY: MMNApiKeyResponse = Object.freeze({
   apiKey: 'N/A',
 })
 
-export const SESSIONS_LIST_RESPONSE_EMPTY: SessionListResponse = Object.freeze({
-  items: [],
-  page: 1,
-  pageSize: 0,
-  totalItems: 0,
-  totalPages: 0,
-})
-
 export const NODE_MONITORING_STATUS_RESPONSE_EMPTY: NodeMonitoringStatusResponse = Object.freeze({
   status: NodeMonitoringStatus.PASSED,
 })
@@ -146,14 +114,6 @@ export const NODE_HEALTH_CHECK_EMPTY: NodeHealthcheck = Object.freeze({
     branch: '',
     buildNumber: '',
   },
-})
-
-/**
- * @deprecated
- */
-export const SESSIONS_STATS_DAILY_RESPONSE_EMPTY: SessionStatsDailyResponse = Object.freeze({
-  items: {},
-  stats: SESSION_STATS_EMPTY,
 })
 
 export const SESSIONS_V2_RESPONSE_EMPTY: SessionsV2Response = Object.freeze({
