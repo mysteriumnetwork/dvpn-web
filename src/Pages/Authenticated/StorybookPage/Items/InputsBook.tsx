@@ -7,11 +7,17 @@
 import { InputGroup } from '../../../../Components/Inputs/InputGroup'
 import { LayoutRow } from '../../Components/Layout/Layout'
 import { TextField } from '../../../../Components/Inputs/TextField'
-import { InputLockIcon } from '../../../../Components/Icons/InputIcons'
+import {
+  InputCopyToClipboardIcon,
+  InputEmailIcon,
+  InputIconVariant,
+  InputLockIcon,
+} from '../../../../Components/Icons/InputIcons'
 import styled from 'styled-components'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
 import { CenteredRow } from '../Components'
 import { useState } from 'react'
+import CopyToClipboardButtonIcon from '../../../../Components/Inputs/CopyToClipboardButtonIcon'
 
 const TextAreas = styled.div`
   display: flex;
@@ -29,6 +35,24 @@ const InputsBook = () => {
   return (
     <>
       <CenteredRow>
+        <LayoutRow>
+          <InputGroup title="Speed" subTitle="Mb" input={<TextField disabled value={short} onChange={setShort} />} />
+          <InputGroup
+            title="Speed"
+            subTitle="Mb"
+            input={
+              <TextField value={ipsum} onChange={setIpsum} disabled icon={<CopyToClipboardButtonIcon text={ipsum} />} />
+            }
+          />
+        </LayoutRow>
+        <LayoutRow>
+          <InputGroup title="Speed" subTitle="Mb" input={<TextField value={short} onChange={setShort} />} />
+          <InputGroup
+            title="Speed"
+            subTitle="Mb"
+            input={<TextField value={ipsum} onChange={setIpsum} icon={<CopyToClipboardButtonIcon text={short} />} />}
+          />
+        </LayoutRow>
         <LayoutRow>
           <InputGroup title="Speed" subTitle="Mb" input={<TextField disabled value={short} onChange={setShort} />} />
           <InputGroup
@@ -63,6 +87,21 @@ const InputsBook = () => {
             <TextArea value={ipsum} onChange={setIpsum} /> <TextArea value={ipsum} error onChange={setIpsum} />
             <TextArea value={ipsum} disabled onChange={setIpsum} />
           </TextAreas>
+        </LayoutRow>
+        <LayoutRow>
+          {['normal', 'disabled', 'error'].map((v) => (
+            <InputEmailIcon key={`InputEmailIcon-${v}`} $variant={v as InputIconVariant} />
+          ))}
+        </LayoutRow>
+        <LayoutRow>
+          {['normal', 'disabled', 'error'].map((v) => (
+            <InputCopyToClipboardIcon key={`InputCopyToClipboardIcon-${v}`} $variant={v as InputIconVariant} />
+          ))}
+        </LayoutRow>
+        <LayoutRow>
+          {['normal', 'disabled', 'error'].map((v) => (
+            <InputLockIcon key={`InputLockIcon-${v}`} $variant={v as InputIconVariant} />
+          ))}
         </LayoutRow>
       </CenteredRow>
     </>
