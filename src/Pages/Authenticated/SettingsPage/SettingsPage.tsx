@@ -57,6 +57,7 @@ export const SettingsPage = () => {
     <Layout logo={<SettingsHeaderIcon />} title="Settings">
       <Row>
         <NavLinkTabs
+          activateFirst
           tabs={[
             {
               name: 'Account',

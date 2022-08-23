@@ -6,7 +6,7 @@
  */
 import styled, { css } from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { themeCommon } from '../../theme/themeCommon'
 import { devices } from '../../theme/themes'
 
@@ -68,11 +68,18 @@ const TabContainer = styled.div`
 interface Props {
   tabs?: { name: string; to: string }[]
   onChange?: (tab: string) => void
+  activateFirst?: boolean
 }
 
-export const NavLinkTabs = ({ tabs = [], onChange = () => {} }: Props) => {
+export const NavLinkTabs = ({ tabs = [], onChange = () => {}, activateFirst }: Props) => {
   const { pathname } = useLocation()
-  const [activeTab, setActiveTab] = useState<string>(tabs.find((t) => t.to === pathname)?.name || tabs[0].name || '')
+  const [activeTab, setActiveTab] = useState('')
+
+  useEffect(() => {
+    if (activateFirst) {
+      setActiveTab(tabs.find((t) => t.to === pathname)?.name || tabs[0].name || '')
+    }
+  }, [])
 
   const handleSwitch = (name: string) => {
     setActiveTab(name)
