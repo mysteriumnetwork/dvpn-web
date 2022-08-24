@@ -9,6 +9,7 @@ import { ReactNode } from 'react'
 import { XButtonIcon } from '../Icons/ButtonIcons'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { themeCommon } from '../../theme/themeCommon'
+import { devices } from '../../theme/themes'
 
 type ModalSize = 'xl'
 
@@ -30,15 +31,23 @@ const normalSize = css`
   left: 50%;
   top: 20%;
   transform: translate(-50%, 0);
+  @media ${devices.tablet} {
+    width: 80%;
+    height: 500px;
+  }
 `
 
 const xlSize = css`
   width: 90%;
   min-width: 50%;
-
   left: 50%;
   top: 10%;
   transform: translate(-50%, 0);
+  @media ${devices.tablet} {
+    width: 80%;
+    height: 625px;
+    top: 5%;
+  }
 `
 
 const StyledModal = styled.div<{ $size?: ModalSize }>`
@@ -88,6 +97,10 @@ const Title = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.modal.titleColor};
   margin-top: 40px;
+  @media ${devices.tablet} {
+    text-align: center;
+    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+  }
 `
 
 const SubTitle = styled.div`
@@ -95,6 +108,9 @@ const SubTitle = styled.div`
   font-weight: 700;
   margin-top: 10px;
   color: ${themeCommon.colorKey};
+  @media ${devices.tablet} {
+    margin-bottom: 20px;
+  }
 `
 
 const SpinnerOverlay = styled.div`

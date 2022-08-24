@@ -14,8 +14,9 @@ import { ReactComponent as InfoIcon } from '../../../../assets/images/info-big.s
 import ReactHtmlParser from 'react-html-parser'
 import { Button } from '../../../../Components/Inputs/Button'
 import { tequila } from '../../../../api/tequila'
+import { devices } from '../../../../theme/themes'
 
-const HeaderNote = styled.div`
+const Note = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,6 +24,12 @@ const HeaderNote = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   &:nth-of-type(1) {
     margin-top: 20px;
+  }
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeNormal};
+    text-align: center;
+    display: inline-block;
+    padding: 0 15px;
   }
 `
 const Content = styled.div`
@@ -53,6 +60,7 @@ const Container = styled.div`
   justify-content: flex-start;
 `
 const Link = styled.a`
+  display: inline;
   color: ${({ theme }) => theme.common.colorKey};
   margin-left: 0.25em;
 `
@@ -72,13 +80,13 @@ export const TOSModal = ({ show = false, onClose, hideAgree, onCloseLabel }: Pro
   return (
     <Modal disableBackdrop disableX show={show} title="Terms and Conditions Update" icon={<InfoIcon />}>
       <Content>
-        <HeaderNote>We have updated our Terms and Conditions. Please click agree to access NODE UI</HeaderNote>
-        <HeaderNote>
+        <Note>We have updated our Terms and Conditions. Please click agree to access NODE UI</Note>
+        <Note>
           You can always find our terms and conditions on
           <Link href="https://mystnodes.com/terms" target="_blank">
             mystnodes.com/terms
           </Link>
-        </HeaderNote>
+        </Note>
         <Container>{ReactHtmlParser(termsHtml)}</Container>
         <Footer>
           {onClose && <Button label={onCloseLabel || 'Cancel'} rounded variant={'outlined'} onClick={onClose} />}
