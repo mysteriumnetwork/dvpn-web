@@ -42,20 +42,20 @@ const Title = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
 `
 
-const Meta = styled.div`
+/*const Meta = styled.div`
   display: flex;
   flex-direction: column;
 `
 
 interface DiffValueProps {
   positive: boolean
-}
+}*/
 const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `
-const DiffValue = styled.div<DiffValueProps>`
+/*const DiffValue = styled.div<DiffValueProps>`
   display: flex;
   justify-content: center;
   width: 80px;
@@ -65,7 +65,7 @@ const DiffValue = styled.div<DiffValueProps>`
 
   color: ${({ positive }) => (positive ? themeCommon.colorGreen : themeCommon.colorGrayBlue)};
   background: ${({ positive, theme }) => (positive ? theme.bgReportCardDiffPositive : themeCommon.colorLightBlue)};
-`
+`*/
 
 interface Props {
   icon: ReactNode
