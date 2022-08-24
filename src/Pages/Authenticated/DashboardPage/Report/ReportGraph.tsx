@@ -15,10 +15,10 @@ import { RangePicker } from '../../../../Components/Inputs/RangePicker'
 import { Option } from '../../../../types/common'
 import { capitalizeFirstLetter } from '../../../../commons'
 import { ChartData } from './types'
+import { ChartTooltip } from './ChartTooltip'
 
 interface Props {
   chartData: ChartData
-
   graphOptions: Option[]
   onGraphChange: (o: Option) => void
   selectedGraph: Option
@@ -80,12 +80,21 @@ const ReportGraph = ({
             <XAxis dataKey="x" tickMargin={20} />
             <YAxis
               tick={{ width: 250 }}
+              tickCount={0}
               tickMargin={10}
               ticks={charts.ticks(chartData.series)}
               dataKey="y"
               unit={chartData.units}
             />
-            <Tooltip />
+            <Tooltip
+              content={({ active, payload, label }) => (
+                <ChartTooltip
+                  active={active}
+                  value={chartData.tooltipFormatter((payload ?? [])[0]?.value as string)}
+                  label={label}
+                />
+              )}
+            />
             <Area
               type="monotone"
               dataKey="y"

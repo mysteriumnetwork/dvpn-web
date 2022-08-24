@@ -12,7 +12,7 @@ const ticks = (allPairs: Pair[]): number[] => {
   }
   const maxTick = Math.ceil(Math.max(...allPairs.map((p) => p.y)))
   const midTick = Number((maxTick / 2).toFixed(2))
-  return [0, midTick, maxTick]
+  return [0, midTick / 2, midTick, maxTick - midTick / 2, maxTick]
 }
 
 const charts = {

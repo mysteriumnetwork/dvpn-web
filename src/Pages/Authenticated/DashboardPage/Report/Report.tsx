@@ -7,7 +7,7 @@
 
 import { useFetch } from '../../../../commons/hooks'
 import { tequila } from '../../../../api/tequila'
-import ReportGraph from '../Charts/ReportGraph'
+import ReportGraph from './ReportGraph'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
@@ -19,10 +19,11 @@ import { SESSIONS_V2_RESPONSE_EMPTY } from '../../../../constants/instances'
 import { myst } from '../../../../commons/mysts'
 import bytes from '../../../../commons/bytes'
 import { MetricsRange, Option } from '../../../../types/common'
-import { ChartData } from '../Charts/types'
+import { ChartData } from './types'
 import series from './series'
 import { ChartType } from './types'
 import totals from './totals'
+import { tooltipFormatter } from './PAIR_MAPPERS'
 
 const { api } = tequila
 const { seconds2Time } = dates
@@ -93,14 +94,14 @@ interface Stats {
 
 export const Report = () => {
   const [selectedRange, setSelectedRange] = useState(RANGE_OPTIONS[0])
-  const [selectedGraph, setSelectedGraph] = useState(GRAPH_OPTIONS[0])
+  const [selectedGraph, setSelectedGraph] = useState<Option<ChartType>>(GRAPH_OPTIONS[0])
   const [stats, setStats] = useState<Stats>({
     totalEarningsEther: 0,
     totalSessions: 0,
     totalSessionTime: 0,
     totalTransferredBytes: 0,
   })
-  const [chartData, setChartData] = useState<ChartData>({ series: [] })
+  const [chartData, setChartData] = useState<ChartData>({ series: [], tooltipFormatter: () => '' })
 
   const [data = SESSIONS_V2_RESPONSE_EMPTY, loading] = useFetch(
     () => api.provider.sessions({ range: selectedRange.value }),
@@ -111,11 +112,17 @@ export const Report = () => {
     if (loading) {
       return
     }
+
     setChartData((p) => ({
       ...p,
       series: series.pairs(data.sessions, selectedGraph.value as ChartType, selectedRange.value),
-      units: series.units(selectedGraph.value as ChartType),
+      units: series.units(selectedGraph.value),
+      tooltipFormatter: tooltipFormatter(selectedGraph.value),
     }))
+    series
+      .pairs(data.sessions, selectedGraph.value as ChartType, selectedRange.value)
+      .filter((p) => p.y)
+      .forEach((p) => console.log(`x: ${p.x} y: ${p.y}`))
     setStats((p) => ({
       ...p,
       totalEarningsEther: totals.earnings(data.sessions),

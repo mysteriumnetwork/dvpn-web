@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { SessionV2 } from 'mysterium-vpn-js/lib/provider'
-import { Pair } from '../Charts/types'
+import { Pair } from './types'
 import { ChartType, GroupedByTime } from './types'
-import { MAPPERS } from './mappers'
+import { PAIR_MAPPERS } from './PAIR_MAPPERS'
 import { currentCurrency } from '../../../../commons/currency'
 import { MetricsRange } from '../../../../types/common'
 import { dayHour, localDate } from './dates'
 
-const units = (type: ChartType): string =>
+const units = (type: ChartType): string | undefined =>
   ({
     earnings: ` ${currentCurrency()}`,
     data: ' GB',
@@ -20,7 +20,7 @@ const units = (type: ChartType): string =>
   }[type])
 
 const pairs = (sessions: SessionV2[], type: ChartType, range: MetricsRange): Pair[] =>
-  MAPPERS[type](range === '1d' ? groupByLast24Hours(sessions) : groupByDays(sessions, range))
+  PAIR_MAPPERS[type](range === '1d' ? groupByLast24Hours(sessions) : groupByDays(sessions, range))
 
 const emptyGroup = (key: string) => ({ [key]: [] })
 

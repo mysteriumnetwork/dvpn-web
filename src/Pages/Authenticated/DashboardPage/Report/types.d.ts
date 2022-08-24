@@ -7,7 +7,18 @@
 
 import { SessionV2 } from 'mysterium-vpn-js/lib/provider'
 
-export type ChartType = 'earnings' | 'sessions' | 'data'
+export interface Pair {
+  x: string
+  y: number
+}
+
+export interface ChartData {
+  series: Pair[]
+  units?: string
+  tooltipFormatter: (value: string) => string
+}
+
+export type ChartType = 'earnings' | 'sessions' | 'data' | string
 
 export interface GroupedByTime {
   [date: string]: SessionV2[]
