@@ -127,7 +127,6 @@ export type Theme = {
 
   notifications: {
     background: string
-    border: string
 
     list: {
       background: string
@@ -177,6 +176,24 @@ export type Theme = {
 
   a: {
     textColor: string
+  }
+
+  toasts: {
+    success: {
+      iconBackground: string
+    }
+    warning: {
+      iconBackground: string
+    }
+    info: {
+      iconBackground: string
+    }
+    error: {
+      iconBackground: string
+    }
+    background: string
+    contentTextColor: string
+    closeButtonColor: string
   }
 
   common: Common

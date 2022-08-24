@@ -5,9 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { PasswordChangePage } from '../../Onboarding/PasswordChangePage'
+import { CenteredRow } from '../Components'
 
 const PasswordChangeBook = () => {
-  return <PasswordChangePage />
+  return (
+    <CenteredRow>
+      <PasswordChangePage />
+    </CenteredRow>
+  )
 }
 
 export default PasswordChangeBook

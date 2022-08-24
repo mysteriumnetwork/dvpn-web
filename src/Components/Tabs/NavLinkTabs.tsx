@@ -6,49 +6,49 @@
  */
 import styled, { css } from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { themeCommon } from '../../theme/themeCommon'
 import { devices } from '../../theme/themes'
 
-interface TabProps {
+interface TabTitleProps {
   $active?: boolean
-  data: string
 }
+
 const activeCSS = css`
   :after {
     content: '';
     position: absolute;
-    width: 0px;
-    height: 0px;
-    left: 0px;
+    display: flex;
+    justify-content: center;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-top: 6px solid #d61f85;
-    transform: translateX(42px) translateY(25px);
-    @media ${devices.tablet} {
-      transform: translateX(53px) translateY(25px);
-    }
+
+    transform: translateX(30px);
+    bottom: -6px;
   }
 `
-const Tab = styled(Link)<TabProps>`
+const Tab = styled(Link)`
   text-decoration: none;
-  position: relative;
   min-width: 100px;
-  &:before {
-    content: attr(data);
-    position: relative;
-    transform: translate(-50%);
-  }
+`
+
+const TabTitle = styled.div<TabTitleProps>`
+  position: relative;
+
+  background-color: ${({ $active, theme }) => ($active ? themeCommon.colorKey : theme.navTab.bgColor)};
+  color: ${({ $active, theme }) => ($active ? themeCommon.colorWhite : theme.navTab.textColor)};
+  font-size: ${themeCommon.fontSizeBigger};
+  border-radius: 100px;
+  padding: 8px 12px 8px 12px;
+  cursor: pointer;
+  min-width: 100px;
+  text-align: center;
+
   :hover {
     color: ${({ $active }) => ($active ? themeCommon.colorWhite : themeCommon.colorGrayBlue2)};
   }
-  text-align: center;
-  background: ${({ $active, theme }) => ($active ? themeCommon.colorKey : theme.navTab.bgColor)};
-  border-radius: 100px;
-  color: ${({ $active, theme }) => ($active ? themeCommon.colorWhite : theme.navTab.textColor)};
-  font-size: ${themeCommon.fontSizeBigger};
-  padding: 8px 12px 8px 12px;
-  cursor: pointer;
+
   ${({ $active }) => $active && activeCSS}
   @media ${devices.tablet} {
     width: 33%;
@@ -68,11 +68,18 @@ const TabContainer = styled.div`
 interface Props {
   tabs?: { name: string; to: string }[]
   onChange?: (tab: string) => void
+  activateFirst?: boolean
 }
 
-export const NavLinkTabs = ({ tabs = [], onChange = () => {} }: Props) => {
+export const NavLinkTabs = ({ tabs = [], onChange = () => {}, activateFirst }: Props) => {
   const { pathname } = useLocation()
-  const [activeTab, setActiveTab] = useState<string>(tabs.find((t) => t.to === pathname)?.name || tabs[0].name || '')
+  const [activeTab, setActiveTab] = useState('')
+
+  useEffect(() => {
+    if (activateFirst) {
+      setActiveTab(tabs.find((t) => t.to === pathname)?.name || tabs[0].name || '')
+    }
+  }, [])
 
   const handleSwitch = (name: string) => {
     setActiveTab(name)
@@ -80,7 +87,9 @@ export const NavLinkTabs = ({ tabs = [], onChange = () => {} }: Props) => {
   }
 
   const mappedTabs = tabs.map((t) => (
-    <Tab to={t.to} key={t.name} data={t.name} $active={t.name === activeTab} onClick={() => handleSwitch(t.name)} />
+    <Tab to={t.to} key={t.name} onClick={() => handleSwitch(t.name)}>
+      <TabTitle $active={t.name === activeTab}>{t.name}</TabTitle>
+    </Tab>
   ))
   return <TabContainer>{mappedTabs}</TabContainer>
 }

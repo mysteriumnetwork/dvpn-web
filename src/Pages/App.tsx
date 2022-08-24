@@ -9,7 +9,6 @@ import themes from '../theme/themes'
 import { Hotkeys } from './Authenticated/Components/Hotkeys/Hotkeys'
 import { NodeHealthcheckBarrier } from './NodeHealthcheckBarrier'
 import AppRouter from './AppRouter'
-import { ToastContainer } from 'react-toastify'
 import React from 'react'
 import { useAppSelector } from '../commons/hooks'
 import FontUbuntuBold from '../assets/fonts/Ubuntu/Ubuntu-Bold.ttf'
@@ -24,6 +23,7 @@ import remoteStorage from '../commons/remoteStorage'
 import { UI_THEME_KEY } from '../constants/remote-storage.keys'
 import { themeCommon } from '../theme/themeCommon'
 import { StateInitializer } from './StateInitializer'
+import { OffsetToastsGlobalCSS, StyledToastContainer } from '../Components/Toasts/StyledToastContainer'
 
 export const App = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
@@ -31,6 +31,7 @@ export const App = () => {
   return (
     <ThemeProvider theme={theme === 'dark' ? themes.dark : themes.light}>
       <GlobalStyle />
+      <OffsetToastsGlobalCSS />
       <Hotkeys>
         <NodeHealthcheckBarrier>
           <StateInitializer>
@@ -38,7 +39,7 @@ export const App = () => {
           </StateInitializer>
         </NodeHealthcheckBarrier>
       </Hotkeys>
-      <ToastContainer position="bottom-right" />
+      <StyledToastContainer limit={6} icon={false} hideProgressBar position="bottom-right" />
     </ThemeProvider>
   )
 }

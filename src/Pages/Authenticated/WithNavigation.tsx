@@ -32,7 +32,6 @@ interface Props {
 const WithNavigation = ({ content }: Props) => {
   return (
     <Page>
-      {/* <Navigation openMenu={toggleMobileMenu} /> */}
       <Media.Desktop>
         <DesktopNavigation />
       </Media.Desktop>

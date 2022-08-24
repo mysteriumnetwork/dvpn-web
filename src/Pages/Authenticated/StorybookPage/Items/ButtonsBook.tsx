@@ -7,7 +7,15 @@
 import { Button, ButtonVariant } from '../../../../Components/Inputs/Button'
 import { LayoutRow } from '../../Components/Layout/Layout'
 import { CenteredRow } from '../Components'
+import { ReactComponent as ICO1 } from '../../../../assets/images/input/external.svg'
+import { ReactComponent as ICO2 } from '../../../../assets/images/input/x.svg'
+import { ReactComponent as ICO3 } from '../../../../assets/images/input/burger.svg'
+import { ReactComponent as ICO4 } from '../../../../assets/images/input/email.svg'
+import { ReactComponent as ICO5 } from '../../../../assets/images/input/copy-to-clipboard.svg'
+import { ReactComponent as ICO6 } from '../../../../assets/images/input/lock.svg'
+import { IconButton } from '../../../../Components/Inputs/IconButton'
 
+const ICONS: any[] = [<ICO1 />, <ICO2 />, <ICO3 />, <ICO4 />, <ICO5 />, <ICO6 />]
 const BUTTON_VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'outlined', 'blue']
 
 const ButtonsBook = () => {
@@ -23,6 +31,11 @@ const ButtonsBook = () => {
           <Button label="Test" variant={v} disabled rounded />
         </LayoutRow>
       ))}
+      <LayoutRow>
+        {ICONS.map((ico, index) => (
+          <IconButton key={`ico-btn-${index}`} icon={ico} />
+        ))}
+      </LayoutRow>
     </CenteredRow>
   )
 }

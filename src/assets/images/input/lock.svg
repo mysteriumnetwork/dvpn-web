@@ -1,5 +1,5 @@
 <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
   <circle cx="10.1074" cy="10" r="10" fill="#F6F6FA"/>
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M5.60742 11.5C5.60742 10.3954 6.50285 9.5 7.60742 9.5H12.6074C13.712 9.5 14.6074 10.3954 14.6074 11.5V13C14.6074 14.1046 13.712 15 12.6074 15H7.60742C6.50285 15 5.60742 14.1046 5.60742 13V11.5Z" stroke="#9090BB" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M7.60742 9.49973V7.49973C7.60613 6.21534 8.57829 5.13895 9.85618 5.00987C11.1341 4.88079 12.3018 5.74103 12.5574 6.99973" stroke="#9090BB" stroke-linecap="round" stroke-linejoin="round"/>
+  <path id="ico-fg" fill-rule="evenodd" clip-rule="evenodd" d="M5.60742 11.5C5.60742 10.3954 6.50285 9.5 7.60742 9.5H12.6074C13.712 9.5 14.6074 10.3954 14.6074 11.5V13C14.6074 14.1046 13.712 15 12.6074 15H7.60742C6.50285 15 5.60742 14.1046 5.60742 13V11.5Z" stroke="#9090BB" stroke-linecap="round" stroke-linejoin="round"/>
+  <path id="ico-fg" d="M7.60742 9.49973V7.49973C7.60613 6.21534 8.57829 5.13895 9.85618 5.00987C11.1341 4.88079 12.3018 5.74103 12.5574 6.99973" stroke="#9090BB" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

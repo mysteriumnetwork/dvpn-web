@@ -42,4 +42,12 @@ export const STORYBOOK_ROUTES: { [key: string]: RouteInfo } = {
     component: './Items/ProgressBarBook',
     title: 'Progress',
   },
+  [subRoute('/icons')]: {
+    component: './Items/IconsBook',
+    title: 'Icons',
+  },
+  [subRoute('/toasts')]: {
+    component: './Items/ToastsBook',
+    title: 'Toasts',
+  },
 }

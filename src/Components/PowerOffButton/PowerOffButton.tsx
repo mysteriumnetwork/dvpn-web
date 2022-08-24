@@ -11,8 +11,19 @@ import page from '../../commons/page'
 import errors from '../../commons/errors'
 import { IconButton } from '../Inputs/IconButton'
 import { ConfirmationDialog } from '../ConfirmationDialog/ConfirmationDialog'
+import { ReactComponent as RestartSVG } from '../../assets/images/restart.svg'
+import styled from 'styled-components'
 
 const { parseToastError } = errors
+
+const Row = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.common.colorKey};
+  line-height: 14px;
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+`
 
 export const PowerOffButton = () => {
   const { api } = tequila
@@ -45,7 +56,10 @@ export const PowerOffButton = () => {
 
   return (
     <>
-      <IconButton icon={<h1>X</h1>} onClick={() => setShowConfirmation(true)} />
+      <Row>
+        <IconButton icon={<RestartSVG />} onClick={() => setShowConfirmation(true)} />
+        Restart
+      </Row>
       <ConfirmationDialog
         disableBackdrop={isCountdown}
         title="Restart"

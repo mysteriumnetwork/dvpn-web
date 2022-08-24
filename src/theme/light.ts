@@ -126,7 +126,6 @@ const light: Omit<Theme, 'common'> = {
 
   notifications: {
     background: themeCommon.colorKey,
-    border: '6px solid ' + themeCommon.colorKey,
     list: {
       background: themeCommon.colorWhite,
       boxShadow: '0px 5px 20px ' + themeCommon.color2F2A48 + alphaToHex(0.2),
@@ -175,6 +174,24 @@ const light: Omit<Theme, 'common'> = {
 
   a: {
     textColor: themeCommon.colorKey,
+  },
+
+  toasts: {
+    success: {
+      iconBackground: themeCommon.colorGreen + alphaToHex(0.3),
+    },
+    warning: {
+      iconBackground: themeCommon.colorYellow + alphaToHex(0.3),
+    },
+    info: {
+      iconBackground: themeCommon.colorBlue + alphaToHex(0.3),
+    },
+    error: {
+      iconBackground: themeCommon.colorRed + alphaToHex(0.3),
+    },
+    background: themeCommon.colorWhite,
+    contentTextColor: themeCommon.colorGrayBlue2,
+    closeButtonColor: themeCommon.colorGrayBlue2,
   },
 }
 

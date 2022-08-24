@@ -29,7 +29,7 @@ type Variant = '!' | '?'
 interface Props {
   variant?: Variant
   interactive?: boolean
-  children?: React.ReactElement<any>
+  children?: React.ReactElement
   content?: React.ReactNode
 }
 

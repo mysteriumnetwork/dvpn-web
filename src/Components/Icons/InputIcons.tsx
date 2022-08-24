@@ -10,10 +10,12 @@ import { ReactComponent as InputCopyToClipboardSvg } from '../../assets/images/i
 import { ReactComponent as InputLockSvg } from '../../assets/images/input/lock.svg'
 
 export type InputIconVariant = 'normal' | 'disabled' | 'error'
+export type Brushes = 'fill' | 'stroke'
 
 interface InputIconProps {
   $noCircle?: boolean
   $variant?: InputIconVariant
+  $brushes?: Brushes[]
 }
 
 const resolveCSS = (variant?: InputIconVariant) => {
@@ -27,30 +29,30 @@ const resolveCSS = (variant?: InputIconVariant) => {
   }
 }
 
-const normalCSS = css`
+const normalCSS = css<InputIconProps>`
   circle {
     fill: ${({ theme }) => theme.inputIcon.fill};
   }
-  path {
-    stroke: ${({ theme }) => theme.inputIcon.stroke};
+  #ico-fg {
+    ${({ $brushes, theme }) => $brushes?.map((b) => `${b}: ${theme.inputIcon.stroke};`).join('\n')}
   }
 `
 
-const disabledCSS = css`
+const disabledCSS = css<InputIconProps>`
   circle {
     fill: ${({ theme }) => theme.inputIcon.fillDisabled};
   }
-  path {
-    stroke: ${({ theme }) => theme.inputIcon.strokeDisabled};
+  #ico-fg {
+    ${({ $brushes, theme }) => $brushes?.map((b) => `${b}: ${theme.inputIcon.strokeDisabled};`).join('\n')}
   }
 `
 
-const errorCSS = css`
+const errorCSS = css<InputIconProps>`
   circle {
     fill: ${({ theme }) => theme.inputIcon.fillError};
   }
-  path {
-    stroke: ${({ theme }) => theme.inputIcon.strokeError};
+  #ico-fg {
+    ${({ $brushes, theme }) => $brushes?.map((b) => `${b}: ${theme.inputIcon.strokeError};`).join('\n')}
   }
 `
 
@@ -60,17 +62,23 @@ const commonCSS = `
   height: 100%;
 `
 
-export const InputEmailIcon = styled(InputEmailSvg)<InputIconProps>`
+export const InputEmailIconInit = styled(InputEmailSvg)<InputIconProps>`
   ${({ $variant }) => resolveCSS($variant)};
   ${commonCSS};
 `
 
-export const InputCopyToClipboardIcon = styled(InputCopyToClipboardSvg)<InputIconProps>`
-  ${({ $variant }) => resolveCSS($variant)};
-  ${commonCSS};
-`
+export const InputEmailIcon = (props: InputIconProps) => <InputEmailIconInit $brushes={['stroke']} {...props} />
 
-export const InputLockIcon = styled(InputLockSvg)<InputIconProps>`
+export const InputCopyToClipboardIconInit = styled(InputCopyToClipboardSvg)<InputIconProps>`
   ${({ $variant }) => resolveCSS($variant)};
   ${commonCSS};
 `
+export const InputCopyToClipboardIcon = (props: InputIconProps) => (
+  <InputCopyToClipboardIconInit $brushes={['fill']} {...props} />
+)
+
+export const InputLockIconInit = styled(InputLockSvg)<InputIconProps>`
+  ${({ $variant }) => resolveCSS($variant)};
+  ${commonCSS};
+`
+export const InputLockIcon = (props: InputIconProps) => <InputLockIconInit $brushes={['stroke']} {...props} />
