@@ -30,6 +30,7 @@ const Title = styled.div`
   font-size: ${themeCommon.fontSizeSmall};
   font-style: normal;
   font-weight: 400;
+  margin-bottom: 0.65em;
 `
 
 export const SettlementStatus = () => {
