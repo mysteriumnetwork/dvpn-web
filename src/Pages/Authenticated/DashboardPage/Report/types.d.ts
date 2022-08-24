@@ -9,6 +9,6 @@ import { SessionV2 } from 'mysterium-vpn-js/lib/provider'
 
 export type ChartType = 'earnings' | 'sessions' | 'data'
 
-export interface GroupByDate {
+export interface GroupedByTime {
   [date: string]: SessionV2[]
 }

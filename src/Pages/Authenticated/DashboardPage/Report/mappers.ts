@@ -5,33 +5,33 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Pair } from '../Charts/types'
-import { GroupByDate } from './types'
+import { GroupedByTime } from './types'
 import bytes from '../../../../commons/bytes'
 
-const earningPairs = (group: GroupByDate): Pair[] => {
-  return Object.keys(group).map((date) => ({
-    x: date,
-    y: group[date].reduce((acc, s) => (acc += Number(s.earnings.human)), 0),
+const earningPairs = (grouped: GroupedByTime[]): Pair[] => {
+  return grouped.map((group) => ({
+    x: Object.keys(group)[0],
+    y: group[Object.keys(group)[0]].reduce((acc, s) => (acc += Number(s.earnings.human)), 0),
   }))
 }
 
-const dataPairs = (group: GroupByDate): Pair[] => {
-  return Object.keys(group)
-    .map((date) => ({
-      x: date,
-      y: group[date].reduce((acc, s) => (acc += Number(s.transferredBytes)), 0),
+const dataPairs = (grouped: GroupedByTime[]): Pair[] => {
+  return grouped
+    .map((group) => ({
+      x: Object.keys(group)[0],
+      y: group[Object.keys(group)[0]].reduce((acc, s) => (acc += Number(s.transferredBytes)), 0),
     }))
     .map((p) => ({ ...p, y: bytes.bytes2Gb(p.y) }))
 }
 
-const sessionCountPairs = (group: GroupByDate): Pair[] => {
-  return Object.keys(group).map((date) => ({
-    x: date,
-    y: group[date].length,
+const sessionCountPairs = (grouped: GroupedByTime[]): Pair[] => {
+  return grouped.map((group) => ({
+    x: Object.keys(group)[0],
+    y: group[Object.keys(group)[0]].length,
   }))
 }
 
-export const MAPPERS: { [key: string]: (group: GroupByDate) => Pair[] } = {
+export const MAPPERS: { [key: string]: (grouped: GroupedByTime[]) => Pair[] } = {
   earnings: earningPairs,
   data: dataPairs,
   sessions: sessionCountPairs,

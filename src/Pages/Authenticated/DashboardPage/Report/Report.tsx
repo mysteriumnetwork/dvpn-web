@@ -15,14 +15,14 @@ import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 import { useEffect, useState } from 'react'
 import dates from '../../../../commons/dates'
-import { SESSION_STATS_WITH_BYTE_TOTAL_EMPTY, SESSIONS_V2_RESPONSE_EMPTY } from '../../../../constants/instances'
-import { SessionStatsWithByteTotal } from '../../../../types/api'
+import { SESSIONS_V2_RESPONSE_EMPTY } from '../../../../constants/instances'
 import { myst } from '../../../../commons/mysts'
 import bytes from '../../../../commons/bytes'
-import { Option } from '../../../../types/common'
+import { MetricsRange, Option } from '../../../../types/common'
 import { ChartData } from '../Charts/types'
 import series from './series'
 import { ChartType } from './types'
+import totals from './totals'
 
 const { api } = tequila
 const { seconds2Time } = dates
@@ -48,6 +48,7 @@ const CardRow = styled.div`
     flex-direction: column;
   }
 `
+
 const ChartRow = styled.div`
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -65,22 +66,32 @@ const ChartRow = styled.div`
 const BorderRight = styled.div`
   border-right: 1px dashed ${themeCommon.colorGrayBlue2}80;
 `
-const RANGE_OPTIONS = ['7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
+
+const RANGE_OPTIONS: Option<MetricsRange>[] = [
+  { label: 'Last 24 hours', value: '1d' },
+  { label: 'Last 7 days', value: '7d' },
+  { label: 'Last 30 days', value: '30d' },
+]
+
 const GRAPH_OPTIONS = ['earnings', 'sessions', 'data'].map<Option>((r) => ({ value: r, label: r }))
 
-interface ReportStats {
-  totals: SessionStatsWithByteTotal
-  diff: SessionStatsWithByteTotal
+interface Stats {
+  totalEarningsEther: number
+  totalSessions: number
+  totalSessionTime: number
+  totalTransferredBytes: number
 }
 
 export const Report = () => {
   const [selectedRange, setSelectedRange] = useState(RANGE_OPTIONS[0])
   const [selectedGraph, setSelectedGraph] = useState(GRAPH_OPTIONS[0])
-  const [chartData, setChartData] = useState<ChartData>({ series: [] })
-  const [reportStats] = useState<ReportStats>({
-    totals: SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
-    diff: SESSION_STATS_WITH_BYTE_TOTAL_EMPTY,
+  const [stats, setStats] = useState<Stats>({
+    totalEarningsEther: 0,
+    totalSessions: 0,
+    totalSessionTime: 0,
+    totalTransferredBytes: 0,
   })
+  const [chartData, setChartData] = useState<ChartData>({ series: [] })
 
   const [data = SESSIONS_V2_RESPONSE_EMPTY, loading] = useFetch(
     () => api.provider.sessions({ range: selectedRange.value }),
@@ -96,6 +107,14 @@ export const Report = () => {
       series: series.pairs(data.sessions, selectedGraph.value as ChartType, selectedRange.value),
       units: series.units(selectedGraph.value as ChartType),
     }))
+
+    setStats((p) => ({
+      ...p,
+      totalEarningsEther: totals.earnings(data.sessions),
+      totalSessions: data.sessions.length,
+      totalSessionTime: 0,
+      totalTransferredBytes: totals.dataTransferredBytes(data.sessions),
+    }))
   }, [selectedRange, selectedGraph, loading])
 
   return (
@@ -104,40 +123,28 @@ export const Report = () => {
         <ReportGraph
           chartData={chartData}
           rangeOptions={RANGE_OPTIONS}
-          onRangeChange={(o: Option) => setSelectedRange(o)}
           selectedRange={selectedRange}
+          onRangeChange={(o: Option) => setSelectedRange(o)}
           graphOptions={GRAPH_OPTIONS}
-          onGraphChange={(o) => setSelectedGraph(o)}
           selectedGraph={selectedGraph}
+          onGraphChange={(o) => setSelectedGraph(o)}
         />
       </ChartRow>
       <CardRow>
         <ReportCard
           icon={<WalletIcon $accented />}
-          value={myst.display(reportStats.totals.sumTokens, { fractionDigits: 3 })}
+          value={myst.display(myst.toWeiBig(stats.totalEarningsEther), { fractionDigits: 3 })}
           title="Total Earnings"
-          diff={Number(myst.display(reportStats.diff.sumTokens, { fractionDigits: 3, showCurrency: false }))}
         />
         <BorderRight />
-        <ReportCard
-          icon={<SessionsIcon />}
-          value={reportStats.totals.count}
-          title="Sessions"
-          diff={reportStats.diff.count}
-        />
+        <ReportCard icon={<SessionsIcon />} value={stats.totalSessions} title="Sessions" />
         <BorderRight />
-        <ReportCard
-          icon={<StopwatchIcon />}
-          value={seconds2Time(reportStats.totals.sumDuration)}
-          title="Session time"
-          diff={Math.floor(reportStats.diff.sumDuration / 3600)}
-        />
+        <ReportCard icon={<StopwatchIcon />} value={seconds2Time(stats.totalSessionTime)} title="Session time" />
         <BorderRight />
         <ReportCard
           icon={<CloudIcon />}
-          value={format(reportStats.totals.byteTotal)}
+          value={format(stats.totalTransferredBytes)}
           title="Transferred"
-          diff={parseFloat((reportStats.diff.byteTotal / 1_000_000_000).toFixed(2))}
           tooltip="Total transferred data"
         />
       </CardRow>

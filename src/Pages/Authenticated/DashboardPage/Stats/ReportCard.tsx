@@ -85,14 +85,14 @@ export const ReportCard = ({ icon, value, title, tooltip, diff = 0 }: Props) => 
         <Value>{value}</Value>
         <Title>{title}</Title>
       </Content>
-      <Meta>
-        <Tooltip content={tooltip}>
-          <DiffValue positive={diff > 0}>
-            {diff > 0 ? '+ ' : '- '}
-            {Math.abs(diff)}
-          </DiffValue>
-        </Tooltip>
-      </Meta>
+      {/*<Meta>*/}
+      {/*  <Tooltip content={tooltip}>*/}
+      {/*    <DiffValue positive={diff > 0}>*/}
+      {/*      {diff > 0 ? '+ ' : '- '}*/}
+      {/*      {Math.abs(diff)}*/}
+      {/*    </DiffValue>*/}
+      {/*  </Tooltip>*/}
+      {/*</Meta>*/}
     </Card>
   )
 }
