@@ -28,7 +28,7 @@ interface Props {
   selectedRange: Option
 }
 
-const ReportGraph = ({
+const ReportChart = ({
   chartData,
   onRangeChange,
   selectedRange,
@@ -196,4 +196,4 @@ const ChartOverrides = styled.div`
   }
 `
 
-export default ReportGraph
+export default ReportChart

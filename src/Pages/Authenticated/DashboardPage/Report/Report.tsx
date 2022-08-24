@@ -7,7 +7,7 @@
 
 import { useFetch } from '../../../../commons/hooks'
 import { tequila } from '../../../../api/tequila'
-import ReportGraph from './ReportGraph'
+import ReportChart from './ReportChart'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
@@ -135,7 +135,7 @@ export const Report = () => {
   return (
     <Column>
       <ChartRow>
-        <ReportGraph
+        <ReportChart
           chartData={chartData}
           rangeOptions={RANGE_OPTIONS}
           selectedRange={selectedRange}
