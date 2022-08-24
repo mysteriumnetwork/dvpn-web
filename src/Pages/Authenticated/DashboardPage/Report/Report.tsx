@@ -11,7 +11,7 @@ import ReportGraph from '../Charts/ReportGraph'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
-import { themeCommon } from '../../../../theme/themeCommon'
+import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 import { useEffect, useState } from 'react'
 import dates from '../../../../commons/dates'
@@ -44,7 +44,20 @@ const CardRow = styled.div`
 
   padding-top: 20px;
   padding-bottom: 20px;
+
+  #report-card {
+    border-right: 1px dashed ${themeCommon.colorGrayBlue2}80;
+  }
+
+  #report-card:last-child {
+    border-right: 0;
+  }
+
   @media ${devices.tablet} {
+    #report-card {
+      border-right: 0;
+      border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
+    }
     flex-direction: column;
   }
 `
@@ -61,10 +74,6 @@ const ChartRow = styled.div`
     overflow-x: auto;
     overflow-y: hidden;
   }
-`
-
-const BorderRight = styled.div`
-  border-right: 1px dashed ${themeCommon.colorGrayBlue2}80;
 `
 
 const RANGE_OPTIONS: Option<MetricsRange>[] = [
@@ -136,11 +145,8 @@ export const Report = () => {
           value={myst.display(myst.toWeiBig(stats.totalEarningsEther), { fractionDigits: 3 })}
           title="Total Earnings"
         />
-        <BorderRight />
         <ReportCard icon={<SessionsIcon />} value={stats.totalSessions} title="Sessions" />
-        <BorderRight />
         <ReportCard icon={<StopwatchIcon />} value={seconds2Time(stats.totalSessionTime)} title="Session time" />
-        <BorderRight />
         <ReportCard
           icon={<CloudIcon />}
           value={format(stats.totalTransferredBytes)}

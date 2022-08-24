@@ -6,9 +6,8 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
+import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
-import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 
 const Card = styled.div`
   display: flex;
@@ -18,7 +17,6 @@ const Card = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.tablet} {
     justify-content: space-between;
-    border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
     padding: 20px 0px;
     align-items: center;
     margin: 0 20px;
@@ -79,7 +77,7 @@ interface Props {
 
 export const ReportCard = ({ icon, value, title, tooltip, diff = 0 }: Props) => {
   return (
-    <Card>
+    <Card id="report-card">
       <IconContainer>{icon}</IconContainer>
       <Content>
         <Value>{value}</Value>
