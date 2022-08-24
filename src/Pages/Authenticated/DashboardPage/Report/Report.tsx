@@ -44,6 +44,9 @@ const CardRow = styled.div`
   overflow-x: scroll;
   @media ${devices.tablet} {
     flex-direction: column;
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 `
 
