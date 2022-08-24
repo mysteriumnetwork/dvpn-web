@@ -8,7 +8,6 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { Media } from '../../../../commons/media'
 import charts from './chart.utils'
 import styled from 'styled-components'
-import { GraphDropDown } from './GraphDropDown'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 import { RangePicker } from '../../../../Components/Inputs/RangePicker'
@@ -16,6 +15,7 @@ import { Option } from '../../../../types/common'
 import { capitalizeFirstLetter } from '../../../../commons'
 import { ChartData } from './types'
 import { ChartTooltip } from './ChartTooltip'
+import { Select } from '../../../../Components/Inputs/Select'
 
 interface Props {
   chartData: ChartData
@@ -44,7 +44,7 @@ const ReportChart = ({
           <Title>{capitalizeFirstLetter(selectedGraph.value)} Report</Title>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
           <FlexGrow />
-          <GraphDropDown onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
+          <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
         </Header>
       </Media.Desktop>
       <Media.Mobile>
@@ -52,7 +52,7 @@ const ReportChart = ({
           <Row>
             <Title>Earnings Report</Title>
             {/* TODO: Figure out why select options bug and show in the wrong place */}
-            <GraphDropDown onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
+            <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
           </Row>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
         </Header>
