@@ -45,13 +45,22 @@ interface Props {
   onChange?: (o: Option) => void
   value?: Option
 }
-
+const createLabel = (range: string) => {
+  switch (range) {
+    case '1d':
+      return 'Last 24 hours'
+    case '7d':
+      return 'Last 7 days'
+    case '30d':
+      return 'Last 30 days'
+  }
+}
 export const RangePicker = ({ value, options = [], onChange = () => {} }: Props) => {
   return (
     <Content>
       {options?.map((o) => (
         <StyledOption key={o.value} active={value?.value === o.value} onClick={() => onChange(o)}>
-          {o.label}
+          {createLabel(o.label)}
         </StyledOption>
       ))}
     </Content>
