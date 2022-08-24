@@ -11,7 +11,6 @@ import ReportChart from './ReportChart'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
 import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../Components/Icons/Icons'
-import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 import { useEffect, useState } from 'react'
 import dates from '../../../../commons/dates'
@@ -37,28 +36,15 @@ const Column = styled.div`
 
 const CardRow = styled.div`
   display: flex;
-  justify-content: space-between;
-
+  justify-content: space-evenly;
   background: ${({ theme }) => theme.bgReportChartRow};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-
   padding-top: 20px;
   padding-bottom: 20px;
-
-  #report-card {
-    border-right: 1px dashed ${themeCommon.colorGrayBlue2}80;
-  }
-
-  #report-card:last-child {
-    border-right: 0;
-  }
-
+  overflow-y: hidden;
+  overflow-x: auto;
   @media ${devices.tablet} {
-    #report-card {
-      border-right: 0;
-      border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
-    }
     flex-direction: column;
   }
 `
@@ -68,7 +54,6 @@ const ChartRow = styled.div`
   border-top-right-radius: 20px;
   padding: 20px 20px 0 20px;
   background: ${({ theme }) => theme.bgReportChartRow};
-
   z-index: 1;
   box-shadow: ${({ theme }) => theme.bgReportChartRowBoxShadow};
   @media ${devices.tablet} {

@@ -15,9 +15,13 @@ const Card = styled.div`
   background: ${({ theme }) => theme.bgLayoutCardCss};
   padding: 20px;
   color: ${({ theme }) => theme.text.colorMain};
-  width: 100%;
+  :not(:last-of-type) {
+    border-right: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
+  }
   @media ${devices.tablet} {
     justify-content: space-between;
+    border-right: none !important;
+    border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
     padding: 20px 0px;
     align-items: center;
     margin: 0 20px;
@@ -77,6 +81,16 @@ interface Props {
 }
 
 export const ReportCard = ({ icon, value, title, tooltip, diff = 0 }: Props) => {
+  // const diffSymbol = (diff: number) => {
+  //   switch (true) {
+  //     case diff > 0:
+  //       return '+'
+  //     case diff < 0:
+  //       return '-'
+  //     default:
+  //       return ''
+  //   }
+  // }
   return (
     <Card id="report-card">
       <IconContainer>{icon}</IconContainer>
