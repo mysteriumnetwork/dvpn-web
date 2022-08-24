@@ -67,9 +67,9 @@ const groupByDays = (sessions: SessionV2[], range: MetricsRange): GroupedByTime[
 
 const days = (period: string): number => {
   try {
-    return Number(period.split('d')[0])
+    return Number(period.split('d')[0]) + 1
   } catch (ignored: any) {
-    return 30
+    return 31
   }
 }
 

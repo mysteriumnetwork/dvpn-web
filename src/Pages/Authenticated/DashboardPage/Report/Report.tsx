@@ -116,7 +116,6 @@ export const Report = () => {
       series: series.pairs(data.sessions, selectedGraph.value as ChartType, selectedRange.value),
       units: series.units(selectedGraph.value as ChartType),
     }))
-
     setStats((p) => ({
       ...p,
       totalEarningsEther: totals.earnings(data.sessions),
