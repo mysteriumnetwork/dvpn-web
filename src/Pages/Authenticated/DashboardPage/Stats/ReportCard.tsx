@@ -15,6 +15,7 @@ const Card = styled.div`
   background: ${({ theme }) => theme.bgLayoutCardCss};
   padding: 20px;
   color: ${({ theme }) => theme.text.colorMain};
+  width: 100%;
   @media ${devices.tablet} {
     justify-content: space-between;
     padding: 20px 0px;
