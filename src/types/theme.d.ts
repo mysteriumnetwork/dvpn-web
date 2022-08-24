@@ -196,6 +196,16 @@ export type Theme = {
     closeButtonColor: string
   }
 
+  dropdown: {
+    valueTextColor: string
+    placeholderTextColor: string
+    border: string
+    backgroundColor: string
+    selectedOrFocusedValueColor: string
+    selectedValueBackgroundColor: string
+    focusedValueBackgroundColor: string
+  }
+
   common: Common
 }
 

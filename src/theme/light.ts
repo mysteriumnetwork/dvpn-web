@@ -193,6 +193,16 @@ const light: Omit<Theme, 'common'> = {
     contentTextColor: themeCommon.colorGrayBlue2,
     closeButtonColor: themeCommon.colorGrayBlue2,
   },
+
+  dropdown: {
+    valueTextColor: themeCommon.colorDarkBlue,
+    placeholderTextColor: themeCommon.colorGrayBlue2,
+    border: `1px solid ${themeCommon.colorGrayBlue}`,
+    backgroundColor: themeCommon.colorWhite,
+    selectedOrFocusedValueColor: themeCommon.colorWhite,
+    selectedValueBackgroundColor: themeCommon.colorKey,
+    focusedValueBackgroundColor: themeCommon.colorKeyLight,
+  },
 }
 
 export default light
