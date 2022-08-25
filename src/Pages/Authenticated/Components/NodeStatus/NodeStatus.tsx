@@ -6,23 +6,7 @@
  */
 import styled from 'styled-components'
 import { themeCommon } from '../../../../theme/themeCommon'
-import { devices } from '../../../../theme/themes'
-const Status = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  @media ${devices.tablet} {
-    margin-bottom: 25px;
-  }
-`
-const Title = styled.div`
-  color: ${({ theme }) => theme.text.colorMain};
-  font-size: ${themeCommon.fontSizeSmall};
-  font-weight: 400;
-  @media ${devices.tablet} {
-    color: ${themeCommon.colorWhite};
-  }
-`
+import { HeaderItem } from '../../../../Components/Header/HeaderItem'
 
 export type IndicatorVariants = 'online' | 'offline' | 'monitoringFailed'
 
@@ -40,10 +24,5 @@ const Indicator = styled.div<IndicatorProps>`
 `
 
 export const NodeStatus = () => {
-  return (
-    <Status>
-      <Title>Status:</Title>
-      <Indicator $variant="online">Online</Indicator>
-    </Status>
-  )
+  return <HeaderItem title="Status" content={<Indicator $variant="online">Online</Indicator>} />
 }
