@@ -11,26 +11,12 @@ import { selectors } from '../../../../redux/selectors'
 import { configs } from '../../../../commons/config'
 import { myst } from '../../../../commons/mysts'
 import { ProgressBar } from '../../../../Components/ProgressBar/ProgressBar'
-import { themeCommon } from '../../../../theme/themeCommon'
 import { useMemo } from 'react'
-
-const Content = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  min-width: 300px;
-`
+import { HeaderItem } from '../../../../Components/Header/HeaderItem'
 
 const ProgressContainer = styled.div`
   width: 30%;
   margin-top: 0.5em;
-`
-
-const Title = styled.div`
-  color: ${({ theme }) => theme.text.colorMain};
-  font-size: ${themeCommon.fontSizeSmall};
-  font-style: normal;
-  font-weight: 400;
 `
 
 export const SettlementStatus = () => {
@@ -41,11 +27,14 @@ export const SettlementStatus = () => {
   const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
 
   return (
-    <Content>
-      <Title>Next auto settlement ({myst.display(myst.toWeiBig(settleThresholdMyst), { fractionDigits: 1 })})</Title>
-      <ProgressContainer>
-        <ProgressBar size="small" max={settleThresholdMyst} value={value} />
-      </ProgressContainer>
-    </Content>
+    <HeaderItem
+      minWidth={300}
+      title={`Next auto settlement (${myst.display(myst.toWeiBig(settleThresholdMyst), { fractionDigits: 1 })})`}
+      content={
+        <ProgressContainer>
+          <ProgressBar size="small" max={settleThresholdMyst} value={value} />
+        </ProgressContainer>
+      }
+    />
   )
 }

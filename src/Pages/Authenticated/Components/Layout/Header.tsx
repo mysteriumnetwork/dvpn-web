@@ -6,13 +6,12 @@
  */
 import styled from 'styled-components'
 import { devices } from '../../../../theme/themes'
-import { NodeStatus } from '../NodeStatus/NodeStatus'
-import { Quality } from '../Quality/Quality'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { Profile } from '../Profile/Profile'
 import { Notifications } from '../Notifications/Notifications'
 import PageTitle from '../../../../Components/LayoutHeader/PageTitle'
 import { ReactNode } from 'react'
+import { MonitoringStatus } from '../MonitoringStatus/MonitoringStatus'
 
 const Container = styled.div`
   display: flex;
@@ -45,8 +44,11 @@ export const Header = ({ logo, title }: Props) => {
   return (
     <Container>
       <PageTitle logo={logo} name={title} />
-      <NodeStatus />
-      <Quality />
+      <MonitoringStatus />
+      {/* TODO: waiting for endpoint*/}
+      {/*<NodeStatus />*/}
+      {/* TODO: waiting for endpoint*/}
+      {/*<Quality />*/}
       <SettlementStatus />
       <Group>
         <Notifications />

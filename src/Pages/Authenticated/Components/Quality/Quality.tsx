@@ -5,27 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { QualityBarsIcon } from '../../../../Components/Icons/Icons'
-import styled from 'styled-components'
-import { themeCommon } from '../../../../theme/themeCommon'
 import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
-
-const Content = styled.div`
-  display: flex;
-  gap: 24px;
-  align-items: center;
-`
-
-const Title = styled.div`
-  color: ${({ theme }) => theme.text.colorMain};
-  font-size: ${themeCommon.fontSizeSmall};
-`
+import { HeaderItem } from '../../../../Components/Header/HeaderItem'
 
 export const Quality = () => {
   return (
-    <Content>
-      <Title>Quality</Title>
-      <QualityBarsIcon $quality={2} />
-      <Tooltip content={'Indicates averaged quality as seen by consumers in your continent'} />
-    </Content>
+    <HeaderItem
+      title="Quality"
+      content={
+        <>
+          <QualityBarsIcon $quality={2} />
+          <Tooltip content={'Indicates averaged quality as seen by consumers in your continent'} />
+        </>
+      }
+    />
   )
 }
