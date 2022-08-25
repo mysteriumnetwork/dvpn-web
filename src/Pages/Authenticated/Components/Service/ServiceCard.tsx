@@ -8,7 +8,7 @@ import { Switch } from '../../../../Components/Switch/Switch'
 import { myst } from '../../../../commons/mysts'
 import styled from 'styled-components'
 import { InfoCard } from './InfoCard'
-import { ClockIcon, DataIcon, InfoIcon, PeopleIcon, WalletIcon } from '../../../../Components/Icons/Icons'
+import { ClockIcon, DataIcon, InfoIcon } from '../../../../Components/Icons/Icons'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import { useState } from 'react'
 import { useAppSelector } from '../../../../commons/hooks'
@@ -181,18 +181,18 @@ export const ServiceCard = ({
             icon={<ClockIcon $inactive={!enabled} />}
           />
         </Row>
-        <Row>
-          <InfoCard
-            title="Service earnings"
-            value={myst.display(earnings, { fractionDigits: 4 })}
-            icon={<WalletIcon $inactive={!enabled} />}
-          />
-          <InfoCard
-            title="Total earnings"
-            value={myst.display(totalEarning, { fractionDigits: 4 })}
-            icon={<PeopleIcon $inactive={!enabled} />}
-          />
-        </Row>
+        {/*<Row>*/}
+        {/*  <InfoCard*/}
+        {/*    title="Service earnings"*/}
+        {/*    value={myst.display(earnings, { fractionDigits: 4 })}*/}
+        {/*    icon={<WalletIcon $inactive={!enabled} />}*/}
+        {/*  />*/}
+        {/*  <InfoCard*/}
+        {/*    title="Total earnings"*/}
+        {/*    value={myst.display(totalEarning, { fractionDigits: 4 })}*/}
+        {/*    icon={<PeopleIcon $inactive={!enabled} />}*/}
+        {/*  />*/}
+        {/*</Row>*/}
       </Content>
     </Card>
   )
