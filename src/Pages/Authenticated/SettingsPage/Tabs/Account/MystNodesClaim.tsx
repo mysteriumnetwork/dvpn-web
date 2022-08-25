@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MMN_SITE, MMN_SITE_ME_URL, MMN_SITE_URL } from '../../../../../constants/names'
+import { MMN_SITE, MMN_SITE_ME_URL } from '../../../../../constants/names'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
 import { SettingsCard } from '../../SettingsCard'
