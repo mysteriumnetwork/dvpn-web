@@ -31,8 +31,6 @@ const Content = styled.div`
   width: 100%;
 `
 const Description = styled.div`
-  display: flex;
-  align-items: center;
   gap: 2px;
   margin-top: 30px;
   font-weight: 400;
