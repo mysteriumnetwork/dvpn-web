@@ -24,9 +24,6 @@ import errors from '../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
 import { updateBeneficiaryTxStatusStore } from '../../../../redux/app.slice'
 import { devices } from '../../../../theme/themes'
-import { useMediaQuery } from 'react-responsive'
-import { media } from '../../../../commons/media'
-const { isMobileQuery } = media
 
 const Error = styled.div`
   color: red;
@@ -196,16 +193,10 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
     setLoading(false)
   }
   const isNegativeProfit = calculatedFees.profitsWei.lte(0)
-  const isMobile = useMediaQuery(isMobileQuery)
+
   const showErrors = state.errors.length > 0
   return (
-    <Modal
-      show={show}
-      title="Settle"
-      size={isMobile ? 'xl' : undefined}
-      icon={<SettleButtonIcon />}
-      onClickX={handleClose}
-    >
+    <Modal show={show} title="Settle" icon={<SettleButtonIcon />} onClickX={handleClose}>
       <Content>
         <HeaderNote>External wallet address: </HeaderNote>
         <Container>

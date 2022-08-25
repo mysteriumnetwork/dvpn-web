@@ -14,6 +14,7 @@ import { Button } from '../../../../Components/Inputs/Button'
 import { ChatIcon } from '../../../../Components/Icons/Icons'
 import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
+import { devices } from '../../../../theme/themes'
 
 const { api } = tequila
 
@@ -29,6 +30,9 @@ const Content = styled.div`
   width: 80%;
   height: 70%;
   justify-content: space-between;
+  @media ${devices.tablet} {
+    justify-content: flex-start;
+  }
 `
 
 const Note = styled.div`
