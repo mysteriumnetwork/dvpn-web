@@ -36,11 +36,10 @@ const Column = styled.div`
 
 const CardRow = styled.div`
   display: flex;
+  justify-content: space-between;
   background: ${({ theme }) => theme.bgReportChartRow};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  padding-top: 20px;
-  padding-bottom: 20px;
   overflow-x: scroll;
   @media ${devices.tablet} {
     flex-direction: column;

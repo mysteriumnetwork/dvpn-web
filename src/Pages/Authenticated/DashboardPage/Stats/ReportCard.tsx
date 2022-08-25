@@ -12,6 +12,8 @@ import { devices } from '../../../../theme/themes'
 const Card = styled.div`
   display: flex;
   gap: 16px;
+  align-items: center;
+  justify-content: space-between;
   background: ${({ theme }) => theme.bgLayoutCardCss};
   padding: 20px;
   color: ${({ theme }) => theme.text.colorMain};
@@ -19,15 +21,17 @@ const Card = styled.div`
     border-right: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
   }
   @media ${devices.tablet} {
-    justify-content: space-between;
     border-right: none !important;
-    border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
-    padding: 20px 0px;
-    align-items: center;
+    padding: 20px 0;
     margin: 0 20px;
+    border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
+    align-items: flex-start;
   }
 `
-
+const Wrapper = styled.div`
+  display: flex;
+  gap: 50px;
+`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -93,11 +97,13 @@ export const ReportCard = ({ icon, value, title, tooltip, diff = 0 }: Props) => 
   // }
   return (
     <Card id="report-card">
-      <IconContainer>{icon}</IconContainer>
-      <Content>
-        <Value>{value}</Value>
-        <Title>{title}</Title>
-      </Content>
+      <Wrapper>
+        <IconContainer>{icon}</IconContainer>
+        <Content>
+          <Value>{value}</Value>
+          <Title>{title}</Title>
+        </Content>
+      </Wrapper>
       {/*<Meta>*/}
       {/*  <Tooltip content={tooltip}>*/}
       {/*    <DiffValue positive={diff > 0}>*/}
