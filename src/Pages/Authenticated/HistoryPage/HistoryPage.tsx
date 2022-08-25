@@ -17,7 +17,7 @@ import { useFetch } from '../../../commons/hooks'
 import location from '../../../commons/location'
 import { myst } from '../../../commons/mysts'
 import bytes from '../../../commons/bytes'
-import { Option } from '../../../types/common'
+import { MetricsRange, Option } from '../../../types/common'
 import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
 import { SessionV2 } from 'mysterium-vpn-js'
@@ -62,7 +62,12 @@ const session2human = (session: string) => {
 }
 
 const PAGE_SIZE = 10
-const RANGE_OPTIONS = ['1d', '7d', '30d'].map<Option>((r) => ({ value: r, label: r }))
+const RANGE_OPTIONS: Option<MetricsRange>[] = [
+  { label: 'Last 24 hours', value: '1d' },
+  { label: 'Last 7 days', value: '7d' },
+  { label: 'Last 30 days', value: '30d' },
+]
+
 const Placeholder = () => (
   <PlaceholderContainer>
     <PlaceholderIcon />
