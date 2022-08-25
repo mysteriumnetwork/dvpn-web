@@ -184,7 +184,7 @@ export const Modal = ({
 
   return (
     <>
-      {isMobile && <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />}
+      {!isMobile && <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />}
       <StyledModal $size={size}>
         <Container>
           {loading && (
