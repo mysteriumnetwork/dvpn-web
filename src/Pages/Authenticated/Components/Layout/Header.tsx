@@ -6,7 +6,6 @@
  */
 import styled from 'styled-components'
 import { devices } from '../../../../theme/themes'
-import { Quality } from '../Quality/Quality'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { Profile } from '../Profile/Profile'
 import { Notifications } from '../Notifications/Notifications'
