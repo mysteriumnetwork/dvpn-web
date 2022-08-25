@@ -119,10 +119,7 @@ export const Report = () => {
       units: series.units(selectedGraph.value),
       tooltipFormatter: tooltipFormatter(selectedGraph.value),
     }))
-    series
-      .pairs(data.sessions, selectedGraph.value as ChartType, selectedRange.value)
-      .filter((p) => p.y)
-      .forEach((p) => console.log(`x: ${p.x} y: ${p.y}`))
+
     setStats((p) => ({
       ...p,
       totalEarningsEther: totals.earnings(data.sessions),

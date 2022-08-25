@@ -48,7 +48,6 @@ export const Select = ({ options = [], onChange = () => {}, value, id, isClearab
         menuList: (p, s) => ({
           ...p,
           backgroundColor: `${theme.dropdown.backgroundColor}`,
-          // border: `1px solid ${theme.dropdown.border}`,
           color: `${theme.text.colorMain}`,
         }),
       }}
