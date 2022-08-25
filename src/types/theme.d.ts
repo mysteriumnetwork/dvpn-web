@@ -106,7 +106,11 @@ export type Theme = {
     borderDisabled: string
     borderError: string
   }
-
+  scrollBar: {
+    trackColor: string
+    handleColor: string
+    handleColorHover: string
+  }
   dndList: {
     textColor: string
     background: string

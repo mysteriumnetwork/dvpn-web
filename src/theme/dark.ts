@@ -50,7 +50,11 @@ const dark: Omit<Theme, 'common'> = {
       textColorSecondary: themeCommon.colorGrayBlue,
     },
   },
-
+  scrollBar: {
+    trackColor: themeCommon.colorGrayBlue2,
+    handleColor: themeCommon.colorGrayBlue,
+    handleColorHover: themeCommon.colorDarkBlue,
+  },
   text: {
     colorMain: themeCommon.colorLightBlue,
     colorSecondary: themeCommon.colorGrayBlue,

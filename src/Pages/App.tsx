@@ -21,7 +21,6 @@ import FontUbuntuItalic from '../assets/fonts/Ubuntu/Ubuntu-Italic.ttf'
 import FontUbuntuRegular from '../assets/fonts/Ubuntu/Ubuntu-Regular.ttf'
 import remoteStorage from '../commons/remoteStorage'
 import { UI_THEME_KEY } from '../constants/remote-storage.keys'
-import { themeCommon } from '../theme/themeCommon'
 import { StateInitializer } from './StateInitializer'
 import { OffsetToastsGlobalCSS, StyledToastContainer } from '../Components/Toasts/StyledToastContainer'
 
@@ -127,16 +126,20 @@ const GlobalStyle = createGlobalStyle`
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: ${({ theme }) => theme.scrollBar.trackColor};
+    border-radius: 50px;
+    box-sizing: border-box;
+   padding:0 20px;
+   margin: 0 20px;
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: ${themeCommon.colorLightBlue};
+    background: ${({ theme }) => theme.scrollBar.handleColor};
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: ${themeCommon.colorDarkBlue};
+    background: ${({ theme }) => theme.scrollBar.handleColorHover};
   }
 `
