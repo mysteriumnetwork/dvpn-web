@@ -6,11 +6,12 @@
  */
 import { Pair } from './types'
 
-const ticks = (allPairs: Pair[]): number[] => {
-  if (allPairs.length < 2) {
-    return [0, 1, 2]
-  }
-  const maxTick = Math.ceil(Math.max(...allPairs.map((p) => p.y)))
+const maxValueClosestInteger = (pairs: Pair[]): number =>
+  pairs.length === 0 ? 0 : Math.ceil(Math.max(...pairs.map((p) => p.y)))
+
+const ticks = (pairs: Pair[]): number[] => {
+  const maxTick = maxValueClosestInteger(pairs) || 1
+
   const midTick = Number((maxTick / 2).toFixed(2))
   return [0, midTick / 2, midTick, maxTick - midTick / 2, maxTick]
 }
