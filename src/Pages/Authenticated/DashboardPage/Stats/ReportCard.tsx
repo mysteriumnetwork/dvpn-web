@@ -6,7 +6,7 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import { themeCommon } from '../../../../theme/themeCommon'
+import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 
 const Card = styled.div`
