@@ -181,7 +181,7 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
             <Header>
               <Title>Welcome</Title>
               <SubTitle>node runner!</SubTitle>
-              <Comment>Welcome Back! Please enter your NODE UI password.</Comment>
+              <Comment>Welcome Back! Please enter your Node UI password.</Comment>
             </Header>
 
             <InputGroup
