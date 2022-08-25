@@ -13,11 +13,12 @@ const format = (a?: number, b = 2): string => {
     parseFloat((a / Math.pow(1000, d)).toFixed(c)) + ' ' + ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][d]
   )
 }
-const bytes2Gb = (a?: number, b = 2): number => {
-  if (!a || 0 === a) return 0
-  const c = 0 > b ? 0 : b,
-    d = Math.floor(Math.log(a) / Math.log(1000))
-  return parseFloat((a / Math.pow(1000, d)).toFixed(c))
+
+const bytes2Gb = (bytes: number): number => {
+  if (!bytes || 0 === bytes) {
+    return 0
+  }
+  return Number((bytes / 1000 / 1000 / 1000).toFixed(2))
 }
 export const add = (a?: number, b?: number): number => {
   return (a || 0) + (b || 0)

@@ -50,4 +50,8 @@ export const STORYBOOK_ROUTES: { [key: string]: RouteInfo } = {
     component: './Items/ToastsBook',
     title: 'Toasts',
   },
+  [subRoute('/dropdowns')]: {
+    component: './Items/DropdownBook',
+    title: 'Dropdown',
+  },
 }
