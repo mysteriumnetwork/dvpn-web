@@ -76,8 +76,8 @@ const Menu = styled.div<OverlayProps>`
     max-width: ${({ $display }) => ($display ? '100%' : 0)};
     align-items: flex-start;
     justify-content: space-between;
-    padding: 18px 24px 10px 10px;
-    margin-bottom: 20px;
+    padding: ${({ $display }) => ($display ? '18px 24px 10px 10px' : 0)};
+    margin-bottom: ${({ $display }) => ($display ? '20px' : 0)};
     ${Container} {
       display: flex;
       align-items: center;
@@ -100,7 +100,7 @@ const Menu = styled.div<OverlayProps>`
       height: 32px;
       max-width: ${({ $display }) => ($display ? '32px' : 0)};
       opacity: ${({ $display }) => ($display ? 1 : 0)};
-      transition: max-width 0.3s;
+      transition: max-width 0.3s opacity 0.3s;
       top: -2px;
       position: relative;
       :hover {
@@ -112,7 +112,7 @@ const Menu = styled.div<OverlayProps>`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 0 20px;
+    margin: ${({ $display }) => ($display ? '0 20px' : 0)};
     max-width: ${({ $display }) => ($display ? '200px' : 0)};
     opacity: ${({ $display }) => ($display ? 1 : 0)};
     transition: max-width 0.3s, opacity 0.3s;

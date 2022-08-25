@@ -15,7 +15,7 @@ interface TransitionProps {
 }
 const Title = styled.div``
 const Container = styled.div<TransitionProps>`
-  display: flex;
+  display: ${({ $transition }) => ($transition ? 'flex' : 'none')};
   justify-content: flex-start;
   align-items: center;
   text-decoration: none;

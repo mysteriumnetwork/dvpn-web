@@ -21,7 +21,7 @@ const ThemeStatus = styled.div``
 const Column = styled.div``
 
 const Container = styled.div<TransitionProps>`
-  display: flex;
+  display: ${({ $transition }) => ($transition ? 'flex' : 'none')};
   align-items: center;
   justify-content: flex-start;
   align-items: center;

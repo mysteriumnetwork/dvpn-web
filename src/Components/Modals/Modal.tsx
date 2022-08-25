@@ -57,7 +57,7 @@ const xlSize = css`
 
 const StyledModal = styled.div<{ $size?: ModalSize }>`
   position: fixed;
-  z-index: 1005;
+  z-index: 1001;
 
   ${({ $size }) => ($size ? xlSize : normalSize)}
 
