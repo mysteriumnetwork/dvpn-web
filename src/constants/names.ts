@@ -6,3 +6,4 @@
  */
 export const MMN_SITE = 'mystnodes.com'
 export const MMN_SITE_URL = `https://${MMN_SITE}`
+export const MMN_SITE_ME_URL = `https://${MMN_SITE}/me`

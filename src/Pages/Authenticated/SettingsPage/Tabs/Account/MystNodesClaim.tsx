@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MMN_SITE, MMN_SITE_URL } from '../../../../../constants/names'
+import { MMN_SITE, MMN_SITE_ME_URL } from '../../../../../constants/names'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
 import { SettingsCard } from '../../SettingsCard'
@@ -40,7 +40,7 @@ export const MystNodesClaim = () => {
   const [token, setToken] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
 
-  const [data = [], fetchLoading] = useFetch(() => Promise.all([api.getMMNApiKey()]), [identity.id])
+  const [data = [], dataLoading] = useFetch(() => Promise.all([api.getMMNApiKey()]), [identity.id])
   const [apiToken] = data
   const handleApiKey = (value: string) => setToken(value)
 
@@ -78,20 +78,20 @@ export const MystNodesClaim = () => {
     setLoading(false)
   }
 
-  const resolvedLoading = loading || fetchLoading
-
   return (
     <SettingsCard
-      loading={fetchLoading}
+      loading={dataLoading}
       title={
         <Title>
           <div>{capitalizeFirstLetter(MMN_SITE)} Integrations</div>
-          <a href={MMN_SITE_URL} target="_blank" rel="noreferrer">
+          <a href={MMN_SITE_ME_URL} target="_blank" rel="noreferrer">
             <ExternalSVG />
           </a>
         </Title>
       }
-      footer={<Button type="submit" variant="secondary" loading={resolvedLoading} onClick={handleClaim} label="Save" />}
+      footer={
+        <Button type="submit" variant="secondary" loading={loading || dataLoading} onClick={handleClaim} label="Save" />
+      }
     >
       <Form onSubmit={handleClaim}>
         <InputGroup

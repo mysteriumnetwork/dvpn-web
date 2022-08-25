@@ -63,10 +63,15 @@ const Payment = ({ gateway, allGateways, back, next }: RegistrationStepProps) =>
     skipIfPaid()
   }, [])
 
+  const refreshPaymentStatus = async () => {
+    await api.payment.registrationPayment(identity.id).then((r) => setRegistrationPayment(r))
+    await api.identityBalanceRefresh(identity.id)
+  }
+
   useEffect(() => {
+    refreshPaymentStatus()
     const interval = setInterval(() => {
-      api.identityBalanceRefresh(identity.id)
-      api.payment.registrationPayment(identity.id).then((r) => setRegistrationPayment(r))
+      refreshPaymentStatus()
     }, 5 * 1000)
     return () => clearInterval(interval)
   }, [])

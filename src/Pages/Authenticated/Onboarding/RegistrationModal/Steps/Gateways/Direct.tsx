@@ -31,8 +31,6 @@ const Content = styled.div`
   width: 100%;
 `
 const Description = styled.div`
-  display: flex;
-  align-items: center;
   gap: 2px;
   margin-top: 30px;
   font-weight: 400;
@@ -115,7 +113,7 @@ const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) =
         </Waiting>
       )}
       <Controls>
-        {next && isRegistrationFeeReceived && <Button label="Continue" onClick={next} />}
+        {next && isRegistrationFeeReceived && <Button label="Next" onClick={next} />}
         {back && !isRegistrationFeeReceived && (
           <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
         )}

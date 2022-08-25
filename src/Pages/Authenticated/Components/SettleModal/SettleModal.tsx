@@ -264,7 +264,7 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
             label={isExternalWalletChanged ? 'Settle and change wallet address' : 'Settle'}
             rounded
             loading={loading}
-            disabled={isNegativeProfit}
+            disabled={isNegativeProfit || state.errors.length !== 0}
             onClick={async () => {
               await handleSettle()
             }}
