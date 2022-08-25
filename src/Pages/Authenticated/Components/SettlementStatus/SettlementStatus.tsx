@@ -23,6 +23,7 @@ const Content = styled.div`
 
 const ProgressContainer = styled.div`
   width: 30%;
+  margin-top: 0.5em;
 `
 
 const Title = styled.div`
@@ -30,7 +31,6 @@ const Title = styled.div`
   font-size: ${themeCommon.fontSizeSmall};
   font-style: normal;
   font-weight: 400;
-  margin-bottom: 0.65em;
 `
 
 export const SettlementStatus = () => {

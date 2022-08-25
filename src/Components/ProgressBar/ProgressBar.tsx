@@ -93,7 +93,7 @@ const Tooltip = styled.div`
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-top: 4px solid ${({ theme }) => theme.common.colorKey};
-    transform: translateX(12px) translateY(8px);
+    transform: translateX(12px) translateY(7px);
   }
 `
 interface Props {
