@@ -28,7 +28,7 @@ const Content = styled.div`
   position: fixed;
   height: 100px;
   top: 0;
-  z-index: 4;
+  z-index: 1002;
   padding: 0 10px 0 10px;
   align-items: center;
   justify-content: space-between;
