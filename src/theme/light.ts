@@ -70,6 +70,11 @@ const light: Omit<Theme, 'common'> = {
   settleCard: {
     earningsColor: themeCommon.colorDarkBlue,
   },
+  scrollBar: {
+    trackColor: 'f1f1f1f1',
+    handleColor: themeCommon.colorLightBlue,
+    handleColorHover: themeCommon.colorDarkBlue,
+  },
   calendar: {
     bgBody: themeCommon.colorWhite,
     bgHeader: themeCommon.colorWhite,
