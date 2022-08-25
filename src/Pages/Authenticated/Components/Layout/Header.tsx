@@ -6,7 +6,6 @@
  */
 import styled from 'styled-components'
 import { devices } from '../../../../theme/themes'
-import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { Quality } from '../Quality/Quality'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { Profile } from '../Profile/Profile'
@@ -47,8 +46,10 @@ export const Header = ({ logo, title }: Props) => {
     <Container>
       <PageTitle logo={logo} name={title} />
       <MonitoringStatus />
-      <NodeStatus />
-      <Quality />
+      {/* TODO: waiting for endpoint*/}
+      {/*<NodeStatus />*/}
+      {/* TODO: waiting for endpoint*/}
+      {/*<Quality />*/}
       <SettlementStatus />
       <Group>
         <Notifications />
