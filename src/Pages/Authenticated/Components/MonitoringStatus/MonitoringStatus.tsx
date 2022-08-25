@@ -5,16 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useFetch } from '../../../../commons/hooks'
+import { useAppSelector, useFetch } from '../../../../commons/hooks'
 import { tequila } from '../../../../api/tequila'
 import { ReactComponent as WarningSVG } from '../../../../assets/images/toasts/warning.svg'
 import { HeaderItem } from '../../../../Components/Header/HeaderItem'
 import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
+import { selectors } from '../../../../redux/selectors'
 
 export const MonitoringStatus = () => {
-  const [data = { status: 'pending' }, loading] = useFetch(() => tequila.api.nodeMonitoringStatus())
+  const services = useAppSelector(selectors.runningServices)
+  const anyOnline = services.length > 0
 
-  if (data.status !== 'failed') {
+  const [data = { status: 'pending' }] = useFetch(() => tequila.api.nodeMonitoringStatus())
+
+  if (!anyOnline && data.status !== 'failed') {
     return <></>
   }
 

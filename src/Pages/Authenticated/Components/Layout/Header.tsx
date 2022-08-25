@@ -13,7 +13,7 @@ import { Profile } from '../Profile/Profile'
 import { Notifications } from '../Notifications/Notifications'
 import PageTitle from '../../../../Components/LayoutHeader/PageTitle'
 import { ReactNode } from 'react'
-import { MonitoringStatus } from '../MonitoringStatus/IdleStat'
+import { MonitoringStatus } from '../MonitoringStatus/MonitoringStatus'
 
 const Container = styled.div`
   display: flex;
