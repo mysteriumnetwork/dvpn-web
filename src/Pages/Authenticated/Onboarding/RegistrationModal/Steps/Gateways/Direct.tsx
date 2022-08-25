@@ -115,7 +115,7 @@ const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) =
         </Waiting>
       )}
       <Controls>
-        {next && isRegistrationFeeReceived && <Button label="Continue" onClick={next} />}
+        {next && isRegistrationFeeReceived && <Button label="Next" onClick={next} />}
         {back && !isRegistrationFeeReceived && (
           <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
         )}

@@ -229,7 +229,7 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
       <InvoiceLink identity={identity.id} isCompleted={isCompleted} />
       <Controls>
         {showPayNow && <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay 1 USD" />}
-        {isCompleted && <Button label="Continue" rounded onClick={next} />}
+        {isCompleted && <Button label="Next" rounded onClick={next} />}
         <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
       </Controls>
     </Content>
