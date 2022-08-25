@@ -27,7 +27,7 @@ export const InvoiceLink = ({ identity, isCompleted }: { identity: string; isCom
       return
     }
     const orders = await api.payment.orders(identity)
-    return orders.find((o) => o)
+    return orders.find((o) => o.status === 'paid')
   }, [isCompleted])
 
   useEffect(() => {
@@ -44,7 +44,8 @@ export const InvoiceLink = ({ identity, isCompleted }: { identity: string; isCom
         errors.parseToastError(err)
       }
     }
-    if (suposedlyPaidOrder && !isCompleted) {
+
+    if (suposedlyPaidOrder && isCompleted) {
       generate(suposedlyPaidOrder)
     }
   }, [suposedlyPaidOrder?.id])
