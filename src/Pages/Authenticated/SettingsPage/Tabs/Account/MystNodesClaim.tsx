@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MMN_SITE, MMN_SITE_URL } from '../../../../../constants/names'
+import { MMN_SITE, MMN_SITE_ME_URL, MMN_SITE_URL } from '../../../../../constants/names'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
 import { SettingsCard } from '../../SettingsCard'
@@ -86,7 +86,7 @@ export const MystNodesClaim = () => {
       title={
         <Title>
           <div>{capitalizeFirstLetter(MMN_SITE)} Integrations</div>
-          <a href={MMN_SITE_URL} target="_blank" rel="noreferrer">
+          <a href={MMN_SITE_ME_URL} target="_blank" rel="noreferrer">
             <ExternalSVG />
           </a>
         </Title>
