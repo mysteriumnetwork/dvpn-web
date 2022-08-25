@@ -40,7 +40,7 @@ export const MystNodesClaim = () => {
   const [token, setToken] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
 
-  const [data = [], fetchLoading] = useFetch(() => Promise.all([api.getMMNApiKey()]), [identity.id])
+  const [data = [], dataLoading] = useFetch(() => Promise.all([api.getMMNApiKey()]), [identity.id])
   const [apiToken] = data
   const handleApiKey = (value: string) => setToken(value)
 
@@ -78,11 +78,9 @@ export const MystNodesClaim = () => {
     setLoading(false)
   }
 
-  const resolvedLoading = loading || fetchLoading
-
   return (
     <SettingsCard
-      loading={fetchLoading}
+      loading={dataLoading}
       title={
         <Title>
           <div>{capitalizeFirstLetter(MMN_SITE)} Integrations</div>
@@ -91,7 +89,9 @@ export const MystNodesClaim = () => {
           </a>
         </Title>
       }
-      footer={<Button type="submit" variant="secondary" loading={resolvedLoading} onClick={handleClaim} label="Save" />}
+      footer={
+        <Button type="submit" variant="secondary" loading={loading || dataLoading} onClick={handleClaim} label="Save" />
+      }
     >
       <Form onSubmit={handleClaim}>
         <InputGroup
