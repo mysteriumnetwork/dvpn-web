@@ -43,6 +43,8 @@ const Card = styled.div<Props>`
   padding: 20px;
   width: 100%;
   flex-direction: column;
+  overflow-x: auto;
+  overflow-y: hidden;
 `
 const Header = styled.div`
   display: flex;

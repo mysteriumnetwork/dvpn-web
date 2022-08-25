@@ -23,6 +23,7 @@ const Content = styled.div`
 
 const ProgressContainer = styled.div`
   width: 30%;
+  margin-top: 0.5em;
 `
 
 const Title = styled.div`

@@ -27,7 +27,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `
 const Progress = styled.div<BarProps>`
   display: flex;
@@ -60,7 +59,6 @@ const Mark = styled.span<BarProps>`
 `
 const MarkContainer = styled.div<BarProps>`
   width: 100%;
-  box-sizing: border-box;
   display: flex;
   margin: ${({ $size }) => {
     return $size === 'big' ? '9px' : '4px'
@@ -95,7 +93,7 @@ const Tooltip = styled.div`
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-top: 4px solid ${({ theme }) => theme.common.colorKey};
-    transform: translateX(12px) translateY(8px);
+    transform: translateX(12px) translateY(7px);
   }
 `
 interface Props {

@@ -15,6 +15,8 @@ import { SettingsCard } from '../../SettingsCard'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../../../Components/Inputs/TextField'
 import { Config } from 'mysterium-vpn-js'
+import { devices } from '../../../../../theme/themes'
+import styled from 'styled-components'
 
 export interface AdvancedSettingsForms {
   udpRange: string
@@ -36,7 +38,11 @@ const rpcl2UrlsWithoutDefaults = (config: Config, defaultConfig: Config): string
 
   return all.filter((u) => !defaults.includes(u))
 }
-
+const MarginBottom = styled.div`
+  @media ${devices.tablet} {
+    margin-bottom: 80px;
+  }
+`
 // TODO split this into actual two separate cards with separate controls
 export const AdvancedSettings = () => {
   const [form, setForm] = useState<AdvancedSettingsForms>(INITIAL_FORM)
@@ -125,6 +131,7 @@ export const AdvancedSettings = () => {
         handleSave={handleSave}
         handleReset={resetToDefaults}
       />
+      <MarginBottom />
     </>
   )
 }

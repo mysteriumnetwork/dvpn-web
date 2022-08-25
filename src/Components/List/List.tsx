@@ -46,11 +46,12 @@ const ListBody = styled.div<BodyProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
+  border-radius: 20px;
   background: ${({ $noContent, theme }) => ($noContent ? theme.table.bgBody : 'none')} !important;
   gap: 20px;
-  padding: 0;
+  padding: 20px;
   min-width: 300px;
-  min-height: ${({ $noContent, $loading }) => ($noContent || $loading ? '200px' : '')};
+  min-height: ${({ $noContent, $loading }) => ($noContent || $loading ? '220px' : '')};
 `
 const ListSpinner = () => (
   <Overlay>

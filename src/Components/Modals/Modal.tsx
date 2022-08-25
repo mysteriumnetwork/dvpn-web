@@ -8,10 +8,14 @@ import styled, { css } from 'styled-components'
 import { ReactNode } from 'react'
 import { XButtonIcon } from '../Icons/ButtonIcons'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
-import { themeCommon } from '../../theme/themeCommon'
+import { alphaToHex, themeCommon } from '../../theme/themeCommon'
 import { devices } from '../../theme/themes'
+import { media } from '../../commons/media'
+import { useMediaQuery } from 'react-responsive'
 
 type ModalSize = 'xl'
+
+const { isMobileQuery } = media
 
 const PageOverlay = styled.div`
   position: fixed;
@@ -32,8 +36,9 @@ const normalSize = css`
   top: 20%;
   transform: translate(-50%, 0);
   @media ${devices.tablet} {
-    width: 80%;
-    height: 500px;
+    width: 100%;
+    height: 100%;
+    top: 0;
   }
 `
 
@@ -52,13 +57,17 @@ const xlSize = css`
 
 const StyledModal = styled.div<{ $size?: ModalSize }>`
   position: fixed;
-  z-index: 1000;
+  z-index: 1005;
 
   ${({ $size }) => ($size ? xlSize : normalSize)}
 
   background: ${({ theme }) => theme.modal.bgColor};
   box-shadow: ${({ theme }) => theme.modal.boxShadow};
   border-radius: 20px;
+  @media ${devices.tablet} {
+    border-radius: 0;
+    background: ${({ theme }) => theme.modal.bgColor + alphaToHex(0.95)};
+  }
 `
 
 const Container = styled.div`
@@ -81,6 +90,11 @@ const Icon = styled.div`
   left: 50%;
   transform: translate(-50%, 0);
   top: -32px;
+  @media ${devices.tablet} {
+    position: static;
+    transform: translate(0, 0);
+    margin-top: 32px;
+  }
 `
 
 const CloseButtonPlacement = styled.div`
@@ -90,6 +104,10 @@ const CloseButtonPlacement = styled.div`
   right: -32px;
   top: -32px;
   border-radius: 100px;
+  @media ${devices.tablet} {
+    top: 10px;
+    right: 10px;
+  }
 `
 
 const Title = styled.div`
@@ -159,13 +177,14 @@ export const Modal = ({
   disableX,
   size,
 }: Props) => {
+  const isMobile = useMediaQuery(isMobileQuery)
   if (!show) {
     return <></>
   }
 
   return (
     <>
-      <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />
+      {!isMobile && <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />}
       <StyledModal $size={size}>
         <Container>
           {loading && (

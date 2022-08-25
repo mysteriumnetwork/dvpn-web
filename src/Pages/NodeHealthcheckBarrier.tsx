@@ -48,7 +48,7 @@ export const NodeHealthcheckBarrier = ({ children }: Props) => {
   if (error) {
     return (
       <Container>
-        <SadMessage>Looks like your node is unreachable... ☹️😭</SadMessage>
+        <SadMessage>Looks like your node is unreachable... 😭</SadMessage>
       </Container>
     )
   }

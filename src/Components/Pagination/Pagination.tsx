@@ -14,6 +14,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 20px 10px;
+  margin-bottom: 80px;
 `
 const activeCSS = css`
   background: ${themeCommon.colorGrayBlue}51;
