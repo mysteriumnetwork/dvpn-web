@@ -36,7 +36,7 @@ const calculateEarnings = (earnings: Tokens, fees: FeesV2, hermesPercent: string
 }
 const calculateSettled = (earnings: Tokens, earningsTotal: Tokens) => {
   const { toBig } = myst
-  const totalSettled = toBig(earningsTotal.wei).minus(earnings.wei)
+  const totalSettled = toBig(earningsTotal.wei).minus(toBig(earnings.wei))
   return totalSettled
 }
 const ZERO_DATE = new Date(0).toJSON()

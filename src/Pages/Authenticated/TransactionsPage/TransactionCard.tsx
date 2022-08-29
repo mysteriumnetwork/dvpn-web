@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import { themeCommon, alphaToHex } from '../../../theme/themeCommon'
 import { myst } from '../../../commons/mysts'
 import { ReactComponent as Download } from '../../../assets/images/download.svg'
+import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 
 const { date2human } = dates
 
@@ -54,6 +55,9 @@ const HeaderRow = styled(Row)`
   margin-bottom: 10px;
 `
 const Name = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.table.mobileCard.textColorSecondary};
 `
@@ -72,12 +76,7 @@ const Hash = styled(Data)`
   white-space: no-wrap;
   text-overflow: ellipsis;
 `
-const NameIcon = styled(Name)`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  justify-content: flex-start;
-`
+
 const WideColumn = styled(Column)`
   width: 100%;
 `
@@ -102,13 +101,16 @@ export const TransactionCard = ({ item }: Props) => {
       </Row>
       <Row>
         <Column>
-          <NameIcon>
+          <Name>
             Received amount <Download />
-          </NameIcon>
+          </Name>
           <Data>{myst.display(item.amount, { fractionDigits: 3 })}</Data>
         </Column>
         <Column>
-          <Name>Fees</Name>
+          <Name>
+            Fees
+            <Tooltip content="Fees include a 20% network fee and blockchain transaction fees for settlement transactions." />
+          </Name>
           <Data>{myst.display(item.fees, { fractionDigits: 3 })}</Data>
         </Column>
       </Row>

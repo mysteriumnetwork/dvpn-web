@@ -27,6 +27,7 @@ import { devices } from '../../../theme/themes'
 import { Settlement } from 'mysterium-vpn-js'
 import { TransactionCard } from './TransactionCard'
 import { List } from '../../../Components/List/List'
+import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 
 const { isDesktopQuery } = media
 const { api } = tequila
@@ -93,7 +94,12 @@ export const TransactionsPage = () => {
         minWidth: 300,
       },
       {
-        Header: 'Fee',
+        Header: () => (
+          <>
+            {'Fee'}
+            <Tooltip content="Fees include a 20% network fee and blockchain transaction fees for settlement transactions." />
+          </>
+        ),
         accessor: 'fees',
         Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractionDigits: 3 })}</PrimaryCell>,
         minWidth: 50,
