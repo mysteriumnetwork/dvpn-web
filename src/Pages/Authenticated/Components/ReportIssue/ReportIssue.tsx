@@ -15,7 +15,7 @@ interface TransitionProps {
 }
 const Title = styled.div``
 const Container = styled.div<TransitionProps>`
-  display: ${({ $transition }) => ($transition ? 'flex' : 'none')};
+  display: flex;
   justify-content: flex-start;
   align-items: center;
   text-decoration: none;
@@ -23,7 +23,7 @@ const Container = styled.div<TransitionProps>`
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   gap: ${({ $transition }) => ($transition ? '40px' : 0)};
   padding-right: ${({ $transition }) => ($transition ? '20px' : 0)};
-  transition: gap 0.3s, padding-right 0.3s;
+  transition: gap 0.3s, padding-right 0.3s, max-width 0.3s;
   ${Title} {
     text-decoration: none;
     color: ${({ theme }) => theme.common.colorWhite};
