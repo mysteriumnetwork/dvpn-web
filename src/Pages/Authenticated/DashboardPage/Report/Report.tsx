@@ -109,7 +109,7 @@ export const Report = () => {
       ...p,
       totalEarningsEther: totals.earnings(data.sessions),
       totalSessions: data.sessions.length,
-      totalSessionTime: 0,
+      totalSessionTime: totals.durationSeconds(data.sessions),
       totalTransferredBytes: totals.dataTransferredBytes(data.sessions),
     }))
   }, [selectedRange, selectedGraph, loading])
