@@ -36,7 +36,6 @@ const StyledRCSlider = styled(RCSlider)`
   .rc-slider-handle:active {
     border-color: ${themeCommon.colorKeyLight};
     box-shadow: 0 0 5px ${themeCommon.colorKeyLight};
-    cursor: -webkit-grabbing;
     cursor: grabbing;
   }
 
@@ -64,7 +63,11 @@ const StyledRCSlider = styled(RCSlider)`
     color: ${themeCommon.colorGrayBlue2};
     font-size: ${themeCommon.fontSizeSmall};
     font-weight: 400;
+    margin: 0 10px;
     width: 80px;
+  }
+  .rc-slider-mark-text:last-of-type {
+    padding-right: 30px;
   }
 
   .rc-slider-mark-text-active {

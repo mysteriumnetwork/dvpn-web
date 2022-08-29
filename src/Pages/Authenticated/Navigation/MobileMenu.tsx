@@ -78,6 +78,7 @@ const Menu = styled.div<OverlayProps>`
     justify-content: space-between;
     padding: ${({ $display }) => ($display ? '18px 24px 10px 10px' : 0)};
     margin-bottom: ${({ $display }) => ($display ? '20px' : 0)};
+    transition: padding 0.3s;
     ${Container} {
       display: flex;
       align-items: center;
@@ -163,7 +164,7 @@ export const MobileMenu = ({ show, toggleMenu }: Props) => {
           <Arrow onClick={toggleMenu} />
         </Header>
         <Group>{Links}</Group>
-        <Group>{Controllers}</Group>
+        <Group>{show && Controllers}</Group>
       </Menu>
     </>
   )

@@ -11,9 +11,12 @@ const earnings = (sessions: SessionV2[]): number => sessions.reduce((acc, s) => 
 const dataTransferredBytes = (sessions: SessionV2[]): number =>
   sessions.reduce((acc, s) => acc + Number(s.transferredBytes), 0)
 
+const durationSeconds = (sessions: SessionV2[]): number => sessions.reduce((acc, s) => acc + s.durationSeconds, 0)
+
 const totals = {
   earnings,
   dataTransferredBytes,
+  durationSeconds,
 }
 
 export default totals

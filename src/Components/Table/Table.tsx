@@ -49,10 +49,13 @@ const HeaderRow = styled.div`
   padding: 20px;
 `
 const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: ${({ theme }) => theme.common.colorGrayBlue};
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   width: 10%;
-  text-align: center;
+  gap: 5px;
 `
 const Row = styled.div`
   display: flex;
