@@ -18,19 +18,19 @@ export const MonitoringStatus = () => {
 
   const [data = { status: 'pending' }] = useFetch(() => tequila.api.nodeMonitoringStatus())
 
-  if (!anyOnline && data.status !== 'failed') {
-    return <></>
+  if (anyOnline && data.status === 'failed') {
+    return (
+      <HeaderItem
+        title="Monitoring"
+        content={
+          <>
+            <WarningSVG />
+            <Tooltip content="Your node has failed monitoring agent check. Please check your internet connection and router settings." />
+          </>
+        }
+      />
+    )
   }
 
-  return (
-    <HeaderItem
-      title="Monitoring"
-      content={
-        <>
-          <WarningSVG />
-          <Tooltip content="Your node has failed monitoring agent check. Please check your internet connection and router settings." />
-        </>
-      }
-    />
-  )
+  return <></>
 }
