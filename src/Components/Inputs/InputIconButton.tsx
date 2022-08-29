@@ -15,7 +15,7 @@ interface IconButtonProps {
 
 const clickableCSS = css`
   :hover {
-    border: 1px solid ${themeCommon.colorDarkBlue}AA;
+    border: 1px solid ${themeCommon.colorDarkBlue};
     border-radius: 100px;
   }
 

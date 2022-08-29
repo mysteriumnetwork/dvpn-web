@@ -56,7 +56,7 @@ const errorCSS = css<InputIconProps>`
   }
 `
 
-const commonCSS = `
+const commonCSS = css`
   display: flex;
   width: 100%;
   height: 100%;

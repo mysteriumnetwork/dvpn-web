@@ -29,7 +29,7 @@ const { seconds2Time } = dates
 const { countryName } = location
 const { format, add } = bytes
 const { isDesktopQuery } = media
-// TODO: Move these to commons
+// TODO Rethink how to show full session/have full session copyable
 const session2human = (session: string) => {
   return session.split('-')[0]
 }

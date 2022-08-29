@@ -36,7 +36,7 @@ export const WaitingFiatPayment = ({ isCompleted, visible }: WaitingPaymentProps
   ) : (
     <Waiting>
       <WaitingSpinner />
-      Wait for confirmation (might take couple of minutes)
+      Please wait for confirmation (might take couple of minutes)
     </Waiting>
   )
 }

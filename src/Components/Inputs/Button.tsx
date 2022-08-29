@@ -17,7 +17,7 @@ const PRIMARY_CSS = css`
   background: ${themeCommon.colorKey};
 
   :active {
-    background: ${themeCommon.colorKey}BB;
+    background: ${themeCommon.colorKey};
   }
 `
 const MEDIUM_CSS = css`
@@ -32,7 +32,7 @@ const SECONDARY_CSS = css`
   background: ${themeCommon.colorGrayBlue};
 
   :active {
-    background: ${themeCommon.colorGrayBlue}BB;
+    background: ${themeCommon.colorGrayBlue};
   }
 `
 
@@ -54,7 +54,7 @@ const BLUE_CSS = css`
   background: ${themeCommon.colorBlue};
 
   :active {
-    background: ${themeCommon.colorBlue}BB;
+    background: ${themeCommon.colorBlue};
   }
 `
 
@@ -78,6 +78,8 @@ const resolveSize = (size: ButtonSize) => {
       return MEDIUM_CSS
     case 'large':
       return LARGE_CSS
+    default:
+      return
   }
 }
 interface ButtonStyleProps {

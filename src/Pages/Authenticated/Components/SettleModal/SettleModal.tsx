@@ -239,7 +239,7 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
             {state.errors.map((message, idx) => (
               <Error key={idx}>{message}</Error>
             ))}
-            {txStatus?.error && <Error>Fail to change wallet address. Please try again.</Error>}
+            {txStatus?.error && <Error>Failed to change wallet address. Please try again.</Error>}
           </Errors>
         )}
         <Footer>

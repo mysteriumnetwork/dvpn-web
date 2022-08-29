@@ -23,11 +23,9 @@ import { useMediaQuery } from 'react-responsive'
 import { SessionV2 } from 'mysterium-vpn-js'
 import services from '../../../commons/services'
 import { RangePicker } from '../../../Components/Inputs/RangePicker'
-import { ReactComponent as Clock } from '../../../assets/images/sessions.svg'
-import styled from 'styled-components'
-import { devices } from '../../../theme/themes'
 import { List } from '../../../Components/List/List'
 import { SessionCard } from './SessionCard'
+import { Placeholder } from './Placeholder'
 
 const { api } = tequila
 const { date2human, seconds2Time } = dates
@@ -36,27 +34,6 @@ const { format } = bytes
 const { isDesktopQuery } = media
 const { PrimaryCell, SecondaryCell } = cells
 
-const PlaceholderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-`
-const PlaceholderIcon = styled(Clock)`
-  width: 350px;
-  @media ${devices.tablet} {
-    width: 300px;
-  }
-`
-const PlaceholderText = styled.div`
-  color: ${({ theme }) => theme.common.colorGrayBlue};
-  font-size: ${({ theme }) => theme.common.fontSizeBig};
-  font-weight: 700;
-  margin-top: 50px;
-  margin-bottom: 50px;
-`
 const session2human = (session: string) => {
   return session.split('-')[0]
 }
@@ -68,12 +45,6 @@ const RANGE_OPTIONS: Option<MetricsRange>[] = [
   { label: 'Last 30 days', value: '30d' },
 ]
 
-const Placeholder = () => (
-  <PlaceholderContainer>
-    <PlaceholderIcon />
-    <PlaceholderText>No sessions in Your history yet</PlaceholderText>
-  </PlaceholderContainer>
-)
 export const HistoryPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
 

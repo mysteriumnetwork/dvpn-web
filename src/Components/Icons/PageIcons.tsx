@@ -12,9 +12,6 @@ import { ReactComponent as TransactionsNavSvg } from '../../assets/images/naviga
 import { themeCommon } from '../../theme/themeCommon'
 
 const headerCSS = css`
-  //width: 100%;
-  //height: 100%;
-
   rect {
     opacity: 1;
     fill: ${themeCommon.colorKey};

@@ -21,9 +21,7 @@ import dates from '../../../commons/dates'
 import { cells } from '../../../Components/Table/cells'
 import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
-import { ReactComponent as Wallet } from '../../../assets/images/transactions.svg'
-import styled from 'styled-components'
-import { devices } from '../../../theme/themes'
+import { Placeholder } from './Placeholder'
 import { Settlement } from 'mysterium-vpn-js'
 import { TransactionCard } from './TransactionCard'
 import { List } from '../../../Components/List/List'
@@ -33,34 +31,6 @@ const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
 const { PrimaryCell, SecondaryCell } = cells
-
-const PlaceholderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-`
-const PlaceholderIcon = styled(Wallet)`
-  width: 350px;
-  @media ${devices.tablet} {
-    width: 300px;
-  }
-`
-const PlaceholderText = styled.div`
-  color: ${({ theme }) => theme.common.colorGrayBlue};
-  font-size: ${({ theme }) => theme.common.fontSizeBig};
-  font-weight: 700;
-  margin-top: 50px;
-  margin-bottom: 50px;
-`
-const Placeholder = () => (
-  <PlaceholderContainer>
-    <PlaceholderIcon />
-    <PlaceholderText>No transactions in Your history yet</PlaceholderText>
-  </PlaceholderContainer>
-)
 
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)

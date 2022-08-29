@@ -4,12 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
 import { DOCS_METAMASK } from '../../../../../../constants/urls'
+import styled from 'styled-components'
 
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`
 export const HowToGetMyst = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+    <Column>
       <div>
         To avoid transaction fees on Ethereum network, we recommend to use Polygon network for MYST transfers. Follow
         these steps to buy MYST tokens needed for registration:
@@ -41,6 +46,6 @@ export const HowToGetMyst = () => {
         and swap your MATIC to MYST.
       </div>
       <div>5. Send required MYST amount for your node registration.</div>
-    </div>
+    </Column>
   )
 }
