@@ -68,9 +68,7 @@ export const Pagination = ({ currentPage, totalPages, handlePageChange }: Pagina
         variant="outlined"
         label="Prev"
         rounded
-        onClick={() => {
-          onFirstPage && handlePageChange(currentPage - 1)
-        }}
+        onClick={() => onFirstPage && handlePageChange(currentPage - 1)}
       />
       <Pages>
         {paginationRange?.map((pageNumber) => {
@@ -90,14 +88,7 @@ export const Pagination = ({ currentPage, totalPages, handlePageChange }: Pagina
           )
         })}
       </Pages>
-      <Button
-        variant="outlined"
-        label="Next"
-        rounded
-        onClick={() => {
-          onLastPage && handlePageChange(currentPage + 1)
-        }}
-      />
+      <Button variant="outlined" label="Next" rounded onClick={() => onLastPage && handlePageChange(currentPage + 1)} />
     </Container>
   )
 }

@@ -7,7 +7,7 @@
 
 import styled, { css } from 'styled-components'
 import { ReactNode } from 'react'
-import { themeCommon } from '../../theme/themeCommon'
+import { alphaToHex, themeCommon } from '../../theme/themeCommon'
 
 interface IconButtonProps {
   $clickable?: boolean
@@ -15,7 +15,7 @@ interface IconButtonProps {
 
 const clickableCSS = css`
   :hover {
-    border: 1px solid ${themeCommon.colorDarkBlue};
+    border: 1px solid ${themeCommon.colorDarkBlue + alphaToHex(0.67)};
     border-radius: 100px;
   }
 

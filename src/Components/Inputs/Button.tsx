@@ -17,7 +17,7 @@ const PRIMARY_CSS = css`
   background: ${themeCommon.colorKey};
 
   :active {
-    background: ${themeCommon.colorKey};
+    background: ${themeCommon.colorKey + alphaToHex(0.73)};
   }
 `
 const MEDIUM_CSS = css`
