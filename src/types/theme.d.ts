@@ -228,6 +228,8 @@ export type Common = {
   colorLightGreen: string
   colorBlue: string
   colorLightBlue: string
+  colorLightBlue1: string
+  colorDarkBlue2: string
   colorYellow: string
 
   colorNavStroke: string

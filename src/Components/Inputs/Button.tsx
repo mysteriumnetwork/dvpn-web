@@ -15,12 +15,10 @@ export type ButtonSize = 'small' | 'medium' | 'large'
 const PRIMARY_CSS = css`
   color: ${themeCommon.colorWhite};
   background: ${themeCommon.colorKey};
-
-  :focus,
   :active {
     background: ${themeCommon.colorKeyDark};
   }
-  :hover {
+  :hover:not(:active) {
     background: ${themeCommon.colorKeyLight};
   }
 `
@@ -38,8 +36,8 @@ const SECONDARY_CSS = css`
   :active {
     background: ${themeCommon.colorGrayBlue2};
   }
-  :hover {
-    background: ${themeCommon.colorGrayBlue}85;
+  :hover:not(:active) {
+    background: ${themeCommon.colorGrayBlue2}80;
   }
 `
 
@@ -52,7 +50,7 @@ const OUTLINES_CSS = css`
     background: ${themeCommon.colorGrayBlue}51;
   }
 
-  :hover {
+  :hover:not(:active) {
     background-color: ${({ theme }) => theme.buttons.outlined.hoverBackgroundColor};
   }
 `
@@ -61,10 +59,10 @@ const BLUE_CSS = css`
   background: ${themeCommon.colorBlue};
 
   :active {
-    background: #168ce1;
+    background: ${themeCommon.colorDarkBlue2};
   }
-  :hover {
-    background: ${themeCommon.colorBlue}95;
+  :hover:not(:active) {
+    background: ${themeCommon.colorLightBlue1};
   }
 `
 

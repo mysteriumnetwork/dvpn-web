@@ -25,6 +25,8 @@ export const themeCommon: Common = {
   colorLightGreen: '#EFF8ED',
   colorBlue: '#5BB1EF',
   colorLightBlue: '#F6F6FA',
+  colorLightBlue1: '#93D1FF',
+  colorDarkBlue2: '#168CE1',
   colorYellow: '#FFDE69',
   colorNavStroke: '#FFFFFF',
   colorNavActiveStroke: '#3C3857',
