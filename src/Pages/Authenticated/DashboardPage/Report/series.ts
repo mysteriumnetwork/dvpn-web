@@ -10,7 +10,7 @@ import { ChartType, GroupedByTime } from './types'
 import { PAIR_MAPPERS } from './PAIR_MAPPERS'
 import { currentCurrency } from '../../../../commons/currency'
 import { MetricsRange } from '../../../../types/common'
-import { dayHour, localDate } from './dates'
+import { hour, localDate } from './dates'
 
 const units = (type: ChartType): string | undefined =>
   ({
@@ -29,13 +29,13 @@ const groupByLast24Hours = (sessions: SessionV2[]): GroupedByTime[] => {
 
   const now = new Date()
   for (let i = 0; i < 24; i++) {
-    grouped.push(emptyGroup(dayHour(now.toISOString())))
+    grouped.push(emptyGroup(hour(now.toISOString())))
     now.setHours(now.getHours() - 1)
   }
   grouped.reverse()
 
   sessions.forEach((s) => {
-    const key = dayHour(s.startedAt)
+    const key = hour(s.startedAt)
     const group = grouped.find((g) => g[key])
 
     if (group) {

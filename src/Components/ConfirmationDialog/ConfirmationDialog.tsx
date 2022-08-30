@@ -45,10 +45,13 @@ const Container = styled.div`
 
 const Title = styled.h2`
   margin-top: 16px;
+  color: ${({ theme }) => theme.text.colorMain};
 `
 
 const Message = styled.div`
   padding: 16px;
+  color: ${({ theme }) => theme.text.colorMain};
+  text-align: center;
 `
 
 const FlexGrow = styled.div`

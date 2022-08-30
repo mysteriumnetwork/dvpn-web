@@ -11,9 +11,8 @@ export const localDate = (timestamp: string): string => {
   return `${month}-${day}`
 }
 
-export const dayHour = (timestamp: string): string => {
+export const hour = (timestamp: string): string => {
   const date = new Date(timestamp)
-  const day = date.getDay() < 10 ? `0${date.getDay()}` : `${date.getDay()}`
   const hour = date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`
-  return `${day}-${hour}`
+  return `${hour}:00`
 }

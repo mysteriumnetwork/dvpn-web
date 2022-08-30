@@ -22,14 +22,20 @@ const dark: Omit<Theme, 'common'> = {
 
   bgSettingsCard: themeCommon.color393453,
 
-  bgReportChartRow: themeCommon.color393453,
-
-  bgReportChartRowBoxShadow: '0 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
   bgReportCardDiffPositive: themeCommon.colorGreen + alphaToHex(0.1),
   bgSettlementMobile: themeCommon.color444161,
   bgTransactionPageCard: themeCommon.color393453,
 
   bgTransactionPageCardBoxShadow: '0px 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
+
+  report: {
+    reportCardRowBackground: themeCommon.color393453,
+    chart: {
+      shadow: '0 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
+      xTickFontColor: themeCommon.colorGrayBlue,
+      yTickFontColor: themeCommon.colorGrayBlue,
+    },
+  },
 
   buttons: {
     disabledOpacity: '0.3',

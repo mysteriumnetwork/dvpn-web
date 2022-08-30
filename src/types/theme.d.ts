@@ -19,14 +19,20 @@ export type Theme = {
   bgServiceCardContentMobile: string
   bgSettingsCard: string
 
-  bgReportChartRow: string
-  bgReportChartRowBoxShadow: string
-
   bgReportCardDiffPositive: string
 
   bgTransactionPageCard: string
   bgTransactionPageCardBoxShadow: string
   bgSettlementMobile: string
+
+  report: {
+    reportCardRowBackground: string
+    chart: {
+      shadow: string
+      xTickFontColor: string
+      yTickFontColor: string
+    }
+  }
 
   buttons: {
     disabledOpacity: string
