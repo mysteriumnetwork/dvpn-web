@@ -20,13 +20,19 @@ const light: Omit<Theme, 'common'> = {
   bgServiceCardContentMobile: themeCommon.colorWhite,
   bgSettingsCard: themeCommon.colorWhite,
 
-  bgReportChartRow: themeCommon.colorWhite,
-  bgReportChartRowBoxShadow: '0 10px 30px ' + themeCommon.color4e1c67 + alphaToHex(0.05),
-
   bgReportCardDiffPositive: themeCommon.colorGreen + alphaToHex(0.1),
   bgSettlementMobile: themeCommon.colorWhite,
   bgTransactionPageCard: themeCommon.colorWhite,
   bgTransactionPageCardBoxShadow: '0px 5px 20px ' + themeCommon.color221E39 + alphaToHex(0.02),
+
+  report: {
+    reportCardRowBackground: themeCommon.colorWhite,
+    chart: {
+      shadow: '0 10px 30px ' + themeCommon.color4e1c67 + alphaToHex(0.05),
+      xTickFontColor: themeCommon.colorGrayBlue,
+      yTickFontColor: themeCommon.colorGrayBlue2,
+    },
+  },
 
   buttons: {
     disabledOpacity: '0.7',

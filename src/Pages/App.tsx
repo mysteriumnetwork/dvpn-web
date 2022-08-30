@@ -116,8 +116,7 @@ const GlobalStyle = createGlobalStyle`
   #root {
     height: 100%;
   }
-
-
+  
   /* width */
   ::-webkit-scrollbar {
     width: 5px;

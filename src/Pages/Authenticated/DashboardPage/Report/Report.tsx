@@ -37,7 +37,7 @@ const Column = styled.div`
 const CardRow = styled.div`
   display: flex;
   justify-content: space-between;
-  background: ${({ theme }) => theme.bgReportChartRow};
+  background: ${({ theme }) => theme.report.reportCardRowBackground};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   overflow-x: scroll;
@@ -53,9 +53,9 @@ const ChartRow = styled.div`
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   padding: 20px 20px 0 20px;
-  background: ${({ theme }) => theme.bgReportChartRow};
+  background: ${({ theme }) => theme.report.reportCardRowBackground};
   z-index: 1;
-  box-shadow: ${({ theme }) => theme.bgReportChartRowBoxShadow};
+  box-shadow: ${({ theme }) => theme.report.chart.shadow};
   @media ${devices.tablet} {
     overflow-x: auto;
     overflow-y: hidden;

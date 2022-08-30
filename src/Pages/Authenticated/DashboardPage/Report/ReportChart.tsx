@@ -7,7 +7,7 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { Media } from '../../../../commons/media'
 import charts from './chart.utils'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 import { RangePicker } from '../../../../Components/Inputs/RangePicker'
@@ -37,6 +37,7 @@ const ReportChart = ({
   selectedGraph,
   onGraphChange,
 }: Props) => {
+  const theme = useTheme()
   return (
     <Chart>
       <Media.Desktop>
@@ -76,9 +77,22 @@ const ReportChart = ({
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="4 4" stroke="#eee" />
-            <XAxis dataKey="x" tickMargin={20} />
+            <XAxis
+              dataKey="x"
+              tickMargin={20}
+              tick={{
+                fill: theme.report.chart.yTickFontColor,
+                fontSize: theme.common.fontSizeSmall,
+                fontWeight: '400',
+              }}
+            />
             <YAxis
-              tick={{ width: 250 }}
+              tick={{
+                width: 250,
+                fill: theme.report.chart.xTickFontColor,
+                fontSize: theme.common.fontSizeSmall,
+                fontWeight: '400',
+              }}
               tickCount={0}
               tickMargin={10}
               ticks={charts.ticks(chartData.series)}
@@ -136,8 +150,10 @@ const Row = styled.div`
 const Title = styled.div`
   font-size: ${themeCommon.fontSizeBig};
   font-weight: 700;
-  font-family: Ubuntu;
   margin-right: 60px;
+  @media ${devices.laptopL} {
+    width: 8em;
+  }
 `
 
 const ChartOverrides = styled.div`
@@ -167,7 +183,6 @@ const ChartOverrides = styled.div`
   }
 
   .recharts-text.recharts-cartesian-axis-tick-value {
-    font-family: 'Ubuntu', sans-serif;
     font-style: normal !important;
     font-size: ${themeCommon.fontSizeSmall};
     line-height: 21px;
