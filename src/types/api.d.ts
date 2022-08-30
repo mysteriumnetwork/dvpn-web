@@ -6,6 +6,4 @@
  */
 import { SessionStats } from 'mysterium-vpn-js'
 
-export type DateToSessionStats = { [date: string]: SessionStats }
-export type SessionStatsWithDate = SessionStats & { date: string }
 export type SessionStatsWithByteTotal = SessionStats & { byteTotal: number }
