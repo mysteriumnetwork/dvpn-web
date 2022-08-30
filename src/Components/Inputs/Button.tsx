@@ -16,8 +16,12 @@ const PRIMARY_CSS = css`
   color: ${themeCommon.colorWhite};
   background: ${themeCommon.colorKey};
 
+  :focus,
   :active {
-    background: ${themeCommon.colorKey + alphaToHex(0.73)};
+    background: ${themeCommon.colorKeyDark};
+  }
+  :hover {
+    background: ${themeCommon.colorKeyLight};
   }
 `
 const MEDIUM_CSS = css`
@@ -32,7 +36,10 @@ const SECONDARY_CSS = css`
   background: ${themeCommon.colorGrayBlue};
 
   :active {
-    background: ${themeCommon.colorGrayBlue};
+    background: ${themeCommon.colorGrayBlue2};
+  }
+  :hover {
+    background: ${themeCommon.colorGrayBlue}85;
   }
 `
 
@@ -54,7 +61,10 @@ const BLUE_CSS = css`
   background: ${themeCommon.colorBlue};
 
   :active {
-    background: ${themeCommon.colorBlue};
+    background: #168ce1;
+  }
+  :hover {
+    background: ${themeCommon.colorBlue}95;
   }
 `
 

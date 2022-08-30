@@ -15,6 +15,7 @@ export const themeCommon: Common = {
 
   colorKey: '#D61F85',
   colorKeyLight: '#ED5BAC',
+  colorKeyDark: '#B00D68',
   colorDarkBlue: '#3C3857',
   colorGrayBlue: '#9090BB',
   colorGrayBlue2: '#5A597D',
