@@ -22,7 +22,7 @@ import CopyToClipboardButtonIcon from '../../../../../Components/Inputs/CopyToCl
 import { capitalizeFirstLetter } from '../../../../../commons'
 import { ReactComponent as ExternalSVG } from '../../../../../assets/images/input/external.svg'
 import styled from 'styled-components'
-
+import { Tooltip } from '../../../../../Components/Tooltip/Tooltip'
 const { api } = tequila
 
 const Title = styled.div`
@@ -31,7 +31,11 @@ const Title = styled.div`
   width: 100%;
   align-items: center;
 `
-
+const Link = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 export const MystNodesClaim = () => {
   const identity = useAppSelector(selectors.currentIdentity)
   const config = useAppSelector(selectors.currentConfig)
@@ -84,9 +88,11 @@ export const MystNodesClaim = () => {
       title={
         <Title>
           <div>{capitalizeFirstLetter(MMN_SITE)} Integrations</div>
-          <a href={MMN_SITE_ME_URL} target="_blank" rel="noreferrer">
-            <ExternalSVG />
-          </a>
+          <Tooltip content="Go to mystnodes.com/me">
+            <Link href={MMN_SITE_ME_URL} target="_blank" rel="noreferrer">
+              <ExternalSVG />
+            </Link>
+          </Tooltip>
         </Title>
       }
       footer={
@@ -96,7 +102,14 @@ export const MystNodesClaim = () => {
       <Form onSubmit={handleClaim}>
         <InputGroup
           title="API Key"
-          input={<TextField value={token} onChange={handleApiKey} icon={<CopyToClipboardButtonIcon text={token} />} />}
+          input={
+            <TextField
+              value={token}
+              onChange={handleApiKey}
+              tooltip
+              icon={<CopyToClipboardButtonIcon text={token} />}
+            />
+          }
         />
       </Form>
     </SettingsCard>

@@ -20,7 +20,7 @@ export const YourIdentity = () => {
     <SettingsCard loading={identities.isEmpty(id)} title="Identity">
       <InputGroup
         title="Your identity"
-        input={<TextField disabled value={id} icon={<CopyToClipboardButtonIcon text={id} />} />}
+        input={<TextField disabled value={id} tooltip icon={<CopyToClipboardButtonIcon text={id} />} />}
       />
     </SettingsCard>
   )
