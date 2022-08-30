@@ -7,6 +7,7 @@
 import { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { themeCommon } from '../../theme/themeCommon'
+import { Tooltip } from '../Tooltip/Tooltip'
 
 const errorCSS = css`
   background: ${({ theme }) => theme.textInput.backgroundError} !important;
@@ -80,9 +81,19 @@ interface Props {
   error?: boolean
   textarea?: boolean
   variant?: TextFieldVariant
+  tooltip?: boolean
 }
 
-export const TextField = ({ icon, value, onChange = () => {}, disabled, type = 'text', error, placeholder }: Props) => {
+export const TextField = ({
+  icon,
+  value,
+  onChange = () => {},
+  disabled,
+  type = 'text',
+  error,
+  placeholder,
+  tooltip,
+}: Props) => {
   return (
     <Container>
       <StyledInput
@@ -99,7 +110,13 @@ export const TextField = ({ icon, value, onChange = () => {}, disabled, type = '
       />
       {icon && (
         <IconContainer>
-          <IconSize>{icon}</IconSize>
+          {tooltip ? (
+            <Tooltip content="Copy">
+              <IconSize>{icon}</IconSize>
+            </Tooltip>
+          ) : (
+            <IconSize>{icon}</IconSize>
+          )}
         </IconContainer>
       )}
     </Container>

@@ -16,7 +16,6 @@ import { useState } from 'react'
 import toasts from '../../../../../commons/toasts'
 import { tequila } from '../../../../../api/tequila'
 import { DEFAULT_USERNAME } from '../../../../../constants/defaults'
-import errors from '../../../../../commons/errors'
 import { validatePassword } from '../../../../../commons/passwords'
 import { devices } from '../../../../../theme/themes'
 import { Media } from '../../../../../commons/media'
@@ -78,7 +77,7 @@ export const PasswordChange = () => {
       setForm(DEFAULT_FORM)
       toasts.toastSuccess('Password changed')
     } catch (err: any) {
-      errors.parseToastError(err)
+      toasts.toastError('Please enter a valid password')
     }
 
     setLoading(false)
