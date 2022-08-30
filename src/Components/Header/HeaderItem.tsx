@@ -14,6 +14,7 @@ const Item = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 16px;
+  flex-shrink: 0;
   @media ${devices.tablet} {
     margin-bottom: 25px;
   }

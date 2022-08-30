@@ -32,6 +32,7 @@ const Grouped = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 `
 
 const PATH_TO_TAB = {

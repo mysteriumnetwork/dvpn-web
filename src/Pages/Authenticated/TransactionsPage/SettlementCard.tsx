@@ -70,7 +70,7 @@ export const SettlementCard = () => {
   const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
 
   return (
-    <Card scale={true}>
+    <Card>
       <SettleModal
         show={showModal}
         onClose={() => setShowModal(false)}

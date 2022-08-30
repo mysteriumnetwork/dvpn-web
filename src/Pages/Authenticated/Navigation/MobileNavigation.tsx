@@ -60,15 +60,18 @@ const Progress = styled.div`
   align-items: center;
   width: 90%;
   min-width: 300px;
-  background-color: white;
   padding: 25px;
   position: absolute;
   top: 65px;
-  left: 20px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.bgSettlementMobile};
   box-shadow: 0 5px 20px ${themeCommon.color000065 + alphaToHex(0.15)};
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 `
+
 const ProgressBarContainer = styled.div`
   width: 35%;
   margin-top: 5px;
