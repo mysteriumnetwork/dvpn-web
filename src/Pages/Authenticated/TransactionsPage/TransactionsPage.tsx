@@ -26,11 +26,18 @@ import { Settlement } from 'mysterium-vpn-js'
 import { TransactionCard } from './TransactionCard'
 import { List } from '../../../Components/List/List'
 import { Tooltip } from '../../../Components/Tooltip/Tooltip'
+import styled from 'styled-components'
 
 const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
 const { PrimaryCell, SecondaryCell } = cells
+
+const SpecializedRow = styled(LayoutRow)`
+  > :nth-child(2) {
+    flex-grow: 2;
+  }
+`
 
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
@@ -88,11 +95,11 @@ export const TransactionsPage = () => {
 
   return (
     <Layout logo={<TransactionsHeaderIcon />} title="Transactions">
-      <LayoutRow $variant={isDesktop ? 'hero' : 'plain'}>
+      <SpecializedRow $variant={isDesktop ? 'hero' : 'plain'}>
         <TotalSettled />
         {isDesktop && <SettlementCard />}
         <DownloadTransactionCSV data={data} />
-      </LayoutRow>
+      </SpecializedRow>
       <LayoutRow>
         {isDesktop && <Table noContent={<Placeholder />} columns={Columns} loading={loading} data={data.items} />}
         {!isDesktop && (

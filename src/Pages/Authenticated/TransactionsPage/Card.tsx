@@ -8,7 +8,7 @@ import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { devices } from '../../../theme/themes'
 
-const PaddedContent = styled.div`
+const Content = styled.div`
   padding: 26px 30px 26px 30px;
   display: flex;
   justify-content: center;
@@ -17,6 +17,7 @@ const PaddedContent = styled.div`
   max-height: 100px;
   background: ${({ theme }) => theme.bgTransactionPageCard};
   box-shadow: ${({ theme }) => theme.bgTransactionPageCardBoxShadow};
+  flex-grow: 1;
   flex-shrink: 0;
   @media ${devices.tablet} {
     width: 100%;
@@ -30,5 +31,5 @@ interface Props {
 }
 
 export const Card = ({ children }: Props) => {
-  return <PaddedContent>{children}</PaddedContent>
+  return <Content>{children}</Content>
 }
