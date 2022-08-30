@@ -8,22 +8,16 @@ import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { devices } from '../../../theme/themes'
 
-interface CardProps {
-  $scale?: boolean
-  $fluid?: boolean
-}
-
-const PaddedContent = styled.div<CardProps>`
+const PaddedContent = styled.div`
   padding: 26px 30px 26px 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 20px;
   max-height: 100px;
-  flex-grow: ${({ $scale }) => $scale && 1};
-  flex-shrink: ${({ $scale }) => $scale && 1};
   background: ${({ theme }) => theme.bgTransactionPageCard};
   box-shadow: ${({ theme }) => theme.bgTransactionPageCardBoxShadow};
+  flex-shrink: 0;
   @media ${devices.tablet} {
     width: 100%;
     align-items: stretch;
@@ -32,15 +26,9 @@ const PaddedContent = styled.div<CardProps>`
 `
 
 interface Props {
-  scale?: boolean
-  fluid?: boolean
   children?: ReactNode
 }
 
-export const Card = ({ children, scale, fluid }: Props) => {
-  return (
-    <PaddedContent $fluid={fluid} $scale={scale}>
-      {children}
-    </PaddedContent>
-  )
+export const Card = ({ children }: Props) => {
+  return <PaddedContent>{children}</PaddedContent>
 }
