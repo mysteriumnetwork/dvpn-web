@@ -51,7 +51,6 @@ const ReportChart = ({
         <Header>
           <Row>
             <Title>Earnings Report</Title>
-            {/* TODO: Figure out why select options bug and show in the wrong place */}
             <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
           </Row>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />

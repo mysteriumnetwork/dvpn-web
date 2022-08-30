@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components'
 import { Button } from '../Inputs/Button'
 import { themeCommon } from '../../theme/themeCommon'
 import { usePagination, DOTS_R, DOTS_L } from './usePagination'
+import { devices } from '../../theme/themes'
 
 const Container = styled.div`
   width: 100%;
@@ -43,6 +44,9 @@ const Pages = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
+  @media ${devices.tablet} {
+    gap: 5px;
+  }
 `
 interface Props {
   onClick?: () => void
@@ -53,21 +57,18 @@ export interface PaginationProps {
   totalPages: number
   handlePageChange: (page: number) => void
 }
-// TODO: Rinse logic for displaying active page
 
 export const Pagination = ({ currentPage, totalPages, handlePageChange }: PaginationProps) => {
   const paginationRange = usePagination({ currentPage, totalPages })
-
+  const onFirstPage = currentPage - 1 >= 1
+  const onLastPage = currentPage + 1 >= totalPages
   return (
     <Container>
       <Button
         variant="outlined"
         label="Prev"
         rounded
-        onClick={() => {
-          // Rethink else call
-          currentPage - 1 >= 1 && handlePageChange(currentPage - 1)
-        }}
+        onClick={() => onFirstPage && handlePageChange(currentPage - 1)}
       />
       <Pages>
         {paginationRange?.map((pageNumber) => {
@@ -87,15 +88,7 @@ export const Pagination = ({ currentPage, totalPages, handlePageChange }: Pagina
           )
         })}
       </Pages>
-      <Button
-        variant="outlined"
-        label="Next"
-        rounded
-        onClick={() => {
-          // Rethink else call
-          currentPage + 1 <= totalPages && handlePageChange(currentPage + 1)
-        }}
-      />
+      <Button variant="outlined" label="Next" rounded onClick={() => onLastPage && handlePageChange(currentPage + 1)} />
     </Container>
   )
 }

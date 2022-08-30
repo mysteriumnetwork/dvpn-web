@@ -55,8 +55,6 @@ const Page = styled.div`
   background-color: ${({ theme }) => theme.common.colorLightBlue};
   @media ${devices.tablet} {
     padding-top: 30px;
-    height: 100%;
-    width: 100%;
   }
 `
 const Header = styled.div`

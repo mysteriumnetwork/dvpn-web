@@ -12,11 +12,11 @@ export const CircularSpinner = styled.div`
   -moz-animation: rotation 1s infinite linear;
   -o-animation: rotation 1s infinite linear;
   animation: rotation 1s infinite linear;
-  border: 6px solid rgba(0, 0, 0, .2);
+  border: 6px solid rgba(0, 0, 0, 0.2);
   border-radius: 100%;
 
   :before {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     left: -6px;
@@ -65,6 +65,4 @@ export const CircularSpinner = styled.div`
       transform: rotate(359deg);
     }
   }
-
-}
 `

@@ -6,7 +6,6 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import { themeCommon } from '../../theme/themeCommon'
 
 interface Props {
   icon: ReactNode
@@ -25,10 +24,6 @@ const IButton = styled.div`
 
   :hover {
     cursor: pointer;
-  }
-
-  :active {
-    //background: ${themeCommon.colorWhite}1A;
   }
 `
 
