@@ -104,9 +104,11 @@ const heroVariantCss = css`
   margin: 0 16px 0 16px;
   padding: 16px;
   background: ${({ theme }) => theme.layout.row.heroBackground};
-  overflow-x: scroll;
-  overflow-y: hidden;
   border-radius: 35px;
+
+  overflow-y: hidden;
+  min-width: fit-content;
+
   &&::-webkit-scrollbar {
     display: none;
   }
