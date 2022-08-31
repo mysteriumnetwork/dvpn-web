@@ -7,21 +7,15 @@
 import {
   BeneficiaryTxState,
   BeneficiaryTxStatus,
-  Config,
-  CurrentPricesResponse,
   FeesResponse,
   FeesV2,
   Identity,
   IdentityRegistrationStatus,
-  MMNApiKeyResponse,
   NatTypeResponse,
   NodeHealthcheck,
-  NodeMonitoringStatus,
-  NodeMonitoringStatusResponse,
   SessionsV2Response,
   SettlementListResponse,
 } from 'mysterium-vpn-js'
-import { SessionStatsWithByteTotal } from '../types/api'
 
 export const TOKENS_EMPTY = Object.freeze({
   wei: '0',
@@ -43,13 +37,6 @@ export const FEES_RESPONSE_EMPTY: FeesResponse = Object.freeze({
   serverTime: new Date(0).toJSON(),
 })
 
-export const CURRENT_PRICES_EMPTY: CurrentPricesResponse = Object.freeze({
-  pricePerHour: BigInt(0),
-  pricePerGib: BigInt(0),
-  pricePerHourTokens: TOKENS_EMPTY,
-  pricePerGibTokens: TOKENS_EMPTY,
-})
-
 export const IDENTITY_EMPTY: Identity = Object.freeze({
   id: '0x',
   registrationStatus: IdentityRegistrationStatus.RegistrationError,
@@ -65,18 +52,6 @@ export const IDENTITY_EMPTY: Identity = Object.freeze({
   earningsPerHermes: {},
 })
 
-export const SESSION_STATS_WITH_BYTE_TOTAL_EMPTY: SessionStatsWithByteTotal = Object.freeze({
-  count: 0,
-  countConsumers: 0,
-  sumBytesReceived: 0,
-  sumBytesSent: 0,
-  sumDuration: 0,
-  sumTokens: 0,
-  byteTotal: 0,
-})
-
-export const CONFIG_EMPTY: Config = Object.freeze({ data: {} })
-
 export const HEALTHCHECK_EMPTY: NodeHealthcheck = Object.freeze({
   uptime: '0',
   process: 0,
@@ -88,14 +63,6 @@ export const HEALTHCHECK_EMPTY: NodeHealthcheck = Object.freeze({
   },
 })
 
-export const MMN_KEY_RESPONSE_EMPTY: MMNApiKeyResponse = Object.freeze({
-  apiKey: 'N/A',
-})
-
-export const NODE_MONITORING_STATUS_RESPONSE_EMPTY: NodeMonitoringStatusResponse = Object.freeze({
-  status: NodeMonitoringStatus.PASSED,
-})
-
 export const SETTLEMENT_LIST_RESPONSE_EMPTY: SettlementListResponse = Object.freeze({
   items: [],
   totalPages: 0,
@@ -103,17 +70,6 @@ export const SETTLEMENT_LIST_RESPONSE_EMPTY: SettlementListResponse = Object.fre
   pageSize: 10,
   totalItems: 0,
   withdrawalTotal: '0',
-})
-
-export const NODE_HEALTH_CHECK_EMPTY: NodeHealthcheck = Object.freeze({
-  uptime: '',
-  process: 0,
-  version: '',
-  buildInfo: {
-    commit: '',
-    branch: '',
-    buildNumber: '',
-  },
 })
 
 export const SESSIONS_V2_RESPONSE_EMPTY: SessionsV2Response = Object.freeze({

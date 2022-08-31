@@ -20,12 +20,10 @@ const bytes2Gb = (bytes: number): number => {
   }
   return Number((bytes / 1000 / 1000 / 1000).toFixed(2))
 }
-export const add = (a?: number, b?: number): number => {
-  return (a || 0) + (b || 0)
-}
-const subtract = (a?: number, b?: number): number => {
-  return (a || 0) - (b || 0)
-}
+export const add = (a?: number, b?: number): number => (a || 0) + (b || 0)
+
+const subtract = (a?: number, b?: number): number => (a || 0) - (b || 0)
+
 const bytes = {
   format,
   add,

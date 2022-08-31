@@ -5,13 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const kbps = (mbps: number) => {
-  return (mbps * 1_000) / 8
-}
+const kbps = (mbps: number) => (mbps * 1_000) / 8
 
-const mbps = (kbps: number) => {
-  return (kbps / 1_000) * 8
-}
+const mbps = (kbps: number) => (kbps / 1_000) * 8
 
 const conversions = {
   kbps,
