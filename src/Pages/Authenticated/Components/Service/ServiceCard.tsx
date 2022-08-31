@@ -172,24 +172,24 @@ export const ServiceCard = ({
         <Row>
           <InfoCard
             title="Price per GiB"
-            value={myst.display(prices.pricePerGibWei, { fractionDigits: 4 })}
+            value={myst.display(prices.pricePerGibWei, { fractions: 4 })}
             icon={<DataIcon $inactive={!enabled} />}
           />
           <InfoCard
             title="Price per hour"
-            value={myst.display(prices.pricePerHourWei, { fractionDigits: 4 })}
+            value={myst.display(prices.pricePerHourWei, { fractions: 4 })}
             icon={<ClockIcon $inactive={!enabled} />}
           />
         </Row>
         {/*<Row>*/}
         {/*  <InfoCard*/}
         {/*    title="Service earnings"*/}
-        {/*    value={myst.display(earnings, { fractionDigits: 4 })}*/}
+        {/*    value={myst.display(earnings, { fractions: 4 })}*/}
         {/*    icon={<WalletIcon $inactive={!enabled} />}*/}
         {/*  />*/}
         {/*  <InfoCard*/}
         {/*    title="Total earnings"*/}
-        {/*    value={myst.display(totalEarning, { fractionDigits: 4 })}*/}
+        {/*    value={myst.display(totalEarning, { fractions: 4 })}*/}
         {/*    icon={<PeopleIcon $inactive={!enabled} />}*/}
         {/*  />*/}
         {/*</Row>*/}

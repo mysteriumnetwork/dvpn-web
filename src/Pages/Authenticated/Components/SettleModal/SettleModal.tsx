@@ -24,6 +24,7 @@ import errors from '../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
 import { updateBeneficiaryTxStatusStore } from '../../../../redux/app.slice'
 import { devices } from '../../../../theme/themes'
+import complexActions from '../../../../redux/complex.actions'
 
 const Error = styled.div`
   color: red;
@@ -142,8 +143,8 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
       try {
         const status = await api.beneficiaryTxStatus(identity.id).catch(() => undefined)
         dispatch(updateBeneficiaryTxStatusStore(status))
-      } catch (e: any) {
-        errors.parseToastError(e)
+      } catch (err: any) {
+        errors.parseToastError(err)
       }
       setLoading(false)
     })()
@@ -184,7 +185,7 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
       }
 
       toastSuccess(`Automatic withdrawal to ${externalWalletAddress} request submitted`)
-      await tequila.refreshBeneficiary(identity.id)
+      await complexActions.refreshBeneficiary(identity.id)
     } catch (err: any) {
       errors.parseToastError(err)
     }
@@ -219,16 +220,13 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
           />
         </Container>
         <Row>
-          <Card title="Amount" amount={myst.display(calculatedFees.earningsWei, { fractionDigits: 6 })} />
+          <Card title="Amount" amount={myst.display(calculatedFees.earningsWei, { fractions: 6 })} />
           <Card
             title={`Network fee ${calculatedFees.hermesCutPercent * 100}%`}
-            amount={myst.display(calculatedFees.hermesCutWei, { fractionDigits: 6 })}
+            amount={myst.display(calculatedFees.hermesCutWei, { fractions: 6 })}
           />
-          <Card
-            title="Polygon mainnet fee"
-            amount={myst.display(calculatedFees.blockchainFeeWei, { fractionDigits: 6 })}
-          />
-          <Card $primary title="You will get" amount={myst.display(calculatedFees.profitsWei, { fractionDigits: 6 })} />
+          <Card title="Polygon mainnet fee" amount={myst.display(calculatedFees.blockchainFeeWei, { fractions: 6 })} />
+          <Card $primary title="You will get" amount={myst.display(calculatedFees.profitsWei, { fractions: 6 })} />
         </Row>
         <Note>
           Please click SETTLE to proceed with settlement to External wallet. Note: Settlement transaction may take a few

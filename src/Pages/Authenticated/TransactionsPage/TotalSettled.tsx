@@ -87,7 +87,7 @@ export const TotalSettled = () => {
         )}
         <Column>
           <Title>Total settled</Title>
-          <Value>{myst.display(totalSettled, { fractionDigits: 2 })}</Value>
+          <Value>{myst.display(totalSettled, { fractions: 2 })}</Value>
         </Column>
         <Media.Mobile>
           <LockoutButton

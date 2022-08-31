@@ -97,7 +97,7 @@ export const SessionCard = ({ item }: Props) => {
       <Row>
         <Column>
           <Name>Earnings</Name>
-          <Data>{myst.display(item.earnings.wei, { fractionDigits: 3 })}</Data>
+          <Data>{myst.display(item.earnings.wei, { fractions: 3 })}</Data>
         </Column>
         <Column>
           <Name>Transferred</Name>

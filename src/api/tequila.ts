@@ -4,13 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import termsPackageJson from '@mysteriumnetwork/terms/package.json'
 import { AxiosAdapter, TequilapiClient, TequilapiClientFactory } from 'mysterium-vpn-js'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
-import { updateBeneficiaryStore, updateConfigStore, updateTermsStore } from '../redux/app.slice'
 
-import { store } from '../redux/store'
 import qs from 'qs'
 import { AxiosInstance } from 'axios'
 import errorInterceptors from './error.interceptors'
@@ -57,78 +53,6 @@ const isUserAuthenticated = async (): Promise<boolean> => {
   return true
 }
 
-const acceptWithTermsAndConditions = async () => {
-  return await tequilaClient
-    .termsUpdate({
-      agreedProvider: true,
-      agreedVersion: termsPackageJson.version,
-    })
-    .then(() => store.dispatch(updateTermsStore({ acceptedVersion: termsPackageJson.version })))
-}
-
-const refreshStoreConfig = async (): Promise<Config> => {
-  return await tequilaClient.config().then((config) => {
-    store.dispatch(updateConfigStore(config))
-    return config
-  })
-}
-
-const refreshBeneficiary = async (identity: string) => {
-  try {
-    const beneficiaryResponse = await tequilaClient.identityBeneficiary(identity)
-    store.dispatch(updateBeneficiaryStore(beneficiaryResponse))
-  } catch (ignored: any) {}
-}
-
-const setAccessPolicy = async (policyName?: string | null): Promise<Config> => {
-  return await tequilaClient
-    .updateUserConfig({
-      data: {
-        'access-policy': {
-          list: policyName,
-        },
-      },
-    })
-    .then(refreshStoreConfig)
-}
-
-const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promise<Config> => {
-  return await tequilaClient
-    .updateUserConfig({
-      data: {
-        shaper: {
-          enabled: enabled,
-          bandwidth: bandwidthKBps,
-        },
-      },
-    })
-    .then(refreshStoreConfig)
-}
-
-const setChainId = async (chainId: number): Promise<Config> => {
-  return await tequilaClient
-    .updateUserConfig({
-      data: {
-        'chain-id': chainId,
-      },
-    })
-    .then(refreshStoreConfig)
-}
-
-const setFeatures = async (features: string[]): Promise<Config> => {
-  return tequilaClient
-    .updateUserConfig({
-      data: {
-        'ui.features': features.join(','),
-      },
-    })
-    .then(refreshStoreConfig)
-}
-
-const setUserConfig = async (data: any): Promise<Config> => {
-  return await tequilaClient.updateUserConfig({ data }).then(refreshStoreConfig)
-}
-
 const stopAllServices = async () => {
   const services = await tequilaClient.serviceList({ includeAll: true })
   await Promise.all(services.filter((s) => s.status === 'Running').map((s) => tequilaClient.serviceStop(s.id!)))
@@ -165,17 +89,9 @@ const restartRunningServices = async (identity: string) => {
 
 export const tequila = {
   api: tequilaClient,
-  http: http,
+  http,
   loginWithDefaultCredentials,
   isUserAuthenticated,
-  acceptWithTermsAndConditions,
-  refreshStoreConfig,
-  setAccessPolicy,
-  setTrafficShaping,
-  setChainId,
-  setUserConfig,
-  setFeatures,
-  refreshBeneficiary,
   startAllServices,
   stopAllServices,
   restartRunningServices,

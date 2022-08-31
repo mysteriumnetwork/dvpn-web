@@ -92,7 +92,7 @@ export const HistoryPage = () => {
       {
         Header: 'Earnings',
         accessor: 'earnings',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value.wei, { fractionDigits: 3 })}</PrimaryCell>,
+        Cell: (c) => <PrimaryCell>{myst.display(c.value.wei, { fractions: 3 })}</PrimaryCell>,
       },
       {
         Header: 'Transferred',

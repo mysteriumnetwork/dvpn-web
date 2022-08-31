@@ -78,14 +78,14 @@ export const TransactionsPage = () => {
           </>
         ),
         accessor: 'fees',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractionDigits: 3 })}</PrimaryCell>,
+        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractions: 3 })}</PrimaryCell>,
         minWidth: 50,
         maxWidth: 100,
       },
       {
         Header: 'Received amount',
         accessor: 'amount',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractionDigits: 3 })}</PrimaryCell>,
+        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractions: 3 })}</PrimaryCell>,
         minWidth: 50,
         maxWidth: 100,
       },

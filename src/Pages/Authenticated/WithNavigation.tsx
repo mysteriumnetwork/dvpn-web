@@ -10,19 +10,33 @@ import { Onboarding } from './Onboarding/Onboarding'
 import { DesktopNavigation } from './Navigation/DesktopNavigation'
 import { MobileNavigation } from './Navigation/MobileNavigation'
 import { Media } from '../../commons/media'
+import { devices } from '../../theme/themes'
 
 const Page = styled.div`
+  background: ${({ theme }) => theme.bgNavigation};
   display: flex;
   min-height: 100vh;
-  width: 100%;
   height: 100vh;
+  width: 100%;
+  position: fixed;
 `
 
 const Content = styled.div`
-  background: ${({ theme }) => theme.bgNavigation};
   height: 100%;
   width: 100%;
   display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background-color: ${({ theme }) => theme.bgLayout};
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+
+  @media ${devices.tablet} {
+    overflow-x: auto;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 `
 
 interface Props {

@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useState } from 'react'
-import { tequila } from '../../../../api/tequila'
 import { configs } from '../../../../commons/config'
 import FEATURES from '../../../../commons/features'
 import { selectors } from '../../../../redux/selectors'
 import { useAppSelector } from '../../../../commons/hooks'
 import { Button } from '../../../../Components/Inputs/Button'
 import styled from 'styled-components'
+import complexActions from '../../../../redux/complex.actions'
 
 const Content = styled.div`
   display: flex;
@@ -40,7 +40,6 @@ const Name = styled.div`
 const Description = styled.div``
 
 export const FeatureToggle = () => {
-  const { setFeatures } = tequila
   const config = useAppSelector(selectors.currentConfig)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -51,9 +50,9 @@ export const FeatureToggle = () => {
 
     try {
       if (isEnabled) {
-        await setFeatures(enabledFeatures.filter((f) => f !== name))
+        await complexActions.setFeatures(enabledFeatures.filter((f) => f !== name))
       } else {
-        await setFeatures([...enabledFeatures, name])
+        await complexActions.setFeatures([...enabledFeatures, name])
       }
     } finally {
       setIsLoading(false)

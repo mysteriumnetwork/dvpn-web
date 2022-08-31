@@ -7,7 +7,6 @@
 import { useAppSelector } from '../../../../../commons/hooks'
 import { selectors } from '../../../../../redux/selectors'
 import calls from '../../../../../commons/calls'
-import { tequila } from '../../../../../api/tequila'
 import { NATTraversalOrder } from './NATTraversalOrder'
 import { useEffect, useMemo, useState } from 'react'
 import { configs } from '../../../../../commons/config'
@@ -17,6 +16,7 @@ import { TextField } from '../../../../../Components/Inputs/TextField'
 import { Config } from 'mysterium-vpn-js'
 import { devices } from '../../../../../theme/themes'
 import styled from 'styled-components'
+import complexActions from '../../../../../redux/complex.actions'
 
 export interface AdvancedSettingsForms {
   udpRange: string
@@ -91,13 +91,13 @@ export const AdvancedSettings = () => {
 
   const handleSave = async () => {
     setLoading(true)
-    await calls.tryTo(() => tequila.setUserConfig(data), { success: 'Settings saved' })
+    await calls.tryTo(() => complexActions.setUserConfig(data), { success: 'Settings saved' })
     setLoading(false)
   }
 
   const resetToDefaults = async () => {
     setLoading(true)
-    await calls.tryTo(() => tequila.setUserConfig(defaultData), { success: 'Settings reset' })
+    await calls.tryTo(() => complexActions.setUserConfig(defaultData), { success: 'Settings reset' })
     setForm((p) => ({
       ...p,
       udpRange: defaultData['udp.ports'],

@@ -91,7 +91,7 @@ const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) =
     <Content>
       <Title>{SUPPORTED_GATEWAYS.direct.title}</Title>
       <Description>
-        Send no less than {myst.display(amountRequiredWei, { fractionDigits: 2 })} to the address below. Important: only
+        Send no less than {myst.display(amountRequiredWei, { fractions: 2 })} to the address below. Important: only
         Polygon blockchain {currentCurrency()} is supported!{' '}
         <a href={DOCS_METAMASK} target="_blank" rel="noreferrer">
           Don't have any MYST? Read here how to get it.

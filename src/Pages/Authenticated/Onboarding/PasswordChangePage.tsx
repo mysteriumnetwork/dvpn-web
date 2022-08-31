@@ -25,6 +25,7 @@ import { devices } from '../../../theme/themes'
 import { TOSModal } from '../Components/TOSModal/TOSModal'
 import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 import { Link } from '../../../Components/Common/Link'
+import complexActions from '../../../redux/complex.actions'
 
 const { api } = tequila
 const Logo = styled(Lock)`
@@ -255,7 +256,7 @@ export const PasswordChangePage = () => {
       })
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
       if (state.agreeTos) {
-        await tequila.acceptWithTermsAndConditions()
+        await complexActions.acceptWithTermsAndConditions()
       }
     } catch (err: any) {
       const apiError = errors.apiError(err)

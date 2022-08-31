@@ -17,6 +17,7 @@ import conversions from '../../../../../commons/conversions'
 import errors from '../../../../../commons/errors'
 import { themeCommon } from '../../../../../theme/themeCommon'
 import { ConfirmationDialog } from '../../../../../Components/ConfirmationDialog/ConfirmationDialog'
+import complexActions from '../../../../../redux/complex.actions'
 
 const GroupedTitle = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ export const BandwidthControl = () => {
   const handleChange = (v: number | number[]) => setBandwidthMBps(v as number)
 
   const changeShapingConfig = async (enabled: boolean, bandwidthMBps: number) =>
-    await tequila.setTrafficShaping(enabled, conversions.kbps(bandwidthMBps))
+    await complexActions.setTrafficShaping(enabled, conversions.kbps(bandwidthMBps))
 
   const toggleShaping = async (checked: boolean, mbps: number) => {
     setLoading(true)

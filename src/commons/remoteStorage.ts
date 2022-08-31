@@ -6,8 +6,9 @@
  */
 import { tequila } from '../api/tequila'
 import { RootState, store } from '../redux/store'
+import complexActions from '../redux/complex.actions'
 
-const { api, refreshStoreConfig } = tequila
+const { api } = tequila
 
 const ROOT_KEY = 'node-ui'
 
@@ -18,7 +19,7 @@ const root = (): { [key: string]: any } => {
 const put = async <T extends any>(key: string, value: T) => {
   const storageRoot = root()
   await api.updateUserConfig({ data: { [ROOT_KEY]: { ...storageRoot, [key]: value } } })
-  await refreshStoreConfig()
+  await complexActions.refreshStoreConfig()
 }
 
 const selector = <T>(key: string): ((state: RootState) => T | undefined) => {

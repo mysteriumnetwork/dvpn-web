@@ -40,7 +40,7 @@ const CardRow = styled.div`
   background: ${({ theme }) => theme.report.reportCardRowBackground};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  overflow-x: scroll;
+  overflow-x: auto;
   @media ${devices.tablet} {
     flex-direction: column;
     ::-webkit-scrollbar {
@@ -56,6 +56,7 @@ const ChartRow = styled.div`
   background: ${({ theme }) => theme.report.reportCardRowBackground};
   z-index: 1;
   box-shadow: ${({ theme }) => theme.report.chart.shadow};
+  overflow: hidden;
   @media ${devices.tablet} {
     overflow-x: auto;
     overflow-y: hidden;
@@ -130,7 +131,7 @@ export const Report = () => {
       <CardRow>
         <ReportCard
           icon={<WalletIcon $accented />}
-          value={myst.display(myst.toWeiBig(stats.totalEarningsEther), { fractionDigits: 3 })}
+          value={myst.display(myst.toWeiBig(stats.totalEarningsEther), { fractions: 3 })}
           title="Total Earnings"
         />
         <ReportCard icon={<SessionsIcon />} value={stats.totalSessions} title="Sessions" />

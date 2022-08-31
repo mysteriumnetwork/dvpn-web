@@ -105,7 +105,7 @@ export const MobileNavigation = () => {
         <Notifications />
       </InputGroupRight>
       <Progress>
-        <Info>Next auto settlement ({myst.display(myst.toWeiBig(thresholdMyst), { fractionDigits: 1 })})</Info>
+        <Info>Next auto settlement ({myst.display(myst.toWeiBig(thresholdMyst), { fractions: 1 })})</Info>
         <ProgressBarContainer>
           <ProgressBar max={thresholdMyst} value={value} size="small" />
         </ProgressBarContainer>

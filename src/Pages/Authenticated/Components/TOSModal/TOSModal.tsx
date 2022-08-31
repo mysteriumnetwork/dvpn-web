@@ -13,8 +13,8 @@ import showdown from 'showdown'
 import { ReactComponent as InfoIcon } from '../../../../assets/images/info-big.svg'
 import ReactHtmlParser from 'react-html-parser'
 import { Button } from '../../../../Components/Inputs/Button'
-import { tequila } from '../../../../api/tequila'
 import { devices } from '../../../../theme/themes'
+import complexActions from '../../../../redux/complex.actions'
 
 const Note = styled.div`
   display: flex;
@@ -75,7 +75,7 @@ const md = new showdown.Converter()
 export const TOSModal = ({ show = false, onClose, hideAgree, onCloseLabel }: Props) => {
   const termsHtml = md.makeHtml(TermsExitNode)
   const agree = async () => {
-    await tequila.acceptWithTermsAndConditions()
+    await complexActions.acceptWithTermsAndConditions()
   }
   return (
     <Modal disableBackdrop disableX show={show} title="Terms and Conditions Update" icon={<InfoIcon />}>
