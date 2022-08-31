@@ -6,28 +6,23 @@
  */
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
+import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 
 const Card = styled.div`
   display: flex;
   gap: 16px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background: ${({ theme }) => theme.bgLayoutCardCss};
   padding: 20px;
   color: ${({ theme }) => theme.text.colorMain};
-  :not(:last-of-type) {
-    border-right: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
-  }
+  width: 100%;
+
   @media ${devices.tablet} {
-    border-right: none !important;
     padding: 20px 0;
     margin: 0 20px;
     align-items: flex-start;
-    :not(:last-of-type) {
-      border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
-    }
   }
 `
 const Wrapper = styled.div`
