@@ -15,7 +15,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 20px 10px;
-  margin-bottom: 80px;
+  /* margin-bottom: 80px; */
 `
 const activeCSS = css`
   background: ${themeCommon.colorGrayBlue}51;
@@ -61,7 +61,7 @@ export interface PaginationProps {
 export const Pagination = ({ currentPage, totalPages, handlePageChange }: PaginationProps) => {
   const paginationRange = usePagination({ currentPage, totalPages })
   const onFirstPage = currentPage - 1 >= 1
-  const onLastPage = currentPage + 1 >= totalPages
+  const onLastPage = currentPage + 1 <= totalPages
   return (
     <Container>
       <Button
