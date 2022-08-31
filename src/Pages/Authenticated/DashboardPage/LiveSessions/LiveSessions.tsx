@@ -38,7 +38,7 @@ interface Props {
 }
 const Card = styled.div<Props>`
   display: ${({ $show }) => ($show ? 'flex' : 'none')};
-  background: ${({ theme }) => theme.bgLayoutCardCss};
+  background: ${({ theme }) => theme.liveSessions.card.background};
   border-radius: 20px;
   padding: 20px;
   width: 100%;

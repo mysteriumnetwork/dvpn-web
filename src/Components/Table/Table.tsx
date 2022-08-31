@@ -86,6 +86,7 @@ const Body = styled.div<TableProps>`
   border-radius: 20px;
   min-height: ${({ $noContent, $loading }) => ($noContent || $loading ? '550px' : '')};
   gap: 5px;
+  min-width: fit-content;
 `
 const TableSpinner = () => (
   <Overlay>

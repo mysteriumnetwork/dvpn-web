@@ -103,10 +103,12 @@ const heroVariantCss = css`
   box-sizing: border-box;
   margin: 0 16px 0 16px;
   padding: 16px;
-  background: ${({ theme }) => theme.bgLayoutHeroRow};
-  overflow-x: scroll;
-  overflow-y: hidden;
+  background: ${({ theme }) => theme.layout.row.heroBackground};
   border-radius: 35px;
+
+  overflow-y: hidden;
+  min-width: fit-content;
+
   &&::-webkit-scrollbar {
     display: none;
   }

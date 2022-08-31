@@ -13,7 +13,7 @@ import { Media } from '../../commons/media'
 import { devices } from '../../theme/themes'
 
 const Page = styled.div`
-  background: ${({ theme }) => theme.bgNavigation};
+  background: ${({ theme }) => theme.navigation.background};
   display: flex;
   min-height: 100vh;
   height: 100vh;
@@ -28,7 +28,7 @@ const Content = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
 
-  background-color: ${({ theme }) => theme.bgLayout};
+  background-color: ${({ theme }) => theme.navigation.contentBackground};
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 

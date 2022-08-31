@@ -23,6 +23,7 @@ import series from './series'
 import { ChartType } from './types'
 import totals from './totals'
 import { tooltipFormatter } from './PAIR_MAPPERS'
+import { alphaToHex } from '../../../../theme/themeCommon'
 
 const { api } = tequila
 const { seconds2Time } = dates
@@ -41,6 +42,24 @@ const CardRow = styled.div`
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   overflow-x: auto;
+
+  > :not(:last-of-type) {
+    border-right: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
+  }
+
+  > * {
+    width: 100%;
+  }
+
+  @media ${devices.tablet} {
+    > * {
+      border-right: none !important;
+    }
+    > :not(:last-of-type) {
+      border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
+    }
+  }
+
   @media ${devices.tablet} {
     flex-direction: column;
     ::-webkit-scrollbar {

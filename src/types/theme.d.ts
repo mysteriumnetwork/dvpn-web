@@ -7,11 +7,6 @@
 import 'styled-components'
 
 export type Theme = {
-  bgNavigation: string
-  bgLayout: string
-  bgLayoutHeroRow: string
-  bgLayoutCardCss: string
-
   bgServiceCardHeader: string
   bgServiceCardHeaderBoxShadow: string
   bgServiceCardContent: string
@@ -25,8 +20,28 @@ export type Theme = {
   bgTransactionPageCardBoxShadow: string
   bgSettlementMobile: string
 
+  navigation: {
+    background: string
+    contentBackground: string
+  }
+
+  layout: {
+    row: {
+      heroBackground: string
+    }
+  }
+
+  liveSessions: {
+    card: {
+      background: string
+    }
+  }
+
   report: {
     reportCardRowBackground: string
+    card: {
+      background: string
+    }
     chart: {
       shadow: string
       xTickFontColor: string

@@ -8,11 +8,6 @@ import { Theme } from '../types/theme'
 import { alphaToHex, themeCommon } from './themeCommon'
 
 const light: Omit<Theme, 'common'> = {
-  bgNavigation: themeCommon.backgroundMysterium,
-  bgLayout: themeCommon.colorLightBlue,
-  bgLayoutHeroRow: themeCommon.colorGrayBlue + alphaToHex(0.1),
-  bgLayoutCardCss: themeCommon.colorWhite,
-
   bgServiceCardHeader: themeCommon.colorWhite,
   bgServiceCardHeaderBoxShadow: '0 10px 30px' + themeCommon.color000065 + alphaToHex(0.05),
   bgServiceCardContent: themeCommon.colorLightBlue,
@@ -25,8 +20,28 @@ const light: Omit<Theme, 'common'> = {
   bgTransactionPageCard: themeCommon.colorWhite,
   bgTransactionPageCardBoxShadow: '0px 5px 20px ' + themeCommon.color221E39 + alphaToHex(0.02),
 
+  navigation: {
+    background: themeCommon.backgroundMysterium,
+    contentBackground: themeCommon.colorLightBlue,
+  },
+
+  layout: {
+    row: {
+      heroBackground: themeCommon.colorGrayBlue + alphaToHex(0.1),
+    },
+  },
+
+  liveSessions: {
+    card: {
+      background: themeCommon.colorWhite,
+    },
+  },
+
   report: {
     reportCardRowBackground: themeCommon.colorWhite,
+    card: {
+      background: themeCommon.colorWhite,
+    },
     chart: {
       shadow: '0 10px 30px ' + themeCommon.color4e1c67 + alphaToHex(0.05),
       xTickFontColor: themeCommon.colorGrayBlue,
