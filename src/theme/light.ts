@@ -11,7 +11,6 @@ const light: Omit<Theme, 'common'> = {
   bgNavigation: themeCommon.backgroundMysterium,
   bgLayout: themeCommon.colorLightBlue,
   bgLayoutHeroRow: themeCommon.colorGrayBlue + alphaToHex(0.1),
-  bgLayoutCardCss: themeCommon.colorWhite,
 
   bgServiceCardHeader: themeCommon.colorWhite,
   bgServiceCardHeaderBoxShadow: '0 10px 30px' + themeCommon.color000065 + alphaToHex(0.05),
@@ -27,6 +26,9 @@ const light: Omit<Theme, 'common'> = {
 
   report: {
     reportCardRowBackground: themeCommon.colorWhite,
+    card: {
+      background: themeCommon.colorWhite,
+    },
     chart: {
       shadow: '0 10px 30px ' + themeCommon.color4e1c67 + alphaToHex(0.05),
       xTickFontColor: themeCommon.colorGrayBlue,

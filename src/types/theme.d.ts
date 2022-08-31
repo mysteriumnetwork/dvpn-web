@@ -10,7 +10,6 @@ export type Theme = {
   bgNavigation: string
   bgLayout: string
   bgLayoutHeroRow: string
-  bgLayoutCardCss: string
 
   bgServiceCardHeader: string
   bgServiceCardHeaderBoxShadow: string
@@ -27,6 +26,9 @@ export type Theme = {
 
   report: {
     reportCardRowBackground: string
+    card: {
+      background: string
+    }
     chart: {
       shadow: string
       xTickFontColor: string

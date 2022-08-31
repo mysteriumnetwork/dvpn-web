@@ -12,7 +12,6 @@ const dark: Omit<Theme, 'common'> = {
   bgNavigation: themeCommon.color221E39,
   bgLayout: themeCommon.color2F2A48,
   bgLayoutHeroRow: themeCommon.color221E39,
-  bgLayoutCardCss: themeCommon.color393453,
 
   bgServiceCardHeader: themeCommon.color393453,
   bgServiceCardHeaderBoxShadow: '0 10px 20px' + themeCommon.color221E39 + alphaToHex(0.4),
@@ -30,6 +29,9 @@ const dark: Omit<Theme, 'common'> = {
 
   report: {
     reportCardRowBackground: themeCommon.color393453,
+    card: {
+      background: themeCommon.color393453,
+    },
     chart: {
       shadow: '0 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
       xTickFontColor: themeCommon.colorGrayBlue,
