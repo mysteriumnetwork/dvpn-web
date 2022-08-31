@@ -10,6 +10,7 @@ import { DEFAULT_IDENTITY_PASSPHRASE } from '../constants/defaults'
 
 import {
   updateAuthenticatedStore,
+  updateBeneficiaryStore,
   updateBeneficiaryTxStatusStore,
   updateChainSummaryStore,
   updateConfigStore,
@@ -22,10 +23,12 @@ import {
 } from './app.slice'
 import { store } from './store'
 import errors from '../commons/errors'
+import { Config } from 'mysterium-vpn-js/lib/config/config'
+import termsPackageJson from '@mysteriumnetwork/terms/package.json'
 
 const { api } = tequila
 
-export const updateTermsStoreAsync = async () => {
+const updateTermsStoreAsync = async () => {
   const { dispatch } = store
   const terms = await api.terms()
   dispatch(
@@ -35,14 +38,14 @@ export const updateTermsStoreAsync = async () => {
   )
 }
 
-export const fetchIdentityAndRelativeInformationAsync = async () => {
+const fetchIdentityAndRelativeInformationAsync = async () => {
   const { dispatch } = store
   // nat type takes a lot of time to resolve
   tequila.api.natType().then((response) => dispatch(updateNatTypeResponseStore(response)))
   const identityRef = await api.identityCurrent({ passphrase: DEFAULT_IDENTITY_PASSPHRASE })
   dispatch(updateIdentityRefStore(identityRef))
   await api.identityBalanceRefresh(identityRef.id)
-  await tequila.refreshBeneficiary(identityRef.id)
+  await refreshBeneficiary(identityRef.id)
   await api
     .beneficiaryTxStatus(identityRef.id)
     .then((txStatus) => dispatch(updateBeneficiaryTxStatusStore(txStatus)))
@@ -51,13 +54,13 @@ export const fetchIdentityAndRelativeInformationAsync = async () => {
     })
 }
 
-export const fetchConfigAsync = async () => {
+const fetchConfigAsync = async () => {
   const { dispatch } = store
   const config = await api.config()
   dispatch(updateConfigStore(config))
 }
 
-export const fetchDefaultConfigAsync = async () => {
+const fetchDefaultConfigAsync = async () => {
   const { dispatch } = store
   const defaultConfig = await api.defaultConfig()
   dispatch(updateDefaultConfigStore(defaultConfig))
@@ -73,7 +76,7 @@ const fetchChainSummaryAsync = async () => {
   }
 }
 
-export const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }: { isDefaultPassword: boolean }) => {
+const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }: { isDefaultPassword: boolean }) => {
   await store.dispatch(updateLoadingStore(true))
   await store.dispatch(
     updateAuthenticatedStore({
@@ -109,3 +112,65 @@ const updateFees = async () => {
     setTimeout(() => updateFees(), SECOND * 10)
   }
 }
+
+const refreshStoreConfig = async (): Promise<Config> => {
+  return await api.config().then((config) => {
+    store.dispatch(updateConfigStore(config))
+    return config
+  })
+}
+
+const acceptWithTermsAndConditions = async () => {
+  return await api
+    .termsUpdate({
+      agreedProvider: true,
+      agreedVersion: termsPackageJson.version,
+    })
+    .then(() => store.dispatch(updateTermsStore({ acceptedVersion: termsPackageJson.version })))
+}
+
+const refreshBeneficiary = async (identity: string) => {
+  try {
+    const beneficiaryResponse = await api.identityBeneficiary(identity)
+    store.dispatch(updateBeneficiaryStore(beneficiaryResponse))
+  } catch (ignored: any) {}
+}
+
+const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promise<Config> => {
+  return await api
+    .updateUserConfig({
+      data: {
+        shaper: {
+          enabled: enabled,
+          bandwidth: bandwidthKBps,
+        },
+      },
+    })
+    .then(refreshStoreConfig)
+}
+
+const setFeatures = async (features: string[]): Promise<Config> => {
+  return api
+    .updateUserConfig({
+      data: {
+        'ui.features': features.join(','),
+      },
+    })
+    .then(refreshStoreConfig)
+}
+
+const setUserConfig = async (data: any): Promise<Config> => {
+  return await api.updateUserConfig({ data }).then(refreshStoreConfig)
+}
+
+const complexActions = {
+  loadAppStateAfterAuthenticationAsync,
+  setTrafficShaping,
+  setUserConfig,
+  acceptWithTermsAndConditions,
+  refreshBeneficiary,
+  setFeatures,
+  refreshStoreConfig,
+}
+
+export default complexActions

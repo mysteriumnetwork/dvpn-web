@@ -23,7 +23,7 @@ import errors from '../../commons/errors'
 import Background from '../../assets/images/onboarding/background.png'
 import { ReactComponent as LoginLogo } from '../../assets/images/onboarding/login.svg'
 import { devices } from '../../theme/themes'
-import { loadAppStateAfterAuthenticationAsync } from '../../redux/complex.actions'
+import complexActions from '../../redux/complex.actions'
 
 const { api } = tequila
 
@@ -160,7 +160,7 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
         username: DEFAULT_USERNAME,
         password: password,
       })
-      await loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
+      await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
     } catch (err: any) {
       toast.error(errors.apiError(err).human())
       setError(err.message)

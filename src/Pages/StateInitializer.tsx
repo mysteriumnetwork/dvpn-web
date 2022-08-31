@@ -6,7 +6,7 @@
  */
 import { ReactNode, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../commons/hooks'
-import { loadAppStateAfterAuthenticationAsync } from '../redux/complex.actions'
+import complexActions from '../redux/complex.actions'
 import { updateLoadingStore } from '../redux/app.slice'
 import { AppState } from 'mysterium-vpn-js'
 import { sseAppStateStateChanged } from '../redux/sse.slice'
@@ -39,7 +39,7 @@ export const StateInitializer = ({ children }: Props) => {
       }
 
       if (isAuthenticated) {
-        await loadAppStateAfterAuthenticationAsync({ isDefaultPassword })
+        await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword })
         return
       }
 

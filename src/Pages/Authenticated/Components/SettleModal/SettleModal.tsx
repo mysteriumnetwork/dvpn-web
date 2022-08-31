@@ -24,6 +24,7 @@ import errors from '../../../../commons/errors'
 import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
 import { updateBeneficiaryTxStatusStore } from '../../../../redux/app.slice'
 import { devices } from '../../../../theme/themes'
+import complexActions from '../../../../redux/complex.actions'
 
 const Error = styled.div`
   color: red;
@@ -184,7 +185,7 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
       }
 
       toastSuccess(`Automatic withdrawal to ${externalWalletAddress} request submitted`)
-      await tequila.refreshBeneficiary(identity.id)
+      await complexActions.refreshBeneficiary(identity.id)
     } catch (err: any) {
       errors.parseToastError(err)
     }
