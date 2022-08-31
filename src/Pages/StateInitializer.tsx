@@ -6,7 +6,7 @@
  */
 import { ReactNode, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../commons/hooks'
-import { loadAppStateAfterAuthenticationAsync } from '../redux/app.async.actions'
+import { loadAppStateAfterAuthenticationAsync } from '../redux/complex.actions'
 import { updateLoadingStore } from '../redux/app.slice'
 import { AppState } from 'mysterium-vpn-js'
 import { sseAppStateStateChanged } from '../redux/sse.slice'

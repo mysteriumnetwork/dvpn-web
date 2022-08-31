@@ -23,7 +23,7 @@ import errors from '../../commons/errors'
 import Background from '../../assets/images/onboarding/background.png'
 import { ReactComponent as LoginLogo } from '../../assets/images/onboarding/login.svg'
 import { devices } from '../../theme/themes'
-import { loadAppStateAfterAuthenticationAsync } from '../../redux/app.async.actions'
+import { loadAppStateAfterAuthenticationAsync } from '../../redux/complex.actions'
 
 const { api } = tequila
 
