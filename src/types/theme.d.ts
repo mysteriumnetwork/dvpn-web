@@ -7,10 +7,6 @@
 import 'styled-components'
 
 export type Theme = {
-  bgNavigation: string
-  bgLayout: string
-  bgLayoutHeroRow: string
-
   bgServiceCardHeader: string
   bgServiceCardHeaderBoxShadow: string
   bgServiceCardContent: string
@@ -23,6 +19,17 @@ export type Theme = {
   bgTransactionPageCard: string
   bgTransactionPageCardBoxShadow: string
   bgSettlementMobile: string
+
+  navigation: {
+    background: string
+    contentBackground: string
+  }
+
+  layout: {
+    row: {
+      heroBackground: string
+    }
+  }
 
   liveSessions: {
     card: {
