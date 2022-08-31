@@ -130,7 +130,7 @@ export const Report = () => {
       <CardRow>
         <ReportCard
           icon={<WalletIcon $accented />}
-          value={myst.display(myst.toWeiBig(stats.totalEarningsEther), { fractionDigits: 3 })}
+          value={myst.display(myst.toWeiBig(stats.totalEarningsEther), { fractions: 3 })}
           title="Total Earnings"
         />
         <ReportCard icon={<SessionsIcon />} value={stats.totalSessions} title="Sessions" />

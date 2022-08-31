@@ -98,7 +98,7 @@ export const LiveSessionCard = ({ item }: Props) => {
       <Row>
         <Column>
           <Name>Earnings</Name>
-          <Data>{myst.display(item.tokens, { fractionDigits: 3 })}</Data>
+          <Data>{myst.display(item.tokens, { fractions: 3 })}</Data>
         </Column>
         <Column>
           <Name>Transferred</Name>

@@ -16,6 +16,13 @@ test.each([
   expect(myst.display(data.wei)).toEqual(data.expected)
 })
 
+test('options', () => {
+  expect(myst.display(myst.toWeiBig(1.5), { fractions: 2, currency: false })).toEqual('1.50')
+  expect(myst.display(myst.toWeiBig(1.5), { fractions: 3, currency: false })).toEqual('1.500')
+  expect(myst.display(myst.toWeiBig(1.5), { fractions: 2, currency: true })).toEqual('1.50 MYST')
+  expect(myst.display(myst.toWeiBig(1.5), { fractions: 0, currency: true })).toEqual('1 MYST')
+})
+
 test.each([
   { wei: '6123456789123456789', expected: '6.123456789123456789' },
   { wei: '23456789123456789', expected: '0.023456789123456789' },

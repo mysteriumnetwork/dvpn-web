@@ -220,16 +220,13 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
           />
         </Container>
         <Row>
-          <Card title="Amount" amount={myst.display(calculatedFees.earningsWei, { fractionDigits: 6 })} />
+          <Card title="Amount" amount={myst.display(calculatedFees.earningsWei, { fractions: 6 })} />
           <Card
             title={`Network fee ${calculatedFees.hermesCutPercent * 100}%`}
-            amount={myst.display(calculatedFees.hermesCutWei, { fractionDigits: 6 })}
+            amount={myst.display(calculatedFees.hermesCutWei, { fractions: 6 })}
           />
-          <Card
-            title="Polygon mainnet fee"
-            amount={myst.display(calculatedFees.blockchainFeeWei, { fractionDigits: 6 })}
-          />
-          <Card $primary title="You will get" amount={myst.display(calculatedFees.profitsWei, { fractionDigits: 6 })} />
+          <Card title="Polygon mainnet fee" amount={myst.display(calculatedFees.blockchainFeeWei, { fractions: 6 })} />
+          <Card $primary title="You will get" amount={myst.display(calculatedFees.profitsWei, { fractions: 6 })} />
         </Row>
         <Note>
           Please click SETTLE to proceed with settlement to External wallet. Note: Settlement transaction may take a few

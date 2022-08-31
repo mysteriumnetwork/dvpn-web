@@ -29,7 +29,7 @@ export const SettlementStatus = () => {
   return (
     <HeaderItem
       minWidth={300}
-      title={`Next auto settlement (${myst.display(myst.toWeiBig(settleThresholdMyst), { fractionDigits: 1 })})`}
+      title={`Next auto settlement (${myst.display(myst.toWeiBig(settleThresholdMyst), { fractions: 1 })})`}
       content={
         <ProgressContainer>
           <ProgressBar size="small" max={settleThresholdMyst} value={value} />

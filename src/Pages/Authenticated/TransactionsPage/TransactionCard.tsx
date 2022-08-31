@@ -104,14 +104,14 @@ export const TransactionCard = ({ item }: Props) => {
           <Name>
             Received amount <Download />
           </Name>
-          <Data>{myst.display(item.amount, { fractionDigits: 3 })}</Data>
+          <Data>{myst.display(item.amount, { fractions: 3 })}</Data>
         </Column>
         <Column>
           <Name>
             Fees
             <Tooltip content="Fees include a 20% network fee and blockchain transaction fees for settlement transactions." />
           </Name>
-          <Data>{myst.display(item.fees, { fractionDigits: 3 })}</Data>
+          <Data>{myst.display(item.fees, { fractions: 3 })}</Data>
         </Column>
       </Row>
     </Body>

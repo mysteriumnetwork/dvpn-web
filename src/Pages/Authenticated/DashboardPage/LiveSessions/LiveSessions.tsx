@@ -88,7 +88,7 @@ export const LiveSessions = () => {
       {
         Header: 'Earnings',
         accessor: 'tokens',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractionDigits: 3 })}</PrimaryCell>,
+        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractions: 3 })}</PrimaryCell>,
       },
 
       {

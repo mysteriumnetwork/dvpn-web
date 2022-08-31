@@ -5,16 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 import BigNumber from 'bignumber.js'
-import { DECIMAL_PART, DisplayMoneyOptions } from 'mysterium-vpn-js'
+import { DECIMAL_PART } from 'mysterium-vpn-js'
 import { currentCurrency } from './currency'
-import { DEFAULT_MONEY_DISPLAY_OPTIONS } from './index'
 
-const format = (
-  amount: string | number | BigNumber,
-  options: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS,
-): string => {
-  const symbol = options?.showCurrency ? ' ' + currentCurrency() : ''
-  const requiredPrecision = options?.fractionDigits || 18
+interface MYSTOptions {
+  currency?: boolean
+  fractions?: number
+}
+
+export const DEFAULT_MONEY_DISPLAY_OPTIONS: Required<MYSTOptions> = Object.freeze({
+  currency: true,
+  fractions: 7,
+})
+
+const format = (amount: string | number | BigNumber, options: MYSTOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
+  const symbol = options?.currency ? ' ' + currentCurrency() : ''
+  const requiredPrecision = options?.fractions ?? 18
 
   const bigMyst = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_DOWN, POW_PRECISION: 18 })
   const lowestDisplayable = new bigMyst(1).div(Math.pow(10, requiredPrecision))
@@ -28,10 +34,8 @@ const format = (
 }
 
 // TODO rethink API
-const display = (
-  wei: string | BigNumber | number = 0,
-  override: DisplayMoneyOptions = DEFAULT_MONEY_DISPLAY_OPTIONS,
-): string => format(wei, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, ...override })
+const display = (wei: string | BigNumber | number = 0, override: MYSTOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string =>
+  format(wei, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, ...override })
 
 const toEtherBig = (wei: BigNumber | string | number): BigNumber => {
   return new (BigNumber.clone({ POW_PRECISION: 0, ROUNDING_MODE: BigNumber.ROUND_DOWN }))(wei).div(DECIMAL_PART)
