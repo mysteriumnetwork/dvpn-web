@@ -6,7 +6,7 @@
  */
 import { Button, ButtonVariant } from '../../../../Components/Inputs/Button'
 import { LayoutRow } from '../../Components/Layout/Layout'
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 import { ReactComponent as ICO1 } from '../../../../assets/images/input/external.svg'
 import { ReactComponent as ICO2 } from '../../../../assets/images/input/x.svg'
 import { ReactComponent as ICO3 } from '../../../../assets/images/input/burger.svg'
@@ -20,7 +20,7 @@ const BUTTON_VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'outlined', 'b
 
 const ButtonsBook = () => {
   return (
-    <CenteredRow>
+    <CenteredColumn>
       {BUTTON_VARIANTS.map((v) => (
         <LayoutRow key={v}>
           <Button label="Test" variant={v} />
@@ -36,7 +36,7 @@ const ButtonsBook = () => {
           <IconButton key={`ico-btn-${index}`} icon={ico} />
         ))}
       </LayoutRow>
-    </CenteredRow>
+    </CenteredColumn>
   )
 }
 

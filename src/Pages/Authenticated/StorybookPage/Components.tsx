@@ -5,14 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import { LayoutRow } from '../Components/Layout/Layout'
 
-export const CenteredRow = styled(LayoutRow)`
+export const CenteredColumn = styled.div`
+  margin-top: 20px;
   flex-direction: column;
   overflow-y: scroll;
   scroll-behavior: smooth;
   align-items: center;
-  border: 1px solid ${({ theme }) => theme.common.colorKey};
-  border-radius: 10px;
   width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 `

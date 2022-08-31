@@ -64,7 +64,7 @@ import { ReactComponent as ICO57 } from '../../../../assets/images/input/copy-to
 import { ReactComponent as ICO58 } from '../../../../assets/images/input/lock.svg'
 import { ReactComponent as ICO59 } from '../../../../assets/images/data.svg'
 
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
@@ -145,13 +145,13 @@ const IconsBook = () => {
   )
 
   return (
-    <CenteredRow>
+    <CenteredColumn>
       <Row>
         {icons.map((i, index) => (
           <div key={`ico-sb-${index}`}>{i}</div>
         ))}
       </Row>
-    </CenteredRow>
+    </CenteredColumn>
   )
 }
 

@@ -7,11 +7,11 @@
 import { LayoutRow } from '../../Components/Layout/Layout'
 import { CircleIndicator } from '../../SettingsPage/Tabs/Advanced/CircleIndicator'
 import { Variant } from '../../SettingsPage/Tabs/Advanced/types'
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 
 const IndicatorsBook = () => {
   return (
-    <CenteredRow>
+    <CenteredColumn>
       {[12, 16, 20, 24, 28, 34, 38, 42].map((s) => (
         <LayoutRow key={`cid-${s}-s`}>
           {['ok', 'warning', 'error'].map((v) => (
@@ -19,7 +19,7 @@ const IndicatorsBook = () => {
           ))}
         </LayoutRow>
       ))}
-    </CenteredRow>
+    </CenteredColumn>
   )
 }
 

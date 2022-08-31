@@ -15,7 +15,7 @@ import {
 } from '../../../../Components/Icons/InputIcons'
 import styled from 'styled-components'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 import { useState } from 'react'
 import CopyToClipboardButtonIcon from '../../../../Components/Inputs/CopyToClipboardButtonIcon'
 
@@ -34,7 +34,7 @@ const InputsBook = () => {
 
   return (
     <>
-      <CenteredRow>
+      <CenteredColumn>
         <LayoutRow>
           <InputGroup title="Speed" subTitle="Mb" input={<TextField disabled value={short} onChange={setShort} />} />
           <InputGroup
@@ -103,7 +103,7 @@ const InputsBook = () => {
             <InputLockIcon key={`InputLockIcon-${v}`} $variant={v as InputIconVariant} />
           ))}
         </LayoutRow>
-      </CenteredRow>
+      </CenteredColumn>
     </>
   )
 }
