@@ -24,6 +24,12 @@ export type Theme = {
   bgTransactionPageCardBoxShadow: string
   bgSettlementMobile: string
 
+  liveSessions: {
+    card: {
+      background: string
+    }
+  }
+
   report: {
     reportCardRowBackground: string
     card: {
