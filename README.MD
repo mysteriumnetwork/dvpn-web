@@ -35,7 +35,7 @@ Set appropriate release version (i.e. 0.1.6 at the time of writing)
    github_changelog_generator --user mysteriumnetwork --project dvpn-web -t $GITHUB_TOKEN --since-tag 0.1.5
    ```
     * Use generated changelog as release description
-    * Enter appropriate `tag` and `version` names, they usually are same values (i.e. 0.1.6) 
+    * Enter appropriate `tag` and `version` names, they are usually same values (i.e. 0.1.6) 
   
 3. Wait until builds pass:  
     - https://gitlab.com/mysteriumnetwork/dvpn-web/-/pipelines
