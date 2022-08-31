@@ -24,8 +24,10 @@ const Card = styled.div`
     border-right: none !important;
     padding: 20px 0;
     margin: 0 20px;
-    border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
     align-items: flex-start;
+    :not(:last-of-type) {
+      border-bottom: 1px dashed ${({ theme }) => theme.common.colorGrayBlue + alphaToHex(0.5)};
+    }
   }
 `
 const Wrapper = styled.div`
