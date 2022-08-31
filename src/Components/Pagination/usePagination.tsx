@@ -19,7 +19,7 @@ interface Props {
   currentPage: number
 }
 export const usePagination = ({ totalPages, siblingCount = 1, currentPage }: Props) => {
-  const paginationRange = useMemo(() => {
+  return useMemo(() => {
     const totalPageNumbers = siblingCount + 5
 
     if (totalPageNumbers >= totalPages) {
@@ -50,6 +50,4 @@ export const usePagination = ({ totalPages, siblingCount = 1, currentPage }: Pro
       return [firstPageIndex, DOTS_L, ...middleRange, DOTS_R, lastPageIndex]
     }
   }, [totalPages, currentPage])
-
-  return paginationRange
 }

@@ -37,8 +37,7 @@ const seconds2Time = (seconds: number): string => {
   return res
 }
 const days2Ms = (days: number): number => {
-  const milliseconds = days * 86400 * 1000
-  return milliseconds
+  return days * 86400 * 1000
 }
 
 const dates = {
