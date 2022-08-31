@@ -17,25 +17,13 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  background-color: ${({ theme }) => theme.bgLayout};
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  @media ${devices.tablet} {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
+  height: 100vh;
 `
 
 const Content = styled.div`
-  height: 100vh;
   width: 100%;
-  overflow-y: auto;
   @media ${devices.tablet} {
     padding-top: 120px;
-  }
-  ::-webkit-scrollbar {
-    display: none;
   }
 `
 
