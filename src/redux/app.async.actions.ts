@@ -63,7 +63,7 @@ export const fetchDefaultConfigAsync = async () => {
   dispatch(updateDefaultConfigStore(defaultConfig))
 }
 
-export const fetchChainSummaryAsync = async () => {
+const fetchChainSummaryAsync = async () => {
   try {
     const { dispatch } = store
     const chainSummary = await api.chainSummary()

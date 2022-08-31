@@ -165,7 +165,7 @@ const restartRunningServices = async (identity: string) => {
 
 export const tequila = {
   api: tequilaClient,
-  http: http,
+  http,
   loginWithDefaultCredentials,
   isUserAuthenticated,
   acceptWithTermsAndConditions,

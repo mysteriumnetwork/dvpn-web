@@ -142,8 +142,8 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
       try {
         const status = await api.beneficiaryTxStatus(identity.id).catch(() => undefined)
         dispatch(updateBeneficiaryTxStatusStore(status))
-      } catch (e: any) {
-        errors.parseToastError(e)
+      } catch (err: any) {
+        errors.parseToastError(err)
       }
       setLoading(false)
     })()
