@@ -7,7 +7,7 @@
 import { SessionV2 } from 'mysterium-vpn-js/lib/provider'
 import { Pair } from './types'
 import { ChartType, GroupedByTime } from './types'
-import { PAIR_MAPPERS } from './PAIR_MAPPERS'
+import { PAIR_MAPPERS } from './mappers'
 import { currentCurrency } from '../../../../commons/currency'
 import { MetricsRange } from '../../../../types/common'
 import { hour, localDate } from './dates'

@@ -22,7 +22,7 @@ import { ChartData } from './types'
 import series from './series'
 import { ChartType } from './types'
 import totals from './totals'
-import { tooltipFormatter } from './PAIR_MAPPERS'
+import { tooltipFormatter } from './mappers'
 import { alphaToHex } from '../../../../theme/themeCommon'
 
 const { api } = tequila

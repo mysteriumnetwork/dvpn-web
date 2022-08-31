@@ -42,7 +42,7 @@ export const PAIR_MAPPERS: { [key: string]: (grouped: GroupedByTime[]) => Pair[]
   sessions: sessionCountPairs,
 }
 
-const earnings = (value: string) => myst.display(myst.toWeiString(value), { fractions: 3 })
+const earnings = (value: string) => myst.display(myst.toWeiBig(value), { fractions: 3 })
 const data = (value: string) => `${value} ${series.units('data')}`
 
 const TOOLTIP_FORMATTERS: { [key: ChartType]: (value: string) => string } = {
