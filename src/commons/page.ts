@@ -5,9 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const refreshPage = async (seconds: number = 0) => {
-  setTimeout(() => window.location.reload(), seconds * 1_000)
-}
+const refreshPage = async (seconds: number = 0) => setTimeout(() => window.location.reload(), seconds * 1_000)
 
 const page = {
   refreshPage,
