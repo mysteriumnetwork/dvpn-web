@@ -22,6 +22,7 @@ import {
 } from '../../../constants/routes'
 import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
+import { Chat } from '../Components/Chat/Chat'
 
 interface LinkDefinition {
   name?: string
@@ -61,6 +62,10 @@ export const CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
   {
     name: 'Report Issue',
     component: ReportIssue,
+  },
+  {
+    name: 'Chat',
+    component: Chat,
   },
   {
     name: 'Dark Mode',

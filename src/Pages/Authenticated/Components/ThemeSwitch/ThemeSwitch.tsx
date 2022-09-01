@@ -14,7 +14,7 @@ import { UI_THEME_KEY } from '../../../../constants/remote-storage.keys'
 import { themeCommon, alphaToHex } from '../../../../theme/themeCommon'
 
 interface TransitionProps {
-  $transition: boolean
+  $expanded: boolean
 }
 const Title = styled.div``
 const ThemeStatus = styled.div``
@@ -24,16 +24,15 @@ const Container = styled.div<TransitionProps>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  align-items: center;
-  gap: ${({ $transition }) => ($transition ? '40px' : 0)};
-  padding-right: ${({ $transition }) => ($transition ? '20px' : 0)};
+  gap: ${({ $expanded }) => ($expanded ? '40px' : 0)};
+  padding-right: ${({ $expanded }) => ($expanded ? '20px' : 0)};
   transition: gap 0.3s, padding-right 0.3s;
   ${Title} {
     text-decoration: none;
     color: ${({ theme }) => theme.common.colorWhite};
     font-size: ${({ theme }) => theme.common.fontSizeBig};
-    opacity: ${({ $transition }) => ($transition ? 1 : 0)};
-    max-width: ${({ $transition }) => ($transition ? '200px' : 0)};
+    opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
+    max-width: ${({ $expanded }) => ($expanded ? '200px' : 0)};
     overflow: hidden;
     white-space: nowrap;
     transition: opacity 0.3s, max-width 0.3s;
@@ -41,8 +40,8 @@ const Container = styled.div<TransitionProps>`
   ${ThemeStatus} {
     font-size: ${({ theme }) => theme.common.fontSizeNormal};
     color: ${themeCommon.colorWhite + alphaToHex(0.5)};
-    opacity: ${({ $transition }) => ($transition ? 1 : 0)};
-    max-width: ${({ $transition }) => ($transition ? '200px' : 0)};
+    opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
+    max-width: ${({ $expanded }) => ($expanded ? '200px' : 0)};
     transition: opacity 0.3s, max-width 0.3s;
   }
   ${Column} {
@@ -51,8 +50,8 @@ const Container = styled.div<TransitionProps>`
     align-items: flex-start;
     gap: 20px;
     justify-content: center;
-    opacity: ${({ $transition }) => ($transition ? 1 : 0)};
-    max-width: ${({ $transition }) => ($transition ? '200px' : 0)};
+    opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
+    max-width: ${({ $expanded }) => ($expanded ? '200px' : 0)};
     margin-bottom: 10px;
   }
 `
@@ -67,15 +66,15 @@ const SwitchContainer = styled.div`
 
 interface Props {
   title: string
-  transition: boolean
+  expanded: boolean
 }
 
-export const ThemeSwitch = ({ title, transition }: Props) => {
+export const ThemeSwitch = ({ title, expanded }: Props) => {
   const theme = useAppSelector(remoteStorage.selector<string>(UI_THEME_KEY))
   const isDark = theme === 'dark'
 
   return (
-    <Container $transition={transition}>
+    <Container $expanded={expanded}>
       <SwitchContainer>
         {isDark ? <MoonNavIcon /> : <SunNavIcon />}
         <Switch
