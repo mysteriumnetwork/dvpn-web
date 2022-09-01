@@ -20,7 +20,7 @@ interface Options {
   horizontalPadding?: number
 }
 
-export const useIntercom = (options: Options = DEFAULT_OPTIONS) => {
+export const useIntercom = () => {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -30,12 +30,12 @@ export const useIntercom = (options: Options = DEFAULT_OPTIONS) => {
     window.Intercom('onShow', () => setOpen(true))
     // @ts-ignore
     window.Intercom('update', {
-      hide_default_launcher: options?.hideLauncher ?? false,
-      alignment: options?.alignment ?? 'right',
-      horizontal_padding: options?.horizontalPadding,
-      vertical_padding: options?.verticalPadding,
+      hide_default_launcher: DEFAULT_OPTIONS?.hideLauncher ?? false,
+      alignment: DEFAULT_OPTIONS?.alignment ?? 'right',
+      horizontal_padding: DEFAULT_OPTIONS?.horizontalPadding,
+      vertical_padding: DEFAULT_OPTIONS?.verticalPadding,
     })
-  }, [options?.hideLauncher, options?.alignment, options?.hideLauncher, options?.verticalPadding])
+  }, [])
 
   // @ts-ignore
   const show = () => window.Intercom('show')
