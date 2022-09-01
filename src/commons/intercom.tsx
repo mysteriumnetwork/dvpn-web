@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react'
 
 interface Options {
   hideLauncher?: boolean
+  alignment?: 'left' | 'right'
+  verticalPadding?: number
+  horizontalPadding?: number
 }
 
 export const useIntercom = (options?: Options) => {
@@ -21,6 +24,9 @@ export const useIntercom = (options?: Options) => {
     // @ts-ignore
     window.Intercom('update', {
       hide_default_launcher: options?.hideLauncher ?? false,
+      alignment: options?.alignment ?? 'right',
+      horizontal_padding: options?.horizontalPadding,
+      vertical_padding: options?.verticalPadding,
     })
   }, [options?.hideLauncher])
 

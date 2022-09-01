@@ -15,7 +15,12 @@ interface Props {
 }
 
 export const Chat = ({ title, expanded }: Props) => {
-  const { show, hide, open } = useIntercom({ hideLauncher: true })
+  const { show, hide, open } = useIntercom({
+    hideLauncher: true,
+    alignment: 'left',
+    horizontalPadding: 100,
+    verticalPadding: 200,
+  })
   return (
     <ExpandableControl
       title={title}
