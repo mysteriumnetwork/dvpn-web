@@ -10,7 +10,7 @@ import { TextFieldVariant } from './TextField'
 import { themeCommon } from '../../theme/themeCommon'
 
 const errorCSS = css`
-  background: ${({ theme }) => theme.textInput.backgroundError} !important;
+  background: ${({ theme }) => theme.textInput.bgError} !important;
   color: ${({ theme }) => theme.textInput.textColorError} !important;
   border: ${({ theme }) => theme.textInput.borderError} !important;
 `
@@ -31,7 +31,7 @@ const StyledTextArea = styled.textarea<StyledTextAreaProps>`
   padding: 5px;
 
   color: ${({ theme }) => theme.textInput.textColor};
-  background: ${({ theme }) => theme.textInput.background};
+  background: ${({ theme }) => theme.textInput.bg};
   border: ${({ theme }) => theme.textInput.border};
 
   :focus {
@@ -40,7 +40,7 @@ const StyledTextArea = styled.textarea<StyledTextAreaProps>`
 
   :disabled {
     color: ${({ theme }) => theme.textInput.textColorDisabled};
-    background: ${({ theme }) => theme.textInput.backgroundDisabled};
+    background: ${({ theme }) => theme.textInput.bgDisabled};
     border: ${({ theme }) => theme.textInput.borderDisabled};
   }
 

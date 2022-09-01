@@ -32,7 +32,7 @@ const Overlay = styled.div`
   opacity: 0.5;
   z-index: 1000;
   height: 100%;
-  background: #dfdfdf;
+  background-color: #dfdfdf;
   position: absolute;
   top: 0;
   left: 0;
@@ -103,7 +103,7 @@ const heroVariantCss = css`
   box-sizing: border-box;
   margin: 0 16px 0 16px;
   padding: 16px;
-  background: ${({ theme }) => theme.layout.row.heroBackground};
+  background-color: ${({ theme }) => theme.layout.row.heroBg};
   border-radius: 35px;
 
   overflow-y: hidden;

@@ -21,7 +21,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: 16px;
 
-  background: ${({ theme }) => theme.notifications.list.background};
+  background: ${({ theme }) => theme.notifications.list.bg};
   box-shadow: ${({ theme }) => theme.notifications.list.boxShadow};
   border-radius: 20px;
 `

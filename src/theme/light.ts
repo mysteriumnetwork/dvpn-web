@@ -21,26 +21,26 @@ const light: Omit<Theme, 'common'> = {
   bgTransactionPageCardBoxShadow: '0px 5px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.02),
 
   navigation: {
-    background: themeCommon.backgroundMysterium,
-    contentBackground: themeCommon.colorLightBlue,
+    bg: themeCommon.bgMysterium,
+    contentBg: themeCommon.colorLightBlue,
   },
 
   layout: {
     row: {
-      heroBackground: themeCommon.colorGrayBlue + alphaToHex(0.1),
+      heroBg: themeCommon.colorGrayBlue + alphaToHex(0.1),
     },
   },
 
   liveSessions: {
     card: {
-      background: themeCommon.colorWhite,
+      bg: themeCommon.colorWhite,
     },
   },
 
   report: {
-    reportCardRowBackground: themeCommon.colorWhite,
+    reportCardRowBg: themeCommon.colorWhite,
     card: {
-      background: themeCommon.colorWhite,
+      bg: themeCommon.colorWhite,
     },
     chart: {
       shadow: '0 10px 30px ' + themeCommon.yankeeBlue + alphaToHex(0.05),
@@ -53,7 +53,7 @@ const light: Omit<Theme, 'common'> = {
     disabledOpacity: '0.7',
 
     outlined: {
-      hoverBackgroundColor: themeCommon.colorKeyLight + alphaToHex(0.1),
+      hoverBgColor: themeCommon.colorKeyLight + alphaToHex(0.1),
     },
   },
 
@@ -112,13 +112,13 @@ const light: Omit<Theme, 'common'> = {
   textInput: {
     textColor: themeCommon.colorGrayBlue2,
     textColorDisabled: themeCommon.colorGrayBlue,
-    background: themeCommon.colorWhite,
-    backgroundDisabled: themeCommon.colorLightBlue,
+    bg: themeCommon.colorWhite,
+    bgDisabled: themeCommon.colorLightBlue,
     border: '1px solid ' + themeCommon.colorGrayBlue2,
     borderDisabled: '1px solid ' + themeCommon.colorGrayBlue,
 
     textColorError: themeCommon.colorKey,
-    backgroundError: themeCommon.colorKey + alphaToHex(0.1),
+    bgError: themeCommon.colorKey + alphaToHex(0.1),
     borderError: '1px solid ' + themeCommon.colorKey,
   },
 
@@ -134,11 +134,11 @@ const light: Omit<Theme, 'common'> = {
 
   dndList: {
     textColor: themeCommon.colorGrayBlue2,
-    background: themeCommon.colorLightBlue + alphaToHex(0.5),
+    bg: themeCommon.colorLightBlue + alphaToHex(0.5),
   },
 
   nodeStatus: {
-    background: {
+    bg: {
       monitoringFailed: themeCommon.colorKey,
       offline: themeCommon.colorGrayBlue,
       online: themeCommon.colorGreen,
@@ -154,9 +154,9 @@ const light: Omit<Theme, 'common'> = {
     bgCardHover: themeCommon.colorGrayBlue,
   },
   notifications: {
-    background: themeCommon.colorKey,
+    bg: themeCommon.colorKey,
     list: {
-      background: themeCommon.colorWhite,
+      bg: themeCommon.colorWhite,
       boxShadow: '0px 5px 20px ' + themeCommon.color2F2A48 + alphaToHex(0.2),
     },
 
@@ -164,28 +164,28 @@ const light: Omit<Theme, 'common'> = {
       subjectTextColor: themeCommon.colorDarkBlue,
       messageTextColor: themeCommon.colorGrayBlue,
       positive: {
-        background: themeCommon.colorGreen + alphaToHex(0.2),
+        bg: themeCommon.colorGreen + alphaToHex(0.2),
       },
       negative: {
-        background: themeCommon.colorKey + alphaToHex(0.2),
+        bg: themeCommon.colorKey + alphaToHex(0.2),
       },
       neutral: {
-        background: themeCommon.colorGrayBlue + alphaToHex(0.2),
+        bg: themeCommon.colorGrayBlue + alphaToHex(0.2),
       },
       update: {
-        background: themeCommon.colorYellow + alphaToHex(0.1),
+        bg: themeCommon.colorYellow + alphaToHex(0.1),
       },
     },
   },
 
   tooltip: {
     textColor: themeCommon.colorGrayBlue,
-    background: themeCommon.colorWhite,
+    bg: themeCommon.colorWhite,
     boxShadow: '0 4px 4px' + themeCommon.yankeeBlue + alphaToHex(0.5),
   },
 
   nat: {
-    background: themeCommon.colorLightBlue,
+    bg: themeCommon.colorLightBlue,
   },
 
   indicator: {
@@ -198,7 +198,7 @@ const light: Omit<Theme, 'common'> = {
     error: {
       color: themeCommon.colorRed,
     },
-    holeBackground: themeCommon.colorWhite,
+    holeBg: themeCommon.colorWhite,
   },
 
   a: {
@@ -207,18 +207,18 @@ const light: Omit<Theme, 'common'> = {
 
   toasts: {
     success: {
-      iconBackground: themeCommon.colorGreen + alphaToHex(0.3),
+      iconBg: themeCommon.colorGreen + alphaToHex(0.3),
     },
     warning: {
-      iconBackground: themeCommon.colorYellow + alphaToHex(0.3),
+      iconBg: themeCommon.colorYellow + alphaToHex(0.3),
     },
     info: {
-      iconBackground: themeCommon.colorBlue + alphaToHex(0.3),
+      iconBg: themeCommon.colorBlue + alphaToHex(0.3),
     },
     error: {
-      iconBackground: themeCommon.colorRed + alphaToHex(0.3),
+      iconBg: themeCommon.colorRed + alphaToHex(0.3),
     },
-    background: themeCommon.colorWhite,
+    bg: themeCommon.colorWhite,
     contentTextColor: themeCommon.colorGrayBlue2,
     closeButtonColor: themeCommon.colorGrayBlue2,
   },
@@ -227,10 +227,10 @@ const light: Omit<Theme, 'common'> = {
     valueTextColor: themeCommon.colorDarkBlue,
     placeholderTextColor: themeCommon.colorGrayBlue2,
     border: `1px solid ${themeCommon.colorGrayBlue}`,
-    backgroundColor: themeCommon.colorWhite,
+    bgColor: themeCommon.colorWhite,
     selectedOrFocusedValueColor: themeCommon.colorWhite,
-    selectedValueBackgroundColor: themeCommon.colorKey,
-    focusedValueBackgroundColor: themeCommon.colorKeyLight,
+    selectedValueBgColor: themeCommon.colorKey,
+    focusedValueBgColor: themeCommon.colorKeyLight,
   },
 }
 

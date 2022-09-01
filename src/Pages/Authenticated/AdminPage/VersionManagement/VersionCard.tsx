@@ -13,8 +13,8 @@ import { ReactComponent as Triangle } from '../../../../assets/images/triangle-d
 import { useState } from 'react'
 
 const { date2human } = dates
-interface AccordeonProps {
-  show: boolean
+interface AccordionProps {
+  $show: boolean
 }
 const Card = styled.div`
   padding: 20px;
@@ -26,8 +26,8 @@ const Card = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `
-const Arrow = styled(Triangle)<AccordeonProps>`
-  transform: ${({ show }) => show && 'rotate(180deg)'};
+const Arrow = styled(Triangle)<AccordionProps>`
+  transform: ${({ $show }) => $show && 'rotate(180deg)'};
 `
 const Row = styled.div`
   display: flex;
@@ -49,7 +49,7 @@ const Date = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
 `
-const AccordeonSwitch = styled.div`
+const AccordionSwitch = styled.div`
   display: flex;
   color: ${({ theme }) => theme.text.colorSecondary};
   align-items: center;
@@ -57,8 +57,8 @@ const AccordeonSwitch = styled.div`
   gap: 10px;
   cursor: pointer;
 `
-const Accordeon = styled.div<AccordeonProps>`
-  display: ${({ show }) => (show ? 'flex' : 'none')};
+const Accordion = styled.div<AccordionProps>`
+  display: ${({ $show }) => ($show ? 'flex' : 'none')};
 `
 interface Props {
   remote: RemoteVersion
@@ -89,7 +89,7 @@ export const VersionCard = ({
   const isBundled = remote.name === bundledVersion
   const canDownload = !local && !isBundled
   const [showNotes, setShowNotes] = useState(false)
-  const handleAccordeon = () => setShowNotes(!showNotes)
+  const handleAccordion = () => setShowNotes(!showNotes)
   return (
     <Card key={remote.name}>
       <Row>
@@ -115,11 +115,11 @@ export const VersionCard = ({
         )}
       </Row>
       <Date>{date2human(remote.releasedAt)}</Date>
-      <AccordeonSwitch onClick={handleAccordeon}>
+      <AccordionSwitch onClick={handleAccordion}>
         Show release notes
-        <Arrow show={showNotes} />
-      </AccordeonSwitch>
-      <Accordeon show={showNotes}>{releaseNotes ? releaseNotes : 'No notes for this release'}</Accordeon>
+        <Arrow $show={showNotes} />
+      </AccordionSwitch>
+      <Accordion $show={showNotes}>{releaseNotes ? releaseNotes : 'No notes for this release'}</Accordion>
     </Card>
   )
 }

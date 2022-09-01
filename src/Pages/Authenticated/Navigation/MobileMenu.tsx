@@ -64,7 +64,7 @@ const Menu = styled.div<OverlayProps>`
   position: fixed;
   top: 0;
   left: 0;
-  background: ${({ theme }) => theme.navigation.background};
+  background: ${({ theme }) => theme.navigation.bg};
   display: flex;
   flex-direction: column;
   border-top-right-radius: 30px;

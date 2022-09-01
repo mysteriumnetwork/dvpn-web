@@ -11,8 +11,7 @@ export const alphaToHex = (value: number) => {
 }
 
 export const themeCommon: Common = {
-  backgroundMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
-
+  bgMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
   colorKey: '#D61F85',
   colorKeyLight: '#ED5BAC',
   colorKeyDark: '#B00D68',

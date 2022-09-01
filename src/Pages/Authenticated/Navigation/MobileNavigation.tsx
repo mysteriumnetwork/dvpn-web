@@ -32,7 +32,7 @@ const Content = styled.div`
   padding: 0 10px 0 10px;
   align-items: center;
   justify-content: space-between;
-  background: ${({ theme }) => theme.navigation.background};
+  background: ${({ theme }) => theme.navigation.bg};
 `
 const StyledLogo = styled(Logo)`
   height: 30px;

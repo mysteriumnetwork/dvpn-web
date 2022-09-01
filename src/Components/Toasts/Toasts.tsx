@@ -14,7 +14,7 @@ import styled from 'styled-components'
 export type Variant = 'success' | 'warning' | 'info' | 'error'
 
 const Card = styled.div`
-  background-color: ${({ theme }) => theme.toasts.background};
+  background-color: ${({ theme }) => theme.toasts.bg};
   display: flex;
   height: 100%;
   width: 300px;
@@ -29,7 +29,7 @@ const IconContainer = styled.div<IconContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme, $variant }) => theme.toasts[$variant].iconBackground};
+  background-color: ${({ theme, $variant }) => theme.toasts[$variant].iconBg};
 `
 
 const Message = styled.div`

@@ -27,9 +27,6 @@ const StyledRCSlider = styled(RCSlider)`
   }
 
   .rc-slider-handle {
-    //width: 8px;
-    //height: 8px;
-    //margin-top: -2.5px;
     border: solid 5px ${themeCommon.colorKey};
   }
 

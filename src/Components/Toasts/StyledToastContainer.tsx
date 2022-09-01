@@ -18,7 +18,7 @@ export const StyledToastContainer = styled(ToastContainer)`
     padding: 0;
     min-height: 0;
     border-radius: 4px;
-    background-color: ${({ theme }) => theme.toasts.background};
+    background-color: ${({ theme }) => theme.toasts.bg};
   }
   .Toastify__toast-body {
     padding: 0;

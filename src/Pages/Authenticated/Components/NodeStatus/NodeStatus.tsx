@@ -15,7 +15,7 @@ interface IndicatorProps {
 }
 
 const Indicator = styled.div<IndicatorProps>`
-  background: ${({ theme, $variant }) => theme.nodeStatus.background[$variant]};
+  background: ${({ theme, $variant }) => theme.nodeStatus.bg[$variant]};
   color: ${({ theme, $variant }) => theme.nodeStatus.textColor[$variant]};
   font-size: ${themeCommon.fontSizeSmaller};
   font-weight: 400;

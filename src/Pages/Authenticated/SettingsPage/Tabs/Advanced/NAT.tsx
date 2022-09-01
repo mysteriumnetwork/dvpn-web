@@ -20,7 +20,7 @@ const Container = styled.div`
   gap: 5px;
   padding: 8px 14px 8px 14px;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.nat.background};
+  background-color: ${({ theme }) => theme.nat.bg};
   border-radius: 10px;
 `
 

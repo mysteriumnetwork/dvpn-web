@@ -12,7 +12,7 @@ import { useId } from 'react'
 
 const StyledTooltip = styled.div`
   position: relative;
-  background-color: ${({ theme }) => theme.tooltip.background};
+  background-color: ${({ theme }) => theme.tooltip.bg};
   box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
   color: ${({ theme }) => theme.tooltip.textColor};
   padding: 10px;

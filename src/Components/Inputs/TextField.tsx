@@ -10,7 +10,7 @@ import { themeCommon } from '../../theme/themeCommon'
 import { Tooltip } from '../Tooltip/Tooltip'
 
 const errorCSS = css`
-  background: ${({ theme }) => theme.textInput.backgroundError} !important;
+  background: ${({ theme }) => theme.textInput.bgError} !important;
   color: ${({ theme }) => theme.textInput.textColorError} !important;
   border: ${({ theme }) => theme.textInput.borderError} !important;
 `
@@ -26,7 +26,7 @@ const StyledInput = styled.input<StyledInputProps>`
   padding-left: 5px;
 
   color: ${({ theme }) => theme.textInput.textColor};
-  background: ${({ theme }) => theme.textInput.background};
+  background: ${({ theme }) => theme.textInput.bg};
   border: ${({ theme }) => theme.textInput.border};
 
   :focus {
@@ -35,7 +35,7 @@ const StyledInput = styled.input<StyledInputProps>`
 
   :disabled {
     color: ${({ theme }) => theme.textInput.textColorDisabled};
-    background: ${({ theme }) => theme.textInput.backgroundDisabled};
+    background: ${({ theme }) => theme.textInput.bgDisabled};
     border: ${({ theme }) => theme.textInput.borderDisabled};
   }
 
