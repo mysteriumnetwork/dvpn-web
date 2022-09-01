@@ -15,17 +15,16 @@ const format = (a?: number, b = 2): string => {
 }
 
 const bytes2Gb = (bytes: number): number => {
-  if (!bytes || 0 === bytes) {
+  if (!bytes) {
     return 0
   }
   return Number((bytes / 1000 / 1000 / 1000).toFixed(2))
 }
-export const add = (a?: number, b?: number): number => {
-  return (a || 0) + (b || 0)
-}
-const subtract = (a?: number, b?: number): number => {
-  return (a || 0) - (b || 0)
-}
+
+const add = (a?: number, b?: number): number => (a || 0) + (b || 0)
+
+const subtract = (a?: number, b?: number): number => (a || 0) - (b || 0)
+
 const bytes = {
   format,
   add,

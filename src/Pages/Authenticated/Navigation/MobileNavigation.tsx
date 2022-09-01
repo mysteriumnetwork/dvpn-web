@@ -65,7 +65,7 @@ const Progress = styled.div`
   top: 65px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.bgSettlementMobile};
-  box-shadow: 0 5px 20px ${themeCommon.color000065 + alphaToHex(0.15)};
+  box-shadow: 0 5px 20px ${themeCommon.yankeeBlue + alphaToHex(0.15)};
   left: 0;
   right: 0;
   margin-left: auto;

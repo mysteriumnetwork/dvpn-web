@@ -35,7 +35,7 @@ import PageNotFound from './Error/PageNotFound'
 import { StorybookPage } from './Authenticated/StorybookPage/StorybookPage'
 import { PasswordChangePage } from './Authenticated/Onboarding/PasswordChangePage'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
-import { STORYBOOK_ROUTES } from './Authenticated/StorybookPage/storybook.utils'
+import { STORYBOOK_ROUTES } from './Authenticated/StorybookPage/storybook.routes'
 
 const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)

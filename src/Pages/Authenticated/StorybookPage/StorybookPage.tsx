@@ -9,7 +9,7 @@ import React, { useMemo } from 'react'
 import { NavLinkTabs } from '../../../Components/Tabs/NavLinkTabs'
 import ROUTES from '../../../constants/routes'
 import { useLocation } from 'react-router-dom'
-import { STORYBOOK_ROUTES } from './storybook.utils'
+import { STORYBOOK_ROUTES } from './storybook.routes'
 
 const toTabs = () =>
   Object.keys(STORYBOOK_ROUTES).map((path) => ({

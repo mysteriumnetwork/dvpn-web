@@ -8,17 +8,17 @@ import BigNumber from 'bignumber.js'
 import { DECIMAL_PART } from 'mysterium-vpn-js'
 import { currentCurrency } from './currency'
 
-interface MYSTOptions {
+interface Options {
   currency?: boolean
   fractions?: number
 }
 
-export const DEFAULT_MONEY_DISPLAY_OPTIONS: Required<MYSTOptions> = Object.freeze({
+const DEFAULTS: Required<Options> = Object.freeze({
   currency: true,
   fractions: 7,
 })
 
-const format = (amount: string | number | BigNumber, options: MYSTOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string => {
+const format = (amount: string | number | BigNumber, options: Options = DEFAULTS): string => {
   const symbol = options?.currency ? ' ' + currentCurrency() : ''
   const requiredPrecision = options?.fractions ?? 18
 
@@ -33,20 +33,11 @@ const format = (amount: string | number | BigNumber, options: MYSTOptions = DEFA
   return `${ethers.toFixed(requiredPrecision)}${symbol}`
 }
 
-// TODO rethink API
-const display = (wei: string | BigNumber | number = 0, override: MYSTOptions = DEFAULT_MONEY_DISPLAY_OPTIONS): string =>
-  format(wei, { ...DEFAULT_MONEY_DISPLAY_OPTIONS, ...override })
+const display = (wei: string | BigNumber | number = 0, override: Options = DEFAULTS): string =>
+  format(wei, { ...DEFAULTS, ...override })
 
 const toEtherBig = (wei: BigNumber | string | number): BigNumber => {
   return new (BigNumber.clone({ POW_PRECISION: 0, ROUNDING_MODE: BigNumber.ROUND_DOWN }))(wei).div(DECIMAL_PART)
-}
-
-const toEtherString = (wei: BigNumber | string | number): string => {
-  return toEtherBig(wei).toFixed()
-}
-
-const toWeiString = (ether: BigNumber | string | number): string => {
-  return toWeiBig(ether).toFixed()
 }
 
 const toWeiBig = (ether: BigNumber | string | number): BigNumber => {
@@ -59,9 +50,7 @@ const toBig = (value: BigNumber | string | number, config?: BigNumber.Config): B
 
 export const myst = {
   display,
-  toEtherString,
   toEtherBig,
-  toWeiString,
   toWeiBig,
   toBig,
 }

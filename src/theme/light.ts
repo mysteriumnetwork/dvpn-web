@@ -9,16 +9,16 @@ import { alphaToHex, themeCommon } from './themeCommon'
 
 const light: Omit<Theme, 'common'> = {
   bgServiceCardHeader: themeCommon.colorWhite,
-  bgServiceCardHeaderBoxShadow: '0 10px 30px' + themeCommon.color000065 + alphaToHex(0.05),
+  bgServiceCardHeaderBoxShadow: '0 10px 30px' + themeCommon.yankeeBlue + alphaToHex(0.05),
   bgServiceCardContent: themeCommon.colorLightBlue,
-  bgServiceCardContentBoxShadow: '0 5px 20px' + themeCommon.color000065 + alphaToHex(0.02),
+  bgServiceCardContentBoxShadow: '0 5px 20px' + themeCommon.yankeeBlue + alphaToHex(0.02),
   bgServiceCardContentMobile: themeCommon.colorWhite,
   bgSettingsCard: themeCommon.colorWhite,
 
   bgReportCardDiffPositive: themeCommon.colorGreen + alphaToHex(0.1),
   bgSettlementMobile: themeCommon.colorWhite,
   bgTransactionPageCard: themeCommon.colorWhite,
-  bgTransactionPageCardBoxShadow: '0px 5px 20px ' + themeCommon.color221E39 + alphaToHex(0.02),
+  bgTransactionPageCardBoxShadow: '0px 5px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.02),
 
   navigation: {
     background: themeCommon.backgroundMysterium,
@@ -43,7 +43,7 @@ const light: Omit<Theme, 'common'> = {
       background: themeCommon.colorWhite,
     },
     chart: {
-      shadow: '0 10px 30px ' + themeCommon.color4e1c67 + alphaToHex(0.05),
+      shadow: '0 10px 30px ' + themeCommon.yankeeBlue + alphaToHex(0.05),
       xTickFontColor: themeCommon.colorGrayBlue,
       yTickFontColor: themeCommon.colorGrayBlue2,
     },
@@ -106,7 +106,7 @@ const light: Omit<Theme, 'common'> = {
     bgOverlay: themeCommon.colorDarkBlue + alphaToHex(0.5),
     bgColor: themeCommon.colorWhite,
     titleColor: themeCommon.colorDarkBlue,
-    boxShadow: '0px 5px 20px ' + themeCommon.color221E39 + alphaToHex(0.1),
+    boxShadow: '0px 5px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.1),
   },
 
   textInput: {
@@ -178,7 +178,7 @@ const light: Omit<Theme, 'common'> = {
   tooltip: {
     textColor: themeCommon.colorGrayBlue,
     background: themeCommon.colorWhite,
-    boxShadow: '0 4px 4px' + themeCommon.color000065 + alphaToHex(0.5),
+    boxShadow: '0 4px 4px' + themeCommon.yankeeBlue + alphaToHex(0.5),
   },
 
   nat: {

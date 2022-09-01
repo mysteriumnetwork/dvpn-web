@@ -6,15 +6,15 @@
  */
 import { NATType } from '../../SettingsPage/Tabs/Advanced/types'
 import { NATTooltip } from '../../SettingsPage/Tabs/Advanced/NATTooltip'
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 
 const TooltipsBook = () => {
   return (
-    <CenteredRow>
+    <CenteredColumn>
       {['none', 'fullcone', 'rcone', 'prcone', 'symmetric'].map((nt) => (
         <NATTooltip key={nt} type={nt as NATType} />
       ))}
-    </CenteredRow>
+    </CenteredColumn>
   )
 }
 

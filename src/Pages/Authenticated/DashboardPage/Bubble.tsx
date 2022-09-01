@@ -18,9 +18,9 @@ const greenAfterCss = css<BubbleProps>`
   :after {
     content: '';
     position: absolute;
-    width: 0px;
-    height: 0px;
-    left: 0px;
+    width: 0;
+    height: 0;
+    left: 0;
     border-bottom: 3px solid transparent;
     border-top: 3px solid transparent;
     border-right: 5px solid
@@ -47,12 +47,13 @@ const BlueBubble = styled.div<BubbleProps>`
   ${commonBubbleCss};
   background: ${({ $primary }) => ($primary ? themeCommon.colorBlue : `${themeCommon.colorBlue}${alphaToHex(0.2)}`)};
   color: ${({ $primary, theme }) => ($primary ? themeCommon.colorWhite : theme.idleStat.bubbleTextColor)};
+
   :after {
     content: '';
     position: absolute;
-    width: 0px;
-    height: 0px;
-    left: 0px;
+    width: 0;
+    height: 0;
+    left: 0;
     border-bottom: 3px solid transparent;
     border-top: 3px solid transparent;
     border-right: 5px solid

@@ -9,13 +9,13 @@ import { ProgressBar } from '../../../../Components/ProgressBar/ProgressBar'
 import { Button } from '../../../../Components/Inputs/Button'
 import { Slider } from '../../../../Components/Slider/Slider'
 import styled from 'styled-components'
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 
 const ProgressBarBook = () => {
   return (
-    <CenteredRow>
+    <CenteredColumn>
       <Bars />
-    </CenteredRow>
+    </CenteredColumn>
   )
 }
 

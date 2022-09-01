@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 import { Select } from '../../../../Components/Inputs/Select'
 import { Option } from '../../../../types/common'
 import { useState } from 'react'
@@ -19,10 +19,10 @@ const OPTIONS: Option[] = [
 const DropdownBook = () => {
   const [option, setOption] = useState(OPTIONS[0])
   return (
-    <CenteredRow style={{ height: '80%' }}>
+    <CenteredColumn style={{ height: '80%' }}>
       <Select options={OPTIONS} value={option} onChange={setOption} />
       <Select options={[]} />
-    </CenteredRow>
+    </CenteredColumn>
   )
 }
 

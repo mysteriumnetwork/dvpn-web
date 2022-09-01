@@ -4,11 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import {
-  NEW_PASSWORD_ERROR_TO_SHORT,
-  NEW_PASSWORD_ERROR_BLANK,
-  NEW_PASSWORD_ERROR_NOT_SAME,
-} from '../constants/defaults'
+
+const NEW_PASSWORD_ERROR_TO_SHORT = 'Your password should be at least 10 characters.'
+const NEW_PASSWORD_ERROR_BLANK = 'Password fields cannot be blank.'
+const NEW_PASSWORD_ERROR_NOT_SAME = "Passwords don't match"
 
 interface ValidateResultInterface {
   success: boolean
@@ -54,14 +53,8 @@ export const validatePassword = (password?: string, repeat?: string): ValidateRe
   return response
 }
 
-const isEqual = (password?: string, passwordRepeat?: string): boolean => {
-  return password === passwordRepeat
-}
+const isEqual = (password?: string, passwordRepeat?: string): boolean => password === passwordRepeat
 
-const isValid = (password?: string): boolean => {
-  return !password || password.length < 10
-}
+const isValid = (password?: string): boolean => !password || password.length < 10
 
-const isBlank = (password?: string, passwordRepeat?: string): boolean => {
-  return !password || !passwordRepeat
-}
+const isBlank = (password?: string, passwordRepeat?: string): boolean => !password || !passwordRepeat

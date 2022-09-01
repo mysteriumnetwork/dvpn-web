@@ -10,9 +10,9 @@ import { themeCommon } from './themeCommon'
 
 const dark: Omit<Theme, 'common'> = {
   bgServiceCardHeader: themeCommon.color393453,
-  bgServiceCardHeaderBoxShadow: '0 10px 20px' + themeCommon.color221E39 + alphaToHex(0.4),
+  bgServiceCardHeaderBoxShadow: '0 10px 20px' + themeCommon.yankeeBlue + alphaToHex(0.4),
   bgServiceCardContent: themeCommon.color393453,
-  bgServiceCardContentBoxShadow: '0 5px 20px' + themeCommon.color000065 + alphaToHex(0.02),
+  bgServiceCardContentBoxShadow: '0 5px 20px' + themeCommon.yankeeBlue + alphaToHex(0.02),
   bgServiceCardContentMobile: themeCommon.color393453,
 
   bgSettingsCard: themeCommon.color393453,
@@ -21,16 +21,16 @@ const dark: Omit<Theme, 'common'> = {
   bgSettlementMobile: themeCommon.color444161,
   bgTransactionPageCard: themeCommon.color393453,
 
-  bgTransactionPageCardBoxShadow: '0px 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
+  bgTransactionPageCardBoxShadow: '0px 10px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.4),
 
   navigation: {
-    background: themeCommon.color221E39,
+    background: themeCommon.yankeeBlue,
     contentBackground: themeCommon.color2F2A48,
   },
 
   layout: {
     row: {
-      heroBackground: themeCommon.color221E39,
+      heroBackground: themeCommon.yankeeBlue,
     },
   },
 
@@ -46,7 +46,7 @@ const dark: Omit<Theme, 'common'> = {
       background: themeCommon.color393453,
     },
     chart: {
-      shadow: '0 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
+      shadow: '0 10px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.4),
       xTickFontColor: themeCommon.colorGrayBlue,
       yTickFontColor: themeCommon.colorGrayBlue,
     },
@@ -85,10 +85,10 @@ const dark: Omit<Theme, 'common'> = {
     textColor: themeCommon.colorGrayBlue,
   },
   modal: {
-    bgOverlay: themeCommon.color231F3A + alphaToHex(0.8),
+    bgOverlay: themeCommon.yankeeBlue + alphaToHex(0.8),
     bgColor: themeCommon.color393453,
     titleColor: themeCommon.colorLightBlue,
-    boxShadow: '0px 10px 20px ' + themeCommon.color221E39 + alphaToHex(0.4),
+    boxShadow: '0px 10px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.4),
   },
   calendar: {
     bgHeader: themeCommon.colorGrayBlue2,
@@ -180,7 +180,7 @@ const dark: Omit<Theme, 'common'> = {
   tooltip: {
     textColor: themeCommon.colorGrayBlue,
     background: themeCommon.colorGrayBlue2,
-    boxShadow: '0 4px 4px' + themeCommon.color4e1c67 + alphaToHex(0.4),
+    boxShadow: '0 4px 4px' + themeCommon.yankeeBlue + alphaToHex(0.4),
   },
 
   nat: {

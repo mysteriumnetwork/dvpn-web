@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { PasswordChangePage } from '../../Onboarding/PasswordChangePage'
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 
 const PasswordChangeBook = () => {
   return (
-    <CenteredRow>
+    <CenteredColumn>
       <PasswordChangePage />
-    </CenteredRow>
+    </CenteredColumn>
   )
 }
 

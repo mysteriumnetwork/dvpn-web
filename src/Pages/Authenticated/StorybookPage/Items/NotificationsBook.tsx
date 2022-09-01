@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Notifications } from '../../Components/Notifications/Notifications'
-import { CenteredRow } from '../Components'
+import { CenteredColumn } from '../Components'
 
 const NotificationsBook = () => {
   return (
-    <CenteredRow>
+    <CenteredColumn>
       <Notifications />
-    </CenteredRow>
+    </CenteredColumn>
   )
 }
 

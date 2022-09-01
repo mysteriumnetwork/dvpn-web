@@ -107,7 +107,6 @@ const heroVariantCss = css`
   border-radius: 35px;
 
   overflow-y: hidden;
-  min-width: fit-content;
 
   &&::-webkit-scrollbar {
     display: none;
