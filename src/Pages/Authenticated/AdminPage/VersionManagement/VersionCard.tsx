@@ -19,7 +19,7 @@ interface AccordeonProps {
 const Card = styled.div`
   padding: 20px;
   border-radius: 20px;
-  background: ${({ theme }) => theme.versionManagement.bgCard};
+  background: ${({ theme }) => theme.adminPanel.bgCard};
   gap: 10px;
   width: 350px;
   display: flex;

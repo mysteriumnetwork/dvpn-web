@@ -151,8 +151,9 @@ const dark: Omit<Theme, 'common'> = {
       online: themeCommon.colorWhite,
     },
   },
-  versionManagement: {
+  adminPanel: {
     bgCard: themeCommon.colorGrayBlue2,
+    bgCardHover: themeCommon.colorDarkBlue,
   },
   notifications: {
     background: themeCommon.colorKeyLight,
