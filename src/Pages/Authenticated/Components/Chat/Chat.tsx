@@ -15,18 +15,14 @@ interface Props {
 }
 
 export const Chat = ({ title, expanded }: Props) => {
-  const { show, hide, open } = useIntercom({
-    hideLauncher: true,
-    alignment: 'left',
-    horizontalPadding: 100,
-    verticalPadding: 200,
-  })
+  const { show, hide, open } = useIntercom()
   return (
     <ExpandableControl
       title={title}
       expanded={expanded}
       icon={<ChatNavIcon />}
       onClick={() => (open ? hide() : show())}
+      ignoreOverlay
     />
   )
 }

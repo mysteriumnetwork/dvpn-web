@@ -7,9 +7,11 @@
 import styled from 'styled-components'
 import { IconButton } from '../Inputs/IconButton'
 import { ReactNode } from 'react'
+import zIndexes from '../../constants/z-indexes'
 
 interface TransitionProps {
   $expanded: boolean
+  $ignoreOverlay?: boolean
 }
 const Title = styled.div``
 const Container = styled.div<TransitionProps>`
@@ -21,6 +23,7 @@ const Container = styled.div<TransitionProps>`
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   gap: ${({ $expanded }) => ($expanded ? '40px' : 0)};
   padding-right: ${({ $expanded }) => ($expanded ? '20px' : 0)};
+  z-index: ${({ $ignoreOverlay }) => ($ignoreOverlay ? zIndexes.overlay + 1 : 0)};
   transition: gap 0.3s, padding-right 0.3s, max-width 0.3s;
   ${Title} {
     text-decoration: none;
@@ -39,11 +42,12 @@ interface Props {
   expanded: boolean
   icon: ReactNode
   onClick: () => void
+  ignoreOverlay?: boolean
 }
 
-export const ExpandableControl = ({ expanded, icon, onClick, title }: Props) => {
+export const ExpandableControl = ({ expanded, icon, onClick, title, ignoreOverlay }: Props) => {
   return (
-    <Container $expanded={expanded}>
+    <Container $expanded={expanded} $ignoreOverlay={ignoreOverlay}>
       <IconButton onClick={onClick} icon={icon} />
       <Title>{title}</Title>
     </Container>
