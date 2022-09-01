@@ -6,41 +6,45 @@
  */
 import { LocalVersion, RemoteVersion } from '../../../../api/ui-version-management'
 import dates from '../../../../commons/dates'
-import React from 'react'
 import { Button } from '../../../../Components/Inputs/Button'
 import styled from 'styled-components'
+import { themeCommon } from '../../../../theme/themeCommon'
 
 const { date2human } = dates
 
+const Card = styled.div`
+  padding: 20px;
+  border-radius: 20px;
+  background: ${({ theme }) => theme.bgSettingsCard};
+  gap: 40px;
+  width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 const Row = styled.div`
-  padding: 35px;
-  border-radius: 5px;
-  background: #ffffff;
-
-  width: 500px;
-  height: 50px;
-
   display: flex;
+  gap: 15px;
   align-items: center;
-  justify-content: space-between;
 `
-const VersionBlock = styled.div`
+const Column = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 80%;
 `
-const ReleaseBlock = styled.div`
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 5px;
-  width: 200px;
-`
-
-const PreRelease = styled.div`
-  color: red;
+const Status = styled.div`
+  color: ${themeCommon.colorKey};
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+  font-weight: 700;
 `
 const Name = styled.div`
-  margin-right: 15px;
+  color: ${({ theme }) => theme.text.colorMain};
+  font-weight: 600;
+`
+const Date = styled.div`
+  color: ${({ theme }) => theme.text.colorSecondary};
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
 `
 interface Props {
   remote: RemoteVersion
@@ -58,7 +62,6 @@ export const VersionCard = ({
   remote,
   local,
   bundledVersion,
-  releaseNotes,
   onDownload,
   onSwitchVersion,
   isDownloadInProgress,
@@ -67,38 +70,28 @@ export const VersionCard = ({
 }: Props) => {
   const canSwitchTo = local && !isInUse
   return (
-    <Row key={remote.name}>
-      <div>
-        <VersionBlock>
+    <Card key={remote.name}>
+      <Column>
+        <Row>
           <Name>{remote.name}</Name>
-          {remote.name === bundledVersion && <PreRelease>(bundled)</PreRelease>}
-          {remote.isPreRelease && <PreRelease>(pre-release)</PreRelease>}
-        </VersionBlock>
-        <ReleaseBlock>
-          <div>({date2human(remote.releasedAt)})</div>
-          {/*{releaseNotes && <Tooltip title={releaseNotes} />}*/}
-        </ReleaseBlock>
-      </div>
-      <div>
-        {!local && (
-          <Button
-            loading={isLoading}
-            onClick={onDownload}
-            disabled={isDownloadInProgress}
-            variant="outlined"
-            label="Download"
-          />
-        )}
-        {canSwitchTo && (
-          <Button
-            loading={isLoading}
-            onClick={onSwitchVersion}
-            disabled={isDownloadInProgress}
-            variant="blue"
-            label="Switch"
-          />
-        )}
-      </div>
-    </Row>
+          <Status>{remote.name === bundledVersion ? 'bundled' : 'pre-release'}</Status>
+        </Row>
+        <Row>
+          <Date>{date2human(remote.releasedAt)}</Date>
+        </Row>
+      </Column>
+      {!local && (
+        <Button
+          loading={isLoading}
+          onClick={onDownload}
+          disabled={isDownloadInProgress}
+          variant="outlined"
+          label="Download"
+        />
+      )}
+      {canSwitchTo && (
+        <Button loading={isLoading} onClick={onSwitchVersion} disabled={isDownloadInProgress} label="Switch" />
+      )}
+    </Card>
   )
 }

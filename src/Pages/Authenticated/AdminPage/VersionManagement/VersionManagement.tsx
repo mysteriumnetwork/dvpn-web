@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   LocalVersion,
   LocalVersionsResponse,
@@ -234,8 +234,14 @@ export const VersionManagement = () => {
     <>
       <Info>
         <Card>
-          {infoRow('Bundled:', state.ui.bundledVersion)}
-          {infoRow('Used:', state.ui.usedVersion)}
+          <InfoRow>
+            <div>Bundled:</div>
+            <div>{state.ui.bundledVersion}</div>
+          </InfoRow>
+          <InfoRow>
+            <div>Used:</div>
+            <div>{state.ui.usedVersion}</div>
+          </InfoRow>
         </Card>
         <Controls>
           <Button onClick={() => init(true)} loading={state.isLoading} variant="outlined" label="Flush Cache" />
@@ -249,10 +255,3 @@ export const VersionManagement = () => {
     </>
   )
 }
-
-const infoRow = (key: string, value: string): JSX.Element => (
-  <InfoRow>
-    <div>{key}</div>
-    <div>{value}</div>
-  </InfoRow>
-)
