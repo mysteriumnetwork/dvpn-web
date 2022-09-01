@@ -15,7 +15,7 @@ import { PanelCard } from '../PanelCard'
 import { nanoid } from 'nanoid'
 
 const Container = styled.div`
-  max-height: 500px;
+  max-height: 400px;
   display: flex;
   flex-direction: column;
   gap: 10px;
