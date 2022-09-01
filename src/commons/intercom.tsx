@@ -42,5 +42,15 @@ export const useIntercom = (options: Options = DEFAULT_OPTIONS) => {
   // @ts-ignore
   const hide = () => window.Intercom('hide')
 
-  return { show, hide, open }
+  const reportIssue = async (cb: (userId?: string) => Promise<any>) => {
+    // @ts-ignore
+    const userId = window.Intercom('getVisitorId')
+    await cb(userId)
+    // @ts-ignore
+    window.Intercom('update')
+    // @ts-ignore
+    window.Intercom('showMessages')
+  }
+
+  return { show, hide, open, reportIssue }
 }

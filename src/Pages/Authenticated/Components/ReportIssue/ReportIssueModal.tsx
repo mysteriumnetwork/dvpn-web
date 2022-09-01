@@ -17,6 +17,7 @@ import { TextArea } from '../../../../Components/Inputs/TextArea'
 import { devices } from '../../../../theme/themes'
 import { useIntercom } from '../../../../commons/intercom'
 import zIndexes from '../../../../constants/z-indexes'
+import errors from '../../../../commons/errors'
 
 const { api } = tequila
 
@@ -79,15 +80,11 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
   const reportIssue = async () => {
     setSending(true)
     try {
-      // @ts-ignore
-      const userId = window.Intercom('getVisitorId')
-      await api.reportIssueIntercom({ email: email, description: message, userId: userId, userType: 'provider' }, 60000)
-      // @ts-ignore
-      window.Intercom('update')
-      // @ts-ignore
-      window.Intercom('showMessages')
-    } catch (e) {
-      console.log(e)
+      await intercom.reportIssue((userId) =>
+        api.reportIssueIntercom({ email: email, description: message, userId: userId, userType: 'provider' }, 60000),
+      )
+    } catch (err: any) {
+      errors.parseToastError(err)
     }
     setSending(false)
   }
