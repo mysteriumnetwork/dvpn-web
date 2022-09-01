@@ -14,6 +14,7 @@ import complexActions from '../../../../redux/complex.actions'
 import { Switch } from '../../../../Components/Switch/Switch'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { PanelCard } from '../PanelCard'
 
 const Overlay = styled.div`
   position: absolute;
@@ -34,31 +35,26 @@ const Spinner = styled(CircularSpinner)`
   border: 6px solid ${themeCommon.colorWhite};
   z-index: 1001;
 `
-const Content = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  padding: 20px;
-  border-radius: 20px;
-  background-color: ${({ theme }) => theme.bgSettingsCard};
-  gap: 15px;
-  margin-left: 50px;
-`
 const Feature = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 15px;
+  gap: 5px;
 `
 const Row = styled.div`
   display: flex;
+  width: 400px;
   align-items: center;
   justify-content: space-between;
 `
 const Name = styled.div`
   margin-bottom: 5px;
+  color: ${({ theme }) => theme.text.colorMain};
 `
-const Description = styled.div``
+const Description = styled.div`
+  color: ${({ theme }) => theme.text.colorSecondary};
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+`
 const capitalize = (s: string) => {
   return s[0].toUpperCase() + s.slice(1)
 }
@@ -97,13 +93,13 @@ export const FeatureToggle = () => {
   })
 
   return (
-    <Content>
+    <PanelCard title="Toggle features">
       {loading && (
         <Overlay>
           <Spinner />
         </Overlay>
       )}
       {featureList}
-    </Content>
+    </PanelCard>
   )
 }

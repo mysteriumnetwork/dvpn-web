@@ -54,14 +54,6 @@ const Data = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
   font-weight: 400;
 `
-const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding: 20px;
-  border-radius: 20px;
-  background: ${({ theme }) => theme.bgSettingsCard};
-`
 const List = styled.div`
   margin-top: 25px;
   display: flex;
