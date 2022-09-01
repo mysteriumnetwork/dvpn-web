@@ -150,7 +150,7 @@ export const MobileMenu = ({ show, toggleMenu }: Props) => {
   )
   const Controllers = useMemo(() => {
     return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
-      return <Component key={`mobile-menu-controller-${name}`} transition={show} title={name} />
+      return <Component key={`mobile-menu-controller-${name}`} expanded={show} title={name} />
     })
   }, [show])
   return (
