@@ -17,7 +17,7 @@ import errors from '../../../../commons/errors'
 import { VersionCard } from './VersionCard'
 import { Button } from '../../../../Components/Inputs/Button'
 import styled from 'styled-components'
-
+import { PanelCard } from '../PanelCard'
 const { parseToastError } = errors
 
 interface State {
@@ -221,7 +221,7 @@ export const VersionManagement = () => {
     )
   }
   return (
-    <Card>
+    <PanelCard title="Version management">
       <Row>
         <Label>Bundled:</Label>
         <Data>{state.ui.bundledVersion}</Data>
@@ -235,6 +235,6 @@ export const VersionManagement = () => {
         )}
       </Row>
       <List>{versionList}</List>
-    </Card>
+    </PanelCard>
   )
 }

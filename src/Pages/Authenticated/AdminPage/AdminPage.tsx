@@ -8,16 +8,24 @@ import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { FeatureToggle } from './FeatureToggle/FeatureToggle'
 import { VersionManagement } from './VersionManagement/VersionManagement'
 import { ErrorLog } from './ErrorLog/ErrorLog'
+import styled from 'styled-components'
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+`
 
 export const AdminPage = () => {
   return (
     <Layout title="Admin panel" loading={false}>
       <LayoutRow>
         <VersionManagement />
-        <FeatureToggle />
-      </LayoutRow>
-      <LayoutRow>
-        <ErrorLog />
+        <Column>
+          <FeatureToggle />
+          <ErrorLog />
+        </Column>
       </LayoutRow>
     </Layout>
   )

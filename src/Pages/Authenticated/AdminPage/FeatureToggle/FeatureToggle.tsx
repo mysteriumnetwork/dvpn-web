@@ -9,42 +9,65 @@ import { configs } from '../../../../commons/config'
 import FEATURES from '../../../../commons/features'
 import { selectors } from '../../../../redux/selectors'
 import { useAppSelector } from '../../../../commons/hooks'
-import { Button } from '../../../../Components/Inputs/Button'
 import styled from 'styled-components'
 import complexActions from '../../../../redux/complex.actions'
+import { Switch } from '../../../../Components/Switch/Switch'
+import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
+import { themeCommon } from '../../../../theme/themeCommon'
 
+const Overlay = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background: ${themeCommon.colorDarkBlue}6A;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const Spinner = styled(CircularSpinner)`
+  width: 50px;
+  height: 50px;
+  border: 6px solid ${themeCommon.colorWhite};
+  z-index: 1001;
+`
 const Content = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
-  width: 100%;
-
+  padding: 20px;
+  border-radius: 20px;
+  background-color: ${({ theme }) => theme.bgSettingsCard};
   gap: 15px;
-
-  overflow-y: auto;
+  margin-left: 50px;
 `
 const Feature = styled.div`
-  display: grid;
-  grid-template-columns: 0.25fr 2fr 1fr;
-  justify-content: space-between;
-  width: 500px;
-  gap: 15px;
-`
-const Enabled = styled.div``
-const Info = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+`
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 const Name = styled.div`
   margin-bottom: 5px;
 `
 const Description = styled.div``
-
+const capitalize = (s: string) => {
+  return s[0].toUpperCase() + s.slice(1)
+}
 export const FeatureToggle = () => {
   const config = useAppSelector(selectors.currentConfig)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const toggle = async (name: string) => {
-    setIsLoading(true)
+    setLoading(true)
     const isEnabled = configs.isFeatureEnabled(config, name)
     const enabledFeatures = configs.uiFeatures(config)
 
@@ -55,7 +78,7 @@ export const FeatureToggle = () => {
         await complexActions.setFeatures([...enabledFeatures, name])
       }
     } finally {
-      setIsLoading(false)
+      setLoading(false)
     }
   }
 
@@ -64,15 +87,23 @@ export const FeatureToggle = () => {
     const isEnabled = configs.isFeatureEnabled(config, feature.name)
     return (
       <Feature key={feature.name}>
-        <Enabled>{isEnabled && 'X'}</Enabled>
-        <Info>
-          <Name>{feature.name}</Name>
-          <Description>{feature.description}</Description>
-        </Info>
-        <Button onClick={() => toggle(feature.name)} loading={isLoading} variant="outlined" label="Toggle" />
+        <Row>
+          <Name>{capitalize(feature.name)}</Name>
+          <Switch onChange={() => toggle(feature.name)} checked={isEnabled} />
+        </Row>
+        <Description>{feature.description}</Description>
       </Feature>
     )
   })
 
-  return <Content>{featureList}</Content>
+  return (
+    <Content>
+      {loading && (
+        <Overlay>
+          <Spinner />
+        </Overlay>
+      )}
+      {featureList}
+    </Content>
+  )
 }
