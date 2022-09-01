@@ -6,6 +6,13 @@
  */
 import { useEffect, useState } from 'react'
 
+export const DEFAULT_OPTIONS: Options = {
+  hideLauncher: true,
+  alignment: 'left',
+  horizontalPadding: 100,
+  verticalPadding: 200,
+}
+
 interface Options {
   hideLauncher?: boolean
   alignment?: 'left' | 'right'
@@ -13,7 +20,7 @@ interface Options {
   horizontalPadding?: number
 }
 
-export const useIntercom = (options?: Options) => {
+export const useIntercom = (options: Options = DEFAULT_OPTIONS) => {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -28,7 +35,7 @@ export const useIntercom = (options?: Options) => {
       horizontal_padding: options?.horizontalPadding,
       vertical_padding: options?.verticalPadding,
     })
-  }, [options?.hideLauncher])
+  }, [options?.hideLauncher, options?.alignment, options?.hideLauncher, options?.verticalPadding])
 
   // @ts-ignore
   const show = () => window.Intercom('show')

@@ -10,6 +10,7 @@ import { themeCommon } from '../../theme/themeCommon'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { devices } from '../../theme/themes'
 import { ReactNode } from 'react'
+import zIndexes from '../../constants/z-indexes'
 
 interface Props {
   columns: Column<any>[]
@@ -30,7 +31,7 @@ const Spinner = styled(CircularSpinner)`
 `
 const Overlay = styled.div`
   position: absolute;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   left: 0;
   top: 0;
   width: 100%;

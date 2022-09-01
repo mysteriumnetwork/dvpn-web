@@ -23,7 +23,8 @@ export const ReportIssue = ({ title, expanded }: Props) => {
         title={title}
         expanded={expanded}
         icon={<BugButtonIcon />}
-        onClick={() => setShowModal(true)}
+        onClick={() => setShowModal((p) => !p)}
+        ignoreOverlay
       />
     </>
   )

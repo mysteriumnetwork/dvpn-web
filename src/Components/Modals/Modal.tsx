@@ -12,6 +12,7 @@ import { alphaToHex, themeCommon } from '../../theme/themeCommon'
 import { devices } from '../../theme/themes'
 import { media } from '../../commons/media'
 import { useMediaQuery } from 'react-responsive'
+import zIndexes from '../../constants/z-indexes'
 
 type ModalSize = 'xl'
 
@@ -25,7 +26,7 @@ const PageOverlay = styled.div`
   top: 0;
   left: 0;
 
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   background: ${({ theme }) => theme.modal.bgOverlay};
 `
 
@@ -55,9 +56,9 @@ const xlSize = css`
   }
 `
 
-const StyledModal = styled.div<{ $size?: ModalSize }>`
+const StyledModal = styled.div<{ $size?: ModalSize; $zIndex?: number }>`
   position: fixed;
-  z-index: 1001;
+  z-index: ${({ $zIndex }) => $zIndex ?? zIndexes.modal};
 
   ${({ $size }) => ($size ? xlSize : normalSize)}
 
@@ -135,7 +136,7 @@ const SpinnerOverlay = styled.div`
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   width: 100%;
   height: 100%;
   background: ${themeCommon.colorDarkBlue}6A;
@@ -163,6 +164,7 @@ interface Props {
   disableBackdrop?: boolean
   disableX?: boolean
   size?: ModalSize
+  zIndex?: number
 }
 
 export const Modal = ({
@@ -176,6 +178,7 @@ export const Modal = ({
   disableBackdrop,
   disableX,
   size,
+  zIndex,
 }: Props) => {
   const isMobile = useMediaQuery(isMobileQuery)
   if (!show) {
@@ -185,7 +188,7 @@ export const Modal = ({
   return (
     <>
       {!isMobile && <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />}
-      <StyledModal $size={size}>
+      <StyledModal $size={size} $zIndex={zIndex}>
         <Container>
           {loading && (
             <SpinnerOverlay>

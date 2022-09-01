@@ -18,6 +18,7 @@ import { tequila } from '../../../../api/tequila'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { devices } from '../../../../theme/themes'
 import { Prices } from './types'
+import zIndexes from '../../../../constants/z-indexes'
 
 const Card = styled.div`
   position: relative;
@@ -35,7 +36,7 @@ const Overlay = styled.div`
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   width: 100%;
   height: 100%;
   background: ${themeCommon.colorDarkBlue}6A;

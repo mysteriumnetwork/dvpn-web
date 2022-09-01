@@ -8,11 +8,12 @@
 import React from 'react'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import styled from 'styled-components'
+import zIndexes from '../../../../constants/z-indexes'
 
 const Overlay = styled.div`
   width: 100%;
   opacity: 0.5;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   height: 100%;
   background: #dfdfdf;
   position: fixed;
