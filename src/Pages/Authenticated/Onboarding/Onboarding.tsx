@@ -40,5 +40,5 @@ export const Onboarding = () => {
     return <RegistrationInProgressModal show />
   }
 
-  return <RegistrationInProgressModal show />
+  return <></>
 }
