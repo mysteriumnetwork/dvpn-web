@@ -9,6 +9,7 @@ import { ReactNode, useId } from 'react'
 import styled from 'styled-components'
 import { themeCommon } from '../../theme/themeCommon'
 import { devices } from '../../theme/themes'
+import zIndexes from '../../constants/z-indexes'
 interface BodyProps {
   $noContent: boolean
   $loading?: boolean
@@ -27,7 +28,7 @@ const Spinner = styled(CircularSpinner)`
 `
 const Overlay = styled.div`
   position: absolute;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   left: 0;
   top: 0;
   width: 100%;

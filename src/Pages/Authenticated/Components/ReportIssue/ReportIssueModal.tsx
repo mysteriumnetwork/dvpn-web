@@ -15,6 +15,9 @@ import { ChatIcon } from '../../../../Components/Icons/Icons'
 import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
 import { devices } from '../../../../theme/themes'
+import { useIntercom } from '../../../../intercom/intercom'
+import zIndexes from '../../../../constants/z-indexes'
+import errors from '../../../../commons/errors'
 
 const { api } = tequila
 
@@ -61,6 +64,7 @@ const StyledBugButtonIcon = styled(BugButtonIcon)`
 `
 
 export const ReportIssueModal = ({ show, onClose }: Props) => {
+  const intercom = useIntercom()
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [sending, setSending] = useState(false)
@@ -76,21 +80,16 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
   const reportIssue = async () => {
     setSending(true)
     try {
-      // @ts-ignore
-      const userId = window.Intercom('getVisitorId')
-      await api.reportIssueIntercom({ email: email, description: message, userId: userId, userType: 'provider' }, 60000)
-      // @ts-ignore
-      window.Intercom('update')
-      // @ts-ignore
-      window.Intercom('showMessages')
-    } catch (e) {
-      console.log(e)
+      await intercom.reportIssue((userId) =>
+        api.reportIssueIntercom({ email: email, description: message, userId: userId, userType: 'provider' }, 60000),
+      )
+    } catch (err: any) {
+      errors.parseToastError(err)
     }
     setSending(false)
   }
   const handleOpenIntercom = () => {
-    // @ts-ignore
-    window.Intercom('showNewMessage', 'Hi there! I need some assistance.')
+    intercom.show()
     handleClose()
   }
 
@@ -101,6 +100,7 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
       subTitle="Describe your issue"
       icon={<StyledBugButtonIcon />}
       onClickX={handleClose}
+      zIndex={zIndexes.overlay + 100}
     >
       <Content>
         <InputGroup

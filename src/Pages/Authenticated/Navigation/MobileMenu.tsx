@@ -11,6 +11,7 @@ import { ReactComponent as ArrowLeft } from '../../../assets/images/arrow-left.s
 import { LINK_DEFINITIONS, CONTROLLER_DEFINITIONS } from './definitions'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useMemo } from 'react'
+import zIndexes from '../../../constants/z-indexes'
 
 interface OverlayProps {
   $display: boolean
@@ -50,7 +51,7 @@ const Overlay = styled.div<OverlayProps>`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   background-color: ${themeCommon.colorDarkBlue + alphaToHex(0.77)};
   align-items: flex-start;
   transition: min-width 0.3s;
@@ -149,7 +150,7 @@ export const MobileMenu = ({ show, toggleMenu }: Props) => {
   )
   const Controllers = useMemo(() => {
     return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
-      return <Component key={`mobile-menu-controller-${name}`} transition={show} title={name} />
+      return <Component key={`mobile-menu-controller-${name}`} expanded={show} title={name} />
     })
   }, [show])
   return (

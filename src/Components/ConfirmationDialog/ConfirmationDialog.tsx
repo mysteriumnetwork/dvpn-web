@@ -6,6 +6,7 @@
  */
 import styled from 'styled-components'
 import { Button } from '../Inputs/Button'
+import zIndexes from '../../constants/z-indexes'
 
 const PageOverlay = styled.div`
   position: fixed;
@@ -15,13 +16,13 @@ const PageOverlay = styled.div`
   top: 0;
   left: 0;
 
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   background: ${({ theme }) => theme.modal.bgOverlay};
 `
 
 const StyledConfirmationDialog = styled.div`
   position: fixed;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
 
   width: 400px;
 

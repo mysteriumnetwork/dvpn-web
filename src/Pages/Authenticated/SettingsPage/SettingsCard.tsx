@@ -8,6 +8,7 @@ import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { CircularSpinner } from '../../../Components/CircularSpinner/CircularSpinner'
 import { themeCommon } from '../../../theme/themeCommon'
+import zIndexes from '../../../constants/z-indexes'
 
 const Container = styled.div`
   position: relative;
@@ -31,7 +32,7 @@ const Content = styled.div`
 
 const LoadingOverlay = styled.div`
   position: absolute;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   width: 100%;
   height: 100%;
   top: 0;

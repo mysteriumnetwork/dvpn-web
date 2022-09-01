@@ -105,7 +105,7 @@ export const DesktopNavigation = () => {
   )
   const Controllers = useMemo(() => {
     return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
-      return <Component key={`desktop-menu-controller-${name}`} transition={open} title={name} />
+      return <Component key={`desktop-menu-controller-${name}`} expanded={open} title={name} />
     })
   }, [open])
   return (

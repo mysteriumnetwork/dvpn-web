@@ -11,6 +11,8 @@ import styled, { css } from 'styled-components'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import { devices } from '../../../../theme/themes'
 import { Header } from './Header'
+import zIndexes from '../../../../constants/z-indexes'
+import { useIntercom } from '../../../../intercom/intercom'
 
 const Main = styled.main`
   position: relative;
@@ -30,7 +32,7 @@ const Content = styled.div`
 const Overlay = styled.div`
   width: 100%;
   opacity: 0.5;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   height: 100%;
   background: #dfdfdf;
   position: absolute;
@@ -70,7 +72,7 @@ export const Layout = ({ logo, title, children, loading }: Props) => {
   const isSSELoading = useAppSelector(selectors.isSSELoading)
 
   const showSpinner = loading || isSSELoading || isAppLoading
-
+  useIntercom()
   return (
     <Main>
       {showSpinner && <PageSpinner />}
