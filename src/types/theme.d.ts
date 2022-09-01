@@ -113,7 +113,9 @@ export type Theme = {
     strokeDisabled: string
     strokeError: string
   }
-
+  versionManagement: {
+    bgCard: string
+  }
   textInput: {
     textColor: string
     textColorDisabled: string

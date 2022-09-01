@@ -151,7 +151,9 @@ const dark: Omit<Theme, 'common'> = {
       online: themeCommon.colorWhite,
     },
   },
-
+  versionManagement: {
+    bgCard: themeCommon.colorGrayBlue2,
+  },
   notifications: {
     background: themeCommon.colorKeyLight,
     list: {

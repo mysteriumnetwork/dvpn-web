@@ -9,29 +9,32 @@ import dates from '../../../../commons/dates'
 import { Button } from '../../../../Components/Inputs/Button'
 import styled from 'styled-components'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { ReactComponent as Triangle } from '../../../../assets/images/triangle-down.svg'
+import { useState } from 'react'
 
 const { date2human } = dates
-
+interface AccordeonProps {
+  show: boolean
+}
 const Card = styled.div`
   padding: 20px;
   border-radius: 20px;
-  background: ${({ theme }) => theme.bgSettingsCard};
-  gap: 40px;
+  background: ${({ theme }) => theme.versionManagement.bgCard};
+  gap: 10px;
   width: 350px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+`
+const Arrow = styled(Triangle)<AccordeonProps>`
+  transform: ${({ show }) => show && 'rotate(180deg)'};
 `
 const Row = styled.div`
   display: flex;
   gap: 15px;
+  width: 100%;
   align-items: center;
-`
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 80%;
+  justify-content: space-between;
 `
 const Status = styled.div`
   color: ${themeCommon.colorKey};
@@ -46,6 +49,17 @@ const Date = styled.div`
   color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
 `
+const AccordeonSwitch = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.text.colorSecondary};
+  align-items: center;
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  gap: 10px;
+  cursor: pointer;
+`
+const Accordeon = styled.div<AccordeonProps>`
+  display: ${({ show }) => (show ? 'flex' : 'none')};
+`
 interface Props {
   remote: RemoteVersion
   local?: LocalVersion
@@ -53,9 +67,10 @@ interface Props {
   releaseNotes?: JSX.Element
   onDownload?: () => void
   onSwitchVersion: () => void
-  isDownloadInProgress: boolean
-  isInUse: boolean
-  isLoading?: boolean
+  downloadInProgress: boolean
+  inUse: boolean
+  preRelease?: boolean
+  loading?: boolean
 }
 
 export const VersionCard = ({
@@ -64,34 +79,47 @@ export const VersionCard = ({
   bundledVersion,
   onDownload,
   onSwitchVersion,
-  isDownloadInProgress,
-  isInUse,
-  isLoading,
+  downloadInProgress,
+  releaseNotes,
+  inUse,
+  preRelease,
+  loading,
 }: Props) => {
-  const canSwitchTo = local && !isInUse
+  const canSwitchTo = local && !inUse
+  const isBundled = remote.name === bundledVersion
+  const canDownload = !local && !isBundled
+  const [showNotes, setShowNotes] = useState(false)
+  const handleAccordeon = () => setShowNotes(!showNotes)
   return (
     <Card key={remote.name}>
-      <Column>
-        <Row>
+      <Row>
+        <div>
           <Name>{remote.name}</Name>
-          <Status>{remote.name === bundledVersion ? 'bundled' : 'pre-release'}</Status>
-        </Row>
-        <Row>
-          <Date>{date2human(remote.releasedAt)}</Date>
-        </Row>
-      </Column>
-      {!local && (
-        <Button
-          loading={isLoading}
-          onClick={onDownload}
-          disabled={isDownloadInProgress}
-          variant="outlined"
-          label="Download"
-        />
-      )}
-      {canSwitchTo && (
-        <Button loading={isLoading} onClick={onSwitchVersion} disabled={isDownloadInProgress} label="Switch" />
-      )}
+          <Status>
+            {isBundled && 'bundled'}
+            {preRelease && 'pre-release'}
+          </Status>
+        </div>
+
+        {canDownload && (
+          <Button
+            loading={loading}
+            onClick={onDownload}
+            disabled={downloadInProgress}
+            variant="outlined"
+            label="Download"
+          />
+        )}
+        {canSwitchTo && (
+          <Button loading={loading} onClick={onSwitchVersion} disabled={downloadInProgress} label="Switch" />
+        )}
+      </Row>
+      <Date>{date2human(remote.releasedAt)}</Date>
+      <AccordeonSwitch onClick={handleAccordeon}>
+        Show release notes
+        <Arrow show={showNotes} />
+      </AccordeonSwitch>
+      <Accordeon show={showNotes}>{releaseNotes ? releaseNotes : 'No notes for this release'}</Accordeon>
     </Card>
   )
 }
