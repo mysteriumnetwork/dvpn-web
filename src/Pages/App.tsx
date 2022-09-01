@@ -16,6 +16,7 @@ import { UI_THEME_KEY } from '../constants/remote-storage.keys'
 import { StateInitializer } from './StateInitializer'
 import { OffsetToastsGlobalCSS, StyledToastContainer } from '../Components/Toasts/StyledToastContainer'
 import { GlobalStyle } from './GlobalStyle'
+import { IntercomLoader } from '../intercom/IntercomLoader'
 
 export const App = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
@@ -27,6 +28,7 @@ export const App = () => {
       <Hotkeys>
         <NodeHealthcheckBarrier>
           <StateInitializer>
+            <IntercomLoader />
             <AppRouter />
           </StateInitializer>
         </NodeHealthcheckBarrier>

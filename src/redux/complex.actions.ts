@@ -13,6 +13,7 @@ import {
   updateBeneficiaryStore,
   updateBeneficiaryTxStatusStore,
   updateChainSummaryStore,
+  updateChatOpenedStore,
   updateConfigStore,
   updateDefaultConfigStore,
   updateFeesStore,
@@ -163,6 +164,8 @@ const setUserConfig = async (data: any): Promise<Config> => {
   return await api.updateUserConfig({ data }).then(refreshStoreConfig)
 }
 
+const setChatOpened = (b: boolean) => store.dispatch(updateChatOpenedStore(b))
+
 const complexActions = {
   loadAppStateAfterAuthenticationAsync,
   setTrafficShaping,
@@ -171,6 +174,7 @@ const complexActions = {
   refreshBeneficiary,
   setFeatures,
   refreshStoreConfig,
+  setChatOpened,
 }
 
 export default complexActions

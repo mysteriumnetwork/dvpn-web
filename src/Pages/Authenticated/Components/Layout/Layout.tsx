@@ -12,6 +12,7 @@ import { CircularSpinner } from '../../../../Components/CircularSpinner/Circular
 import { devices } from '../../../../theme/themes'
 import { Header } from './Header'
 import zIndexes from '../../../../constants/z-indexes'
+import { useIntercom } from '../../../../intercom/intercom'
 
 const Main = styled.main`
   position: relative;
@@ -71,7 +72,7 @@ export const Layout = ({ logo, title, children, loading }: Props) => {
   const isSSELoading = useAppSelector(selectors.isSSELoading)
 
   const showSpinner = loading || isSSELoading || isAppLoading
-
+  useIntercom()
   return (
     <Main>
       {showSpinner && <PageSpinner />}

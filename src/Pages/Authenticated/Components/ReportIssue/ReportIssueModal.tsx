@@ -15,7 +15,7 @@ import { ChatIcon } from '../../../../Components/Icons/Icons'
 import { BugButtonIcon } from '../../../../Components/Icons/ButtonIcons'
 import { TextArea } from '../../../../Components/Inputs/TextArea'
 import { devices } from '../../../../theme/themes'
-import { useIntercom } from '../../../../commons/intercom'
+import { useIntercom } from '../../../../intercom/intercom'
 import zIndexes from '../../../../constants/z-indexes'
 import errors from '../../../../commons/errors'
 

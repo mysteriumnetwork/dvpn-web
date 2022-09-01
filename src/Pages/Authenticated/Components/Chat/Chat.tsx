@@ -6,7 +6,7 @@
  */
 
 import { ChatNavIcon } from '../../../../Components/Icons/NavigationIcons'
-import { useIntercom } from '../../../../commons/intercom'
+import { useIntercom } from '../../../../intercom/intercom'
 import { ExpandableControl } from '../../../../Components/Navigation/ExpandableControl'
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
 
 export const Chat = ({ title, expanded }: Props) => {
   const { show, hide, open } = useIntercom()
+
   return (
     <ExpandableControl
       title={title}

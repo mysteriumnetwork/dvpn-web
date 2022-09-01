@@ -13,7 +13,6 @@ import { sseAppStateStateChanged } from '../redux/sse.slice'
 import { selectors } from '../redux/selectors'
 import { tequila } from '../api/tequila'
 import ConnectToSSE from '../sse/server-sent-events'
-import { loadIntercomCookie } from './intercom'
 
 interface Props {
   children: ReactNode
@@ -51,9 +50,6 @@ export const StateInitializer = ({ children }: Props) => {
     if (!loggedIn) {
       return
     }
-
-    loadIntercomCookie()
-
     ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state))
   }, [loggedIn])
 

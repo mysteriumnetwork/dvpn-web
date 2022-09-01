@@ -51,6 +51,7 @@ export interface AppState {
   beneficiaryTxStatus: BeneficiaryTxStatus
   healthCheckResponse: NodeHealthcheck
   natType: NatTypeResponse
+  chatOpened: boolean
 }
 
 const INITIAL_STATE: AppState = {
@@ -82,6 +83,7 @@ const INITIAL_STATE: AppState = {
   beneficiaryTxStatus: BENEFICIARY_TX_STATUS_EMPTY,
   healthCheckResponse: HEALTHCHECK_EMPTY,
   natType: NAT_TYPE_RESPONSE_EMPTY,
+  chatOpened: false,
 }
 
 const slice = createSlice({
@@ -124,6 +126,9 @@ const slice = createSlice({
     updateNatTypeResponseStore: (state, action) => {
       state.natType = action.payload
     },
+    updateChatOpenedStore: (state, action) => {
+      state.chatOpened = action.payload
+    },
   },
 })
 
@@ -140,6 +145,7 @@ export const {
   updateBeneficiaryTxStatusStore,
   updateHealthCheckResponseStore,
   updateNatTypeResponseStore,
+  updateChatOpenedStore,
 } = slice.actions
 
 export default slice.reducer
