@@ -20,6 +20,7 @@ import { useAppSelector } from '../../../commons/hooks'
 import { myst } from '../../../commons/mysts'
 import { selectors } from '../../../redux/selectors'
 import { MobileMenu } from './MobileMenu'
+import zIndexes from '../../../constants/z-indexes'
 
 const Content = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const Content = styled.div`
   position: fixed;
   height: 100px;
   top: 0;
-  z-index: 1002;
+  z-index: ${zIndexes.mobileNavigation};
   padding: 0 10px 0 10px;
   align-items: center;
   justify-content: space-between;

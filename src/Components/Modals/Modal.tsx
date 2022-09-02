@@ -150,7 +150,7 @@ const Spinner = styled(CircularSpinner)`
   width: 50px;
   height: 50px;
   border: 6px solid ${themeCommon.colorWhite};
-  z-index: 1001;
+  z-index: ${zIndexes.spinner};
 `
 
 interface Props {

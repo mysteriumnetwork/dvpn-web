@@ -28,7 +28,7 @@ const Spinner = styled(CircularSpinner)`
   top: 0;
   bottom: 0;
   margin: auto;
-  z-index: 1001;
+  z-index: ${zIndexes.spinner};
   position: fixed;
 `
 

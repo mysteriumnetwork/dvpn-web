@@ -61,7 +61,7 @@ const Menu = styled.div<OverlayProps>`
   height: 100vh;
   max-width: ${({ $display }) => ($display ? '70vw' : 0)};
   min-width: ${({ $display }) => ($display ? '60vw' : 0)};
-  z-index: 1002;
+  z-index: ${zIndexes.mobileMenu};
   position: fixed;
   top: 0;
   left: 0;

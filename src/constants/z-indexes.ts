@@ -7,10 +7,22 @@
 
 const overlay = 1000
 const modal = 1001
+const mobileMenu = 1002
+const mobileNavigation = 1002
+const settleModal = 1003
+const buttonOverlay = 10
+const buttonSpinner = 11
+const spinner = 1001
 
 const zIndexes = {
   overlay,
   modal,
+  mobileMenu,
+  mobileNavigation,
+  settleModal,
+  buttonOverlay,
+  buttonSpinner,
+  spinner,
 }
 
 export default zIndexes

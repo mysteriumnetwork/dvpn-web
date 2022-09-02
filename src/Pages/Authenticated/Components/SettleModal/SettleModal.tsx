@@ -25,6 +25,7 @@ import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
 import { updateBeneficiaryTxStatusStore } from '../../../../redux/app.slice'
 import { devices } from '../../../../theme/themes'
 import complexActions from '../../../../redux/complex.actions'
+import zIndexes from '../../../../constants/z-indexes'
 
 const Error = styled.div`
   color: red;
@@ -197,7 +198,7 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
 
   const showErrors = state.errors.length > 0
   return (
-    <Modal show={show} title="Settle" icon={<SettleButtonIcon />} onClickX={handleClose}>
+    <Modal show={show} title="Settle" icon={<SettleButtonIcon />} onClickX={handleClose} zIndex={zIndexes.settleModal}>
       <Content>
         <HeaderNote>External wallet address: </HeaderNote>
         <Container>

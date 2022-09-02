@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { alphaToHex, themeCommon } from '../../theme/themeCommon'
 import { ButtonProps } from './types'
+import zIndexes from '../../constants/z-indexes'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'blue'
 export type ButtonSize = 'small' | 'medium' | 'large'
@@ -137,7 +138,7 @@ const LoadingOverlay = styled.div<ButtonStyleProps>`
 
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: ${zIndexes.buttonOverlay};
   border-radius: ${({ $rounded }) => ($rounded ? '100px' : '5px')};
 `
 
@@ -145,7 +146,7 @@ const Spinner = styled(CircularSpinner)`
   width: 24px;
   height: 24px;
   border-color: ${themeCommon.colorWhite};
-  z-index: 11;
+  z-index: ${zIndexes.buttonSpinner};
   border-width: 2px;
 
   :before {
