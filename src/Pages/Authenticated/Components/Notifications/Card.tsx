@@ -23,7 +23,7 @@ const Container = styled.div<StyleProps>`
   width: 100%;
   border-radius: 15px;
   padding: 16px;
-  background: ${({ theme, $variant }) => theme.notifications.card[$variant].background};
+  background: ${({ theme, $variant }) => theme.notifications.card[$variant].bg};
 `
 
 const IconContainer = styled.div<StyleProps>`
@@ -33,7 +33,7 @@ const IconContainer = styled.div<StyleProps>`
   width: 36px;
   height: 36px;
   border-radius: 100%;
-  background: ${({ theme, $variant }) => theme.notifications.card[$variant].background};
+  background: ${({ theme, $variant }) => theme.notifications.card[$variant].bg};
 `
 
 const Row = styled.div`

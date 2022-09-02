@@ -47,7 +47,7 @@ const Dot = styled.div`
   width: 16px;
   height: 16px;
   border-radius: 100px;
-  background-color: ${({ theme }) => theme.notifications.background};
+  background-color: ${({ theme }) => theme.notifications.bg};
 
   right: 10%;
   top: 0;
@@ -75,7 +75,7 @@ const Arrow = styled.div`
   left: 226px;
   border-top: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid ${({ theme }) => theme.notifications.list.background};
+  border-bottom: 8px solid ${({ theme }) => theme.notifications.list.bg};
   border-left: 8px solid transparent;
 `
 

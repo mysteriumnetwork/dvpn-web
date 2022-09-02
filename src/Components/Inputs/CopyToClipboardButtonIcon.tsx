@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import Clipboard from 'clipboard'
 import toasts from '../../commons/toasts'
 import { nanoid } from 'nanoid'

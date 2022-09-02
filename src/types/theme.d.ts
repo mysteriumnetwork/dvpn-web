@@ -21,26 +21,26 @@ export type Theme = {
   bgSettlementMobile: string
 
   navigation: {
-    background: string
-    contentBackground: string
+    bg: string
+    contentBg: string
   }
 
   layout: {
     row: {
-      heroBackground: string
+      heroBg: string
     }
   }
 
   liveSessions: {
     card: {
-      background: string
+      bg: string
     }
   }
 
   report: {
-    reportCardRowBackground: string
+    reportCardRowBg: string
     card: {
-      background: string
+      bg: string
     }
     chart: {
       shadow: string
@@ -53,7 +53,7 @@ export type Theme = {
     disabledOpacity: string
 
     outlined: {
-      hoverBackgroundColor: string
+      hoverBgColor: string
     }
   }
 
@@ -113,15 +113,18 @@ export type Theme = {
     strokeDisabled: string
     strokeError: string
   }
-
+  adminPanel: {
+    bgCard: string
+    bgCardHover: string
+  }
   textInput: {
     textColor: string
     textColorDisabled: string
     textColorError: string
 
-    background: string
-    backgroundDisabled: string
-    backgroundError: string
+    bg: string
+    bgDisabled: string
+    bgError: string
 
     border: string
     borderDisabled: string
@@ -134,11 +137,11 @@ export type Theme = {
   }
   dndList: {
     textColor: string
-    background: string
+    bg: string
   }
 
   nodeStatus: {
-    background: {
+    bg: {
       online: string
       offline: string
       monitoringFailed: string
@@ -151,10 +154,10 @@ export type Theme = {
   }
 
   notifications: {
-    background: string
+    bg: string
 
     list: {
-      background: string
+      bg: string
       boxShadow: string
     }
 
@@ -162,28 +165,28 @@ export type Theme = {
       subjectTextColor: string
       messageTextColor: string
       positive: {
-        background: string
+        bg: string
       }
       negative: {
-        background: string
+        bg: string
       }
       neutral: {
-        background: string
+        bg: string
       }
       update: {
-        background: string
+        bg: string
       }
     }
   }
 
   tooltip: {
     textColor: string
-    background: string
+    bg: string
     boxShadow: string
   }
 
   nat: {
-    background: string
+    bg: string
   }
 
   indicator: {
@@ -196,7 +199,7 @@ export type Theme = {
     error: {
       color: string
     }
-    holeBackground: string
+    holeBg: string
   }
 
   a: {
@@ -205,18 +208,18 @@ export type Theme = {
 
   toasts: {
     success: {
-      iconBackground: string
+      iconBg: string
     }
     warning: {
-      iconBackground: string
+      iconBg: string
     }
     info: {
-      iconBackground: string
+      iconBg: string
     }
     error: {
-      iconBackground: string
+      iconBg: string
     }
-    background: string
+    bg: string
     contentTextColor: string
     closeButtonColor: string
   }
@@ -225,17 +228,17 @@ export type Theme = {
     valueTextColor: string
     placeholderTextColor: string
     border: string
-    backgroundColor: string
+    bgColor: string
     selectedOrFocusedValueColor: string
-    selectedValueBackgroundColor: string
-    focusedValueBackgroundColor: string
+    selectedValueBgColor: string
+    focusedValueBgColor: string
   }
 
   common: Common
 }
 
 export type Common = {
-  backgroundMysterium: string
+  bgMysterium: string
 
   colorKey: string
   colorKeyLight: string

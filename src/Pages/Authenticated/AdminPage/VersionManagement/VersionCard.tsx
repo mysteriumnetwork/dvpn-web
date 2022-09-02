@@ -6,41 +6,59 @@
  */
 import { LocalVersion, RemoteVersion } from '../../../../api/ui-version-management'
 import dates from '../../../../commons/dates'
-import React from 'react'
 import { Button } from '../../../../Components/Inputs/Button'
 import styled from 'styled-components'
+import { themeCommon } from '../../../../theme/themeCommon'
+import { ReactComponent as Triangle } from '../../../../assets/images/triangle-down.svg'
+import { useState } from 'react'
 
 const { date2human } = dates
-
+interface AccordionProps {
+  $show: boolean
+}
+const Card = styled.div`
+  padding: 20px;
+  border-radius: 20px;
+  background: ${({ theme }) => theme.adminPanel.bgCard};
+  gap: 10px;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
+const Arrow = styled(Triangle)<AccordionProps>`
+  transform: ${({ $show }) => $show && 'rotate(180deg)'};
+`
 const Row = styled.div`
-  padding: 35px;
-  border-radius: 5px;
-  background: #ffffff;
-
-  width: 500px;
-  height: 50px;
-
   display: flex;
+  gap: 15px;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
 `
-const VersionBlock = styled.div`
-  display: flex;
-`
-const ReleaseBlock = styled.div`
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 5px;
-  width: 200px;
-`
-
-const PreRelease = styled.div`
-  color: red;
+const Status = styled.div`
+  color: ${themeCommon.colorKey};
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+  font-weight: 700;
 `
 const Name = styled.div`
-  margin-right: 15px;
+  color: ${({ theme }) => theme.text.colorMain};
+  font-weight: 600;
+`
+const Date = styled.div`
+  color: ${({ theme }) => theme.text.colorSecondary};
+  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+`
+const AccordionSwitch = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.text.colorSecondary};
+  align-items: center;
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  gap: 10px;
+  cursor: pointer;
+`
+const Accordion = styled.div<AccordionProps>`
+  display: ${({ $show }) => ($show ? 'flex' : 'none')};
 `
 interface Props {
   remote: RemoteVersion
@@ -49,56 +67,59 @@ interface Props {
   releaseNotes?: JSX.Element
   onDownload?: () => void
   onSwitchVersion: () => void
-  isDownloadInProgress: boolean
-  isInUse: boolean
-  isLoading?: boolean
+  downloadInProgress: boolean
+  inUse: boolean
+  preRelease?: boolean
+  loading?: boolean
 }
 
 export const VersionCard = ({
   remote,
   local,
   bundledVersion,
-  releaseNotes,
   onDownload,
   onSwitchVersion,
-  isDownloadInProgress,
-  isInUse,
-  isLoading,
+  downloadInProgress,
+  releaseNotes,
+  inUse,
+  preRelease,
+  loading,
 }: Props) => {
-  const canSwitchTo = local && !isInUse
+  const canSwitchTo = local && !inUse
+  const isBundled = remote.name === bundledVersion
+  const canDownload = !local && !isBundled
+  const [showNotes, setShowNotes] = useState(false)
+  const handleAccordion = () => setShowNotes(!showNotes)
   return (
-    <Row key={remote.name}>
-      <div>
-        <VersionBlock>
+    <Card key={remote.name}>
+      <Row>
+        <div>
           <Name>{remote.name}</Name>
-          {remote.name === bundledVersion && <PreRelease>(bundled)</PreRelease>}
-          {remote.isPreRelease && <PreRelease>(pre-release)</PreRelease>}
-        </VersionBlock>
-        <ReleaseBlock>
-          <div>({date2human(remote.releasedAt)})</div>
-          {/*{releaseNotes && <Tooltip title={releaseNotes} />}*/}
-        </ReleaseBlock>
-      </div>
-      <div>
-        {!local && (
+          <Status>
+            {isBundled && 'bundled'}
+            {preRelease && 'pre-release'}
+          </Status>
+        </div>
+
+        {canDownload && (
           <Button
-            loading={isLoading}
+            loading={loading}
             onClick={onDownload}
-            disabled={isDownloadInProgress}
+            disabled={downloadInProgress}
             variant="outlined"
             label="Download"
           />
         )}
         {canSwitchTo && (
-          <Button
-            loading={isLoading}
-            onClick={onSwitchVersion}
-            disabled={isDownloadInProgress}
-            variant="blue"
-            label="Switch"
-          />
+          <Button loading={loading} onClick={onSwitchVersion} disabled={downloadInProgress} label="Switch" />
         )}
-      </div>
-    </Row>
+      </Row>
+      <Date>{date2human(remote.releasedAt)}</Date>
+      <AccordionSwitch onClick={handleAccordion}>
+        Show release notes
+        <Arrow $show={showNotes} />
+      </AccordionSwitch>
+      <Accordion $show={showNotes}>{releaseNotes ? releaseNotes : 'No notes for this release'}</Accordion>
+    </Card>
   )
 }

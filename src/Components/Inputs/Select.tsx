@@ -32,22 +32,22 @@ export const Select = ({ options = [], onChange = () => {}, value, id, isClearab
             color: s.isSelected || s.isFocused ? theme.dropdown.selectedOrFocusedValueColor : theme.text.colorMain,
             backgroundColor: `${
               s.isSelected
-                ? theme.dropdown.selectedValueBackgroundColor
+                ? theme.dropdown.selectedValueBgColor
                 : s.isFocused
-                ? theme.dropdown.focusedValueBackgroundColor
-                : theme.dropdown.backgroundColor
+                ? theme.dropdown.focusedValueBgColor
+                : theme.dropdown.bgColor
             }`,
           }
         },
         control: (p, s) => ({
           ...p,
-          backgroundColor: `${theme.dropdown.backgroundColor}`,
+          backgroundColor: `${theme.dropdown.bgColor}`,
           border: theme.dropdown.border,
           borderRadius: '5px',
         }),
         menuList: (p, s) => ({
           ...p,
-          backgroundColor: `${theme.dropdown.backgroundColor}`,
+          backgroundColor: `${theme.dropdown.bgColor}`,
           color: `${theme.text.colorMain}`,
         }),
       }}

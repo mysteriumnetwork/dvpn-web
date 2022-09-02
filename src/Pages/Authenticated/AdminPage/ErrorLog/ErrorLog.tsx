@@ -11,83 +11,53 @@ import dates from '../../../../commons/dates'
 import Clipboard from 'clipboard'
 import toasts from '../../../../commons/toasts'
 import styled from 'styled-components'
+import { PanelCard } from '../PanelCard'
+import { nanoid } from 'nanoid'
 
-const Content = styled.div`
-  position: relative;
+const Container = styled.div`
+  max-height: 400px;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-x: hidden;
+  gap: 10px;
   overflow-y: scroll;
+  padding: 5px;
 `
-
-export const ErrorLog = () => {
-  const [errorLog, setErrorLog] = useState<EL>({ errors: [] })
-
-  useEffect(() => {
-    setErrorLog(storage.get<EL>(errorInterceptors.KEY_ERROR_LOG) || { errors: [] })
-  }, [])
-
-  return (
-    <Content>
-      {errorLog.errors
-        .sort((a, b) => b.createdAt - a.createdAt)
-        .map((error, index) => (
-          <Row key={index} {...error} />
-        ))}
-    </Content>
-  )
-}
-
-const RowContent = styled.div`
+const Card = styled.div`
   cursor: pointer;
   &:hover {
-    background-color: #f1e1ff;
+    background-color: ${({ theme }) => theme.adminPanel.bgCardHover};
   }
-  //border: 1px solid $inputs-labels-text-color;
-  background-color: #ffffff;
-  border-radius: 0.4rem;
-  padding-top: 0.5rem;
-
-  //color: $light-key-color;
-
-  display: grid;
-  grid-template-areas:
-    'time       tag         code'
-    'message    message     message';
+  background-color: ${({ theme }) => theme.adminPanel.bgCard};
+  border-radius: 20px;
+  padding: 20px;
+  width: 400px;
+  display: flex;
 `
-
-const Time = styled.div`
-  padding-left: 0.5rem;
-  grid-area: time;
-  //font-size: $smaller-size;
+const Row = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 50px;
+  justify-content: space-between;
 `
-const Code = styled.div`
-  grid-area: code;
-  //font-size: $smaller-size;
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 15px;
+  width: 100%;
 `
-const Tag = styled.div`
-  grid-area: tag;
-  //font-size: $smaller-size;
+const Name = styled.div`
+  color: ${({ theme }) => theme.text.colorMain};
 `
-const Message = styled.div`
-  grid-area: message;
-
-  //font-size: $normal-size;
-
-  width: 60%;
-
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  //color: $main-text-color;
+const Value = styled.div`
+  color: ${({ theme }) => theme.text.colorSecondary};
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
 `
-
-// TODO fix copy to clipboard
-const Row = ({ code, message, tag, createdAt }: ErrorEntry) => {
+const Error = ({ code, message, tag, createdAt }: ErrorEntry) => {
+  const uid = useMemo(() => nanoid(), [])
   useEffect(() => {
-    const clipboard = new Clipboard('.copy-error-clip')
+    const clipboard = new Clipboard(`.${uid}`)
     return () => clipboard.destroy()
   }, [])
 
@@ -98,11 +68,49 @@ const Row = ({ code, message, tag, createdAt }: ErrorEntry) => {
   )
 
   return (
-    <RowContent onClick={() => toasts.toastSuccess('Copied to Clipboard')} data-clipboard-text={copyText}>
-      <Time>{dates.date2human(new Date(createdAt).toISOString())}</Time>
-      <Code>{code}</Code>
-      <Tag>{tag}</Tag>
-      <Message>{message}</Message>
-    </RowContent>
+    <Card className={uid} onClick={() => toasts.toastSuccess('Copied to Clipboard')} data-clipboard-text={copyText}>
+      <Column>
+        <Row>
+          <Column>
+            <Name>Time:</Name>
+            <Value>{dates.date2human(new Date(createdAt).toISOString())}</Value>
+          </Column>
+          <Column>
+            <Name>Error code:</Name>
+            <Value>{code}</Value>
+          </Column>
+        </Row>
+        <Row>
+          <Column>
+            <Name>Error tag:</Name>
+            <Value>{tag}</Value>
+          </Column>
+          <Column>
+            <Name>Error message:</Name>
+            <Value>{message}</Value>
+          </Column>
+        </Row>
+      </Column>
+    </Card>
+  )
+}
+
+export const ErrorLog = () => {
+  const [errorLog, setErrorLog] = useState<EL>({ errors: [] })
+
+  useEffect(() => {
+    setErrorLog(storage.get<EL>(errorInterceptors.KEY_ERROR_LOG) || { errors: [] })
+  }, [])
+
+  return (
+    <PanelCard title="Error logs">
+      <Container>
+        {errorLog.errors
+          .sort((a, b) => b.createdAt - a.createdAt)
+          .map((error, index) => (
+            <Error key={index} {...error} />
+          ))}
+      </Container>
+    </PanelCard>
   )
 }

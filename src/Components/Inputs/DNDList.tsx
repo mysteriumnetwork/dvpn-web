@@ -21,7 +21,7 @@ const StyledDraggable = styled.div`
   align-items: center;
 
   color: ${({ theme }) => theme.dndList.textColor};
-  background: ${({ theme }) => theme.dndList.background};
+  background: ${({ theme }) => theme.dndList.bg};
   border-radius: 5px;
   padding: 10px;
   font-weight: 400;

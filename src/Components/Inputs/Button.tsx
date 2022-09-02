@@ -51,7 +51,7 @@ const OUTLINES_CSS = css`
   }
 
   :hover:not(:active) {
-    background-color: ${({ theme }) => theme.buttons.outlined.hoverBackgroundColor};
+    background-color: ${({ theme }) => theme.buttons.outlined.hoverBgColor};
   }
 `
 const BLUE_CSS = css`

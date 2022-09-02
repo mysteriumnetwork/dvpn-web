@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   LocalVersion,
   LocalVersionsResponse,
@@ -17,7 +17,7 @@ import errors from '../../../../commons/errors'
 import { VersionCard } from './VersionCard'
 import { Button } from '../../../../Components/Inputs/Button'
 import styled from 'styled-components'
-
+import { PanelCard } from '../PanelCard'
 const { parseToastError } = errors
 
 interface State {
@@ -46,58 +46,39 @@ const initialState: State = {
   },
 }
 
-const Info = styled.div`
-  display: flex;
-  width: 100%;
-  height: 6rem;
-  justify-content: center;
-  gap: 25px;
+const Label = styled.div`
+  color: ${({ theme }) => theme.text.colorMain};
+  font-weight: 600;
 `
-const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  gap: 15px;
+const Data = styled.div`
+  color: ${({ theme }) => theme.text.colorSecondary};
+  font-weight: 400;
 `
-const Controls = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  gap: 10px;
-  height: 100%;
-  width: 10rem;
-`
-const Progress = styled.div`
-  height: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
-const Bar = styled.progress`
-  width: 60%;
-`
-const Versions = styled.div`
+const List = styled.div`
   margin-top: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
   width: 100%;
-  gap: 5px;
-
-  height: 60vh;
-  overflow-y: auto;
+  height: 500px;
+  overflow-y: scroll;
+  margin-right: 10px;
 `
-const InfoRow = styled.div`
+const Row = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
   align-items: center;
+  justify-content: center;
 `
+
 const ReleaseNotes = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  color: ${({ theme }) => theme.text.colorSecondary};
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
 `
 
 export const VersionManagement = () => {
@@ -210,8 +191,9 @@ export const VersionManagement = () => {
           bundledVersion={state.ui.bundledVersion}
           onDownload={() => download(remote.name)}
           onSwitchVersion={() => switchVersion(remote.name)}
-          isDownloadInProgress={state.isDownloadInProgress}
-          isInUse={isInUse(local)}
+          downloadInProgress={state.isDownloadInProgress}
+          inUse={isInUse(local)}
+          preRelease={remote.isPreRelease}
           releaseNotes={notes(remote.releaseNotes)}
         />
       )
@@ -225,34 +207,26 @@ export const VersionManagement = () => {
         local={local}
         bundledVersion={state.ui.bundledVersion}
         onSwitchVersion={() => switchVersion('local')}
-        isDownloadInProgress={state.isDownloadInProgress}
-        isInUse={isInUse(local)}
+        downloadInProgress={state.isDownloadInProgress}
+        inUse={isInUse(local)}
       />,
     )
   }
   return (
-    <>
-      <Info>
-        <Card>
-          {infoRow('Bundled:', state.ui.bundledVersion)}
-          {infoRow('Used:', state.ui.usedVersion)}
-        </Card>
-        <Controls>
-          <Button onClick={() => init(true)} loading={state.isLoading} variant="outlined" label="Flush Cache" />
-          {state.ui.usedVersion !== 'bundled' && (
-            <Button onClick={() => switchVersion('bundled')} loading={state.isLoading} label="Switch Back" />
-          )}
-        </Controls>
-      </Info>
-      <Progress>{state.isDownloadInProgress && <Bar value={state.downloadProgress / 100} />}</Progress>
-      <Versions>{versionList}</Versions>
-    </>
+    <PanelCard title="Version management">
+      <Row>
+        <Label>Bundled:</Label>
+        <Data>{state.ui.bundledVersion}</Data>
+        <Label>In use:</Label>
+        <Data>{state.ui.usedVersion}</Data>
+      </Row>
+      <Row>
+        <Button onClick={() => init(true)} loading={state.isLoading} variant="outlined" label="Flush Cache" />
+        {state.ui.usedVersion !== 'bundled' && (
+          <Button onClick={() => switchVersion('bundled')} loading={state.isLoading} label="Switch Back" />
+        )}
+      </Row>
+      <List>{versionList}</List>
+    </PanelCard>
   )
 }
-
-const infoRow = (key: string, value: string): JSX.Element => (
-  <InfoRow>
-    <div>{key}</div>
-    <div>{value}</div>
-  </InfoRow>
-)

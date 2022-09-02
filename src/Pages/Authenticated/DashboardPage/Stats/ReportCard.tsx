@@ -14,7 +14,7 @@ const Card = styled.div`
   gap: 16px;
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.report.card.background};
+  background: ${({ theme }) => theme.report.card.bg};
   padding: 20px;
   color: ${({ theme }) => theme.text.colorMain};
   width: 100%;

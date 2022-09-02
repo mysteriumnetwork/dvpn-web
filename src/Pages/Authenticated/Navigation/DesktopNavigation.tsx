@@ -12,7 +12,7 @@ import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.s
 import { useMemo, useState } from 'react'
 
 const Content = styled.div`
-  background: ${({ theme }) => theme.navigation.background};
+  background: ${({ theme }) => theme.navigation.bg};
   padding: 0 18px 0 18px;
   display: flex;
   height: 100%;

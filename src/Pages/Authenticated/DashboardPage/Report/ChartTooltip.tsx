@@ -15,7 +15,7 @@ interface Props {
 
 const StyledTooltip = styled.div`
   color: ${({ theme }) => theme.tooltip.textColor};
-  background-color: ${({ theme }) => theme.tooltip.background};
+  background-color: ${({ theme }) => theme.tooltip.bg};
   border-radius: 100px;
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
