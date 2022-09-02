@@ -92,9 +92,9 @@ const light: Omit<Theme, 'common'> = {
     earningsColor: themeCommon.colorDarkBlue,
   },
   scrollBar: {
-    trackColor: 'f1f1f1f1',
-    handleColor: themeCommon.colorLightBlue,
-    handleColorHover: themeCommon.colorDarkBlue,
+    trackColor: '#e4e4f7',
+    handleColor: themeCommon.colorGrayBlue,
+    handleColorHover: themeCommon.colorGrayBlue2,
   },
   calendar: {
     bgBody: themeCommon.colorWhite,
