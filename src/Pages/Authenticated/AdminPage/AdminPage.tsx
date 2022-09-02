@@ -9,7 +9,7 @@ import { FeatureToggle } from './FeatureToggle/FeatureToggle'
 import { VersionManagement } from './VersionManagement/VersionManagement'
 import { ErrorLog } from './ErrorLog/ErrorLog'
 import styled from 'styled-components'
-import { ReactComponent as Settings } from '../../../assets/images/navigation/settings.svg'
+import { SettingsHeaderIcon } from '../../../Components/Icons/PageIcons'
 
 const Column = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ const Column = styled.div`
 
 export const AdminPage = () => {
   return (
-    <Layout title="Admin panel" loading={false} logo={<Settings />}>
+    <Layout title="Admin panel" loading={false} logo={<SettingsHeaderIcon />}>
       <LayoutRow>
         <VersionManagement />
         <Column>

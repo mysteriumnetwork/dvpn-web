@@ -15,12 +15,13 @@ import { Switch } from '../../../../Components/Switch/Switch'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { PanelCard } from '../PanelCard'
+import zIndexes from '../../../../constants/z-indexes'
 
 const Overlay = styled.div`
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 1000;
+  z-index: ${zIndexes.overlay};
   width: 100%;
   height: 100%;
   background: ${themeCommon.colorDarkBlue}6A;
@@ -33,7 +34,7 @@ const Spinner = styled(CircularSpinner)`
   width: 50px;
   height: 50px;
   border: 6px solid ${themeCommon.colorWhite};
-  z-index: 1001;
+  z-index: ${zIndexes.spinner};
 `
 const Feature = styled.div`
   display: flex;
