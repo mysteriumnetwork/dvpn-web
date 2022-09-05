@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFetch } from '../../../../../../../commons/hooks'
 import { PaymentOrder } from 'mysterium-vpn-js'
 import { tequila } from '../../../../../../../api/tequila'

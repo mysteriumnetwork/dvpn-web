@@ -15,6 +15,7 @@ import ReactHtmlParser from 'react-html-parser'
 import { Button } from '../../../../Components/Inputs/Button'
 import { devices } from '../../../../theme/themes'
 import complexActions from '../../../../redux/complex.actions'
+import zIndexes from '../../../../constants/z-indexes'
 
 const Note = styled.div`
   display: flex;
@@ -78,7 +79,14 @@ export const TOSModal = ({ show = false, onClose, hideAgree, onCloseLabel }: Pro
     await complexActions.acceptWithTermsAndConditions()
   }
   return (
-    <Modal disableBackdrop disableX show={show} title="Terms and Conditions Update" icon={<InfoIcon />}>
+    <Modal
+      disableBackdrop
+      disableX
+      show={show}
+      zIndex={zIndexes.onboardingModal}
+      title="Terms and Conditions Update"
+      icon={<InfoIcon />}
+    >
       <Content>
         <Note>We have updated our Terms and Conditions. Please click agree to access NODE UI</Note>
         <Note>

@@ -23,6 +23,7 @@ import { InputGroup } from '../../../../../../Components/Inputs/InputGroup'
 import gatewaysUtils from './gateways.utils'
 import { InvoiceLink } from './Components/InvoiceLink'
 import { WaitingFiatPayment } from './Components/WaitingFiatPayment'
+import { devices } from '../../../../../../theme/themes'
 
 const { parseToastError } = errors
 const { countryNames } = location
@@ -51,6 +52,9 @@ const Title = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+  }
 `
 
 const Description = styled.div`
@@ -60,6 +64,9 @@ const Description = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   line-height: 22px;
   color: ${({ theme }) => theme.common.colorGrayBlue2};
+  @media ${devices.tablet} {
+    margin-top: 10px;
+  }
 `
 
 const Note = styled.div`
@@ -73,6 +80,10 @@ const Controls = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  @media ${devices.tablet} {
+    gap: 16px;
+    flex-direction: row;
+  }
 `
 
 const Input = styled.div`
