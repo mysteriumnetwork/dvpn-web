@@ -29,7 +29,6 @@ const Content = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  min-width: fit-content;
   align-items: center;
   justify-content: space-between;
   padding: 48px;
@@ -37,7 +36,7 @@ const Content = styled.div`
   @media ${devices.tablet} {
     align-items: center;
     justify-content: flex-start;
-    gap: 25px;
+    gap: 15px;
     padding-top: 20px;
   }
 `
@@ -47,22 +46,18 @@ const Row = styled.div`
   width: 100%;
   justify-content: space-between;
   gap: 80px;
-  @media ${devices.tablet} {
-    align-items: center;
-    justify-content: center;
-  }
 `
 const Wallet = styled(WalletSVG)`
   height: 400px;
   width: 500px;
   @media ${devices.tablet} {
-    height: 300px;
+    height: 250px;
     width: 400px;
   }
 `
 const Payment = styled(PaymentSVG)`
   @media ${devices.tablet} {
-    height: 300px;
+    height: 250px;
     width: 400px;
   }
 `
@@ -88,8 +83,10 @@ const Image = styled.div`
   position: relative;
   @media ${devices.tablet} {
     display: flex;
-    max-width: 500px;
-    max-height: 250px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    max-height: 230px;
   }
 `
 
@@ -169,7 +166,7 @@ export const RegistrationModal = ({ show }: Props) => {
         </Row>
         <Row>
           <Image>
-            {steps[step]?.logo(gateway) || <PaymentSVG />}
+            <div>{steps[step]?.logo(gateway) || <PaymentSVG />}</div>
             {isDesktop && <StepNumber>{step + 1}</StepNumber>}
           </Image>
           <Media.Desktop>
