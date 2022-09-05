@@ -37,7 +37,7 @@ const Content = styled.div`
     align-items: center;
     justify-content: flex-start;
     gap: 15px;
-    padding-top: 20px;
+    padding: 20px;
   }
 `
 
