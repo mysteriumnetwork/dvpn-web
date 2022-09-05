@@ -16,7 +16,12 @@ import { toast } from 'react-toastify'
 import { RegistrationStepProps } from './types'
 import errors from '../../../../commons/errors'
 import { SUPPORTED_GATEWAYS } from './gateways'
+import { devices } from '../../../../theme/themes'
+import zIndexes from '../../../../constants/z-indexes'
+import { Media, media } from '../../../../commons/media'
+import { useMediaQuery } from 'react-responsive'
 
+const { isDesktopQuery } = media
 const { api } = tequila
 
 const Content = styled.div`
@@ -24,11 +29,17 @@ const Content = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-
+  min-width: fit-content;
   align-items: center;
   justify-content: space-between;
   padding: 48px;
   gap: 38px;
+  @media ${devices.tablet} {
+    align-items: center;
+    justify-content: flex-start;
+    gap: 25px;
+    padding-top: 20px;
+  }
 `
 
 const Row = styled.div`
@@ -36,8 +47,25 @@ const Row = styled.div`
   width: 100%;
   justify-content: space-between;
   gap: 80px;
+  @media ${devices.tablet} {
+    align-items: center;
+    justify-content: center;
+  }
 `
-
+const Wallet = styled(WalletSVG)`
+  height: 400px;
+  width: 500px;
+  @media ${devices.tablet} {
+    height: 300px;
+    width: 400px;
+  }
+`
+const Payment = styled(PaymentSVG)`
+  @media ${devices.tablet} {
+    height: 300px;
+    width: 400px;
+  }
+`
 const StepNumber = styled.div`
   position: absolute;
   display: flex;
@@ -58,28 +86,31 @@ const StepNumber = styled.div`
 
 const Image = styled.div`
   position: relative;
-  width: 517px;
-  height: 443px;
+  @media ${devices.tablet} {
+    display: flex;
+    max-width: 500px;
+    max-height: 250px;
+  }
 `
 
 const steps = [
   {
     component: `PaymentMethod`,
-    logo: () => <PaymentSVG />,
+    logo: () => <Payment />,
   },
   {
     component: `Payment`,
     logo: (gateway: string) => {
       const Logo = SUPPORTED_GATEWAYS[gateway].logo
       if (!Logo) {
-        return <PaymentSVG />
+        return <Payment />
       }
       return <Logo />
     },
   },
   {
     component: `Wallet`,
-    logo: () => <WalletSVG />,
+    logo: () => <Wallet />,
   },
 ]
 
@@ -94,7 +125,7 @@ export const RegistrationModal = ({ show }: Props) => {
   const [allGateways, setAllGateways] = useState<PaymentGateway[]>([])
   const [gateway, setGateway] = useState('empty')
   const [beneficiary, setBeneficiary] = useState('')
-
+  const isDesktop = useMediaQuery(isDesktopQuery)
   const Step = useMemo(() => React.lazy(() => import(`./Steps/${steps[step].component}`)), [step])
 
   useEffect(() => {
@@ -124,7 +155,14 @@ export const RegistrationModal = ({ show }: Props) => {
   }
 
   return (
-    <Modal disableBackdrop disableX show={show} size="xl" loading={loading || stepLoading}>
+    <Modal
+      disableBackdrop
+      disableX
+      show={show}
+      size="xl"
+      zIndex={zIndexes.onboardingModal}
+      loading={loading || stepLoading}
+    >
       <Content>
         <Row>
           <BreadCrumbs current={step} />
@@ -132,13 +170,19 @@ export const RegistrationModal = ({ show }: Props) => {
         <Row>
           <Image>
             {steps[step]?.logo(gateway) || <PaymentSVG />}
-            <StepNumber>{step + 1}</StepNumber>
+            {isDesktop && <StepNumber>{step + 1}</StepNumber>}
           </Image>
-
+          <Media.Desktop>
+            <Suspense>
+              <Step {...stepProps} />
+            </Suspense>
+          </Media.Desktop>
+        </Row>
+        <Media.Mobile>
           <Suspense>
             <Step {...stepProps} />
           </Suspense>
-        </Row>
+        </Media.Mobile>
       </Content>
     </Modal>
   )

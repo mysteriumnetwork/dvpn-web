@@ -6,20 +6,28 @@
  */
 import styled from 'styled-components'
 import { Button } from '../../../../../Components/Inputs/Button'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SUPPORTED_GATEWAYS } from '../gateways'
 import { RegistrationStepProps } from '../types'
 import { Option } from '../../../../../types/common'
+import { devices } from '../../../../../theme/themes'
 
 const Content = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  @media ${devices.tablet} {
+    align-items: center;
+    width: 90%;
+  }
 `
 const Title = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+  }
 `
 const Description = styled.div`
   display: flex;
@@ -28,6 +36,9 @@ const Description = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.common.colorGrayBlue2};
   line-height: 22px;
+  @media ${devices.tablet} {
+    text-align: center;
+  }
 `
 const Options = styled.div`
   margin-top: 24px;

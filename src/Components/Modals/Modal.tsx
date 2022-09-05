@@ -50,9 +50,10 @@ const xlSize = css`
   top: 10%;
   transform: translate(-50%, 0);
   @media ${devices.tablet} {
-    width: 80%;
-    height: 625px;
-    top: 5%;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    min-height: fit-content;
   }
 `
 
@@ -195,7 +196,7 @@ export const Modal = ({
               <Spinner />
             </SpinnerOverlay>
           )}
-          <Icon>{icon}</Icon>
+          {icon && <Icon>{icon}</Icon>}
           <CloseButtonPlacement>{!disableX && <XButtonIcon onClick={onClickX} />}</CloseButtonPlacement>
           {title && <Title>{title}</Title>}
           {subTitle && <SubTitle>{subTitle}</SubTitle>}
