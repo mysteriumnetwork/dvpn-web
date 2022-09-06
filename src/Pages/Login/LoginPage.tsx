@@ -18,7 +18,6 @@ import { InputGroup } from '../../Components/Inputs/InputGroup'
 import { TextField } from '../../Components/Inputs/TextField'
 import { Form } from '../../Components/Inputs/Form'
 import { Button } from '../../Components/Inputs/Button'
-import { toast } from 'react-toastify'
 import errors from '../../commons/errors'
 import Background from '../../assets/images/onboarding/background.png'
 import { ReactComponent as LoginLogo } from '../../assets/images/onboarding/login.svg'
@@ -162,7 +161,7 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
       })
       await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
     } catch (err: any) {
-      toast.error(errors.apiError(err).human())
+      errors.parseToastError(err)
       setError(err.message)
     } finally {
       setLoading(false)
