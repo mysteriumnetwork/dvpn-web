@@ -22,12 +22,12 @@ export type Theme = {
 
   navigation: {
     bg: string
-    contentBg: string
+    bgContent: string
   }
 
   layout: {
     row: {
-      heroBg: string
+      bgHero: string
     }
   }
 
@@ -38,7 +38,7 @@ export type Theme = {
   }
 
   report: {
-    reportCardRowBg: string
+    bgReportCardRow: string
     card: {
       bg: string
     }
@@ -53,7 +53,7 @@ export type Theme = {
     disabledOpacity: string
 
     outlined: {
-      hoverBgColor: string
+      bgHover: string
     }
   }
 
@@ -199,7 +199,7 @@ export type Theme = {
     error: {
       color: string
     }
-    holeBg: string
+    bgHole: string
   }
 
   a: {
@@ -208,16 +208,16 @@ export type Theme = {
 
   toasts: {
     success: {
-      iconBg: string
+      bgIcon: string
     }
     warning: {
-      iconBg: string
+      bgIcon: string
     }
     info: {
-      iconBg: string
+      bgIcon: string
     }
     error: {
-      iconBg: string
+      bgIcon: string
     }
     bg: string
     contentTextColor: string
@@ -230,8 +230,8 @@ export type Theme = {
     border: string
     bgColor: string
     selectedOrFocusedValueColor: string
-    selectedValueBgColor: string
-    focusedValueBgColor: string
+    bgSelectedValue: string
+    bgFocusedValue: string
   }
 
   common: Common

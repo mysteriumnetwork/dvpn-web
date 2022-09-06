@@ -28,7 +28,7 @@ const Content = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
 
-  background-color: ${({ theme }) => theme.navigation.contentBg};
+  background-color: ${({ theme }) => theme.navigation.bgContent};
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 

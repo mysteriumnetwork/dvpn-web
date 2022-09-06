@@ -105,7 +105,7 @@ const heroVariantCss = css`
   box-sizing: border-box;
   margin: 0 16px 0 16px;
   padding: 16px;
-  background-color: ${({ theme }) => theme.layout.row.heroBg};
+  background-color: ${({ theme }) => theme.layout.row.bgHero};
   border-radius: 35px;
 
   overflow-y: hidden;

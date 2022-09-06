@@ -22,12 +22,12 @@ const light: Omit<Theme, 'common'> = {
 
   navigation: {
     bg: themeCommon.bgMysterium,
-    contentBg: themeCommon.colorLightBlue,
+    bgContent: themeCommon.colorLightBlue,
   },
 
   layout: {
     row: {
-      heroBg: themeCommon.colorGrayBlue + alphaToHex(0.1),
+      bgHero: themeCommon.colorGrayBlue + alphaToHex(0.1),
     },
   },
 
@@ -38,7 +38,7 @@ const light: Omit<Theme, 'common'> = {
   },
 
   report: {
-    reportCardRowBg: themeCommon.colorWhite,
+    bgReportCardRow: themeCommon.colorWhite,
     card: {
       bg: themeCommon.colorWhite,
     },
@@ -53,7 +53,7 @@ const light: Omit<Theme, 'common'> = {
     disabledOpacity: '0.7',
 
     outlined: {
-      hoverBgColor: themeCommon.colorKeyLight + alphaToHex(0.1),
+      bgHover: themeCommon.colorKeyLight + alphaToHex(0.1),
     },
   },
 
@@ -198,7 +198,7 @@ const light: Omit<Theme, 'common'> = {
     error: {
       color: themeCommon.colorRed,
     },
-    holeBg: themeCommon.colorWhite,
+    bgHole: themeCommon.colorWhite,
   },
 
   a: {
@@ -207,16 +207,16 @@ const light: Omit<Theme, 'common'> = {
 
   toasts: {
     success: {
-      iconBg: themeCommon.colorGreen + alphaToHex(0.3),
+      bgIcon: themeCommon.colorGreen + alphaToHex(0.3),
     },
     warning: {
-      iconBg: themeCommon.colorYellow + alphaToHex(0.3),
+      bgIcon: themeCommon.colorYellow + alphaToHex(0.3),
     },
     info: {
-      iconBg: themeCommon.colorBlue + alphaToHex(0.3),
+      bgIcon: themeCommon.colorBlue + alphaToHex(0.3),
     },
     error: {
-      iconBg: themeCommon.colorRed + alphaToHex(0.3),
+      bgIcon: themeCommon.colorRed + alphaToHex(0.3),
     },
     bg: themeCommon.colorWhite,
     contentTextColor: themeCommon.colorGrayBlue2,
@@ -229,8 +229,8 @@ const light: Omit<Theme, 'common'> = {
     border: `1px solid ${themeCommon.colorGrayBlue}`,
     bgColor: themeCommon.colorWhite,
     selectedOrFocusedValueColor: themeCommon.colorWhite,
-    selectedValueBgColor: themeCommon.colorKey,
-    focusedValueBgColor: themeCommon.colorKeyLight,
+    bgSelectedValue: themeCommon.colorKey,
+    bgFocusedValue: themeCommon.colorKeyLight,
   },
 }
 

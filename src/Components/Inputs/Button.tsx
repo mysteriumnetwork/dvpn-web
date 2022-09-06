@@ -52,7 +52,7 @@ const OUTLINES_CSS = css`
   }
 
   :hover:not(:active) {
-    background-color: ${({ theme }) => theme.buttons.outlined.hoverBgColor};
+    background-color: ${({ theme }) => theme.buttons.outlined.bgHover};
   }
 `
 const BLUE_CSS = css`
