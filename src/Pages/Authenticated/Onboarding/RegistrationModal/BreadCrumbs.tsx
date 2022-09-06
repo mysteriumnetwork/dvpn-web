@@ -6,10 +6,6 @@
  */
 
 import styled from 'styled-components'
-import { useMediaQuery } from 'react-responsive'
-import { media } from '../../../../commons/media'
-
-const { isDesktopQuery } = media
 
 const Container = styled.div`
   display: flex;
@@ -59,18 +55,18 @@ const Dot = styled.div`
 
 interface Props {
   current: number
+  showStep?: boolean
 }
 
 const STEPS = ['Select payment method', 'Payment', 'Set withdrawal address']
 
-export const BreadCrumbs = ({ current }: Props) => {
-  const isDesktop = useMediaQuery(isDesktopQuery)
+export const BreadCrumbs = ({ current, showStep }: Props) => {
   return (
     <Container>
       {STEPS.map((step, index) => (
         <StepWrapper key={`step-${index}`} $active={index === current}>
           <Step $active={index === current}>{index + 1}</Step>
-          {isDesktop && step}
+          {showStep && step}
           {index !== STEPS.length - 1 && (
             <Dots>
               <Dot />

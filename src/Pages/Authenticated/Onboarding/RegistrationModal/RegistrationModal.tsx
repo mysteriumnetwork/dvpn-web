@@ -18,7 +18,7 @@ import errors from '../../../../commons/errors'
 import { SUPPORTED_GATEWAYS } from './gateways'
 import { devices } from '../../../../theme/themes'
 import zIndexes from '../../../../constants/z-indexes'
-import { Media, media } from '../../../../commons/media'
+import { media } from '../../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
 
 const { isDesktopQuery } = media
@@ -41,11 +41,17 @@ const Content = styled.div`
   }
 `
 
-const Row = styled.div`
+const Wrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
   gap: 80px;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+  }
 `
 const Wallet = styled(WalletSVG)`
   height: 400px;
@@ -56,6 +62,8 @@ const Wallet = styled(WalletSVG)`
   }
 `
 const Payment = styled(PaymentSVG)`
+  height: 400px;
+  width: 500px;
   @media ${devices.tablet} {
     height: 250px;
     width: 400px;
@@ -67,7 +75,7 @@ const StepNumber = styled.div`
   justify-content: center;
   align-items: center;
 
-  right: -50px;
+  right: -10px;
   top: 25px;
 
   width: 100px;
@@ -161,25 +169,16 @@ export const RegistrationModal = ({ show }: Props) => {
       loading={loading || stepLoading}
     >
       <Content>
-        <Row>
-          <BreadCrumbs current={step} />
-        </Row>
-        <Row>
+        <BreadCrumbs current={step} showStep={isDesktop} />
+        <Wrapper>
           <Image>
             <div>{steps[step]?.logo(gateway) || <PaymentSVG />}</div>
             {isDesktop && <StepNumber>{step + 1}</StepNumber>}
           </Image>
-          <Media.Desktop>
-            <Suspense>
-              <Step {...stepProps} />
-            </Suspense>
-          </Media.Desktop>
-        </Row>
-        <Media.Mobile>
           <Suspense>
             <Step {...stepProps} />
           </Suspense>
-        </Media.Mobile>
+        </Wrapper>
       </Content>
     </Modal>
   )
