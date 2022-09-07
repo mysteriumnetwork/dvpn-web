@@ -10,14 +10,31 @@ import { useFetch } from '../../../../../../../commons/hooks'
 import { PaymentOrder } from 'mysterium-vpn-js'
 import { tequila } from '../../../../../../../api/tequila'
 import errors from '../../../../../../../commons/errors'
+import { ReactComponent as Icon } from '../../../../../../../assets/images/download.svg'
+import { devices } from '../../../../../../../theme/themes'
 
 const { api } = tequila
 
 const Link = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   margin-top: 12px;
   align-self: center;
+  text-decoration: none;
+  color: ${({ theme }) => theme.common.colorBlue};
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeSmall};
+    font-weight: 500;
+  }
 `
-
+const Download = styled(Icon)`
+  margin-bottom: 2px;
+  #inner {
+    fill: ${({ theme }) => theme.common.colorBlue};
+  }
+`
 export const InvoiceLink = ({ identity, isCompleted }: { identity: string; isCompleted?: boolean }) => {
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
@@ -56,7 +73,7 @@ export const InvoiceLink = ({ identity, isCompleted }: { identity: string; isCom
 
   return (
     <Link download={name} href={url}>
-      Download Invoice
+      <Download /> Download Invoice
     </Link>
   )
 }
