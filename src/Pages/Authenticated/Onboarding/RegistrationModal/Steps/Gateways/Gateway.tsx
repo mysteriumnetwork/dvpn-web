@@ -79,11 +79,12 @@ const Controls = styled.div`
   margin-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
   @media ${devices.tablet} {
     gap: 16px;
     flex-direction: row;
-    justify-content: center;
   }
 `
 
@@ -240,7 +241,9 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
       <WaitingFiatPayment visible={showPayNow} isCompleted={isCompleted} />
       <InvoiceLink identity={identity.id} isCompleted={isCompleted} />
       <Controls>
-        {showPayNow && <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay 1 USD" />}
+        {showPayNow && (
+          <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} size="medium" label="Pay 1 USD" />
+        )}
         {isCompleted && <Button label="Next" rounded onClick={next} />}
         <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
       </Controls>
