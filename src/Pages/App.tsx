@@ -17,6 +17,7 @@ import { StateInitializer } from './StateInitializer'
 import { OffsetToastsGlobalCSS, StyledToastContainer } from '../Components/Toasts/StyledToastContainer'
 import { GlobalStyle } from './GlobalStyle'
 import { IntercomLoader } from '../intercom/IntercomLoader'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const App = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
@@ -25,6 +26,7 @@ export const App = () => {
     <ThemeProvider theme={theme === 'dark' ? themes.dark : themes.light}>
       <GlobalStyle />
       <OffsetToastsGlobalCSS />
+      <StyledToastContainer limit={6} icon={false} hideProgressBar position="bottom-right" />
       <Hotkeys>
         <NodeHealthcheckBarrier>
           <StateInitializer>
@@ -33,7 +35,6 @@ export const App = () => {
           </StateInitializer>
         </NodeHealthcheckBarrier>
       </Hotkeys>
-      <StyledToastContainer limit={6} icon={false} hideProgressBar position="bottom-right" />
     </ThemeProvider>
   )
 }
