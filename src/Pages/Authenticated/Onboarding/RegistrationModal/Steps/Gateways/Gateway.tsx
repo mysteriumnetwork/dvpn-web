@@ -150,7 +150,7 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
 
   useEffect(() => {
     if (taxCountry.value === 'US' && !taxState) {
-      setState((p) => ({ ...p, taxState: stateOptions[0] }))
+      setState((p) => ({ ...p, taxState: undefined }))
       return
     }
 
@@ -163,6 +163,9 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
   const handlePayNow = async () => {
     try {
       setState((p) => ({ ...p, isLoadingPayNow: true }))
+      if (taxCountry.value === 'US' && !taxState) {
+        throw new Error('Please select tax state!')
+      }
       const order = await createOrRetrieveOrder()
       const checkoutUrl = validateAndReturnCheckoutUrl(order, gatewayName)
       gatewaysUtils.openInNewTab(checkoutUrl)
