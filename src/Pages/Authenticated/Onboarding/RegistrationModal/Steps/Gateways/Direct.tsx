@@ -89,6 +89,8 @@ const Waiting = styled.div`
   @media ${devices.tablet} {
     height: 20px;
     margin-top: 10px;
+    font-weight: 500;
+    font-size: ${({ theme }) => theme.common.fontSizeSmall};
   }
 `
 const Title = styled.div`

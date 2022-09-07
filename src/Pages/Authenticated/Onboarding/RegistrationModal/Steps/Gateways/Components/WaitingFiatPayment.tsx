@@ -7,6 +7,7 @@
 import styled from 'styled-components'
 import { CircularSpinner } from '../../../../../../../Components/CircularSpinner/CircularSpinner'
 import React from 'react'
+import { devices } from '../../../../../../../theme/themes'
 
 interface WaitingPaymentProps {
   isCompleted: boolean
@@ -16,6 +17,10 @@ interface WaitingPaymentProps {
 const WaitingSpinner = styled(CircularSpinner)`
   width: 30px;
   height: 30px;
+  @media ${devices.tablet} {
+    width: 20px;
+    height: 20px;
+  }
 `
 
 const Waiting = styled.div`
@@ -24,6 +29,12 @@ const Waiting = styled.div`
   align-items: center;
   height: 30px;
   gap: 5px;
+  @media ${devices.tablet} {
+    height: 20px;
+    font-size: ${({ theme }) => theme.common.fontSizeSmall};
+    margin-top: 10px;
+    font-weight: 500;
+  }
 `
 
 export const WaitingFiatPayment = ({ isCompleted, visible }: WaitingPaymentProps) => {
