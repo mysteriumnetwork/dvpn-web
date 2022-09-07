@@ -39,7 +39,7 @@ export interface SupportedGateways {
   [key: 'direct' | 'paypal' | 'empty' | 'stripe' | string]: {
     title: string
     description: string
-    summary: string
+    summary: (value?: string) => string
     component: string
     note?: string
     logo?: any
@@ -48,13 +48,13 @@ export interface SupportedGateways {
 
 export const SUPPORTED_GATEWAYS: SupportedGateways = Object.freeze({
   empty: {
-    summary: '',
+    summary: () => '',
     title: '',
     description: '',
     component: 'Empty',
   },
   direct: {
-    summary: `Deposit ${currentCurrency()} token`,
+    summary: (value) => `Deposit ${value} ${currentCurrency()} token`,
     title: 'Transfer MYST ',
     description:
       'Send no less than 0.11 MYST to the address below. Important: only Polygon blockchain MYST is supported! Dont’t have any MYST? Read here now to get it.',
@@ -62,7 +62,7 @@ export const SUPPORTED_GATEWAYS: SupportedGateways = Object.freeze({
     logo: Direct,
   },
   paypal: {
-    summary: `Deposit with PayPal (1 USD)`,
+    summary: () => `Deposit with PayPal (1 USD)`,
     title: 'Pay with Paypal ',
     description:
       'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed. ',
@@ -72,7 +72,7 @@ export const SUPPORTED_GATEWAYS: SupportedGateways = Object.freeze({
     logo: PayPal,
   },
   stripe: {
-    summary: `Deposit with Credit or Debit card (1 USD)`,
+    summary: () => `Deposit with Credit or Debit card (1 USD)`,
     title: 'Pay with Credit or Debit card',
     description:
       'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed.',

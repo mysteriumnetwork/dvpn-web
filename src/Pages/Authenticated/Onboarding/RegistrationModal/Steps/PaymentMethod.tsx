@@ -11,6 +11,10 @@ import { SUPPORTED_GATEWAYS } from '../gateways'
 import { RegistrationStepProps } from '../types'
 import { Option } from '../../../../../types/common'
 import { devices } from '../../../../../theme/themes'
+import BigNumber from 'bignumber.js'
+import { useAppSelector } from '../../../../../commons/hooks'
+import { myst } from '../../../../../commons/mysts'
+import { selectors } from '../../../../../redux/selectors'
 
 const Content = styled.div`
   width: 100%;
@@ -47,15 +51,21 @@ const Options = styled.div`
   gap: 10px;
 `
 
-const DIRECT_GATEWAY_OPTION: Option = { value: 'direct', label: SUPPORTED_GATEWAYS.direct.summary }
-
 const PaymentMethod = ({ setLoading, selectGateway, next, allGateways }: RegistrationStepProps) => {
+  const minimalAmountEther = myst
+    .toEtherBig(useAppSelector(selectors.minimumRegistrationAmountWei))
+    .dp(2, BigNumber.ROUND_UP)
+    .toString()
+  const DIRECT_GATEWAY_OPTION: Option = {
+    value: 'direct',
+    label: SUPPORTED_GATEWAYS.direct.summary(minimalAmountEther),
+  }
   const [availableGatewayOptions, setAvailableGatewayOptions] = useState<Option[]>([])
   useEffect(() => {
     setLoading(true)
     const options: Option[] = allGateways
       .filter((gw) => Object.keys(SUPPORTED_GATEWAYS).includes(gw.name))
-      .map((gw) => ({ value: gw.name, label: SUPPORTED_GATEWAYS[gw.name].summary }))
+      .map((gw) => ({ value: gw.name, label: SUPPORTED_GATEWAYS[gw.name].summary() }))
     setAvailableGatewayOptions([DIRECT_GATEWAY_OPTION, ...options])
     setLoading(false)
   }, [allGateways])

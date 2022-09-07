@@ -25,8 +25,6 @@ const Content = styled.div`
   flex-direction: column;
 `
 
-const FEE_SPIKE_MULTIPLIER = 1.5
-
 const isPaid = (balance: Tokens, registrationPayment: RegistrationPaymentResponse, feeEther: string): boolean =>
   myst.toEtherBig(balance.wei).gte(feeEther) || registrationPayment.paid
 
@@ -39,10 +37,9 @@ const Payment = ({ gateway, allGateways, back, next }: RegistrationStepProps) =>
 
   const isEmptyFees = feez.isEmpty(fees)
 
-  const minimalAmountEther = useMemo(
-    () => myst.toBig(registration.ether).times(FEE_SPIKE_MULTIPLIER).dp(2, BigNumber.ROUND_UP),
-    [registration.ether],
-  )
+  const minimalAmountEther = myst
+    .toEtherBig(useAppSelector(selectors.minimumRegistrationAmountWei))
+    .dp(2, BigNumber.ROUND_UP)
 
   const [registrationPayment, setRegistrationPayment] = useState<RegistrationPaymentResponse>({ paid: false })
 
