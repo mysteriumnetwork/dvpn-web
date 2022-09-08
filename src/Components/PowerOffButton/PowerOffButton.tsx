@@ -71,6 +71,7 @@ export const PowerOffButton = () => {
         loading={isCountdown}
         show={showConfirmation}
         onCancel={() => setShowConfirmation(false)}
+        onConfirmLabel="Restart"
         onConfirm={handleStop}
       />
     </>

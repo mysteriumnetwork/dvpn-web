@@ -13,7 +13,6 @@ import { devices } from '../../../../theme/themes'
 import { useAppSelector } from '../../../../commons/hooks'
 import remoteStorage from '../../../../commons/remoteStorage'
 import { KEY_CURRENT_NODE_VERSION_LAST_CHECK, KEY_LATEST_NODE_VERSION } from './constants'
-import { toast } from 'react-toastify'
 import errors from '../../../../commons/errors'
 import { fetchLatestNodeVersion } from '../../../../api/node-version.management'
 import { selectors } from '../../../../redux/selectors'
@@ -131,8 +130,8 @@ export const Notifications = () => {
           remoteStorage.put(KEY_CURRENT_NODE_VERSION_LAST_CHECK, now)
           remoteStorage.put(KEY_LATEST_NODE_VERSION, latestNodeVersion)
         }
-      } catch (e: any) {
-        toast.error(errors.apiError(e).human())
+      } catch (err: any) {
+        errors.parseToastError(err)
       }
     })()
   }, [])

@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   BeneficiaryTxStatus,
   ChainSummary,
@@ -107,7 +107,7 @@ const slice = createSlice({
     updateConfigStore: (state, action) => {
       state.config = action.payload
     },
-    updateFeesStore: (state, action) => {
+    updateFeesStore: (state, action: PayloadAction<FeesResponse>) => {
       state.fees = action.payload
     },
     updateChainSummaryStore: (state, action) => {

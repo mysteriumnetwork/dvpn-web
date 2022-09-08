@@ -20,10 +20,6 @@ import { devices } from '../../../../theme/themes'
 import zIndexes from '../../../../constants/z-indexes'
 import { media } from '../../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
-import { myst } from '../../../../commons/mysts'
-import { useAppSelector } from '../../../../commons/hooks'
-import { selectors } from '../../../../redux/selectors'
-import complexActions from '../../../../redux/complex.actions'
 
 const { isDesktopQuery } = media
 const { api } = tequila
@@ -123,8 +119,6 @@ const steps = [
   },
 ]
 
-const FEE_SPIKE_MULTIPLIER = 1.5
-
 interface Props {
   show?: boolean
 }
@@ -139,21 +133,13 @@ export const RegistrationModal = ({ show }: Props) => {
   const isDesktop = useMediaQuery(isDesktopQuery)
   const Step = useMemo(() => React.lazy(() => import(`./Steps/${steps[step].component}`)), [step])
 
-  const fees = useAppSelector(selectors.fees)
-  const {
-    current: { registration },
-  } = fees
-  useEffect(() => {
-    complexActions.setMinimumRegistrationAmountWei(myst.toBig(registration.wei).times(FEE_SPIKE_MULTIPLIER).toFixed())
-  }, [registration.wei])
-
   useEffect(() => {
     ;(async () => {
       try {
         const gateways = await api.payment.gateways()
         setAllGateways(gateways)
-      } catch (e: any) {
-        toast.error(errors.apiError(e).human)
+      } catch (err: any) {
+        errors.parseToastError(err)
         toast.error('Could not retrieve payment gateways')
       }
 

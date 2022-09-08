@@ -104,6 +104,7 @@ export const BandwidthControl = () => {
         title="Restart Services"
         message="To enable or change bandwidth limit all running services need to be restarted"
         show={showConfirmation}
+        onConfirmLabel="Restart"
         onConfirm={async () => {
           setShowConfirmation(false)
           await toggleShaping(!shapingEnabled, bandwidthMBps)

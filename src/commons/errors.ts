@@ -21,19 +21,18 @@ const codeToMessage: { code: string; message: string }[] = [
 ]
 
 export class ErrorWrapper {
-  private readonly error?: any
+  private readonly error?: Error
   private readonly errorHuman?: string
   private readonly errorCode?: string
 
-  constructor(error?: any) {
+  constructor(error?: Error) {
     this.error = error
 
-    if (this.error instanceof APIError) {
-      this.errorHuman = error.human()
-      this.errorCode = error.response.error.code
-    }
-    if (this.error instanceof Error) {
-      this.errorHuman = error.message
+    this.errorHuman = error?.message
+
+    if (error instanceof APIError) {
+      this.errorHuman = error?.human()
+      this.errorCode = error?.response.error.code
     }
   }
 
@@ -56,7 +55,7 @@ const parseToastError = (error: any) => {
   toasts.toastError(apiError(error).human())
 }
 
-const apiError = (error: any) => new ErrorWrapper(error)
+const apiError = (error: Error) => new ErrorWrapper(error)
 
 const errors = {
   parseToastError,

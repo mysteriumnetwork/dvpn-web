@@ -22,7 +22,7 @@ const IndicatorIcon = styled(IndicatorSVG)<SProps>`
   }
 
   #inner {
-    fill: ${({ theme }) => theme.indicator.holeBg};
+    fill: ${({ theme }) => theme.indicator.bgHole};
   }
 `
 
