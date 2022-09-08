@@ -58,4 +58,8 @@ export const STORYBOOK_ROUTES: { [key: string]: RouteInfo } = {
     component: './Items/ColorsBook',
     title: 'Colors',
   },
+  [subRoute('/node-status')]: {
+    component: './Items/NodeStatusBook',
+    title: 'Node Status',
+  },
 }

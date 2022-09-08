@@ -141,13 +141,13 @@ const dark: Omit<Theme, 'common'> = {
 
   nodeStatus: {
     bg: {
-      monitoringFailed: themeCommon.colorKey,
+      monitoringFailed: themeCommon.colorRed,
       offline: themeCommon.colorGrayBlue2,
       online: themeCommon.colorGreen,
     },
     textColor: {
       monitoringFailed: themeCommon.colorWhite,
-      offline: themeCommon.colorGrayBlue,
+      offline: themeCommon.colorWhite,
       online: themeCommon.colorWhite,
     },
   },

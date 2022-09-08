@@ -139,7 +139,7 @@ const light: Omit<Theme, 'common'> = {
 
   nodeStatus: {
     bg: {
-      monitoringFailed: themeCommon.colorKey,
+      monitoringFailed: themeCommon.colorRed,
       offline: themeCommon.colorGrayBlue,
       online: themeCommon.colorGreen,
     },
