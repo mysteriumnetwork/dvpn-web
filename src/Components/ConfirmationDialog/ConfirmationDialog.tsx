@@ -69,7 +69,9 @@ interface Props {
   message: string
   show: boolean
   onConfirm?: () => void
+  onConfirmLabel?: string
   onCancel?: () => void
+  onCancelLabel?: string
   loading?: boolean
   disableBackdrop?: boolean
 }
@@ -82,6 +84,8 @@ export const ConfirmationDialog = ({
   message,
   onConfirm,
   disableBackdrop,
+  onConfirmLabel,
+  onCancelLabel,
 }: Props) => {
   if (!show) {
     return <></>
@@ -96,8 +100,14 @@ export const ConfirmationDialog = ({
           <Message>{message}</Message>
           <FlexGrow />
           <Controls>
-            <Button disabled={loading} label="Cancel" variant="outlined" rounded onClick={onCancel} />
-            <Button loading={loading} label="OK" rounded onClick={onConfirm} />
+            <Button
+              disabled={loading}
+              label={onCancelLabel ?? 'Cancel'}
+              variant="outlined"
+              rounded
+              onClick={onCancel}
+            />
+            <Button loading={loading} label={onConfirmLabel ?? 'OK'} rounded onClick={onConfirm} />
           </Controls>
         </Container>
       </StyledConfirmationDialog>
