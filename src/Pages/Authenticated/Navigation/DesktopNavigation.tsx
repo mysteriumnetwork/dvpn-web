@@ -85,11 +85,12 @@ const PlainLink = styled(NavLink)<openProps>`
   ${Tooltip} {
     position: absolute;
     left: 150%;
+    display: none;
     font-size: ${({ theme }) => theme.common.fontSizeSmall};
     color: ${({ theme }) => theme.common.colorWhite};
     z-index: ${zIndexes.menuTooltip};
     opacity: 0;
-    transition: opacity 0.1s;
+    transition: opacity 0.1s display 0.3s;
     &:before {
       content: attr(data-tooltip);
       position: absolute;
@@ -112,6 +113,7 @@ const PlainLink = styled(NavLink)<openProps>`
     }
   }
   &:hover ${Tooltip} {
+    display: flex;
     opacity: ${({ $open }) => (!$open ? 1 : 0)};
   }
 `
