@@ -14,6 +14,8 @@ const onboardingModal = 1003
 const buttonOverlay = 10
 const buttonSpinner = 11
 const spinner = 1001
+const welcomePage = 1300
+const welcomePageContent = 1301
 
 const zIndexes = {
   overlay,
@@ -25,6 +27,8 @@ const zIndexes = {
   buttonOverlay,
   buttonSpinner,
   spinner,
+  welcomePage,
+  welcomePageContent,
 }
 
 export default zIndexes

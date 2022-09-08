@@ -10,6 +10,8 @@ import styled from 'styled-components'
 import { devices } from '../../../theme/themes'
 import { ReactComponent as LoginLogo } from '../../../assets/images/onboarding/login.svg'
 import { Button } from '../../../Components/Inputs/Button'
+import zIndexes from '../../../constants/z-indexes'
+
 const Logo = styled(LoginLogo)`
   height: 500px;
   width: 500px;
@@ -57,7 +59,7 @@ const Card = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
   box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
-  z-index: 1301;
+  z-index: ${zIndexes.welcomePageContent};
   height: 550px;
   gap: 100px;
   display: flex;
@@ -97,7 +99,7 @@ const Page = styled.div`
   align-items: center;
   height: 100vh;
   width: 100vw;
-  z-index: 1300;
+  z-index: ${zIndexes.welcomePage};
   align-items: center;
   justify-content: center;
   background-image: url(${Background});
