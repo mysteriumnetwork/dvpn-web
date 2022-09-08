@@ -20,7 +20,7 @@ import { ReactComponent as WarningSVG } from '../../../assets/images/notificatio
 import { media, Media } from '../../../commons/media'
 import { devices } from '../../../theme/themes'
 import { useMediaQuery } from 'react-responsive'
-
+import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 const { isDesktopQuery } = media
 
 const Row = styled.div`
@@ -81,9 +81,11 @@ export const TotalSettled = () => {
       </Media.Mobile>
       <Row>
         {isDesktop && (
-          <IconContainer>
-            <WalletIcon $accented />
-          </IconContainer>
+          <Tooltip content="Total amount transferred to your external wallet including all applicable fees">
+            <IconContainer>
+              <WalletIcon $accented />
+            </IconContainer>
+          </Tooltip>
         )}
         <Column>
           <Title>Total settled</Title>

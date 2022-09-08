@@ -32,6 +32,6 @@ const PlaceholderText = styled.div`
 export const Placeholder = () => (
   <PlaceholderContainer>
     <PlaceholderIcon />
-    <PlaceholderText>No transactions in Your history yet</PlaceholderText>
+    <PlaceholderText>No transactions in your history yet</PlaceholderText>
   </PlaceholderContainer>
 )

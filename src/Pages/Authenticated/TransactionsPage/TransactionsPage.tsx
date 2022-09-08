@@ -74,7 +74,7 @@ export const TransactionsPage = () => {
         Header: () => (
           <>
             {'Fee'}
-            <Tooltip content="Fees include a 20% network fee and blockchain transaction fees for settlement transactions." />
+            <Tooltip content="This fee includes a 20% network fee plus blockchain transaction fees for settlement transactions." />
           </>
         ),
         accessor: 'fees',

@@ -10,6 +10,7 @@ import { LINK_DEFINITIONS, CONTROLLER_DEFINITIONS } from './definitions'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import { useMemo, useState } from 'react'
+import zIndexes from '../../../constants/z-indexes'
 
 const Content = styled.div`
   background: ${({ theme }) => theme.navigation.bg};
@@ -57,9 +58,12 @@ const LogoLink = styled(Link)<openProps>`
     transition: opacity 0.3s, max-width 0.3s;
   }
 `
+const Tooltip = styled.div``
+
 const PlainLink = styled(NavLink)<openProps>`
   display: flex;
   justify-content: flex-start;
+  position: relative;
   align-items: center;
   text-decoration: none;
   color: ${({ theme }) => theme.common.colorWhite};
@@ -77,6 +81,40 @@ const PlainLink = styled(NavLink)<openProps>`
     overflow: hidden;
     white-space: nowrap;
     transition: opacity 0.3s, max-width 0.3s;
+  }
+  ${Tooltip} {
+    position: absolute;
+    left: 150%;
+    display: none;
+    font-size: ${({ theme }) => theme.common.fontSizeSmall};
+    color: ${({ theme }) => theme.common.colorWhite};
+    z-index: ${zIndexes.menuTooltip};
+    opacity: 0;
+    transition: opacity 0.1s display 0.3s;
+    &:before {
+      content: attr(data-tooltip);
+      position: absolute;
+      background-color: ${({ theme }) => theme.common.colorKeyDark};
+      left: 150%;
+      top: -10px;
+      padding: 5px 10px;
+      border-radius: 50px;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      width: 0px;
+      height: 0px;
+      left: 0px;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 5px solid ${({ theme }) => theme.common.colorKeyDark};
+      transform: translateX(-2px) translateY(-7px);
+    }
+  }
+  &:hover ${Tooltip} {
+    display: flex;
+    opacity: ${({ $open }) => (!$open ? 1 : 0)};
   }
 `
 
@@ -99,10 +137,12 @@ export const DesktopNavigation = () => {
         >
           <Icon $active={[...subPaths, path].includes(pathname)} />
           {name && <Title>{name}</Title>}
+          <Tooltip data-tooltip={name} />
         </PlainLink>
       )),
     [pathname, open],
   )
+
   const Controllers = useMemo(() => {
     return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
       return <Component key={`desktop-menu-controller-${name}`} expanded={open} title={name} />

@@ -33,6 +33,6 @@ const PlaceholderText = styled.div`
 export const Placeholder = () => (
   <PlaceholderContainer>
     <PlaceholderIcon />
-    <PlaceholderText>No sessions in Your history yet</PlaceholderText>
+    <PlaceholderText>No sessions in your history yet</PlaceholderText>
   </PlaceholderContainer>
 )
