@@ -13,6 +13,7 @@ import { sseAppStateStateChanged } from '../redux/sse.slice'
 import { selectors } from '../redux/selectors'
 import { tequila } from '../api/tequila'
 import ConnectToSSE from '../sse/server-sent-events'
+import listeners from '../redux/listeners'
 
 interface Props {
   children: ReactNode
@@ -52,6 +53,10 @@ export const StateInitializer = ({ children }: Props) => {
     }
     ConnectToSSE((state: AppState) => actions.sseAppStateStateChanged(state))
   }, [loggedIn])
+
+  useEffect(() => {
+    listeners.registerMinimumRegistrationAmountListener()
+  }, [])
 
   return <>{children}</>
 }

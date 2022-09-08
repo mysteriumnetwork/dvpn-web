@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { combineReducers, configureStore, createListenerMiddleware } from '@reduxjs/toolkit'
 
 import sseReducer from '../sse.slice'
 import appReducer from '../app.slice'
@@ -16,11 +16,11 @@ const rootReducer = combineReducers({
 
 export default rootReducer
 
-const middleWares = getDefaultMiddleware()
+export const listenedMiddleware = createListenerMiddleware()
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: middleWares,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(listenedMiddleware.middleware),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

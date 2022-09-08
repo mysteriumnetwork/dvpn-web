@@ -19,7 +19,6 @@ import {
   updateFeesStore,
   updateIdentityRefStore,
   updateLoadingStore,
-  updateMinimumRegistrationAmountWeiStore,
   updateNatTypeResponseStore,
   updateTermsStore,
 } from './app.slice'
@@ -91,13 +90,13 @@ const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }: { isD
   await fetchConfigAsync()
   await fetchDefaultConfigAsync()
   await fetchChainSummaryAsync()
-  await updateFees()
+  await startContinuouslyUpdatingFees()
   await store.dispatch(updateLoadingStore(false))
 }
 
 const SECOND = 1000
 
-const updateFees = async () => {
+const startContinuouslyUpdatingFees = async () => {
   if (!store.getState().app.auth.authenticated) {
     return
   }
@@ -109,9 +108,9 @@ const updateFees = async () => {
     } = response
     const staleInMs = new Date(validUntil).getTime() - new Date(serverTime).getTime()
     store.dispatch(updateFeesStore(response))
-    setTimeout(() => updateFees(), staleInMs - SECOND * 10)
+    setTimeout(() => startContinuouslyUpdatingFees(), staleInMs - SECOND * 10)
   } catch (ignored: any) {
-    setTimeout(() => updateFees(), SECOND * 10)
+    setTimeout(() => startContinuouslyUpdatingFees(), SECOND * 10)
   }
 }
 
@@ -167,9 +166,6 @@ const setUserConfig = async (data: any): Promise<Config> => {
 
 const setChatOpened = (b: boolean) => store.dispatch(updateChatOpenedStore(b))
 
-const setMinimumRegistrationAmountWei = (amountWei: string) =>
-  store.dispatch(updateMinimumRegistrationAmountWeiStore(amountWei))
-
 const complexActions = {
   loadAppStateAfterAuthenticationAsync,
   setTrafficShaping,
@@ -179,7 +175,6 @@ const complexActions = {
   setFeatures,
   refreshStoreConfig,
   setChatOpened,
-  setMinimumRegistrationAmountWei,
 }
 
 export default complexActions
