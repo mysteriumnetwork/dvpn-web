@@ -8,6 +8,7 @@
 const overlay = 1000
 const modal = 1001
 const mobileMenu = 1002
+const menuTooltip = 1002
 const mobileNavigation = 1002
 const settleModal = 1003
 const onboardingModal = 1003
@@ -21,6 +22,7 @@ const zIndexes = {
   overlay,
   modal,
   mobileMenu,
+  menuTooltip,
   mobileNavigation,
   settleModal,
   onboardingModal,
