@@ -101,7 +101,7 @@ const StyledLink = styled.a`
 export const UpdateCardMessage = () => {
   return (
     <Message>
-      <span>Update app to experience new features</span>
+      <span>Update your node to experience new features!</span>
       <StyledLink href={DOCS_UPDATE_NODE} target="_blank" rel="noopener noreferrer">
         Update
       </StyledLink>
