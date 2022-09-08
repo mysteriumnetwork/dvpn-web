@@ -6,8 +6,8 @@
  */
 import styled from 'styled-components'
 import { CircularSpinner } from '../../../../../../../Components/CircularSpinner/CircularSpinner'
-import React from 'react'
-
+import { devices } from '../../../../../../../theme/themes'
+import { ReactComponent as Icon } from '../../../../../../../assets/images/check.svg'
 interface WaitingPaymentProps {
   isCompleted: boolean
   visible: boolean
@@ -16,6 +16,10 @@ interface WaitingPaymentProps {
 const WaitingSpinner = styled(CircularSpinner)`
   width: 30px;
   height: 30px;
+  @media ${devices.tablet} {
+    width: 20px;
+    height: 20px;
+  }
 `
 
 const Waiting = styled.div`
@@ -24,15 +28,31 @@ const Waiting = styled.div`
   align-items: center;
   height: 30px;
   gap: 5px;
+  @media ${devices.tablet} {
+    height: 20px;
+    font-size: ${({ theme }) => theme.common.fontSizeSmall};
+    margin-top: 10px;
+    font-weight: 500;
+  }
 `
-
+const Success = styled(Waiting)`
+  color: ${({ theme }) => theme.common.colorGreen};
+`
+const Check = styled(Icon)`
+  #outer {
+    fill: ${({ theme }) => theme.common.colorGreen};
+  }
+`
 export const WaitingFiatPayment = ({ isCompleted, visible }: WaitingPaymentProps) => {
   if (visible) {
     return <></>
   }
 
   return isCompleted ? (
-    <Waiting>Payment successful! Click Next to proceed.</Waiting>
+    <Success>
+      <Check />
+      Payment successful!
+    </Success>
   ) : (
     <Waiting>
       <WaitingSpinner />

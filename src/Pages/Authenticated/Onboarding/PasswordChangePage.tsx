@@ -26,7 +26,7 @@ import { TOSModal } from '../Components/TOSModal/TOSModal'
 import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 import { Link } from '../../../Components/Common/Link'
 import complexActions from '../../../redux/complex.actions'
-
+import { WelcomePage } from './WelcomePage'
 const { api } = tequila
 const Logo = styled(Lock)`
   height: 500px;
@@ -189,6 +189,9 @@ export const PasswordChangePage = () => {
     mmnApiKey: mmnApiKey !== null ? mmnApiKey : '',
   })
   const [loading, setLoading] = useState(false)
+  const [showWelcomePage, setShowWelcomePage] = useState(true)
+  const closeWelcomePage = () => setShowWelcomePage(false)
+
   const TooltipContent = useMemo(() => {
     return (
       <div>
@@ -268,6 +271,7 @@ export const PasswordChangePage = () => {
 
   return (
     <>
+      {showWelcomePage && <WelcomePage close={closeWelcomePage} />}
       <Form onSubmit={handleSubmit}>
         <Page>
           <Card>

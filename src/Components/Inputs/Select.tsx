@@ -32,9 +32,9 @@ export const Select = ({ options = [], onChange = () => {}, value, id, isClearab
             color: s.isSelected || s.isFocused ? theme.dropdown.selectedOrFocusedValueColor : theme.text.colorMain,
             backgroundColor: `${
               s.isSelected
-                ? theme.dropdown.selectedValueBgColor
+                ? theme.dropdown.bgSelectedValue
                 : s.isFocused
-                ? theme.dropdown.focusedValueBgColor
+                ? theme.dropdown.bgFocusedValue
                 : theme.dropdown.bgColor
             }`,
           }

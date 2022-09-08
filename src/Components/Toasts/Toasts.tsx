@@ -29,7 +29,7 @@ const IconContainer = styled.div<IconContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme, $variant }) => theme.toasts[$variant].iconBg};
+  background-color: ${({ theme, $variant }) => theme.toasts[$variant].bgIcon};
 `
 
 const Message = styled.div`

@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
 import { QRCode } from 'react-qr-svg'
 import { currentCurrency } from '../../../../../../commons/currency'
 import { myst } from '../../../../../../commons/mysts'
@@ -17,10 +16,15 @@ import { CircularSpinner } from '../../../../../../Components/CircularSpinner/Ci
 import { SUPPORTED_GATEWAYS } from '../../gateways'
 import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyToClipboard'
 import { DOCS_METAMASK } from '../../../../../../constants/urls'
+import { devices } from '../../../../../../theme/themes'
 
 const QR = styled.div`
   width: 150px;
   height: 150px;
+  @media ${devices.tablet} {
+    width: 100px;
+    height: 100px;
+  }
 `
 
 const Content = styled.div`
@@ -37,6 +41,9 @@ const Description = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   line-height: 22px;
   color: ${({ theme }) => theme.common.colorGrayBlue2};
+  @media ${devices.tablet} {
+    margin-top: 5px;
+  }
 `
 
 const Centered = styled.div`
@@ -46,6 +53,9 @@ const Centered = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
+  @media ${devices.tablet} {
+    margin-top: 5px;
+  }
 `
 
 const ChannelAddress = styled.div`
@@ -56,11 +66,18 @@ const ChannelAddress = styled.div`
   font-weight: 500;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   color: ${({ theme }) => theme.common.colorKey};
+  @media ${devices.tablet} {
+    margin-top: 5px;
+  }
 `
 
 const Spinner = styled(CircularSpinner)`
   width: 30px;
   height: 30px;
+  @media ${devices.tablet} {
+    height: 20px;
+    width: 20px;
+  }
 `
 
 const Waiting = styled.div`
@@ -69,16 +86,29 @@ const Waiting = styled.div`
   align-items: center;
   height: 30px;
   gap: 5px;
+  @media ${devices.tablet} {
+    height: 20px;
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  }
 `
 const Title = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+    justify-content: center;
+  }
 `
 
 const Controls = styled.div`
   margin-top: 16px;
   display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 32px;
 `
@@ -108,7 +138,9 @@ const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) =
       </Centered>
       {!isRegistrationFeeReceived && (
         <Waiting>
-          <Spinner />
+          <div>
+            <Spinner />
+          </div>
           Wait for confirmation (might take couple of minutes)
         </Waiting>
       )}

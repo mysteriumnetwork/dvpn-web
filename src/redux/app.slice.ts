@@ -52,6 +52,7 @@ export interface AppState {
   healthCheckResponse: NodeHealthcheck
   natType: NatTypeResponse
   chatOpened: boolean
+  minimumRegistrationAmountWei: string
 }
 
 const INITIAL_STATE: AppState = {
@@ -84,6 +85,7 @@ const INITIAL_STATE: AppState = {
   healthCheckResponse: HEALTHCHECK_EMPTY,
   natType: NAT_TYPE_RESPONSE_EMPTY,
   chatOpened: false,
+  minimumRegistrationAmountWei: '0',
 }
 
 const slice = createSlice({
@@ -129,6 +131,9 @@ const slice = createSlice({
     updateChatOpenedStore: (state, action) => {
       state.chatOpened = action.payload
     },
+    updateMinimumRegistrationAmountWeiStore: (state, action) => {
+      state.minimumRegistrationAmountWei = action.payload
+    },
   },
 })
 
@@ -146,6 +151,7 @@ export const {
   updateHealthCheckResponseStore,
   updateNatTypeResponseStore,
   updateChatOpenedStore,
+  updateMinimumRegistrationAmountWeiStore,
 } = slice.actions
 
 export default slice.reducer

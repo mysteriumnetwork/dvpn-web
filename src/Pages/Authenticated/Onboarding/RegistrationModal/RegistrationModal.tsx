@@ -16,7 +16,16 @@ import { toast } from 'react-toastify'
 import { RegistrationStepProps } from './types'
 import errors from '../../../../commons/errors'
 import { SUPPORTED_GATEWAYS } from './gateways'
+import { devices } from '../../../../theme/themes'
+import zIndexes from '../../../../constants/z-indexes'
+import { media } from '../../../../commons/media'
+import { useMediaQuery } from 'react-responsive'
+import { myst } from '../../../../commons/mysts'
+import { useAppSelector } from '../../../../commons/hooks'
+import { selectors } from '../../../../redux/selectors'
+import complexActions from '../../../../redux/complex.actions'
 
+const { isDesktopQuery } = media
 const { api } = tequila
 
 const Content = styled.div`
@@ -24,27 +33,53 @@ const Content = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-
   align-items: center;
   justify-content: space-between;
   padding: 48px;
   gap: 38px;
+  @media ${devices.tablet} {
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 20px;
+  }
 `
 
-const Row = styled.div`
+const Wrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
   gap: 80px;
+  @media ${devices.tablet} {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+  }
 `
-
+const Wallet = styled(WalletSVG)`
+  height: 400px;
+  width: 500px;
+  @media ${devices.tablet} {
+    height: 250px;
+    width: 400px;
+  }
+`
+const Payment = styled(PaymentSVG)`
+  height: 400px;
+  width: 500px;
+  @media ${devices.tablet} {
+    height: 250px;
+    width: 400px;
+  }
+`
 const StepNumber = styled.div`
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  right: -50px;
+  right: -10px;
   top: 25px;
 
   width: 100px;
@@ -58,30 +93,37 @@ const StepNumber = styled.div`
 
 const Image = styled.div`
   position: relative;
-  width: 517px;
-  height: 443px;
+  @media ${devices.tablet} {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    max-height: 230px;
+  }
 `
 
 const steps = [
   {
     component: `PaymentMethod`,
-    logo: () => <PaymentSVG />,
+    logo: () => <Payment />,
   },
   {
     component: `Payment`,
     logo: (gateway: string) => {
       const Logo = SUPPORTED_GATEWAYS[gateway].logo
       if (!Logo) {
-        return <PaymentSVG />
+        return <Payment />
       }
       return <Logo />
     },
   },
   {
     component: `Wallet`,
-    logo: () => <WalletSVG />,
+    logo: () => <Wallet />,
   },
 ]
+
+const FEE_SPIKE_MULTIPLIER = 1.5
 
 interface Props {
   show?: boolean
@@ -94,8 +136,16 @@ export const RegistrationModal = ({ show }: Props) => {
   const [allGateways, setAllGateways] = useState<PaymentGateway[]>([])
   const [gateway, setGateway] = useState('empty')
   const [beneficiary, setBeneficiary] = useState('')
-
+  const isDesktop = useMediaQuery(isDesktopQuery)
   const Step = useMemo(() => React.lazy(() => import(`./Steps/${steps[step].component}`)), [step])
+
+  const fees = useAppSelector(selectors.fees)
+  const {
+    current: { registration },
+  } = fees
+  useEffect(() => {
+    complexActions.setMinimumRegistrationAmountWei(myst.toBig(registration.wei).times(FEE_SPIKE_MULTIPLIER).toFixed())
+  }, [registration.wei])
 
   useEffect(() => {
     ;(async () => {
@@ -124,21 +174,25 @@ export const RegistrationModal = ({ show }: Props) => {
   }
 
   return (
-    <Modal disableBackdrop disableX show={show} size="xl" loading={loading || stepLoading}>
+    <Modal
+      disableBackdrop
+      disableX
+      show={show}
+      size="xl"
+      zIndex={zIndexes.onboardingModal}
+      loading={loading || stepLoading}
+    >
       <Content>
-        <Row>
-          <BreadCrumbs current={step} />
-        </Row>
-        <Row>
+        <BreadCrumbs current={step} showStep={isDesktop} />
+        <Wrapper>
           <Image>
-            {steps[step]?.logo(gateway) || <PaymentSVG />}
-            <StepNumber>{step + 1}</StepNumber>
+            <div>{steps[step]?.logo(gateway) || <PaymentSVG />}</div>
+            {isDesktop && <StepNumber>{step + 1}</StepNumber>}
           </Image>
-
           <Suspense>
             <Step {...stepProps} />
           </Suspense>
-        </Row>
+        </Wrapper>
       </Content>
     </Modal>
   )

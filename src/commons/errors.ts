@@ -14,6 +14,10 @@ const codeToMessage: { code: string; message: string }[] = [
     code: 'err_mmn_registration',
     message: 'Failed to register to mystnodes.com',
   },
+  {
+    code: 'err_no_tax_state',
+    message: 'Please select tax state',
+  },
 ]
 
 export class ErrorWrapper {
@@ -27,6 +31,9 @@ export class ErrorWrapper {
     if (this.error instanceof APIError) {
       this.errorHuman = error.human()
       this.errorCode = error.response.error.code
+    }
+    if (this.error instanceof Error) {
+      this.errorHuman = error.message
     }
   }
 

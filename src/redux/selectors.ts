@@ -74,6 +74,8 @@ const auth = ({ app }: RootState) => app.auth
 
 const natType = ({ app }: RootState) => app.natType
 
+const minimumRegistrationAmountWei = ({ app }: RootState) => app.minimumRegistrationAmountWei
+
 export const selectors = {
   currentIdentity,
   fees,
@@ -91,4 +93,5 @@ export const selectors = {
   healthCheck,
   auth,
   natType,
+  minimumRegistrationAmountWei,
 }

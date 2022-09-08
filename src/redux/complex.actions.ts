@@ -19,6 +19,7 @@ import {
   updateFeesStore,
   updateIdentityRefStore,
   updateLoadingStore,
+  updateMinimumRegistrationAmountWeiStore,
   updateNatTypeResponseStore,
   updateTermsStore,
 } from './app.slice'
@@ -166,6 +167,9 @@ const setUserConfig = async (data: any): Promise<Config> => {
 
 const setChatOpened = (b: boolean) => store.dispatch(updateChatOpenedStore(b))
 
+const setMinimumRegistrationAmountWei = (amountWei: string) =>
+  store.dispatch(updateMinimumRegistrationAmountWeiStore(amountWei))
+
 const complexActions = {
   loadAppStateAfterAuthenticationAsync,
   setTrafficShaping,
@@ -175,6 +179,7 @@ const complexActions = {
   setFeatures,
   refreshStoreConfig,
   setChatOpened,
+  setMinimumRegistrationAmountWei,
 }
 
 export default complexActions

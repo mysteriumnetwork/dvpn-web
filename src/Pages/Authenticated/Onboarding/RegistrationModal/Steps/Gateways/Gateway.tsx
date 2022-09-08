@@ -23,6 +23,7 @@ import { InputGroup } from '../../../../../../Components/Inputs/InputGroup'
 import gatewaysUtils from './gateways.utils'
 import { InvoiceLink } from './Components/InvoiceLink'
 import { WaitingFiatPayment } from './Components/WaitingFiatPayment'
+import { devices } from '../../../../../../theme/themes'
 
 const { parseToastError } = errors
 const { countryNames } = location
@@ -51,6 +52,9 @@ const Title = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+  }
 `
 
 const Description = styled.div`
@@ -60,6 +64,9 @@ const Description = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   line-height: 22px;
   color: ${({ theme }) => theme.common.colorGrayBlue2};
+  @media ${devices.tablet} {
+    margin-top: 10px;
+  }
 `
 
 const Note = styled.div`
@@ -72,7 +79,13 @@ const Controls = styled.div`
   margin-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  @media ${devices.tablet} {
+    gap: 16px;
+    flex-direction: row;
+  }
 `
 
 const Input = styled.div`
@@ -137,7 +150,7 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
 
   useEffect(() => {
     if (taxCountry.value === 'US' && !taxState) {
-      setState((p) => ({ ...p, taxState: stateOptions[0] }))
+      setState((p) => ({ ...p, taxState: undefined }))
       return
     }
 
@@ -150,6 +163,9 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
   const handlePayNow = async () => {
     try {
       setState((p) => ({ ...p, isLoadingPayNow: true }))
+      if (taxCountry.value === 'US' && !taxState) {
+        throw new Error('Please select tax state!')
+      }
       const order = await createOrRetrieveOrder()
       const checkoutUrl = validateAndReturnCheckoutUrl(order, gatewayName)
       gatewaysUtils.openInNewTab(checkoutUrl)
@@ -228,7 +244,9 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
       <WaitingFiatPayment visible={showPayNow} isCompleted={isCompleted} />
       <InvoiceLink identity={identity.id} isCompleted={isCompleted} />
       <Controls>
-        {showPayNow && <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} label="Pay 1 USD" />}
+        {showPayNow && (
+          <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} size="medium" label="Pay 1 USD" />
+        )}
         {isCompleted && <Button label="Next" rounded onClick={next} />}
         <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
       </Controls>

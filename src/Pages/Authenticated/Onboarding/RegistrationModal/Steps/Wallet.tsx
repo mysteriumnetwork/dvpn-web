@@ -17,6 +17,8 @@ import { selectors } from '../../../../../redux/selectors'
 import identities from '../../../../../commons/identities'
 import { tequila } from '../../../../../api/tequila'
 import { DOCS_METAMASK } from '../../../../../constants/urls'
+import { devices } from '../../../../../theme/themes'
+import { Link } from '../../../../../Components/Common/Link'
 
 const { api } = tequila
 
@@ -29,24 +31,34 @@ const Title = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+  }
 `
 const Description = styled.div`
   display: flex;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin: 30px 0;
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   color: ${({ theme }) => theme.common.colorGrayBlue2};
   line-height: 22px;
+  @media ${devices.tablet} {
+    margin: 10px 0;
+  }
 `
 
 const Input = styled.div`
-  margin-top: 45px;
-  margin-bottom: 45px;
+  margin: 45px 0;
+  @media ${devices.tablet} {
+    margin: 10px 0;
+  }
 `
 
 const FlexGrow = styled.div`
   flex-grow: 1;
+  @media ${devices.tablet} {
+    margin-bottom: 10px;
+  }
 `
 
 const NetworkRegistration = ({ next, beneficiary, setBeneficiary, loading, setLoading }: RegistrationStepProps) => {
@@ -92,9 +104,9 @@ const NetworkRegistration = ({ next, beneficiary, setBeneficiary, loading, setLo
       <Description>
         Make sure withdrawal address is from ERC-20 Polygon compatible wallet (e.g MetaMask or MyEtherWallet)
       </Description>
-      <a href={DOCS_METAMASK} target="_blank" rel="noreferrer">
+      <Link href={DOCS_METAMASK} target="_blank" rel="noreferrer">
         Check here for instructions how to setup MYST token on MetaMask
-      </a>
+      </Link>
       <FlexGrow />
       <Button rounded label="Finish" onClick={handleFinish} />
     </Content>
