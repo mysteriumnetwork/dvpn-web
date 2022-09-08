@@ -83,7 +83,7 @@ const NetworkRegistration = ({ next, beneficiary, setBeneficiary, loading, setLo
         })
       }
     } catch (err: any) {
-      toast.error(errors.apiError(err).human())
+      errors.parseToastError(err)
     }
     setLoading(false)
   }

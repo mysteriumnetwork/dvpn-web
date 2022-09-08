@@ -28,12 +28,11 @@ export class ErrorWrapper {
   constructor(error?: any) {
     this.error = error
 
+    this.errorHuman = error.message
+
     if (this.error instanceof APIError) {
       this.errorHuman = error.human()
       this.errorCode = error.response.error.code
-    }
-    if (this.error instanceof Error) {
-      this.errorHuman = error.message
     }
   }
 

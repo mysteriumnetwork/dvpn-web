@@ -152,8 +152,8 @@ export const RegistrationModal = ({ show }: Props) => {
       try {
         const gateways = await api.payment.gateways()
         setAllGateways(gateways)
-      } catch (e: any) {
-        toast.error(errors.apiError(e).human)
+      } catch (err: any) {
+        errors.parseToastError(err)
         toast.error('Could not retrieve payment gateways')
       }
 

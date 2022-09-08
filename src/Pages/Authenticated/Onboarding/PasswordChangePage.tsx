@@ -262,8 +262,7 @@ export const PasswordChangePage = () => {
         await complexActions.acceptWithTermsAndConditions()
       }
     } catch (err: any) {
-      const apiError = errors.apiError(err)
-      toasts.toastError(apiError.human())
+      errors.parseToastError(err)
     } finally {
       setLoading(false)
     }
