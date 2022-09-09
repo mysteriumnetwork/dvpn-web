@@ -22,8 +22,8 @@ export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
     description: 'Streaming and data transfer traffic from B2B clients',
   },
   {
-    name: 'B2B Data Scrapping',
+    name: 'B2B Data Scraping',
     type: 'scraping',
-    description: 'Data scrapping traffic from B2B clients',
+    description: 'Data scraping traffic from B2B clients',
   },
 ]
