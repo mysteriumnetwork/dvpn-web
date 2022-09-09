@@ -27,7 +27,7 @@ const MarginTop = styled.div`
   margin-top: 20px;
 `
 
-export const NATTraversalOrder = () => {
+export const NATTraversalOrderCard = () => {
   const config = useAppSelector(selectors.currentConfig)
   const defaultConfig = useAppSelector(selectors.defaultConfig)
 
