@@ -19,10 +19,12 @@ import { MetricsRange, Option } from '../../../../types/common'
 import { ChartData, ChartType } from './types'
 import series from './series'
 import { tooltipFormatter } from './chart.tooltip'
-import { alphaToHex } from '../../../../theme/themeCommon'
+import { alphaToHex, themeCommon } from '../../../../theme/themeCommon'
 import { SESSIONS_V2_RESPONSE_EMPTY } from '../../../../constants/instances'
 import { tequila } from '../../../../api/tequila'
 import totals from './totals'
+import zIndexes from '../../../../constants/z-indexes'
+import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 
 const { seconds2Time } = dates
 const { format } = bytes
@@ -31,6 +33,7 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
 `
 
 const CardRow = styled.div`
@@ -78,6 +81,25 @@ const ChartRow = styled.div`
     overflow-x: auto;
     overflow-y: hidden;
   }
+`
+
+const Spinner = styled(CircularSpinner)`
+  width: 4em;
+  height: 4em;
+`
+
+const Overlay = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: ${themeCommon.colorDarkBlue + alphaToHex(0.3)};
+  z-index: ${zIndexes.overlay};
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const RANGE_OPTIONS: Option<MetricsRange>[] = [
@@ -141,6 +163,11 @@ export const Report = () => {
 
   return (
     <Column>
+      {loading && (
+        <Overlay>
+          <Spinner />
+        </Overlay>
+      )}
       <ChartRow>
         <ReportChart
           chartData={chartData}
