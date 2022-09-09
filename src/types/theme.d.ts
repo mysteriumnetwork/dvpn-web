@@ -82,6 +82,7 @@ export type Theme = {
     bgBody: string
     bgRowOdd: string
     bgRowEven: string
+    bgRowOngoing: string
     textColorPrimary: string
     textColorSecondary: string
     mobileCard: {

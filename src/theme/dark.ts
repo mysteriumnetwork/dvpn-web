@@ -64,8 +64,9 @@ const dark: Omit<Theme, 'common'> = {
     bgBody: themeCommon.color393453,
     bgRowOdd: themeCommon.colorGrayBlue2 + alphaToHex(0.1),
     bgRowEven: themeCommon.colorGrayBlue2 + alphaToHex(0.3),
+    bgRowOngoing: themeCommon.colorGreen + alphaToHex(0.3),
     textColorPrimary: themeCommon.colorLightBlue,
-    textColorSecondary: themeCommon.colorGrayBlue,
+    textColorSecondary: themeCommon.colorLightBlue,
     mobileCard: {
       textColorPrimary: themeCommon.colorLightBlue,
       textColorSecondary: themeCommon.colorGrayBlue,

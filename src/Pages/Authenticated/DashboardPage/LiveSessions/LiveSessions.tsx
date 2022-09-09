@@ -23,6 +23,7 @@ import { useMediaQuery } from 'react-responsive'
 import { media } from '../../../../commons/media'
 import { LiveSessionCard } from './LiveSessionCard'
 import { List } from '../../../../Components/List/List'
+import { ReactComponent as Ongoing } from '../../../../assets/images/ongoing.svg'
 
 const { PrimaryCell, SecondaryCell } = cells
 const { seconds2Time } = dates
@@ -81,6 +82,15 @@ export const LiveSessions = () => {
       },
       { Header: 'Duration', accessor: 'duration', Cell: (c) => <SecondaryCell>{seconds2Time(c.value)}</SecondaryCell> },
       {
+        Header: '',
+        accessor: 'ongoing',
+        Cell: (c) => (
+          <SecondaryCell>
+            <Ongoing />
+          </SecondaryCell>
+        ),
+      },
+      {
         Header: 'Services',
         accessor: 'serviceType',
         Cell: (c) => <SecondaryCell>{services.name(c.value)}</SecondaryCell>,
@@ -108,7 +118,7 @@ export const LiveSessions = () => {
         <Title>Ongoing Sessions</Title>
         <SubTitle to={HISTORY}>Session history</SubTitle>
       </Header>
-      {isDesktop && <Table columns={Columns} data={liveSessions} />}
+      {isDesktop && <Table ongoing columns={Columns} data={liveSessions} />}
       {!isDesktop && <List items={liveSessions} mapper={(item) => <LiveSessionCard item={item} />} />}
     </Card>
   )

@@ -17,6 +17,7 @@ interface Props {
   data: any[]
   loading?: boolean
   noContent?: ReactNode
+  ongoing?: boolean
 }
 
 const Container = styled.div`
@@ -58,23 +59,27 @@ const Header = styled.div`
   width: 10%;
   gap: 5px;
 `
-const Row = styled.div`
+const Row = styled.div<RowProps>`
   display: flex;
   position: relative;
   justify-content: space-between;
   padding: 5px;
+  background-color: ${({ $ongoing, theme }) => $ongoing && theme.table.bgRowOngoing};
   border-radius: 10px;
   &:nth-of-type(odd) {
-    background-color: ${({ theme }) => theme.table.bgRowOdd};
+    background-color: ${({ $ongoing, theme }) => !$ongoing && theme.table.bgRowOdd};
   }
   &:nth-of-type(even) {
-    background-color: ${({ theme }) => theme.table.bgRowEven};
+    background-color: ${({ $ongoing, theme }) => !$ongoing && theme.table.bgRowEven};
   }
 `
 
 interface TableProps {
   $noContent: boolean
   $loading?: boolean
+}
+interface RowProps {
+  $ongoing?: boolean
 }
 const Body = styled.div<TableProps>`
   position: relative;
@@ -94,7 +99,7 @@ const TableSpinner = () => (
     <Spinner />
   </Overlay>
 )
-export const Table = ({ columns, data, loading, noContent }: Props) => {
+export const Table = ({ columns, data, loading, noContent, ongoing }: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { data, columns },
     useFlexLayout,
@@ -119,11 +124,9 @@ export const Table = ({ columns, data, loading, noContent }: Props) => {
         {rows.map((row) => {
           prepareRow(row)
           return (
-            <Row {...row.getRowProps()}>
+            <Row $ongoing={ongoing} {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                return (
-                  <div {...cell.getCellProps({ className: (cell.column as any).className })}>{cell.render('Cell')}</div>
-                )
+                return <div {...cell.getCellProps()}>{cell.render('Cell')}</div>
               })}
             </Row>
           )
