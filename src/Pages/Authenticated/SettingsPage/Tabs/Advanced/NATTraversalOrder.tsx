@@ -8,9 +8,14 @@ import { SettingsCard } from '../../SettingsCard'
 import { Button } from '../../../../../Components/Inputs/Button'
 import { DNDList, DNDListItem } from '../../../../../Components/Inputs/DNDList'
 import styled from 'styled-components'
-import { AdvancedSettingsForms } from './AdvancedSettings'
 import { InputGroup } from '../../../../../Components/Inputs/InputGroup'
 import { NAT } from './NAT'
+import { useEffect, useState } from 'react'
+import { useAppSelector } from '../../../../../commons/hooks'
+import { selectors } from '../../../../../redux/selectors'
+import { configs } from '../../../../../commons/config'
+import calls from '../../../../../commons/calls'
+import complexActions from '../../../../../redux/complex.actions'
 
 const Controls = styled.div`
   display: flex;
@@ -22,17 +27,39 @@ const MarginTop = styled.div`
   margin-top: 20px;
 `
 
-interface Props {
-  loading?: boolean
-  form: AdvancedSettingsForms
-  onChange: (traversals: string) => void
-  handleSave: () => void
-  handleReset: () => void
-}
+export const NATTraversalOrder = () => {
+  const config = useAppSelector(selectors.currentConfig)
+  const defaultConfig = useAppSelector(selectors.defaultConfig)
 
-export const NATTraversalOrder = ({ handleSave, loading, onChange, form, handleReset }: Props) => {
+  const [loading, setLoading] = useState(true)
+  const [traversal, setTraversal] = useState('')
+
+  useEffect(() => {
+    setTraversal(configs.natTraversals(config))
+    setLoading(false)
+  }, [])
+
   const handleChange = (items: DNDListItem[]) => {
-    onChange(items.map((i) => i.id).join(','))
+    setTraversal(items.map((i) => i.id).join(','))
+  }
+
+  const handleSave = async () => {
+    setLoading(true)
+    await calls.tryTo(() => complexActions.setUserConfig({ traversal }), { success: 'NAT traversals saved' })
+    setLoading(false)
+  }
+
+  const handleReset = async () => {
+    setLoading(true)
+    await calls.tryTo(
+      () =>
+        complexActions.setUserConfig({
+          traversal: configs.natTraversals(defaultConfig),
+        }),
+      { success: 'NAT traversals reset' },
+    )
+    setTraversal(configs.natTraversals(defaultConfig))
+    setLoading(false)
   }
 
   return (
@@ -52,8 +79,8 @@ export const NATTraversalOrder = ({ handleSave, loading, onChange, form, handleR
         input={
           <>
             <MarginTop />
-            {!loading && form.traversals && (
-              <DNDList items={form.traversals.split(',').map((v) => ({ id: v, label: v }))} onChange={handleChange} />
+            {!loading && traversal && (
+              <DNDList items={traversal.split(',').map((v) => ({ id: v, label: v }))} onChange={handleChange} />
             )}
           </>
         }
