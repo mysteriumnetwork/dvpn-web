@@ -224,10 +224,11 @@ const light: Omit<Theme, 'common'> = {
   },
 
   dropdown: {
-    valueTextColor: themeCommon.colorDarkBlue,
+    valueTextColor: themeCommon.colorWhite,
     placeholderTextColor: themeCommon.colorGrayBlue2,
     border: `1px solid ${themeCommon.colorGrayBlue}`,
-    bgColor: themeCommon.colorWhite,
+    bgMenu: themeCommon.colorWhite,
+    bgControl: themeCommon.colorKey,
     selectedOrFocusedValueColor: themeCommon.colorWhite,
     bgSelectedValue: themeCommon.colorKey,
     bgFocusedValue: themeCommon.colorKeyLight,

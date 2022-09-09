@@ -228,7 +228,8 @@ export type Theme = {
     valueTextColor: string
     placeholderTextColor: string
     border: string
-    bgColor: string
+    bgMenu: string
+    bgControl: string
     selectedOrFocusedValueColor: string
     bgSelectedValue: string
     bgFocusedValue: string
