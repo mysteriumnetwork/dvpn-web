@@ -11,7 +11,6 @@ import { Profile } from '../Profile/Profile'
 import { Notifications } from '../Notifications/Notifications'
 import PageTitle from '../../../../Components/LayoutHeader/PageTitle'
 import { ReactNode } from 'react'
-import { MonitoringStatus } from '../MonitoringStatus/MonitoringStatus'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 
 const Container = styled.div`
@@ -45,7 +44,6 @@ export const Header = ({ logo, title }: Props) => {
   return (
     <Container>
       <PageTitle logo={logo} name={title} />
-      <MonitoringStatus />
       <NodeStatus />
       {/* TODO: waiting for endpoint*/}
       {/*<Quality />*/}
