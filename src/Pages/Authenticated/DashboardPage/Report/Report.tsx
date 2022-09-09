@@ -6,7 +6,6 @@
  */
 
 import { useFetch } from '../../../../commons/hooks'
-import { tequila } from '../../../../api/tequila'
 import ReportChart from './ReportChart'
 import { ReportCard } from '../Stats/ReportCard'
 import styled from 'styled-components'
@@ -14,18 +13,17 @@ import { CloudIcon, SessionsIcon, StopwatchIcon, WalletIcon } from '../../../../
 import { devices } from '../../../../theme/themes'
 import { useEffect, useState } from 'react'
 import dates from '../../../../commons/dates'
-import { SESSIONS_V2_RESPONSE_EMPTY } from '../../../../constants/instances'
 import { myst } from '../../../../commons/mysts'
 import bytes from '../../../../commons/bytes'
 import { MetricsRange, Option } from '../../../../types/common'
-import { ChartData } from './types'
+import { ChartData, ChartType } from './types'
 import series from './series'
-import { ChartType } from './types'
-import totals from './totals'
-import { tooltipFormatter } from './mappers'
+import { tooltipFormatter } from './chart.tooltip'
 import { alphaToHex } from '../../../../theme/themeCommon'
+import { SESSIONS_V2_RESPONSE_EMPTY } from '../../../../constants/instances'
+import { tequila } from '../../../../api/tequila'
+import totals from './totals'
 
-const { api } = tequila
 const { seconds2Time } = dates
 const { format } = bytes
 
@@ -108,10 +106,17 @@ export const Report = () => {
   })
   const [chartData, setChartData] = useState<ChartData>({ series: [], tooltipFormatter: () => '' })
 
-  const [data = SESSIONS_V2_RESPONSE_EMPTY, loading] = useFetch(
-    () => api.provider.sessions({ range: selectedRange.value }),
+  const [seriesData = [], loadingSeries] = useFetch(() => series.pairs(selectedRange.value, selectedGraph.value), [
+    selectedRange.value,
+    selectedGraph.value,
+  ])
+
+  const [sessionsData = SESSIONS_V2_RESPONSE_EMPTY, loadingSessions] = useFetch(
+    () => tequila.api.provider.sessions({ range: selectedRange.value }),
     [selectedRange],
   )
+
+  const loading = loadingSeries || loadingSessions
 
   useEffect(() => {
     if (loading) {
@@ -120,17 +125,17 @@ export const Report = () => {
 
     setChartData((p) => ({
       ...p,
-      series: series.pairs(data.sessions, selectedGraph.value as ChartType, selectedRange.value),
+      series: seriesData,
       units: series.units(selectedGraph.value),
       tooltipFormatter: tooltipFormatter(selectedGraph.value),
     }))
 
     setStats((p) => ({
       ...p,
-      totalEarningsEther: totals.earnings(data.sessions),
-      totalSessions: data.sessions.length,
-      totalSessionTime: totals.durationSeconds(data.sessions),
-      totalTransferredBytes: totals.dataTransferredBytes(data.sessions),
+      totalEarningsEther: totals.earnings(sessionsData.sessions),
+      totalSessions: sessionsData.sessions.length,
+      totalSessionTime: totals.durationSeconds(sessionsData.sessions),
+      totalTransferredBytes: totals.dataTransferredBytes(sessionsData.sessions),
     }))
   }, [selectedRange, selectedGraph, loading])
 

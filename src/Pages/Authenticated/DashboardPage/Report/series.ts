@@ -4,13 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { SessionV2 } from 'mysterium-vpn-js/lib/provider'
-import { Pair } from './types'
-import { ChartType, GroupedByTime } from './types'
-import { PAIR_MAPPERS } from './mappers'
+import { SeriesResponse } from 'mysterium-vpn-js/lib/provider'
+import { ChartType, Pair } from './types'
 import { currentCurrency } from '../../../../commons/currency'
 import { MetricsRange } from '../../../../types/common'
 import { hour, localDate } from './dates'
+import { tequila } from '../../../../api/tequila'
 
 const units = (type: ChartType): string | undefined =>
   ({
@@ -18,52 +17,6 @@ const units = (type: ChartType): string | undefined =>
     data: ' GB',
     sessions: '',
   }[type])
-
-const pairs = (sessions: SessionV2[], type: ChartType, range: MetricsRange): Pair[] =>
-  PAIR_MAPPERS[type](range === '1d' ? groupByLast24Hours(sessions) : groupByDays(sessions, range))
-
-const emptyGroup = (key: string) => ({ [key]: [] })
-
-const groupByLast24Hours = (sessions: SessionV2[]): GroupedByTime[] => {
-  const grouped: GroupedByTime[] = []
-
-  const now = new Date()
-  for (let i = 0; i < 24; i++) {
-    grouped.push(emptyGroup(hour(now.toISOString())))
-    now.setHours(now.getHours() - 1)
-  }
-  grouped.reverse()
-
-  sessions.forEach((s) => {
-    const key = hour(s.startedAt)
-    const group = grouped.find((g) => g[key])
-
-    if (group) {
-      group[key].push(s)
-    }
-  })
-  return grouped
-}
-
-const groupByDays = (sessions: SessionV2[], range: MetricsRange): GroupedByTime[] => {
-  const grouped: GroupedByTime[] = []
-  const now = new Date()
-  for (let i = 0; i < days(range); i++) {
-    grouped.push(emptyGroup(localDate(now.toISOString())))
-    now.setDate(now.getDate() - 1)
-  }
-  grouped.reverse()
-
-  sessions.forEach((s) => {
-    const key = localDate(s.startedAt)
-    const group = grouped.find((g) => g[key])
-
-    if (group) {
-      group[key].push(s)
-    }
-  })
-  return grouped
-}
 
 const days = (period: string): number => {
   try {
@@ -73,6 +26,57 @@ const days = (period: string): number => {
   }
 }
 
-const series = { pairs, units }
+const template = (range: MetricsRange): Pair[] => {
+  const prefilled: Pair[] = []
+
+  if (range === '1d') {
+    const now = new Date()
+    for (let i = 0; i < 24; i++) {
+      prefilled.push({ y: 0, x: hour(now.getTime() / 1000) })
+      now.setHours(now.getHours() - 1)
+    }
+  } else {
+    const now = new Date()
+    for (let i = 0; i < days(range); i++) {
+      prefilled.push({ y: 0, x: localDate(now.getTime() / 1000) })
+      now.setDate(now.getDate() - 1)
+    }
+  }
+
+  prefilled.reverse()
+  return prefilled
+}
+
+const seriesToPairs = ({ data }: SeriesResponse, range: MetricsRange): Pair[] => {
+  const result: Pair[] = template(range)
+
+  for (let i = 0; i < data.length; i++) {
+    const entry = data[i]
+    const x = range === '1d' ? hour(entry.timestamp) : localDate(entry.timestamp)
+
+    const index = result.findIndex((p) => p.x === x)
+    if (index !== -1) {
+      const r = result[index]
+      result[index] = { ...r, y: r.y + Number(entry.value) }
+    }
+  }
+
+  return result
+}
+
+type SeriesFuncName = 'seriesEarnings' | 'seriesData' | 'seriesSessions'
+
+const TYPE_2_FUNC_NAME: { [key: string]: SeriesFuncName } = {
+  earnings: 'seriesEarnings',
+  data: 'seriesData',
+  sessions: 'seriesSessions',
+}
+
+const pairs = async (range: MetricsRange, type: ChartType): Promise<Pair[]> => {
+  const response = await tequila.api.provider[TYPE_2_FUNC_NAME[type]]({ range })
+  return seriesToPairs(response, range)
+}
+
+const series = { units, pairs }
 
 export default series
