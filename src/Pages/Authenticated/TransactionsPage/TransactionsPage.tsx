@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Table } from '../../../Components/Table/Table'
@@ -42,18 +42,12 @@ const SpecializedRow = styled(LayoutRow)`
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState(1)
-  const [noData, setNoData] = useState(false)
-
   const handlePageChange = (page: number) => setState(page)
 
   const [data = SETTLEMENT_LIST_RESPONSE_EMPTY, loading] = useFetch(() => api.settlementHistory({ page: state }), [
     state,
   ])
-  useEffect(() => {
-    if (data.items.length === 0 && !loading) {
-      setNoData(true)
-    }
-  }, [loading])
+  const noData = data.items.length === 0
 
   const Columns: Column<Settlement>[] = useMemo(
     () => [

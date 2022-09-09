@@ -47,7 +47,6 @@ const RANGE_OPTIONS: Option<MetricsRange>[] = [
 
 export const HistoryPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
-  const [noData, setNoData] = useState(false)
   const [range, setRange] = useState<Option>(RANGE_OPTIONS[RANGE_OPTIONS.length - 1])
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -57,16 +56,13 @@ export const HistoryPage = () => {
     range.value,
   ])
   useEffect(() => {
-    if (data.sessions.length < 1 || loading) {
+    if (loading) {
       return
-    }
-    if (data.sessions.length === 0 && !loading) {
-      setNoData(true)
     }
     setTotalPages(Math.ceil(data.sessions.length / PAGE_SIZE))
     setSessions(data.sessions.slice(PAGE_SIZE * (page - 1), PAGE_SIZE * page))
-  }, [data.sessions.length, page, loading])
-
+  }, [page, loading, range.value])
+  const noData = data.sessions.length === 0
   const DesktopColumns: Column<SessionV2>[] = useMemo(
     () => [
       {
