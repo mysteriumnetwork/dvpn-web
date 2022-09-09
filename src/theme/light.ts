@@ -229,10 +229,10 @@ const light: Omit<Theme, 'common'> = {
     placeholderTextColor: themeCommon.colorGrayBlue2,
     border: `1px solid ${themeCommon.colorGrayBlue}`,
     bgMenu: themeCommon.colorWhite,
-    bgControl: themeCommon.colorKey,
-    selectedOrFocusedValueColor: themeCommon.colorWhite,
-    bgSelectedValue: themeCommon.colorKey,
-    bgFocusedValue: themeCommon.colorKeyLight,
+    bgControl: themeCommon.colorWhite,
+    selectedOrFocusedValueColor: themeCommon.colorGrayBlue2,
+    bgSelectedValue: themeCommon.colorGrayBlue + alphaToHex(0.3),
+    bgFocusedValue: themeCommon.colorGrayBlue + alphaToHex(0.1),
   },
 }
 

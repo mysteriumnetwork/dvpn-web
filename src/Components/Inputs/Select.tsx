@@ -22,7 +22,7 @@ export const Select = ({ options = [], onChange = () => {}, value, id, isClearab
   return (
     <RSelect<Option>
       styles={{
-        singleValue: (p, s) => ({ ...p, color: `${theme.common.colorWhite}`, minWidth: '70px' }),
+        singleValue: (p, s) => ({ ...p, color: `${theme.text.colorMain}`, minWidth: '70px' }),
         placeholder: (p, s) => ({ ...p, color: `${theme.dropdown.valueTextColor}`, padding: '10px' }),
         noOptionsMessage: (p, s) => ({ ...p, color: `${theme.text.colorSecondary}` }),
         indicatorSeparator: (p, s) => ({ ...p, width: '0px' }),
@@ -46,7 +46,7 @@ export const Select = ({ options = [], onChange = () => {}, value, id, isClearab
           ...p,
           color: `${theme.text.colorMain}`,
           backgroundColor: `${theme.dropdown.bgControl}`,
-          borderRadius: '30px',
+          borderRadius: '10px',
           minWidth: '80px',
         }),
         menuList: (p, s) => ({
