@@ -47,7 +47,6 @@ const RANGE_OPTIONS: Option<MetricsRange>[] = [
 
 export const HistoryPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
-
   const [range, setRange] = useState<Option>(RANGE_OPTIONS[RANGE_OPTIONS.length - 1])
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
@@ -56,16 +55,14 @@ export const HistoryPage = () => {
   const [data = { sessions: [] }, loading] = useFetch(() => api.provider.sessions({ range: range.value }), [
     range.value,
   ])
-
   useEffect(() => {
-    if (data.sessions.length < 1 || loading) {
+    if (loading) {
       return
     }
     setTotalPages(Math.ceil(data.sessions.length / PAGE_SIZE))
     setSessions(data.sessions.slice(PAGE_SIZE * (page - 1), PAGE_SIZE * page))
-  }, [data.sessions.length, page, loading])
+  }, [page, loading, range.value])
   const noData = data.sessions.length === 0
-
   const DesktopColumns: Column<SessionV2>[] = useMemo(
     () => [
       {
@@ -92,7 +89,7 @@ export const HistoryPage = () => {
       {
         Header: 'Earnings',
         accessor: 'earnings',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value.wei, { fractions: 3 })}</PrimaryCell>,
+        Cell: (c) => <PrimaryCell>{myst.display(c.value.wei, { fractions: 5 })}</PrimaryCell>,
       },
       {
         Header: 'Transferred',

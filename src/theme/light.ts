@@ -61,6 +61,7 @@ const light: Omit<Theme, 'common'> = {
     bgBody: themeCommon.colorWhite,
     bgRowOdd: themeCommon.colorLightBlue + alphaToHex(0.2),
     bgRowEven: themeCommon.colorLightBlue + alphaToHex(0.5),
+    bgRowOngoing: themeCommon.colorLightGreen,
     textColorPrimary: themeCommon.colorDarkBlue,
     textColorSecondary: themeCommon.colorDarkBlue,
     mobileCard: {
@@ -224,13 +225,14 @@ const light: Omit<Theme, 'common'> = {
   },
 
   dropdown: {
-    valueTextColor: themeCommon.colorDarkBlue,
+    valueTextColor: themeCommon.colorWhite,
     placeholderTextColor: themeCommon.colorGrayBlue2,
     border: `1px solid ${themeCommon.colorGrayBlue}`,
-    bgColor: themeCommon.colorWhite,
-    selectedOrFocusedValueColor: themeCommon.colorWhite,
-    bgSelectedValue: themeCommon.colorKey,
-    bgFocusedValue: themeCommon.colorKeyLight,
+    bgMenu: themeCommon.colorWhite,
+    bgControl: themeCommon.colorWhite,
+    selectedOrFocusedValueColor: themeCommon.colorGrayBlue2,
+    bgSelectedValue: themeCommon.colorGrayBlue + alphaToHex(0.3),
+    bgFocusedValue: themeCommon.colorGrayBlue + alphaToHex(0.1),
   },
 }
 

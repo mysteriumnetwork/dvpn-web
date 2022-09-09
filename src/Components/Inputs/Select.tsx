@@ -22,8 +22,8 @@ export const Select = ({ options = [], onChange = () => {}, value, id, isClearab
   return (
     <RSelect<Option>
       styles={{
-        singleValue: (p, s) => ({ ...p, color: `${theme.text.colorMain}` }),
-        placeholder: (p, s) => ({ ...p, color: `${theme.text.colorSecondary}` }),
+        singleValue: (p, s) => ({ ...p, color: `${theme.text.colorMain}`, minWidth: '70px' }),
+        placeholder: (p, s) => ({ ...p, color: `${theme.dropdown.valueTextColor}`, padding: '10px' }),
         noOptionsMessage: (p, s) => ({ ...p, color: `${theme.text.colorSecondary}` }),
         indicatorSeparator: (p, s) => ({ ...p, width: '0px' }),
         option: (p, s) => {
@@ -35,20 +35,32 @@ export const Select = ({ options = [], onChange = () => {}, value, id, isClearab
                 ? theme.dropdown.bgSelectedValue
                 : s.isFocused
                 ? theme.dropdown.bgFocusedValue
-                : theme.dropdown.bgColor
+                : theme.dropdown.bgMenu
             }`,
+            borderRadius: '5px',
+            marginBottom: '5px',
+            minWidth: '80px',
           }
         },
         control: (p, s) => ({
           ...p,
-          backgroundColor: `${theme.dropdown.bgColor}`,
-          border: theme.dropdown.border,
-          borderRadius: '5px',
+          color: `${theme.text.colorMain}`,
+          backgroundColor: `${theme.dropdown.bgControl}`,
+          borderRadius: '10px',
+          minWidth: '80px',
         }),
         menuList: (p, s) => ({
           ...p,
-          backgroundColor: `${theme.dropdown.bgColor}`,
+          backgroundColor: `${theme.dropdown.bgMenu}`,
           color: `${theme.text.colorMain}`,
+          borderRadius: '15px',
+          minWidth: '80px',
+        }),
+        menu: (p, s) => ({
+          ...p,
+          backgroundColor: `${theme.dropdown.bgMenu}`,
+          borderRadius: '15px',
+          padding: '5px',
         }),
       }}
       id={id}

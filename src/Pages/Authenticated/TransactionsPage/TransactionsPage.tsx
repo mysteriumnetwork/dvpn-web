@@ -42,7 +42,6 @@ const SpecializedRow = styled(LayoutRow)`
 export const TransactionsPage = () => {
   const isDesktop = useMediaQuery(isDesktopQuery)
   const [state, setState] = useState(1)
-
   const handlePageChange = (page: number) => setState(page)
 
   const [data = SETTLEMENT_LIST_RESPONSE_EMPTY, loading] = useFetch(() => api.settlementHistory({ page: state }), [
