@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { SeriesResponse } from 'mysterium-vpn-js/lib/provider'
+import { SeriesResponse } from 'mysterium-vpn-js'
 import { ChartType, Pair } from './types'
 import { currentCurrency } from '../../../../commons/currency'
 import { MetricsRange } from '../../../../types/common'
