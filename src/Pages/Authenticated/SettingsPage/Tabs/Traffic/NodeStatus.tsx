@@ -73,7 +73,7 @@ export const NodeStatus = () => {
         title={on ? 'Stop Services' : 'Start Services'}
         message={on ? 'This will stop all running services!' : 'This will start all stopped services!'}
         show={showConfirmation}
-        onConfirmLabel="Restart"
+        onConfirmLabel={on ? 'Stop' : 'Start'}
         onConfirm={handle}
         onCancel={() => setShowConfirmation(false)}
       />
