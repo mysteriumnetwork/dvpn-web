@@ -95,7 +95,6 @@ export const AdvancedSettingsCard = () => {
       udpRange: defaultData['udp.ports'],
       l2RPCurls: '',
       stunServerURLS: defaultData['stun-servers'].join(','),
-      traversals: configs.natTraversals(defaultConfig),
     }))
     setLoading(false)
   }
