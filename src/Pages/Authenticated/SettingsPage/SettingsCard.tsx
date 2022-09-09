@@ -7,7 +7,7 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { CircularSpinner } from '../../../Components/CircularSpinner/CircularSpinner'
-import { themeCommon } from '../../../theme/themeCommon'
+import { alphaToHex, themeCommon } from '../../../theme/themeCommon'
 import zIndexes from '../../../constants/z-indexes'
 
 const Container = styled.div`
@@ -42,7 +42,9 @@ const LoadingOverlay = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${themeCommon.colorWhite}AA;
+  border-radius: 20px;
+
+  background-color: ${themeCommon.colorDarkBlue + alphaToHex(0.3)};
 `
 
 const Spinner = styled(CircularSpinner)`
