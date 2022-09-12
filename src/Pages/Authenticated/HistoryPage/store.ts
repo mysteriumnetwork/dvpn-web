@@ -57,6 +57,7 @@ export class HistoryPageStore {
 
   setRange(range: Option<MetricsRange>) {
     this.range = range
+    this.setPage(1)
   }
 
   async fetchSessions(): Promise<void> {
