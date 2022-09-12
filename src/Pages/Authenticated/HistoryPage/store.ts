@@ -44,14 +44,13 @@ export class HistoryPageStore {
       pagedSessions: computed,
       noData: computed,
     })
-
-    this.fetchSessions()
   }
 
   setupReactions(): void {
     reaction(
       () => this.range,
       () => this.fetchSessions(),
+      { fireImmediately: true },
     )
   }
 
