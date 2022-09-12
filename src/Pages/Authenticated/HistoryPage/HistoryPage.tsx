@@ -4,20 +4,18 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Column } from 'react-table'
 import { Table } from '../../../Components/Table/Table'
 import { cells } from '../../../Components/Table/cells'
 import { Pagination } from '../../../Components/Pagination/Pagination'
-import { tequila } from '../../../api/tequila'
 import dates from '../../../commons/dates'
-import { useFetch } from '../../../commons/hooks'
 import location from '../../../commons/location'
 import { myst } from '../../../commons/mysts'
 import bytes from '../../../commons/bytes'
-import { MetricsRange, Option } from '../../../types/common'
+import { Option } from '../../../types/common'
 import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
 import { SessionV2 } from 'mysterium-vpn-js'
@@ -26,8 +24,9 @@ import { RangePicker } from '../../../Components/Inputs/RangePicker'
 import { List } from '../../../Components/List/List'
 import { SessionCard } from './SessionCard'
 import { Placeholder } from './Placeholder'
+import { observer } from 'mobx-react-lite'
+import { useStores } from '../../../mobx/store'
 
-const { api } = tequila
 const { date2human, seconds2Time } = dates
 const { countryName } = location
 const { format } = bytes
@@ -38,31 +37,10 @@ const session2human = (session: string) => {
   return session.split('-')[0]
 }
 
-const PAGE_SIZE = 10
-const RANGE_OPTIONS: Option<MetricsRange>[] = [
-  { label: 'Last 24 hours', value: '1d' },
-  { label: 'Last 7 days', value: '7d' },
-  { label: 'Last 30 days', value: '30d' },
-]
-
-export const HistoryPage = () => {
+export const HistoryPage = observer(() => {
+  const { historyPage } = useStores()
   const isDesktop = useMediaQuery(isDesktopQuery)
-  const [range, setRange] = useState<Option>(RANGE_OPTIONS[RANGE_OPTIONS.length - 1])
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [sessions, setSessions] = useState<SessionV2[]>([])
 
-  const [data = { sessions: [] }, loading] = useFetch(() => api.provider.sessions({ range: range.value }), [
-    range.value,
-  ])
-  useEffect(() => {
-    if (loading) {
-      return
-    }
-    setTotalPages(Math.ceil(data.sessions.length / PAGE_SIZE))
-    setSessions(data.sessions.slice(PAGE_SIZE * (page - 1), PAGE_SIZE * page))
-  }, [page, loading, range.value])
-  const noData = data.sessions.length === 0
   const DesktopColumns: Column<SessionV2>[] = useMemo(
     () => [
       {
@@ -108,24 +86,39 @@ export const HistoryPage = () => {
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
       <LayoutRow>
-        <RangePicker options={RANGE_OPTIONS} value={range} onChange={(option: Option) => setRange(option)} />
+        <RangePicker
+          options={historyPage.rangeOptions}
+          value={historyPage.range}
+          onChange={(o: Option) => historyPage.setRange(o)}
+        />
       </LayoutRow>
       <LayoutRow>
-        {isDesktop && <Table noContent={<Placeholder />} columns={DesktopColumns} data={sessions} loading={loading} />}
+        {isDesktop && (
+          <Table
+            noContent={<Placeholder />}
+            columns={DesktopColumns}
+            data={historyPage.pagedSessions}
+            loading={historyPage.loading}
+          />
+        )}
         {!isDesktop && (
           <List
-            items={sessions}
+            items={historyPage.pagedSessions}
             mapper={(item) => <SessionCard item={item} />}
             noContent={<Placeholder />}
-            loading={loading}
+            loading={historyPage.loading}
           />
         )}
       </LayoutRow>
       <LayoutRow>
-        {!noData && (
-          <Pagination currentPage={page} totalPages={totalPages} handlePageChange={(page: number) => setPage(page)} />
+        {!historyPage.noData && (
+          <Pagination
+            currentPage={historyPage.page}
+            totalPages={historyPage.totalPages}
+            handlePageChange={(p) => historyPage.setPage(p)}
+          />
         )}
       </LayoutRow>
     </Layout>
   )
-}
+})
