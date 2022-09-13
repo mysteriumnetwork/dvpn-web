@@ -50,7 +50,6 @@ export class HistoryPageStore {
     reaction(
       () => this.range,
       () => this.fetchSessions(),
-      { fireImmediately: true },
     )
   }
 
