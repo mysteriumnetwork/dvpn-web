@@ -18,10 +18,11 @@ import identities from '../../../../../commons/identities'
 import { tequila } from '../../../../../api/tequila'
 import { DOCS_METAMASK } from '../../../../../constants/urls'
 import { devices } from '../../../../../theme/themes'
-import { Link } from '../../../../../Components/Common/Link'
 
 const { api } = tequila
-
+const Link = styled.a`
+  color: ${({ theme }) => theme.common.colorBlue};
+`
 const Content = styled.div`
   width: 100%;
   display: flex;
