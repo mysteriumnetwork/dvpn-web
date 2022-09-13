@@ -40,7 +40,9 @@ const session2human = (session: string) => {
 export const HistoryPage = observer(() => {
   const { historyPage } = useStores()
   const isDesktop = useMediaQuery(isDesktopQuery)
-
+  useEffect(() => {
+    historyPage.fetchSessions()
+  }, [])
   const DesktopColumns: Column<SessionV2>[] = useMemo(
     () => [
       {
