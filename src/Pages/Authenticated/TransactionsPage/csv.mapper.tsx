@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { SettlementListResponse, Settlement } from 'mysterium-vpn-js'
+import { Settlement } from 'mysterium-vpn-js'
 
 const newLine = '\n'
 
@@ -20,8 +20,7 @@ const alias = (original: string): string => {
   return original
 }
 
-export const toCsv = (response: SettlementListResponse): string => {
-  const { items } = response
+export const toCsv = (items: Settlement[]): string => {
   if (items.length === 0) {
     return 'No settlement history'
   }

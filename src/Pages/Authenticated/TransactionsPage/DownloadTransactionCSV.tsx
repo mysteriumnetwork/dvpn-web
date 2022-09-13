@@ -9,7 +9,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { FileIcon } from '../../../Components/Icons/Icons'
 import { Button } from '../../../Components/Inputs/Button'
-import { SettlementListResponse } from 'mysterium-vpn-js'
+import { Settlement } from 'mysterium-vpn-js'
 import { toCsv } from './csv.mapper'
 import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
@@ -33,7 +33,7 @@ const IconContainer = styled.div`
 `
 
 interface Props {
-  data: SettlementListResponse
+  data: Settlement[]
 }
 
 interface State {
@@ -49,7 +49,7 @@ export const DownloadTransactionCSV = ({ data }: Props) => {
   })
   const setIsLoading = (b: boolean = true) => setState((d) => ({ ...d, isLoading: b }))
 
-  const handleDownload = (data: SettlementListResponse) => {
+  const handleDownload = (data: Settlement[]) => {
     setIsLoading()
 
     if (!data) {
