@@ -7,7 +7,7 @@
 import styled from 'styled-components'
 import { Button } from '../../../../../Components/Inputs/Button'
 import { useEffect, useState } from 'react'
-import { SUPPORTED_GATEWAYS } from '../gateways'
+import { gatewayDescriptor, SUPPORTED_GATEWAYS } from '../gateways'
 import { RegistrationStepProps } from '../types'
 import { Option } from '../../../../../types/common'
 import { devices } from '../../../../../theme/themes'
@@ -58,15 +58,17 @@ const PaymentMethod = ({ setLoading, selectGateway, next, allGateways }: Registr
     .toString()
   const DIRECT_GATEWAY_OPTION: Option = {
     value: 'direct',
-    label: SUPPORTED_GATEWAYS.direct.summary(minimalAmountEther),
+    label: gatewayDescriptor('direct').summary(minimalAmountEther),
   }
   const [availableGatewayOptions, setAvailableGatewayOptions] = useState<Option[]>([])
+
   useEffect(() => {
     setLoading(true)
-    const options: Option[] = allGateways
-      .filter((gw) => Object.keys(SUPPORTED_GATEWAYS).includes(gw.name))
-      .map((gw) => ({ value: gw.name, label: SUPPORTED_GATEWAYS[gw.name].summary() }))
-    setAvailableGatewayOptions([DIRECT_GATEWAY_OPTION, ...options])
+    const orderedSupportedGateways = Array.from(SUPPORTED_GATEWAYS.keys())
+      .filter((key) => allGateways.find((ag) => ag.name === key))
+      .map<Option>((key) => ({ value: key, label: gatewayDescriptor(key).summary() }))
+
+    setAvailableGatewayOptions([DIRECT_GATEWAY_OPTION, ...orderedSupportedGateways])
     setLoading(false)
   }, [allGateways])
 
