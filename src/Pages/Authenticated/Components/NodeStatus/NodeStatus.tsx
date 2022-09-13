@@ -86,5 +86,5 @@ export const NodeStatus = () => {
   const variant = resolveVariant(anyOnline, data.status)
   const content = resolveContent(variant)
 
-  return <HeaderItem title="Status" content={<Indicator $variant={variant}>{content}</Indicator>} />
+  return <HeaderItem title="Node status" content={<Indicator $variant={variant}>{content}</Indicator>} />
 }

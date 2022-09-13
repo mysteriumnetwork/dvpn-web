@@ -11,7 +11,8 @@ import { selectors } from '../../../redux/selectors'
 import { CircularSpinner } from '../../../Components/CircularSpinner/CircularSpinner'
 import identities from '../../../commons/identities'
 import CopyToClipboard from '../../../Components/CopyToClipboard/CopyToClipboard'
-
+import zIndexes from '../../../constants/z-indexes'
+import { devices } from '../../../theme/themes'
 const Content = styled.div`
   height: 400px;
 
@@ -25,12 +26,20 @@ const Content = styled.div`
 const Text = styled.div`
   font-weight: 700;
   font-size: ${({ theme }) => theme.common.fontSizeHuge};
+  @media ${devices.tablet} {
+    text-align: center;
+    font-size: ${({ theme }) => theme.common.fontSizeBig};
+  }
 `
 const Identity = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: ${({ theme }) => theme.common.fontSizeBig};
+  @media ${devices.tablet} {
+    font-size: ${({ theme }) => theme.common.fontSizeNormal};
+    gap: 5px;
+  }
 `
 const Spinner = styled(CircularSpinner)`
   width: 100px;
@@ -52,7 +61,7 @@ export const RegistrationInProgressModal = ({ show }: Props) => {
   const isError = identities.isRegistrationError(identity)
 
   return (
-    <Modal size="xl" disableBackdrop disableX show={show}>
+    <Modal zIndex={zIndexes.onboardingModal} size="xl" disableBackdrop disableX show={show}>
       <Content>
         <Spinner />
         <Text>Your identity is being registered, please be patient...</Text>

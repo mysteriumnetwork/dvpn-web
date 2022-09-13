@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
 import { Column } from 'react-table'
@@ -40,7 +40,9 @@ const session2human = (session: string) => {
 export const HistoryPage = observer(() => {
   const { historyPage } = useStores()
   const isDesktop = useMediaQuery(isDesktopQuery)
-
+  useEffect(() => {
+    historyPage.fetchSessions()
+  }, [])
   const DesktopColumns: Column<SessionV2>[] = useMemo(
     () => [
       {

@@ -212,7 +212,7 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
                 icon={
                   <StyledEditIcon
                     onClick={() => {
-                      handleDisableChange(!inputDisabled)
+                      handleDisableChange(false)
                     }}
                   />
                 }
