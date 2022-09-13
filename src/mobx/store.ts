@@ -5,15 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { HistoryPageStore } from '../Pages/Authenticated/HistoryPage/store'
+import { TransactionsPageStore } from '../Pages/Authenticated/TransactionsPage/store'
 import React from 'react'
 import { configure } from 'mobx'
 
 export class MobXRootStore {
   historyPage: HistoryPageStore
+  transactionsPage: TransactionsPageStore
 
   constructor() {
     this.historyPage = new HistoryPageStore()
+    this.transactionsPage = new TransactionsPageStore()
     this.historyPage.setupReactions()
+    this.transactionsPage.setupReactions()
   }
 }
 
