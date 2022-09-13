@@ -87,12 +87,12 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
       errors.parseToastError(err)
     }
     setSending(false)
+    handleClose()
   }
   const handleOpenIntercom = () => {
     intercom.show()
     handleClose()
   }
-
   return (
     <Modal
       show={show}
