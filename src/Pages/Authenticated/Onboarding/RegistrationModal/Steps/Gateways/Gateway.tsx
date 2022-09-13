@@ -18,7 +18,7 @@ import { Button } from '../../../../../../Components/Inputs/Button'
 import { Select } from '../../../../../../Components/Inputs/Select'
 import { Option } from '../../../../../../types/common'
 import styled from 'styled-components'
-import { SUPPORTED_GATEWAYS } from '../../gateways'
+import { gatewayDescriptor } from '../../gateways'
 import { InputGroup } from '../../../../../../Components/Inputs/InputGroup'
 import gatewaysUtils from './gateways.utils'
 import { InvoiceLink } from './Components/InvoiceLink'
@@ -217,10 +217,12 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
     )
   }
 
+  const { title, description, note } = gatewayDescriptor(gatewayName)
+
   return (
     <Content>
-      <Title>{SUPPORTED_GATEWAYS[gateway.name].title}</Title>
-      <Description>{SUPPORTED_GATEWAYS[gateway.name].description}</Description>
+      <Title>{title}</Title>
+      <Description>{description}</Description>
       <Input>
         <InputGroup
           title="Country"
@@ -239,7 +241,7 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
           />
         </Input>
       )}
-      <Note>{SUPPORTED_GATEWAYS[gateway.name].note}</Note>
+      <Note>{note}</Note>
       <FlexGrow />
       <WaitingFiatPayment visible={showPayNow} isCompleted={isCompleted} />
       <InvoiceLink identity={identity.id} isCompleted={isCompleted} />

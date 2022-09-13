@@ -15,7 +15,7 @@ import { BreadCrumbs } from './BreadCrumbs'
 import { toast } from 'react-toastify'
 import { RegistrationStepProps } from './types'
 import errors from '../../../../commons/errors'
-import { SUPPORTED_GATEWAYS } from './gateways'
+import { gatewayDescriptor } from './gateways'
 import { devices } from '../../../../theme/themes'
 import zIndexes from '../../../../constants/z-indexes'
 import { media } from '../../../../commons/media'
@@ -106,7 +106,7 @@ const steps = [
   {
     component: `Payment`,
     logo: (gateway: string) => {
-      const Logo = SUPPORTED_GATEWAYS[gateway].logo
+      const Logo = gatewayDescriptor(gateway).logo
       if (!Logo) {
         return <Payment />
       }

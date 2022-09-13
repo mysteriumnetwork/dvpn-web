@@ -10,7 +10,7 @@ import { RegistrationPaymentResponse, Tokens } from 'mysterium-vpn-js'
 import { tequila } from '../../../../../api/tequila'
 import { GatewayProps } from './Gateways/types'
 import { RegistrationStepProps } from '../types'
-import { SUPPORTED_GATEWAYS } from '../gateways'
+import { gatewayDescriptor } from '../gateways'
 import { useAppSelector } from '../../../../../commons/hooks'
 import { selectors } from '../../../../../redux/selectors'
 import { feez } from '../../../../../commons/fees'
@@ -43,7 +43,7 @@ const Payment = ({ gateway, allGateways, back, next }: RegistrationStepProps) =>
 
   const [registrationPayment, setRegistrationPayment] = useState<RegistrationPaymentResponse>({ paid: false })
 
-  const Gateway = useMemo(() => React.lazy(() => import(`./Gateways/${SUPPORTED_GATEWAYS[gateway].component}`)), [
+  const Gateway = useMemo(() => React.lazy(() => import(`./Gateways/${gatewayDescriptor(gateway).component}`)), [
     gateway,
   ])
 

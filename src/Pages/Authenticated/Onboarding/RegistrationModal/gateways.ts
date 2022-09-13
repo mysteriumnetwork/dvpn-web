@@ -35,50 +35,67 @@ const Stripe = styled(StripeSVG)`
     width: 400px;
   }
 `
-export interface SupportedGateways {
-  [key: 'direct' | 'paypal' | 'empty' | 'stripe' | string]: {
-    title: string
-    description: string
-    summary: (value?: string) => string
-    component: string
-    note?: string
-    logo?: any
-  }
+
+interface GatewayDescriptor {
+  title: string
+  description: string
+  summary: (value?: string) => string
+  component: string
+  note?: string
+  logo?: any
 }
 
-export const SUPPORTED_GATEWAYS: SupportedGateways = Object.freeze({
-  empty: {
-    summary: () => '',
-    title: '',
-    description: '',
-    component: 'Empty',
-  },
-  direct: {
-    summary: (value) => `Deposit ${value} ${currentCurrency()} token`,
-    title: 'Transfer MYST ',
-    description:
-      'Send no less than 0.11 MYST to the address below. Important: only Polygon blockchain MYST is supported! Dont’t have any MYST? Read here now to get it.',
-    component: 'Direct',
-    logo: Direct,
-  },
-  paypal: {
-    summary: () => `Deposit with PayPal (1 USD)`,
-    title: 'Pay with Paypal ',
-    description:
-      'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed. ',
-    component: 'Gateway',
-    note:
-      'Note: After clicking Pay 1 USD below, new tab/window will be opened and you will be redirected to Paypal to complete transaction.',
-    logo: PayPal,
-  },
-  stripe: {
-    summary: () => `Deposit with Credit or Debit card (1 USD)`,
-    title: 'Pay with Credit or Debit card',
-    description:
-      'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed.',
-    component: 'Gateway',
-    note:
-      'Note: After clicking Pay 1 USD below, new tab/window will be opened and you will be redirected to complete transaction.',
-    logo: Stripe,
-  },
-})
+const EMPTY: GatewayDescriptor = {
+  summary: () => '',
+  title: '',
+  description: '',
+  component: 'Empty',
+}
+
+export const SUPPORTED_GATEWAYS: Map<string, GatewayDescriptor> = new Map<
+  'direct' | 'paypal' | 'empty' | 'stripe' | string,
+  GatewayDescriptor
+>([
+  ['empty', EMPTY],
+  [
+    'direct',
+    {
+      summary: (value) => `Deposit ${value} ${currentCurrency()} token`,
+      title: 'Transfer MYST ',
+      description:
+        'Send no less than 0.11 MYST to the address below. Important: only Polygon blockchain MYST is supported! Dont’t have any MYST? Read here now to get it.',
+      component: 'Direct',
+      logo: Direct,
+    },
+  ],
+  [
+    'paypal',
+    {
+      summary: () => `Deposit with PayPal (1 USD)`,
+      title: 'Pay with Paypal ',
+      description:
+        'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed. ',
+      component: 'Gateway',
+      note:
+        'Note: After clicking Pay 1 USD below, new tab/window will be opened and you will be redirected to Paypal to complete transaction.',
+      logo: PayPal,
+    },
+  ],
+  [
+    'stripe',
+    {
+      summary: () => `Deposit with Credit or Debit card (1 USD)`,
+      title: 'Pay with Credit or Debit card',
+      description:
+        'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed.',
+      component: 'Gateway',
+      note:
+        'Note: After clicking Pay 1 USD below, new tab/window will be opened and you will be redirected to complete transaction.',
+      logo: Stripe,
+    },
+  ],
+])
+
+export const gatewayDescriptor = (gatewayName: string): GatewayDescriptor => {
+  return SUPPORTED_GATEWAYS.get(gatewayName) ?? EMPTY
+}

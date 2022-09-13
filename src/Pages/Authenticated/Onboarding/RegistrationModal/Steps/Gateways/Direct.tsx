@@ -13,7 +13,7 @@ import { useAppSelector } from '../../../../../../commons/hooks'
 import styled from 'styled-components'
 import { Button } from '../../../../../../Components/Inputs/Button'
 import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
-import { SUPPORTED_GATEWAYS } from '../../gateways'
+import { gatewayDescriptor } from '../../gateways'
 import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyToClipboard'
 import { DOCS_METAMASK } from '../../../../../../constants/urls'
 import { devices } from '../../../../../../theme/themes'
@@ -119,7 +119,7 @@ const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) =
 
   return (
     <Content>
-      <Title>{SUPPORTED_GATEWAYS.direct.title}</Title>
+      <Title>{gatewayDescriptor('direct').title}</Title>
       <Description>
         Send no less than {myst.display(amountRequiredWei, { fractions: 2 })} to the address below. Important: only
         Polygon blockchain {currentCurrency()} is supported!{' '}
