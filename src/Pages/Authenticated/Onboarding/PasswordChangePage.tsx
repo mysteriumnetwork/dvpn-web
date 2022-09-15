@@ -186,7 +186,7 @@ export const PasswordChangePage = () => {
   const [state, setState] = useState({
     ...INITIAL_STATE,
     claim: mmnApiKey !== null,
-    mmnApiKey: mmnApiKey !== null ? mmnApiKey : '',
+    mmnApiKey: mmnApiKey ?? '',
   })
   const [loading, setLoading] = useState(false)
   const [showWelcomePage, setShowWelcomePage] = useState(true)
