@@ -10,6 +10,7 @@ import { currentCurrency } from '../../../../commons/currency'
 import { MetricsRange } from '../../../../types/common'
 import { hour, localDate } from './dates'
 import { tequila } from '../../../../api/tequila'
+import bytes from '../../../../commons/bytes'
 
 const units = (type: ChartType): string | undefined =>
   ({
@@ -47,7 +48,15 @@ const template = (range: MetricsRange): Pair[] => {
   return prefilled
 }
 
-const seriesToPairs = ({ data }: SeriesResponse, range: MetricsRange): Pair[] => {
+const transformValue = (value: string, type: ChartType): number => {
+  if (type === 'data') {
+    return bytes.gb(Number(value))
+  }
+
+  return Number(value)
+}
+
+export const seriesToPairs = ({ data }: SeriesResponse, range: MetricsRange, type: ChartType): Pair[] => {
   const result: Pair[] = template(range)
 
   for (let i = 0; i < data.length; i++) {
@@ -57,7 +66,7 @@ const seriesToPairs = ({ data }: SeriesResponse, range: MetricsRange): Pair[] =>
     const index = result.findIndex((p) => p.x === x)
     if (index !== -1) {
       const r = result[index]
-      result[index] = { ...r, y: r.y + Number(entry.value) }
+      result[index] = { ...r, y: r.y + transformValue(entry.value, type) }
     }
   }
 
@@ -74,7 +83,7 @@ const TYPE_2_FUNC_NAME: { [key: string]: SeriesFuncName } = {
 
 const pairs = async (range: MetricsRange, type: ChartType): Promise<Pair[]> => {
   const response = await tequila.api.provider[TYPE_2_FUNC_NAME[type]]({ range })
-  return seriesToPairs(response, range)
+  return seriesToPairs(response, range, type)
 }
 
 const series = { units, pairs }
