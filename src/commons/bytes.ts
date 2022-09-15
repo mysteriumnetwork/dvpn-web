@@ -14,7 +14,7 @@ const format = (a?: number, b = 2): string => {
   )
 }
 
-const bytes2Gb = (bytes: number): number => {
+const gb = (bytes: number): number => {
   if (!bytes) {
     return 0
   }
@@ -28,7 +28,7 @@ const subtract = (a?: number, b?: number): number => (a || 0) - (b || 0)
 const bytes = {
   format,
   add,
-  bytes2Gb,
+  gb,
   subtract,
 }
 
