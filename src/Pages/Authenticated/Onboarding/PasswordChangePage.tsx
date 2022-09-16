@@ -188,6 +188,7 @@ export const PasswordChangePage = () => {
     claim: mmnApiKey !== null,
     mmnApiKey: mmnApiKey ?? '',
   })
+
   const [loading, setLoading] = useState(false)
   const [showWelcomePage, setShowWelcomePage] = useState(true)
   const closeWelcomePage = () => setShowWelcomePage(false)
@@ -248,6 +249,10 @@ export const PasswordChangePage = () => {
 
     try {
       setLoading(true)
+      if (state.agreeTos) {
+        await complexActions.acceptWithTermsAndConditions()
+      }
+
       if (shouldClaim) {
         await api.setMMNApiKey(state.mmnApiKey)
       }
@@ -257,15 +262,12 @@ export const PasswordChangePage = () => {
         oldPassword: DEFAULT_PASSWORD,
         newPassword: state.password,
       })
+
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
-      if (state.agreeTos) {
-        await complexActions.acceptWithTermsAndConditions()
-      }
     } catch (err: any) {
       errors.parseToastError(err)
-    } finally {
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   return (
@@ -317,7 +319,14 @@ export const PasswordChangePage = () => {
                 <InputGroup
                   error={state.mmnError}
                   fluid
-                  input={<TextField error={mmnError} value={state.mmnApiKey} onChange={handleClaim} />}
+                  input={
+                    <TextField
+                      disabled={mmnApiKey !== null}
+                      error={mmnError}
+                      value={state.mmnApiKey}
+                      onChange={handleClaim}
+                    />
+                  }
                 />
               </Footer>
             </Container>
