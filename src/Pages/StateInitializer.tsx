@@ -14,6 +14,7 @@ import { selectors } from '../redux/selectors'
 import { tequila } from '../api/tequila'
 import ConnectToSSE from '../sse/server-sent-events'
 import listeners from '../redux/listeners'
+import { IdentityRegistrationStatusListener } from './Authenticated/Components/Listeners/IdentityRegistrationStatusListener'
 
 interface Props {
   children: ReactNode
@@ -58,5 +59,10 @@ export const StateInitializer = ({ children }: Props) => {
     listeners.registerMinimumRegistrationAmountListener()
   }, [])
 
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      <IdentityRegistrationStatusListener />
+    </>
+  )
 }
