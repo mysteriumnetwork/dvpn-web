@@ -10,32 +10,31 @@ import { XButtonIcon } from '../Icons/ButtonIcons'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { alphaToHex, themeCommon } from '../../theme/themeCommon'
 import { devices } from '../../theme/themes'
-import { media } from '../../commons/media'
-import { useMediaQuery } from 'react-responsive'
 import zIndexes from '../../constants/z-indexes'
 
 type ModalSize = 'xl'
-
-const { isMobileQuery } = media
 
 const PageOverlay = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   top: 0;
   left: 0;
 
   z-index: ${zIndexes.overlay};
   background: ${({ theme }) => theme.modal.bgOverlay};
+  @media ${devices.tablet} {
+    z-index: ${zIndexes.settleModal};
+  }
 `
 
 const normalSize = css`
   width: 900px;
   height: 440px;
-  left: 50%;
-  top: 20%;
-  transform: translate(-50%, 0);
   @media ${devices.tablet} {
     width: 100%;
     height: 100%;
@@ -46,9 +45,6 @@ const normalSize = css`
 const xlSize = css`
   width: 90%;
   min-width: 50%;
-  left: 50%;
-  top: 10%;
-  transform: translate(-50%, 0);
   @media ${devices.tablet} {
     width: 100%;
     height: 100%;
@@ -58,7 +54,6 @@ const xlSize = css`
 `
 
 const StyledModal = styled.div<{ $size?: ModalSize; $zIndex?: number }>`
-  position: fixed;
   z-index: ${({ $zIndex }) => $zIndex ?? zIndexes.modal};
 
   ${({ $size }) => ($size ? xlSize : normalSize)}
@@ -181,14 +176,12 @@ export const Modal = ({
   size,
   zIndex,
 }: Props) => {
-  const isMobile = useMediaQuery(isMobileQuery)
   if (!show) {
     return <></>
   }
 
   return (
-    <>
-      {!isMobile && <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />}
+    <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()}>
       <StyledModal $size={size} $zIndex={zIndex}>
         <Container>
           {loading && (
@@ -203,6 +196,6 @@ export const Modal = ({
           {children}
         </Container>
       </StyledModal>
-    </>
+    </PageOverlay>
   )
 }
