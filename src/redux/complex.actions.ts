@@ -134,7 +134,9 @@ const refreshBeneficiary = async (identity: string) => {
   try {
     const beneficiaryResponse = await api.identityBeneficiary(identity)
     store.dispatch(updateBeneficiaryStore(beneficiaryResponse))
-  } catch (ignored: any) {}
+  } catch (ignored: any) {
+    console.error('failed to update beneficiary')
+  }
 }
 
 const setTrafficShaping = async (enabled: boolean, bandwidthKBps: number): Promise<Config> => {
