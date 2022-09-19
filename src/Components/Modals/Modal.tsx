@@ -181,23 +181,21 @@ export const Modal = ({
   }
 
   return (
-    <>
-      <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()}>
-        <StyledModal $size={size} $zIndex={zIndex}>
-          <Container>
-            {loading && (
-              <SpinnerOverlay>
-                <Spinner />
-              </SpinnerOverlay>
-            )}
-            {icon && <Icon>{icon}</Icon>}
-            <CloseButtonPlacement>{!disableX && <XButtonIcon onClick={onClickX} />}</CloseButtonPlacement>
-            {title && <Title>{title}</Title>}
-            {subTitle && <SubTitle>{subTitle}</SubTitle>}
-            {children}
-          </Container>
-        </StyledModal>
-      </PageOverlay>
-    </>
+    <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()}>
+      <StyledModal $size={size} $zIndex={zIndex}>
+        <Container>
+          {loading && (
+            <SpinnerOverlay>
+              <Spinner />
+            </SpinnerOverlay>
+          )}
+          {icon && <Icon>{icon}</Icon>}
+          <CloseButtonPlacement>{!disableX && <XButtonIcon onClick={onClickX} />}</CloseButtonPlacement>
+          {title && <Title>{title}</Title>}
+          {subTitle && <SubTitle>{subTitle}</SubTitle>}
+          {children}
+        </Container>
+      </StyledModal>
+    </PageOverlay>
   )
 }
