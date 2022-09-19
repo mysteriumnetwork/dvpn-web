@@ -5,7 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { ReactElement } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
+import { useAppSelector } from '../commons/hooks'
+import { RootState } from '../redux/store'
+import { NEW_PASSWORD } from '../constants/routes'
 
 interface Redirect {
   condition: boolean
@@ -18,7 +21,14 @@ interface ProtectedProps {
 }
 
 export const Protected = ({ children, redirects = [] }: ProtectedProps) => {
+  const defaultCredentials = useAppSelector(({ app }: RootState) => app.auth.withDefaultCredentials)
+
   const redirect = redirects.find((r) => r.condition)
+
+  const location = useLocation()
+  if (defaultCredentials && location.pathname !== NEW_PASSWORD) {
+    return <Navigate to={NEW_PASSWORD} />
+  }
 
   if (redirect) {
     return <Navigate to={redirect.to} />
