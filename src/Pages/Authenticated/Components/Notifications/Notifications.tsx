@@ -7,19 +7,14 @@
 import { ReactComponent as BellSvg } from '../../../../assets/images/bell.svg'
 import { IconButton } from '../../../../Components/Inputs/IconButton'
 import styled from 'styled-components'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { List } from './List'
 import { devices } from '../../../../theme/themes'
 import { useAppSelector } from '../../../../commons/hooks'
-import remoteStorage from '../../../../commons/remoteStorage'
-import { KEY_CURRENT_NODE_VERSION_LAST_CHECK, KEY_LATEST_NODE_VERSION } from './constants'
-import errors from '../../../../commons/errors'
-import { fetchLatestNodeVersion } from '../../../../api/node-version.management'
 import { selectors } from '../../../../redux/selectors'
 import { NotificationCardProps } from './types'
 import { UpdateCardMessage } from './Card'
-
-const TWO_HOURS_MS = 2 * 60 * 60 * 1000
+import { NodeReleaseCheck } from './NodeReleaseCheck'
 
 const BellIcon = styled(BellSvg)`
   width: 80%;
@@ -82,7 +77,6 @@ const ID_BENEFICIARY_TX_ERROR = 'ID_BENEFICIARY_TX_ERROR'
 const ID_NODE_UPDATE = 'ID_NODE_UPDATE'
 
 export const Notifications = () => {
-  const healthCheck = useAppSelector(selectors.healthCheck)
   const [open, setOpen] = useState(false)
   const beneficiaryTxStatus = useAppSelector(selectors.beneficiaryTxStatus)
 
@@ -103,41 +97,17 @@ export const Notifications = () => {
     })
   }, [beneficiaryTxStatus.error])
 
-  const latestNodeVersion = useAppSelector(remoteStorage.selector(KEY_LATEST_NODE_VERSION))
-  useEffect(() => {
-    ;(async () => {
-      if (healthCheck.version.toString() !== latestNodeVersion) {
-        addNotification(ID_NODE_UPDATE, {
-          variant: 'update',
-          subject: 'New version released',
-          message: <UpdateCardMessage />,
-        })
-      }
-    })()
-  }, [latestNodeVersion])
-
-  const now = useMemo(() => {
-    return Date.now()
-  }, [])
-
-  const lastChecked = useAppSelector(remoteStorage.selector<number>(KEY_CURRENT_NODE_VERSION_LAST_CHECK))
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        if (!lastChecked || now > lastChecked + TWO_HOURS_MS) {
-          const latestNodeVersion = await fetchLatestNodeVersion()
-          remoteStorage.put(KEY_CURRENT_NODE_VERSION_LAST_CHECK, now)
-          remoteStorage.put(KEY_LATEST_NODE_VERSION, latestNodeVersion)
-        }
-      } catch (err: any) {
-        errors.parseToastError(err)
-      }
-    })()
-  }, [])
-
   return (
     <Container>
+      <NodeReleaseCheck
+        onNewNodeVersionAvailable={(current, latest) =>
+          addNotification(ID_NODE_UPDATE, {
+            variant: 'update',
+            subject: `New version released (${latest})`,
+            message: <UpdateCardMessage currentVersion={current} />,
+          })
+        }
+      />
       {notifications.size > 0 && <Dot>{notifications.size}</Dot>}
       <IconButton icon={<BellIcon />} onClick={() => setOpen((p) => !p)} />
       {open && (

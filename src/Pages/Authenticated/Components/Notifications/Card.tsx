@@ -43,7 +43,6 @@ const Row = styled.div`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 14px;
 `
 
 const Subject = styled.div`
@@ -94,17 +93,19 @@ export const Card = ({ variant, subject, message }: NotificationCardProps) => {
 const StyledLink = styled.a`
   text-decoration: underline;
   color: ${({ theme }) => theme.common.colorKey};
-  font-weight: 700;
-  font-size: ${({ theme }) => theme.common.fontSizeNormal};
+  font-weight: 400;
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
 `
 
-export const UpdateCardMessage = () => {
-  return (
-    <Message>
-      <span>Update your node to experience new features!</span>
+export const UpdateCardMessage = ({ currentVersion }: { currentVersion: string }) => (
+  <Message>
+    <div>Your current version: {currentVersion}</div>
+    <Subject>
+      See how to{' '}
       <StyledLink href={DOCS_UPDATE_NODE} target="_blank" rel="noopener noreferrer">
         Update
-      </StyledLink>
-    </Message>
-  )
-}
+      </StyledLink>{' '}
+      your node
+    </Subject>
+  </Message>
+)
