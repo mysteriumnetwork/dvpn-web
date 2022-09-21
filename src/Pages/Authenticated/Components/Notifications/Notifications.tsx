@@ -7,14 +7,13 @@
 import { ReactComponent as BellSvg } from '../../../../assets/images/bell.svg'
 import { IconButton } from '../../../../Components/Inputs/IconButton'
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { List } from './List'
 import { devices } from '../../../../theme/themes'
-import { useAppSelector } from '../../../../commons/hooks'
-import { selectors } from '../../../../redux/selectors'
 import { NotificationCardProps } from './types'
 import { UpdateCardMessage } from './Card'
 import { NodeReleaseCheck } from './NodeReleaseCheck'
+import { BeneficiaryTxCheck } from './BeneficiaryTxCheck'
 
 const BellIcon = styled(BellSvg)`
   width: 80%;
@@ -78,24 +77,12 @@ const ID_NODE_UPDATE = 'ID_NODE_UPDATE'
 
 export const Notifications = () => {
   const [open, setOpen] = useState(false)
-  const beneficiaryTxStatus = useAppSelector(selectors.beneficiaryTxStatus)
 
   const [notifications, setNotifications] = useState(new Map<string, NotificationCardProps>())
 
   const addNotification = (id: string, notification: NotificationCardProps) => {
     setNotifications(new Map(notifications.set(id, notification)))
   }
-
-  useEffect(() => {
-    if (!beneficiaryTxStatus.error) {
-      return
-    }
-    addNotification(ID_BENEFICIARY_TX_ERROR, {
-      variant: 'negative',
-      subject: 'External Wallet address change failed',
-      message: beneficiaryTxStatus.error,
-    })
-  }, [beneficiaryTxStatus.error])
 
   return (
     <Container>
@@ -105,6 +92,15 @@ export const Notifications = () => {
             variant: 'update',
             subject: `New version released (${latest})`,
             message: <UpdateCardMessage currentVersion={current} />,
+          })
+        }
+      />
+      <BeneficiaryTxCheck
+        onTxError={(beneficiaryTxStatus) =>
+          addNotification(ID_BENEFICIARY_TX_ERROR, {
+            variant: 'negative',
+            subject: 'External Wallet address change failed',
+            message: beneficiaryTxStatus.error,
           })
         }
       />

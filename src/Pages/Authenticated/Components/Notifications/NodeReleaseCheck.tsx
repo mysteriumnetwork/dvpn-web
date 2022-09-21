@@ -21,7 +21,7 @@ interface NodeVersionCheck {
 }
 
 interface Props {
-  onNewNodeVersionAvailable?: (currentVersion: string, latestVersion: string) => void
+  onNewNodeVersionAvailable: (currentVersion: string, latestVersion: string) => void
 }
 
 export const NodeReleaseCheck = ({ onNewNodeVersionAvailable }: Props) => {
@@ -31,7 +31,7 @@ export const NodeReleaseCheck = ({ onNewNodeVersionAvailable }: Props) => {
   useEffect(() => {
     ;(async () => {
       if (check?.latestVersion && healthCheck.version.toString() !== check.latestVersion) {
-        onNewNodeVersionAvailable && onNewNodeVersionAvailable(healthCheck.version, check.latestVersion)
+        onNewNodeVersionAvailable(healthCheck.version, check.latestVersion)
       }
     })()
   }, [check?.latestVersion, healthCheck.version])
