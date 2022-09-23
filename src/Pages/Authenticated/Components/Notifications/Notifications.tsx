@@ -99,7 +99,7 @@ export const Notifications = () => {
         onTxError={(beneficiaryTxStatus) =>
           addNotification(ID_BENEFICIARY_TX_ERROR, {
             variant: 'negative',
-            subject: 'External Wallet address change failed',
+            subject: 'External Wallet address change failed with a bang!',
             message: beneficiaryTxStatus.error,
           })
         }
