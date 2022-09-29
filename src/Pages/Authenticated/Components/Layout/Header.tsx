@@ -46,7 +46,6 @@ export const Header = ({ logo, title }: Props) => {
     <Container>
       <PageTitle logo={logo} name={title} />
       <NodeStatus />
-      {/* TODO: waiting for endpoint*/}
       <Quality />
       <SettlementStatus />
       <Group>
