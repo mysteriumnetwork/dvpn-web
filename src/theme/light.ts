@@ -180,7 +180,7 @@ const light: Omit<Theme, 'common'> = {
   },
 
   tooltip: {
-    textColor: themeCommon.colorGrayBlue,
+    textColor: themeCommon.colorGrayBlue2,
     bg: themeCommon.colorWhite,
     boxShadow: '0 4px 4px' + themeCommon.yankeeBlue + alphaToHex(0.5),
   },
@@ -233,6 +233,25 @@ const light: Omit<Theme, 'common'> = {
     selectedOrFocusedValueColor: themeCommon.colorGrayBlue2,
     bgSelectedValue: themeCommon.colorGrayBlue + alphaToHex(0.3),
     bgFocusedValue: themeCommon.colorGrayBlue + alphaToHex(0.1),
+  },
+
+  activity: {
+    bgColor: themeCommon.colorWhite,
+
+    online: {
+      fill: themeCommon.colorBlue,
+      bgColor: '#CDE7FC',
+    },
+
+    connectivity: {
+      bgColorA: themeCommon.colorGreen,
+      bgColorB: '#c8e7c1',
+      bgColor: `${themeCommon.colorGreen}${alphaToHex(0.1)}`,
+    },
+
+    bubble: {
+      fontColor: themeCommon.colorDarkBlue,
+    },
   },
 }
 

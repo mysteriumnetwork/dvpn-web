@@ -20,6 +20,14 @@ const Main = styled.main`
   flex-direction: column;
   width: 100%;
   height: 100vh;
+
+  @media ${devices.tablet} {
+    // mobile hack to account for browser chin overlay
+    :after {
+      content: '';
+      min-height: 100px;
+    }
+  }
 `
 
 const Content = styled.div`
@@ -86,7 +94,11 @@ const sharedRowCss = css`
   display: flex;
   flex-direction: row;
   gap: 20px;
+
+  min-width: fit-content;
+
   @media ${devices.tablet} {
+    min-width: auto;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;

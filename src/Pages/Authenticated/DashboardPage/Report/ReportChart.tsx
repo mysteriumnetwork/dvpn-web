@@ -148,7 +148,7 @@ const Row = styled.div`
   justify-content: space-between;
 `
 const Title = styled.div`
-  font-size: ${themeCommon.fontSizeBig};
+  font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
   margin-right: 60px;
   @media ${devices.laptopL} {

@@ -13,6 +13,7 @@ import { Services } from '../Components/Service/Services'
 import { LiveSessions } from './LiveSessions/LiveSessions'
 import { useMediaQuery } from 'react-responsive'
 import { media } from '../../../commons/media'
+import { Activity } from '../Components/Activity/Activity'
 
 const { isDesktopQuery } = media
 
@@ -26,6 +27,9 @@ const DashboardPage = () => {
       </LayoutRow>
       <LayoutRow>
         <Report />
+      </LayoutRow>
+      <LayoutRow>
+        <Activity />
       </LayoutRow>
       <LayoutRow>
         <LiveSessions />
