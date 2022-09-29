@@ -11,6 +11,10 @@ import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
 import { alphaToHex, themeCommon } from '../../theme/themeCommon'
 import { devices } from '../../theme/themes'
 import zIndexes from '../../constants/z-indexes'
+import { useMediaQuery } from 'react-responsive'
+import { media } from '../../commons/media'
+
+const { isMobileQuery } = media
 
 type ModalSize = 'xl'
 
@@ -18,10 +22,6 @@ const PageOverlay = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   top: 0;
   left: 0;
 
@@ -31,20 +31,26 @@ const PageOverlay = styled.div`
     z-index: ${zIndexes.settleModal};
   }
 `
-
 const normalSize = css`
   width: 900px;
   height: 440px;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, 30%);
   @media ${devices.tablet} {
     width: 100%;
     height: 100%;
     top: 0;
+    transform: translate(-50%, 0);
   }
 `
 
 const xlSize = css`
   width: 90%;
   min-width: 50%;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, 0);
   @media ${devices.tablet} {
     width: 100%;
     height: 100%;
@@ -54,6 +60,7 @@ const xlSize = css`
 `
 
 const StyledModal = styled.div<{ $size?: ModalSize; $zIndex?: number }>`
+  position: fixed;
   z-index: ${({ $zIndex }) => $zIndex ?? zIndexes.modal};
 
   ${({ $size }) => ($size ? xlSize : normalSize)}
@@ -104,6 +111,9 @@ const CloseButtonPlacement = styled.div`
   @media ${devices.tablet} {
     top: 10px;
     right: 10px;
+  }
+  :hover {
+    cursor: pointer;
   }
 `
 
@@ -176,12 +186,15 @@ export const Modal = ({
   size,
   zIndex,
 }: Props) => {
+  const isMobile = useMediaQuery(isMobileQuery)
   if (!show) {
     return <></>
   }
 
   return (
-    <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()}>
+    <>
+      {!isMobile && <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />}
+
       <StyledModal $size={size} $zIndex={zIndex}>
         <Container>
           {loading && (
@@ -196,6 +209,6 @@ export const Modal = ({
           {children}
         </Container>
       </StyledModal>
-    </PageOverlay>
+    </>
   )
 }
