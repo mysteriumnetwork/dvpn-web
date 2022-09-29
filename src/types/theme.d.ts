@@ -236,6 +236,25 @@ export type Theme = {
     bgFocusedValue: string
   }
 
+  activity: {
+    bgColor: string
+
+    online: {
+      fill: string
+      bgColor: string
+    }
+
+    connectivity: {
+      bgColorA: string
+      bgColorB: string
+      bgColor: string
+    }
+
+    bubble: {
+      fontColor: string
+    }
+  }
+
   common: Common
 }
 

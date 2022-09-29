@@ -182,7 +182,7 @@ const dark: Omit<Theme, 'common'> = {
   },
 
   tooltip: {
-    textColor: themeCommon.colorGrayBlue,
+    textColor: themeCommon.colorLightBlue,
     bg: themeCommon.colorGrayBlue2,
     boxShadow: '0 4px 4px' + themeCommon.yankeeBlue + alphaToHex(0.4),
   },
@@ -235,6 +235,25 @@ const dark: Omit<Theme, 'common'> = {
     selectedOrFocusedValueColor: themeCommon.colorWhite,
     bgSelectedValue: themeCommon.colorKey,
     bgFocusedValue: themeCommon.colorKeyLight,
+  },
+
+  activity: {
+    bgColor: themeCommon.color393453,
+
+    online: {
+      fill: themeCommon.colorBlue,
+      bgColor: '#404D72',
+    },
+
+    connectivity: {
+      bgColorA: themeCommon.colorGreen,
+      bgColorB: '#41614B',
+      bgColor: `${themeCommon.colorGreen}${alphaToHex(0.1)}`,
+    },
+
+    bubble: {
+      fontColor: themeCommon.colorWhite,
+    },
   },
 }
 

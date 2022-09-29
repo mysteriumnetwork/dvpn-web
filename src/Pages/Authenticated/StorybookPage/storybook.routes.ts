@@ -62,4 +62,8 @@ export const STORYBOOK_ROUTES: { [key: string]: RouteInfo } = {
     component: './Items/NodeStatusBook',
     title: 'Node Status',
   },
+  [subRoute('/pie-chart')]: {
+    component: './Items/PieChartBook',
+    title: 'Pie Charts',
+  },
 }

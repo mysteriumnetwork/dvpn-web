@@ -12,6 +12,7 @@ import { Notifications } from '../Notifications/Notifications'
 import PageTitle from '../../../../Components/LayoutHeader/PageTitle'
 import { ReactNode } from 'react'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
+import { Quality } from '../Quality/Quality'
 
 const Container = styled.div`
   display: flex;
@@ -45,8 +46,7 @@ export const Header = ({ logo, title }: Props) => {
     <Container>
       <PageTitle logo={logo} name={title} />
       <NodeStatus />
-      {/* TODO: waiting for endpoint*/}
-      {/*<Quality />*/}
+      <Quality />
       <SettlementStatus />
       <Group>
         <Notifications />
