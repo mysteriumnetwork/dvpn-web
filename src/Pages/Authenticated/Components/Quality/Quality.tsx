@@ -49,6 +49,7 @@ export const Quality = () => {
                 <Row>Latency</Row>
                 <Row>Bandwidth</Row>
                 <Row>Uptime</Row>
+                <Row>Successful connection rate</Row>
               </Column>
             }
           />
