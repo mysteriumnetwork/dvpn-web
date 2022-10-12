@@ -9,6 +9,10 @@ import { ReactNode } from 'react'
 import { themeCommon } from '../../../../theme/themeCommon'
 
 const Card = styled.div`
+  width: 100%;
+`
+
+const FlexContainer = styled.div`
   display: flex;
 `
 
@@ -42,11 +46,13 @@ interface InfoProps {
 export const InfoCard = ({ title, value, icon }: InfoProps) => {
   return (
     <Card>
-      <Icon>{icon && icon}</Icon>
-      <Content>
-        <Title>{title}</Title>
-        <Value>{value}</Value>
-      </Content>
+      <FlexContainer>
+        <Icon>{icon && icon}</Icon>
+        <Content>
+          <Title>{title}</Title>
+          <Value>{value}</Value>
+        </Content>
+      </FlexContainer>
     </Card>
   )
 }

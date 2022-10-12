@@ -6,7 +6,7 @@
  */
 
 import _ from 'lodash'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { Config } from 'mysterium-vpn-js'
 import toasts from './toasts'
 
 const { toastError } = toasts

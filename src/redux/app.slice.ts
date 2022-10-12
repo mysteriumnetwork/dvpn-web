@@ -14,7 +14,7 @@ import {
   NatTypeResponse,
   NodeHealthcheck,
 } from 'mysterium-vpn-js'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { Config } from 'mysterium-vpn-js'
 import {
   BENEFICIARY_TX_STATUS_EMPTY,
   FEES_RESPONSE_EMPTY,
