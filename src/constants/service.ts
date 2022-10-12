@@ -14,7 +14,7 @@ export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
   {
     name: 'Public',
     type: 'wireguard',
-    description: 'Open to the whole network.',
+    description: 'Open to the whole network',
   },
   {
     name: 'B2B VPN and data transfer',
