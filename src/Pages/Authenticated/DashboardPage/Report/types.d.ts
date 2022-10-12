@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { SessionV2 } from 'mysterium-vpn-js/lib/provider'
+import { SessionV2 } from 'mysterium-vpn-js'
 
 export interface Pair {
   x: string

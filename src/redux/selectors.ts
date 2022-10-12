@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { ChainSummary, FeesResponse, Identity, IdentityRef } from 'mysterium-vpn-js'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { Config } from 'mysterium-vpn-js'
 import { IDENTITY_EMPTY } from '../constants/instances'
 import { AppState, Auth, Onboarding, Terms } from './app.slice'
 import { SSEState } from './sse.slice'
