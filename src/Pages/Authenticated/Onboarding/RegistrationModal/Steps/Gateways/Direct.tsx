@@ -15,7 +15,7 @@ import { Button } from '../../../../../../Components/Inputs/Button'
 import { CircularSpinner } from '../../../../../../Components/CircularSpinner/CircularSpinner'
 import { gatewayDescriptor } from '../../gateways'
 import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyToClipboard'
-import { DOCS_METAMASK } from '../../../../../../constants/urls'
+import { PAYOUT_GUIDE } from '../../../../../../constants/urls'
 import { devices } from '../../../../../../theme/themes'
 
 const QR = styled.div`
@@ -123,7 +123,7 @@ const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) =
       <Description>
         Send no less than {myst.display(amountRequiredWei, { fractions: 2 })} to the address below. Important: only
         Polygon blockchain {currentCurrency()} is supported!{' '}
-        <a href={DOCS_METAMASK} target="_blank" rel="noreferrer">
+        <a href={PAYOUT_GUIDE} target="_blank" rel="noreferrer">
           Don't have any MYST? Read here how to get it.
         </a>
       </Description>

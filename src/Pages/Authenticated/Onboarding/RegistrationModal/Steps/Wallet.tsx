@@ -16,7 +16,7 @@ import { useAppSelector } from '../../../../../commons/hooks'
 import { selectors } from '../../../../../redux/selectors'
 import identities from '../../../../../commons/identities'
 import { tequila } from '../../../../../api/tequila'
-import { DOCS_METAMASK } from '../../../../../constants/urls'
+import { PAYOUT_GUIDE } from '../../../../../constants/urls'
 import { devices } from '../../../../../theme/themes'
 
 const { api } = tequila
@@ -105,7 +105,7 @@ const NetworkRegistration = ({ next, beneficiary, setBeneficiary, loading, setLo
       <Description>
         Make sure withdrawal address is from ERC-20 Polygon compatible wallet (e.g MetaMask or MyEtherWallet)
       </Description>
-      <Link href={DOCS_METAMASK} target="_blank" rel="noreferrer">
+      <Link href={PAYOUT_GUIDE} target="_blank" rel="noreferrer">
         Check here for instructions how to setup MYST token on MetaMask
       </Link>
       <FlexGrow />
