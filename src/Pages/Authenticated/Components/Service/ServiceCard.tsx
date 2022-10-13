@@ -8,7 +8,7 @@ import { Switch } from '../../../../Components/Switch/Switch'
 import { myst } from '../../../../commons/mysts'
 import styled from 'styled-components'
 import { InfoCard } from './InfoCard'
-import { ClockIcon, DataIcon, InfoIcon } from '../../../../Components/Icons/Icons'
+import { ClockIcon, DataIcon, InfoIcon, PeopleIcon, WalletIcon } from '../../../../Components/Icons/Icons'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
 import { useState } from 'react'
 import { useAppSelector } from '../../../../commons/hooks'
@@ -82,28 +82,26 @@ const Description = styled.div`
   font-size: ${themeCommon.fontSizeSmall};
 `
 
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  @media ${devices.tablet} {
-    align-items: center;
-  }
-`
 const Content = styled.div`
   background: ${({ theme }) => theme.bgServiceCardContent};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   padding: 31px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 
   @media ${devices.tablet} {
     padding: 20px;
-    gap: 12px;
+    grid-gap: 12px;
     box-shadow: ${({ theme }) => theme.bgServiceCardContentBoxShadow};
     background-color: ${({ theme }) => theme.bgServiceCardContentMobile};
   }
 `
+
+export interface ServiceEarnings {
+  earningsWei?: string | number
+  totalEarningWei?: string | number
+}
 
 interface Props {
   name: string
@@ -112,8 +110,7 @@ interface Props {
   approvalPending?: boolean
   priceGiB?: string | number
   priceHour?: string | number
-  earnings?: string | number
-  totalEarning?: string | number
+  earnings?: ServiceEarnings
   prices?: Prices
   loading?: boolean
   onChange?: () => {}
@@ -127,8 +124,7 @@ export const ServiceCard = ({
   description,
   serviceType,
   approvalPending = false,
-  earnings = 0,
-  totalEarning = 0,
+  earnings = { earningsWei: 0, totalEarningWei: 0 },
   prices = { pricePerGibWei: '0', pricePerHourWei: '0' },
   loading,
 }: Props) => {
@@ -170,30 +166,26 @@ export const ServiceCard = ({
         <Description>{description}</Description>
       </Header>
       <Content>
-        <Row>
-          <InfoCard
-            title="Price per GiB"
-            value={myst.display(prices.pricePerGibWei, { fractions: 4 })}
-            icon={<DataIcon $inactive={!enabled} />}
-          />
-          <InfoCard
-            title="Price per hour"
-            value={myst.display(prices.pricePerHourWei, { fractions: 4 })}
-            icon={<ClockIcon $inactive={!enabled} />}
-          />
-        </Row>
-        {/*<Row>*/}
-        {/*  <InfoCard*/}
-        {/*    title="Service earnings"*/}
-        {/*    value={myst.display(earnings, { fractions: 4 })}*/}
-        {/*    icon={<WalletIcon $inactive={!enabled} />}*/}
-        {/*  />*/}
-        {/*  <InfoCard*/}
-        {/*    title="Total earnings"*/}
-        {/*    value={myst.display(totalEarning, { fractions: 4 })}*/}
-        {/*    icon={<PeopleIcon $inactive={!enabled} />}*/}
-        {/*  />*/}
-        {/*</Row>*/}
+        <InfoCard
+          title="Price per GiB"
+          value={myst.display(prices.pricePerGibWei, { fractions: 4 })}
+          icon={<DataIcon $inactive={!enabled} />}
+        />
+        <InfoCard
+          title="Price per hour"
+          value={myst.display(prices.pricePerHourWei, { fractions: 4 })}
+          icon={<ClockIcon $inactive={!enabled} />}
+        />
+        <InfoCard
+          title="Service earnings"
+          value={myst.display(earnings.earningsWei, { fractions: 4 })}
+          icon={<WalletIcon $inactive={!enabled} />}
+        />
+        <InfoCard
+          title="Total earnings"
+          value={myst.display(earnings.totalEarningWei, { fractions: 4 })}
+          icon={<PeopleIcon $inactive={!enabled} />}
+        />
       </Content>
     </Card>
   )

@@ -24,7 +24,7 @@ import {
 } from './app.slice'
 import { store } from './store'
 import errors from '../commons/errors'
-import { Config } from 'mysterium-vpn-js/lib/config/config'
+import { Config } from 'mysterium-vpn-js'
 import termsPackageJson from '@mysteriumnetwork/terms/package.json'
 
 const { api } = tequila

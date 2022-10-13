@@ -15,6 +15,7 @@ import {
   NodeHealthcheck,
   SessionsV2Response,
   SettlementListResponse,
+  EarningsPerServiceResponse,
 } from 'mysterium-vpn-js'
 
 export const TOKENS_EMPTY = Object.freeze({
@@ -84,4 +85,11 @@ export const BENEFICIARY_TX_STATUS_EMPTY: BeneficiaryTxStatus = Object.freeze({
 export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
   type: '',
   error: '',
+})
+
+export const PRICE_EARNINGS_PER_SERVICE: EarningsPerServiceResponse = Object.freeze({
+  public: TOKENS_EMPTY,
+  dataTransfer: TOKENS_EMPTY,
+  scraping: TOKENS_EMPTY,
+  total: TOKENS_EMPTY,
 })
