@@ -51,7 +51,7 @@ const ReportChart = ({
       <Media.Mobile>
         <Header>
           <Row>
-            <Title>Earnings Report</Title>
+            <Title>{capitalizeFirstLetter(selectedGraph.value)} Report</Title>
             <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} isSearchable={false} />
           </Row>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
@@ -146,6 +146,7 @@ const Row = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 `
 const Title = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeBig};
