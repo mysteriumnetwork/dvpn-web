@@ -45,14 +45,14 @@ const ReportChart = ({
           <Title>{capitalizeFirstLetter(selectedGraph.value)} Report</Title>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
           <FlexGrow />
-          <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
+          <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} isSearchable={false} />
         </Header>
       </Media.Desktop>
       <Media.Mobile>
         <Header>
           <Row>
             <Title>Earnings Report</Title>
-            <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
+            <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} isSearchable={false} />
           </Row>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
         </Header>
