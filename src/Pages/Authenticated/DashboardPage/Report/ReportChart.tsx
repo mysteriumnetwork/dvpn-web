@@ -45,14 +45,14 @@ const ReportChart = ({
           <Title>{capitalizeFirstLetter(selectedGraph.value)} Report</Title>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
           <FlexGrow />
-          <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
+          <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} isSearchable={false} />
         </Header>
       </Media.Desktop>
       <Media.Mobile>
         <Header>
           <Row>
-            <Title>Earnings Report</Title>
-            <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} />
+            <Title>{capitalizeFirstLetter(selectedGraph.value)} Report</Title>
+            <Select onChange={onGraphChange} options={graphOptions} value={selectedGraph} isSearchable={false} />
           </Row>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
         </Header>
@@ -146,6 +146,7 @@ const Row = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 `
 const Title = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeBig};

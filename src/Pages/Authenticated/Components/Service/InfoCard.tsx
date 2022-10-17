@@ -7,6 +7,7 @@
 import styled from 'styled-components'
 import { ReactNode } from 'react'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 
 const Card = styled.div`
   width: 100%;
@@ -41,13 +42,16 @@ interface InfoProps {
   title: string
   value: string
   icon?: ReactNode
+  tooltip?: ReactNode
 }
 
-export const InfoCard = ({ title, value, icon }: InfoProps) => {
+export const InfoCard = ({ title, value, icon, tooltip }: InfoProps) => {
   return (
     <Card>
       <FlexContainer>
-        <Icon>{icon && icon}</Icon>
+        <Tooltip content={tooltip}>
+          <Icon>{icon && icon}</Icon>
+        </Tooltip>
         <Content>
           <Title>{title}</Title>
           <Value>{value}</Value>

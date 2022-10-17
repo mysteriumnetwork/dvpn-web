@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { InfoCard } from './InfoCard'
 import { ClockIcon, DataIcon, InfoIcon, PeopleIcon, WalletIcon } from '../../../../Components/Icons/Icons'
 import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { useAppSelector } from '../../../../commons/hooks'
 import { selectors } from '../../../../redux/selectors'
 import calls from '../../../../commons/calls'
@@ -103,18 +103,19 @@ export interface ServiceEarnings {
   totalEarningWei?: string | number
 }
 
+export interface ServiceTooltips {
+  earnings?: ReactNode
+}
+
 interface Props {
   name: string
   description: string
   serviceType: string
   approvalPending?: boolean
-  priceGiB?: string | number
-  priceHour?: string | number
   earnings?: ServiceEarnings
   prices?: Prices
   loading?: boolean
-  onChange?: () => {}
-  enabled?: boolean
+  tooltips?: ServiceTooltips
 }
 
 const CLICK_COOLDOWN_MS = 1_000
@@ -127,6 +128,7 @@ export const ServiceCard = ({
   earnings = { earningsWei: 0, totalEarningWei: 0 },
   prices = { pricePerGibWei: '0', pricePerHourWei: '0' },
   loading,
+  tooltips,
 }: Props) => {
   const { id } = useAppSelector(selectors.currentIdentity)
   const serviceInfo = useAppSelector(selectors.runningServices).find((si) => si.type === serviceType)
@@ -178,6 +180,7 @@ export const ServiceCard = ({
         />
         <InfoCard
           title="Service earnings"
+          tooltip={tooltips?.earnings}
           value={myst.display(earnings.earningsWei, { fractions: 4 })}
           icon={<WalletIcon $inactive={!enabled} />}
         />

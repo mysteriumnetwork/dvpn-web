@@ -15,9 +15,18 @@ interface Props {
   onChange?: (value: Option) => void
   value?: Option
   isClearable?: boolean
+  isSearchable?: boolean
 }
 
-export const Select = ({ options = [], onChange = () => {}, value, id, isClearable, placeholder }: Props) => {
+export const Select = ({
+  options = [],
+  onChange = () => {},
+  value,
+  id,
+  isClearable,
+  placeholder,
+  isSearchable,
+}: Props) => {
   const theme = useTheme()
   return (
     <RSelect<Option>
@@ -68,6 +77,7 @@ export const Select = ({ options = [], onChange = () => {}, value, id, isClearab
       options={options}
       isClearable={isClearable}
       placeholder={placeholder}
+      isSearchable={isSearchable}
       onChange={(o) => onChange(o as Option)}
     />
   )
