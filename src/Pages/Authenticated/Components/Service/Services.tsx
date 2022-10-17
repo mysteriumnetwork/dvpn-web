@@ -68,6 +68,7 @@ export const Services = () => {
           serviceType={sd.type}
           prices={findPrice(sd.type)}
           earnings={findEarnings(sd.type)}
+          tooltips={sd.tooltips}
         />
       ))}
     </>
