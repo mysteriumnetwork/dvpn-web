@@ -52,7 +52,7 @@ export const HeatAtlasLegend = () => {
           <LegendEntry color={heat.m200} text="More than 200" />
           <LegendEntry color={heat.m100} text="More than 100" />
           <LegendEntry color={heat.m50} text="More than 50" />
-          <LegendEntry color={heat.m0} text="More than 1" />
+          <LegendEntry color={heat.m0} text="1 or more" />
         </Row>
       </Content>
     </Legend>
