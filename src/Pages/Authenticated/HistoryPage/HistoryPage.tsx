@@ -26,6 +26,7 @@ import { SessionCard } from './SessionCard'
 import { Placeholder } from './Placeholder'
 import { observer } from 'mobx-react-lite'
 import { useStores } from '../../../mobx/store'
+import { HeatAtlas } from '../../../Components/Maps/HeatAtlas'
 
 const { date2human, seconds2Time } = dates
 const { countryName } = location
@@ -40,9 +41,11 @@ const session2human = (session: string) => {
 export const HistoryPage = observer(() => {
   const { historyPage } = useStores()
   const isDesktop = useMediaQuery(isDesktopQuery)
+
   useEffect(() => {
     historyPage.fetchSessions()
   }, [])
+
   const DesktopColumns: Column<SessionV2>[] = useMemo(
     () => [
       {
@@ -94,6 +97,11 @@ export const HistoryPage = observer(() => {
           onChange={(o: Option) => historyPage.setRange(o)}
         />
       </LayoutRow>
+      {isDesktop && (
+        <LayoutRow>
+          <HeatAtlas points={historyPage.points} />
+        </LayoutRow>
+      )}
       <LayoutRow>
         {isDesktop && (
           <Table

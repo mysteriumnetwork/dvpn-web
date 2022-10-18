@@ -253,6 +253,28 @@ const light: Omit<Theme, 'common'> = {
       fontColor: themeCommon.colorDarkBlue,
     },
   },
+
+  heatAtlas: {
+    bgColor: '#E2E0EE',
+
+    country: {
+      fill: themeCommon.colorWhite,
+      stroke: '#E2E0EE',
+    },
+
+    heat: {
+      m0: '#BBD7F0',
+      m50: '#9896FE',
+      m100: '#EA94EC',
+      m200: '#FA5F96',
+    },
+
+    legend: {
+      bgColor: themeCommon.colorWhite,
+      boxShadow: '0px 10px 30px rgba(78, 28, 103, 0.05)',
+      textColor: themeCommon.colorDarkBlue,
+    },
+  },
 }
 
 export default light

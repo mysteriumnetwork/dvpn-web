@@ -255,6 +255,28 @@ const dark: Omit<Theme, 'common'> = {
       fontColor: themeCommon.colorWhite,
     },
   },
+
+  heatAtlas: {
+    bgColor: '#221E39',
+
+    country: {
+      fill: '#393453',
+      stroke: '#221E39',
+    },
+
+    heat: {
+      m0: '#BBD7F0',
+      m50: '#9896FE',
+      m100: '#EA94EC',
+      m200: '#FA5F96',
+    },
+
+    legend: {
+      bgColor: themeCommon.color444161,
+      boxShadow: '0px 10px 20px rgba(34, 30, 57, 0.4)',
+      textColor: themeCommon.colorGrayBlue,
+    },
+  },
 }
 
 export default dark
