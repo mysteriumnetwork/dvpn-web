@@ -56,10 +56,10 @@ export const Tooltip = ({ children, content, variant = '!', interactive = true }
 const resolveVariant = (variant: Variant) => {
   switch (variant) {
     case '!':
-      return <InfoIcon />
+      return <InfoIcon data-test-id="Icons.infoIcon" />
     case '?':
-      return <QuestionIcon />
+      return <QuestionIcon data-test-id="Icons.questionIcon" />
     default:
-      return <InfoIcon />
+      return <InfoIcon data-test-id="Icons.infoIcon" />
   }
 }

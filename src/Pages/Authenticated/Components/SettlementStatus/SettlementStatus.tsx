@@ -30,8 +30,9 @@ export const SettlementStatus = () => {
     <HeaderItem
       minWidth={300}
       title={`Next auto settlement (${myst.display(myst.toWeiBig(settleThresholdMyst), { fractions: 1 })})`}
+      dataTestId="SettlementStatus.container"
       content={
-        <ProgressContainer>
+        <ProgressContainer data-test-id="SettlementStatus.progressBar">
           <ProgressBar size="small" max={settleThresholdMyst} value={value} />
         </ProgressContainer>
       }

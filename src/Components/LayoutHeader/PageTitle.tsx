@@ -41,7 +41,7 @@ const PageTitle = ({ logo, name }: Props) => {
   return (
     <Container>
       <Logo>{logo}</Logo>
-      <PageName>{name}</PageName>
+      <PageName data-test-id="PageTitle">{name}</PageName>
     </Container>
   )
 }
