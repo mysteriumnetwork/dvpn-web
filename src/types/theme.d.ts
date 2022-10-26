@@ -255,6 +255,28 @@ export type Theme = {
     }
   }
 
+  heatAtlas: {
+    bgColor: string
+
+    country: {
+      fill: string
+      stroke: string
+    }
+
+    heat: {
+      m0: string
+      m50: string
+      m100: string
+      m200: string
+    }
+
+    legend: {
+      bgColor: string
+      boxShadow: string
+      textColor: string
+    }
+  }
+
   common: Common
 }
 

@@ -9,6 +9,7 @@ import { MetricsRange, Option } from '../../../types/common'
 import { SessionV2 } from 'mysterium-vpn-js'
 import { tequila } from '../../../api/tequila'
 import errors from '../../../commons/errors'
+import { Point } from '../../../Components/Maps/HeatAtlas'
 
 const { api } = tequila
 
@@ -43,6 +44,7 @@ export class HistoryPageStore {
 
       pagedSessions: computed,
       noData: computed,
+      points: computed,
     })
   }
 
@@ -96,5 +98,19 @@ export class HistoryPageStore {
 
   get noData(): boolean {
     return this.sessions.length === 0
+  }
+
+  get points(): Point[] {
+    console.log('pointszzz', this.sessions.length)
+    const countryToCount = new Map<string, number>()
+    for (let i = 0; i < this.sessions.length; i++) {
+      const country = this.sessions[i].consumerCountry
+
+      countryToCount.set(country, (countryToCount.get(country) ?? 0) + 1)
+    }
+
+    const points: Point[] = []
+    countryToCount.forEach((count, country) => points.push({ country, count }))
+    return points
   }
 }
