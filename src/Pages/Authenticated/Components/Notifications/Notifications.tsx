@@ -85,7 +85,7 @@ export const Notifications = () => {
   }
 
   return (
-    <Container>
+    <Container data-test-id="Notifications.overlay">
       <NodeReleaseCheck
         onNewNodeVersionAvailable={(current, latest) =>
           addNotification(ID_NODE_UPDATE, {

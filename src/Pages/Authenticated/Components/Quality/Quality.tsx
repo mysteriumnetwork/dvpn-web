@@ -39,9 +39,10 @@ export const Quality = () => {
   return (
     <HeaderItem
       title="Quality"
+      data-test-id="Quality.container"
       content={
         <>
-          <QualityBarsIcon $quality={quality} />
+          <QualityBarsIcon data-test-id="Quality.barsIcon" $quality={quality} />
           <Tooltip
             content={
               <Column>

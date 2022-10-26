@@ -43,5 +43,9 @@ export const List = ({ list }: Props) => {
     })
   }, [list])
 
-  return <Container>{Notifications.length === 0 ? <NoNotifications /> : Notifications}</Container>
+  return (
+    <Container data-test-id="List.notifications">
+      {Notifications.length === 0 ? <NoNotifications /> : Notifications}
+    </Container>
+  )
 }

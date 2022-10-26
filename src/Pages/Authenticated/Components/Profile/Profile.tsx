@@ -26,7 +26,7 @@ export const Profile = () => {
   const activeIconKey = useAppSelector(remoteStorage.selector<AvatarNames>(KEY_PROFILE_ICON)) || 'gorilla'
   const Icon = PROFILE_AVATAR_ICONS_DEFINITIONS.find((def) => def.key === activeIconKey)!.icon
   return (
-    <StyledProfile>
+    <StyledProfile data-test-id="Profile.avatarIcon">
       <Icon />
     </StyledProfile>
   )

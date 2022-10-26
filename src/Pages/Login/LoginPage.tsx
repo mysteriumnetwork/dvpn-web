@@ -178,7 +178,7 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
             <Header>
               <Title>Welcome</Title>
               <SubTitle>node runner!</SubTitle>
-              <Comment>Welcome Back! Please enter your Node UI password.</Comment>
+              <Comment data-test-id="LoginPage.welcomeText">Welcome Back! Please enter your Node UI password.</Comment>
             </Header>
 
             <InputGroup
@@ -189,7 +189,11 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
             />
 
             <Footer>
-              <Link href="https://docs.mysterium.network/troubleshooting/forgot-password" target="_blank">
+              <Link
+                data-test-id="LoginPage.forgotPassword"
+                href="https://docs.mysterium.network/troubleshooting/forgot-password"
+                target="_blank"
+              >
                 Forgot password?
               </Link>
             </Footer>

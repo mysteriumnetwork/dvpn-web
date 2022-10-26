@@ -32,12 +32,13 @@ const Title = styled.div`
 interface Props {
   minWidth?: number
   title?: string
+  dataTestId?: string
   content: ReactNode
 }
 
-export const HeaderItem = ({ title, content, minWidth = 0 }: Props) => {
+export const HeaderItem = ({ title, dataTestId, content, minWidth = 0 }: Props) => {
   return (
-    <Item style={{ minWidth: `${minWidth}px` }}>
+    <Item data-test-id={dataTestId} style={{ minWidth: `${minWidth}px` }}>
       {title && <Title>{title}</Title>}
       {content}
     </Item>
