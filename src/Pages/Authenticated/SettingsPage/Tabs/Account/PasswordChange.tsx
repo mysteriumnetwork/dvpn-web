@@ -85,8 +85,17 @@ export const PasswordChange = () => {
 
   return (
     <SettingsCard
-      footer={<Button loading={loading} onClick={handlePasswordChange} variant="secondary" label="Update Password" />}
+      footer={
+        <Button
+          dataTestId="PasswordChange.updatePassword"
+          loading={loading}
+          onClick={handlePasswordChange}
+          variant="secondary"
+          label="Update Password"
+        />
+      }
       title="Change Password"
+      dataTestId="SettingsCard.changePassword"
     >
       <Form onSubmit={handlePasswordChange}>
         <FormContent>
@@ -94,6 +103,7 @@ export const PasswordChange = () => {
             <InputGroup
               fluid
               title="Current password"
+              dataTestId="PasswordChange.currentPassword"
               input={
                 <TextField
                   type="password"
@@ -108,6 +118,7 @@ export const PasswordChange = () => {
             <InputGroup
               fluid
               title="New password"
+              dataTestId="PasswordChange.newPassword"
               input={
                 <TextField
                   type="password"
@@ -121,6 +132,7 @@ export const PasswordChange = () => {
               <InputGroup
                 fluid
                 title="Confirm new password"
+                dataTestId="PasswordChange.confirmNewPassword"
                 input={
                   <TextField
                     type="password"

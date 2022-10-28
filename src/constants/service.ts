@@ -10,6 +10,7 @@ import { ServiceTooltips } from '../Pages/Authenticated/Components/Service/Servi
 export interface ServiceDescriptor {
   type: string
   name: string
+  dataTestId?: string
   description: string
   tooltips?: ServiceTooltips
 }
@@ -17,6 +18,7 @@ export interface ServiceDescriptor {
 export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
   {
     name: 'Public',
+    dataTestId: 'Services.public',
     type: 'wireguard',
     description: 'Open to the whole network',
     tooltips: {
@@ -25,6 +27,7 @@ export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
   },
   {
     name: 'B2B VPN and data transfer',
+    dataTestId: 'Services.dataTransfer',
     type: 'data_transfer',
     description: 'Streaming and data transfer traffic from B2B clients',
     tooltips: {
@@ -33,6 +36,7 @@ export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
   },
   {
     name: 'B2B Data Scraping',
+    dataTestId: 'Services.B2BDataScraping',
     type: 'scraping',
     description: 'Data scraping traffic from B2B clients',
     tooltips: {

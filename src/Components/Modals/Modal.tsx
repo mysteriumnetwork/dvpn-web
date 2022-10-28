@@ -160,6 +160,7 @@ const Spinner = styled(CircularSpinner)`
 `
 
 interface Props {
+  dataTestId?: string
   show?: boolean
   icon?: ReactNode
   title?: string
@@ -174,6 +175,7 @@ interface Props {
 }
 
 export const Modal = ({
+  dataTestId,
   show,
   icon,
   title,
@@ -195,7 +197,7 @@ export const Modal = ({
     <>
       {!isMobile && <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />}
 
-      <StyledModal $size={size} $zIndex={zIndex}>
+      <StyledModal data-test-id={dataTestId} $size={size} $zIndex={zIndex}>
         <Container>
           {loading && (
             <SpinnerOverlay>
@@ -203,7 +205,9 @@ export const Modal = ({
             </SpinnerOverlay>
           )}
           {icon && <Icon>{icon}</Icon>}
-          <CloseButtonPlacement>{!disableX && <XButtonIcon onClick={onClickX} />}</CloseButtonPlacement>
+          <CloseButtonPlacement data-test-id="Modal.closeButton">
+            {!disableX && <XButtonIcon onClick={onClickX} />}
+          </CloseButtonPlacement>
           {title && <Title>{title}</Title>}
           {subTitle && <SubTitle>{subTitle}</SubTitle>}
           {children}

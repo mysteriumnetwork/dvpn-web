@@ -166,9 +166,18 @@ export const Button = ({
   onClick,
   type,
   rounded,
+  dataTestId,
 }: ButtonProps) => {
   return (
-    <StyledButton $size={size} $rounded={rounded} $variant={variant} type={type} disabled={disabled} onClick={onClick}>
+    <StyledButton
+      $size={size}
+      $rounded={rounded}
+      $variant={variant}
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      data-test-id={dataTestId}
+    >
       {loading && (
         <LoadingOverlay $size={size} $rounded={rounded} $variant={variant}>
           <Spinner />

@@ -111,6 +111,7 @@ interface Props {
   name: string
   description: string
   serviceType: string
+  dataTestId?: string
   approvalPending?: boolean
   earnings?: ServiceEarnings
   prices?: Prices
@@ -124,6 +125,7 @@ export const ServiceCard = ({
   name,
   description,
   serviceType,
+  dataTestId,
   approvalPending = false,
   earnings = { earningsWei: 0, totalEarningWei: 0 },
   prices = { pricePerGibWei: '0', pricePerHourWei: '0' },
@@ -153,21 +155,21 @@ export const ServiceCard = ({
   }
 
   return (
-    <Card>
+    <Card data-test-id={dataTestId}>
       {(internalLoading || loading) && (
         <Overlay>
           <Spinner />
         </Overlay>
       )}
-      <Header>
+      <Header data-test-id="ServiceCard.header">
         {approvalPending && <PendingApproval />}
-        <Controls>
+        <Controls data-test-id="ServiceCard.nameContainer">
           {name}
           <Switch checked={enabled} onChange={handleSwitch} />
         </Controls>
         <Description>{description}</Description>
       </Header>
-      <Content>
+      <Content data-test-id="ServiceCard.content">
         <InfoCard
           title="Price per GiB"
           value={myst.display(prices.pricePerGibWei, { fractions: 4 })}

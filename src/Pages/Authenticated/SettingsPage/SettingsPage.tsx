@@ -62,19 +62,22 @@ export const SettingsPage = () => {
           tabs={[
             {
               name: 'Account',
+              id: 'SettingsPage.accountTab',
               to: SETTINGS_ACCOUNT,
             },
             {
               name: 'Traffic',
+              id: 'SettingsPage.trafficTab',
               to: SETTINGS_TRAFFIC,
             },
             {
               name: 'Advanced',
+              id: 'SettingsPage.advancedTab',
               to: SETTINGS_ADVANCED,
             },
           ]}
         />
-        <Grouped>
+        <Grouped data-test-id="SettingsPage.versionsContainer">
           <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />
           {restartEnabled && <PowerOffButton />}
         </Grouped>

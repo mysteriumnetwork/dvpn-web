@@ -75,6 +75,7 @@ const Footer = styled.div`
 `
 
 interface Props {
+  dataTestId?: string
   title?: ReactNode
   titleControl?: ReactNode
   children?: ReactNode
@@ -82,9 +83,9 @@ interface Props {
   loading?: boolean
 }
 
-export const SettingsCard = ({ title, children, footer, loading }: Props) => {
+export const SettingsCard = ({ dataTestId, title, children, footer, loading }: Props) => {
   return (
-    <Container>
+    <Container data-test-id={dataTestId}>
       {title && (
         <Title>
           <TitleText>{title}</TitleText>

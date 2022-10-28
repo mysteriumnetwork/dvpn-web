@@ -99,7 +99,7 @@ export const TransactionsPage = () => {
         {isDesktop && <SettlementCard />}
         <DownloadTransactionCSV data={data} />
       </SpecializedRow>
-      <LayoutRow>
+      <LayoutRow data-test-id="TransactionsPage.tableContainer">
         {isDesktop && <Table noContent={<Placeholder />} columns={Columns} loading={loading} data={data.items} />}
         {!isDesktop && (
           <List

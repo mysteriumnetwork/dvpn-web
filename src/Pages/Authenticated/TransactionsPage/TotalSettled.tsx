@@ -79,7 +79,7 @@ export const TotalSettled = () => {
           onSave={() => lockouts.lock({ id: SETTLE_LOCKOUT_ID, seconds: 60, refreshPage: true })}
         />
       </Media.Mobile>
-      <Row>
+      <Row data-test-id="TotalSettled.container">
         {isDesktop && (
           <Tooltip content="Total amount transferred to your external wallet including all applicable fees">
             <IconContainer>
