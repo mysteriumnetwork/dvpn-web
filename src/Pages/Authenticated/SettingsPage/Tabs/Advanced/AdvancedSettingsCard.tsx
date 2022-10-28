@@ -101,21 +101,33 @@ export const AdvancedSettingsCard = () => {
 
   return (
     <SettingsCard
+      dataTestId="SettingsCard.advancedSettings"
       loading={loading}
       footer={
         <Controls>
-          <Button variant="outlined" label="Restore default" onClick={handleReset} />
-          <Button variant="secondary" label="Save" onClick={handleSave} />
+          <Button
+            dataTestId="AdvancedSettingsCard.restoreDefault"
+            variant="outlined"
+            label="Restore default"
+            onClick={handleReset}
+          />
+          <Button dataTestId="AdvancedSettingsCard.save" variant="secondary" label="Save" onClick={handleSave} />
         </Controls>
       }
       title="Advanced Settings"
     >
-      <InputGroup title="UDP Port range" input={<TextField value={form.udpRange} onChange={handleUDPRangeChange} />} />
       <InputGroup
+        dataTestId="AdvancedSettingsCard.UDPPortRange"
+        title="UDP Port range"
+        input={<TextField value={form.udpRange} onChange={handleUDPRangeChange} />}
+      />
+      <InputGroup
+        dataTestId="AdvancedSettingsCard.L2RPCURLs"
         title="L2 RPC URLs (Requires NODE restart)"
         input={<TextField value={form.l2RPCurls} onChange={handleL2RPCurlsChange} />}
       />
       <InputGroup
+        dataTestId="AdvancedSettingsCard.stunServers"
         title="Stun Servers"
         input={<TextField value={form.stunServerURLS} onChange={handleStunServersChange} />}
       />

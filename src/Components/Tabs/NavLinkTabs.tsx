@@ -66,7 +66,7 @@ const TabContainer = styled.div`
 `
 
 interface Props {
-  tabs?: { name: string; to: string }[]
+  tabs?: { id?: string; name: string; to: string }[]
   onChange?: (tab: string) => void
   activateFirst?: boolean
 }
@@ -87,7 +87,7 @@ export const NavLinkTabs = ({ tabs = [], onChange = () => {}, activateFirst }: P
   }
 
   const mappedTabs = tabs.map((t) => (
-    <Tab to={t.to} key={t.name} onClick={() => handleSwitch(t.name)}>
+    <Tab id={t.id} to={t.to} key={t.name} onClick={() => handleSwitch(t.name)}>
       <TabTitle $active={t.name === activeTab}>{t.name}</TabTitle>
     </Tab>
   ))

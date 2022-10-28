@@ -72,7 +72,7 @@ export const DownloadTransactionCSV = ({ data }: Props) => {
 
   return (
     <Card>
-      <Row>
+      <Row data-test-id="DownloadTransactions.container">
         {isDesktop && (
           <IconContainer>
             <FileIcon />

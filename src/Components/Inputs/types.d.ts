@@ -27,4 +27,5 @@ export type ButtonProps = {
   rounded?: boolean
   onClick?: () => void
   type?: 'submit' | 'reset' | 'button'
+  dataTestId?: string
 }

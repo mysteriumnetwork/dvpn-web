@@ -65,7 +65,7 @@ export const AvatarChoice = () => {
     [activeIconKey],
   )
   return (
-    <SettingsCard title="Select Avatar">
+    <SettingsCard dataTestId="SettingsCard.selectAvatar" title="Select Avatar">
       <AvatarGrid>{icons}</AvatarGrid>
     </SettingsCard>
   )

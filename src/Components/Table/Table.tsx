@@ -108,7 +108,7 @@ export const Table = ({ columns, data, loading, noContent, ongoing }: Props) => 
   const showNoContent = data.length === 0 && !loading
   return (
     <Container {...getTableProps()}>
-      <HeaderRow>
+      <HeaderRow data-test-id="HistoryPage.tableHeader">
         {headerGroups.map((headerGroup) => (
           <div {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (

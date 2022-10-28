@@ -84,6 +84,7 @@ export const MystNodesClaim = () => {
 
   return (
     <SettingsCard
+      dataTestId="SettingsCard.MyNodesClaim"
       loading={dataLoading}
       title={
         <Title>
@@ -96,12 +97,20 @@ export const MystNodesClaim = () => {
         </Title>
       }
       footer={
-        <Button type="submit" variant="secondary" loading={loading || dataLoading} onClick={handleClaim} label="Save" />
+        <Button
+          dataTestId="MystNodesClaim.save"
+          type="submit"
+          variant="secondary"
+          loading={loading || dataLoading}
+          onClick={handleClaim}
+          label="Save"
+        />
       }
     >
       <Form onSubmit={handleClaim}>
         <InputGroup
           title="API Key"
+          dataTestId="MystNodesClaim.APIKey"
           input={
             <TextField
               value={token}

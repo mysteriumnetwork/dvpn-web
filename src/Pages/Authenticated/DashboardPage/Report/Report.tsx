@@ -162,7 +162,7 @@ export const Report = () => {
   }, [selectedRange, selectedGraph, loading])
 
   return (
-    <Column>
+    <Column data-test-id="Report.chart">
       {loading && (
         <Overlay>
           <Spinner />
