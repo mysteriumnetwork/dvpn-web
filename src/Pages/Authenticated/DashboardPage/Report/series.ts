@@ -15,7 +15,7 @@ import bytes from '../../../../commons/bytes'
 const units = (type: ChartType): string | undefined =>
   ({
     earnings: ` ${currentCurrency()}`,
-    data: ' GB',
+    data: ' GiB',
     sessions: '',
   }[type])
 
@@ -50,7 +50,7 @@ const template = (range: MetricsRange): Pair[] => {
 
 const transformValue = (value: string, type: ChartType): number => {
   if (type === 'data') {
-    return bytes.gb(Number(value))
+    return bytes.gib(Number(value))
   }
 
   return Number(value)

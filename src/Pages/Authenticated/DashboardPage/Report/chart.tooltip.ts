@@ -9,7 +9,7 @@ import { myst } from '../../../../commons/mysts'
 import series from './series'
 
 const earnings = (value: string) => myst.display(myst.toWeiBig(value), { fractions: 3 })
-const data = (value: string) => `${value} ${series.units('data')}`
+const data = (value: string) => `${myst.toBig(value).toFixed(2)} ${series.units('data')}`
 
 const TOOLTIP_FORMATTERS: { [key: ChartType]: (value: string) => string } = {
   earnings,
