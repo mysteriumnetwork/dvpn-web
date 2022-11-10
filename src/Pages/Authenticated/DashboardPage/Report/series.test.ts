@@ -11,7 +11,7 @@ import { SeriesEntry } from 'mysterium-vpn-js'
 import { localDate } from './dates'
 
 test.each<{ chart: ChartType; unit: any }>([
-  { chart: 'data', unit: ' GB' },
+  { chart: 'data', unit: ' GiB' },
   { chart: 'earnings', unit: ` ${currentCurrency()}` },
   { chart: 'sessions', unit: '' },
 ])('chart type to units %j', ({ chart, unit }) => {
@@ -31,9 +31,9 @@ const twoDaysBefore = nowMinusTwoDays()
 // 1663246040 === Thu Sep 15 2022 15:47:20 GMT+0300 (Eastern European Summer Time) {}
 test.each<{ entry: SeriesEntry; type: ChartType; expected: Pair }>([
   {
-    entry: { value: '110000000', timestamp: twoDaysBefore },
+    entry: { value: '130000000', timestamp: twoDaysBefore },
     type: 'data',
-    expected: { x: localDate(twoDaysBefore), y: 0.11 },
+    expected: { x: localDate(twoDaysBefore), y: 0.12 },
   },
   {
     entry: { value: '1000', timestamp: twoDaysBefore },
