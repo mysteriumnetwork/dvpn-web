@@ -71,7 +71,7 @@ export const SUPPORTED_GATEWAYS: Map<string, GatewayDescriptor> = new Map<
   [
     'paypal',
     {
-      summary: () => `Deposit with PayPal (1 USD)`,
+      summary: () => `Pay with PayPal (1 USD)`,
       title: 'Pay with Paypal ',
       description:
         'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed. ',
@@ -84,7 +84,7 @@ export const SUPPORTED_GATEWAYS: Map<string, GatewayDescriptor> = new Map<
   [
     'stripe',
     {
-      summary: () => `Deposit with Credit or Debit card (1 USD)`,
+      summary: () => `Pay with Credit or Debit card (1 USD)`,
       title: 'Pay with Credit or Debit card',
       description:
         'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed.',
