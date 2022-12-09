@@ -7,13 +7,14 @@
 import {
   ServiceEarningsKeys,
   serviceTypeToEarningPerServiceKey,
+  serviceTypeToTotalNetworkEarningPerServiceKey,
   SUPPORTED_SERVICES,
 } from '../../../../constants/service'
 import { ServiceCard, ServiceEarnings } from './ServiceCard'
 import { tequila } from '../../../../api/tequila'
 import { useFetch } from '../../../../commons/hooks'
 import { Prices } from './types'
-import { PRICE_EMPTY, SERVICE_EARNINGS_EMPTY } from './instances'
+import { PRICE_EMPTY } from './instances'
 import { PRICE_EARNINGS_PER_SERVICE } from '../../../../constants/instances'
 import { useMemo } from 'react'
 import { myst } from '../../../../commons/mysts'
@@ -35,26 +36,36 @@ export const Services = () => {
   }
 
   const totalEarningWei = useMemo(
-    () => myst.toBig(earnings.public.wei).plus(earnings.dataTransfer.wei).plus(earnings.scraping.wei).toString(),
-    [earnings.public.wei, earnings.dataTransfer.wei, earnings.scraping.wei],
+    () =>
+      myst
+        .toBig(earnings.publicTokens.wei)
+        .plus(earnings.dataTransferTokens.wei)
+        .plus(earnings.scrapingTokens.wei)
+        .toString(),
+    [earnings.publicTokens.wei, earnings.dataTransferTokens.wei, earnings.scrapingTokens.wei],
   )
 
   const findEarnings = (serviceType: string): ServiceEarnings => {
     const earningKeys = Object.keys(earnings)
     const serviceEarningsKey = serviceTypeToEarningPerServiceKey(serviceType)
+    const serviceTotalNetworkEarningsKey = serviceTypeToTotalNetworkEarningPerServiceKey(serviceType)
 
     // @ts-ignore
-    const found: ServiceEarningsKeys | undefined = earningKeys.find((key) =>
+    const foundServiceEarnings: ServiceEarningsKeys | undefined = earningKeys.find((key) =>
       key === serviceEarningsKey ? key : undefined,
     )
 
-    if (!found) {
-      return SERVICE_EARNINGS_EMPTY
-    }
+    // @ts-ignore
+    const foundTotalNetworkEarningsfoundTotalNetworkEarnings:
+      | ServiceEarningsKeys
+      | undefined = earningKeys.find((key) => (key === serviceTotalNetworkEarningsKey ? key : undefined))
 
-    const wei = earnings[found].wei
+    const serviceWei = foundServiceEarnings ? earnings[foundServiceEarnings].wei : 0
+    const totalServiceNetworkWei = foundTotalNetworkEarningsfoundTotalNetworkEarnings
+      ? earnings[foundTotalNetworkEarningsfoundTotalNetworkEarnings].wei
+      : 0
 
-    return { earningsWei: wei, totalEarningWei }
+    return { earningsWei: serviceWei, totalEarningWei, totalNetworkEarningsWei: totalServiceNetworkWei }
   }
 
   return (

@@ -88,8 +88,11 @@ export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
 })
 
 export const PRICE_EARNINGS_PER_SERVICE: EarningsPerServiceResponse = Object.freeze({
-  public: TOKENS_EMPTY,
-  dataTransfer: TOKENS_EMPTY,
-  scraping: TOKENS_EMPTY,
-  total: TOKENS_EMPTY,
+  publicTokens: TOKENS_EMPTY,
+  dataTransferTokens: TOKENS_EMPTY,
+  scrapingTokens: TOKENS_EMPTY,
+  totalTokens: TOKENS_EMPTY,
+  totalPublicTokens: TOKENS_EMPTY,
+  totalDataTransferTokens: TOKENS_EMPTY,
+  totalScrapingTokens: TOKENS_EMPTY,
 })
