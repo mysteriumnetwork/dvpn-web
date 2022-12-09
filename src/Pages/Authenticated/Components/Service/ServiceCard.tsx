@@ -101,6 +101,7 @@ const Content = styled.div`
 export interface ServiceEarnings {
   earningsWei?: string | number
   totalEarningWei?: string | number
+  totalNetworkEarningsWei?: string | number
 }
 
 export interface ServiceTooltips {
@@ -187,8 +188,8 @@ export const ServiceCard = ({
           icon={<WalletIcon $inactive={!enabled} />}
         />
         <InfoCard
-          title="Total earnings"
-          value={myst.display(earnings.totalEarningWei, { fractions: 4 })}
+          title="Total network earnings"
+          value={myst.display(earnings?.totalNetworkEarningsWei, { fractions: 0 })}
           icon={<PeopleIcon $inactive={!enabled} />}
         />
       </Content>

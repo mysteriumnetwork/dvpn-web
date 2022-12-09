@@ -49,12 +49,25 @@ export type ServiceEarningsKeys = keyof EarningsPerServiceResponse
 export const serviceTypeToEarningPerServiceKey = (type: string): ServiceEarningsKeys => {
   switch (type) {
     case 'wireguard':
-      return 'public'
+      return 'publicTokens'
     case 'data_transfer':
-      return 'dataTransfer'
+      return 'dataTransferTokens'
     case 'scraping':
-      return 'scraping'
+      return 'scrapingTokens'
     default:
-      return 'total'
+      return 'totalTokens'
+  }
+}
+
+export const serviceTypeToTotalNetworkEarningPerServiceKey = (type: string): ServiceEarningsKeys => {
+  switch (type) {
+    case 'wireguard':
+      return 'totalPublicTokens'
+    case 'data_transfer':
+      return 'totalDataTransferTokens'
+    case 'scraping':
+      return 'totalScrapingTokens'
+    default:
+      return 'totalTokens'
   }
 }
