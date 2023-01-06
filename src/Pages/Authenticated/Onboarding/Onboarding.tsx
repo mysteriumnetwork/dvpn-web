@@ -11,8 +11,11 @@ import { TOSModal } from '../Components/TOSModal/TOSModal'
 import { ConfirmationDialog } from '../../../Components/ConfirmationDialog/ConfirmationDialog'
 import { RegistrationModal } from './RegistrationModal/RegistrationModal'
 import { RegistrationInProgressModal } from './RegistrationInProgressModal'
+import { useLocation } from 'react-router-dom'
+import ROUTES from '../../../constants/routes'
 
 export const Onboarding = () => {
+  const { pathname } = useLocation()
   const identity = useAppSelector(selectors.currentIdentity)
   const { needsAgreedTerms, needsRegisteredIdentity } = useAppSelector(selectors.onBoarding)
 
@@ -25,6 +28,10 @@ export const Onboarding = () => {
         show
       />
     )
+  }
+
+  if (pathname === ROUTES.ADMIN) {
+    return <></>
   }
 
   if (needsAgreedTerms) {
