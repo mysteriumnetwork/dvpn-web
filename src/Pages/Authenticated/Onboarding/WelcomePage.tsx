@@ -88,9 +88,8 @@ const Card = styled.div`
     padding: 10px;
   }
   @media ${devices.mobileS} {
-   height: max-content;
+    height: max-content;
   }
-\`
 `
 const Header = styled.div`
   display: flex;
