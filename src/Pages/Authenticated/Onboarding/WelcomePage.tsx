@@ -19,7 +19,7 @@ const Logo = styled(LoginLogo)`
     height: 300px;
     width: 300px;
   }
-  @media screen and (max-height: 430px) {
+  @media ${devices.mobileS} {
     display: none;
   }
 `
@@ -39,12 +39,12 @@ const Title = styled.h1`
     font-size: 60px;
     line-height: 60px;
   }
-  @media screen and (max-height: 430px) {
+  @media ${devices.mobileS} {
     font-size: 40px;
     line-height: 40px;
   }
-\`
 `
+
 const Comment = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue2};
   margin-top: 20px;
@@ -62,12 +62,12 @@ const SubTitle = styled.h1`
     font-size: 60px;
     line-height: 60px;
   }
-  @media screen and (max-height: 430px) {
+  @media ${devices.mobileS} {
     font-size: 40px;
     line-height: 40px;
   }
-\`
 `
+
 const Card = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
   box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
@@ -87,7 +87,7 @@ const Card = styled.div`
     width: 300px;
     padding: 10px;
   }
-  @media screen and (max-height: 430px) {
+  @media ${devices.mobileS} {
    height: max-content;
   }
 \`

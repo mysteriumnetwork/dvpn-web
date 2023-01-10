@@ -33,7 +33,7 @@ const Logo = styled(LoginLogo)`
     height: 300px;
     width: 300px;
   }
-  @media screen and (max-height: 430px) {
+  @media  ${devices.mobileS}) {
     display: none;
   }
 `
@@ -77,7 +77,7 @@ const SubTitle = styled.h1`
     font-size: 60px;
     line-height: 60px;
   }
-  @media screen and (max-height: 430px) {
+  @media ${devices.mobileS} {
     font-size: 40px;
     line-height: 40px;
   }
@@ -95,14 +95,14 @@ const Title = styled.h1`
     font-size: 60px;
     line-height: 60px;
   }
-  @media screen and (max-height: 430px) {
+  @media ${devices.mobileS} {
     font-size: 40px;
     line-height: 40px;
   }
 `
 const Card = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
-  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
+  box-shadow: 0 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
   height: 550px;
   gap: 100px;

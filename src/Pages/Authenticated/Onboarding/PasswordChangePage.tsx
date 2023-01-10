@@ -43,7 +43,7 @@ const LogoContainer = styled.div`
   @media ${devices.tablet} {
     align-self: center;
   }
-  @media screen and (max-height: 430px) {
+  @media ${devices.mobileS} {
     display: none;
   }
 `
@@ -142,7 +142,7 @@ const Card = styled.div`
     width: 350px;
     padding: 10px;
   }
-  @media screen and (max-height: 430px) {
+  @media screen and ${devices.mobileS} {
     width: 275px;
     height: max-content;
     padding: 20px 5px;
