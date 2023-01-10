@@ -33,6 +33,9 @@ const Logo = styled(LoginLogo)`
     height: 300px;
     width: 300px;
   }
+  @media screen and (max-height: 430px) {
+    display: none;
+  }
 `
 const LogoContainer = styled.div`
   display: flex;
@@ -59,7 +62,7 @@ const Page = styled.div`
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 0;
   margin-bottom: 40px;
   @media ${devices.tablet} {
     align-self: flex-start;
@@ -74,6 +77,10 @@ const SubTitle = styled.h1`
     font-size: 60px;
     line-height: 60px;
   }
+  @media screen and (max-height: 430px) {
+    font-size: 40px;
+    line-height: 40px;
+  }
 `
 const Comment = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue2};
@@ -87,6 +94,10 @@ const Title = styled.h1`
     text-align: left;
     font-size: 60px;
     line-height: 60px;
+  }
+  @media screen and (max-height: 430px) {
+    font-size: 40px;
+    line-height: 40px;
   }
 `
 const Card = styled.div`

@@ -43,6 +43,9 @@ const LogoContainer = styled.div`
   @media ${devices.tablet} {
     align-self: center;
   }
+  @media screen and (max-height: 430px) {
+    display: none;
+  }
 `
 const Title = styled.h1`
   color: ${({ theme }) => theme.common.colorDarkBlue};
@@ -116,6 +119,9 @@ const LinkButton = styled.div`
 const Row = styled.div`
   display: flex;
   gap: 5px;
+  @media screen and (max-height: 430px) {
+    font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  }
 `
 
 const Card = styled.div`
@@ -135,6 +141,11 @@ const Card = styled.div`
     height: 750px;
     width: 350px;
     padding: 10px;
+  }
+  @media screen and (max-height: 430px) {
+    width: 275px;
+    height: max-content;
+    padding: 20px 5px;
   }
 `
 const Container = styled.div`
