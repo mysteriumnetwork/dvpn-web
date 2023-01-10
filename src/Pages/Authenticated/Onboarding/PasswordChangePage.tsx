@@ -119,7 +119,7 @@ const LinkButton = styled.div`
 const Row = styled.div`
   display: flex;
   gap: 5px;
-  @media screen and (max-height: 430px) {
+  @media ${devices.mobileS} {
     font-size: ${({ theme }) => theme.common.fontSizeSmall};
   }
 `
@@ -142,7 +142,7 @@ const Card = styled.div`
     width: 350px;
     padding: 10px;
   }
-  @media screen and ${devices.mobileS} {
+  @media ${devices.mobileS} {
     width: 275px;
     height: max-content;
     padding: 20px 5px;
