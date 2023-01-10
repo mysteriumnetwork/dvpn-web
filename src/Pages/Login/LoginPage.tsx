@@ -33,7 +33,7 @@ const Logo = styled(LoginLogo)`
     height: 300px;
     width: 300px;
   }
-  @media  ${devices.mobileS}) {
+  @media ${devices.mobileS} {
     display: none;
   }
 `
