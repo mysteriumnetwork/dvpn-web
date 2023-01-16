@@ -14,12 +14,16 @@ import { tequila } from '../../../../../api/tequila'
 import { useState } from 'react'
 import { ConfirmationDialog } from '../../../../../Components/ConfirmationDialog/ConfirmationDialog'
 import errors from '../../../../../commons/errors'
+import { devices } from '../../../../../theme/themes'
 
 const Row = styled.div`
   display: flex;
   align-items: center;
   gap: 40px;
   width: 100%;
+  @media ${devices.mobileS} {
+    gap: 20px;
+  }
 `
 
 const Title = styled.div`
