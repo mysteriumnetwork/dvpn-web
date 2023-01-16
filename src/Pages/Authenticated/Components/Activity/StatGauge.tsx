@@ -18,6 +18,11 @@ const Content = styled.div<{ $bgColor?: string }>`
   align-items: center;
   background-color: ${({ $bgColor }) => $bgColor && $bgColor};
   border-radius: 25px;
+  @media ${devices.mobileS} {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    justify-content: flex-start;
+  }
 `
 
 const Bubbles = styled.div`
