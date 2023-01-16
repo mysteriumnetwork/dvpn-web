@@ -27,7 +27,7 @@ const activeCSS = css`
     transform: translateX(30px);
     bottom: -6px;
     @media ${devices.mobileS} {
-      transform: translateX(15px);
+      transform: translateX(20px);
     }
   }
 `
