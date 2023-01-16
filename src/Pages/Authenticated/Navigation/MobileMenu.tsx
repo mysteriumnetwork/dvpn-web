@@ -12,6 +12,7 @@ import { LINK_DEFINITIONS, CONTROLLER_DEFINITIONS } from './definitions'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useMemo } from 'react'
 import zIndexes from '../../../constants/z-indexes'
+import { devices } from '../../../theme/themes'
 
 interface OverlayProps {
   $display: boolean
@@ -71,6 +72,14 @@ const Menu = styled.div<OverlayProps>`
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
   transition: max-width 0.3s;
+  @media ${devices.tablet} {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-width: 80vw;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
   ${Header} {
     display: flex;
     flex-direction: row;
