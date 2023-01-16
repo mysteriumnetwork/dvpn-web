@@ -17,6 +17,10 @@ const Content = styled.div`
     gap: 20px;
     margin: 0 10px 10px 10px;
   }
+  @media ${devices.mobileS} {
+    gap: 10px;
+    justify-content: space-between;
+  }
 `
 
 const StyledOption = styled.div`
@@ -36,6 +40,10 @@ const StyledOption = styled.div`
   `}
   @media ${devices.tablet} {
     width: 90px;
+  }
+  @media ${devices.mobileS} {
+    width: 70px;
+    font-size: ${({ theme }) => theme.common.fontSizeSmaller};
   }
 `
 
