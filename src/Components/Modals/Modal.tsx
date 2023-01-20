@@ -42,6 +42,10 @@ const normalSize = css`
     height: 100%;
     top: 0;
     transform: translate(-50%, 0);
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 `
 

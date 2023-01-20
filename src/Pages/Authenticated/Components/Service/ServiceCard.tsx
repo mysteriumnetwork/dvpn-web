@@ -30,6 +30,9 @@ const Card = styled.div`
     flex-direction: column;
     min-width: 325px;
   }
+  @media ${devices.mobileS} {
+    min-width: 280px;
+  }
 `
 
 const Overlay = styled.div`

@@ -26,11 +26,17 @@ const activeCSS = css`
 
     transform: translateX(30px);
     bottom: -6px;
+    @media ${devices.mobileS} {
+      transform: translateX(20px);
+    }
   }
 `
 const Tab = styled(Link)`
   text-decoration: none;
   min-width: 100px;
+  @media ${devices.mobileS} {
+    min-width: 80px;
+  }
 `
 
 const TabTitle = styled.div<TabTitleProps>`
@@ -44,6 +50,10 @@ const TabTitle = styled.div<TabTitleProps>`
   cursor: pointer;
   min-width: 100px;
   text-align: center;
+  @media ${devices.mobileS} {
+    font-size: ${({ theme }) => theme.common.fontSizeSmall};
+    min-width: 80px;
+  }
 
   :hover {
     color: ${({ $active }) => ($active ? themeCommon.colorWhite : themeCommon.colorGrayBlue2)};
