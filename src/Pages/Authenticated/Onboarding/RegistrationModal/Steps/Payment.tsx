@@ -65,16 +65,19 @@ const Payment = ({ gateway, allGateways, back, next }: RegistrationStepProps) =>
     await api.identityBalanceRefresh(identity.id)
   }
 
+  const isRegistrationPaymentReceived =
+    myst.toEtherBig(identity.balanceTokens.wei).gte(registration.ether) || registrationPayment.paid
+
   useEffect(() => {
     refreshPaymentStatus()
     const interval = setInterval(() => {
+      if (isRegistrationPaymentReceived) {
+        return
+      }
       refreshPaymentStatus()
     }, 5 * 1000)
     return () => clearInterval(interval)
-  }, [])
-
-  const isRegistrationPaymentReceived =
-    myst.toEtherBig(identity.balanceTokens.wei).gte(registration.ether) || registrationPayment.paid
+  }, [isRegistrationPaymentReceived])
 
   const gatewayProps: GatewayProps = {
     gateway: allGateways.find((gw) => gw.name === gateway)!,

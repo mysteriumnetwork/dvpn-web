@@ -15,7 +15,7 @@ const Direct = styled(DirectSVG)`
   height: 400px;
   width: 500px;
   @media ${devices.tablet} {
-    height: 250px;
+    height: 180px;
     width: 400px;
   }
 `
@@ -23,7 +23,7 @@ const PayPal = styled(PayPalSVG)`
   height: 400px;
   width: 500px;
   @media ${devices.tablet} {
-    height: 250px;
+    height: 180px;
     width: 400px;
   }
 `
@@ -31,7 +31,7 @@ const Stripe = styled(StripeSVG)`
   height: 400px;
   width: 500px;
   @media ${devices.tablet} {
-    height: 250px;
+    height: 180px;
     width: 400px;
   }
 `
