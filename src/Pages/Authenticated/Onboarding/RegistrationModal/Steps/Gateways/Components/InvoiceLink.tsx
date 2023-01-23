@@ -44,7 +44,7 @@ export const InvoiceLink = ({ identity, isCompleted }: { identity: string; isCom
       return
     }
     const orders = await api.payment.orders(identity)
-    return orders.find((o) => o.status === 'paid')
+    return orders.find(Boolean)
   }, [isCompleted])
 
   useEffect(() => {

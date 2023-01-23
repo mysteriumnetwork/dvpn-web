@@ -57,7 +57,7 @@ const Wallet = styled(WalletSVG)`
   height: 400px;
   width: 500px;
   @media ${devices.tablet} {
-    height: 250px;
+    height: 180px;
     width: 400px;
   }
 `
@@ -65,7 +65,7 @@ const Payment = styled(PaymentSVG)`
   height: 400px;
   width: 500px;
   @media ${devices.tablet} {
-    height: 250px;
+    height: 180px;
     width: 400px;
   }
 `
@@ -87,16 +87,16 @@ const StepNumber = styled.div`
   font-weight: 900;
 `
 
-const Image = styled.div`
+const Header = styled.div`
   position: relative;
   @media ${devices.tablet} {
     display: flex;
-    width: 100%;
     align-items: center;
     justify-content: center;
-    max-height: 230px;
   }
 `
+
+const Image = styled.div``
 
 const steps = [
   {
@@ -171,10 +171,10 @@ export const RegistrationModal = ({ show }: Props) => {
       <Content>
         <BreadCrumbs current={step} showStep={isDesktop} />
         <Wrapper>
-          <Image>
-            <div>{steps[step]?.logo(gateway) || <PaymentSVG />}</div>
+          <Header>
+            <Image>{steps[step].logo(gateway)}</Image>
             {isDesktop && <StepNumber>{step + 1}</StepNumber>}
-          </Image>
+          </Header>
           <Suspense>
             <Step {...stepProps} />
           </Suspense>

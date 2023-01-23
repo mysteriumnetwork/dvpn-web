@@ -17,6 +17,7 @@ import { gatewayDescriptor } from '../../gateways'
 import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyToClipboard'
 import { PAYOUT_GUIDE } from '../../../../../../constants/urls'
 import { devices } from '../../../../../../theme/themes'
+import React from 'react'
 
 const QR = styled.div`
   width: 150px;
@@ -145,7 +146,7 @@ const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) =
         </Waiting>
       )}
       <Controls>
-        {next && isRegistrationFeeReceived && <Button label="Next" onClick={next} />}
+        {next && isRegistrationFeeReceived && <Button label="Next" rounded onClick={next} />}
         {back && !isRegistrationFeeReceived && (
           <Button onClick={back} variant="outlined" rounded label="Back To Payment Method" />
         )}
