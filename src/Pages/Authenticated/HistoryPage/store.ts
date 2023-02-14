@@ -101,7 +101,6 @@ export class HistoryPageStore {
   }
 
   get points(): Point[] {
-    console.log('pointszzz', this.sessions.length)
     const countryToCount = new Map<string, number>()
     for (let i = 0; i < this.sessions.length; i++) {
       const country = this.sessions[i].consumerCountry
