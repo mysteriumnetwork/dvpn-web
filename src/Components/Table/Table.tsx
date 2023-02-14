@@ -72,6 +72,9 @@ const Row = styled.div<RowProps>`
   &:nth-of-type(even) {
     background-color: ${({ $ongoing, theme }) => !$ongoing && theme.table.bgRowEven};
   }
+  :hover {
+    background-color: ${({ $ongoing, theme }) => ($ongoing ? theme.table.bgRowOngoingHover : theme.table.bgRowHover)};
+  }
 `
 
 interface TableProps {

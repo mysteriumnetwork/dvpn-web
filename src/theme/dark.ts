@@ -62,9 +62,11 @@ const dark: Omit<Theme, 'common'> = {
 
   table: {
     bgBody: themeCommon.color393453,
+    bgRowHover: themeCommon.colorGrayBlue2 + alphaToHex(0.8),
     bgRowOdd: themeCommon.colorGrayBlue2 + alphaToHex(0.1),
     bgRowEven: themeCommon.colorGrayBlue2 + alphaToHex(0.3),
     bgRowOngoing: themeCommon.colorGreen + alphaToHex(0.3),
+    bgRowOngoingHover: themeCommon.colorGreen + alphaToHex(0.5),
     textColorPrimary: themeCommon.colorLightBlue,
     textColorSecondary: themeCommon.colorLightBlue,
     mobileCard: {

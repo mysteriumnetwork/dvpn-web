@@ -59,9 +59,11 @@ const light: Omit<Theme, 'common'> = {
 
   table: {
     bgBody: themeCommon.colorWhite,
+    bgRowHover: themeCommon.colorGrayBlue + alphaToHex(0.2),
     bgRowOdd: themeCommon.colorLightBlue + alphaToHex(0.2),
     bgRowEven: themeCommon.colorLightBlue + alphaToHex(0.5),
     bgRowOngoing: themeCommon.colorLightGreen,
+    bgRowOngoingHover: themeCommon.colorGreen + alphaToHex(0.3),
     textColorPrimary: themeCommon.colorDarkBlue,
     textColorSecondary: themeCommon.colorDarkBlue,
     mobileCard: {
