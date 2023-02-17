@@ -12,6 +12,9 @@ interface Props {
 }
 
 const Default = styled.div<Props>`
+  display: flex;
+  align-items: center;
+  gap: 5px;
   width: 100%;
   text-align: ${({ $align }) => $align || 'left'};
   margin-left: ${({ $ml }) => $ml};

@@ -81,7 +81,10 @@ export const TotalSettled = () => {
       </Media.Mobile>
       <Row data-test-id="TotalSettled.container">
         {isDesktop && (
-          <Tooltip content="Total amount transferred to your external wallet including all applicable fees">
+          <Tooltip
+            placement="top"
+            content="Total amount transferred to your external wallet including all applicable fees"
+          >
             <IconContainer>
               <WalletIcon $accented />
             </IconContainer>

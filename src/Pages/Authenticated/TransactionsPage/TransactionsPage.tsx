@@ -26,6 +26,8 @@ import { TransactionCard } from './TransactionCard'
 import { List } from '../../../Components/List/List'
 import styled from 'styled-components'
 import { Table } from '../../../Components/Table/Table'
+import { Tooltip } from '../../../Components/Tooltip/Tooltip'
+import { InfoIcon } from '../../../Components/Icons/Icons'
 const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
@@ -68,7 +70,19 @@ export const TransactionsPage = () => {
       },
       {
         id: 'Fee',
-        header: () => <Default>Fee</Default>,
+        header: () => (
+          <Default>
+            Fees
+            <Tooltip
+              placement="top"
+              content={
+                'This fee includes a 20% network fee plus blockchain transaction fees for settlement transactions.'
+              }
+            >
+              <InfoIcon />
+            </Tooltip>
+          </Default>
+        ),
         cell: ({ row: { original } }) => <Primary>{myst.display(original.fees, { fractions: 3 })}</Primary>,
         minSize: 50,
         maxSize: 100,
