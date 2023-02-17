@@ -13,8 +13,12 @@ const PlaceholderContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 400px;
   height: 100%;
   width: 100%;
+  @media ${devices.tablet} {
+    height: 100%;
+  }
 `
 const PlaceholderIcon = styled(Clock)`
   width: 350px;

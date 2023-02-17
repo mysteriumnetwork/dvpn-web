@@ -7,9 +7,7 @@
 import { useMemo, useEffect } from 'react'
 import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { HistoryHeaderIcon } from '../../../Components/Icons/PageIcons'
-import { Column } from 'react-table'
-import { Table } from '../../../Components/Table/Table'
-import { cells } from '../../../Components/Table/cells'
+import { Cells } from '../../../Components/Table/cells'
 import { Pagination } from '../../../Components/Pagination/Pagination'
 import dates from '../../../commons/dates'
 import location from '../../../commons/location'
@@ -27,16 +25,14 @@ import { Placeholder } from './Placeholder'
 import { observer } from 'mobx-react-lite'
 import { useStores } from '../../../mobx/store'
 import { HeatAtlas } from '../../../Components/Maps/HeatAtlas'
+import { ColumnDef } from '@tanstack/react-table'
+import { Table } from '../../../Components/Table/Table'
 
 const { date2human, seconds2Time } = dates
 const { countryName } = location
 const { format } = bytes
 const { isDesktopQuery } = media
-const { PrimaryCell, SecondaryCell } = cells
-
-const session2human = (session: string) => {
-  return session.split('-')[0]
-}
+const { Primary, Secondary, Default } = Cells
 
 export const HistoryPage = observer(() => {
   const { historyPage } = useStores()
@@ -46,48 +42,67 @@ export const HistoryPage = observer(() => {
     historyPage.fetchSessions()
   }, [])
 
-  const DesktopColumns: Column<SessionV2>[] = useMemo(
+  const Columns = useMemo<ColumnDef<SessionV2>[]>(
     () => [
       {
-        Header: 'Country',
-        accessor: 'consumerCountry',
-        Cell: (c) => <PrimaryCell>{countryName(c.value)}</PrimaryCell>,
-        maxWidth: 100,
+        id: 'Country',
+        header: 'Country',
+        cell: ({ row: { original } }) => <Primary>{countryName(original.consumerCountry)}</Primary>,
+        maxSize: 100,
       },
       {
-        Header: 'Duration',
-        accessor: 'durationSeconds',
-        Cell: (c) => <SecondaryCell>{seconds2Time(c.value)}</SecondaryCell>,
+        id: 'Duration',
+        header: 'Duration',
+        maxSize: 50,
+        minSize: 50,
+        cell: ({ row: { original } }) => <Secondary>{seconds2Time(original.durationSeconds)}</Secondary>,
       },
       {
-        Header: 'Started',
-        accessor: 'startedAt',
-        Cell: (c) => <SecondaryCell>{date2human(c.value)}</SecondaryCell>,
+        id: 'Started',
+        maxSize: 125,
+        minSize: 100,
+        header: () => <Default $ml="15px">Started</Default>,
+        cell: ({ row: { original } }) => (
+          <Secondary $ml="10px" $align={'left'}>
+            {date2human(original.startedAt)}
+          </Secondary>
+        ),
       },
       {
-        Header: 'Services',
-        accessor: 'serviceType',
-        Cell: (c) => <SecondaryCell>{services.name(c.value)}</SecondaryCell>,
+        id: 'Services',
+        maxSize: 160,
+        minSize: 160,
+        header: () => <Default $ml="15px">Services</Default>,
+        cell: ({ row: { original } }) => (
+          <Secondary $ml="10px" $align={'left'}>
+            {services.name(original.serviceType)}
+          </Secondary>
+        ),
       },
       {
-        Header: 'Earnings',
-        accessor: 'earnings',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value.wei, { fractions: 5 })}</PrimaryCell>,
+        id: 'Earnings',
+        maxSize: 120,
+        minSize: 120,
+        header: () => <Default $ml="15px">Earnings</Default>,
+        cell: ({ row: { original } }) => (
+          <Primary $ml="10px">{myst.display(original.earnings.wei, { fractions: 5 })}</Primary>
+        ),
       },
       {
-        Header: 'Transferred',
-        accessor: 'transferredBytes',
-        Cell: (c) => <PrimaryCell>{format(c.value)}</PrimaryCell>,
+        id: 'Transferred',
+        maxSize: 90,
+        minSize: 90,
+        header: () => <Default $ml="15px">Transferred</Default>,
+        cell: ({ row: { original } }) => <Primary $ml="10px">{format(original.transferredBytes)}</Primary>,
       },
       {
-        Header: 'Session ID',
-        accessor: 'id',
-        Cell: (c) => <SecondaryCell>{session2human(c.value)}</SecondaryCell>,
+        id: 'Session ID',
+        header: () => <Default $ml="15px">Transferred</Default>,
+        cell: ({ row: { original } }) => <Secondary $ml="10px">{original.id}</Secondary>,
       },
     ],
     [],
   )
-
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
       <LayoutRow data-test-id="SessionCard.header">
@@ -106,7 +121,7 @@ export const HistoryPage = observer(() => {
         {isDesktop && (
           <Table
             noContent={<Placeholder />}
-            columns={DesktopColumns}
+            columns={Columns}
             data={historyPage.pagedSessions}
             loading={historyPage.loading}
           />

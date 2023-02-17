@@ -4,10 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Table } from '../../../../Components/Table/Table'
-import { Column } from 'react-table'
 import { Link } from 'react-router-dom'
-import { useMemo } from 'react'
+import { ComponentType, useMemo } from 'react'
 import { myst } from '../../../../commons/mysts'
 import bytes from '../../../../commons/bytes'
 import location from '../../../../commons/location'
@@ -17,23 +15,22 @@ import { selectors } from '../../../../redux/selectors'
 import styled from 'styled-components'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { HISTORY } from '../../../../constants/routes'
-import { cells } from '../../../../Components/Table/cells'
+import { Cells } from '../../../../Components/Table/cells'
 import services from '../../../../commons/services'
 import { useMediaQuery } from 'react-responsive'
 import { media } from '../../../../commons/media'
 import { LiveSessionCard } from './LiveSessionCard'
 import { List } from '../../../../Components/List/List'
 import { ReactComponent as Ongoing } from '../../../../assets/images/ongoing.svg'
-
-const { PrimaryCell, SecondaryCell } = cells
+import { Session } from 'mysterium-vpn-js'
+import { ColumnDef, Row } from '@tanstack/react-table'
+import { Table } from '../../../../Components/Table/Table'
+const { Primary, Secondary, Default } = Cells
 const { seconds2Time } = dates
 const { countryName } = location
 const { format, add } = bytes
 const { isDesktopQuery } = media
-// TODO Rethink how to show full session/have full session copyable
-const session2human = (session: string) => {
-  return session.split('-')[0]
-}
+
 interface Props {
   $show?: boolean
 }
@@ -67,48 +64,73 @@ const SubTitle = styled(Link)`
   font-size: ${themeCommon.fontSizeSmaller};
   color: ${({ theme }) => theme.text.colorSecondary};
 `
+const OngoingSession = styled.tr`
+  background-color: ${({ theme }) => theme.table.bgRowOngoing};
+  :hover {
+    background-color: ${({ theme }) => theme.table.bgRowOngoingHover};
+  }
+  td:nth-child(1) {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+`
+const rowProvider = (row: Row<Session>): ComponentType<any> => OngoingSession
 
 export const LiveSessions = () => {
   const liveSessions = useAppSelector(selectors.liveSessions)
   const isDesktop = useMediaQuery(isDesktopQuery)
 
   const showContent = liveSessions.length > 0
-  const Columns: Column<any>[] = useMemo(
+
+  const ColumnsV2 = useMemo<ColumnDef<Session>[]>(
     () => [
       {
-        Header: 'Country',
-        accessor: 'consumerCountry',
-        Cell: (c) => <PrimaryCell>{countryName(c.value)}</PrimaryCell>,
+        id: 'country',
+        header: () => <Default $ml="15px">Country</Default>,
+        cell: ({ row: { original } }) => <Primary $ml="20px">{countryName(original.consumerCountry)}</Primary>,
       },
-      { Header: 'Duration', accessor: 'duration', Cell: (c) => <SecondaryCell>{seconds2Time(c.value)}</SecondaryCell> },
       {
-        Header: '',
-        accessor: 'ongoing',
-        Cell: (c) => (
-          <SecondaryCell>
+        id: 'Duration',
+        maxSize: 75,
+        header: () => <Default>Duration</Default>,
+        cell: ({ row: { original } }) => <Secondary>{seconds2Time(original.duration)}</Secondary>,
+      },
+      {
+        id: 'ongoing',
+        maxSize: 75,
+        cell: () => (
+          <Secondary>
             <Ongoing />
-          </SecondaryCell>
+          </Secondary>
         ),
       },
       {
-        Header: 'Services',
-        accessor: 'serviceType',
-        Cell: (c) => <SecondaryCell>{services.name(c.value)}</SecondaryCell>,
+        id: 'Services',
+        header: () => <Default>Services</Default>,
+        cell: ({ row: { original } }) => <Secondary>{services.name(original.serviceType)}</Secondary>,
       },
       {
-        Header: 'Earnings',
-        accessor: 'tokens',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractions: 3 })}</PrimaryCell>,
+        id: 'Earnings',
+        header: () => <Default>Earnings</Default>,
+        cell: ({ row: { original } }) => <Primary>{myst.display(original.tokens, { fractions: 3 })}</Primary>,
       },
 
       {
-        Header: 'Data transferred',
-        accessor: (row): any => add(row.bytesSent, row.bytesReceived),
-        Cell: (c) => <PrimaryCell>{format(c.value)}</PrimaryCell>,
+        id: 'Data transferred',
+        header: () => <Default>Data transferred</Default>,
+        cell: ({ row: { original } }) => <Primary>{format(add(original.bytesSent, original.bytesReceived))}</Primary>,
       },
-      { Header: 'Session ID', accessor: 'id', Cell: (c) => <SecondaryCell>{session2human(c.value)}</SecondaryCell> },
+      {
+        id: 'Session ID',
+        header: () => <Default>Session ID</Default>,
+        cell: ({ row: { original } }) => <Secondary>{original.id}</Secondary>,
+      },
     ],
-
     [],
   )
 
@@ -118,7 +140,7 @@ export const LiveSessions = () => {
         <Title>Ongoing Sessions</Title>
         <SubTitle to={HISTORY}>Session history</SubTitle>
       </Header>
-      {isDesktop && <Table ongoing columns={Columns} data={liveSessions} />}
+      {isDesktop && <Table rowProvider={rowProvider} data={liveSessions} columns={ColumnsV2} />}
       {!isDesktop && <List items={liveSessions} mapper={(item) => <LiveSessionCard item={item} />} />}
     </Card>
   )
