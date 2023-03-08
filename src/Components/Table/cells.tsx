@@ -4,29 +4,34 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-const cellCss = css`
-  white-space: no-wrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  padding: 1em;
+interface Props {
+  $align?: string
+  $ml?: string
+}
+
+const Default = styled.div<Props>`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  text-align: ${({ $align }) => $align || 'left'};
+  margin-left: ${({ $ml }) => $ml};
 `
-const PrimaryCell = styled.div`
+const Primary = styled(Default)`
   color: ${({ theme }) => theme.table.textColorPrimary};
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   font-weight: 600;
-  ${cellCss}
 `
-const SecondaryCell = styled.div`
+const Secondary = styled(Default)`
   color: ${({ theme }) => theme.table.textColorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
   font-weight: 400;
-  ${cellCss}
 `
 
-export const cells = {
-  PrimaryCell,
-  SecondaryCell,
+export const Cells = {
+  Default,
+  Primary,
+  Secondary,
 }

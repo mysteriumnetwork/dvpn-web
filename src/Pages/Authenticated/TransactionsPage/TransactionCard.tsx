@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import { themeCommon, alphaToHex } from '../../../theme/themeCommon'
 import { myst } from '../../../commons/mysts'
 import { ReactComponent as Download } from '../../../assets/images/download.svg'
+import { InfoIcon } from '../../../Components/Icons/Icons'
 import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 
 const { date2human } = dates
@@ -109,7 +110,12 @@ export const TransactionCard = ({ item }: Props) => {
         <Column>
           <Name>
             Fees
-            <Tooltip content="Fees include a 20% network fee and blockchain transaction fees for settlement transactions." />
+            <Tooltip
+              placement="top"
+              content="Fees include a 20% network fee and blockchain transaction fees for settlement transactions."
+            >
+              <InfoIcon />
+            </Tooltip>
           </Name>
           <Data>{myst.display(item.fees, { fractions: 3 })}</Data>
         </Column>

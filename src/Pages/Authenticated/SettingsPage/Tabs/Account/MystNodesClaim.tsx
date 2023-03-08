@@ -89,7 +89,7 @@ export const MystNodesClaim = () => {
       title={
         <Title>
           <div>{capitalizeFirstLetter(MMN_SITE)} Integrations</div>
-          <Tooltip content="Go to mystnodes.com/me">
+          <Tooltip placement="top" content="Go to mystnodes.com/me">
             <Link href={MMN_SITE_ME_URL} target="_blank" rel="noreferrer">
               <ExternalSVG />
             </Link>

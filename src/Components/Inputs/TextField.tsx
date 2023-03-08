@@ -111,7 +111,7 @@ export const TextField = ({
       {icon && (
         <IconContainer>
           {tooltip ? (
-            <Tooltip content="Copy">
+            <Tooltip placement="top" content="Copy">
               <IconSize>{icon}</IconSize>
             </Tooltip>
           ) : (

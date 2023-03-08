@@ -7,31 +7,31 @@
 import { useMemo, useState } from 'react'
 import { Layout, LayoutRow } from '../Components/Layout/Layout'
 import { TransactionsHeaderIcon } from '../../../Components/Icons/PageIcons'
-import { Table } from '../../../Components/Table/Table'
 import { DownloadTransactionCSV } from './DownloadTransactionCSV'
 import { TotalSettled } from './TotalSettled'
 import { SettlementCard } from './SettlementCard'
-import { Column } from 'react-table'
 import { Pagination } from '../../../Components/Pagination/Pagination'
 import { tequila } from '../../../api/tequila'
 import { myst } from '../../../commons/mysts'
 import { useFetch } from '../../../commons/hooks'
 import { SETTLEMENT_LIST_RESPONSE_EMPTY } from '../../../constants/instances'
 import dates from '../../../commons/dates'
-import { cells } from '../../../Components/Table/cells'
+import { Cells } from '../../../Components/Table/cells'
 import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
 import { Placeholder } from './Placeholder'
 import { Settlement } from 'mysterium-vpn-js'
+import { ColumnDef } from '@tanstack/react-table'
 import { TransactionCard } from './TransactionCard'
 import { List } from '../../../Components/List/List'
-import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 import styled from 'styled-components'
-
+import { Table } from '../../../Components/Table/Table'
+import { Tooltip } from '../../../Components/Tooltip/Tooltip'
+import { InfoIcon } from '../../../Components/Icons/Icons'
 const { isDesktopQuery } = media
 const { api } = tequila
 const { date2human } = dates
-const { PrimaryCell, SecondaryCell } = cells
+const { Primary, Secondary, Default } = Cells
 
 const SpecializedRow = styled(LayoutRow)`
   > :nth-child(2) {
@@ -49,44 +49,50 @@ export const TransactionsPage = () => {
   ])
   const noData = data.items.length === 0
 
-  const Columns: Column<Settlement>[] = useMemo(
+  const Columns = useMemo<ColumnDef<Settlement>[]>(
     () => [
       {
-        Header: 'Date',
-        accessor: 'settledAt',
-        Cell: (c) => <PrimaryCell>{date2human(c.value)}</PrimaryCell>,
-        minWidth: 50,
+        id: 'date',
+        header: () => <Default $ml="20px">Date</Default>,
+        cell: ({ row: { original } }) => <Primary $ml="20px">{date2human(original.settledAt)}</Primary>,
       },
       {
-        Header: 'External Wallet Address',
-        accessor: 'beneficiary',
-        Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
-        minWidth: 300,
+        id: 'External Wallet Address',
+        header: () => <Default>External Wallet Address</Default>,
+        cell: ({ row: { original } }) => <Secondary>{original.beneficiary}</Secondary>,
+        minSize: 300,
       },
       {
-        Header: 'Transaction ID',
-        accessor: 'txHash',
-        Cell: (c) => <SecondaryCell>{c.value}</SecondaryCell>,
-        minWidth: 300,
+        id: 'Transaction ID',
+        header: () => <Default>Transaction ID</Default>,
+        cell: ({ row: { original } }) => <Secondary>{original.txHash}</Secondary>,
+        minSize: 300,
       },
       {
-        Header: () => (
-          <>
-            {'Fee'}
-            <Tooltip content="This fee includes a 20% network fee plus blockchain transaction fees for settlement transactions." />
-          </>
+        id: 'Fee',
+        header: () => (
+          <Default>
+            Fees
+            <Tooltip
+              placement="top"
+              content={
+                'This fee includes a 20% network fee plus blockchain transaction fees for settlement transactions.'
+              }
+            >
+              <InfoIcon />
+            </Tooltip>
+          </Default>
         ),
-        accessor: 'fees',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractions: 3 })}</PrimaryCell>,
-        minWidth: 50,
-        maxWidth: 100,
+        cell: ({ row: { original } }) => <Primary>{myst.display(original.fees, { fractions: 3 })}</Primary>,
+        minSize: 50,
+        maxSize: 100,
       },
       {
-        Header: 'Received amount',
-        accessor: 'amount',
-        Cell: (c) => <PrimaryCell>{myst.display(c.value, { fractions: 3 })}</PrimaryCell>,
-        minWidth: 50,
-        maxWidth: 100,
+        id: 'Received amount',
+        header: () => <Default>Received amount</Default>,
+        cell: ({ row: { original } }) => <Primary>{myst.display(original.amount, { fractions: 3 })}</Primary>,
+        minSize: 50,
+        maxSize: 100,
       },
     ],
     [],
@@ -100,7 +106,6 @@ export const TransactionsPage = () => {
         <DownloadTransactionCSV data={data} />
       </SpecializedRow>
       <LayoutRow data-test-id="TransactionsPage.tableContainer">
-        {isDesktop && <Table noContent={<Placeholder />} columns={Columns} loading={loading} data={data.items} />}
         {!isDesktop && (
           <List
             items={data.items}
@@ -109,6 +114,9 @@ export const TransactionsPage = () => {
             noContent={<Placeholder />}
           />
         )}
+      </LayoutRow>
+      <LayoutRow>
+        {isDesktop && <Table noContent={<Placeholder />} columns={Columns} loading={loading} data={data.items} />}
       </LayoutRow>
       <LayoutRow>
         {!noData && <Pagination currentPage={state} totalPages={data.totalPages} handlePageChange={handlePageChange} />}

@@ -23,10 +23,11 @@ import Background from '../../../assets/images/onboarding/background.png'
 import { ReactComponent as Lock } from '../../../assets/images/onboarding/password.svg'
 import { devices } from '../../../theme/themes'
 import { TOSModal } from '../Components/TOSModal/TOSModal'
-import { Tooltip } from '../../../Components/Tooltip/Tooltip'
 import { Link } from '../../../Components/Common/Link'
 import complexActions from '../../../redux/complex.actions'
 import { WelcomePage } from './WelcomePage'
+import { Tooltip } from '../../../Components/Tooltip/Tooltip'
+import { QuestionIcon } from '../../../Components/Icons/Icons'
 const { api } = tequila
 const Logo = styled(Lock)`
   height: 500px;
@@ -325,7 +326,9 @@ export const PasswordChangePage = () => {
               <Footer>
                 <SecondaryTitle>
                   Connect your node to mystnodes.com
-                  <Tooltip variant="?" content={TooltipContent} />
+                  <Tooltip placement="top" content={TooltipContent}>
+                    <QuestionIcon />
+                  </Tooltip>
                 </SecondaryTitle>
                 <InputGroup
                   error={state.mmnError}

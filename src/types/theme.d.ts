@@ -80,9 +80,11 @@ export type Theme = {
   }
   table: {
     bgBody: string
+    bgRowHover: string
     bgRowOdd: string
     bgRowEven: string
     bgRowOngoing: string
+    bgRowOngoingHover: string
     textColorPrimary: string
     textColorSecondary: string
     mobileCard: {

@@ -54,9 +54,10 @@
     "@types/react-dom": "18.0.0"
   },
   "dependencies": {
+    "@floating-ui/react-dom-interactions": "^0.13.3",
     "@mysteriumnetwork/terms": "0.0.50",
     "@reduxjs/toolkit": "1.8.1",
-    "@tippyjs/react": "^4.2.6",
+    "@tanstack/react-table": "^8.7.9",
     "bignumber.js": "^9.0.2",
     "buffer": "^6.0.3",
     "clipboard": "^2.0.8",
@@ -71,6 +72,7 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.1.0",
     "react-html-parser": "^2.0.2",
+    "react-merge-refs": "^2.0.1",
     "react-qr-svg": "^2.2.2",
     "react-redux": "8.0.1",
     "react-responsive": "^9.0.0-beta.5",
@@ -79,7 +81,6 @@
     "react-select": "^5.2.1",
     "react-simple-maps": "^3.0.0",
     "react-switch": "^7.0.0",
-    "react-table": "^7.8.0",
     "react-toastify": "^9.0.5",
     "recharts": "2.1.10",
     "semver": "^7.3.7",

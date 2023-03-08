@@ -5,12 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { QualityBarsIcon } from '../../../../Components/Icons/Icons'
-import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 import { HeaderItem } from '../../../../Components/Header/HeaderItem'
 import { useEffect, useState } from 'react'
 import { tequila } from '../../../../api/tequila'
 import styled from 'styled-components'
-
+import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
+import { InfoIcon } from '../../../../Components/Icons/Icons'
+import * as React from 'react'
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,7 +54,9 @@ export const Quality = () => {
                 <Row>Successful connection rate</Row>
               </Column>
             }
-          />
+          >
+            <InfoIcon data-test-id="Icons.infoIcon" />
+          </Tooltip>
         </>
       }
     />

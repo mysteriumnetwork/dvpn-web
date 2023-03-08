@@ -9,8 +9,9 @@ import styled from 'styled-components'
 import { NATType } from './types'
 import { ReactNode } from 'react'
 import { nat2Human } from './utils'
-import { Tooltip } from '../../../../../Components/Tooltip/Tooltip'
 import { Link } from '../../../../../Components/Common/Link'
+import { InfoIcon } from '../../../../../Components/Icons/Icons'
+import { Tooltip } from '../../../../../Components/Tooltip/Tooltip'
 
 const TooltipContainer = styled.div`
   display: flex;
@@ -29,13 +30,16 @@ const TooltipDescription = styled.div`
 export const NATTooltip = ({ type }: { type: NATType }) => {
   return (
     <Tooltip
+      placement="top"
       content={
         <TooltipContainer>
           <TooltipTitle>NAT type: {nat2Human(type).label}</TooltipTitle>
           <TooltipDescription>{description(type)}</TooltipDescription>
         </TooltipContainer>
       }
-    />
+    >
+      <InfoIcon />
+    </Tooltip>
   )
 }
 

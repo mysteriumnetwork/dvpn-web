@@ -13,8 +13,11 @@ const PlaceholderContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 400px;
   width: 100%;
+  @media ${devices.tablet} {
+    height: 100%;
+  }
 `
 const PlaceholderIcon = styled(Wallet)`
   width: 350px;
@@ -26,8 +29,10 @@ const PlaceholderText = styled.div`
   color: ${({ theme }) => theme.common.colorGrayBlue};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   font-weight: 700;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 25px;
+  @media ${devices.tablet} {
+    margin: 50px 0;
+  }
 `
 export const Placeholder = () => (
   <PlaceholderContainer>

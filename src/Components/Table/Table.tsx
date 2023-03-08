@@ -4,26 +4,35 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useTable, useFlexLayout, Column } from 'react-table'
+import { ColumnDef, flexRender, getCoreRowModel, Row, useReactTable } from '@tanstack/react-table'
 import styled from 'styled-components'
-import { themeCommon } from '../../theme/themeCommon'
 import { CircularSpinner } from '../CircularSpinner/CircularSpinner'
-import { devices } from '../../theme/themes'
-import { ReactNode } from 'react'
+import { themeCommon } from '../../theme/themeCommon'
 import zIndexes from '../../constants/z-indexes'
+import { devices } from '../../theme/themes'
+import { ComponentType, Fragment, ReactNode } from 'react'
 
-interface Props {
-  columns: Column<any>[]
-  data: any[]
-  loading?: boolean
-  noContent?: ReactNode
-  ongoing?: boolean
+interface TableBodyProps {
+  $noContent: boolean
+  $loading?: boolean
 }
-
-const Container = styled.div`
+interface Props<Data> {
+  loading?: boolean
+  data: Data[]
+  columns: ColumnDef<Data>[]
+  noContent?: ReactNode
+  rowProvider?: (row: Row<Data>) => ComponentType<any> | undefined
+}
+const Container = styled.table`
   width: 100%;
+  display: table;
+  border-collapse: separate;
+  padding: 0 20px 24px 20px;
+  background-color: ${({ theme }) => theme.table.bgBody};
+  border-spacing: 0 5px;
+  border-radius: 20px;
+  position: relative;
 `
-
 const Spinner = styled(CircularSpinner)`
   width: 50px;
   height: 50px;
@@ -36,9 +45,9 @@ const Overlay = styled.div`
   left: 0;
   top: 0;
   width: 100%;
-  min-height: 550px;
+  min-height: 400px;
   height: 100%;
-  background: ${themeCommon.colorDarkBlue}6A;
+  background-color: ${themeCommon.colorDarkBlue}6A;
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -47,91 +56,116 @@ const Overlay = styled.div`
     min-height: 200px;
   }
 `
-const HeaderRow = styled.div`
-  padding: 20px;
-`
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const HeaderRow = styled.tr``
+const Header = styled.th`
+  padding-bottom: 15px;
+  padding-top: 10px;
   color: ${({ theme }) => theme.common.colorGrayBlue};
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  width: 10%;
-  gap: 5px;
 `
-const Row = styled.div<RowProps>`
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-  padding: 5px;
-  background-color: ${({ $ongoing, theme }) => $ongoing && theme.table.bgRowOngoing};
-  border-radius: 10px;
+const Body = styled.tbody<TableBodyProps>`
+  min-width: fit-content;
+  min-height: fit-content;
+`
+const RowStyled = styled.tr`
   &:nth-of-type(odd) {
-    background-color: ${({ $ongoing, theme }) => !$ongoing && theme.table.bgRowOdd};
+    background-color: ${({ theme }) => theme.table.bgRowOdd};
   }
   &:nth-of-type(even) {
-    background-color: ${({ $ongoing, theme }) => !$ongoing && theme.table.bgRowEven};
+    background-color: ${({ theme }) => theme.table.bgRowEven};
+  }
+  :hover {
+    background-color: ${({ theme }) => theme.table.bgRowHover};
+  }
+  td:nth-child(1) {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
   }
 `
-
-interface TableProps {
-  $noContent: boolean
-  $loading?: boolean
-}
-interface RowProps {
-  $ongoing?: boolean
-}
-const Body = styled.div<TableProps>`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: ${({ $noContent }) => ($noContent ? 'center' : '')};
-  justify-content: ${({ $noContent }) => ($noContent ? 'center' : '')};
+const PlaceholderRow = styled.tr`
   background-color: ${({ theme }) => theme.table.bgBody};
-  padding: 16px 20px 24px 20px;
-  border-radius: 20px;
-  min-height: ${({ $noContent, $loading }) => ($noContent || $loading ? '550px' : '')};
-  gap: 5px;
-  min-width: fit-content;
+  td:nth-child(1) {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+`
+const Cell = styled.td`
+  padding: 20px 5px;
+  white-space: nowrap;
 `
 const TableSpinner = () => (
   <Overlay>
     <Spinner />
   </Overlay>
 )
-export const Table = ({ columns, data, loading, noContent, ongoing }: Props) => {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
-    { data, columns },
-    useFlexLayout,
-  )
-  const showSpinner = loading
+
+export const Table = <Data extends unknown>({ data, columns, noContent, rowProvider, loading }: Props<Data>) => {
+  const table = useReactTable<Data>({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
   const showNoContent = data.length === 0 && !loading
   return (
-    <Container {...getTableProps()}>
-      <HeaderRow data-test-id="HistoryPage.tableHeader">
-        {headerGroups.map((headerGroup) => (
-          <div {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <Header {...column.getHeaderProps()}>{column.render('Header')}</Header>
+    <Container>
+      <thead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <HeaderRow key={`headerGroup-${headerGroup.id}`}>
+            {headerGroup.headers.map((header) => (
+              <Header key={header.id}>{flexRender(header.column.columnDef.header, header.getContext())}</Header>
             ))}
-          </div>
+          </HeaderRow>
         ))}
-      </HeaderRow>
+      </thead>
+      <Body $noContent={showNoContent} $loading={loading}>
+        {table.getRowModel().rows.map((row) => {
+          const providedRow = rowProvider && rowProvider(row)
+          const ResolvedRow = providedRow ?? RowStyled
 
-      <Body $noContent={showNoContent} $loading={loading} {...getTableBodyProps()}>
-        {showNoContent && noContent}
-        {showSpinner && <TableSpinner />}
-        {rows.map((row) => {
-          prepareRow(row)
           return (
-            <Row $ongoing={ongoing} {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return <div {...cell.getCellProps()}>{cell.render('Cell')}</div>
-              })}
-            </Row>
+            <Fragment key={row.id}>
+              <ResolvedRow key={`row-${row.id}`}>
+                {row.getVisibleCells().map((cell) => (
+                  <Cell
+                    {...{
+                      key: cell.id,
+                      style: {
+                        width: cell.column.getSize(),
+                        minWidth: `${cell.column.columnDef.minSize}px`,
+                        maxWidth: `${cell.column.columnDef.maxSize}px`,
+                      },
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Cell>
+                ))}
+              </ResolvedRow>
+            </Fragment>
           )
         })}
+        {showNoContent && (
+          <PlaceholderRow>
+            <td colSpan={10}>{noContent}</td>
+          </PlaceholderRow>
+        )}
       </Body>
+      {loading && (
+        <PlaceholderRow>
+          <Cell colSpan={10}>
+            <TableSpinner />
+          </Cell>
+        </PlaceholderRow>
+      )}
     </Container>
   )
 }
