@@ -4,13 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { SeriesResponse } from 'mysterium-vpn-js'
 import { ChartType, Pair } from './types'
 import { currentCurrency } from '../../../../commons/currency'
 import { MetricsRange } from '../../../../types/common'
 import { hour, localDate } from './dates'
 import { tequila } from '../../../../api/tequila'
 import bytes from '../../../../commons/bytes'
+import { SessionV2 } from 'mysterium-vpn-js'
 
 const units = (type: ChartType): string | undefined =>
   ({
@@ -19,73 +19,82 @@ const units = (type: ChartType): string | undefined =>
     sessions: '',
   }[type])
 
-const days = (period: string): number => {
-  try {
-    return Number(period.split('d')[0]) + 1
-  } catch (ignored: any) {
-    return 31
+const session2Date = (s: SessionV2) => localDate(new Date(s.startedAt).getTime())
+const session2Hour = (s: SessionV2) => hour(new Date(s.startedAt).getTime())
+
+const groupByDate = (sessions: SessionV2[]): Map<string, SessionV2[]> => {
+  const dateToSessions = new Map<string, SessionV2[]>()
+
+  for (const s of sessions) {
+    const date = session2Date(s)
+    const m = dateToSessions.get(date) ?? []
+    m.push(s)
+    dateToSessions.set(date, m)
   }
+
+  return dateToSessions
 }
 
-const template = (range: MetricsRange): Pair[] => {
-  const prefilled: Pair[] = []
+const groupByHour = (sessions: SessionV2[]): Map<string, SessionV2[]> => {
+  const dateToSessions = new Map<string, SessionV2[]>()
 
-  if (range === '1d') {
-    const now = new Date()
-    for (let i = 0; i < 24; i++) {
-      prefilled.push({ y: 0, x: hour(now.getTime() / 1000) })
-      now.setHours(now.getHours() - 1)
+  const now = new Date()
+  for (let i = 0; i < 24; i++) {
+    dateToSessions.set(hour(now.getTime()), [])
+    now.setHours(now.getHours() - 1)
+  }
+
+  for (const s of sessions) {
+    dateToSessions.get(session2Hour(s))?.push(s)
+  }
+
+  return dateToSessions
+}
+
+const MAPPERS: Record<ChartType, (grouped: Map<string, SessionV2[]>) => Pair[]> = Object.freeze({
+  earnings: (grouped: Map<string, SessionV2[]>) => {
+    const pairs: Pair[] = []
+    for (const [date, list] of grouped) {
+      pairs.push({
+        x: date,
+        y: list.reduce((acc, s) => Number(s.earnings.human) || 0, 0),
+      })
     }
-  } else {
-    const now = new Date()
-    for (let i = 0; i < days(range); i++) {
-      prefilled.push({ y: 0, x: localDate(now.getTime() / 1000) })
-      now.setDate(now.getDate() - 1)
+    return pairs
+  },
+  sessions: (grouped: Map<string, SessionV2[]>) => {
+    const pairs: Pair[] = []
+    for (const [date, list] of grouped) {
+      pairs.push({
+        x: date,
+        y: list.length,
+      })
     }
-  }
-
-  prefilled.reverse()
-  return prefilled
-}
-
-const transformValue = (value: string, type: ChartType): number => {
-  if (type === 'data') {
-    return bytes.gib(Number(value))
-  }
-
-  return Number(value)
-}
-
-export const seriesToPairs = ({ data }: SeriesResponse, range: MetricsRange, type: ChartType): Pair[] => {
-  const result: Pair[] = template(range)
-
-  for (let i = 0; i < data.length; i++) {
-    const entry = data[i]
-    const x = range === '1d' ? hour(entry.timestamp) : localDate(entry.timestamp)
-
-    const index = result.findIndex((p) => p.x === x)
-    if (index !== -1) {
-      const r = result[index]
-      result[index] = { ...r, y: r.y + transformValue(entry.value, type) }
+    return pairs
+  },
+  data: (grouped: Map<string, SessionV2[]>) => {
+    const pairs: Pair[] = []
+    for (const [date, list] of grouped) {
+      pairs.push({
+        x: date,
+        y: list.reduce((acc, s) => bytes.gib(Number(s.transferredBytes)) || 0, 0),
+      })
     }
-  }
+    return pairs
+  },
+})
 
-  return result
-}
-
-type SeriesFuncName = 'seriesEarnings' | 'seriesData' | 'seriesSessions'
-
-const TYPE_2_FUNC_NAME: { [key: string]: SeriesFuncName } = {
-  earnings: 'seriesEarnings',
-  data: 'seriesData',
-  sessions: 'seriesSessions',
+const _convert = (range: MetricsRange, type: ChartType, sessions: SessionV2[]) => {
+  const mapper = MAPPERS[type]
+  return mapper ? mapper(range === '1d' ? groupByHour(sessions) : groupByDate(sessions)) : []
 }
 
 const pairs = async (range: MetricsRange, type: ChartType): Promise<Pair[]> => {
-  const response = await tequila.api.provider[TYPE_2_FUNC_NAME[type]]({ range })
-  return seriesToPairs(response, range, type)
+  const { sessions } = await tequila.api.provider.sessions({ range })
+  const mapper = MAPPERS[type]
+  return mapper ? mapper(range === '1d' ? groupByHour(sessions) : groupByDate(sessions)) : []
 }
 
-const series = { units, pairs }
+const series = { units, pairs, _convert }
 
 export default series
