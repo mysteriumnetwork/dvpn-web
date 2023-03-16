@@ -49,6 +49,7 @@ const Container = styled.div<TransitionProps>`
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
+    cursor: pointer;
     justify-content: center;
     opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
     max-width: ${({ $expanded }) => ($expanded ? '200px' : 0)};
@@ -72,7 +73,9 @@ interface Props {
 export const ThemeSwitch = ({ title, expanded }: Props) => {
   const theme = useAppSelector(remoteStorage.selector<string>(UI_THEME_KEY))
   const isDark = theme === 'dark'
-
+  const handleThemeChange = async () => {
+    await remoteStorage.put<string>(UI_THEME_KEY, isDark ? 'light' : 'dark')
+  }
   return (
     <Container $expanded={expanded}>
       <SwitchContainer>
@@ -82,11 +85,15 @@ export const ThemeSwitch = ({ title, expanded }: Props) => {
           size="small"
           checked={isDark}
           onChange={async () => {
-            await remoteStorage.put<string>(UI_THEME_KEY, isDark ? 'light' : 'dark')
+            await handleThemeChange()
           }}
         />
       </SwitchContainer>
-      <Column>
+      <Column
+        onClick={async () => {
+          await handleThemeChange()
+        }}
+      >
         <Title>{title}</Title>
         <ThemeStatus>{isDark ? 'On' : 'Off'}</ThemeStatus>
       </Column>
