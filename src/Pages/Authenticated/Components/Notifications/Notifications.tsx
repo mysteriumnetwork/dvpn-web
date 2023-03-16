@@ -4,16 +4,27 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ReactComponent as BellSvg } from '../../../../assets/images/bell.svg'
+import { useRef, useState } from 'react'
+import {
+  arrow,
+  autoUpdate,
+  offset,
+  useClick,
+  useFloating,
+  useFocus,
+  useInteractions,
+} from '@floating-ui/react-dom-interactions'
+import { NodeReleaseCheck } from './NodeReleaseCheck'
+import { UpdateCardMessage } from './Card'
+import { BeneficiaryTxCheck } from './BeneficiaryTxCheck'
+import { NotificationCardProps } from './types'
 import { IconButton } from '../../../../Components/Inputs/IconButton'
 import styled from 'styled-components'
-import { useState } from 'react'
+import { ReactComponent as BellSvg } from '../../../../assets/images/bell.svg'
 import { List } from './List'
-import { devices } from '../../../../theme/themes'
-import { NotificationCardProps } from './types'
-import { UpdateCardMessage } from './Card'
-import { NodeReleaseCheck } from './NodeReleaseCheck'
-import { BeneficiaryTxCheck } from './BeneficiaryTxCheck'
+
+const ID_BENEFICIARY_TX_ERROR = 'ID_BENEFICIARY_TX_ERROR'
+const ID_NODE_UPDATE = 'ID_NODE_UPDATE'
 
 const BellIcon = styled(BellSvg)`
   width: 80%;
@@ -24,14 +35,6 @@ const BellIcon = styled(BellSvg)`
     height: 70%;
   }
 `
-
-const Container = styled.div`
-  position: relative;
-  @media ${devices.tablet} {
-    margin-bottom: 20px;
-  }
-`
-
 const Dot = styled.div`
   position: absolute;
   display: flex;
@@ -51,41 +54,52 @@ const Dot = styled.div`
 `
 
 const ListContainer = styled.div`
-  position: absolute;
   width: 280px;
   z-index: 10;
-
-  top: 56px;
-  left: -210px;
 `
 
 const Arrow = styled.div`
   position: absolute;
-  width: 4px;
+  width: 12px;
+  height: 12px;
   z-index: 10;
-
-  top: -16px;
-  left: 226px;
-  border-top: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid ${({ theme }) => theme.notifications.list.bg};
-  border-left: 8px solid transparent;
+  background-color: ${({ theme }) => theme.common.colorWhite};
+  transform: rotate(45deg);
 `
-
-const ID_BENEFICIARY_TX_ERROR = 'ID_BENEFICIARY_TX_ERROR'
-const ID_NODE_UPDATE = 'ID_NODE_UPDATE'
-
+const Trigger = styled.button`
+  position: relative;
+  border: none;
+  background: none;
+`
 export const Notifications = () => {
   const [open, setOpen] = useState(false)
 
+  const arrowRef = useRef(null)
   const [notifications, setNotifications] = useState(new Map<string, NotificationCardProps>())
-
+  const showDot = notifications.size > 0
   const addNotification = (id: string, notification: NotificationCardProps) => {
     setNotifications(new Map(notifications.set(id, notification)))
   }
-
+  const { x, y, reference, placement, floating, strategy, context, middlewareData } = useFloating({
+    open,
+    onOpenChange: setOpen,
+    whileElementsMounted: autoUpdate,
+    middleware: [offset(10), arrow({ element: arrowRef })],
+    placement: 'bottom-end',
+  })
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useClick(context, { toggle: true }),
+    useFocus(context, { keyboardOnly: false }),
+  ])
+  const { x: arrowX, y: arrowY } = middlewareData.arrow ?? {}
+  const staticSide = {
+    top: 'bottom',
+    right: 'left',
+    bottom: 'top',
+    left: 'right',
+  }[placement.split('-')[0]]
   return (
-    <Container data-test-id="Notifications.overlay">
+    <>
       <NodeReleaseCheck
         onNewNodeVersionAvailable={(current, latest) =>
           addNotification(ID_NODE_UPDATE, {
@@ -104,16 +118,29 @@ export const Notifications = () => {
           })
         }
       />
-      {notifications.size > 0 && <Dot>{notifications.size}</Dot>}
-      <IconButton icon={<BellIcon />} onClick={() => setOpen((p) => !p)} />
+      <Trigger {...getReferenceProps({ ref: reference })}>
+        <IconButton icon={<BellIcon />}>{showDot && <Dot />}</IconButton>
+      </Trigger>
       {open && (
-        <>
-          <ListContainer>
-            <Arrow />
-            <List list={Array.from(notifications.values())} />
-          </ListContainer>
-        </>
+        <ListContainer
+          onBlur={() => setOpen(false)}
+          {...getFloatingProps({
+            ref: floating,
+            style: { position: strategy, top: y ?? 0, left: x ?? 0, width: 'max-content' },
+          })}
+        >
+          <List list={Array.from(notifications.values())} />
+          <Arrow
+            ref={arrowRef}
+            style={{
+              top: arrowY != null ? `${arrowY}px` : '',
+              left: arrowX != null ? `${arrowX}px` : '',
+              right: '',
+              [staticSide as string]: '-5px',
+            }}
+          />
+        </ListContainer>
       )}
-    </Container>
+    </>
   )
 }

@@ -79,9 +79,9 @@ const Tooltip = styled.div`
   &:after {
     content: '';
     position: absolute;
-    width: 0px;
-    height: 0px;
-    left: 0px;
+    width: 0;
+    height: 0;
+    left: 0;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
     border-right: 5px solid ${({ theme }) => theme.common.colorKeyDark};

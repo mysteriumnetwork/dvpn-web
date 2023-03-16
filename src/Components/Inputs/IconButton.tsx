@@ -10,16 +10,19 @@ import styled from 'styled-components'
 interface Props {
   icon: ReactNode
   onClick?: () => void
+  onBlur?: () => void
+  children?: ReactNode
 }
 
-const IButton = styled.div`
+const IButton = styled.button`
   width: 48px;
   height: 48px;
-
+  border: none;
+  background: none;
   display: flex;
   justify-content: center;
   align-items: center;
-
+  position: relative;
   border-radius: 100px;
 
   :hover {
@@ -27,6 +30,11 @@ const IButton = styled.div`
   }
 `
 
-export const IconButton = ({ icon, onClick }: Props) => {
-  return <IButton onClick={() => onClick && onClick()}>{icon}</IButton>
+export const IconButton = ({ icon, onClick, onBlur, children }: Props) => {
+  return (
+    <IButton onBlur={() => onBlur && onBlur()} onClick={() => onClick && onClick()}>
+      {icon}
+      {children}
+    </IButton>
+  )
 }
