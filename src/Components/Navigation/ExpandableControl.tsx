@@ -33,6 +33,7 @@ const Container = styled.div<TransitionProps>`
     max-width: ${({ $expanded }) => ($expanded ? '200px' : 0)};
     overflow: hidden;
     white-space: nowrap;
+    cursor: pointer;
     transition: opacity 0.3s, max-width 0.3s;
   }
 `
@@ -47,8 +48,8 @@ interface Props {
 
 export const ExpandableControl = ({ expanded, icon, onClick, title, ignoreOverlay }: Props) => {
   return (
-    <Container $expanded={expanded} $ignoreOverlay={ignoreOverlay}>
-      <IconButton onClick={onClick} icon={icon} />
+    <Container $expanded={expanded} $ignoreOverlay={ignoreOverlay} onClick={onClick}>
+      <IconButton icon={icon} />
       <Title>{title}</Title>
     </Container>
   )

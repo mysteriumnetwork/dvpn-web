@@ -8,11 +8,11 @@ import styled from 'styled-components'
 import { devices } from '../../../../theme/themes'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { Profile } from '../Profile/Profile'
-import { Notifications } from '../Notifications/Notifications'
 import PageTitle from '../../../../Components/LayoutHeader/PageTitle'
 import { ReactNode } from 'react'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { Quality } from '../Quality/Quality'
+import { Notifications } from '../Notifications/Notifications'
 
 const Container = styled.div`
   display: flex;
