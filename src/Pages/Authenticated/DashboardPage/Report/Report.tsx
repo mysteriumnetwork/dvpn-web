@@ -159,7 +159,7 @@ export const Report = () => {
       totalSessionTime: totals.durationSeconds(sessionsData.sessions),
       totalTransferredBytes: totals.dataTransferredBytes(sessionsData.sessions),
     }))
-  }, [selectedRange, selectedGraph, loading])
+  }, [selectedRange.value, selectedGraph.value, loading])
 
   return (
     <Column data-test-id="Report.chart">

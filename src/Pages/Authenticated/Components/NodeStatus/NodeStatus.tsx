@@ -82,7 +82,7 @@ export const NodeStatus = () => {
   const [data = { status: 'pending' } as NodeMonitoringStatusResponse] = useFetch(() =>
     tequila.api.nodeMonitoringStatus(),
   )
-  console.log(data.status)
+
   const variant = resolveVariant(anyOnline, data.status)
   const content = resolveContent(variant)
 
