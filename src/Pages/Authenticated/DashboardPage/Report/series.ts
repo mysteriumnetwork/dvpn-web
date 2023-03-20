@@ -22,8 +22,18 @@ const units = (type: ChartType): string | undefined =>
 const session2Date = (s: SessionV2) => localDate(new Date(s.startedAt).getTime())
 const session2Hour = (s: SessionV2) => hour(new Date(s.startedAt).getTime())
 
-const groupByDate = (sessions: SessionV2[]): Map<string, SessionV2[]> => {
+const groupByDate = (sessions: SessionV2[], range: MetricsRange): Map<string, SessionV2[]> => {
   const dateToSessions = new Map<string, SessionV2[]>()
+
+  const rangeNumber = Number(range.replace('d', ''))
+
+  const start = new Date()
+  start.setDate(new Date().getDate() - rangeNumber)
+
+  for (let i = 0; i < rangeNumber; i++) {
+    dateToSessions.set(localDate(start.getTime()), [])
+    start.setDate(start.getDate() + 1)
+  }
 
   for (const s of sessions) {
     const date = session2Date(s)
@@ -38,10 +48,11 @@ const groupByDate = (sessions: SessionV2[]): Map<string, SessionV2[]> => {
 const groupByHour = (sessions: SessionV2[]): Map<string, SessionV2[]> => {
   const dateToSessions = new Map<string, SessionV2[]>()
 
-  const now = new Date()
+  const start = new Date()
+  start.setDate(start.getHours() - 24)
   for (let i = 0; i < 24; i++) {
-    dateToSessions.set(hour(now.getTime()), [])
-    now.setHours(now.getHours() - 1)
+    dateToSessions.set(hour(start.getTime()), [])
+    start.setHours(start.getHours() + 1)
   }
 
   for (const s of sessions) {
@@ -57,7 +68,7 @@ const MAPPERS: Record<ChartType, (grouped: Map<string, SessionV2[]>) => Pair[]> 
     for (const [date, list] of grouped) {
       pairs.push({
         x: date,
-        y: list.reduce((acc, s) => Number(s.earnings.human) || 0, 0),
+        y: list.reduce((acc, s) => acc + Number(s.earnings.human) || 0, 0),
       })
     }
     return pairs
@@ -77,7 +88,7 @@ const MAPPERS: Record<ChartType, (grouped: Map<string, SessionV2[]>) => Pair[]> 
     for (const [date, list] of grouped) {
       pairs.push({
         x: date,
-        y: list.reduce((acc, s) => bytes.gib(Number(s.transferredBytes)) || 0, 0),
+        y: bytes.gib(list.reduce((acc, s) => acc + Number(s.transferredBytes) || 0, 0)),
       })
     }
     return pairs
@@ -86,13 +97,12 @@ const MAPPERS: Record<ChartType, (grouped: Map<string, SessionV2[]>) => Pair[]> 
 
 const _convert = (range: MetricsRange, type: ChartType, sessions: SessionV2[]) => {
   const mapper = MAPPERS[type]
-  return mapper ? mapper(range === '1d' ? groupByHour(sessions) : groupByDate(sessions)) : []
+  return mapper ? mapper(range === '1d' ? groupByHour(sessions) : groupByDate(sessions, range)) : []
 }
 
 const pairs = async (range: MetricsRange, type: ChartType): Promise<Pair[]> => {
   const { sessions } = await tequila.api.provider.sessions({ range })
-  const mapper = MAPPERS[type]
-  return mapper ? mapper(range === '1d' ? groupByHour(sessions) : groupByDate(sessions)) : []
+  return _convert(range, type, sessions)
 }
 
 const series = { units, pairs, _convert }
