@@ -66,7 +66,7 @@ const Arrow = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
   transform: rotate(45deg);
 `
-const Trigger = styled.button`
+const Trigger = styled.div`
   position: relative;
   border: none;
   background: none;
