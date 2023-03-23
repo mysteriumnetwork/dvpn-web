@@ -46,12 +46,17 @@ interface InfoProps {
 }
 
 export const InfoCard = ({ title, value, icon, tooltip }: InfoProps) => {
+  console.log(tooltip)
   return (
     <Card>
       <FlexContainer>
-        <Tooltip content={tooltip}>
+        {tooltip ? (
+          <Tooltip content={tooltip}>
+            <Icon>{icon && icon}</Icon>
+          </Tooltip>
+        ) : (
           <Icon>{icon && icon}</Icon>
-        </Tooltip>
+        )}
         <Content>
           <Title>{title}</Title>
           <Value>{value}</Value>
