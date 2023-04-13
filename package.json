@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@floating-ui/react-dom-interactions": "^0.13.3",
-    "@mysteriumnetwork/terms": "0.0.50",
+    "@mysteriumnetwork/terms": "0.0.53",
     "@reduxjs/toolkit": "1.8.1",
     "@tanstack/react-table": "^8.7.9",
     "bignumber.js": "^9.0.2",
