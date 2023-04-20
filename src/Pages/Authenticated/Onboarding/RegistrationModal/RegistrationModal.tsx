@@ -20,6 +20,8 @@ import { devices } from '../../../../theme/themes'
 import zIndexes from '../../../../constants/z-indexes'
 import { media } from '../../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
+import { useAppSelector } from '../../../../commons/hooks'
+import { selectors } from '../../../../redux/selectors'
 
 const { isDesktopQuery } = media
 const { api } = tequila
@@ -132,12 +134,19 @@ export const RegistrationModal = ({ show }: Props) => {
   const [beneficiary, setBeneficiary] = useState('')
   const isDesktop = useMediaQuery(isDesktopQuery)
   const Step = useMemo(() => React.lazy(() => import(`./Steps/${steps[step].component}`)), [step])
+  const identity = useAppSelector(selectors.currentIdentity)
 
   useEffect(() => {
     ;(async () => {
       try {
-        const gateways = await api.payment.gateways()
+        const [gateways, freeRegistrationEligibility] = await Promise.all([
+          api.payment.gateways(),
+          api.freeRegistrationEligibility(identity.id),
+        ])
         setAllGateways(gateways)
+        if (freeRegistrationEligibility.eligible) {
+          setStep(steps.length - 1)
+        }
       } catch (err: any) {
         errors.parseToastError(err)
         toast.error('Could not retrieve payment gateways')
