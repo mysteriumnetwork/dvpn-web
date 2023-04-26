@@ -2855,10 +2855,10 @@
     outvariant "^1.2.1"
     strict-event-emitter "^0.2.4"
 
-"@mysteriumnetwork/terms@0.0.50":
-  version "0.0.50"
-  resolved "https://registry.yarnpkg.com/@mysteriumnetwork/terms/-/terms-0.0.50.tgz#4f2e9dea7add6dbc462e3f353866cafd434d35c3"
-  integrity sha512-Jm6gQfu52IpG3+lxhuiNgYPPl+shZK15rOhMAXclj9A/HbXKpHBPJL+AVEDYEa1cs8mdjYrDJMGxFRccgYrKEg==
+"@mysteriumnetwork/terms@0.0.53":
+  version "0.0.53"
+  resolved "https://registry.yarnpkg.com/@mysteriumnetwork/terms/-/terms-0.0.53.tgz#f946d8758a5d6dd7185e8cfa878baf3c144ea8b4"
+  integrity sha512-/j5oPxNmXwCEXoZ3mPGboCaEImtYJYirBZkiKknFhP8HICYDoadnVX4jiuZtoeS4/JaLdqehCzPA4DRrm2ZwYg==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"

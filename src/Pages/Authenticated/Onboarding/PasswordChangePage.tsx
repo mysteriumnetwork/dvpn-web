@@ -6,7 +6,7 @@
  */
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Form } from '../../../Components/Inputs/Form'
 import { InputGroup } from '../../../Components/Inputs/InputGroup'
 import { TextField } from '../../../Components/Inputs/TextField'
@@ -26,8 +26,7 @@ import { TOSModal } from '../Components/TOSModal/TOSModal'
 import { Link } from '../../../Components/Common/Link'
 import complexActions from '../../../redux/complex.actions'
 import { WelcomePage } from './WelcomePage'
-import { Tooltip } from '../../../Components/Tooltip/Tooltip'
-import { QuestionIcon } from '../../../Components/Icons/Icons'
+import { alphaToHex } from '../../../theme/themeCommon'
 const { api } = tequila
 const Logo = styled(Lock)`
   height: 500px;
@@ -50,18 +49,15 @@ const LogoContainer = styled.div`
 `
 const Title = styled.h1`
   color: ${({ theme }) => theme.common.colorDarkBlue};
-  font-size: 28px;
+  font-size: ${({ theme }) => theme.common.fontSizeHuge};
   @media ${devices.tablet} {
-    font-size: ${({ theme }) => theme.common.fontSizeHuge};
+    font-size: ${({ theme }) => theme.common.fontSizeNormal};
   }
 `
-const SecondaryTitle = styled.h2`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: ${({ theme }) => theme.common.colorDarkBlue};
-  font-size: ${({ theme }) => theme.common.fontSizeBig};
+const Divider = styled.div`
+  border-bottom: 1px solid ${({ theme }) => `${theme.common.colorGrayBlue}${alphaToHex(0.25)}`};
 `
+
 const Comment = styled.p`
   color: ${({ theme }) => theme.common.colorGrayBlue2};
   @media ${devices.tablet} {
@@ -84,29 +80,18 @@ const Page = styled.div`
     width: 100%;
   }
 `
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 30px;
-  @media ${devices.tablet} {
-    align-self: flex-start;
-  }
-`
 const Footer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+  @media ${devices.tablet} {
+    gap: 5px;
+  }
 `
-const InputContainer = styled.div`
+const PasswordInputs = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 20px;
-  margin-bottom: 70px;
-  @media ${devices.tablet} {
-    margin-bottom: 20px;
-  }
 `
 
 const LinkButton = styled.div`
@@ -127,11 +112,12 @@ const Row = styled.div`
 
 const Card = styled.div`
   background-color: ${({ theme }) => theme.common.colorWhite};
-  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
+  box-shadow: 0 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
   height: 550px;
   gap: 100px;
   display: flex;
+
   align-items: center;
   padding: 40px;
   @media ${devices.tablet} {
@@ -150,14 +136,18 @@ const Card = styled.div`
   }
 `
 const Container = styled.div`
-  width: 50%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100%;
+  max-width: 600px;
+  min-width: 400px;
   @media ${devices.tablet} {
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 0 10px;
     width: 100%;
+    min-width: unset;
+    margin-bottom: 10px;
   }
 `
 const ButtonRow = styled.div`
@@ -204,24 +194,6 @@ export const PasswordChangePage = () => {
   const [loading, setLoading] = useState(false)
   const [showWelcomePage, setShowWelcomePage] = useState(true)
   const closeWelcomePage = () => setShowWelcomePage(false)
-
-  const TooltipContent = useMemo(() => {
-    return (
-      <div>
-        Get your key from
-        <Link href="https://mystnodes.com/me" target="_blank">
-          {' '}
-          mystnodes.com/me{' '}
-        </Link>
-        and connect your node to
-        <Link href="https://mystnodes.com/" target="_blank">
-          {' '}
-          mystnodes.com
-        </Link>
-        , to manage and see your statistics
-      </div>
-    )
-  }, [])
 
   const handlePassword = (value: string) => setState((p) => ({ ...p, password: value, passwordError: '' }))
   const handleConfirmPassword = (value: string) =>
@@ -292,11 +264,12 @@ export const PasswordChangePage = () => {
               <Logo />
             </LogoContainer>
             <Container>
-              <Header>
+              <Footer>
                 <Title>Create Password</Title>
                 <Comment>Please set your Node UI password. Your password must contain at least 10 characters.</Comment>
-              </Header>
-              <InputContainer>
+              </Footer>
+
+              <PasswordInputs>
                 <InputGroup
                   error={state.passwordError}
                   title="Password"
@@ -322,14 +295,21 @@ export const PasswordChangePage = () => {
                   <Checkbox checked={state.agreeTos} onChange={handleTOS} /> I agree to
                   <LinkButton onClick={() => showTos()}>Terms and Conditions</LinkButton>
                 </Row>
-              </InputContainer>
+              </PasswordInputs>
+              <Divider />
               <Footer>
-                <SecondaryTitle>
-                  Connect your node to mystnodes.com
-                  <Tooltip placement="top" content={TooltipContent}>
-                    <QuestionIcon />
-                  </Tooltip>
-                </SecondaryTitle>
+                <Title>Connect your node to mystnodes.com</Title>
+                <Comment>
+                  To manage your node and view statistics on{' '}
+                  <Link href="https://mystnodes.com/me" target="_blank">
+                    mystnodes.com
+                  </Link>
+                  , enter your API key obtained from{' '}
+                  <Link href="https://mystnodes.com/" target="_blank">
+                    mystnodes.com/me
+                  </Link>
+                  . As a first-time user, you may be eligible for a free node registration.
+                </Comment>
                 <InputGroup
                   error={state.mmnError}
                   fluid

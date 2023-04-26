@@ -46,7 +46,6 @@ interface InfoProps {
 }
 
 export const InfoCard = ({ title, value, icon, tooltip }: InfoProps) => {
-  console.log(tooltip)
   return (
     <Card>
       <FlexContainer>
