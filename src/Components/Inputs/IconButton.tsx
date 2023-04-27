@@ -32,7 +32,7 @@ const IButton = styled.button`
 
 export const IconButton = ({ icon, onClick, onBlur, children }: Props) => {
   return (
-    <IButton onBlur={() => onBlur && onBlur()} onClick={() => onClick && onClick()}>
+    <IButton type="button" onBlur={() => onBlur && onBlur()} onClick={() => onClick && onClick()}>
       {icon}
       {children}
     </IButton>

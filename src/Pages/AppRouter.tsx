@@ -36,6 +36,7 @@ import { StorybookPage } from './Authenticated/StorybookPage/StorybookPage'
 import { PasswordChangePage } from './Authenticated/Onboarding/PasswordChangePage'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 import { STORYBOOK_ROUTES } from './Authenticated/StorybookPage/storybook.routes'
+import { SSOPage } from './Login/SSOPage'
 
 const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)
@@ -128,6 +129,7 @@ const AppRouter = () => {
           </Protected>
         }
       />
+      <Route path={ROUTES.AUTH_SSO} element={<SSOPage />} />
       <Route
         path={ROUTES.STORYBOOK}
         element={

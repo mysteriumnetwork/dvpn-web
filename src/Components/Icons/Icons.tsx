@@ -19,6 +19,7 @@ import { ReactComponent as DragIndicatorSvg } from '../../assets/images/drag-ind
 import { ReactComponent as FileSvg } from '../../assets/images/file.svg'
 import { ReactComponent as ChatSvg } from '../../assets/images/chat.svg'
 import { ReactComponent as QuestionSvg } from '../../assets/images/question.svg'
+import { ReactComponent as MystnodesSvg } from '../../assets/images/mystnodes.svg'
 
 import { themeCommon } from '../../theme/themeCommon'
 
@@ -125,3 +126,8 @@ export const FileIcon = styled(FileSvg)``
 export const ChatIcon = styled(ChatSvg)``
 
 export const QuestionIcon = styled(QuestionSvg)``
+
+export const MystnodesIcon = styled(MystnodesSvg)`
+  width: 24px;
+  height: 24px;
+`
