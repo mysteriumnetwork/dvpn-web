@@ -18,6 +18,7 @@ import errors from '../../../../../commons/errors'
 import { themeCommon } from '../../../../../theme/themeCommon'
 import { ConfirmationDialog } from '../../../../../Components/ConfirmationDialog/ConfirmationDialog'
 import complexActions from '../../../../../redux/complex.actions'
+import semver from 'semver/preload'
 
 const GroupedTitle = styled.div`
   display: flex;
@@ -45,6 +46,7 @@ export const BandwidthControl = () => {
   const { id } = useAppSelector(selectors.currentIdentity)
   const shapingEnabled = configs.isTrafficShapingEnabled(config)
   const configShapingKBps = configs.trafficShapingBandwidthKBps(config)
+  const { version } = useAppSelector(selectors.healthCheck)
 
   const [loading, setLoading] = useState<boolean>(true)
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false)
@@ -59,7 +61,11 @@ export const BandwidthControl = () => {
     setLoading(true)
     try {
       await changeShapingConfig(checked, mbps)
-      await tequila.restartRunningServices(id)
+
+      let isNewVersion = version === 'source.dev-build' || semver.satisfies(version, '>=1.23.0')
+      if (!isNewVersion || !configs.isUserspaceProvider(config)) {
+        await tequila.restartRunningServices(id)
+      }
     } catch (err: any) {
       errors.parseToastError(err)
     }

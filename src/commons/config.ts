@@ -25,6 +25,14 @@ const isAccessPolicyEnabled = (c: Config): boolean => {
   return !!_.get<Config, any>(c, 'data.access-policy.list')
 }
 
+const isUserspaceProvider = (c: Config): boolean => {
+  const userSpace = _.get<Config, any>(c, 'data.userspace')
+  if (typeof userSpace === 'string') {
+    return userSpace === 'true'
+  }
+  return userSpace
+}
+
 const chainId = (c: Config): number => {
   return _.get<Config, any>(c, 'data.chain-id')
 }
@@ -141,4 +149,5 @@ export const configs = {
   pilvytisUrl,
   uiFeatures,
   isFeatureEnabled,
+  isUserspaceProvider,
 }
