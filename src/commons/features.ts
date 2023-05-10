@@ -11,6 +11,10 @@ export type Feature = {
 }
 
 const FEATURES: { [key: string]: Feature } = {
+  UPDATE_NOTIFICATIONS: {
+    name: 'disableUpdateNotifications',
+    description: 'Disable node update notifications',
+  },
   RESTART: {
     name: 'restart',
     description: 'Ability to restart node from NodeUI',

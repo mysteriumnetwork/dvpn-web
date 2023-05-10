@@ -9,6 +9,8 @@ import { useEffect } from 'react'
 import { selectors } from '../../../../redux/selectors'
 import { fetchLatestNodeVersion } from '../../../../api/node-version.management'
 import semver from 'semver/preload'
+import { configs } from '../../../../commons/config'
+import FEATURES from '../../../../commons/features'
 
 interface Props {
   onNewNodeVersionAvailable: (currentVersion: string, latestVersion: string) => void
@@ -16,13 +18,14 @@ interface Props {
 
 export const NodeReleaseCheck = ({ onNewNodeVersionAvailable }: Props) => {
   const healthCheck = useAppSelector(selectors.healthCheck)
-
+  const config = useAppSelector(selectors.currentConfig)
+  const updateNotificationsDisabled = configs.isFeatureEnabled(config, FEATURES.UPDATE_NOTIFICATIONS.name)
   useEffect(() => {
     ;(async () => {
       const latest = await fetchLatestNodeVersion()
       const current = healthCheck.version
 
-      if (!semver.valid(latest) || !semver.valid(current)) {
+      if (!semver.valid(latest) || !semver.valid(current) || updateNotificationsDisabled) {
         return
       }
 
