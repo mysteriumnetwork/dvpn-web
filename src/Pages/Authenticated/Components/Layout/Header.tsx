@@ -13,6 +13,8 @@ import { ReactNode } from 'react'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { Quality } from '../Quality/Quality'
 import { Notifications } from '../Notifications/Notifications'
+import complexActions from '../../../../redux/complex.actions'
+import { Button } from '../../../../Components/Inputs/Button'
 
 const Container = styled.div`
   display: flex;
@@ -51,6 +53,14 @@ export const Header = ({ logo, title }: Props) => {
       <Group>
         <Notifications />
         <Profile />
+        <Button
+          onClick={async () => {
+            await complexActions.logout()
+          }}
+          label="LOGOUT"
+          variant="outlined"
+          rounded
+        />
       </Group>
     </Container>
   )

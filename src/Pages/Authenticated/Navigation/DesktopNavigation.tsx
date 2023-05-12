@@ -6,7 +6,7 @@
  */
 
 import styled from 'styled-components'
-import { LINK_DEFINITIONS, CONTROLLER_DEFINITIONS } from './definitions'
+import { LINK_DEFINITIONS, DESKTOP_CONTROLLER_DEFINITIONS } from './definitions'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import { useMemo, useState } from 'react'
@@ -161,7 +161,7 @@ export const DesktopNavigation = () => {
   )
 
   const Controllers = useMemo(() => {
-    return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
+    return DESKTOP_CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
       return (
         <Controller $open={open} key={`desktop-menu-controller-${name}`}>
           <Component expanded={open} title={name} />

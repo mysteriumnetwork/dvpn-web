@@ -13,6 +13,7 @@ import { ReactComponent as BugNavSvg } from '../../assets/images/navigation/bug.
 import { ReactComponent as ChatNavSvg } from '../../assets/images/navigation/chat.svg'
 import { ReactComponent as SunSvg } from '../../assets/images/navigation/sun.svg'
 import { ReactComponent as MoonSvg } from '../../assets/images/navigation/moon.svg'
+import { ReactComponent as LogoutSvg } from '../../assets/images/navigation/logout.svg'
 import { themeCommon } from '../../theme/themeCommon'
 
 interface NavProps {
@@ -57,5 +58,8 @@ export const SunNavIcon = styled(SunSvg)<NavProps>`
 `
 
 export const MoonNavIcon = styled(MoonSvg)<NavProps>`
+  ${navIconCss}
+`
+export const LogoutNavIcon = styled(LogoutSvg)<NavProps>`
   ${navIconCss}
 `

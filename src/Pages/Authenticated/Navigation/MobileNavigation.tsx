@@ -52,7 +52,7 @@ const InputGroupLeft = styled.div`
   margin-bottom: 25px;
 `
 const InputGroupRight = styled.div`
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 `
 const Progress = styled.div`
   display: flex;

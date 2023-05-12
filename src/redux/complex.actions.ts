@@ -94,6 +94,12 @@ const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }: { isD
   await store.dispatch(updateLoadingStore(false))
 }
 
+const logout = async () => {
+  await api.authLogout()
+  await store.dispatch(updateLoadingStore(true))
+  await store.dispatch(updateAuthenticatedStore({ authenticated: false, withDefaultCredentials: false }))
+  await store.dispatch(updateLoadingStore(false))
+}
 const SECOND = 1000
 
 const startContinuouslyUpdatingFees = async () => {
@@ -177,6 +183,7 @@ const complexActions = {
   setFeatures,
   refreshStoreConfig,
   setChatOpened,
+  logout,
 }
 
 export default complexActions

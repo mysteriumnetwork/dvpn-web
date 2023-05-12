@@ -23,6 +23,7 @@ import {
 import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
 import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
 import { Chat } from '../Components/Chat/Chat'
+import { LogoutButton } from './LogoutButton'
 
 interface LinkDefinition {
   name?: string
@@ -64,7 +65,7 @@ export const LINK_DEFINITIONS: LinkDefinition[] = [
     subPaths: [SETTINGS_ACCOUNT, SETTINGS_ADVANCED, SETTINGS_TRAFFIC],
   },
 ]
-export const CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
+export const DESKTOP_CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
   {
     name: 'Report Issue',
     dataTestId: 'DesktopNavigation.reportIssue',
@@ -79,5 +80,27 @@ export const CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
     name: 'Dark Mode',
     dataTestId: 'DesktopNavigation.darkMode',
     component: ThemeSwitch,
+  },
+]
+export const MOBILE_CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
+  {
+    name: 'Report Issue',
+    dataTestId: 'DesktopNavigation.reportIssue',
+    component: ReportIssue,
+  },
+  {
+    name: 'Chat',
+    dataTestId: 'DesktopNavigation.chat',
+    component: Chat,
+  },
+  {
+    name: 'Dark Mode',
+    dataTestId: 'DesktopNavigation.darkMode',
+    component: ThemeSwitch,
+  },
+  {
+    name: 'Logout',
+    dataTestId: 'DesktopNavigation.logout',
+    component: LogoutButton,
   },
 ]
