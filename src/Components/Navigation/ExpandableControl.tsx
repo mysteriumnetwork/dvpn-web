@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 BlockDev AG
+ * Copyright (c) 2023 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -9,6 +9,7 @@ import { IconButton } from '../Inputs/IconButton'
 import { ReactNode } from 'react'
 import zIndexes from '../../constants/z-indexes'
 import { alphaToHex, themeCommon } from '../../theme/themeCommon'
+import { devices } from '../../theme/themes'
 
 interface TransitionProps {
   $expanded: boolean
@@ -21,7 +22,6 @@ const Container = styled.div<TransitionProps>`
   justify-content: flex-start;
   align-items: center;
   padding-top: ${({ $border }) => $border && `10px`};
-  border-top: ${({ $border }) => $border && `1px dashed ${themeCommon.colorWhite + alphaToHex(0.2)}`};
   text-decoration: none;
   color: ${({ theme }) => theme.common.colorWhite};
   font-size: ${({ theme }) => theme.common.fontSizeBig};
@@ -29,6 +29,9 @@ const Container = styled.div<TransitionProps>`
   padding-right: ${({ $expanded }) => ($expanded ? '60px' : 0)};
   z-index: ${({ $ignoreOverlay }) => ($ignoreOverlay ? zIndexes.overlay + 1 : 0)};
   transition: gap 0.3s, padding-right 0.3s, max-width 0.3s;
+  @media ${devices.tablet} {
+    border-top: ${({ $border }) => $border && `1px dashed ${themeCommon.colorWhite + alphaToHex(0.2)}`};
+  }
   ${Title} {
     text-decoration: none;
     color: ${({ theme }) => theme.common.colorWhite};

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 BlockDev AG
+ * Copyright (c) 2023 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -13,8 +13,6 @@ import { ReactNode } from 'react'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { Quality } from '../Quality/Quality'
 import { Notifications } from '../Notifications/Notifications'
-import complexActions from '../../../../redux/complex.actions'
-import { Button } from '../../../../Components/Inputs/Button'
 
 const Container = styled.div`
   display: flex;
@@ -53,14 +51,6 @@ export const Header = ({ logo, title }: Props) => {
       <Group>
         <Notifications />
         <Profile />
-        <Button
-          onClick={async () => {
-            await complexActions.logout()
-          }}
-          label="LOGOUT"
-          variant="outlined"
-          rounded
-        />
       </Group>
     </Container>
   )

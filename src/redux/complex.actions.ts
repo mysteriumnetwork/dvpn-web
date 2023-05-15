@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 BlockDev AG
+ * Copyright (c) 2023 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -96,9 +96,12 @@ const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }: { isD
 
 const logout = async () => {
   await api.authLogout()
-  await store.dispatch(updateLoadingStore(true))
-  await store.dispatch(updateAuthenticatedStore({ authenticated: false, withDefaultCredentials: false }))
-  await store.dispatch(updateLoadingStore(false))
+
+  store.dispatch(updateLoadingStore(true))
+
+  store.dispatch(updateAuthenticatedStore({ authenticated: false, withDefaultCredentials: false }))
+
+  store.dispatch(updateLoadingStore(false))
 }
 const SECOND = 1000
 

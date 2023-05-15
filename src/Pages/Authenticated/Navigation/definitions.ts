@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 BlockDev AG
+ * Copyright (c) 2023 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -80,6 +80,11 @@ export const DESKTOP_CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
     name: 'Dark Mode',
     dataTestId: 'DesktopNavigation.darkMode',
     component: ThemeSwitch,
+  },
+  {
+    name: 'Logout',
+    dataTestId: 'DesktopNavigation.logout',
+    component: LogoutButton,
   },
 ]
 export const MOBILE_CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
