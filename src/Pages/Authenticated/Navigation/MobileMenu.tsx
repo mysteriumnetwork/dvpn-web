@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { alphaToHex, themeCommon } from '../../../theme/themeCommon'
 import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import { ReactComponent as ArrowLeft } from '../../../assets/images/arrow-left.svg'
-import { LINK_DEFINITIONS, CONTROLLER_DEFINITIONS } from './definitions'
+import { LINK_DEFINITIONS, MOBILE_CONTROLLER_DEFINITIONS } from './definitions'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useMemo } from 'react'
 import zIndexes from '../../../constants/z-indexes'
@@ -67,6 +67,7 @@ const Menu = styled.div<OverlayProps>`
   top: 0;
   left: 0;
   background: ${({ theme }) => theme.navigation.bg};
+  //TODO: Removing this for some reason disables animations on menu, investigate
   display: flex;
   flex-direction: column;
   border-top-right-radius: 30px;
@@ -128,7 +129,7 @@ const Menu = styled.div<OverlayProps>`
     opacity: ${({ $display }) => ($display ? 1 : 0)};
     transition: max-width 0.3s, opacity 0.3s;
     &:nth-of-type(even) {
-      border-bottom: 1px dashed ${themeCommon.colorWhite + alphaToHex(0.05)} !important;
+      border-bottom: 1px dashed ${themeCommon.colorWhite + alphaToHex(0.2)} !important;
       gap: 20px;
       margin-bottom: 10px;
       padding-bottom: 20px;
@@ -158,7 +159,7 @@ export const MobileMenu = ({ show, toggleMenu }: Props) => {
     [pathname, show],
   )
   const Controllers = useMemo(() => {
-    return CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
+    return MOBILE_CONTROLLER_DEFINITIONS.map(({ name, component: Component }) => {
       return <Component key={`mobile-menu-controller-${name}`} expanded={show} title={name} />
     })
   }, [show])
