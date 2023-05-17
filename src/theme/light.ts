@@ -184,7 +184,7 @@ const light: Omit<Theme, 'common'> = {
   tooltip: {
     textColor: themeCommon.colorGrayBlue2,
     bg: themeCommon.colorWhite,
-    boxShadow: '0 4px 4px' + themeCommon.yankeeBlue + alphaToHex(0.5),
+    boxShadow: '0 2px 2px' + themeCommon.yankeeBlue + alphaToHex(0.5),
   },
 
   nat: {
