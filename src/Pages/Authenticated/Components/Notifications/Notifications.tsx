@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2022 BlockDev AG
+ * Copyright (c) 2023 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useRef, useState } from 'react'
-import {
-  arrow,
-  autoUpdate,
-  offset,
-  useClick,
-  useFloating,
-  useFocus,
-  useInteractions,
-} from '@floating-ui/react-dom-interactions'
+import { useState } from 'react'
 import { NodeReleaseCheck } from './NodeReleaseCheck'
 import { UpdateCardMessage } from './Card'
 import { BeneficiaryTxCheck } from './BeneficiaryTxCheck'
@@ -22,6 +13,7 @@ import { IconButton } from '../../../../Components/Inputs/IconButton'
 import styled from 'styled-components'
 import { ReactComponent as BellSvg } from '../../../../assets/images/bell.svg'
 import { List } from './List'
+import { Floating } from '../../../../Components/Floating/Floating'
 
 const ID_BENEFICIARY_TX_ERROR = 'ID_BENEFICIARY_TX_ERROR'
 const ID_NODE_UPDATE = 'ID_NODE_UPDATE'
@@ -53,51 +45,26 @@ const Dot = styled.div`
   color: ${({ theme }) => theme.common.colorWhite};
 `
 
-const ListContainer = styled.div`
+const ListContainer = styled(Floating.Base)`
   width: 280px;
+  background-color: ${({ theme }) => theme.common.colorWhite};
+  border-radius: 20px;
   z-index: 10;
 `
 
-const Arrow = styled.div`
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  z-index: 10;
-  background-color: ${({ theme }) => theme.common.colorWhite};
-  transform: rotate(45deg);
-`
-const Trigger = styled.div`
+const Trigger = styled(Floating.Anchor)`
   position: relative;
   border: none;
   background: none;
 `
 export const Notifications = () => {
-  const [open, setOpen] = useState(false)
-
-  const arrowRef = useRef(null)
+  const state = Floating.useFloatingState({ id: 'notifications', delay: 0, placement: 'bottom-end', clickable: true })
   const [notifications, setNotifications] = useState(new Map<string, NotificationCardProps>())
   const showDot = notifications.size > 0
   const addNotification = (id: string, notification: NotificationCardProps) => {
     setNotifications(new Map(notifications.set(id, notification)))
   }
-  const { x, y, reference, placement, floating, strategy, context, middlewareData } = useFloating({
-    open,
-    onOpenChange: setOpen,
-    whileElementsMounted: autoUpdate,
-    middleware: [offset(10), arrow({ element: arrowRef })],
-    placement: 'bottom-end',
-  })
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    useClick(context, { toggle: true }),
-    useFocus(context, { keyboardOnly: false }),
-  ])
-  const { x: arrowX, y: arrowY } = middlewareData.arrow ?? {}
-  const staticSide = {
-    top: 'bottom',
-    right: 'left',
-    bottom: 'top',
-    left: 'right',
-  }[placement.split('-')[0]]
+
   return (
     <>
       <NodeReleaseCheck
@@ -118,29 +85,14 @@ export const Notifications = () => {
           })
         }
       />
-      <Trigger {...getReferenceProps({ ref: reference })}>
-        <IconButton icon={<BellIcon />}>{showDot && <Dot />}</IconButton>
-      </Trigger>
-      {open && (
-        <ListContainer
-          onBlur={() => setOpen(false)}
-          {...getFloatingProps({
-            ref: floating,
-            style: { position: strategy, top: y ?? 0, left: x ?? 0, width: 'max-content' },
-          })}
-        >
+      <>
+        <Trigger state={state}>
+          <IconButton icon={<BellIcon />}>{showDot && <Dot />}</IconButton>
+        </Trigger>
+        <ListContainer state={state}>
           <List list={Array.from(notifications.values())} />
-          <Arrow
-            ref={arrowRef}
-            style={{
-              top: arrowY != null ? `${arrowY}px` : '',
-              left: arrowX != null ? `${arrowX}px` : '',
-              right: '',
-              [staticSide as string]: '-5px',
-            }}
-          />
         </ListContainer>
-      )}
+      </>
     </>
   )
 }
