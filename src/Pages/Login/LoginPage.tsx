@@ -23,6 +23,7 @@ import Background from '../../assets/images/onboarding/background.png'
 import { ReactComponent as LoginLogo } from '../../assets/images/onboarding/login.svg'
 import { devices } from '../../theme/themes'
 import complexActions from '../../redux/complex.actions'
+import { MystnodesSSO } from './MystnodesSSO'
 
 const { api } = tequila
 
@@ -114,7 +115,7 @@ const Card = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
-    height: 700px;
+    height: 710px;
     width: 300px;
     padding: 10px;
   }
@@ -131,8 +132,10 @@ const Container = styled.div`
   }
 `
 
-const ButtonRow = styled.div`
+const Controls = styled.div`
   margin-top: 20px;
+  gap: 6px;
+  display: flex;
   @media ${devices.tablet} {
     margin-bottom: 20px;
   }
@@ -145,9 +148,10 @@ const Link = styled.a`
 `
 const Footer = styled.div`
   display: flex;
-  flex-direction: column;
   margin-top: 20px;
-  align-items: flex-end;
+  justify-content: space-between;
+  align-items: center;
+
   @media ${devices.tablet} {
     align-items: flex-start;
   }
@@ -210,9 +214,10 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
             </Footer>
           </Container>
         </Card>
-        <ButtonRow>
+        <Controls>
           <Button rounded size="large" type="submit" variant="primary" label="LOGIN" loading={loading} />
-        </ButtonRow>
+          <MystnodesSSO />
+        </Controls>
       </Page>
     </Form>
   )

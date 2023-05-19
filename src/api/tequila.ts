@@ -87,12 +87,23 @@ const restartRunningServices = async (identity: string) => {
   )
 }
 
+const initSSOAuth = async (redirectUri: string) =>
+  await http
+    .get<{ link: string }>(`/auth/login-mystnodes?redirect_uri=${encodeURIComponent(redirectUri)}`)
+    .then((r) => r.data)
+
+const loginWithAuthorizationGrant = async ({ authorizationGrantToken }: { authorizationGrantToken: string }) =>
+  await http.post('/auth/login-mystnodes', { authorization_grant: authorizationGrantToken })
+
 export const tequila = {
   api: tequilaClient,
   http,
+
   loginWithDefaultCredentials,
   isUserAuthenticated,
   startAllServices,
   stopAllServices,
   restartRunningServices,
+  initSSOAuth,
+  loginWithAuthorizationGrant,
 }

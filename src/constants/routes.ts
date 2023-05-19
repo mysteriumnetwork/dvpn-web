@@ -17,6 +17,7 @@ export const SESSIONS_SIDE = '/sessions-side'
 export const ERROR = '/error'
 export const ADMIN = '/admin'
 const STORYBOOK = '/storybook'
+const AUTH_SSO = '/auth-sso'
 
 const ROUTES = {
   HOME,
@@ -32,6 +33,7 @@ const ROUTES = {
   ERROR,
   ADMIN,
   STORYBOOK,
+  AUTH_SSO,
 }
 
 export default ROUTES
