@@ -75,6 +75,11 @@ const StyledModal = styled.div<{ $size?: ModalSize; $zIndex?: number }>`
   @media ${devices.tablet} {
     border-radius: 0;
     background: ${({ theme }) => theme.modal.bgColor + alphaToHex(0.95)};
+    overflow-y: scroll;
+    overflow-x: hidden;
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 `
 

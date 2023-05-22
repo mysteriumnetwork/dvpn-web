@@ -139,13 +139,20 @@ export const RegistrationModal = ({ show }: Props) => {
   useEffect(() => {
     ;(async () => {
       try {
-        const [gateways, freeRegistrationEligibility] = await Promise.all([
+        const [gateways, freeRegistrationEligibility, existingOrders] = await Promise.all([
           api.payment.gateways(),
           api.freeRegistrationEligibility(identity.id),
+          api.payment.orders(identity.id),
         ])
         setAllGateways(gateways)
         if (freeRegistrationEligibility.eligible) {
           setStep(steps.length - 1)
+        }
+        if (existingOrders.length !== 0) {
+          const order = existingOrders[0]
+          console.log('existingOrders[0]', existingOrders[0])
+          setGateway(order.gatewayName)
+          setStep(1)
         }
       } catch (err: any) {
         errors.parseToastError(err)
