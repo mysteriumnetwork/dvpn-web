@@ -132,10 +132,12 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
           throw new Error('Current location is unavailable for payment')
         }
 
+        const order = orders.find((o) => o.status === 'new' && o.gatewayName === gatewayName)
         setState((p) => ({
           ...p,
           taxCountry,
-          order: orders.find((o) => o.status === 'new' && o.gatewayName === gatewayName),
+          order,
+          redirected: order !== undefined,
         }))
       } catch (e: any) {
         parseToastError(e)
@@ -243,7 +245,7 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
       )}
       <Note>{note}</Note>
       <FlexGrow />
-      <WaitingFiatPayment visible={showPayNow} isCompleted={isCompleted} />
+      <WaitingFiatPayment handlePayNow={handlePayNow} visible={showPayNow} isCompleted={isCompleted} />
       <InvoiceLink identity={identity.id} isCompleted={isCompleted} />
       <Controls>
         {showPayNow && (
