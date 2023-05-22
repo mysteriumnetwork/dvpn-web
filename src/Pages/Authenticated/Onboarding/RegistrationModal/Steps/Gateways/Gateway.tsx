@@ -85,6 +85,7 @@ const Controls = styled.div`
   @media ${devices.tablet} {
     gap: 16px;
     flex-direction: row;
+    padding-bottom: 20px;
   }
 `
 
