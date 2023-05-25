@@ -12,6 +12,9 @@ import { useAppSelector } from '../../../../commons/hooks'
 import remoteStorage from '../../../../commons/remoteStorage'
 import { UI_THEME_KEY } from '../../../../constants/remote-storage.keys'
 import { themeCommon, alphaToHex } from '../../../../theme/themeCommon'
+import localSettingsStorage from '../../../../commons/localSettingsStorage'
+import { UIThemeLS } from '../../../../types/theme'
+import { localStorageKeys } from '../../../../constants/local-storage.keys'
 
 interface TransitionProps {
   $expanded: boolean
@@ -69,31 +72,23 @@ interface Props {
   title: string
   expanded: boolean
 }
-
+const { UI_THEME } = localStorageKeys
 export const ThemeSwitch = ({ title, expanded }: Props) => {
-  const theme = useAppSelector(remoteStorage.selector<string>(UI_THEME_KEY))
-  const isDark = theme === 'dark'
-  const handleThemeChange = async () => {
-    await remoteStorage.put<string>(UI_THEME_KEY, isDark ? 'light' : 'dark')
+  const theme = useAppSelector(localSettingsStorage.selector<UIThemeLS>(UI_THEME))
+  const isDark = theme?.key === 'dark'
+  const handleThemeChange = () => {
+    localSettingsStorage.put<UIThemeLS>(
+      UI_THEME,
+      isDark ? { key: 'light', userPreferred: true } : { key: 'dark', userPreferred: true },
+    )
   }
   return (
     <Container $expanded={expanded}>
       <SwitchContainer>
         {isDark ? <MoonNavIcon /> : <SunNavIcon />}
-        <Switch
-          variant="key"
-          size="small"
-          checked={isDark}
-          onChange={async () => {
-            await handleThemeChange()
-          }}
-        />
+        <Switch variant="key" size="small" checked={isDark} onChange={handleThemeChange} />
       </SwitchContainer>
-      <Column
-        onClick={async () => {
-          await handleThemeChange()
-        }}
-      >
+      <Column onClick={handleThemeChange}>
         <Title>{title}</Title>
         <ThemeStatus>{isDark ? 'On' : 'Off'}</ThemeStatus>
       </Column>

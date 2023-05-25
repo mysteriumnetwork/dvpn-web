@@ -6,6 +6,11 @@
  */
 import 'styled-components'
 
+export type UIThemeLS = {
+  readonly key: string
+  readonly userPreferred: boolean
+}
+
 export type Theme = {
   bgServiceCardHeader: string
   bgServiceCardHeaderBoxShadow: string

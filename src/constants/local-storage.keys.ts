@@ -5,7 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 const INTERCOM_USER_ID = 'node-ui-intercom-user-id'
+const UI_THEME = 'ui-theme'
+const SETTINGS = 'NODE_UI_SETTINGS'
 
 export const localStorageKeys = {
   INTERCOM_USER_ID,
+  UI_THEME,
+  SETTINGS,
 }

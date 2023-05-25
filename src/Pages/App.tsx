@@ -18,9 +18,12 @@ import { OffsetToastsGlobalCSS, StyledToastContainer } from '../Components/Toast
 import { GlobalStyle } from './GlobalStyle'
 import { IntercomLoader } from '../intercom/IntercomLoader'
 import 'react-toastify/dist/ReactToastify.css'
-
+import localSettingsStorage from '../commons/localSettingsStorage'
+import { UIThemeLS } from '../types/theme'
+import { localStorageKeys } from '../constants/local-storage.keys'
+const { UI_THEME } = localStorageKeys
 export const App = () => {
-  const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY)) || 'light'
+  const theme = useAppSelector(localSettingsStorage.selector<UIThemeLS>(UI_THEME))?.key
 
   return (
     <ThemeProvider theme={theme === 'dark' ? themes.dark : themes.light}>
