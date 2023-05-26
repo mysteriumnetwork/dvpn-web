@@ -10,6 +10,8 @@ import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import qs from 'qs'
 import { AxiosInstance } from 'axios'
 import errorInterceptors from './error.interceptors'
+import { urls } from '../commons/urls'
+import routes from '../constants/routes'
 
 const buildAxios = (): AxiosInstance => {
   const instance = new TequilapiClientFactory(
@@ -87,10 +89,15 @@ const restartRunningServices = async (identity: string) => {
   )
 }
 
-const initSSOAuth = async (redirectUri: string) =>
-  await http
-    .get<{ link: string }>(`/auth/login-mystnodes?redirect_uri=${encodeURIComponent(redirectUri)}`)
-    .then((r) => r.data)
+export type LinkResponse = {
+  link: string
+}
+
+const initSSOAuth = async (redirectUrl: string): Promise<LinkResponse> =>
+  http.get<LinkResponse>(`/auth/login-mystnodes?redirect_uri=${encodeURIComponent(redirectUrl)}`).then((r) => r.data)
+
+const initClaim = async (redirectUrl: string = urls.currentOrigin(routes.CLAIM)): Promise<LinkResponse> =>
+  http.get<LinkResponse>(`/mmn/claim-link?redirect_uri=${encodeURIComponent(redirectUrl)}`).then((r) => r.data)
 
 const loginWithAuthorizationGrant = async ({ authorizationGrantToken }: { authorizationGrantToken: string }) =>
   await http.post('/auth/login-mystnodes', { authorization_grant: authorizationGrantToken })
@@ -98,12 +105,12 @@ const loginWithAuthorizationGrant = async ({ authorizationGrantToken }: { author
 export const tequila = {
   api: tequilaClient,
   http,
-
   loginWithDefaultCredentials,
   isUserAuthenticated,
   startAllServices,
   stopAllServices,
   restartRunningServices,
   initSSOAuth,
+  initClaim,
   loginWithAuthorizationGrant,
 }

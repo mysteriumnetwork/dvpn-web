@@ -9,6 +9,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import ROUTES from '../../constants/routes'
 import { tequila } from '../../api/tequila'
 import complexActions from '../../redux/complex.actions'
+import { FullPageSpinner } from '../Authenticated/Components/Spinner/FullPageSpinner'
 
 const AUTHORIZATION_GRANT = 'authorizationGrant'
 
@@ -36,5 +37,5 @@ export const SSOPage = () => {
     })()
   }, [])
 
-  return null
+  return <FullPageSpinner />
 }
