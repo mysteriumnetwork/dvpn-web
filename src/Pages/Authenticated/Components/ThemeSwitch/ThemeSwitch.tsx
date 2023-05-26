@@ -9,13 +9,10 @@ import styled from 'styled-components'
 import { MoonNavIcon, SunNavIcon } from '../../../../Components/Icons/NavigationIcons'
 import { Switch } from '../../../../Components/Switch/Switch'
 import { useAppSelector } from '../../../../commons/hooks'
-import remoteStorage from '../../../../commons/remoteStorage'
-import { UI_THEME_KEY } from '../../../../constants/remote-storage.keys'
 import { themeCommon, alphaToHex } from '../../../../theme/themeCommon'
-import localSettingsStorage from '../../../../commons/localSettingsStorage'
 import { UIThemeLS } from '../../../../types/theme'
 import { localStorageKeys } from '../../../../constants/local-storage.keys'
-
+import localSettingsStorage from '../../../../commons/localSettingsStorage'
 interface TransitionProps {
   $expanded: boolean
 }

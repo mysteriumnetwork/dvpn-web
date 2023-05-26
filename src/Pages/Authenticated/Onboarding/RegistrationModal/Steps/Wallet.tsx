@@ -31,20 +31,21 @@ const Title = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
+  color: ${({ theme }) => theme.text.colorSecondary};
   @media ${devices.tablet} {
     font-size: ${({ theme }) => theme.common.fontSizeHuge};
   }
 `
+const StyledLink = styled(Link)`
+  margin-bottom: 5px;
+`
 const Description = styled.div`
   display: flex;
-  margin: 30px 0;
+  margin: 10px 0;
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   line-height: 22px;
-  @media ${devices.tablet} {
-    margin: 10px 0;
-  }
 `
 
 const Input = styled.div`
@@ -104,9 +105,9 @@ const NetworkRegistration = ({ next, beneficiary, setBeneficiary, loading, setLo
       <Description>
         Make sure withdrawal address is from ERC-20 Polygon compatible wallet (e.g MetaMask or MyEtherWallet)
       </Description>
-      <Link href={PAYOUT_GUIDE} target="_blank" rel="noreferrer">
+      <StyledLink href={PAYOUT_GUIDE} target="_blank" rel="noreferrer">
         Check here for instructions how to setup MYST token on MetaMask
-      </Link>
+      </StyledLink>
       <FlexGrow />
       <Button rounded label="Finish" onClick={handleFinish} />
     </Content>

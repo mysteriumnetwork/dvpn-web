@@ -18,6 +18,10 @@ import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyTo
 import { PAYOUT_GUIDE } from '../../../../../../constants/urls'
 import { devices } from '../../../../../../theme/themes'
 import React from 'react'
+import localSettingsStorage from '../../../../../../commons/localSettingsStorage'
+import { localStorageKeys } from '../../../../../../constants/local-storage.keys'
+import { UIThemeLS } from '../../../../../../types/theme'
+import { themeCommon } from '../../../../../../theme/themeCommon'
 
 const QR = styled.div`
   width: 150px;
@@ -41,9 +45,12 @@ const Description = styled.div`
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   line-height: 22px;
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.tablet} {
     margin-top: 5px;
+  }
+  > a {
+    color: ${({ theme }) => theme.common.colorKey};
   }
 `
 
@@ -87,6 +94,7 @@ const Waiting = styled.div`
   align-items: center;
   height: 30px;
   gap: 5px;
+  color: ${({ theme }) => theme.text.colorSecondary};
   @media ${devices.tablet} {
     height: 20px;
     margin-top: 10px;
@@ -98,6 +106,7 @@ const Title = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
+  color: ${({ theme }) => theme.text.colorSecondary};
   @media ${devices.tablet} {
     font-size: ${({ theme }) => theme.common.fontSizeHuge};
     justify-content: center;
@@ -113,11 +122,12 @@ const Controls = styled.div`
   flex-direction: column;
   gap: 32px;
 `
-
+const { UI_THEME } = localStorageKeys
 const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) => {
   const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentity)
   const isRegistrationFeeReceived = myst.toWeiBig(balanceTokens.wei).gte(amountRequiredWei)
-
+  const theme = useAppSelector(localSettingsStorage.selector<UIThemeLS>(UI_THEME))?.key
+  const isDark = theme === 'dark'
   return (
     <Content>
       <Title>{gatewayDescriptor('direct').title}</Title>
@@ -130,7 +140,11 @@ const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) =
       </Description>
       <Centered>
         <QR>
-          <QRCode value={channelAddress} />
+          <QRCode
+            fgColor={isDark ? themeCommon.colorLightBlue : undefined}
+            bgColor={isDark ? themeCommon.colorDarkBlue : undefined}
+            value={channelAddress}
+          />
         </QR>
         <ChannelAddress>
           {channelAddress}

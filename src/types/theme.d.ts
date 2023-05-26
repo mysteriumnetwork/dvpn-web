@@ -147,7 +147,11 @@ export type Theme = {
     textColor: string
     bg: string
   }
-
+  onboarding: {
+    bgOverlay: string
+    bgCard: string
+    bgSvg: string
+  }
   nodeStatus: {
     bg: {
       online: string

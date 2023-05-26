@@ -26,6 +26,7 @@ const Content = styled.div`
   }
 `
 const Title = styled.div`
+  color: ${({ theme }) => theme.text.colorSecondary};
   display: flex;
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
@@ -38,7 +39,7 @@ const Description = styled.div`
   margin-top: 30px;
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   line-height: 22px;
   @media ${devices.tablet} {
     text-align: center;

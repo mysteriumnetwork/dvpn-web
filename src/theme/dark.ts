@@ -74,6 +74,11 @@ const dark: Omit<Theme, 'common'> = {
       textColorSecondary: themeCommon.colorGrayBlue,
     },
   },
+  onboarding: {
+    bgOverlay: themeCommon.colorDarkBlue,
+    bgCard: themeCommon.colorGrayBlue2,
+    bgSvg: 'none',
+  },
   scrollBar: {
     trackColor: themeCommon.colorGrayBlue2,
     handleColor: themeCommon.colorGrayBlue,
@@ -207,7 +212,7 @@ const dark: Omit<Theme, 'common'> = {
   },
 
   a: {
-    textColor: themeCommon.colorYellow,
+    textColor: themeCommon.colorKey,
   },
 
   toasts: {

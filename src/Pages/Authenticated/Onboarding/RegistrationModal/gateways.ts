@@ -14,6 +14,9 @@ import { devices } from '../../../../theme/themes'
 const Direct = styled(DirectSVG)`
   height: 400px;
   width: 500px;
+  > rect {
+    fill: ${({ theme }) => theme.onboarding.bgSvg};
+  }
   @media ${devices.tablet} {
     height: 180px;
     width: 400px;
@@ -22,6 +25,9 @@ const Direct = styled(DirectSVG)`
 const PayPal = styled(PayPalSVG)`
   height: 400px;
   width: 500px;
+  > rect {
+    fill: ${({ theme }) => theme.onboarding.bgSvg};
+  }
   @media ${devices.tablet} {
     height: 180px;
     width: 400px;
@@ -30,6 +36,9 @@ const PayPal = styled(PayPalSVG)`
 const Stripe = styled(StripeSVG)`
   height: 400px;
   width: 500px;
+  > rect {
+    fill: ${({ theme }) => theme.onboarding.bgSvg};
+  }
   @media ${devices.tablet} {
     height: 180px;
     width: 400px;

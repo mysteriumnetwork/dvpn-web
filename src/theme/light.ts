@@ -111,7 +111,11 @@ const light: Omit<Theme, 'common'> = {
     titleColor: themeCommon.colorDarkBlue,
     boxShadow: '0px 5px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.1),
   },
-
+  onboarding: {
+    bgOverlay: themeCommon.colorLightBlue,
+    bgCard: themeCommon.colorWhite,
+    bgSvg: '#F6F6F6',
+  },
   textInput: {
     textColor: themeCommon.colorGrayBlue2,
     textColorDisabled: themeCommon.colorGrayBlue,

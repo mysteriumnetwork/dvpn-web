@@ -26,6 +26,7 @@ const Content = styled.div`
 const Text = styled.div`
   font-weight: 700;
   font-size: ${({ theme }) => theme.common.fontSizeHuge};
+  color: ${({ theme }) => theme.text.colorSecondary};
   @media ${devices.tablet} {
     text-align: center;
     font-size: ${({ theme }) => theme.common.fontSizeBig};
@@ -34,6 +35,7 @@ const Text = styled.div`
 const Identity = styled.div`
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.text.colorMain};
   gap: 10px;
   font-size: ${({ theme }) => theme.common.fontSizeBig};
   @media ${devices.tablet} {

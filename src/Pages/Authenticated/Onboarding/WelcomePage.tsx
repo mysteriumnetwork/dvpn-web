@@ -46,7 +46,7 @@ const Title = styled.h1`
 `
 
 const Comment = styled.div`
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   margin-top: 20px;
   font-size: ${({ theme }) => theme.common.fontSizeHuge};
   @media ${devices.tablet} {
@@ -57,7 +57,7 @@ const SubTitle = styled.h1`
   font-size: 80px;
   margin-top: 0;
   line-height: 80px;
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.tablet} {
     font-size: 60px;
     line-height: 60px;
@@ -69,7 +69,7 @@ const SubTitle = styled.h1`
 `
 
 const Card = styled.div`
-  background-color: ${({ theme }) => theme.common.colorWhite};
+  background-color: ${({ theme }) => theme.onboarding.bgCard};
   box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
   z-index: ${zIndexes.welcomePageContent};
@@ -119,7 +119,7 @@ const Page = styled.div`
   align-items: center;
   justify-content: center;
   background-image: url(${Background});
-  background-color: ${({ theme }) => theme.common.colorLightBlue};
+  background-color: ${({ theme }) => theme.onboarding.bgOverlay};
   @media ${devices.tablet} {
     padding: 30px 0;
     height: 100%;
