@@ -7,7 +7,6 @@
 import styled from 'styled-components'
 import { IconButton } from '../../../Components/Inputs/IconButton'
 import { ReactComponent as Burger } from '../../../assets/images/input/burger.svg'
-import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
 import { Link } from 'react-router-dom'
 import { ProgressBar } from '../../../Components/ProgressBar/ProgressBar'
 import { Notifications } from '../Components/Notifications/Notifications'
@@ -15,12 +14,16 @@ import { Profile } from '../Components/Profile/Profile'
 import { alphaToHex, themeCommon } from '../../../theme/themeCommon'
 import { DASHBOARD } from '../../../constants/routes'
 import { useMemo, useState } from 'react'
+import { ReactComponent as LogoDark } from '../../../assets/images/navigation/logo_dark.svg'
+import { ReactComponent as LogoLight } from '../../../assets/images/navigation/logo_light.svg'
 import { configs } from '../../../commons/config'
 import { useAppSelector } from '../../../commons/hooks'
 import { myst } from '../../../commons/mysts'
 import { selectors } from '../../../redux/selectors'
 import { MobileMenu } from './MobileMenu'
 import zIndexes from '../../../constants/z-indexes'
+import remoteStorage from '../../../commons/remoteStorage'
+import { UI_THEME_KEY } from '../../../constants/remote-storage.keys'
 
 const Content = styled.div`
   display: flex;
@@ -35,14 +38,14 @@ const Content = styled.div`
   justify-content: space-between;
   background: ${({ theme }) => theme.navigation.bg};
 `
-const StyledLogo = styled(Logo)`
-  height: 30px;
-  width: 60px;
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 const LogoLink = styled(Link)`
-  margin-bottom: 40px;
-  margin-top: 15px;
-  margin-right: 30px;
+  margin-top: -30px;
+  margin-right: 20px;
 `
 const InputGroupLeft = styled.div`
   display: flex;
@@ -52,7 +55,7 @@ const InputGroupLeft = styled.div`
   margin-bottom: 25px;
 `
 const InputGroupRight = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `
 const Progress = styled.div`
   display: flex;
@@ -85,22 +88,25 @@ const Info = styled.div`
 export const MobileNavigation = () => {
   const { earningsTokens } = useAppSelector(selectors.currentIdentity)
   const config = useAppSelector(selectors.currentConfig)
+  const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY))
   const value = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
   const thresholdMyst = configs.zeroStakeSettlementThreshold(config)
   const [showMenu, setShowMenu] = useState(false)
+
+  const isDark = theme === 'dark'
 
   const toggleMenu = () => {
     setShowMenu(!showMenu)
   }
   return (
     <Content>
-      <MobileMenu show={showMenu} toggleMenu={toggleMenu} />
+      <MobileMenu show={showMenu} toggleMenu={toggleMenu} isDark={isDark} />
       <InputGroupLeft>
         <IconButton icon={<Burger />} onClick={toggleMenu} />
         <Profile />
       </InputGroupLeft>
       <LogoLink to={DASHBOARD}>
-        <StyledLogo />
+        <LogoContainer>{isDark ? <LogoDark /> : <LogoLight />}</LogoContainer>
       </LogoLink>
       <InputGroupRight>
         <Notifications />
