@@ -6,7 +6,8 @@
  */
 import styled from 'styled-components'
 import { alphaToHex, themeCommon } from '../../../theme/themeCommon'
-import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
+import { ReactComponent as LogoLight } from '../../../assets/images/navigation/logo_light.svg'
+import { ReactComponent as LogoDark } from '../../../assets/images/navigation/logo_dark.svg'
 import { ReactComponent as ArrowLeft } from '../../../assets/images/arrow-left.svg'
 import { LINK_DEFINITIONS, MOBILE_CONTROLLER_DEFINITIONS } from './definitions'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -87,7 +88,7 @@ const Menu = styled.div<OverlayProps>`
     max-width: ${({ $display }) => ($display ? '100%' : 0)};
     align-items: flex-start;
     justify-content: space-between;
-    padding: ${({ $display }) => ($display ? '18px 24px 10px 10px' : 0)};
+    padding: ${({ $display }) => ($display ? '18px 24px 10px 20px' : 0)};
     margin-bottom: ${({ $display }) => ($display ? '20px' : 0)};
     transition: padding 0.3s;
     ${Container} {
@@ -113,7 +114,7 @@ const Menu = styled.div<OverlayProps>`
       max-width: ${({ $display }) => ($display ? '32px' : 0)};
       opacity: ${({ $display }) => ($display ? 1 : 0)};
       transition: max-width 0.3s opacity 0.3s;
-      top: -2px;
+      top: 7px;
       position: relative;
       :hover {
         cursor: pointer;
@@ -144,9 +145,10 @@ const Menu = styled.div<OverlayProps>`
 interface Props {
   show: boolean
   toggleMenu: () => void
+  isDark?: boolean
 }
 
-export const MobileMenu = ({ show, toggleMenu }: Props) => {
+export const MobileMenu = ({ show, toggleMenu, isDark }: Props) => {
   const { pathname } = useLocation()
   const Links = useMemo(
     () =>
@@ -169,7 +171,7 @@ export const MobileMenu = ({ show, toggleMenu }: Props) => {
       <Menu $display={show}>
         <Header>
           <Container>
-            <Logo />
+            {isDark ? <LogoDark /> : <LogoLight />}
             <Heading>Node UI</Heading>
           </Container>
           <Arrow onClick={toggleMenu} />

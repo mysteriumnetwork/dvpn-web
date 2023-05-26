@@ -8,9 +8,13 @@
 import styled from 'styled-components'
 import { LINK_DEFINITIONS, DESKTOP_CONTROLLER_DEFINITIONS } from './definitions'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { ReactComponent as Logo } from '../../../assets/images/navigation/logo.svg'
+import { ReactComponent as LogoDark } from '../../../assets/images/navigation/logo_dark.svg'
+import { ReactComponent as LogoLight } from '../../../assets/images/navigation/logo_light.svg'
 import { useMemo, useState } from 'react'
 import zIndexes from '../../../constants/z-indexes'
+import { useAppSelector } from '../../../commons/hooks'
+import remoteStorage from '../../../commons/remoteStorage'
+import { UI_THEME_KEY } from '../../../constants/remote-storage.keys'
 
 const Content = styled.div`
   background: ${({ theme }) => theme.navigation.bg};
@@ -136,6 +140,8 @@ const PlainLink = styled(NavLink)<openProps>`
 
 export const DesktopNavigation = () => {
   const { pathname } = useLocation()
+  const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY))
+  const isDark = theme === 'dark'
   const [open, setOpen] = useState(false)
   const toggleMenu = () => {
     setOpen(!open)
@@ -173,7 +179,7 @@ export const DesktopNavigation = () => {
   return (
     <Content>
       <LogoLink data-test-id="DesktopNavigation.logo" $open={open} to="" onClick={toggleMenu}>
-        <Logo />
+        {isDark ? <LogoDark /> : <LogoLight />}
         <Title>Node UI</Title>
       </LogoLink>
       <LinkContainer>{Links}</LinkContainer>
