@@ -11,6 +11,7 @@ import { useMediaQuery } from 'react-responsive'
 import { media } from '../../commons/media'
 import styled from 'styled-components'
 import routes from '../../constants/routes'
+import { urls } from '../../commons/urls'
 
 const { initSSOAuth } = tequila
 
@@ -23,7 +24,7 @@ const Label = styled.div`
 export const MystnodesSSO = () => {
   const isDesktop = useMediaQuery(media.isDesktopQuery)
   const onClick = async () => {
-    const { link } = await initSSOAuth(`${new URL(window.location.href).origin}/#${routes.AUTH_SSO}`)
+    const { link } = await initSSOAuth(urls.currentOrigin(routes.AUTH_SSO))
     window.location.href = link
   }
   return (

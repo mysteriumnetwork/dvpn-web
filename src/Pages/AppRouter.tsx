@@ -12,6 +12,7 @@ import ROUTES, {
   HISTORY,
   HOME,
   NEW_PASSWORD,
+  NODE_CLAIM,
   SESSIONS_SIDE,
   SETTINGS,
   SETTINGS_ACCOUNT,
@@ -37,6 +38,7 @@ import { PasswordChangePage } from './Authenticated/Onboarding/PasswordChangePag
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 import { STORYBOOK_ROUTES } from './Authenticated/StorybookPage/storybook.routes'
 import { SSOPage } from './Login/SSOPage'
+import { NodeClaimPage } from './Authenticated/NodeClaimPage/NodeClaimPage'
 
 const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)
@@ -74,6 +76,14 @@ const AppRouter = () => {
         element={
           <Protected redirects={toLoginOrOnBoarding}>
             <WithNavigation content={<DashboardPage />} />
+          </Protected>
+        }
+      />
+      <Route
+        path={NODE_CLAIM}
+        element={
+          <Protected redirects={toLoginOrOnBoarding}>
+            <NodeClaimPage />
           </Protected>
         }
       />

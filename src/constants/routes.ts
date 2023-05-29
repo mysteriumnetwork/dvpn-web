@@ -6,6 +6,7 @@
  */
 export const HOME = '/'
 export const DASHBOARD = '/dashboard'
+export const NODE_CLAIM = '/node-claim'
 export const NEW_PASSWORD = '/new-password'
 export const HISTORY = '/history'
 export const TRANSACTIONS = '/transactions'
@@ -18,6 +19,7 @@ export const ERROR = '/error'
 export const ADMIN = '/admin'
 const STORYBOOK = '/storybook'
 const AUTH_SSO = '/auth-sso'
+const CLAIM = '/node-claim'
 
 const ROUTES = {
   HOME,
@@ -34,6 +36,7 @@ const ROUTES = {
   ADMIN,
   STORYBOOK,
   AUTH_SSO,
+  CLAIM,
 }
 
 export default ROUTES
