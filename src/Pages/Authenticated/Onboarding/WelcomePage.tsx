@@ -103,7 +103,7 @@ const Header = styled.div`
 const ButtonRow = styled.div`
   margin-top: 20px;
   @media ${devices.tablet} {
-    margin-bottom: 20px;
+    padding-bottom: 20px;
   }
 `
 const Page = styled.div`
@@ -124,6 +124,12 @@ const Page = styled.div`
     padding: 30px 0;
     height: 100%;
     width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    justify-content: flex-start;
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 `
 interface Props {
