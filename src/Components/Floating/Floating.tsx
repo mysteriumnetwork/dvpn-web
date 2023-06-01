@@ -32,6 +32,7 @@ interface FloatingBaseProps {
 }
 
 interface FloatingStateProps {
+  distance?: number
   useArrow?: boolean
   clickable?: boolean
   initialOpen?: boolean
@@ -45,6 +46,7 @@ export const useFloatingState = ({
   useArrow = true,
   placement = 'top',
   delay = 50,
+  distance = 10,
 }: FloatingStateProps = {}) => {
   const [open, setOpen] = useState(initialOpen)
   const arrowRef = useRef(null)
@@ -56,7 +58,7 @@ export const useFloatingState = ({
     },
     whileElementsMounted: autoUpdate,
     //offset(distance) places tooltip away from anchor the given 'distance', based on placement
-    middleware: [offset(10), shift(), arrow({ element: arrowRef })],
+    middleware: [offset(distance), shift(), arrow({ element: arrowRef })],
   })
   const { context } = data
   const hover = useHover(context, {
@@ -91,7 +93,6 @@ const Arrow = styled.div`
   width: 12px;
   height: 12px;
   transform: rotate(45deg);
-  box-shadow: inherit;
 `
 //Merges and forwards created state from useTooltipState to tooltip anchor component
 

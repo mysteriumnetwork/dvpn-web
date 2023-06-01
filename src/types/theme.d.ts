@@ -7,8 +7,8 @@
 import 'styled-components'
 
 export type UIThemeLS = {
-  readonly key: string
-  readonly userPreferred: boolean
+  readonly key: 'dark' | 'light'
+  readonly preference: 'system' | 'manual'
 }
 
 export type Theme = {

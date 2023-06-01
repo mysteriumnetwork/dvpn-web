@@ -18,7 +18,7 @@ import CopyToClipboard from '../../../../../../Components/CopyToClipboard/CopyTo
 import { PAYOUT_GUIDE } from '../../../../../../constants/urls'
 import { devices } from '../../../../../../theme/themes'
 import React from 'react'
-import localSettingsStorage from '../../../../../../commons/localSettingsStorage'
+import localStorage from '../../../../../../commons/localStorageWrapper'
 import { localStorageKeys } from '../../../../../../constants/local-storage.keys'
 import { UIThemeLS } from '../../../../../../types/theme'
 import { themeCommon } from '../../../../../../theme/themeCommon'
@@ -126,7 +126,7 @@ const { UI_THEME } = localStorageKeys
 const Direct = ({ back, next, payments: { amountRequiredWei } }: GatewayProps) => {
   const { channelAddress, balanceTokens } = useAppSelector(selectors.currentIdentity)
   const isRegistrationFeeReceived = myst.toWeiBig(balanceTokens.wei).gte(amountRequiredWei)
-  const theme = useAppSelector(localSettingsStorage.selector<UIThemeLS>(UI_THEME))?.key
+  const theme = useAppSelector(localStorage.selector<UIThemeLS>(UI_THEME))?.key
   const isDark = theme === 'dark'
   return (
     <Content>

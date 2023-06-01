@@ -55,6 +55,10 @@
   },
   "dependencies": {
     "@floating-ui/react-dom-interactions": "^0.13.3",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@mysteriumnetwork/terms": "0.0.53",
     "@reduxjs/toolkit": "1.8.1",
     "@tanstack/react-table": "^8.7.9",
