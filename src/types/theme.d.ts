@@ -6,6 +6,11 @@
  */
 import 'styled-components'
 
+export type UIThemeLS = {
+  readonly key: 'dark' | 'light'
+  readonly preference: 'system' | 'manual'
+}
+
 export type Theme = {
   bgServiceCardHeader: string
   bgServiceCardHeaderBoxShadow: string
@@ -142,7 +147,11 @@ export type Theme = {
     textColor: string
     bg: string
   }
-
+  onboarding: {
+    bgOverlay: string
+    bgCard: string
+    bgSvg: string
+  }
   nodeStatus: {
     bg: {
       online: string

@@ -94,7 +94,6 @@ const sharedRowCss = css`
   display: flex;
   flex-direction: row;
   gap: 20px;
-
   min-width: fit-content;
 
   @media ${devices.tablet} {

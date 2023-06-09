@@ -50,6 +50,7 @@ const Spinner = styled(CircularSpinner)`
 
 const Title = styled.div`
   display: flex;
+  color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeHumongous};
   font-weight: 600;
   @media ${devices.tablet} {
@@ -63,7 +64,7 @@ const Description = styled.div`
   font-weight: 400;
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   line-height: 22px;
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.tablet} {
     margin-top: 10px;
   }
@@ -72,9 +73,11 @@ const Description = styled.div`
 const Note = styled.div`
   margin-top: 8px;
   font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  color: ${({ theme }) => theme.common.colorGrayBlue};
+  color: ${({ theme }) => theme.text.colorSecondary};
 `
-
+const InvoiceContainer = styled.div`
+  margin-top: 5px;
+`
 const Controls = styled.div`
   margin-top: 16px;
   display: flex;
@@ -246,8 +249,11 @@ const Gateway = ({ payments: { isCompleted }, next, gateway, back }: GatewayProp
       )}
       <Note>{note}</Note>
       <FlexGrow />
-      <WaitingFiatPayment handlePayNow={handlePayNow} visible={showPayNow} isCompleted={isCompleted} />
-      <InvoiceLink identity={identity.id} isCompleted={isCompleted} />
+      <InvoiceContainer>
+        <WaitingFiatPayment handlePayNow={handlePayNow} visible={showPayNow} isCompleted={isCompleted} />
+
+        <InvoiceLink identity={identity.id} isCompleted={isCompleted} />
+      </InvoiceContainer>
       <Controls>
         {showPayNow && (
           <Button rounded onClick={handlePayNow} loading={state.isLoadingPayNow} size="medium" label="Pay 1 USD" />

@@ -45,6 +45,7 @@ export interface AppState {
   terms: Terms
   config: Config
   defaultConfig: Config
+  nodeUISettings: any
   fees: FeesResponse
   chainSummary: ChainSummary
   beneficiary: IdentityBeneficiaryResponse
@@ -68,6 +69,7 @@ const INITIAL_STATE: AppState = {
   config: {
     data: {},
   },
+  nodeUISettings: {},
   defaultConfig: {
     data: {},
   },
@@ -134,6 +136,9 @@ const slice = createSlice({
     updateMinimumRegistrationAmountWeiStore: (state, action) => {
       state.minimumRegistrationAmountWei = action.payload
     },
+    updateNodeUISettingsStore: (state, action) => {
+      state.nodeUISettings = action.payload
+    },
   },
 })
 
@@ -152,6 +157,7 @@ export const {
   updateNatTypeResponseStore,
   updateChatOpenedStore,
   updateMinimumRegistrationAmountWeiStore,
+  updateNodeUISettingsStore,
 } = slice.actions
 
 export default slice.reducer

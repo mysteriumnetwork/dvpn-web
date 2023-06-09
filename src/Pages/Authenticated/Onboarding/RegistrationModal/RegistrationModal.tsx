@@ -58,6 +58,9 @@ const Wrapper = styled.div`
 const Wallet = styled(WalletSVG)`
   height: 400px;
   width: 500px;
+  > rect#bg {
+    fill: ${({ theme }) => theme.onboarding.bgSvg};
+  }
   @media ${devices.tablet} {
     height: 180px;
     width: 400px;
@@ -66,6 +69,9 @@ const Wallet = styled(WalletSVG)`
 const Payment = styled(PaymentSVG)`
   height: 400px;
   width: 500px;
+  > rect {
+    fill: ${({ theme }) => theme.onboarding.bgSvg};
+  }
   @media ${devices.tablet} {
     height: 180px;
     width: 400px;

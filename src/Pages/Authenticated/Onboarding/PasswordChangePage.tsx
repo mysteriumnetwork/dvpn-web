@@ -31,6 +31,9 @@ const { api } = tequila
 const Logo = styled(Lock)`
   height: 500px;
   width: 500px;
+  > rect {
+    fill: ${({ theme }) => theme.onboarding.bgSvg};
+  }
   @media ${devices.tablet} {
     height: 250px;
     width: 250px;
@@ -48,7 +51,7 @@ const LogoContainer = styled.div`
   }
 `
 const Title = styled.h1`
-  color: ${({ theme }) => theme.common.colorDarkBlue};
+  color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeHuge};
   @media ${devices.tablet} {
     font-size: ${({ theme }) => theme.common.fontSizeNormal};
@@ -59,7 +62,7 @@ const Divider = styled.div`
 `
 
 const Comment = styled.p`
-  color: ${({ theme }) => theme.common.colorGrayBlue2};
+  color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.tablet} {
     font-size: ${({ theme }) => theme.common.fontSizeNormal};
   }
@@ -73,7 +76,7 @@ const Page = styled.div`
   align-items: center;
   justify-content: center;
   background-image: url(${Background});
-  background-color: ${({ theme }) => theme.common.colorLightBlue};
+  background-color: ${({ theme }) => theme.onboarding.bgOverlay};
   @media ${devices.tablet} {
     padding-top: 30px;
     height: 100%;
@@ -105,13 +108,14 @@ const LinkButton = styled.div`
 const Row = styled.div`
   display: flex;
   gap: 5px;
+  color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.mobileS} {
     font-size: ${({ theme }) => theme.common.fontSizeSmall};
   }
 `
 
 const Card = styled.div`
-  background-color: ${({ theme }) => theme.common.colorWhite};
+  background-color: ${({ theme }) => theme.onboarding.bgCard};
   box-shadow: 0 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
   height: 550px;

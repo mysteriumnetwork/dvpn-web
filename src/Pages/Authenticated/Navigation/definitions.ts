@@ -21,7 +21,6 @@ import {
   TRANSACTIONS,
 } from '../../../constants/routes'
 import { ReportIssue } from '../Components/ReportIssue/ReportIssue'
-import { ThemeSwitch } from '../Components/ThemeSwitch/ThemeSwitch'
 import { Chat } from '../Components/Chat/Chat'
 import { LogoutButton } from './LogoutButton'
 
@@ -77,11 +76,6 @@ export const DESKTOP_CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
     component: Chat,
   },
   {
-    name: 'Dark Mode',
-    dataTestId: 'DesktopNavigation.darkMode',
-    component: ThemeSwitch,
-  },
-  {
     name: 'Logout',
     dataTestId: 'DesktopNavigation.logout',
     component: LogoutButton,
@@ -97,11 +91,6 @@ export const MOBILE_CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
     name: 'Chat',
     dataTestId: 'DesktopNavigation.chat',
     component: Chat,
-  },
-  {
-    name: 'Dark Mode',
-    dataTestId: 'DesktopNavigation.darkMode',
-    component: ThemeSwitch,
   },
   {
     name: 'Logout',

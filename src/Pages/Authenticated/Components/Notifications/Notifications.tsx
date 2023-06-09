@@ -47,7 +47,7 @@ const Dot = styled.div`
 
 const ListContainer = styled(Floating.Base)`
   width: 280px;
-  background-color: ${({ theme }) => theme.common.colorWhite};
+  background-color: ${({ theme }) => theme.notifications.list.bg};
   border-radius: 20px;
   z-index: 10;
 `

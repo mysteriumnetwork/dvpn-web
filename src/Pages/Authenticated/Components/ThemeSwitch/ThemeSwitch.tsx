@@ -1,102 +1,87 @@
 /**
- * Copyright (c) 2022 BlockDev AG
+ * Copyright (c) 2023 BlockDev AG
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import styled from 'styled-components'
-import { MoonNavIcon, SunNavIcon } from '../../../../Components/Icons/NavigationIcons'
-import { Switch } from '../../../../Components/Switch/Switch'
 import { useAppSelector } from '../../../../commons/hooks'
-import remoteStorage from '../../../../commons/remoteStorage'
-import { UI_THEME_KEY } from '../../../../constants/remote-storage.keys'
-import { themeCommon, alphaToHex } from '../../../../theme/themeCommon'
+import localStorage from '../../../../commons/localStorageWrapper'
+import { UIThemeLS } from '../../../../types/theme'
+import { localStorageKeys } from '../../../../constants/local-storage.keys'
+import styled from 'styled-components'
+import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons'
+import { faMoon } from '@fortawesome/free-regular-svg-icons'
+import { faSun } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+const { UI_THEME } = localStorageKeys
 
-interface TransitionProps {
-  $expanded: boolean
+interface SelectionProps {
+  $active?: boolean
 }
-const Title = styled.div``
-const ThemeStatus = styled.div``
-const Column = styled.div``
 
-const Container = styled.div<TransitionProps>`
+const Icon = styled(FontAwesomeIcon)`
+  height: 15px;
+  width: 15px;
+`
+const Selection = styled.button<SelectionProps>`
   display: flex;
+  width: 120px;
+  height: 25px;
+  background: none;
   align-items: center;
+  box-sizing: border-box;
   justify-content: flex-start;
-  gap: ${({ $expanded }) => ($expanded ? '40px' : 0)};
-  padding-right: ${({ $expanded }) => ($expanded ? '20px' : 0)};
-  transition: gap 0.3s, padding-right 0.3s;
-  ${Title} {
-    text-decoration: none;
-    color: ${({ theme }) => theme.common.colorWhite};
-    font-size: ${({ theme }) => theme.common.fontSizeBig};
-    opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
-    max-width: ${({ $expanded }) => ($expanded ? '200px' : 0)};
-    overflow: hidden;
-    white-space: nowrap;
-    transition: opacity 0.3s, max-width 0.3s;
-  }
-  ${ThemeStatus} {
-    font-size: ${({ theme }) => theme.common.fontSizeNormal};
-    color: ${themeCommon.colorWhite + alphaToHex(0.5)};
-    opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
-    max-width: ${({ $expanded }) => ($expanded ? '200px' : 0)};
-    transition: opacity 0.3s, max-width 0.3s;
-  }
-  ${Column} {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+  gap: 15px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: ${({ theme }) => theme.text.colorMain};
+  border: ${({ theme, $active }) => ($active ? `0.5px solid ${theme.text.colorSecondary}` : 'none')};
+  :hover {
     cursor: pointer;
-    justify-content: center;
-    opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
-    max-width: ${({ $expanded }) => ($expanded ? '200px' : 0)};
-    margin-bottom: 10px;
+    border: ${({ theme, $active }) =>
+      $active ? `0.5px solid ${theme.text.colorMain}` : `0.5px solid ${theme.text.colorSecondary}`};
   }
 `
-const SwitchContainer = styled.div`
+const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
   align-items: center;
-  border-radius: 40px;
-  background: ${themeCommon.colorWhite}10;
-  padding-bottom: 20px;
+  gap: 10px;
 `
 
-interface Props {
-  title: string
-  expanded: boolean
-}
-
-export const ThemeSwitch = ({ title, expanded }: Props) => {
-  const theme = useAppSelector(remoteStorage.selector<string>(UI_THEME_KEY))
-  const isDark = theme === 'dark'
-  const handleThemeChange = async () => {
-    await remoteStorage.put<string>(UI_THEME_KEY, isDark ? 'light' : 'dark')
-  }
+export const ThemeSwitch = () => {
+  const theme = useAppSelector(localStorage.selector<UIThemeLS>(UI_THEME))
   return (
-    <Container $expanded={expanded}>
-      <SwitchContainer>
-        {isDark ? <MoonNavIcon /> : <SunNavIcon />}
-        <Switch
-          variant="key"
-          size="small"
-          checked={isDark}
-          onChange={async () => {
-            await handleThemeChange()
-          }}
-        />
-      </SwitchContainer>
-      <Column
-        onClick={async () => {
-          await handleThemeChange()
+    <Container>
+      <Selection
+        $active={theme?.preference === 'system'}
+        onClick={() => {
+          localStorage.writeSettings(UI_THEME, { key: theme?.key, preference: 'system' })
         }}
       >
-        <Title>{title}</Title>
-        <ThemeStatus>{isDark ? 'On' : 'Off'}</ThemeStatus>
-      </Column>
+        <Icon icon={faCircleHalfStroke} />
+        OS default
+      </Selection>
+
+      <Selection
+        $active={theme?.key === 'light' && theme?.preference !== 'system'}
+        onClick={() => {
+          localStorage.writeSettings(UI_THEME, { key: 'light', preference: 'manual' })
+        }}
+      >
+        <Icon icon={faSun} />
+        Light
+      </Selection>
+      <Selection
+        $active={theme?.key === 'dark' && theme?.preference !== 'system'}
+        onClick={() => {
+          localStorage.writeSettings(UI_THEME, { key: 'dark', preference: 'manual' })
+        }}
+      >
+        <Icon icon={faMoon} />
+        Dark
+      </Selection>
     </Container>
   )
 }
