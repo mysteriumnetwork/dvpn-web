@@ -39,6 +39,7 @@ import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpin
 import { STORYBOOK_ROUTES } from './Authenticated/StorybookPage/storybook.routes'
 import { SSOPage } from './Login/SSOPage'
 import { NodeClaimPage } from './Authenticated/NodeClaimPage/NodeClaimPage'
+import { ClickBoarding } from './ClickBoarding'
 
 const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)
@@ -85,6 +86,14 @@ const AppRouter = () => {
           <Protected redirects={toLoginOrOnBoarding}>
             <NodeClaimPage />
           </Protected>
+        }
+      />
+      <Route
+        path={ROUTES.CLICKBOARDING}
+        element={
+          // <Protected redirects={toLoginOrOnBoarding}>
+          <ClickBoarding />
+          // </Protected>
         }
       />
       <Route

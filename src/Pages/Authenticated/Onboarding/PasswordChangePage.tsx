@@ -5,12 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import { useLocation } from 'react-router-dom'
 import React, { useState } from 'react'
 import { Form } from '../../../Components/Inputs/Form'
 import { InputGroup } from '../../../Components/Inputs/InputGroup'
-import { TextField } from '../../../Components/Inputs/TextField'
 import { Button } from '../../../Components/Inputs/Button'
+import { TextField } from '../../../Components/Inputs/TextField'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../../../constants/defaults'
 import { store } from '../../../redux/store'
 import { updateAuthenticatedStore } from '../../../redux/app.slice'
@@ -23,10 +22,11 @@ import Background from '../../../assets/images/onboarding/background.png'
 import { ReactComponent as Lock } from '../../../assets/images/onboarding/password.svg'
 import { devices } from '../../../theme/themes'
 import { TOSModal } from '../Components/TOSModal/TOSModal'
-import { Link } from '../../../Components/Common/Link'
 import complexActions from '../../../redux/complex.actions'
 import { WelcomePage } from './WelcomePage'
 import { alphaToHex } from '../../../theme/themeCommon'
+import routes from '../../../constants/routes'
+import { urls } from '../../../commons/urls'
 const { api } = tequila
 const Logo = styled(Lock)`
   height: 500px;
@@ -160,10 +160,6 @@ const ButtonRow = styled.div`
     margin-bottom: 20px;
   }
 `
-const useQuery = () => {
-  const { search } = useLocation()
-  return React.useMemo(() => new URLSearchParams(search), [search])
-}
 
 interface State {
   password: string
@@ -186,13 +182,8 @@ const INITIAL_STATE: State = {
 }
 
 export const PasswordChangePage = () => {
-  const query = useQuery()
-  const mmnApiKey = query.get('mmnApiKey')
-
   const [state, setState] = useState({
     ...INITIAL_STATE,
-    claim: mmnApiKey !== null,
-    mmnApiKey: mmnApiKey ?? '',
   })
 
   const [loading, setLoading] = useState(false)
@@ -203,25 +194,11 @@ export const PasswordChangePage = () => {
   const handleConfirmPassword = (value: string) =>
     setState((p) => ({ ...p, confirmPassword: value, passwordError: '' }))
   const handleTOS = (value: boolean) => setState((p) => ({ ...p, agreeTos: value }))
-  const handleMmnApiKey = (value: string) => setState((p) => ({ ...p, mmnApiKey: value }))
-  const setMmnError = (value: string) => setState((p) => ({ ...p, mmnError: value }))
   const handlePasswordError = (value: string) => setState((p) => ({ ...p, passwordError: value }))
   const showTos = (b: boolean = true) => setState((p) => ({ ...p, showTos: b }))
 
-  const handleClaim = (value: string) => {
-    handleMmnApiKey(value)
-    if (value.length === 40 || value.length === 0) {
-      setMmnError('')
-      return
-    }
-    if (value.length !== 40) {
-      setMmnError('API key must be 40 characters')
-      return
-    }
-  }
   const shouldClaim = state.mmnApiKey.length > 0
   const passwordError = state.passwordError.length > 0
-  const mmnError = state.mmnError.length > 0
   const handleSubmit = async () => {
     const validationResult = validatePassword(state.password, state.confirmPassword)
     if (!validationResult.success) {
@@ -256,6 +233,11 @@ export const PasswordChangePage = () => {
       errors.parseToastError(err)
     }
     setLoading(false)
+  }
+
+  const getLinkAndRedirect = async () => {
+    const { link } = await tequila.initClickBoarding(urls.currentOrigin(routes.CLICKBOARDING))
+    window.location.href = link
   }
 
   return (
@@ -303,39 +285,12 @@ export const PasswordChangePage = () => {
               <Divider />
               <Footer>
                 <Title>Connect your node to mystnodes.com</Title>
-                <Comment>
-                  To manage your node and view statistics on{' '}
-                  <Link href="https://mystnodes.com/me" target="_blank">
-                    mystnodes.com
-                  </Link>
-                  , enter your API key obtained from{' '}
-                  <Link href="https://mystnodes.com/" target="_blank">
-                    mystnodes.com/me
-                  </Link>
-                  . As a first-time user, you may be eligible for a free node registration.
-                </Comment>
-                <InputGroup
-                  error={state.mmnError}
-                  fluid
-                  input={
-                    <TextField
-                      disabled={mmnApiKey !== null}
-                      error={mmnError}
-                      value={state.mmnApiKey}
-                      onChange={handleClaim}
-                    />
-                  }
-                />
+                <Button type="button" label="OnBoard with Mystnodes.com" onClick={getLinkAndRedirect} />
               </Footer>
             </Container>
           </Card>
           <ButtonRow>
-            <Button
-              size="large"
-              rounded
-              loading={loading}
-              label={state.claim ? 'Set Password and Claim' : 'Set password'}
-            />
+            <Button size="large" rounded loading={loading} label="Set password" />
           </ButtonRow>
         </Page>
       </Form>

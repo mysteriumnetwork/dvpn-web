@@ -20,6 +20,7 @@ export const ADMIN = '/admin'
 const STORYBOOK = '/storybook'
 const AUTH_SSO = '/auth-sso'
 const CLAIM = '/node-claim'
+const CLICKBOARDING = '/clickboarding'
 
 const ROUTES = {
   HOME,
@@ -36,6 +37,7 @@ const ROUTES = {
   ADMIN,
   STORYBOOK,
   AUTH_SSO,
+  CLICKBOARDING,
   CLAIM,
 }
 
