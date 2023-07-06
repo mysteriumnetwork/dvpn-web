@@ -10,7 +10,6 @@ import identities from '../../../commons/identities'
 import { TOSModal } from '../Components/TOSModal/TOSModal'
 import { ConfirmationDialog } from '../../../Components/ConfirmationDialog/ConfirmationDialog'
 import { RegistrationModal } from './RegistrationModal/RegistrationModal'
-import { RegistrationInProgressModal } from './RegistrationInProgressModal'
 import { useLocation } from 'react-router-dom'
 import ROUTES from '../../../constants/routes'
 
@@ -40,10 +39,6 @@ export const Onboarding = () => {
 
   if (needsRegisteredIdentity || identities.isRegistrationError(identity)) {
     return <RegistrationModal show />
-  }
-
-  if (identities.isInProgress(identity)) {
-    return <RegistrationInProgressModal show />
   }
 
   return <></>
