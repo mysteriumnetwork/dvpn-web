@@ -23,6 +23,18 @@ const FEATURES: { [key: string]: Feature } = {
     name: 'error logging',
     description: 'NodeUI will log recent errors to local storage',
   },
+  MOBILE_PROVIDER: {
+    name: 'android_mobile_node',
+    description: 'Enable/Disable features specific for mobile providers',
+  },
+  SSO_DEEPLINK: {
+    name: 'android_sso_deeplink',
+    description: 'Replace localhost as destination for SSO with deeplink',
+  },
+  SSO_HIDE: {
+    name: 'android_sso_hide',
+    description: 'Hides SSO feature',
+  },
 }
 
 export default FEATURES

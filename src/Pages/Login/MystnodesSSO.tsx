@@ -12,6 +12,11 @@ import { media } from '../../commons/media'
 import styled from 'styled-components'
 import routes from '../../constants/routes'
 import { urls } from '../../commons/urls'
+import { useAppSelector } from '../../commons/hooks'
+import { selectors } from '../../redux/selectors'
+import { configs } from '../../commons/config'
+import FEATURES from '../../commons/features'
+import { ANDROID_DEEPLINK } from '../../constants/urls'
 
 const { initSSOAuth } = tequila
 
@@ -20,25 +25,31 @@ const Label = styled.div`
   gap: 6px;
   align-items: center;
 `
-
 export const MystnodesSSO = () => {
+  const config = useAppSelector(selectors.currentConfig)
+  const ssoDisabled = configs.isFeatureEnabled(config, FEATURES.SSO_HIDE.name)
+  const deeplinkEnabled = configs.isFeatureEnabled(config, FEATURES.SSO_DEEPLINK.name)
   const isDesktop = useMediaQuery(media.isDesktopQuery)
   const onClick = async () => {
-    const { link } = await initSSOAuth(urls.currentOrigin(routes.AUTH_SSO))
+    const { link } = await initSSOAuth(deeplinkEnabled ? ANDROID_DEEPLINK : urls.currentOrigin(routes.AUTH_SSO))
     window.location.href = link
   }
   return (
-    <Button
-      size="large"
-      onClick={onClick}
-      rounded
-      label={
-        <Label>
-          <MystnodesIcon /> {isDesktop && 'Sign in with Mystnodes'}
-        </Label>
-      }
-      variant="secondary"
-      type="button"
-    />
+    <>
+      {!ssoDisabled && (
+        <Button
+          size="large"
+          onClick={onClick}
+          rounded
+          label={
+            <Label>
+              <MystnodesIcon /> {isDesktop && 'Sign in with Mystnodes'}
+            </Label>
+          }
+          variant="secondary"
+          type="button"
+        />
+      )}
+    </>
   )
 }
