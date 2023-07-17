@@ -75,6 +75,7 @@ const Controls = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  max-height: 30px;
   align-items: center;
   margin-bottom: 24px;
   color: ${({ theme }) => theme.text.colorMain};
@@ -90,8 +91,9 @@ const Content = styled.div`
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   padding: 31px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 
   @media ${devices.tablet} {
     padding: 20px;
@@ -113,7 +115,7 @@ export interface ServiceTooltips {
 
 interface Props {
   name: string
-  description: string
+  description: string | ReactNode
   serviceType: string
   dataTestId?: string
   approvalPending?: boolean
@@ -139,7 +141,6 @@ export const ServiceCard = ({
   const { id } = useAppSelector(selectors.currentIdentity)
   const serviceInfo = useAppSelector(selectors.runningServices).find((si) => si.type === serviceType)
   const [internalLoading, setInternalLoading] = useState<boolean>(false)
-
   const enabled = !!serviceInfo
 
   const handleSwitch = async () => {

@@ -9,22 +9,28 @@ import {
   serviceTypeToEarningPerServiceKey,
   serviceTypeToTotalNetworkEarningPerServiceKey,
   SUPPORTED_SERVICES,
+  SUPPORTED_SERVICES_MOBILE,
 } from '../../../../constants/service'
 import { ServiceCard, ServiceEarnings } from './ServiceCard'
 import { tequila } from '../../../../api/tequila'
-import { useFetch } from '../../../../commons/hooks'
+import { useAppSelector, useFetch } from '../../../../commons/hooks'
 import { Prices } from './types'
 import { PRICE_EMPTY } from './instances'
 import { PRICE_EARNINGS_PER_SERVICE } from '../../../../constants/instances'
 import { useMemo } from 'react'
 import { myst } from '../../../../commons/mysts'
+import { configs } from '../../../../commons/config'
+import { selectors } from '../../../../redux/selectors'
+import FEATURES from '../../../../commons/features'
 
 const { api } = tequila
 
 export const Services = () => {
+  const config = useAppSelector(selectors.currentConfig)
   const [prices = [], loadingPrices] = useFetch(() => api.pricesCurrentV2())
   const [earnings = PRICE_EARNINGS_PER_SERVICE, loadingEarnings] = useFetch(() => api.provider.earningsPerService())
-
+  const publicDisabled = configs.isFeatureEnabled(config, FEATURES.MOBILE_PROVIDER.name)
+  const servicesToShow = publicDisabled ? SUPPORTED_SERVICES_MOBILE : SUPPORTED_SERVICES
   const findPrice = (serviceType: string): Prices => {
     const price = prices.find((p) => p.serviceType === serviceType)
     return price
@@ -70,7 +76,7 @@ export const Services = () => {
 
   return (
     <>
-      {SUPPORTED_SERVICES.map((sd) => (
+      {servicesToShow.map((sd) => (
         <ServiceCard
           loading={loadingPrices || loadingEarnings}
           dataTestId={sd.dataTestId}

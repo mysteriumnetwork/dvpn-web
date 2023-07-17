@@ -90,8 +90,10 @@ export const NAT_TYPE_RESPONSE_EMPTY: NatTypeResponse = Object.freeze({
 export const PRICE_EARNINGS_PER_SERVICE: EarningsPerServiceResponse = Object.freeze({
   publicTokens: TOKENS_EMPTY,
   dataTransferTokens: TOKENS_EMPTY,
+  dvpnTokens: TOKENS_EMPTY,
   scrapingTokens: TOKENS_EMPTY,
   totalTokens: TOKENS_EMPTY,
+  totalDvpnTokens: TOKENS_EMPTY,
   totalPublicTokens: TOKENS_EMPTY,
   totalDataTransferTokens: TOKENS_EMPTY,
   totalScrapingTokens: TOKENS_EMPTY,
