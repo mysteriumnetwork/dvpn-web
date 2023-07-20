@@ -26,8 +26,11 @@ import { store } from './store'
 import errors from '../commons/errors'
 import { Config } from 'mysterium-vpn-js'
 import termsPackageJson from '@mysteriumnetwork/terms/package.json'
+import localStorageWrapper from '../commons/localStorageWrapper'
+import { localStorageKeys } from '../constants/local-storage.keys'
 
 const { api } = tequila
+const { FEATURES } = localStorageKeys
 
 const updateTermsStoreAsync = async () => {
   const { dispatch } = store
@@ -58,6 +61,10 @@ const fetchIdentityAndRelativeInformationAsync = async () => {
 const fetchConfigAsync = async () => {
   const { dispatch } = store
   const config = await api.config()
+  console.log('configChange')
+  if (config.data.ui.features) {
+    localStorageWrapper.writeSettings(FEATURES, config.data.ui.features)
+  }
   dispatch(updateConfigStore(config))
 }
 
@@ -76,7 +83,6 @@ const fetchChainSummaryAsync = async () => {
     errors.parseToastError(err)
   }
 }
-
 const loadAppStateAfterAuthenticationAsync = async ({ isDefaultPassword }: { isDefaultPassword: boolean }) => {
   await store.dispatch(updateLoadingStore(true))
   await store.dispatch(

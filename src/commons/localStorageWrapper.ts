@@ -17,7 +17,7 @@ import { updateNodeUISettingsStore } from '../redux/app.slice'
 const { SETTINGS } = localStorageKeys
 
 const root = (): { [key: string]: any } => {
-  return store.getState().app.nodeUISettings || {}
+  return get(SETTINGS) || {}
 }
 
 const get = <T>(key: string): T | undefined => {

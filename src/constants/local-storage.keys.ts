@@ -7,9 +7,11 @@
 const INTERCOM_USER_ID = 'node-ui-intercom-user-id'
 const UI_THEME = 'ui-theme'
 const SETTINGS = 'NODE_UI_SETTINGS'
+const FEATURES = 'features'
 
 export const localStorageKeys = {
   INTERCOM_USER_ID,
   UI_THEME,
   SETTINGS,
+  FEATURES,
 }
