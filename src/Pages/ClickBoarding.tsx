@@ -22,11 +22,6 @@ import { Button } from '../Components/Inputs/Button'
 const AUTHORIZATION_GRANT = 'authorizationGrant'
 const { verifyOnboardingGrant } = tequila
 
-interface ErrorState {
-  type?: 'identity' | 'wallet' | 'apiKey' | 'server'
-  message?: string
-}
-
 const Spinner = styled(CircularSpinner)`
   height: 50px;
   width: 50px;
@@ -43,7 +38,7 @@ export const ClickBoarding = () => {
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const { id, registrationStatus } = useAppSelector(selectors.currentIdentity)
-  const [error, setError] = useState<ErrorState>({})
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const autoOnBoard = async () => {
@@ -60,7 +55,10 @@ export const ClickBoarding = () => {
       if ([IdentityRegistrationStatus.InProgress, IdentityRegistrationStatus.Registered].includes(registrationStatus)) {
         //Error - identity already registered or in progress
         setLoading(false)
-        setError({ type: 'identity', message: 'Identity was already registered or registration is in progress!' })
+        setError('Identity was already registered or registration is in progress!')
+        setTimeout(() => {
+          navigate(ROUTES.HOME, { replace: true })
+        }, 3000)
         return
       }
 
@@ -68,14 +66,20 @@ export const ClickBoarding = () => {
         //Error - no api key??
         setLoading(false)
         //TODO: Refine error messages
-        setError({ type: 'apiKey', message: 'Something bad happened. Please retry.' })
+        setError('Something bad happened. Please retry.')
+        setTimeout(() => {
+          navigate(ROUTES.HOME, { replace: true })
+        }, 3000)
         return
       }
 
       if (!info.walletAddress) {
         //Error - no wallet
         setLoading(false)
-        setError({ type: 'wallet', message: 'Please set your wallet on MystNodes to onboard your node' })
+        setError('Please set your wallet on MystNodes to onboard your node')
+        setTimeout(() => {
+          navigate(ROUTES.HOME, { replace: true })
+        }, 3000)
         return
       }
 
@@ -90,7 +94,7 @@ export const ClickBoarding = () => {
     } catch (e: unknown) {
       setLoading(false)
       // TODO: Refine error messages
-      setError({ type: 'server', message: 'Something bad happened, please retry' })
+      setError('Something bad happened, please retry')
     }
   }
 
@@ -114,20 +118,7 @@ export const ClickBoarding = () => {
           <Spinner />
         </Row>
       )}
-      {error.message && (
-        <>
-          <Error>{error.message}</Error>
-          {/*TODO: Consider timeout instead of button?*/}
-          <Button
-            label={error.type === 'identity' ? 'Go Back' : 'Try Again'}
-            rounded
-            size="large"
-            onClick={() => {
-              navigate(ROUTES.HOME, { replace: true })
-            }}
-          />
-        </>
-      )}
+      {error && <Error>{error}</Error>}
     </div>
   )
 }
