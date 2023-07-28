@@ -8,11 +8,8 @@
 import _ from 'lodash'
 import { Config } from 'mysterium-vpn-js'
 import toasts from './toasts'
-import localStorageWrapper from './localStorageWrapper'
-import { localStorageKeys } from '../constants/local-storage.keys'
 
 const { toastError } = toasts
-const { FEATURES } = localStorageKeys
 
 export const SUPPORTED_TRAVERSALS = ['manual', 'upnp', 'holepunching']
 
@@ -128,10 +125,6 @@ const uiFeatures = (c: Config): string[] => {
   const configFeatures = _.get<Config, any>(c, 'data.ui.features')
   if (configFeatures) {
     return configFeatures.split(',')
-  }
-  const lsFeaturesString = localStorageWrapper.getSettings(FEATURES)
-  if (lsFeaturesString) {
-    return lsFeaturesString.toString().split(',')
   }
   return []
 }
