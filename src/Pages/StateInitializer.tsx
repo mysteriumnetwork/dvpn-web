@@ -33,7 +33,7 @@ export const StateInitializer = ({ children }: Props) => {
     ;(async () => {
       const isDefaultPassword = await tequila.loginWithDefaultCredentials()
       let isAuthenticated = isDefaultPassword
-
+      await complexActions.loadUIFeaturesBeforeAuthentificationAsync()
       //check if there is a token cookie saved
       if (!isAuthenticated) {
         isAuthenticated = await tequila.isUserAuthenticated()

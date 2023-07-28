@@ -102,6 +102,8 @@ const initClaim = async (redirectUrl: string = urls.currentOrigin(routes.CLAIM))
 const loginWithAuthorizationGrant = async ({ authorizationGrantToken }: { authorizationGrantToken: string }) =>
   await http.post('/auth/login-mystnodes', { authorization_grant: authorizationGrantToken })
 
+const getUIFeatures = async () => await http.get('/config/ui/features').then((r) => r.data)
+
 export const tequila = {
   api: tequilaClient,
   http,
@@ -109,6 +111,7 @@ export const tequila = {
   isUserAuthenticated,
   startAllServices,
   stopAllServices,
+  getUIFeatures,
   restartRunningServices,
   initSSOAuth,
   initClaim,

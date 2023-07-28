@@ -26,11 +26,8 @@ import { store } from './store'
 import errors from '../commons/errors'
 import { Config } from 'mysterium-vpn-js'
 import termsPackageJson from '@mysteriumnetwork/terms/package.json'
-import localStorageWrapper from '../commons/localStorageWrapper'
-import { localStorageKeys } from '../constants/local-storage.keys'
 
 const { api } = tequila
-const { FEATURES } = localStorageKeys
 
 const updateTermsStoreAsync = async () => {
   const { dispatch } = store
@@ -61,10 +58,6 @@ const fetchIdentityAndRelativeInformationAsync = async () => {
 const fetchConfigAsync = async () => {
   const { dispatch } = store
   const config = await api.config()
-  console.log('configChange')
-  if (config.data.ui.features) {
-    localStorageWrapper.writeSettings(FEATURES, config.data.ui.features)
-  }
   dispatch(updateConfigStore(config))
 }
 
@@ -128,7 +121,11 @@ const startContinuouslyUpdatingFees = async () => {
     setTimeout(() => startContinuouslyUpdatingFees(), SECOND * 10)
   }
 }
-
+const loadUIFeaturesBeforeAuthentificationAsync = async () => {
+  await tequila.getUIFeatures().then((r) => {
+    store.dispatch(updateConfigStore({ data: { ui: { features: r } } }))
+  })
+}
 const refreshStoreConfig = async (): Promise<Config> => {
   return await api.config().then((config) => {
     store.dispatch(updateConfigStore(config))
@@ -184,6 +181,7 @@ const setUserConfig = async (data: any): Promise<Config> => {
 const setChatOpened = (b: boolean) => store.dispatch(updateChatOpenedStore(b))
 
 const complexActions = {
+  loadUIFeaturesBeforeAuthentificationAsync,
   loadAppStateAfterAuthenticationAsync,
   setTrafficShaping,
   setUserConfig,
