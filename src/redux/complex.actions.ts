@@ -128,7 +128,11 @@ const startContinuouslyUpdatingFees = async () => {
     setTimeout(() => startContinuouslyUpdatingFees(), SECOND * 10)
   }
 }
-
+const loadUIFeaturesBeforeAuthentificationAsync = async () => {
+  await tequila.getUIFeatures().then((r) => {
+    store.dispatch(updateConfigStore({ data: { ui: { features: r } } }))
+  })
+}
 const refreshStoreConfig = async (): Promise<Config> => {
   return await api.config().then((config) => {
     store.dispatch(updateConfigStore(config))
@@ -184,6 +188,7 @@ const setUserConfig = async (data: any): Promise<Config> => {
 const setChatOpened = (b: boolean) => store.dispatch(updateChatOpenedStore(b))
 
 const complexActions = {
+  loadUIFeaturesBeforeAuthentificationAsync,
   loadAppStateAfterAuthenticationAsync,
   setTrafficShaping,
   setUserConfig,
