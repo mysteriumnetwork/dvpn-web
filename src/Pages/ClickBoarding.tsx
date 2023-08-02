@@ -17,7 +17,6 @@ import { IdentityRegistrationStatus } from 'mysterium-vpn-js'
 import complexActions from '../redux/complex.actions'
 import { CircularSpinner } from '../Components/CircularSpinner/CircularSpinner'
 import styled from 'styled-components'
-import { Button } from '../Components/Inputs/Button'
 
 const AUTHORIZATION_GRANT = 'authorizationGrant'
 const { verifyOnboardingGrant } = tequila
