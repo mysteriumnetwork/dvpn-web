@@ -84,7 +84,7 @@ const Wrapper = styled.div`
     font-size: ${({ theme }) => theme.common.fontSizeSmall};
   }
   @media ${devices.tablet} {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 `
 
