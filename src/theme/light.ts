@@ -20,6 +20,10 @@ const light: Omit<Theme, 'common'> = {
   bgTransactionPageCard: themeCommon.colorWhite,
   bgTransactionPageCardBoxShadow: '0px 5px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.02),
 
+  changePassword: {
+    separatorColor: themeCommon.colorGrayBlue + alphaToHex(0.45),
+  },
+
   navigation: {
     bg: themeCommon.bgMysterium,
     bgContent: themeCommon.colorLightBlue,
