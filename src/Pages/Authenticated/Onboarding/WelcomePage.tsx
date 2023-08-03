@@ -19,8 +19,8 @@ const Logo = styled(LoginLogo)`
   height: 500px;
   width: 500px;
   @media ${devices.tablet} {
-    height: 300px;
-    width: 300px;
+    height: 250px;
+    width: 250px;
   }
   @media ${devices.mobileS} {
     display: none;
@@ -41,7 +41,7 @@ const Title = styled.h1`
   line-height: 88px;
   font-size: 80px;
   @media ${devices.tablet} {
-    font-size: 60px;
+    font-size: 50px;
     line-height: 60px;
   }
   @media ${devices.mobileS} {
@@ -64,7 +64,7 @@ const SubTitle = styled.h1`
   line-height: 80px;
   color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.tablet} {
-    font-size: 60px;
+    font-size: 40px;
     line-height: 60px;
   }
 `
