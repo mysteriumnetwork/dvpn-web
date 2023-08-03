@@ -89,7 +89,7 @@ export const ClickBoarding = () => {
       await tequila.api.identityRegister(id, { beneficiary: info.walletAddress, stake: 0 })
       await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
       setLoading(false)
-      navigate(ROUTES.DASHBOARD, { replace: true })
+      navigate(ROUTES.DASHBOARD, { replace: true, state: { generatedPassword: newPassword } })
     } catch (e: unknown) {
       setLoading(false)
       // TODO: Refine error messages

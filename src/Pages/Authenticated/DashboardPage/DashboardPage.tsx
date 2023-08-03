@@ -14,6 +14,7 @@ import { LiveSessions } from './LiveSessions/LiveSessions'
 import { useMediaQuery } from 'react-responsive'
 import { media } from '../../../commons/media'
 import { Activity } from '../Components/Activity/Activity'
+import { ConfirmationDialog } from '../../../Components/ConfirmationDialog/ConfirmationDialog'
 
 const { isDesktopQuery } = media
 
@@ -34,6 +35,7 @@ const DashboardPage = () => {
       <LayoutRow>
         <LiveSessions />
       </LayoutRow>
+      <ConfirmationDialog title="Your password" message="" show={false} />
     </Layout>
   )
 }

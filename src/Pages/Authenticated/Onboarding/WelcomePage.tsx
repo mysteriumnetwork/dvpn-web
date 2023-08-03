@@ -73,7 +73,7 @@ const Card = styled.div`
   background-color: ${({ theme }) => theme.onboarding.bgCard};
   box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
-  height: 550px;
+  //height: 550px;
   gap: 100px;
   display: flex;
   align-items: center;
@@ -83,7 +83,7 @@ const Card = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
-    height: 600px;
+    height: fit-content;
     width: 90%;
     padding: 10px;
     margin-top: 20px;
@@ -97,10 +97,10 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin-bottom: 40px;
   @media ${devices.tablet} {
     align-self: flex-start;
     padding: 10px;
+    margin-bottom: 0;
   }
 `
 
@@ -112,9 +112,6 @@ const ButtonRow = styled.div`
 `
 
 const Page = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;

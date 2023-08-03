@@ -25,6 +25,10 @@ export type Theme = {
   bgTransactionPageCardBoxShadow: string
   bgSettlementMobile: string
 
+  generatedPassword: {
+    textColor: string
+  }
+
   changePassword: {
     separatorColor: string
   }

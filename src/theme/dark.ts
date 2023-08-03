@@ -23,6 +23,10 @@ const dark: Omit<Theme, 'common'> = {
 
   bgTransactionPageCardBoxShadow: '0px 10px 20px ' + themeCommon.yankeeBlue + alphaToHex(0.4),
 
+  generatedPassword: {
+    textColor: themeCommon.colorWhite,
+  },
+
   changePassword: {
     separatorColor: themeCommon.colorLightBlue,
   },
