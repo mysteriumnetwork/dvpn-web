@@ -139,7 +139,7 @@ const TOS = styled.div`
   display: flex;
   gap: 5px;
   margin-top: 20px;
-
+  color: ${({ theme }) => theme.text.colorMain};
   @media ${devices.tablet} {
     margin-top: 40px;
     margin-bottom: 20px;
