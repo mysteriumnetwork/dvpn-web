@@ -9,11 +9,19 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ConfirmationDialog } from '../../../../Components/ConfirmationDialog/ConfirmationDialog'
+import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
 
 const Password = styled.div`
-  font-size: ${({ theme }) => theme.common.fontSizeHumongous};
+  font-size: ${({ theme }) => theme.common.fontSizeBigger};
   font-weight: bold;
   color: ${({ theme }) => theme.generatedPassword.textColor};
+`
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 `
 
 const Warning = styled.div`
@@ -46,6 +54,10 @@ export const GeneratedPasswordPopUp = () => {
     }
   }, [generatedPassword])
 
+  if (!generatedPassword) {
+    return <></>
+  }
+
   return (
     <ConfirmationDialog
       hideCancel
@@ -53,8 +65,11 @@ export const GeneratedPasswordPopUp = () => {
       show={show}
       message={
         <Column>
-          <Password>{generatedPassword}</Password>
-          <Warning>Please write this password down or use it to change to a new password in settings page.</Warning>
+          <Row>
+            <Password>{generatedPassword}</Password>
+            <CopyToClipboard text={generatedPassword} />
+          </Row>
+          <Warning>Please write down the password or use it to change to a new password in settings page.</Warning>
         </Column>
       }
       title="Your NodeUI Password"
