@@ -24,6 +24,7 @@ import { ReactComponent as LoginLogo } from '../../assets/images/onboarding/logi
 import { devices } from '../../theme/themes'
 import complexActions from '../../redux/complex.actions'
 import { MystnodesSSO } from './MystnodesSSO'
+import { DOCS_FORGOT_PASSWORD } from '../../constants/urls'
 
 const { api } = tequila
 
@@ -204,11 +205,7 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
             />
 
             <Footer>
-              <Link
-                data-test-id="LoginPage.forgotPassword"
-                href="https://docs.mysterium.network/troubleshooting/forgot-password"
-                target="_blank"
-              >
+              <Link data-test-id="LoginPage.forgotPassword" href={DOCS_FORGOT_PASSWORD} target="_blank">
                 Forgot password?
               </Link>
             </Footer>

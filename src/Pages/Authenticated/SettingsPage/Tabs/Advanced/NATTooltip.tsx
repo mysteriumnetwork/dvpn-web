@@ -12,6 +12,7 @@ import { nat2Human } from './utils'
 import { Link } from '../../../../../Components/Common/Link'
 import { InfoIcon } from '../../../../../Components/Icons/Icons'
 import { Tooltip } from '../../../../../Components/Tooltip/Tooltip'
+import { DOCS_NAT_FIX } from '../../../../../constants/urls'
 
 const TooltipContainer = styled.div`
   display: flex;
@@ -54,7 +55,7 @@ const description = (type: NATType): ReactNode => {
         <div>
           Your node can accept connections from some of the users, but cannot receive connections from users whose NAT
           type is symmetric. Please see our{' '}
-          <Link href="https://docs.mysterium.network/troubleshooting/nat-traversal" target="_blank" rel="noreferrer">
+          <Link href={DOCS_NAT_FIX} target="_blank" rel="noreferrer">
             documentation
           </Link>{' '}
           for further information.
@@ -65,7 +66,7 @@ const description = (type: NATType): ReactNode => {
         <div>
           Your node can accept connections from some of the users, but cannot receive connections from users whose NAT
           type are symmetric and port-restricted cone. Please see our{' '}
-          <Link href="https://docs.mysterium.network/troubleshooting/nat-traversal" target="_blank" rel="noreferrer">
+          <Link href={DOCS_NAT_FIX} target="_blank" rel="noreferrer">
             documentation
           </Link>{' '}
           for further information.
