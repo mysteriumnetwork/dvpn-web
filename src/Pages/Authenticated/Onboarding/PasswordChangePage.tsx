@@ -336,7 +336,7 @@ export const PasswordChangePage = () => {
               <Heading
                 title="Connect Your Node"
                 titleCenter
-                description="The easy way to set up and start running your node.  It will guide you through the onboarding, node claiming, and password-setting process with just a few clicks of a button."
+                description="The easy way to set up and start running your node. It will guide you through the onboarding, node claiming, and password-setting process with just a few clicks of a button."
               />
               <ButtonRow>
                 <Button type="button" size="large" rounded label="Start" onClick={getLinkAndRedirect} />

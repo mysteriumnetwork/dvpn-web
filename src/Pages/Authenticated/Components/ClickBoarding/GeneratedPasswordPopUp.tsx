@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { ConfirmationDialog } from '../../../../Components/ConfirmationDialog/ConfirmationDialog'
 import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
@@ -37,6 +37,7 @@ const Column = styled.div`
 export const GeneratedPasswordPopUp = () => {
   const [show, setShow] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   const resolveGeneratedPassword = (): string | undefined => {
     if (typeof location.state !== 'object') {
@@ -73,7 +74,10 @@ export const GeneratedPasswordPopUp = () => {
         </Column>
       }
       title="Your NodeUI Password"
-      onConfirm={() => setShow(false)}
+      onConfirm={() => {
+        setShow(false)
+        navigate(location.pathname, { replace: true })
+      }}
     ></ConfirmationDialog>
   )
 }
