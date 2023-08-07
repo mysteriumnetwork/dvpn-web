@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { ConfirmationDialog } from '../../../../Components/ConfirmationDialog/ConfirmationDialog'
-import CopyToClipboard from '../../../../Components/CopyToClipboard/CopyToClipboard'
 
 const Password = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeBigger};
@@ -68,7 +67,6 @@ export const GeneratedPasswordPopUp = () => {
         <Column>
           <Row>
             <Password>{generatedPassword}</Password>
-            <CopyToClipboard text={generatedPassword} />
           </Row>
           <Warning>Please write down the password or use it to change to a new password in settings page.</Warning>
         </Column>
