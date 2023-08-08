@@ -18,28 +18,23 @@ import { tequila } from '../../../api/tequila'
 import errors from '../../../commons/errors'
 import toasts from '../../../commons/toasts'
 import { validatePassword } from '../../../commons/passwords'
-import { Checkbox } from '../../../Components/Inputs/Checkbox'
 import Background from '../../../assets/images/onboarding/background.png'
-import { ReactComponent as Lock } from '../../../assets/images/onboarding/password.svg'
+import { ReactComponent as LockIcon } from '../../../assets/images/onboarding/password.svg'
 import { devices } from '../../../theme/themes'
-import { TOSModal } from '../Components/TOSModal/TOSModal'
 import { Link } from '../../../Components/Common/Link'
 import complexActions from '../../../redux/complex.actions'
 import { WelcomePage } from './WelcomePage'
-import { alphaToHex } from '../../../theme/themeCommon'
+import { Heading } from './Password/Heading'
+import { urls } from '../../../commons/urls'
+import routes from '../../../constants/routes'
+
 const { api } = tequila
-const Logo = styled(Lock)`
-  height: 500px;
-  width: 500px;
-  > rect {
-    fill: ${({ theme }) => theme.onboarding.bgSvg};
-  }
-  @media ${devices.tablet} {
-    height: 250px;
-    width: 250px;
-  }
+
+const Lock = styled(LockIcon)`
+  height: 200px;
+  width: 200px;
 `
-const LogoContainer = styled.div`
+const Logo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,30 +45,20 @@ const LogoContainer = styled.div`
     display: none;
   }
 `
-const Title = styled.h1`
-  color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${({ theme }) => theme.common.fontSizeHuge};
-  @media ${devices.tablet} {
-    font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  }
-`
+
 const Divider = styled.div`
-  border-bottom: 1px solid ${({ theme }) => `${theme.common.colorGrayBlue}${alphaToHex(0.25)}`};
+  height: 20px;
+  @media ${devices.tablet} {
+    height: unset;
+  }
 `
 
-const Comment = styled.p`
-  color: ${({ theme }) => theme.text.colorMain};
-  @media ${devices.tablet} {
-    font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  }
-`
 const Page = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100vh;
   width: 100vw;
-  align-items: center;
   justify-content: center;
   background-image: url(${Background});
   background-color: ${({ theme }) => theme.onboarding.bgOverlay};
@@ -83,34 +68,23 @@ const Page = styled.div`
     width: 100%;
   }
 `
-const Footer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  @media ${devices.tablet} {
-    gap: 5px;
-  }
-`
+
 const PasswordInputs = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
 `
 
-const LinkButton = styled.div`
-  color: ${({ theme }) => theme.common.colorKey};
-  font-weight: 500;
-  text-decoration: none;
-  margin-left: 0.2em;
-  cursor: pointer;
-`
-
-const Row = styled.div`
+const Wrapper = styled.div`
   display: flex;
   gap: 5px;
   color: ${({ theme }) => theme.text.colorMain};
+
   @media ${devices.mobileS} {
     font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  }
+  @media ${devices.tablet} {
+    flex-direction: column-reverse;
   }
 `
 
@@ -118,34 +92,53 @@ const Card = styled.div`
   background-color: ${({ theme }) => theme.onboarding.bgCard};
   box-shadow: 0 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
-  height: 550px;
-  gap: 100px;
   display: flex;
 
-  align-items: center;
-  padding: 40px;
+  padding: 10px 40px 40px 40px;
+
+  flex-direction: column;
+
   @media ${devices.tablet} {
-    flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
-    height: 750px;
+    //height: 750px;
     width: 350px;
     padding: 10px;
   }
+
   @media ${devices.mobileS} {
     width: 275px;
     height: max-content;
     padding: 20px 5px;
   }
 `
-const Container = styled.div`
+
+const SectionSeparator = styled.div`
+  border-left: 1px solid ${({ theme }) => theme.changePassword.separatorColor};
+  height: 90%;
+  @media ${devices.tablet} {
+    border-left: unset;
+    border-bottom: 1px solid ${({ theme }) => theme.changePassword.separatorColor};
+    margin: 0 10px 20px 0;
+  }
+`
+
+const Section = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+
+  justify-content: center;
+
+  gap: 10px;
   height: 100%;
-  max-width: 600px;
+  max-width: 800px;
   min-width: 400px;
+
+  width: 50%;
+
+  padding: 0 34px 0 34px;
+
   @media ${devices.tablet} {
     justify-content: space-between;
     padding: 0 10px;
@@ -154,12 +147,16 @@ const Container = styled.div`
     margin-bottom: 10px;
   }
 `
+
 const ButtonRow = styled.div`
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
   @media ${devices.tablet} {
     margin-bottom: 20px;
   }
 `
+
 const useQuery = () => {
   const { search } = useLocation()
   return React.useMemo(() => new URLSearchParams(search), [search])
@@ -172,7 +169,6 @@ interface State {
   mmnApiKey: string
   mmnError: string
   passwordError: string
-  showTos: boolean
 }
 
 const INITIAL_STATE: State = {
@@ -182,7 +178,6 @@ const INITIAL_STATE: State = {
   mmnApiKey: '',
   mmnError: '',
   passwordError: '',
-  showTos: false,
 }
 
 export const PasswordChangePage = () => {
@@ -206,7 +201,6 @@ export const PasswordChangePage = () => {
   const handleMmnApiKey = (value: string) => setState((p) => ({ ...p, mmnApiKey: value }))
   const setMmnError = (value: string) => setState((p) => ({ ...p, mmnError: value }))
   const handlePasswordError = (value: string) => setState((p) => ({ ...p, passwordError: value }))
-  const showTos = (b: boolean = true) => setState((p) => ({ ...p, showTos: b }))
 
   const handleClaim = (value: string) => {
     handleMmnApiKey(value)
@@ -222,6 +216,12 @@ export const PasswordChangePage = () => {
   const shouldClaim = state.mmnApiKey.length > 0
   const passwordError = state.passwordError.length > 0
   const mmnError = state.mmnError.length > 0
+
+  const getLinkAndRedirect = async () => {
+    const { link } = await tequila.initClickBoarding(urls.currentOrigin(routes.CLICKBOARDING))
+    window.location.href = link
+  }
+
   const handleSubmit = async () => {
     const validationResult = validatePassword(state.password, state.confirmPassword)
     if (!validationResult.success) {
@@ -258,21 +258,23 @@ export const PasswordChangePage = () => {
     setLoading(false)
   }
 
-  return (
-    <>
-      {showWelcomePage && <WelcomePage close={closeWelcomePage} />}
-      <Form onSubmit={handleSubmit}>
-        <Page>
-          <Card>
-            <LogoContainer>
-              <Logo />
-            </LogoContainer>
-            <Container>
-              <Footer>
-                <Title>Create Password</Title>
-                <Comment>Please set your Node UI password. Your password must contain at least 10 characters.</Comment>
-              </Footer>
+  if (showWelcomePage) {
+    return <WelcomePage close={closeWelcomePage} toAgreed={state.agreeTos} onAgreeTos={handleTOS} />
+  }
 
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Page>
+        <Card>
+          <Logo>
+            <Lock />
+          </Logo>
+          <Wrapper>
+            <Section>
+              <Heading
+                title="Create Password"
+                description="Please set your Node UI password. Your password must contain at least 10 characters."
+              />
               <PasswordInputs>
                 <InputGroup
                   error={state.passwordError}
@@ -295,51 +297,54 @@ export const PasswordChangePage = () => {
                     />
                   }
                 />
-                <Row>
-                  <Checkbox checked={state.agreeTos} onChange={handleTOS} /> I agree to
-                  <LinkButton onClick={() => showTos()}>Terms and Conditions</LinkButton>
-                </Row>
               </PasswordInputs>
               <Divider />
-              <Footer>
-                <Title>Connect your node to mystnodes.com</Title>
-                <Comment>
-                  To manage your node and view statistics on{' '}
-                  <Link href="https://mystnodes.com/me" target="_blank">
-                    mystnodes.com
-                  </Link>
-                  , enter your API key obtained from{' '}
-                  <Link href="https://mystnodes.com/" target="_blank">
-                    mystnodes.com/me
-                  </Link>
-                  . As a first-time user, you may be eligible for a free node registration.
-                </Comment>
-                <InputGroup
-                  error={state.mmnError}
-                  fluid
-                  input={
-                    <TextField
-                      disabled={mmnApiKey !== null}
-                      error={mmnError}
-                      value={state.mmnApiKey}
-                      onChange={handleClaim}
-                    />
-                  }
-                />
-              </Footer>
-            </Container>
-          </Card>
-          <ButtonRow>
-            <Button
-              size="large"
-              rounded
-              loading={loading}
-              label={state.claim ? 'Set Password and Claim' : 'Set password'}
-            />
-          </ButtonRow>
-        </Page>
-      </Form>
-      <TOSModal show={state.showTos} hideAgree onClose={() => showTos(false)} onCloseLabel="Close" />
-    </>
+              <Heading
+                title="Connect your node to mystnodes.com"
+                description={
+                  <>
+                    To manage your node and view statistics on{' '}
+                    <Link href="https://mystnodes.com/me" target="_blank">
+                      mystnodes.com
+                    </Link>
+                    , enter your API key obtained from{' '}
+                    <Link href="https://mystnodes.com/" target="_blank">
+                      mystnodes.com/me
+                    </Link>
+                    . As a first-time user, you may be eligible for a free node registration.
+                  </>
+                }
+              />
+              <InputGroup
+                error={state.mmnError}
+                fluid
+                input={
+                  <TextField
+                    disabled={mmnApiKey !== null}
+                    error={mmnError}
+                    value={state.mmnApiKey}
+                    onChange={handleClaim}
+                  />
+                }
+              />
+              <ButtonRow>
+                <Button size="large" rounded loading={loading} label={state.claim ? 'Confirm and Claim' : 'Confirm'} />
+              </ButtonRow>
+            </Section>
+            <SectionSeparator />
+            <Section>
+              <Heading
+                title="Connect Your Node"
+                titleCenter
+                description="The easy way to set up and start running your node. It will guide you through the onboarding, node claiming, and password-setting process with just a few clicks of a button."
+              />
+              <ButtonRow>
+                <Button type="button" size="large" rounded label="Start" onClick={getLinkAndRedirect} />
+              </ButtonRow>
+            </Section>
+          </Wrapper>
+        </Card>
+      </Page>
+    </Form>
   )
 }

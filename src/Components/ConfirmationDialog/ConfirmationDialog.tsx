@@ -7,6 +7,7 @@
 import styled from 'styled-components'
 import { Button } from '../Inputs/Button'
 import zIndexes from '../../constants/z-indexes'
+import { ReactNode } from 'react'
 
 const PageOverlay = styled.div`
   position: fixed;
@@ -66,7 +67,7 @@ const Controls = styled.div`
 
 interface Props {
   title: string
-  message: string
+  message: ReactNode
   show: boolean
   onConfirm?: () => void
   onConfirmLabel?: string
@@ -74,6 +75,7 @@ interface Props {
   onCancelLabel?: string
   loading?: boolean
   disableBackdrop?: boolean
+  hideCancel?: boolean
 }
 
 export const ConfirmationDialog = ({
@@ -86,6 +88,7 @@ export const ConfirmationDialog = ({
   disableBackdrop,
   onConfirmLabel,
   onCancelLabel,
+  hideCancel,
 }: Props) => {
   if (!show) {
     return <></>
@@ -100,13 +103,15 @@ export const ConfirmationDialog = ({
           <Message>{message}</Message>
           <FlexGrow />
           <Controls>
-            <Button
-              disabled={loading}
-              label={onCancelLabel ?? 'Cancel'}
-              variant="outlined"
-              rounded
-              onClick={onCancel}
-            />
+            {!hideCancel && (
+              <Button
+                disabled={loading}
+                label={onCancelLabel ?? 'Cancel'}
+                variant="outlined"
+                rounded
+                onClick={onCancel}
+              />
+            )}
             <Button loading={loading} label={onConfirmLabel ?? 'OK'} rounded onClick={onConfirm} />
           </Controls>
         </Container>

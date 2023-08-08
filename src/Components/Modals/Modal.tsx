@@ -206,7 +206,7 @@ export const Modal = ({
     <>
       {!isMobile && <PageOverlay onClick={() => !disableBackdrop && onClickX && onClickX()} />}
 
-      <StyledModal data-test-id={dataTestId} $size={size} $zIndex={zIndex}>
+      <StyledModal $size={size} $zIndex={zIndex}>
         <Container>
           {loading && (
             <SpinnerOverlay>

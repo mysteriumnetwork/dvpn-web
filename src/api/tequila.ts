@@ -96,6 +96,9 @@ export type LinkResponse = {
 const initSSOAuth = async (redirectUrl: string): Promise<LinkResponse> =>
   http.get<LinkResponse>(`/auth/login-mystnodes?redirect_uri=${encodeURIComponent(redirectUrl)}`).then((r) => r.data)
 
+const initClickBoarding = async (redirectUrl: string): Promise<LinkResponse> =>
+  http.get<LinkResponse>(`/mmn/onboarding?redirect_uri=${encodeURIComponent(redirectUrl)}`).then((r) => r.data)
+
 const initClaim = async (redirectUrl: string = urls.currentOrigin(routes.CLAIM)): Promise<LinkResponse> =>
   http.get<LinkResponse>(`/mmn/claim-link?redirect_uri=${encodeURIComponent(redirectUrl)}`).then((r) => r.data)
 
@@ -103,6 +106,20 @@ const loginWithAuthorizationGrant = async ({ authorizationGrantToken }: { author
   await http.post('/auth/login-mystnodes', { authorization_grant: authorizationGrantToken })
 
 const getUIFeatures = async () => await http.get('/config/ui/features').then((r) => r.data)
+
+export type LWAGResponse = {
+  apiKey: string
+  walletAddress?: string
+}
+
+const verifyOnboardingGrant = async ({
+  authorizationGrantToken,
+}: {
+  authorizationGrantToken: string
+}): Promise<LWAGResponse> =>
+  await http
+    .post<LWAGResponse>('/mmn/onboarding/verify-grant', { authorization_grant: authorizationGrantToken })
+    .then((r) => r.data)
 
 export const tequila = {
   api: tequilaClient,
@@ -116,4 +133,6 @@ export const tequila = {
   initSSOAuth,
   initClaim,
   loginWithAuthorizationGrant,
+  initClickBoarding,
+  verifyOnboardingGrant,
 }

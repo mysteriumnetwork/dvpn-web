@@ -14,6 +14,7 @@ import { GlobalStyle } from './GlobalStyle'
 import { IntercomLoader } from '../intercom/IntercomLoader'
 import 'react-toastify/dist/ReactToastify.css'
 import { NodeThemeProvider } from './NodeThemeProvider'
+import { GeneratedPasswordPopUp } from './Authenticated/Components/ClickBoarding/GeneratedPasswordPopUp'
 export const App = () => {
   return (
     <NodeThemeProvider>
@@ -25,6 +26,7 @@ export const App = () => {
           <StateInitializer>
             <IntercomLoader />
             <AppRouter />
+            <GeneratedPasswordPopUp />
           </StateInitializer>
         </NodeHealthcheckBarrier>
       </Hotkeys>
