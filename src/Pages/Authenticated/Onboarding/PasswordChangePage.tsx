@@ -27,7 +27,10 @@ import { WelcomePage } from './WelcomePage'
 import { Heading } from './Password/Heading'
 import { urls } from '../../../commons/urls'
 import routes from '../../../constants/routes'
+import { media } from '../../../commons/media'
+import { useMediaQuery } from 'react-responsive'
 
+const { isMobileQuery } = media
 const { api } = tequila
 
 const Lock = styled(LockIcon)`
@@ -128,8 +131,6 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
 
-  justify-content: center;
-
   gap: 10px;
   height: 100%;
   max-width: 800px;
@@ -162,6 +163,30 @@ const useQuery = () => {
   return React.useMemo(() => new URLSearchParams(search), [search])
 }
 
+const SectionTitle = styled.div`
+  font-size: ${({ theme }) => theme.common.fontSizeHumongous};
+  font-weight: 700;
+  color: ${({ theme }) => theme.text.colorSecondary};
+  margin-bottom: 30px;
+  @media ${devices.tablet} {
+    display: none;
+  }
+`
+
+const SectionTitleWithŽygisLogic = styled(SectionTitle)`
+  width: 100%;
+  text-align: center;
+`
+
+const SS = styled.div`
+  width: 100%;
+  display: flex;
+  text-align: center;
+  @media ${devices.tablet} {
+    text-align: left;
+  }
+`
+
 interface State {
   password: string
   confirmPassword: string
@@ -183,7 +208,7 @@ const INITIAL_STATE: State = {
 export const PasswordChangePage = () => {
   const query = useQuery()
   const mmnApiKey = query.get('mmnApiKey')
-
+  const isMobile = useMediaQuery(isMobileQuery)
   const [state, setState] = useState({
     ...INITIAL_STATE,
     claim: mmnApiKey !== null,
@@ -271,6 +296,7 @@ export const PasswordChangePage = () => {
           </Logo>
           <Wrapper>
             <Section>
+              <SectionTitle>Standard Onboarding</SectionTitle>
               <Heading
                 title="Create Password"
                 description="Please set your Node UI password. Your password must contain at least 10 characters."
@@ -333,10 +359,15 @@ export const PasswordChangePage = () => {
             </Section>
             <SectionSeparator />
             <Section>
+              <SectionTitleWithŽygisLogic>Quick Onboarding</SectionTitleWithŽygisLogic>
               <Heading
-                title="Connect Your Node"
-                titleCenter
-                description="The easy way to set up and start running your node. It will guide you through the onboarding, node claiming, and password-setting process with just a few clicks of a button."
+                title={isMobile ? 'Connect Your Node' : undefined}
+                description={
+                  <SS>
+                    The easy way to set up and start running your node. It will guide you through the onboarding, node
+                    claiming, and password-setting process with just a few clicks of a button.
+                  </SS>
+                }
               />
               <ButtonRow>
                 <Button type="button" size="large" rounded label="Start" onClick={getLinkAndRedirect} />

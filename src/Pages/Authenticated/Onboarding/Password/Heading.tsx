@@ -38,7 +38,7 @@ const Comment = styled.p`
 `
 
 type Props = {
-  title: string
+  title?: string
   titleCenter?: boolean
   description: ReactNode
 }
@@ -46,7 +46,7 @@ type Props = {
 export const Heading = ({ title, description, titleCenter }: Props) => {
   return (
     <Header>
-      <Title $centered={titleCenter}>{title}</Title>
+      {title && <Title $centered={titleCenter}>{title}</Title>}
       <Comment>{description}</Comment>
     </Header>
   )
