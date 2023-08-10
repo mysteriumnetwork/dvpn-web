@@ -10,8 +10,6 @@ import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import qs from 'qs'
 import { AxiosInstance } from 'axios'
 import errorInterceptors from './error.interceptors'
-import { urls } from '../commons/urls'
-import routes from '../constants/routes'
 
 const buildAxios = (): AxiosInstance => {
   const instance = new TequilapiClientFactory(
@@ -99,7 +97,7 @@ const initSSOAuth = async (redirectUrl: string): Promise<LinkResponse> =>
 const initClickBoarding = async (redirectUrl: string): Promise<LinkResponse> =>
   http.get<LinkResponse>(`/mmn/onboarding?redirect_uri=${encodeURIComponent(redirectUrl)}`).then((r) => r.data)
 
-const initClaim = async (redirectUrl: string = urls.currentOrigin(routes.CLAIM)): Promise<LinkResponse> =>
+const initClaim = async (redirectUrl: string): Promise<LinkResponse> =>
   http.get<LinkResponse>(`/mmn/claim-link?redirect_uri=${encodeURIComponent(redirectUrl)}`).then((r) => r.data)
 
 const loginWithAuthorizationGrant = async ({ authorizationGrantToken }: { authorizationGrantToken: string }) =>
