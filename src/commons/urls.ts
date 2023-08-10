@@ -7,14 +7,12 @@
 import { Config } from 'mysterium-vpn-js'
 import { configs } from './config'
 import FEATURES from './features'
-import { ANDROID_DEEPLINK } from '../constants/urls'
-import routes from '../constants/routes'
 
 const current = (path?: string): string => `${new URL(window.location.href).origin}${path ? `/#${path}` : ''}`
 
-const featureAwareCurrentOrigin = (config: Config): string => {
+const featureAwareCurrentOrigin = (config: Config, route: string, deeplink: string): string => {
   const deeplinkEnabled = configs.isFeatureEnabled(config, FEATURES.SSO_DEEPLINK.name)
-  return deeplinkEnabled ? ANDROID_DEEPLINK : current(routes.AUTH_SSO)
+  return deeplinkEnabled ? deeplink : current(route)
 }
 
 export const urls = {

@@ -11,6 +11,8 @@ import errors from '../../../../commons/errors'
 import { useAppSelector } from '../../../../commons/hooks'
 import { selectors } from '../../../../redux/selectors'
 import { urls } from '../../../../commons/urls'
+import ROUTES from '../../../../constants/routes'
+import { ANDROID_DEEPLINK_CLAIM } from '../../../../constants/urls'
 
 const { initClaim } = tequila
 
@@ -25,7 +27,7 @@ export const ClaimButton = ({ label = 'Claim' }: Props) => {
   const handleClaim = async () => {
     setLoading(true)
     try {
-      const { link } = await initClaim(urls.featureAwareCurrentOrigin(config))
+      const { link } = await initClaim(urls.featureAwareCurrentOrigin(config, ROUTES.CLAIM, ANDROID_DEEPLINK_CLAIM))
       window.location.href = link
     } catch (e) {
       errors.parseToastError(e)

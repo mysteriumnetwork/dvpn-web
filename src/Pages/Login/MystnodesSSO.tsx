@@ -15,6 +15,8 @@ import { useAppSelector } from '../../commons/hooks'
 import { selectors } from '../../redux/selectors'
 import { configs } from '../../commons/config'
 import FEATURES from '../../commons/features'
+import ROUTES from '../../constants/routes'
+import { ANDROID_DEEPLINK_SSO } from '../../constants/urls'
 
 const { initSSOAuth } = tequila
 
@@ -28,7 +30,7 @@ export const MystnodesSSO = () => {
   const ssoDisabled = configs.isFeatureEnabled(config, FEATURES.SSO_HIDE.name)
   const isDesktop = useMediaQuery(media.isDesktopQuery)
   const onClick = async () => {
-    const { link } = await initSSOAuth(urls.featureAwareCurrentOrigin(config))
+    const { link } = await initSSOAuth(urls.featureAwareCurrentOrigin(config, ROUTES.AUTH_SSO, ANDROID_DEEPLINK_SSO))
     window.location.href = link
   }
   return (

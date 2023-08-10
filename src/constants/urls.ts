@@ -11,4 +11,8 @@ export const DOCS_FORGOT_PASSWORD = `${DOCS}/en/articles/8005248-forgot-password
 export const DOCS_METAMASK = `${DOCS}/en/articles/8004186-adding-myst-token-to-metamask-on-the-polygon-mainnet`
 export const PAYOUT_GUIDE = `${DOCS}/en/articles/8004190-where-to-buy-polygon-myst`
 export const DOCS_UPDATE_NODE = `${DOCS}/en/articles/8005521-updating-your-node`
-export const ANDROID_DEEPLINK = 'mystnodes://sso'
+export const NAT_TRAVERSAL = `${DOCS}/en/articles/8005265-nat-traversal-and-types-of-nat`
+
+export const ANDROID_DEEPLINK_SSO = 'mystnodes://sso'
+export const ANDROID_DEEPLINK_CLICKBOARDING = 'mystnodes://clickboarding'
+export const ANDROID_DEEPLINK_CLAIM = 'mystnodes://claim'
