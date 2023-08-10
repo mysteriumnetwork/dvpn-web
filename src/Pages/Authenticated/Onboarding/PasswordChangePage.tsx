@@ -30,6 +30,8 @@ import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
 import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
+import routes from '../../../constants/routes'
+import { ANDROID_DEEPLINK_CLICKBOARDING } from '../../../constants/urls'
 
 const { isMobileQuery } = media
 const { api } = tequila
@@ -245,7 +247,9 @@ export const PasswordChangePage = () => {
   const mmnError = state.mmnError.length > 0
 
   const getLinkAndRedirect = async () => {
-    const { link } = await tequila.initClickBoarding(urls.featureAwareCurrentOrigin(config))
+    const { link } = await tequila.initClickBoarding(
+      urls.featureAwareCurrentOrigin(config, routes.CLICKBOARDING, ANDROID_DEEPLINK_CLICKBOARDING),
+    )
     window.location.href = link
   }
 
