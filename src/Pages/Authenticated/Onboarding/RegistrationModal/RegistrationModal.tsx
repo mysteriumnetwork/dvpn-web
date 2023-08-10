@@ -156,7 +156,6 @@ export const RegistrationModal = ({ show }: Props) => {
         }
         if (existingOrders.length !== 0) {
           const order = existingOrders[0]
-          console.log('existingOrders[0]', existingOrders[0])
           setGateway(order.gatewayName)
           setStep(1)
         }

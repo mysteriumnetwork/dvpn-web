@@ -29,7 +29,7 @@ const Title = styled.h1<{ $centered?: boolean }>`
   }
 `
 
-const Comment = styled.p`
+const Comment = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
   @media ${devices.tablet} {

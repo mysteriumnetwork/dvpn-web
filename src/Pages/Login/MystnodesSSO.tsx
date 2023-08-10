@@ -10,13 +10,11 @@ import { tequila } from '../../api/tequila'
 import { useMediaQuery } from 'react-responsive'
 import { media } from '../../commons/media'
 import styled from 'styled-components'
-import routes from '../../constants/routes'
 import { urls } from '../../commons/urls'
 import { useAppSelector } from '../../commons/hooks'
 import { selectors } from '../../redux/selectors'
 import { configs } from '../../commons/config'
 import FEATURES from '../../commons/features'
-import { ANDROID_DEEPLINK } from '../../constants/urls'
 
 const { initSSOAuth } = tequila
 
@@ -28,10 +26,9 @@ const Label = styled.div`
 export const MystnodesSSO = () => {
   const config = useAppSelector(selectors.currentConfig)
   const ssoDisabled = configs.isFeatureEnabled(config, FEATURES.SSO_HIDE.name)
-  const deeplinkEnabled = configs.isFeatureEnabled(config, FEATURES.SSO_DEEPLINK.name)
   const isDesktop = useMediaQuery(media.isDesktopQuery)
   const onClick = async () => {
-    const { link } = await initSSOAuth(deeplinkEnabled ? ANDROID_DEEPLINK : urls.currentOrigin(routes.AUTH_SSO))
+    const { link } = await initSSOAuth(urls.featureAwareCurrentOrigin(config))
     window.location.href = link
   }
   return (

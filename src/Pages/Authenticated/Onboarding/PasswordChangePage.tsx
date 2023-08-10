@@ -26,9 +26,10 @@ import complexActions from '../../../redux/complex.actions'
 import { WelcomePage } from './WelcomePage'
 import { Heading } from './Password/Heading'
 import { urls } from '../../../commons/urls'
-import routes from '../../../constants/routes'
 import { media } from '../../../commons/media'
 import { useMediaQuery } from 'react-responsive'
+import { useAppSelector } from '../../../commons/hooks'
+import { selectors } from '../../../redux/selectors'
 
 const { isMobileQuery } = media
 const { api } = tequila
@@ -206,6 +207,7 @@ const INITIAL_STATE: State = {
 }
 
 export const PasswordChangePage = () => {
+  const config = useAppSelector(selectors.currentConfig)
   const query = useQuery()
   const mmnApiKey = query.get('mmnApiKey')
   const isMobile = useMediaQuery(isMobileQuery)
@@ -243,7 +245,7 @@ export const PasswordChangePage = () => {
   const mmnError = state.mmnError.length > 0
 
   const getLinkAndRedirect = async () => {
-    const { link } = await tequila.initClickBoarding(urls.currentOrigin(routes.CLICKBOARDING))
+    const { link } = await tequila.initClickBoarding(urls.featureAwareCurrentOrigin(config))
     window.location.href = link
   }
 

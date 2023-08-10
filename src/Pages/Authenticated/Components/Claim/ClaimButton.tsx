@@ -8,6 +8,9 @@ import { Button } from '../../../../Components/Inputs/Button'
 import { tequila } from '../../../../api/tequila'
 import { useState } from 'react'
 import errors from '../../../../commons/errors'
+import { useAppSelector } from '../../../../commons/hooks'
+import { selectors } from '../../../../redux/selectors'
+import { urls } from '../../../../commons/urls'
 
 const { initClaim } = tequila
 
@@ -16,12 +19,13 @@ type Props = {
 }
 
 export const ClaimButton = ({ label = 'Claim' }: Props) => {
+  const config = useAppSelector(selectors.currentConfig)
   const [loading, setLoading] = useState(false)
 
   const handleClaim = async () => {
     setLoading(true)
     try {
-      const { link } = await initClaim()
+      const { link } = await initClaim(urls.featureAwareCurrentOrigin(config))
       window.location.href = link
     } catch (e) {
       errors.parseToastError(e)
