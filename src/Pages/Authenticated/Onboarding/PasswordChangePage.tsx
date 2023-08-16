@@ -181,7 +181,7 @@ const SectionTitleWithŽygisLogic = styled(SectionTitle)`
   text-align: center;
 `
 
-const SS = styled.div`
+const CenteredDescription = styled.div`
   width: 100%;
   display: flex;
   text-align: center;
@@ -373,10 +373,10 @@ export const PasswordChangePage = () => {
               <Heading
                 title={''}
                 description={
-                  <SS>
+                  <CenteredDescription>
                     The easy way to set up and start running your node. <br /> It will guide you through the onboarding,
                     node claiming, and password-setting process with just a few clicks of a button.
-                  </SS>
+                  </CenteredDescription>
                 }
               />
               <ButtonRow>

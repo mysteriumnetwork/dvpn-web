@@ -71,7 +71,7 @@ const SubTitle = styled.h1`
 
 const Card = styled.div`
   background-color: ${({ theme }) => theme.onboarding.bgCard};
-  box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.09);
+  box-shadow: 0 4px 50px rgba(0, 0, 0, 0.09);
   border-radius: 30px;
   //height: 550px;
   gap: 100px;
@@ -80,11 +80,11 @@ const Card = styled.div`
   padding: 40px;
   @media ${devices.tablet} {
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
     height: fit-content;
-    width: 90%;
+    width: 300px;
     padding: 10px;
     margin-top: 20px;
   }
@@ -98,7 +98,6 @@ const Header = styled.div`
   flex-direction: column;
   gap: 0;
   @media ${devices.tablet} {
-    align-self: flex-start;
     padding: 10px;
     margin-bottom: 0;
   }
