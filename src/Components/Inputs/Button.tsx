@@ -159,6 +159,7 @@ const Spinner = styled(CircularSpinner)`
 
 export const Button = ({
   size = 'small',
+  className,
   disabled,
   loading,
   label,
@@ -171,6 +172,7 @@ export const Button = ({
   return (
     <StyledButton
       $size={size}
+      className={className}
       $rounded={rounded}
       $variant={variant}
       type={type}

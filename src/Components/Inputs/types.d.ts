@@ -28,4 +28,5 @@ export type ButtonProps = {
   onClick?: () => void
   type?: 'submit' | 'reset' | 'button'
   dataTestId?: string
+  className?: string
 }

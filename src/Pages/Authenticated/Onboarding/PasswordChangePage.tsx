@@ -26,14 +26,11 @@ import complexActions from '../../../redux/complex.actions'
 import { WelcomePage } from './WelcomePage'
 import { Heading } from './Password/Heading'
 import { urls } from '../../../commons/urls'
-import { media } from '../../../commons/media'
-import { useMediaQuery } from 'react-responsive'
 import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
 import routes from '../../../constants/routes'
 import { ANDROID_DEEPLINK_CLICKBOARDING } from '../../../constants/urls'
 
-const { isMobileQuery } = media
 const { api } = tequila
 
 const Lock = styled(LockIcon)`
@@ -156,6 +153,7 @@ const ButtonRow = styled.div`
   margin-top: 20px;
   display: flex;
   justify-content: center;
+  width: 100%;
   @media ${devices.tablet} {
     margin-bottom: 20px;
   }
@@ -171,11 +169,13 @@ const SectionTitle = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.text.colorSecondary};
   margin-bottom: 30px;
+`
+const StyledButton = styled(Button)`
+  width: 100%;
   @media ${devices.tablet} {
-    display: none;
+    width: 100%;
   }
 `
-
 const SectionTitleWithŽygisLogic = styled(SectionTitle)`
   width: 100%;
   text-align: center;
@@ -186,7 +186,7 @@ const SS = styled.div`
   display: flex;
   text-align: center;
   @media ${devices.tablet} {
-    text-align: left;
+    text-align: center;
   }
 `
 
@@ -212,7 +212,6 @@ export const PasswordChangePage = () => {
   const config = useAppSelector(selectors.currentConfig)
   const query = useQuery()
   const mmnApiKey = query.get('mmnApiKey')
-  const isMobile = useMediaQuery(isMobileQuery)
   const [state, setState] = useState({
     ...INITIAL_STATE,
     claim: mmnApiKey !== null,
@@ -360,23 +359,28 @@ export const PasswordChangePage = () => {
                 }
               />
               <ButtonRow>
-                <Button size="large" rounded loading={loading} label={state.claim ? 'Confirm and Claim' : 'Confirm'} />
+                <StyledButton
+                  size="large"
+                  rounded
+                  loading={loading}
+                  label={state.claim ? 'Confirm and Claim' : 'Confirm'}
+                />
               </ButtonRow>
             </Section>
             <SectionSeparator />
             <Section>
               <SectionTitleWithŽygisLogic>Quick Onboarding</SectionTitleWithŽygisLogic>
               <Heading
-                title={isMobile ? 'Connect Your Node' : undefined}
+                title={''}
                 description={
                   <SS>
-                    The easy way to set up and start running your node. It will guide you through the onboarding, node
-                    claiming, and password-setting process with just a few clicks of a button.
+                    The easy way to set up and start running your node. <br /> It will guide you through the onboarding,
+                    node claiming, and password-setting process with just a few clicks of a button.
                   </SS>
                 }
               />
               <ButtonRow>
-                <Button type="button" size="large" rounded label="Start" onClick={getLinkAndRedirect} />
+                <StyledButton type="button" size="large" rounded label="Start" onClick={getLinkAndRedirect} />
               </ButtonRow>
             </Section>
           </Wrapper>

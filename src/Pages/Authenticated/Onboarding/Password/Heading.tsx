@@ -20,11 +20,11 @@ const Header = styled.div`
 const Title = styled.h1<{ $centered?: boolean }>`
   color: ${({ theme }) => theme.text.colorSecondary};
   font-size: ${({ theme }) => theme.common.fontSizeHuge};
-
+  margin-bottom: 10px;
   align-self: ${({ $centered }) => ($centered ? 'center' : 'unset')};
 
   @media ${devices.tablet} {
-    font-size: ${({ theme }) => theme.common.fontSizeNormal};
+    font-size: ${({ theme }) => theme.common.fontSizeBig};
     align-self: unset;
   }
 `
@@ -32,9 +32,7 @@ const Title = styled.h1<{ $centered?: boolean }>`
 const Comment = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
   font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  @media ${devices.tablet} {
-    font-size: ${({ theme }) => theme.common.fontSizeNormal};
-  }
+  margin-bottom: 10px;
 `
 
 type Props = {
