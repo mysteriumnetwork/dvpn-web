@@ -168,6 +168,8 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
 
   const handlePassword = (value: string) => setPassword(value)
   const inputError = error.length > 0
+  const isLocalhost = window.location.hostname == 'localhost'
+
   const handleLogin = async () => {
     try {
       setLoading(true)
@@ -213,6 +215,11 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
         </Card>
         <Controls>
           <Button rounded size="large" type="submit" variant="primary" label="LOGIN" loading={loading} />
+
+          {isLocalhost && (
+            <Button rounded size="large" type="submit" variant="primary" label="LOGIN w/o password" loading={loading} />
+          )}
+
           <MystnodesSSO />
         </Controls>
       </Page>
