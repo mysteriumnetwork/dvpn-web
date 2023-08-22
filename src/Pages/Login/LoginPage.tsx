@@ -168,7 +168,7 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
 
   const handlePassword = (value: string) => setPassword(value)
   const inputError = error.length > 0
-  const isLocalhost = window.location.hostname == 'localhost'
+  const isLocalhost = window.location.hostname === 'localhost'
 
   const handleLogin = async () => {
     try {
