@@ -10,6 +10,7 @@ import { YourIdentity } from './Account/YourIdentity'
 import { MystNodesClaim } from './Account/MystNodesClaim'
 import { PasswordChange } from './Account/PasswordChange'
 import { AvatarChoice } from './Account/AvatarChoice'
+import { IdentityExport } from './Account/IdentityExport'
 
 const AccountTab = () => {
   return (
@@ -21,6 +22,9 @@ const AccountTab = () => {
       <LayoutRow>
         <PasswordChange />
         <AvatarChoice />
+      </LayoutRow>
+      <LayoutRow>
+        <IdentityExport />
       </LayoutRow>
     </>
   )
