@@ -13,6 +13,7 @@ import { AvatarChoice } from './Account/AvatarChoice'
 import { IdentityExport } from './Account/IdentityExport'
 
 const AccountTab = () => {
+  const isLocalhost = window.location.hostname === 'localhost'
   return (
     <>
       <LayoutRow>
@@ -23,9 +24,11 @@ const AccountTab = () => {
         <PasswordChange />
         <AvatarChoice />
       </LayoutRow>
-      <LayoutRow>
-        <IdentityExport />
-      </LayoutRow>
+      {isLocalhost && (
+        <LayoutRow>
+          <IdentityExport />
+        </LayoutRow>
+      )}
     </>
   )
 }
