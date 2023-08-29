@@ -61,7 +61,7 @@ export const ThemeSwitch = () => {
         }}
       >
         <Icon icon={faCircleHalfStroke} />
-        OS default
+        OS
       </Selection>
 
       <Selection

@@ -56,7 +56,7 @@ const Spinner = styled(CircularSpinner)`
   right: 0;
   top: 0;
   bottom: 0;
-  margin: auto;
+  :auto ;
   z-index: ${zIndexes.spinner};
   position: absolute;
 `
@@ -153,4 +153,16 @@ const resolveCss = (variant: Variant = 'plain') => {
 export const LayoutRow = styled.div<{ $variant?: Variant }>`
   ${sharedRowCss};
   ${({ $variant }) => resolveCss($variant)}
+`
+
+export const LayoutGrid = styled.div`
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: clip;
+  ${noneVariantCss}
+
+  @media ${devices.tablet} {
+    grid-template-columns: minmax(0, 1fr);
+  }
 `
