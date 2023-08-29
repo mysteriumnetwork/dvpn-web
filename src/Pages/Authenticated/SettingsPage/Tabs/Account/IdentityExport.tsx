@@ -10,37 +10,39 @@ import { TextField } from '../../../../../Components/Inputs/TextField'
 import { InputLockIcon } from '../../../../../Components/Icons/InputIcons'
 import { SettingsCard } from '../../SettingsCard'
 import { Button } from '../../../../../Components/Inputs/Button'
-import { Form } from '../../../../../Components/Inputs/Form'
 import styled from 'styled-components'
 import { useState } from 'react'
 import toasts from '../../../../../commons/toasts'
 import { tequila } from '../../../../../api/tequila'
-import { DEFAULT_USERNAME } from '../../../../../constants/defaults'
-import { validatePassword } from '../../../../../commons/passwords'
 import { devices } from '../../../../../theme/themes'
-import { Media } from '../../../../../commons/media'
 
 import { useAppSelector } from '../../../../../commons/hooks'
 import { selectors } from '../../../../../redux/selectors'
 import identities from '../../../../../commons/identities'
+import { passwords } from '../../../../../commons/passwords'
 
-const { api } = tequila
+const { exportIdentity } = tequila
 
-const Row = styled.div`
+const Col = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 20px;
   @media ${devices.tablet} {
     width: 100%;
   }
 `
 
-const FormContent = styled.div`
+const Error = styled.div`
+  color: ${({ theme }) => theme.common.colorRed};
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
+  font-weight: 700;
+  gap: 4px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  @media ${devices.tablet} {
-    align-items: flex-start;
-    justify-content: center;
+  > p {
+    &:before {
+      content: '\t• ';
+    }
   }
 `
 
@@ -59,16 +61,23 @@ export const IdentityExport = () => {
   const { id } = useAppSelector(selectors.currentIdentity)
 
   const handlePassword = (v: string) => setForm((p) => ({ ...p, password: v }))
+
+  const passwordValidation = passwords.isStrongPass(form.password)
+
   const handleIdentityExport = async () => {
+    if (!passwordValidation.isStrong) {
+      toasts.toastError('Weak password')
+      return
+    }
     setLoading(true)
     try {
-      let r = await api.exportIdentity({
+      const response = await exportIdentity({
         identity: id,
         newpassphrase: form.password,
       })
 
-      var data = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(r))
-      var a = document.createElement('a')
+      const data = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(response))
+      let a = document.createElement('a')
       a.href = 'data:' + data
       a.download = 'keystore_' + id + '.json'
       a.innerHTML = 'download JSON'
@@ -77,9 +86,8 @@ export const IdentityExport = () => {
       document.body.removeChild(a)
 
       setForm(DEFAULT_FORM)
-      toasts.toastSuccess('Export finished')
     } catch (err: any) {
-      toasts.toastError('Please enter a valid password')
+      toasts.toastError('Export failed')
     }
     setLoading(false)
   }
@@ -99,20 +107,21 @@ export const IdentityExport = () => {
         />
       }
     >
-      <Form>
-        <FormContent>
-          <Row>
-            <InputGroup
-              fluid
-              title="password"
-              dataTestId="IdentityExport.password"
-              input={
-                <TextField type="password" value={form.password} onChange={handlePassword} icon={<InputLockIcon />} />
-              }
-            />
-          </Row>
-        </FormContent>
-      </Form>
+      <Col>
+        <InputGroup
+          fluid
+          title="password"
+          dataTestId="IdentityExport.password"
+          input={<TextField type="password" value={form.password} onChange={handlePassword} icon={<InputLockIcon />} />}
+        />
+        {!passwordValidation.isStrong && form.password !== '' && (
+          <Error>
+            {passwordValidation.messages.map((m) => (
+              <p>{m}</p>
+            ))}
+          </Error>
+        )}
+      </Col>
     </SettingsCard>
   )
 }

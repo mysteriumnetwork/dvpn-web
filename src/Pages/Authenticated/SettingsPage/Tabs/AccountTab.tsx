@@ -5,31 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { LayoutRow } from '../../Components/Layout/Layout'
+import { LayoutGrid } from '../../Components/Layout/Layout'
 import { YourIdentity } from './Account/YourIdentity'
 import { MystNodesClaim } from './Account/MystNodesClaim'
 import { PasswordChange } from './Account/PasswordChange'
 import { AvatarChoice } from './Account/AvatarChoice'
 import { IdentityExport } from './Account/IdentityExport'
 
+const LOCALHOSTS = ['localhost', '127.0.0.1']
+
 const AccountTab = () => {
-  const isLocalhost = window.location.hostname === 'localhost'
+  const isLocalhost = LOCALHOSTS.includes(window.location.hostname)
   return (
-    <>
-      <LayoutRow>
-        <YourIdentity />
-        <MystNodesClaim />
-      </LayoutRow>
-      <LayoutRow>
-        <PasswordChange />
-        <AvatarChoice />
-      </LayoutRow>
-      {isLocalhost && (
-        <LayoutRow>
-          <IdentityExport />
-        </LayoutRow>
-      )}
-    </>
+    <LayoutGrid>
+      <YourIdentity />
+      <MystNodesClaim />
+      <PasswordChange />
+      {isLocalhost && <IdentityExport />}
+      <AvatarChoice />
+    </LayoutGrid>
   )
 }
 

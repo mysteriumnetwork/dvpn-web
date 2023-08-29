@@ -115,9 +115,12 @@ const verifyOnboardingGrant = async ({
 }: {
   authorizationGrantToken: string
 }): Promise<LWAGResponse> =>
-  await http
+  http
     .post<LWAGResponse>('/mmn/onboarding/verify-grant', { authorization_grant: authorizationGrantToken })
     .then((r) => r.data)
+
+const exportIdentity = async (request: any): Promise<unknown> =>
+  http.post<unknown>(`identities/export`, request).then((r) => r.data)
 
 export const tequila = {
   api: tequilaClient,
@@ -133,4 +136,5 @@ export const tequila = {
   loginWithAuthorizationGrant,
   initClickBoarding,
   verifyOnboardingGrant,
+  exportIdentity,
 }
