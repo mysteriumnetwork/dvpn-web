@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { CenteredColumn } from '../Components'
-import { Indicator, IndicatorVariants, resolveContent } from '../../Components/NodeStatus/NodeStatus'
+import { Indicator, StatusIndicatorVariants, resolveContent } from '../../Components/NodeStatus/NodeStatus'
 
-const VARIANTS: IndicatorVariants[] = ['online', 'offline', 'monitoringFailed']
+const VARIANTS: StatusIndicatorVariants[] = ['online', 'offline', 'monitoringFailed', 'pending']
 
 const NodeStatusBook = () => {
   return (

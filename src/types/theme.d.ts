@@ -169,7 +169,13 @@ export type Theme = {
     }
     textColor: string
   }
-
+  quality: {
+    bg: {
+      good: string
+      normal: string
+      poor: string
+    }
+  }
   notifications: {
     bg: string
 

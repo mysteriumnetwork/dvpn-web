@@ -12,12 +12,22 @@ import styled from 'styled-components'
 import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 import { InfoIcon } from '../../../../Components/Icons/Icons'
 import * as React from 'react'
+
+type IndicatorVariants = 'good' | 'normal' | 'poor'
+interface IndicatorProps {
+  $variant: IndicatorVariants
+}
 const Column = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
 `
-
+export const Indicator = styled.div<IndicatorProps>`
+  background: ${({ theme, $variant }) => theme.quality.bg[$variant]};
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+`
 const Row = styled.div`
   display: flex;
   align-items: center;
@@ -36,14 +46,25 @@ export const Quality = () => {
   useEffect(() => {
     tequila.api.provider.quality().then((r) => setQuality(r.quality))
   }, [])
-
+  const resolveVariant = (quality: number): IndicatorVariants => {
+    if (quality > 0.75) {
+      return 'good'
+    }
+    if (quality < 0.75 && quality > 0.5) {
+      return 'normal'
+    }
+    if (quality < 0.5) {
+      return 'poor'
+    }
+    return 'normal'
+  }
   return (
     <HeaderItem
-      title="Quality"
+      title="Node Quality"
       data-test-id="Quality.container"
       content={
         <>
-          <QualityBarsIcon data-test-id="Quality.barsIcon" $quality={quality} />
+          <Indicator $variant={resolveVariant(quality)} />
           <Tooltip
             content={
               <Column>

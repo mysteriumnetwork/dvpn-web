@@ -12,13 +12,12 @@ import { selectors } from '../../../../redux/selectors'
 import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vpn-js/lib/node/status'
 import { ReactNode } from 'react'
 import { ReactComponent as WarningSVG } from '../../../../assets/images/toasts/warning.svg'
-import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 import { themeCommon } from '../../../../theme/themeCommon'
 
-export type IndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
+export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
 
 interface IndicatorProps {
-  $variant: IndicatorVariants
+  $variant: StatusIndicatorVariants
 }
 
 export const Indicator = styled.div<IndicatorProps>`
@@ -38,7 +37,7 @@ const Content = styled.div`
   gap: 4px;
 `
 
-const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStatus): IndicatorVariants => {
+const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStatus): StatusIndicatorVariants => {
   if (!anyOnline) {
     return 'offline'
   }
@@ -63,7 +62,7 @@ const WarningIcon = styled(WarningSVG)`
   }
 `
 
-export const resolveContent = (variant: IndicatorVariants): ReactNode => {
+export const resolveContent = (variant: StatusIndicatorVariants): ReactNode => {
   switch (variant) {
     case 'online':
       return <Content>Online</Content>

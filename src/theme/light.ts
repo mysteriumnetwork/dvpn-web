@@ -161,6 +161,13 @@ const light: Omit<Theme, 'common'> = {
     },
     textColor: themeCommon.colorDarkBlue,
   },
+  quality: {
+    bg: {
+      good: themeCommon.colorGreen,
+      normal: themeCommon.colorWarning,
+      poor: themeCommon.colorRed,
+    },
+  },
   adminPanel: {
     bgCard: themeCommon.colorLightBlue,
     bgCardHover: themeCommon.colorGrayBlue,
