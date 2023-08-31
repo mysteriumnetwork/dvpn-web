@@ -13,8 +13,9 @@ import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vp
 import { ReactNode } from 'react'
 import { ReactComponent as WarningSVG } from '../../../../assets/images/toasts/warning.svg'
 import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
+import { themeCommon } from '../../../../theme/themeCommon'
 
-export type IndicatorVariants = 'online' | 'offline' | 'monitoringFailed'
+export type IndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
 
 interface IndicatorProps {
   $variant: IndicatorVariants
@@ -22,16 +23,18 @@ interface IndicatorProps {
 
 export const Indicator = styled.div<IndicatorProps>`
   background: ${({ theme, $variant }) => theme.nodeStatus.bg[$variant]};
-  color: ${({ theme, $variant }) => theme.nodeStatus.textColor[$variant]};
-  font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  font-weight: 500;
-  padding: 5px 10px 5px 10px;
-  border-radius: 10px;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
 `
 
 const Content = styled.div`
   display: flex;
   align-items: center;
+  font-weight: 400;
+  font-family: Ubuntu, sans-serif;
+  font-size: ${themeCommon.fontSizeSmall};
+  color: ${({ theme }) => theme.nodeStatus.textColor};
   gap: 4px;
 `
 
@@ -42,6 +45,9 @@ const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStat
 
   if (anyOnline && monitoringStatus === 'failed') {
     return 'monitoringFailed'
+  }
+  if (anyOnline && monitoringStatus === 'pending') {
+    return 'pending'
   }
 
   return 'online'
@@ -64,14 +70,7 @@ export const resolveContent = (variant: IndicatorVariants): ReactNode => {
     case 'offline':
       return <Content>Offline</Content>
     case 'monitoringFailed':
-      return (
-        <Tooltip content="Please contact support">
-          <Content>
-            <WarningIcon />
-            Monitoring failed
-          </Content>
-        </Tooltip>
-      )
+      return <Content>Monitoring failed</Content>
   }
 }
 
@@ -91,9 +90,10 @@ export const NodeStatus = () => {
       title="Node status"
       dataTestId="NodeStatus.container"
       content={
-        <Indicator data-test-id="NodeStatus.indicator" $variant={variant}>
+        <>
+          <Indicator data-test-id="NodeStatus.indicator" $variant={variant}></Indicator>
           {content}
-        </Indicator>
+        </>
       }
     />
   )

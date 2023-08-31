@@ -157,15 +157,12 @@ const dark: Omit<Theme, 'common'> = {
 
   nodeStatus: {
     bg: {
+      pending: themeCommon.colorWarning,
       monitoringFailed: themeCommon.colorRed,
       offline: themeCommon.colorGrayBlue2,
       online: themeCommon.colorGreen,
     },
-    textColor: {
-      monitoringFailed: themeCommon.colorWhite,
-      offline: themeCommon.colorWhite,
-      online: themeCommon.colorWhite,
-    },
+    textColor: themeCommon.colorWhite,
   },
   adminPanel: {
     bgCard: themeCommon.colorGrayBlue2,

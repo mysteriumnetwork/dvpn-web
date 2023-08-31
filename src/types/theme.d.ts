@@ -162,15 +162,12 @@ export type Theme = {
   }
   nodeStatus: {
     bg: {
+      pending: string
       online: string
       offline: string
       monitoringFailed: string
     }
-    textColor: {
-      online: string
-      offline: string
-      monitoringFailed: string
-    }
+    textColor: string
   }
 
   notifications: {
@@ -301,7 +298,7 @@ export type Theme = {
 
 export type Common = {
   bgMysterium: string
-
+  colorWarning: string
   colorKey: string
   colorKeyLight: string
   colorKeyDark: string
