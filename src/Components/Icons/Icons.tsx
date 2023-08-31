@@ -14,7 +14,6 @@ import { ReactComponent as WalletSvg } from '../../assets/images/wallet.svg'
 import { ReactComponent as StopwatchSvg } from '../../assets/images/stopwatch.svg'
 import { ReactComponent as CloudSvg } from '../../assets/images/cloud.svg'
 import { ReactComponent as StopwatchSimpleSvg } from '../../assets/images/stopwatch_simple.svg'
-import { ReactComponent as QualityBarsSvg } from '../../assets/images/quality-bars.svg'
 import { ReactComponent as DragIndicatorSvg } from '../../assets/images/drag-indicator.svg'
 import { ReactComponent as FileSvg } from '../../assets/images/file.svg'
 import { ReactComponent as ChatSvg } from '../../assets/images/chat.svg'
@@ -99,25 +98,6 @@ export const SessionsIcon = styled(HistoryNavSvg)<AccentedProps>`
 `
 
 export const StopwatchSimpleIcon = styled(StopwatchSimpleSvg)``
-
-interface QualityBarsProps {
-  $quality?: number
-}
-
-export const QualityBarsIcon = styled(QualityBarsSvg)<QualityBarsProps>`
-  rect {
-    fill: ${themeCommon.colorKeyLight}33;
-  }
-  #bar-1 {
-    fill: ${({ $quality = 0 }) => $quality > 0 && themeCommon.colorKey} !important;
-  }
-  #bar-2 {
-    fill: ${({ $quality = 0 }) => $quality > 1 && themeCommon.colorKey} !important;
-  }
-  #bar-3 {
-    fill: ${({ $quality = 0 }) => $quality > 2 && themeCommon.colorKey} !important;
-  }
-`
 
 export const DragIndicatorIcon = styled(DragIndicatorSvg)``
 

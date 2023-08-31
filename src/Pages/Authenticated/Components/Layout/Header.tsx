@@ -13,6 +13,7 @@ import { ReactNode } from 'react'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { Quality } from '../Quality/Quality'
 import { Notifications } from '../Notifications/Notifications'
+import { NATStatus } from '../NATStatus/NATStatus'
 
 const Container = styled.div`
   display: flex;
@@ -47,6 +48,7 @@ export const Header = ({ logo, title }: Props) => {
       <PageTitle logo={logo} name={title} />
       <NodeStatus />
       <Quality />
+      <NATStatus />
       <SettlementStatus />
       <Group>
         <Notifications />
