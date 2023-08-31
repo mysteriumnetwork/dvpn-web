@@ -14,7 +14,12 @@ const Item = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 16px;
+  height: 80%;
   flex-shrink: 0;
+  padding-right: 20px;
+  :not(:nth-last-of-type(2)) {
+    border-right: ${`1px solid ${themeCommon.colorGrayBlue}`};
+  }
   @media ${devices.tablet} {
     margin-bottom: 25px;
   }
