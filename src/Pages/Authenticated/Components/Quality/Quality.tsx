@@ -21,6 +21,13 @@ const Column = styled.div`
   flex-direction: column;
   gap: 4px;
 `
+const Icon = styled(InfoIcon)`
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+`
 export const Indicator = styled.div<IndicatorProps>`
   background: ${({ theme, $variant }) => theme.quality.bg[$variant]};
   border-radius: 50%;
@@ -75,7 +82,7 @@ export const Quality = () => {
               </Column>
             }
           >
-            <InfoIcon data-test-id="Icons.infoIcon" />
+            <Icon data-test-id="Icons.infoIcon" />
           </Tooltip>
         </>
       }

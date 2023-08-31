@@ -11,8 +11,10 @@ import { tequila } from '../../../../api/tequila'
 import { selectors } from '../../../../redux/selectors'
 import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vpn-js/lib/node/status'
 import { ReactNode } from 'react'
-import { ReactComponent as WarningSVG } from '../../../../assets/images/toasts/warning.svg'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
+import * as React from 'react'
+import { InfoIcon } from '../../../../Components/Icons/Icons'
 
 export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
 
@@ -52,16 +54,13 @@ const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStat
   return 'online'
 }
 
-const WarningIcon = styled(WarningSVG)`
-  width: ${({ theme }) => theme.common.fontSizeSmall};
-  height: ${({ theme }) => theme.common.fontSizeSmall};
-  path,
-  circle {
-    stroke: ${({ theme }) => theme.nodeStatus.textColor.monitoringFailed};
-    stroke: ${({ theme }) => theme.nodeStatus.textColor.monitoringFailed};
-  }
+const Icon = styled(InfoIcon)`
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  right: 10px;
+  top: 0;
 `
-
 export const resolveContent = (variant: StatusIndicatorVariants): ReactNode => {
   switch (variant) {
     case 'online':
@@ -92,6 +91,9 @@ export const NodeStatus = () => {
         <>
           <Indicator data-test-id="NodeStatus.indicator" $variant={variant}></Indicator>
           {content}
+          <Tooltip content={'Placeholder text for tooltip'}>
+            <Icon data-test-id="Icons.infoIcon" />
+          </Tooltip>
         </>
       }
     />
