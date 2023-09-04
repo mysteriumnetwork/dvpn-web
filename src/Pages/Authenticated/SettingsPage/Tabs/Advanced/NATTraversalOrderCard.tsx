@@ -64,24 +64,17 @@ export const NATTraversalOrderCard = () => {
 
   return (
     <SettingsCard
-      dataTestId="SettingsCard.NATTraversalOrder"
       loading={loading}
       title="NAT Traversal order"
       footer={
         <Controls>
-          <Button
-            dataTestId="AdvancedSettingsCard.restoreDefault"
-            variant="outlined"
-            label="Restore default"
-            onClick={handleReset}
-          />
-          <Button dataTestId="AdvancedSettingsCard.save" variant="secondary" label="Save" onClick={handleSave} />
+          <Button variant="outlined" label="Restore default" onClick={handleReset} />
+          <Button variant="secondary" label="Save" onClick={handleSave} />
         </Controls>
       }
     >
       <NAT />
       <InputGroup
-        dataTestId="NATTraversalOrder.dragItems"
         title="Drag items to reorder"
         input={
           <>

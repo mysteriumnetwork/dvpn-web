@@ -79,7 +79,7 @@ export const TotalSettled = () => {
           onSave={() => lockouts.lock({ id: SETTLE_LOCKOUT_ID, seconds: 60, refreshPage: true })}
         />
       </Media.Mobile>
-      <Row data-test-id="TotalSettled.container">
+      <Row>
         {isDesktop && (
           <Tooltip
             placement="top"

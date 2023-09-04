@@ -63,7 +63,6 @@ export const NodeStatus = () => {
 
   return (
     <SettingsCard
-      dataTestId="SettingsCard.nodeStatus"
       loading={loading}
       title={
         <Row>

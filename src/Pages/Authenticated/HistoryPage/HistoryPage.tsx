@@ -105,7 +105,7 @@ export const HistoryPage = observer(() => {
   )
   return (
     <Layout logo={<HistoryHeaderIcon />} title="History">
-      <LayoutRow data-test-id="SessionCard.header">
+      <LayoutRow>
         <RangePicker
           options={historyPage.rangeOptions}
           value={historyPage.range}
@@ -113,7 +113,7 @@ export const HistoryPage = observer(() => {
         />
       </LayoutRow>
       {isDesktop && (
-        <LayoutRow data-test-id="HistoryPage.tableContainer">
+        <LayoutRow>
           <HeatAtlas points={historyPage.points} />
         </LayoutRow>
       )}
@@ -135,7 +135,7 @@ export const HistoryPage = observer(() => {
           />
         )}
       </LayoutRow>
-      <LayoutRow data-test-id="HistoryPage.pagination">
+      <LayoutRow>
         {!historyPage.noData && (
           <Pagination
             currentPage={historyPage.page}

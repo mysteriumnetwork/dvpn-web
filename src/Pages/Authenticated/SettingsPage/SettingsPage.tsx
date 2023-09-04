@@ -78,7 +78,7 @@ export const SettingsPage = () => {
             },
           ]}
         />
-        <Grouped data-test-id="SettingsPage.versionsContainer">
+        <Grouped>
           <Issue nodeUIVersion={packageJson.version} nodeVersion={healthCheck.version} />
           {restartEnabled && <PowerOffButton />}
         </Grouped>

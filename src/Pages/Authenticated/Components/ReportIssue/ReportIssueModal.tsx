@@ -95,7 +95,6 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
   }
   return (
     <Modal
-      dataTestId="ReportIssueModal"
       show={show}
       title="Report Issue"
       subTitle="Describe your issue"
@@ -104,13 +103,8 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
       zIndex={zIndexes.overlay + 100}
     >
       <Content>
+        <InputGroup input={<TextField value={email} placeholder="node@runner.com" onChange={(v) => setEmail(v)} />} />
         <InputGroup
-          dataTestId="ReportIssueModal.emailAddress"
-          title="Email address (Optional)"
-          input={<TextField value={email} placeholder="node@runner.com" onChange={(v) => setEmail(v)} />}
-        />
-        <InputGroup
-          dataTestId="ReportIssueModal.yourMessage"
           fluid
           title={`Your message (${message.length})`}
           input={
@@ -131,7 +125,6 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
 
         <Footer>
           <Button
-            dataTestId="ReportIssueModal.talkToUs"
             variant="blue"
             rounded
             label={
@@ -141,7 +134,7 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
             }
             onClick={handleOpenIntercom}
           />
-          <Button dataTestId="ReportIssueModal.send" loading={sending} rounded label="Send" onClick={reportIssue} />
+          <Button loading={sending} rounded label="Send" onClick={reportIssue} />
         </Footer>
       </Content>
     </Modal>

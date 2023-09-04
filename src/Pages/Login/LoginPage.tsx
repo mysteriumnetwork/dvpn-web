@@ -194,7 +194,7 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
             <Header>
               <Title>Welcome</Title>
               <SubTitle>node runner!</SubTitle>
-              <Comment data-test-id="LoginPage.welcomeText">Welcome Back! Please enter your Node UI password.</Comment>
+              <Comment>Welcome Back! Please enter your Node UI password.</Comment>
             </Header>
 
             <InputGroup
@@ -205,7 +205,7 @@ const LoginPage = ({ onSuccess = () => {} }: Props) => {
             />
 
             <Footer>
-              <Link data-test-id="LoginPage.forgotPassword" href={DOCS_FORGOT_PASSWORD} target="_blank">
+              <Link href={DOCS_FORGOT_PASSWORD} target="_blank">
                 Forgot password?
               </Link>
             </Footer>

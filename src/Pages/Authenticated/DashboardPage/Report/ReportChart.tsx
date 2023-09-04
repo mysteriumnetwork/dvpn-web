@@ -41,7 +41,7 @@ const ReportChart = ({
   return (
     <Chart>
       <Media.Desktop>
-        <Header data-test-id="ReportChart.header">
+        <Header>
           <Title>{capitalizeFirstLetter(selectedGraph.value)} Report</Title>
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
           <FlexGrow />
@@ -57,7 +57,7 @@ const ReportChart = ({
           <RangePicker options={rangeOptions} value={selectedRange} onChange={onRangeChange} />
         </Header>
       </Media.Mobile>
-      <ChartOverrides data-test-id="ReportChart.container">
+      <ChartOverrides>
         <ResponsiveContainer width="100%" minWidth={700} maxHeight={320} aspect={4.0 / 3.0}>
           <AreaChart
             width={500}

@@ -37,11 +37,7 @@ export const Tooltip = ({ children, content, delay, disabled, placement = 'botto
       <Floating.Anchor state={state} asChild>
         {children}
       </Floating.Anchor>
-      {!disabled && (
-        <StyledTooltip data-test-id="Tooltip" state={state}>
-          {content}
-        </StyledTooltip>
-      )}
+      {!disabled && <StyledTooltip state={state}>{content}</StyledTooltip>}
     </>
   )
 }

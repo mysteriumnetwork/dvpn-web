@@ -148,9 +148,8 @@ export const DesktopNavigation = () => {
   }
   const Links = useMemo(
     () =>
-      LINK_DEFINITIONS.map(({ icon: Icon, dataTestId, path, name, subPaths = [] }) => (
+      LINK_DEFINITIONS.map(({ icon: Icon, path, name, subPaths = [] }) => (
         <PlainLink
-          data-test-id={dataTestId}
           key={`desktop-menu-item-${path}`}
           $open={open}
           to={path}
@@ -178,7 +177,7 @@ export const DesktopNavigation = () => {
   }, [open])
   return (
     <Content>
-      <LogoLink data-test-id="DesktopNavigation.logo" $open={open} to="" onClick={toggleMenu}>
+      <LogoLink $open={open} to="" onClick={toggleMenu}>
         {isDark ? <LogoDark /> : <LogoLight />}
         <Title>Node UI</Title>
       </LogoLink>

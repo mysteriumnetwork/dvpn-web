@@ -51,7 +51,6 @@ export const MystNodesClaim = () => {
 
   return (
     <SettingsCard
-      dataTestId="SettingsCard.MyNodesClaim"
       loading={dataLoading}
       title={
         <Title>
@@ -67,7 +66,6 @@ export const MystNodesClaim = () => {
     >
       <InputGroup
         title="API Key"
-        dataTestId="MystNodesClaim.APIKey"
         input={
           <TextField
             disabled
