@@ -5,12 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { HeaderItem } from '../../../../Components/Header/HeaderItem'
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { tequila } from '../../../../api/tequila'
 import styled from 'styled-components'
-import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
-import { InfoIcon } from '../../../../Components/Icons/Icons'
-import * as React from 'react'
 
 type IndicatorVariants = 'good' | 'normal' | 'poor'
 interface IndicatorProps {
@@ -21,18 +19,15 @@ const Column = styled.div`
   flex-direction: column;
   gap: 4px;
 `
-const Icon = styled(InfoIcon)`
-  height: 10px;
-  width: 10px;
-  position: absolute;
-  right: 10px;
-  top: 0;
-`
 export const Indicator = styled.div<IndicatorProps>`
   background: ${({ theme, $variant }) => theme.quality.bg[$variant]};
   border-radius: 50%;
+  min-height: 15px;
   height: 15px;
+  max-height: 15px;
+  min-width: 15px;
   width: 15px;
+  max-width: 15px;
 `
 const Row = styled.div`
   display: flex;
@@ -64,28 +59,20 @@ export const Quality = () => {
     }
     return 'normal'
   }
+
   return (
     <HeaderItem
-      title="Node Quality"
-      data-test-id="Quality.container"
-      content={
-        <>
-          <Indicator $variant={resolveVariant(quality)} />
-          <Tooltip
-            content={
-              <Column>
-                Quality depends on:
-                <Row>Latency</Row>
-                <Row>Bandwidth</Row>
-                <Row>Uptime</Row>
-                <Row>Successful connection rate</Row>
-              </Column>
-            }
-          >
-            <Icon data-test-id="Icons.infoIcon" />
-          </Tooltip>
-        </>
+      title="Quality"
+      tooltip={
+        <Column>
+          Quality depends on:
+          <Row>Latency</Row>
+          <Row>Bandwidth</Row>
+          <Row>Uptime</Row>
+          <Row>Successful connection rate</Row>
+        </Column>
       }
+      content={<Indicator $variant={resolveVariant(quality)} />}
     />
   )
 }

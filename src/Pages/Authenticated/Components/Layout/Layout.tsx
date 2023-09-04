@@ -32,9 +32,6 @@ const Main = styled.main`
 
 const Content = styled.div`
   width: 100%;
-  @media ${devices.tablet} {
-    padding-top: 120px;
-  }
 `
 
 const Overlay = styled.div`

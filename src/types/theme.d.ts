@@ -324,6 +324,8 @@ export type Common = {
   colorNavStroke: string
   colorNavActiveStroke: string
 
+  colorGray: string
+
   color2F2A48: string
   color393453: string
   yankeeBlue: string

@@ -79,7 +79,7 @@ export const SettlementCard = () => {
       <Content data-test-id="SettlementCard.container">
         <Progress>
           <Row>
-            <Info>Next auto settlement ({myst.display(myst.toWeiBig(thresholdMyst), { fractions: 1 })})</Info>
+            <Info>Next settlement ({myst.display(myst.toWeiBig(thresholdMyst), { fractions: 1 })})</Info>
             <CurrentEarnings>{myst.display(earningsTokens.wei, { fractions: 2 })}</CurrentEarnings>
           </Row>
           <ProgressBar max={thresholdMyst} value={value} size="big" />

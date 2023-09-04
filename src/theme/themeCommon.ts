@@ -30,6 +30,7 @@ export const themeCommon: Common = {
   colorYellow: '#FFDE69',
   colorNavStroke: '#FFFFFF',
   colorNavActiveStroke: '#3C3857',
+  colorGray: '#E6E6EF',
 
   // yankeeblue
   yankeeBlue: '#221E39',

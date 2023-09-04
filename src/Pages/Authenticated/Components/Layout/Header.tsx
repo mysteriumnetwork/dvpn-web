@@ -14,6 +14,10 @@ import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { Quality } from '../Quality/Quality'
 import { Notifications } from '../Notifications/Notifications'
 import { NATStatus } from '../NATStatus/NATStatus'
+import { themeCommon } from '../../../../theme/themeCommon'
+import { useMediaQuery } from 'react-responsive'
+import { media } from '../../../../commons/media'
+import { MobileHeader } from '../../Navigation/Mobile/MobileHeader'
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +26,16 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+
+  > div:not(:nth-last-of-type(2)) {
+    border-right: ${`1px solid ${themeCommon.colorGrayBlue}`};
+  }
+
+  > div:first-child,
+  div:last-child {
+    border-right: none;
+  }
+
   @media ${devices.tablet} {
     display: none;
   }
@@ -37,12 +51,27 @@ const Group = styled.div`
     gap: 15px;
   }
 `
+
+const MobileHeaderMargin = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 120px;
+`
+
 interface Props {
   logo?: ReactNode
   title?: string
 }
 
 export const Header = ({ logo, title }: Props) => {
+  const isMobile = useMediaQuery(media.isMobileQuery)
+  if (isMobile) {
+    return (
+      <MobileHeaderMargin>
+        <MobileHeader />
+      </MobileHeaderMargin>
+    )
+  }
   return (
     <Container>
       <PageTitle logo={logo} name={title} />
