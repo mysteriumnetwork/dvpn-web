@@ -56,7 +56,7 @@ const Spinner = styled(CircularSpinner)`
   right: 0;
   top: 0;
   bottom: 0;
-  :auto ;
+  margin: auto;
   z-index: ${zIndexes.spinner};
   position: absolute;
 `
