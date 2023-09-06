@@ -18,6 +18,7 @@ import { themeCommon } from '../../../../theme/themeCommon'
 import { useMediaQuery } from 'react-responsive'
 import { media } from '../../../../commons/media'
 import { MobileHeader } from '../../Navigation/Mobile/MobileHeader'
+import { LayoutRow } from './Layout'
 
 const Container = styled.div`
   display: flex;
@@ -55,7 +56,8 @@ const Group = styled.div`
 const MobileHeaderMargin = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 120px;
+  margin-top: 86px;
+  width: 100%;
 `
 
 interface Props {
@@ -67,9 +69,11 @@ export const Header = ({ logo, title }: Props) => {
   const isMobile = useMediaQuery(media.isMobileQuery)
   if (isMobile) {
     return (
-      <MobileHeaderMargin>
-        <MobileHeader />
-      </MobileHeaderMargin>
+      <LayoutRow>
+        <MobileHeaderMargin>
+          <MobileHeader />
+        </MobileHeaderMargin>
+      </LayoutRow>
     )
   }
   return (

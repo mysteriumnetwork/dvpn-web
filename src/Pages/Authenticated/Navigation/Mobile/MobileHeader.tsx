@@ -15,7 +15,7 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 144px;
-  width: 90%;
+  width: 100%;
   min-width: 300px;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.bgSettlementMobile};
@@ -46,19 +46,32 @@ const Cell = styled.div`
   align-items: center;
 `
 
+const Padded = styled.div`
+  padding: 0 8px 0 8px;
+  width: 100%;
+`
+
 export const MobileHeader = () => {
   return (
     <Grid>
       <Cell>
-        <NodeStatus />
+        <Padded>
+          <NodeStatus />
+        </Padded>
       </Cell>
       <Cell>
-        <NATStatus />
+        <Padded>
+          <NATStatus />
+        </Padded>
       </Cell>
       <Cell>
-        <Quality />
+        <Padded>
+          <Quality />
+        </Padded>
       </Cell>
-      <Cell>{<SettlementStatus />}</Cell>
+      <Cell>
+        <SettlementStatus />
+      </Cell>
     </Grid>
   )
 }
