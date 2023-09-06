@@ -40,7 +40,6 @@ const Content = styled.div`
   font-family: Ubuntu, sans-serif;
   font-size: ${themeCommon.fontSizeSmall};
   color: ${({ theme }) => theme.nodeStatus.textColor};
-  gap: 4px;
 `
 
 const Tooltip = styled.div`

@@ -24,7 +24,8 @@ const Item = styled.div`
   @media ${devices.tablet} {
     width: 100%;
     min-width: unset;
-    padding: 4px;
+    padding-right: 0;
+    gap: 4px;
   }
 `
 
@@ -33,7 +34,7 @@ const Title = styled.div`
   font-size: ${themeCommon.fontSizeSmall};
   font-weight: 400;
   @media ${devices.tablet} {
-    width: 30px;
+    width: 40px;
     color: ${({ theme }) => theme.common.fontSizeSmall};
   }
 `
@@ -48,7 +49,9 @@ const TooltipContainer = styled.div`
   flex-direction: column;
   height: 100%;
   min-height: 10px;
+  width: 10px;
   max-width: 10px;
+  margin-left: auto;
 `
 
 interface Props {
@@ -64,14 +67,11 @@ export const HeaderItem = ({ title, content, minWidth, tooltip }: Props) => {
       {title && <Title>{title}</Title>}
       {content}
       {tooltip && (
-        <>
-          <div style={{ flexGrow: 1 }} />
-          <TooltipContainer>
-            <Tooltip content={tooltip}>
-              <ToolTipIcon />
-            </Tooltip>
-          </TooltipContainer>
-        </>
+        <TooltipContainer>
+          <Tooltip content={tooltip}>
+            <ToolTipIcon />
+          </Tooltip>
+        </TooltipContainer>
       )}
     </Item>
   )

@@ -47,8 +47,10 @@ const Cell = styled.div`
 `
 
 const Padded = styled.div`
-  padding: 0 8px 0 8px;
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
 `
 
 export const MobileHeader = () => {
