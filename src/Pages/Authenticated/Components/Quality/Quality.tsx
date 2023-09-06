@@ -9,16 +9,13 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { tequila } from '../../../../api/tequila'
 import styled from 'styled-components'
+import { Link } from '../../../../Components/Common/Link'
+import { NODE_QUALITY } from '../../../../constants/urls'
 
 type IndicatorVariants = 'good' | 'normal' | 'poor'
 interface IndicatorProps {
   $variant: IndicatorVariants
 }
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`
 export const Indicator = styled.div<IndicatorProps>`
   background: ${({ theme, $variant }) => theme.quality.bg[$variant]};
   border-radius: 50%;
@@ -29,16 +26,11 @@ export const Indicator = styled.div<IndicatorProps>`
   width: 15px;
   max-width: 15px;
 `
-const Row = styled.div`
-  display: flex;
-  align-items: center;
 
-  :before {
-    content: '';
-    border: 2px solid ${({ theme }) => theme.common.colorKey};
-    margin-right: 4px;
-    border-radius: 100%;
-  }
+const Tooltip = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 `
 
 export const Quality = () => {
@@ -64,13 +56,23 @@ export const Quality = () => {
     <HeaderItem
       title="Quality"
       tooltip={
-        <Column>
-          Quality depends on:
-          <Row>Latency</Row>
-          <Row>Bandwidth</Row>
-          <Row>Uptime</Row>
-          <Row>Successful connection rate</Row>
-        </Column>
+        <Tooltip>
+          <div style={{ marginBottom: '6px' }}>
+            Node service quality indicates your node’s accessibility to consumers.
+          </div>
+          <div>
+            <b>Green</b> - quality is great and can be used by any consumer.
+          </div>
+          <div>
+            <b>Orange</b> - quality is satisfactory and can be used by most consumers.
+          </div>
+          <div>
+            <b>Red</b> - poor quality and is unlikely to be utilized.
+          </div>
+          <Link style={{ marginTop: '6px' }} href={NODE_QUALITY} target="_blank">
+            Learn more
+          </Link>
+        </Tooltip>
       }
       content={<Indicator $variant={resolveVariant(quality)} />}
     />

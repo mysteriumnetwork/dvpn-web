@@ -12,6 +12,8 @@ export const DOCS_METAMASK = `${DOCS}/en/articles/8004186-adding-myst-token-to-m
 export const PAYOUT_GUIDE = `${DOCS}/en/articles/8004190-where-to-buy-polygon-myst`
 export const DOCS_UPDATE_NODE = `${DOCS}/en/articles/8005521-updating-your-node`
 export const NAT_TRAVERSAL = `${DOCS}/en/articles/8005265-nat-traversal-and-types-of-nat`
+export const NODE_QUALITY = `${DOCS}/en/articles/8205098`
+export const NODE_STATUS = `${DOCS}/en/articles/8005209-troubleshoot-connection-monitoring-fail-issues`
 
 export const ANDROID_DEEPLINK_SSO = 'mystnodes://sso'
 export const ANDROID_DEEPLINK_CLICKBOARDING = 'mystnodes://clickboarding'

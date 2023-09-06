@@ -224,7 +224,7 @@ const dark: Omit<Theme, 'common'> = {
   },
 
   a: {
-    textColor: themeCommon.colorKey,
+    textColor: themeCommon.colorKeyLight,
   },
 
   toasts: {

@@ -13,6 +13,8 @@ import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vp
 import * as React from 'react'
 import { ReactNode } from 'react'
 import { themeCommon } from '../../../../theme/themeCommon'
+import { Link } from '../../../../Components/Common/Link'
+import { NODE_STATUS } from '../../../../constants/urls'
 
 export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
 
@@ -39,6 +41,12 @@ const Content = styled.div`
   font-size: ${themeCommon.fontSizeSmall};
   color: ${({ theme }) => theme.nodeStatus.textColor};
   gap: 4px;
+`
+
+const Tooltip = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 `
 
 const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStatus): StatusIndicatorVariants => {
@@ -81,7 +89,14 @@ export const NodeStatus = () => {
   return (
     <HeaderItem
       title="Status"
-      tooltip="Placeholder text for tooltip"
+      tooltip={
+        <Tooltip>
+          <div>Indicated the status of your node.</div>
+          <Link href={NODE_STATUS} target="_blank">
+            Learn more
+          </Link>
+        </Tooltip>
+      }
       content={
         <>
           <Indicator $variant={variant}></Indicator>
