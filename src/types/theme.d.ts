@@ -174,6 +174,7 @@ export type Theme = {
       good: string
       normal: string
       poor: string
+      unknown: string
     }
   }
   notifications: {

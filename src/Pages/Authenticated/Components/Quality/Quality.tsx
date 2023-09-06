@@ -11,8 +11,10 @@ import { tequila } from '../../../../api/tequila'
 import styled from 'styled-components'
 import { Link } from '../../../../Components/Common/Link'
 import { NODE_QUALITY } from '../../../../constants/urls'
+import { useAppSelector } from '../../../../commons/hooks'
+import { selectors } from '../../../../redux/selectors'
 
-type IndicatorVariants = 'good' | 'normal' | 'poor'
+type IndicatorVariants = 'good' | 'normal' | 'poor' | 'unknown'
 interface IndicatorProps {
   $variant: IndicatorVariants
 }
@@ -35,6 +37,8 @@ const Tooltip = styled.div`
 
 export const Quality = () => {
   const [quality, setQuality] = useState(0)
+  const services = useAppSelector(selectors.runningServices)
+  const anyOnline = services.length > 0
 
   useEffect(() => {
     tequila.api.provider.quality().then((r) => setQuality(r.quality))
@@ -74,7 +78,7 @@ export const Quality = () => {
           </Link>
         </Tooltip>
       }
-      content={<Indicator $variant={resolveVariant(quality)} />}
+      content={<Indicator $variant={anyOnline ? resolveVariant(quality) : 'unknown'} />}
     />
   )
 }
