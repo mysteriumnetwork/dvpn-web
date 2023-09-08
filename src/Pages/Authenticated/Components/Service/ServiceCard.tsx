@@ -117,7 +117,6 @@ interface Props {
   name: string
   description: string | ReactNode
   serviceType: string
-  dataTestId?: string
   approvalPending?: boolean
   earnings?: ServiceEarnings
   prices?: Prices
@@ -131,7 +130,6 @@ export const ServiceCard = ({
   name,
   description,
   serviceType,
-  dataTestId,
   approvalPending = false,
   earnings = { earningsWei: 0, totalEarningWei: 0 },
   prices = { pricePerGibWei: '0', pricePerHourWei: '0' },
@@ -160,21 +158,21 @@ export const ServiceCard = ({
   }
 
   return (
-    <Card data-test-id={dataTestId}>
+    <Card>
       {(internalLoading || loading) && (
         <Overlay>
           <Spinner />
         </Overlay>
       )}
-      <Header data-test-id="ServiceCard.header">
+      <Header>
         {approvalPending && <PendingApproval />}
-        <Controls data-test-id="ServiceCard.nameContainer">
+        <Controls>
           {name}
           <Switch checked={enabled} onChange={handleSwitch} />
         </Controls>
         <Description>{description}</Description>
       </Header>
-      <Content data-test-id="ServiceCard.content">
+      <Content>
         <InfoCard
           title="Price per GiB"
           value={myst.display(prices.pricePerGibWei, { fractions: 4 })}

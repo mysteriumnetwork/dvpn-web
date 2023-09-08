@@ -13,6 +13,7 @@ export const alphaToHex = (value: number) => {
 export const themeCommon: Common = {
   bgMysterium: 'linear-gradient(180deg, #562160 0%, #7B2061 48.96%, #64205D 100%)',
   colorKey: '#D61F85',
+  colorWarning: '#FF9213',
   colorKeyLight: '#ED5BAC',
   colorKeyDark: '#B00D68',
   colorDarkBlue: '#3C3857',
@@ -29,6 +30,7 @@ export const themeCommon: Common = {
   colorYellow: '#FFDE69',
   colorNavStroke: '#FFFFFF',
   colorNavActiveStroke: '#3C3857',
+  colorGray: '#E6E6EF',
 
   // yankeeblue
   yankeeBlue: '#221E39',

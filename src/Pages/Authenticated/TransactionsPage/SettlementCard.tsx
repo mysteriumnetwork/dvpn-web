@@ -76,10 +76,10 @@ export const SettlementCard = () => {
         onClose={() => setShowModal(false)}
         onSave={() => lockouts.lock({ id: SETTLE_LOCKOUT_ID, seconds: 60, refreshPage: true })}
       />
-      <Content data-test-id="SettlementCard.container">
+      <Content>
         <Progress>
           <Row>
-            <Info>Next auto settlement ({myst.display(myst.toWeiBig(thresholdMyst), { fractions: 1 })})</Info>
+            <Info>Next settlement ({myst.display(myst.toWeiBig(thresholdMyst), { fractions: 1 })})</Info>
             <CurrentEarnings>{myst.display(earningsTokens.wei, { fractions: 2 })}</CurrentEarnings>
           </Row>
           <ProgressBar max={thresholdMyst} value={value} size="big" />

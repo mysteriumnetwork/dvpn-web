@@ -32,9 +32,6 @@ const Main = styled.main`
 
 const Content = styled.div`
   width: 100%;
-  @media ${devices.tablet} {
-    padding-top: 120px;
-  }
 `
 
 const Overlay = styled.div`
@@ -56,7 +53,7 @@ const Spinner = styled(CircularSpinner)`
   right: 0;
   top: 0;
   bottom: 0;
-  :auto ;
+  margin: auto;
   z-index: ${zIndexes.spinner};
   position: absolute;
 `

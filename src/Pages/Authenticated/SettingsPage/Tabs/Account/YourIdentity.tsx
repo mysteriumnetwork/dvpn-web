@@ -18,7 +18,7 @@ export const YourIdentity = () => {
   const { id } = useAppSelector(selectors.currentIdentity)
 
   return (
-    <SettingsCard loading={identities.isEmpty(id)} title="User settings" dataTestId="SettingsCard.yourIdentity">
+    <SettingsCard loading={identities.isEmpty(id)} title="User settings">
       <InputGroup
         title="Your identity"
         input={<TextField disabled value={id} tooltip icon={<CopyToClipboardButtonIcon text={id} />} />}

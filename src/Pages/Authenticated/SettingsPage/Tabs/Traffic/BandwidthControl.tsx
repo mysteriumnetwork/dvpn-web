@@ -79,7 +79,6 @@ export const BandwidthControl = () => {
 
   return (
     <SettingsCard
-      dataTestId="SettingsCard.bandwidthControl"
       loading={loading}
       title={
         <Row>

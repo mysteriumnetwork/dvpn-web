@@ -10,32 +10,45 @@ import { useAppSelector, useFetch } from '../../../../commons/hooks'
 import { tequila } from '../../../../api/tequila'
 import { selectors } from '../../../../redux/selectors'
 import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vpn-js/lib/node/status'
+import * as React from 'react'
 import { ReactNode } from 'react'
-import { ReactComponent as WarningSVG } from '../../../../assets/images/toasts/warning.svg'
-import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
+import { themeCommon } from '../../../../theme/themeCommon'
+import { Link } from '../../../../Components/Common/Link'
+import { NODE_STATUS } from '../../../../constants/urls'
 
-export type IndicatorVariants = 'online' | 'offline' | 'monitoringFailed'
+export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
 
 interface IndicatorProps {
-  $variant: IndicatorVariants
+  $variant: StatusIndicatorVariants
 }
 
 export const Indicator = styled.div<IndicatorProps>`
   background: ${({ theme, $variant }) => theme.nodeStatus.bg[$variant]};
-  color: ${({ theme, $variant }) => theme.nodeStatus.textColor[$variant]};
-  font-size: ${({ theme }) => theme.common.fontSizeSmall};
-  font-weight: 500;
-  padding: 5px 10px 5px 10px;
-  border-radius: 10px;
+  border-radius: 50%;
+  min-height: 15px;
+  height: 15px;
+  max-height: 15px;
+  min-width: 15px;
+  width: 15px;
+  max-width: 15px;
 `
 
 const Content = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  font-weight: 400;
+  font-family: Ubuntu, sans-serif;
+  font-size: ${themeCommon.fontSizeSmall};
+  color: ${({ theme }) => theme.nodeStatus.textColor};
 `
 
-const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStatus): IndicatorVariants => {
+const Tooltip = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`
+
+const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStatus): StatusIndicatorVariants => {
   if (!anyOnline) {
     return 'offline'
   }
@@ -43,35 +56,21 @@ const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStat
   if (anyOnline && monitoringStatus === 'failed') {
     return 'monitoringFailed'
   }
+  if (anyOnline && monitoringStatus === 'pending') {
+    return 'pending'
+  }
 
   return 'online'
 }
 
-const WarningIcon = styled(WarningSVG)`
-  width: ${({ theme }) => theme.common.fontSizeSmall};
-  height: ${({ theme }) => theme.common.fontSizeSmall};
-  path,
-  circle {
-    stroke: ${({ theme }) => theme.nodeStatus.textColor.monitoringFailed};
-    stroke: ${({ theme }) => theme.nodeStatus.textColor.monitoringFailed};
-  }
-`
-
-export const resolveContent = (variant: IndicatorVariants): ReactNode => {
+export const resolveContent = (variant: StatusIndicatorVariants): ReactNode => {
   switch (variant) {
     case 'online':
       return <Content>Online</Content>
     case 'offline':
       return <Content>Offline</Content>
     case 'monitoringFailed':
-      return (
-        <Tooltip content="Please contact support">
-          <Content>
-            <WarningIcon />
-            Monitoring failed
-          </Content>
-        </Tooltip>
-      )
+      return <Content>Monitoring failed</Content>
   }
 }
 
@@ -88,12 +87,20 @@ export const NodeStatus = () => {
 
   return (
     <HeaderItem
-      title="Node status"
-      dataTestId="NodeStatus.container"
+      title="Status"
+      tooltip={
+        <Tooltip>
+          <div>Indicated the status of your node.</div>
+          <Link href={NODE_STATUS} target="_blank">
+            Learn more
+          </Link>
+        </Tooltip>
+      }
       content={
-        <Indicator data-test-id="NodeStatus.indicator" $variant={variant}>
+        <>
+          <Indicator $variant={variant}></Indicator>
           {content}
-        </Indicator>
+        </>
       }
     />
   )

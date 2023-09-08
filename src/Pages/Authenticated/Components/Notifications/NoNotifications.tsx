@@ -39,7 +39,7 @@ const Description = styled.div`
 `
 
 export const NoNotifications = () => (
-  <Container data-test-id="NoNotifications.overlay">
+  <Container>
     <Icon />
     <Column>
       <Title>No notification yet. </Title>

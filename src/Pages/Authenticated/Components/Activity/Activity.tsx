@@ -81,7 +81,7 @@ export const Activity = () => {
           Last 24 hours <StopwatchSimpleIcon />
         </SubTitle>
       </Header>
-      <Content data-test-id="Activity.content">
+      <Content>
         <StatGauge
           progress={online}
           fill={activity.online.fill}

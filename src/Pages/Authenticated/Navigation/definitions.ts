@@ -26,13 +26,11 @@ import { LogoutButton } from './LogoutButton'
 
 interface LinkDefinition {
   name?: string
-  dataTestId?: string
   icon: any
   path: string
   subPaths?: string[]
 }
 interface ControllerDefinition {
-  dataTestId?: string
   name: string
   component: any
 }
@@ -40,25 +38,21 @@ interface ControllerDefinition {
 export const LINK_DEFINITIONS: LinkDefinition[] = [
   {
     name: 'Dashboard',
-    dataTestId: 'DesktopNavigation.dashboardLink',
     icon: DashboardNavIcon,
     path: DASHBOARD,
   },
   {
     name: 'History',
-    dataTestId: 'DesktopNavigation.historyLink',
     icon: SessionsNavIcon,
     path: HISTORY,
   },
   {
     name: 'Transactions',
-    dataTestId: 'DesktopNavigation.transactionsLink',
     icon: WalletNavIcon,
     path: TRANSACTIONS,
   },
   {
     name: 'Settings',
-    dataTestId: 'DesktopNavigation.settingsLink',
     icon: SettingsNavIcon,
     path: SETTINGS,
     subPaths: [SETTINGS_ACCOUNT, SETTINGS_ADVANCED, SETTINGS_TRAFFIC],
@@ -67,34 +61,28 @@ export const LINK_DEFINITIONS: LinkDefinition[] = [
 export const DESKTOP_CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
   {
     name: 'Report Issue',
-    dataTestId: 'DesktopNavigation.reportIssue',
     component: ReportIssue,
   },
   {
     name: 'Chat',
-    dataTestId: 'DesktopNavigation.chat',
     component: Chat,
   },
   {
     name: 'Logout',
-    dataTestId: 'DesktopNavigation.logout',
     component: LogoutButton,
   },
 ]
 export const MOBILE_CONTROLLER_DEFINITIONS: ControllerDefinition[] = [
   {
     name: 'Report Issue',
-    dataTestId: 'DesktopNavigation.reportIssue',
     component: ReportIssue,
   },
   {
     name: 'Chat',
-    dataTestId: 'DesktopNavigation.chat',
     component: Chat,
   },
   {
     name: 'Logout',
-    dataTestId: 'DesktopNavigation.logout',
     component: LogoutButton,
   },
 ]

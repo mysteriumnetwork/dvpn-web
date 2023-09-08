@@ -47,7 +47,6 @@ const Error = styled.div`
 `
 
 interface Props {
-  dataTestId?: string
   title?: string
   subTitle?: ReactNode
   input: ReactNode
@@ -55,9 +54,9 @@ interface Props {
   error?: string
 }
 
-export const InputGroup = ({ dataTestId, input, title, subTitle, fluid, error }: Props) => {
+export const InputGroup = ({ input, title, subTitle, fluid, error }: Props) => {
   return (
-    <Container data-test-id={dataTestId} $fluid={fluid}>
+    <Container $fluid={fluid}>
       <Header>
         <Title>{title}</Title>
         {subTitle && <SubTitle>{subTitle}</SubTitle>}

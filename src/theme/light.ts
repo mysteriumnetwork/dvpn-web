@@ -154,14 +154,19 @@ const light: Omit<Theme, 'common'> = {
 
   nodeStatus: {
     bg: {
-      monitoringFailed: themeCommon.colorRed,
+      pending: themeCommon.colorWarning,
+      monitoringFailed: themeCommon.colorWarning,
       offline: themeCommon.colorGrayBlue,
       online: themeCommon.colorGreen,
     },
-    textColor: {
-      monitoringFailed: themeCommon.colorWhite,
-      offline: themeCommon.colorWhite,
-      online: themeCommon.colorWhite,
+    textColor: themeCommon.colorDarkBlue,
+  },
+  quality: {
+    bg: {
+      good: themeCommon.colorGreen,
+      normal: themeCommon.colorWarning,
+      poor: themeCommon.colorRed,
+      unknown: themeCommon.colorGrayBlue2,
     },
   },
   adminPanel: {

@@ -167,7 +167,6 @@ export const Button = ({
   onClick,
   type,
   rounded,
-  dataTestId,
 }: ButtonProps) => {
   return (
     <StyledButton
@@ -178,7 +177,6 @@ export const Button = ({
       type={type}
       disabled={disabled}
       onClick={onClick}
-      data-test-id={dataTestId}
     >
       {loading && (
         <LoadingOverlay $size={size} $rounded={rounded} $variant={variant}>

@@ -79,7 +79,6 @@ export const Services = () => {
       {servicesToShow.map((sd) => (
         <ServiceCard
           loading={loadingPrices || loadingEarnings}
-          dataTestId={sd.dataTestId}
           key={sd.type}
           name={sd.name}
           description={sd.description}

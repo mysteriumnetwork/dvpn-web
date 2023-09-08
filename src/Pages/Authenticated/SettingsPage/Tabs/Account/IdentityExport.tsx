@@ -96,22 +96,12 @@ export const IdentityExport = () => {
     <SettingsCard
       loading={identities.isEmpty(id)}
       title="Export identity"
-      dataTestId="SettingsCard.exportIdentity"
-      footer={
-        <Button
-          dataTestId="IdentityExport.identityExport"
-          loading={loading}
-          onClick={handleIdentityExport}
-          variant="secondary"
-          label="Export"
-        />
-      }
+      footer={<Button loading={loading} onClick={handleIdentityExport} variant="secondary" label="Export" />}
     >
       <Col>
         <InputGroup
           fluid
           title="password"
-          dataTestId="IdentityExport.password"
           input={<TextField type="password" value={form.password} onChange={handlePassword} icon={<InputLockIcon />} />}
         />
         {!passwordValidation.isStrong && form.password !== '' && (

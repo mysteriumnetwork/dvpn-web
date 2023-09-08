@@ -105,7 +105,7 @@ export const TransactionsPage = () => {
         {isDesktop && <SettlementCard />}
         <DownloadTransactionCSV data={data} />
       </SpecializedRow>
-      <LayoutRow data-test-id="TransactionsPage.tableContainer">
+      <LayoutRow>
         {!isDesktop && (
           <List
             items={data.items}
