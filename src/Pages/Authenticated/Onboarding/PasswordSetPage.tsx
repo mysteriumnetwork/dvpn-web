@@ -208,7 +208,7 @@ const INITIAL_STATE: State = {
   passwordError: '',
 }
 
-export const PasswordChangePage = () => {
+export const PasswordSetPage = () => {
   const config = useAppSelector(selectors.currentConfig)
   const query = useQuery()
   const mmnApiKey = query.get('mmnApiKey')

@@ -34,7 +34,7 @@ import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
 import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
 import PageNotFound from './Error/PageNotFound'
 import { StorybookPage } from './Authenticated/StorybookPage/StorybookPage'
-import { PasswordChangePage } from './Authenticated/Onboarding/PasswordChangePage'
+import { PasswordSetPage } from './Authenticated/Onboarding/PasswordSetPage'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 import { STORYBOOK_ROUTES } from './Authenticated/StorybookPage/storybook.routes'
 import { SSOPage } from './Login/SSOPage'
@@ -136,7 +136,7 @@ const AppRouter = () => {
         path={NEW_PASSWORD}
         element={
           <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
-            <PasswordChangePage />
+            <PasswordSetPage />
           </Protected>
         }
       />
