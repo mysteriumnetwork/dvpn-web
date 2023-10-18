@@ -7,9 +7,15 @@
 import styled from 'styled-components'
 import { devices } from '../../../../theme/themes'
 import React from 'react'
-import { ReactComponent as LoginLogo } from '../../../../assets/images/onboarding/login.svg'
+import { ReactComponent as LoginLogo } from '../../../../assets/images/onboarding/logo.svg'
 
 const LogoContainer = styled.div`
+  position: relative;
+  width: 180px;
+  height: 100px;
+`
+
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,14 +23,15 @@ const LogoContainer = styled.div`
   @media ${devices.tablet} {
     align-self: center;
   }
+
+  @media ${devices.mobileS} {
+    display: none;
+  }
 `
 const Logo = styled(LoginLogo)`
-  height: 180px;
-  width: 180px;
-  @media ${devices.tablet} {
-    height: 250px;
-    width: 250px;
-  }
+  position: absolute;
+  right: -35%;
+  top: -44%;
   @media ${devices.mobileS} {
     display: none;
   }
@@ -72,13 +79,16 @@ const Group = styled.div`
 
 export const Welcome = () => {
   return (
-    <LogoContainer>
-      <Logo />
+    <Container>
+      <LogoContainer>
+        <Logo />
+      </LogoContainer>
+
       <Group>
         <Title>Welcome</Title>
         <SubTitle>node runner!</SubTitle>
         <Comment>Let's get you up and running</Comment>
       </Group>
-    </LogoContainer>
+    </Container>
   )
 }

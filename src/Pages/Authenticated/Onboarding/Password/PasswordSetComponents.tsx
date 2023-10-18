@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import styled from 'styled-components'
-import { ReactComponent as Lock } from '../../../../assets/images/onboarding/lock.svg'
 import { Welcome } from './Welcome'
 import { Button } from '../../../../Components/Inputs/Button'
 import { devices } from '../../../../theme/themes'
@@ -17,10 +16,12 @@ const Page = styled.div`
     height: unset;
     padding: 15px;
   }
-`
 
-const LockIcon = styled(Lock)`
-  border: 1px solid salmon;
+  @media ${devices.mobileS} {
+    min-width: unset;
+    max-height: unset;
+    padding: unset;
+  }
 `
 
 const WhiteCard = styled.div`
@@ -39,6 +40,13 @@ const WhiteCard = styled.div`
 
   @media ${devices.tablet} {
     padding: 15px;
+  }
+
+  @media ${devices.mobileS} {
+    min-width: unset;
+    max-height: unset;
+    padding: unset;
+    min-height: unset;
   }
 `
 
@@ -59,6 +67,12 @@ const GradientCard = styled.div`
   @media ${devices.tablet} {
     max-width: unset;
     padding: 30px 10px 50px 10px;
+  }
+
+  @media ${devices.mobileS} {
+    min-width: unset;
+    max-height: unset;
+    border-radius: unset;
   }
 `
 
@@ -106,6 +120,10 @@ const GDescription = styled.div<TextAlign>`
 
 const StartButton = styled(Button)`
   width: 300px;
+
+  @media ${devices.mobileS} {
+    width: unset;
+  }
 `
 
 export const PasswordSetComponents = {
@@ -115,7 +133,6 @@ export const PasswordSetComponents = {
   Welcome,
   GTitle,
   GDescription,
-  LockIcon,
   StartButton,
   GSubTitle,
 }
