@@ -157,6 +157,7 @@ export type Theme = {
   }
   onboarding: {
     bgOverlay: string
+    bgCardGradient: string
     bgCard: string
     bgSvg: string
   }

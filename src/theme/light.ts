@@ -123,6 +123,7 @@ const light: Omit<Theme, 'common'> = {
     bgOverlay: themeCommon.colorLightBlue,
     bgCard: themeCommon.colorWhite,
     bgSvg: '#F6F6F6',
+    bgCardGradient: 'linear-gradient(180deg, #dfdff1 0%, #f7f8fe 100%)',
   },
   textInput: {
     textColor: themeCommon.colorGrayBlue2,

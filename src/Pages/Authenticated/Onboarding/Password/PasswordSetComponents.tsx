@@ -52,7 +52,7 @@ const WhiteCard = styled.div`
 
 const GradientCard = styled.div`
   position: relative;
-  background: linear-gradient(180deg, #dfdff1 0%, #f7f8fe 100%);
+  background: ${({ theme }) => theme.onboarding.bgCardGradient};
   box-shadow: 0 20px 60px 0 #0000651a;
   max-width: 70%;
   border-radius: 40px;
