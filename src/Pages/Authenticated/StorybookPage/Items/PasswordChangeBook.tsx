@@ -4,13 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { PasswordSetPage } from '../../Onboarding/PasswordSetPage'
 import { CenteredColumn } from '../Components'
+import { QuickOnboardingPage } from '../../Onboarding/Password/QuickOnboardingPage'
+import { AdvancedBoardingPage } from '../../Onboarding/Password/AdvancedBoardingPage'
 
 const PasswordChangeBook = () => {
   return (
     <CenteredColumn>
-      <PasswordSetPage />
+      <QuickOnboardingPage />
+      <AdvancedBoardingPage />
     </CenteredColumn>
   )
 }

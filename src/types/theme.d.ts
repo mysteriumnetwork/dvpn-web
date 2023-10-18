@@ -339,6 +339,7 @@ export type Common = {
   fontSizeNormal: string
   fontSizeBigger: string
   fontSizeBig: string
+  fontSizeBiggest: string
   fontSizeHuge: string
   fontSizeHumongous: string
 }

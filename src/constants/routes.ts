@@ -8,6 +8,8 @@ export const HOME = '/'
 export const DASHBOARD = '/dashboard'
 export const NODE_CLAIM = '/node-claim'
 export const NEW_PASSWORD = '/new-password'
+const QUICK_ONBOARDING = '/quick-onboarding'
+const ADVANCED_ONBOARDING = '/advanced-onboarding'
 export const HISTORY = '/history'
 export const TRANSACTIONS = '/transactions'
 export const SETTINGS = '/settings'
@@ -23,6 +25,8 @@ const CLAIM = '/node-claim'
 const CLICKBOARDING = '/clickboarding'
 
 const ROUTES = {
+  QUICK_ONBOARDING,
+  ADVANCED_ONBOARDING,
   HOME,
   DASHBOARD,
   NEW_PASSWORD,

@@ -80,6 +80,7 @@ export const FeatureToggle = () => {
   }
 
   const featureList = Object.keys(FEATURES).map((f) => {
+    // @ts-ignore
     const feature = FEATURES[f]
     const isEnabled = configs.isFeatureEnabled(config, feature.name)
     return (
