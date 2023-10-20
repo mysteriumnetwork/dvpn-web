@@ -6,14 +6,20 @@
  */
 import { Navigate, useLocation } from 'react-router-dom'
 import React from 'react'
-import { useIsFeatureEnabled } from '../../../commons/hooks'
+import { useAppSelector, useIsFeatureEnabled } from '../../../commons/hooks'
 import ROUTES from '../../../constants/routes'
 import FEATURES from '../../../commons/features'
+import { selectors } from '../../../redux/selectors'
 
 export const NewPasswordSetPage = () => {
   const isClickBoardDisabled = useIsFeatureEnabled(FEATURES.DISABLE_CLICKBOARDING)
-
   const location = useLocation()
+
+  const { needsPasswordChange } = useAppSelector(selectors.onBoarding)
+
+  if (needsPasswordChange) {
+    return <Navigate to={ROUTES.ADVANCED_ONBOARDING} />
+  }
 
   if (!isClickBoardDisabled) {
     return <Navigate to={ROUTES.QUICK_ONBOARDING + location.search} replace />
