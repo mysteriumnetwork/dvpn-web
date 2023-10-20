@@ -19,7 +19,7 @@ import { urls } from '../../../../commons/urls'
 import { ANDROID_DEEPLINK_CLICKBOARDING } from '../../../../constants/urls'
 import toasts from '../../../../commons/toasts'
 
-const { Page, StartButton, GTitle, GDescription, GradientCard, Welcome, WhiteCard } = PasswordSetComponents
+const { Page, LockRow, StartButton, GTitle, GDescription, GradientCard, Welcome, WhiteCard } = PasswordSetComponents
 
 export const QuickOnboardingPage = () => {
   const config = useAppSelector(selectors.currentConfig)
@@ -63,8 +63,10 @@ export const QuickOnboardingPage = () => {
           />
           <StartButton size="large" label="START" rounded onClick={getLinkAndRedirect} />
           <GDescription $textAlign="center">
-            Advanced onboarding <InternalLink to={ROUTES.ADVANCED_ONBOARDING + location.search}>Sign Up</InternalLink>
+            Advanced onboarding{' '}
+            <InternalLink to={ROUTES.ADVANCED_ONBOARDING + location.search}>Start here</InternalLink>
           </GDescription>
+          <LockRow />
         </GradientCard>
       </WhiteCard>
     </Page>

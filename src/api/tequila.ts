@@ -105,18 +105,19 @@ const loginWithAuthorizationGrant = async ({ authorizationGrantToken }: { author
 
 const getUIFeatures = async () => await http.get('/config/ui/features').then((r) => r.data)
 
-export type LWAGResponse = {
+export type GrantVerificationResponse = {
   apiKey: string
   walletAddress?: string
+  isEligibleForFreeRegistration: boolean
 }
 
 const verifyOnboardingGrant = async ({
   authorizationGrantToken,
 }: {
   authorizationGrantToken: string
-}): Promise<LWAGResponse> =>
+}): Promise<GrantVerificationResponse> =>
   http
-    .post<LWAGResponse>('/mmn/onboarding/verify-grant', { authorization_grant: authorizationGrantToken })
+    .post<GrantVerificationResponse>('/mmn/onboarding/verify-grant', { authorization_grant: authorizationGrantToken })
     .then((r) => r.data)
 
 const exportIdentity = async (request: any): Promise<unknown> =>

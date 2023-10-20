@@ -8,8 +8,12 @@ import styled from 'styled-components'
 import { Welcome } from './Welcome'
 import { Button } from '../../../../Components/Inputs/Button'
 import { devices } from '../../../../theme/themes'
+import { ReactComponent as LockIcon } from '../../../../assets/images/onboarding/lock.svg'
 
 const Page = styled.div`
+  display: flex;
+  justify-content: center;
+
   padding: 66px;
 
   @media ${devices.tablet} {
@@ -28,18 +32,18 @@ const WhiteCard = styled.div`
   background: ${({ theme }) => theme.onboarding.bgCard};
   border-radius: 30px;
   box-shadow: 0 20px 60px 0 #0000651a;
+  width: 1100px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 16px;
 
-  min-height: calc(100vh - 66px - 66px);
-
-  padding: 20px;
+  padding: 20px 20px 40px 20px;
 
   @media ${devices.tablet} {
     padding: 15px;
+    width: unset;
   }
 
   @media ${devices.mobileS} {
@@ -54,7 +58,7 @@ const GradientCard = styled.div`
   position: relative;
   background: ${({ theme }) => theme.onboarding.bgCardGradient};
   box-shadow: 0 20px 60px 0 #0000651a;
-  max-width: 70%;
+  width: 650px;
   border-radius: 40px;
   padding: 62px 62px 62px 62px;
 
@@ -66,6 +70,7 @@ const GradientCard = styled.div`
 
   @media ${devices.tablet} {
     max-width: unset;
+    width: unset;
     padding: 30px 10px 50px 10px;
   }
 
@@ -126,6 +131,44 @@ const StartButton = styled(Button)`
   }
 `
 
+const LockRow = () => (
+  <LockContainer>
+    <Lock />
+  </LockContainer>
+)
+
+const LockContainer = styled.div`
+  position: relative;
+  width: 100%;
+
+  @media ${devices.tablet} {
+  }
+
+  @media ${devices.mobileS} {
+    display: none;
+  }
+`
+
+const Lock = styled(LockIcon)`
+  position: absolute;
+  top: -20px;
+  right: -130px;
+  width: 186px;
+  height: 160px;
+
+  @media ${devices.tablet} {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 16px;
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 106px;
+    height: 80px;
+  }
+`
+
 export const PasswordSetComponents = {
   Page,
   WhiteCard,
@@ -135,4 +178,6 @@ export const PasswordSetComponents = {
   GDescription,
   StartButton,
   GSubTitle,
+  Lock,
+  LockRow,
 }

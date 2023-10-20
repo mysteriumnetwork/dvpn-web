@@ -30,7 +30,17 @@ import { devices } from '../../../../theme/themes'
 
 const { api } = tequila
 
-const { Page, StartButton, GTitle, GSubTitle, GDescription, GradientCard, Welcome, WhiteCard } = PasswordSetComponents
+const {
+  Page,
+  LockRow,
+  StartButton,
+  GTitle,
+  GSubTitle,
+  GDescription,
+  GradientCard,
+  Welcome,
+  WhiteCard,
+} = PasswordSetComponents
 
 const PasswordInputs = styled.div`
   display: flex;
@@ -242,6 +252,7 @@ export const AdvancedBoardingPage = () => {
                 Easy setup? <InternalLink to={ROUTES.QUICK_ONBOARDING + location.search}>Quick onboarding</InternalLink>
               </GDescription>
             )}
+            <LockRow />
           </GradientCard>
         </WhiteCard>
       </Form>
