@@ -42,6 +42,7 @@ import { ClickBoarding } from './ClickBoarding'
 import { NewPasswordSetPage } from './Authenticated/Onboarding/NewPasswordSetPage'
 import { QuickOnboardingPage } from './Authenticated/Onboarding/Password/QuickOnboardingPage'
 import { AdvancedBoardingPage } from './Authenticated/Onboarding/Password/AdvancedBoardingPage'
+import { PasswordResetPage } from './Authenticated/Onboarding/Password/PasswordResetPage'
 
 const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)
@@ -148,6 +149,14 @@ const AppRouter = () => {
         element={
           <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
             <AdvancedBoardingPage />
+          </Protected>
+        }
+      />
+      <Route
+        path={ROUTES.PASSWORD_RESET}
+        element={
+          <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
+            <PasswordResetPage />
           </Protected>
         }
       />

@@ -18,7 +18,7 @@ export const NewPasswordSetPage = () => {
   const { needsPasswordChange } = useAppSelector(selectors.onBoarding)
 
   if (needsPasswordChange) {
-    return <Navigate to={ROUTES.ADVANCED_ONBOARDING} />
+    return <Navigate to={ROUTES.PASSWORD_RESET} />
   }
 
   if (!isClickBoardDisabled) {

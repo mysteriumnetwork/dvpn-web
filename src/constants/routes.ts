@@ -23,10 +23,12 @@ const STORYBOOK = '/storybook'
 const AUTH_SSO = '/auth-sso'
 const CLAIM = '/node-claim'
 const CLICKBOARDING = '/clickboarding'
+const PASSWORD_RESET = '/password-reset'
 
 const ROUTES = {
   QUICK_ONBOARDING,
   ADVANCED_ONBOARDING,
+  PASSWORD_RESET,
   HOME,
   DASHBOARD,
   NEW_PASSWORD,

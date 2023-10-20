@@ -28,7 +28,7 @@ export const Protected = ({ children, redirects = [] }: ProtectedProps) => {
   const location = useLocation()
   if (
     defaultCredentials &&
-    ![ROUTES.NEW_PASSWORD, ROUTES.ADVANCED_ONBOARDING, ROUTES.QUICK_ONBOARDING].includes(
+    ![ROUTES.NEW_PASSWORD, ROUTES.ADVANCED_ONBOARDING, ROUTES.QUICK_ONBOARDING, ROUTES.PASSWORD_RESET].includes(
       location.pathname.toLowerCase(),
     )
   ) {
