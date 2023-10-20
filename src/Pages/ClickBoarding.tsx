@@ -51,12 +51,29 @@ export const ClickBoarding = () => {
       setLoading(true)
       const info = await verifyOnboardingGrant({ authorizationGrantToken })
 
+      // Following actions must happen in this particular order
+      const newPassword = strings.generate(16)
+
+      if (!info.isEligibleForFreeRegistration) {
+        setLoading(false)
+
+        await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
+        await tequila.api.setMMNApiKey(info.apiKey) // calls mystnodes.com and marks node for free registration if it is first one
+
+        setTimeout(() => {
+          navigate(ROUTES.DASHBOARD, { replace: true })
+        }, 3000)
+        return
+      }
+
       if ([IdentityRegistrationStatus.InProgress, IdentityRegistrationStatus.Registered].includes(registrationStatus)) {
         //Error - identity already registered or in progress
         setLoading(false)
-        setError('Identity was already registered or registration is in progress!')
+
+        await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
+
         setTimeout(() => {
-          navigate(ROUTES.HOME, { replace: true })
+          navigate(ROUTES.DASHBOARD, { replace: true })
         }, 3000)
         return
       }
@@ -83,9 +100,6 @@ export const ClickBoarding = () => {
       }
 
       // Following actions must happen in this particular order
-      const newPassword = strings.generate(16)
-      await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
-      await tequila.api.setMMNApiKey(info.apiKey) // calls mystnodes.com and marks node for free registration if it is first one
       await tequila.api.identityRegister(id, { beneficiary: info.walletAddress, stake: 0 })
       await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
       setLoading(false)

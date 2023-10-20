@@ -9,12 +9,6 @@ import { devices } from '../../../../theme/themes'
 import React from 'react'
 import { ReactComponent as LoginLogo } from '../../../../assets/images/onboarding/logo.svg'
 
-const LogoContainer = styled.div`
-  position: relative;
-  width: 180px;
-  height: 100px;
-`
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,44 +23,41 @@ const Container = styled.div`
   }
 `
 const Logo = styled(LoginLogo)`
-  position: absolute;
-  right: -35%;
-  top: -44%;
+  width: 70px;
+  height: 85px;
   @media ${devices.mobileS} {
     display: none;
   }
 `
 
 const SubTitle = styled.h1`
-  font-size: 50px;
+  font-size: 30px;
   margin-top: 0;
-  line-height: 30px;
   color: ${({ theme }) => theme.text.colorMain};
+  text-align: center;
   @media ${devices.tablet} {
-    font-size: 40px;
-    line-height: 60px;
+    font-size: 26px;
   }
 `
 
 const Title = styled.h1`
   color: ${({ theme }) => theme.common.colorKey};
-  line-height: 80px;
-  font-size: 60px;
+
+  font-size: 40px;
+  text-align: center;
   @media ${devices.tablet} {
-    font-size: 50px;
-    line-height: 60px;
+    font-size: 30px;
   }
   @media ${devices.mobileS} {
-    font-size: 40px;
-    line-height: 40px;
+    font-size: 20px;
   }
 `
 const Comment = styled.div`
   color: ${({ theme }) => theme.common.colorKeyLight};
-  margin-top: 20px;
-  font-size: 27px;
-  line-height: 40px;
+  margin-top: 10px;
+  font-size: 18px;
   font-weight: 400;
+  text-align: center;
   @media ${devices.tablet} {
     font-size: ${({ theme }) => theme.common.fontSizeBig};
   }
@@ -80,9 +71,7 @@ const Group = styled.div`
 export const Welcome = () => {
   return (
     <Container>
-      <LogoContainer>
-        <Logo />
-      </LogoContainer>
+      <Logo />
 
       <Group>
         <Title>Welcome</Title>
