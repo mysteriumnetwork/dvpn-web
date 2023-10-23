@@ -18,7 +18,7 @@ import { media } from '../../../../commons/media'
 import { devices } from '../../../../theme/themes'
 
 const ProgressContainer = styled.div`
-  width: 30%;
+  width: 100%;
   margin-top: 0.5em;
 
   @media ${devices.tablet} {
@@ -65,6 +65,7 @@ export const SettlementStatus = () => {
     <HeaderItem
       minWidth={360}
       title={`Next settlement (${myst.display(myst.toWeiBig(settleThresholdMyst), { fractions: 1 })})`}
+      variant="progressBar"
       content={
         <ProgressContainer>
           <ProgressBar size="small" max={settleThresholdMyst} value={value} />

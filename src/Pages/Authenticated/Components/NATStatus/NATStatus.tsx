@@ -19,7 +19,7 @@ const Content = styled.div`
   font-weight: 400;
   font-family: Ubuntu, sans-serif;
   font-size: ${themeCommon.fontSizeSmall};
-  margin-left: -10px;
+  width: 100%;
 `
 
 const Tooltip = styled.div`

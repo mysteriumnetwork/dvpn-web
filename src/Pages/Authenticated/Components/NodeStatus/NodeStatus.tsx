@@ -4,17 +4,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import * as React from 'react'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { HeaderItem } from '../../../../Components/Header/HeaderItem'
 import { useAppSelector, useFetch } from '../../../../commons/hooks'
-import { tequila } from '../../../../api/tequila'
 import { selectors } from '../../../../redux/selectors'
-import { NodeMonitoringStatus, NodeMonitoringStatusResponse } from 'mysterium-vpn-js/lib/node/status'
-import * as React from 'react'
-import { ReactNode } from 'react'
 import { themeCommon } from '../../../../theme/themeCommon'
 import { Link } from '../../../../Components/Common/Link'
 import { NODE_STATUS } from '../../../../constants/urls'
+import { useStores } from '../../../../mobx/store'
 
 export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
 
@@ -48,46 +47,29 @@ const Tooltip = styled.div`
   gap: 2px;
 `
 
-const resolveVariant = (anyOnline: boolean, monitoringStatus: NodeMonitoringStatus): StatusIndicatorVariants => {
-  if (!anyOnline) {
-    return 'offline'
-  }
-
-  if (anyOnline && monitoringStatus === 'failed') {
-    return 'monitoringFailed'
-  }
-  if (anyOnline && monitoringStatus === 'pending') {
-    return 'pending'
-  }
-
-  return 'online'
-}
-
-export const resolveContent = (variant: StatusIndicatorVariants): ReactNode => {
+export const resolveContent = (variant: StatusIndicatorVariants): string => {
   switch (variant) {
     case 'online':
-      return <Content>Online</Content>
+      return 'Online'
     case 'offline':
-      return <Content>Offline</Content>
+      return 'Offline'
     case 'monitoringFailed':
-      return <Content>Monitoring failed</Content>
+      return 'Monitoring failed'
   }
+  return ''
 }
 
-export const NodeStatus = () => {
+export const NodeStatus = observer(() => {
   const services = useAppSelector(selectors.runningServices)
   const anyOnline = services.length > 0
 
-  const [data = { status: 'pending' } as NodeMonitoringStatusResponse] = useFetch(() =>
-    tequila.api.nodeMonitoringStatus(),
-  )
-
-  const variant = resolveVariant(anyOnline, data.status)
-  const content = resolveContent(variant)
+  const { headerStore } = useStores()
+  const variant = anyOnline ? headerStore.resolveStatusVariant : 'offline'
 
   return (
     <HeaderItem
-      title="Status"
+      title={resolveContent(variant)}
+      variant="bubble"
       tooltip={
         <Tooltip>
           <div>Indicated the status of your node.</div>
@@ -96,12 +78,7 @@ export const NodeStatus = () => {
           </Link>
         </Tooltip>
       }
-      content={
-        <>
-          <Indicator $variant={variant}></Indicator>
-          {content}
-        </>
-      }
+      content={<Indicator $variant={variant}></Indicator>}
     />
   )
-}
+})
