@@ -10,14 +10,17 @@ import { useAppSelector, useIsFeatureEnabled } from '../../../commons/hooks'
 import ROUTES from '../../../constants/routes'
 import FEATURES from '../../../commons/features'
 import { selectors } from '../../../redux/selectors'
+import { RootState } from '../../../redux/store'
+import { IdentityRegistrationStatus } from 'mysterium-vpn-js'
 
 export const NewPasswordSetPage = () => {
   const isClickBoardDisabled = useIsFeatureEnabled(FEATURES.DISABLE_CLICKBOARDING)
+  const identity = useAppSelector(selectors.currentIdentity)
   const location = useLocation()
 
-  const { needsPasswordChange } = useAppSelector(selectors.onBoarding)
+  const isDefaultCredentials = useAppSelector(({ app }: RootState) => app.auth.withDefaultCredentials)
 
-  if (needsPasswordChange) {
+  if (identity.registrationStatus !== IdentityRegistrationStatus.Unregistered && isDefaultCredentials) {
     return <Navigate to={ROUTES.PASSWORD_RESET} />
   }
 
