@@ -157,6 +157,7 @@ export type Theme = {
   }
   onboarding: {
     bgOverlay: string
+    bgCardGradient: string
     bgCard: string
     bgSvg: string
   }
@@ -339,6 +340,7 @@ export type Common = {
   fontSizeNormal: string
   fontSizeBigger: string
   fontSizeBig: string
+  fontSizeBiggest: string
   fontSizeHuge: string
   fontSizeHumongous: string
 }

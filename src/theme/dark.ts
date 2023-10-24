@@ -86,6 +86,7 @@ const dark: Omit<Theme, 'common'> = {
     bgOverlay: themeCommon.colorDarkBlue,
     bgCard: themeCommon.colorGrayBlue2,
     bgSvg: 'none',
+    bgCardGradient: 'linear-gradient(180deg, #262237 0%, #565075 100%)',
   },
   scrollBar: {
     trackColor: themeCommon.colorGrayBlue2,

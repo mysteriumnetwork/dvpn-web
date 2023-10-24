@@ -34,12 +34,15 @@ import { SettingsPage } from './Authenticated/SettingsPage/SettingsPage'
 import { TransactionsPage } from './Authenticated/TransactionsPage/TransactionsPage'
 import PageNotFound from './Error/PageNotFound'
 import { StorybookPage } from './Authenticated/StorybookPage/StorybookPage'
-import { PasswordChangePage } from './Authenticated/Onboarding/PasswordChangePage'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 import { STORYBOOK_ROUTES } from './Authenticated/StorybookPage/storybook.routes'
 import { SSOPage } from './Login/SSOPage'
 import { NodeClaimPage } from './Authenticated/NodeClaimPage/NodeClaimPage'
 import { ClickBoarding } from './ClickBoarding'
+import { NewPasswordSetPage } from './Authenticated/Onboarding/NewPasswordSetPage'
+import { QuickOnboardingPage } from './Authenticated/Onboarding/Password/QuickOnboardingPage'
+import { AdvancedBoardingPage } from './Authenticated/Onboarding/Password/AdvancedBoardingPage'
+import { PasswordResetPage } from './Authenticated/Onboarding/Password/PasswordResetPage'
 
 const AppRouter = () => {
   const loading = useAppSelector(({ app }) => app.loading)
@@ -88,14 +91,7 @@ const AppRouter = () => {
           </Protected>
         }
       />
-      <Route
-        path={ROUTES.CLICKBOARDING}
-        element={
-          // <Protected redirects={toLoginOrOnBoarding}>
-          <ClickBoarding />
-          // </Protected>
-        }
-      />
+      <Route path={ROUTES.CLICKBOARDING} element={<ClickBoarding />} />
       <Route
         path={HISTORY}
         element={
@@ -136,7 +132,31 @@ const AppRouter = () => {
         path={NEW_PASSWORD}
         element={
           <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
-            <PasswordChangePage />
+            <NewPasswordSetPage />
+          </Protected>
+        }
+      />
+      <Route
+        path={ROUTES.QUICK_ONBOARDING}
+        element={
+          <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
+            <QuickOnboardingPage />
+          </Protected>
+        }
+      />
+      <Route
+        path={ROUTES.ADVANCED_ONBOARDING}
+        element={
+          <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
+            <AdvancedBoardingPage />
+          </Protected>
+        }
+      />
+      <Route
+        path={ROUTES.PASSWORD_RESET}
+        element={
+          <Protected redirects={[{ condition: !onBoarding.needsPasswordChange, to: HOME }]}>
+            <PasswordResetPage />
           </Protected>
         }
       />

@@ -8,6 +8,8 @@ export const HOME = '/'
 export const DASHBOARD = '/dashboard'
 export const NODE_CLAIM = '/node-claim'
 export const NEW_PASSWORD = '/new-password'
+const QUICK_ONBOARDING = '/quick-onboarding'
+const ADVANCED_ONBOARDING = '/advanced-onboarding'
 export const HISTORY = '/history'
 export const TRANSACTIONS = '/transactions'
 export const SETTINGS = '/settings'
@@ -21,8 +23,12 @@ const STORYBOOK = '/storybook'
 const AUTH_SSO = '/auth-sso'
 const CLAIM = '/node-claim'
 const CLICKBOARDING = '/clickboarding'
+const PASSWORD_RESET = '/password-reset'
 
 const ROUTES = {
+  QUICK_ONBOARDING,
+  ADVANCED_ONBOARDING,
+  PASSWORD_RESET,
   HOME,
   DASHBOARD,
   NEW_PASSWORD,

@@ -19,7 +19,6 @@ import { TextField } from '../../Components/Inputs/TextField'
 import { Form } from '../../Components/Inputs/Form'
 import { Button } from '../../Components/Inputs/Button'
 import errors from '../../commons/errors'
-import Background from '../../assets/images/onboarding/background.png'
 import { ReactComponent as LoginLogo } from '../../assets/images/onboarding/login.svg'
 import { devices } from '../../theme/themes'
 import complexActions from '../../redux/complex.actions'
@@ -55,7 +54,6 @@ const Page = styled.div`
   width: 100vw;
   align-items: center;
   justify-content: center;
-  background-image: url(${Background});
   background-color: ${({ theme }) => theme.onboarding.bgOverlay};
   @media ${devices.tablet} {
     padding-top: 30px;

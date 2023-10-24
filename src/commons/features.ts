@@ -10,7 +10,7 @@ export type Feature = {
   description: string
 }
 
-const FEATURES: { [key: string]: Feature } = {
+const FEATURES = {
   UPDATE_NOTIFICATIONS: {
     name: 'disableUpdateNotifications',
     description: 'Disable node update notifications',
@@ -34,6 +34,10 @@ const FEATURES: { [key: string]: Feature } = {
   SSO_HIDE: {
     name: 'android_sso_hide',
     description: 'Hides SSO feature',
+  },
+  DISABLE_CLICKBOARDING: {
+    name: 'disable_clickboarding',
+    description: 'Disables ClickBoarding',
   },
 }
 

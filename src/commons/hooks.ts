@@ -5,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useEffect, useState } from 'react'
-// import errors from './errors'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
+import { selectors } from '../redux/selectors'
+import { configs } from './config'
+import { Feature } from './features'
 
 export const useFetch = <T>(
   fetch: () => Promise<T>,
@@ -40,3 +42,8 @@ export const useFetch = <T>(
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+export const useIsFeatureEnabled = (feature: Feature) => {
+  const config = useAppSelector(selectors.currentConfig)
+  return configs.isFeatureEnabled(config, feature.name)
+}
