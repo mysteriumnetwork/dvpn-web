@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { action, autorun, computed, makeObservable, observable } from 'mobx'
+import { action, computed, makeObservable, observable } from 'mobx'
 import { tequila } from '../../../../api/tequila'
 import errors from '../../../../commons/errors'
 import { StatusIndicatorVariants } from '../NodeStatus/NodeStatus'
@@ -31,11 +31,7 @@ export class HeaderStore {
     })
   }
 
-  setupReactions(): void {
-    autorun(() => {
-      this.fetchState()
-    })
-  }
+  setupReactions(): void {}
 
   updateStateInterval() {
     return setInterval(() => this.fetchState(), 10 * 60 * 1000)
@@ -53,7 +49,6 @@ export class HeaderStore {
     try {
       const { status } = await api.nodeMonitoringStatus()
       const { quality } = await api.provider.quality()
-      console.log('status: ', status)
 
       this.setStatus(status)
       this.setQuality(quality)

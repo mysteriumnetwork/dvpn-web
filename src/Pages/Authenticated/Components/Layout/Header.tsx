@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { useStores } from '../../../../mobx/store'
@@ -70,7 +70,12 @@ interface Props {
 export const Header = observer(({ logo, title }: Props) => {
   const isMobile = useMediaQuery(media.isMobileQuery)
   const { headerStore } = useStores()
-  const intervalId = headerStore.updateStateInterval()
+
+  const intervalId = useMemo(() => headerStore.updateStateInterval(), [])
+
+  useEffect(() => {
+    headerStore.fetchState()
+  }, [])
 
   useEffect(() => {
     return () => {
