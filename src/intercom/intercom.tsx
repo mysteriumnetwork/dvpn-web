@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { useEffect } from 'react'
+import { SupportIssueResponse } from 'mysterium-vpn-js'
 import { localStorageKeys } from '../constants/local-storage.keys'
 import { useAppSelector } from '../commons/hooks'
 import complexActions from '../redux/complex.actions'
@@ -61,17 +62,22 @@ export const useIntercom = () => {
   // @ts-ignore
   const show = () => window.Intercom('show')
   // @ts-ignore
+  const showNewMessage = (message: string) => window.Intercom('showNewMessage', message)
+  // @ts-ignore
   const hide = () => window.Intercom('hide')
 
-  const reportIssue = async (cb: (userId?: string) => Promise<any>) => {
+  const reportIssue = ({ message, email, identity, nodeCountry, ipType, ip }: SupportIssueResponse) => {
     // @ts-ignore
-    const userId = window.Intercom('getVisitorId')
-    await cb(userId)
-    // @ts-ignore
-    window.Intercom('update')
-    // @ts-ignore
-    window.Intercom('showMessages')
+    window.Intercom('update', {
+      anonymous_email: email,
+      node_country: nodeCountry,
+      ip_type: ipType,
+      ip,
+      node_identity: identity,
+      user_role: 'provider',
+    })
+    showNewMessage(message)
   }
 
-  return { show, hide, open, reportIssue }
+  return { show, showNewMessage, hide, open, reportIssue }
 }

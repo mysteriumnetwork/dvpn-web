@@ -77,22 +77,26 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
     setEmail('')
     setMessage('')
   }
+
   const reportIssue = async () => {
     setSending(true)
     try {
-      await intercom.reportIssue((userId) =>
-        api.reportIssueIntercom({ email: email, description: message, userId: userId, userType: 'provider' }, 60000),
-      )
+      const res = await api.reportIssueSupport({ email: email, description: message }, 60000)
+      intercom.reportIssue(res)
     } catch (err: any) {
       errors.parseToastError(err)
+      setSending(false)
+      return
     }
     setSending(false)
     handleClose()
   }
+
   const handleOpenIntercom = () => {
-    intercom.show()
+    intercom.showNewMessage(`${email && `Email: ${email}`}${message && `${email && '\n'}${message}`}`)
     handleClose()
   }
+
   return (
     <Modal
       show={show}
@@ -134,7 +138,7 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
             }
             onClick={handleOpenIntercom}
           />
-          <Button loading={sending} rounded label="Send" onClick={reportIssue} />
+          <Button loading={sending} rounded label={sending ? 'Sending' : 'Send'} onClick={reportIssue} />
         </Footer>
       </Content>
     </Modal>

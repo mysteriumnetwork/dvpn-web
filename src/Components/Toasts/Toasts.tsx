@@ -42,6 +42,7 @@ const Content = styled.div`
   color: ${({ theme }) => theme.toasts.contentTextColor};
   font-weight: 400;
   line-height: 14px;
+  white-space: pre-wrap;
 `
 
 type ToastProps = {
