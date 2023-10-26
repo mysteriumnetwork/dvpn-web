@@ -4,8 +4,10 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { useEffect } from 'react'
 import { SupportIssueResponse } from 'mysterium-vpn-js'
 import { useAppSelector } from '../commons/hooks'
+import complexActions from '../redux/complex.actions'
 
 const DESKTOP_OPTIONS = {
   hide_default_launcher: true,
@@ -36,6 +38,11 @@ export const updateIntercom = (mode: 'mobile' | 'desktop') => {
 
 export const useIntercom = () => {
   const open = useAppSelector(({ app }) => app.chatOpened)
+
+  useEffect(() => {
+    window.Intercom('onHide', () => complexActions.setChatOpened(false))
+    window.Intercom('onShow', () => complexActions.setChatOpened(true))
+  }, [])
 
   const show = () => window.Intercom('show')
   const showNewMessage = (message: string) => window.Intercom('showNewMessage', message)
