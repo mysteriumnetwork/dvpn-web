@@ -110,7 +110,7 @@ export const ProgressBar = ({ max, value, size }: Props) => {
 
   const marks = useMemo(
     () =>
-      [...Array(max * 2 + 1)].map((_, i) => {
+      [...Array((max < 1 ? 1 : max) * 2 + 1)].map((_, i) => {
         return <Mark key={`m-${i}`} $size={size} $primary={i % 2 === 0} />
       }),
     [max],
