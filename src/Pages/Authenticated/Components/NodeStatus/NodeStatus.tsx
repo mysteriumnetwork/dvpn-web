@@ -36,7 +36,7 @@ const Tooltip = styled.div`
   gap: 2px;
 `
 
-export const resolveContent = (variant: StatusIndicatorVariants): string => {
+export const resolveStatusTitle = (variant: StatusIndicatorVariants): string => {
   switch (variant) {
     case 'online':
       return 'Online'
@@ -44,8 +44,9 @@ export const resolveContent = (variant: StatusIndicatorVariants): string => {
       return 'Offline'
     case 'monitoringFailed':
       return 'Monitoring failed'
+    case 'pending':
+      return 'Pending'
   }
-  return ''
 }
 
 export const NodeStatus = observer(() => {
@@ -57,7 +58,7 @@ export const NodeStatus = observer(() => {
 
   return (
     <HeaderItem
-      title={resolveContent(variant)}
+      title={resolveStatusTitle(variant)}
       variant="bubble"
       tooltip={
         <Tooltip>

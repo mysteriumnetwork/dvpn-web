@@ -71,12 +71,12 @@ export class HeaderStore {
   }
 
   get resolveStatusVariant(): StatusIndicatorVariants {
-    if (this.status === 'failed') {
-      return 'monitoringFailed'
+    if (this.status === 'success') {
+      return 'online'
     }
     if (this.status === 'pending') {
       return 'pending'
     }
-    return 'online'
+    return 'monitoringFailed'
   }
 }
