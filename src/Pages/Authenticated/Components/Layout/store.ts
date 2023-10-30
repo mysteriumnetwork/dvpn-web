@@ -7,11 +7,11 @@
 import { action, computed, makeObservable, observable } from 'mobx'
 import { tequila } from '../../../../api/tequila'
 import errors from '../../../../commons/errors'
-import { StatusIndicatorVariants } from '../NodeStatus/NodeStatus'
 
 const { api } = tequila
 
-type QualityIndicatorVariants = 'good' | 'normal' | 'poor' | 'unknown'
+export type QualityIndicatorVariants = 'good' | 'normal' | 'poor' | 'unknown'
+export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
 
 export class HeaderStore {
   status: string = 'pending'

@@ -8,14 +8,12 @@ import * as React from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { HeaderItem } from '../../../../Components/Header/HeaderItem'
-import { useAppSelector, useFetch } from '../../../../commons/hooks'
+import { useAppSelector } from '../../../../commons/hooks'
 import { selectors } from '../../../../redux/selectors'
-import { themeCommon } from '../../../../theme/themeCommon'
 import { Link } from '../../../../Components/Common/Link'
 import { NODE_STATUS } from '../../../../constants/urls'
 import { useStores } from '../../../../mobx/store'
-
-export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'pending'
+import { StatusIndicatorVariants } from '../Layout/store'
 
 interface IndicatorProps {
   $variant: StatusIndicatorVariants
@@ -30,15 +28,6 @@ export const Indicator = styled.div<IndicatorProps>`
   min-width: 15px;
   width: 15px;
   max-width: 15px;
-`
-
-const Content = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  font-family: Ubuntu, sans-serif;
-  font-size: ${themeCommon.fontSizeSmall};
-  color: ${({ theme }) => theme.nodeStatus.textColor};
 `
 
 const Tooltip = styled.div`
