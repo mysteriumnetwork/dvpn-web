@@ -4,15 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { HeaderItem } from '../../../../Components/Header/HeaderItem'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
-import { tequila } from '../../../../api/tequila'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { HeaderItem } from '../../../../Components/Header/HeaderItem'
 import { Link } from '../../../../Components/Common/Link'
 import { NODE_QUALITY } from '../../../../constants/urls'
 import { useAppSelector } from '../../../../commons/hooks'
 import { selectors } from '../../../../redux/selectors'
+import { useStores } from '../../../../mobx/store'
 
 type IndicatorVariants = 'good' | 'normal' | 'poor' | 'unknown'
 interface IndicatorProps {
@@ -35,30 +35,15 @@ const Tooltip = styled.div`
   gap: 2px;
 `
 
-export const Quality = () => {
-  const [quality, setQuality] = useState(0)
+export const Quality = observer(() => {
   const services = useAppSelector(selectors.runningServices)
   const anyOnline = services.length > 0
-
-  useEffect(() => {
-    tequila.api.provider.quality().then((r) => setQuality(r.quality))
-  }, [])
-  const resolveVariant = (quality: number): IndicatorVariants => {
-    if (quality > 0.75) {
-      return 'good'
-    }
-    if (quality < 0.75 && quality > 0.5) {
-      return 'normal'
-    }
-    if (quality < 0.5) {
-      return 'poor'
-    }
-    return 'normal'
-  }
+  const { headerStore } = useStores()
 
   return (
     <HeaderItem
       title="Quality"
+      variant="bubble"
       tooltip={
         <Tooltip>
           <div style={{ marginBottom: '6px' }}>
@@ -78,7 +63,7 @@ export const Quality = () => {
           </Link>
         </Tooltip>
       }
-      content={<Indicator $variant={anyOnline ? resolveVariant(quality) : 'unknown'} />}
+      content={<Indicator $variant={anyOnline ? headerStore.resolveQualityVariant : 'unknown'} />}
     />
   )
-}
+})

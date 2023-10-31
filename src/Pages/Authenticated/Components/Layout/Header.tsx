@@ -4,12 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { ReactNode, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
+import { observer } from 'mobx-react-lite'
+import { useStores } from '../../../../mobx/store'
 import { devices } from '../../../../theme/themes'
 import { SettlementStatus } from '../SettlementStatus/SettlementStatus'
 import { Profile } from '../Profile/Profile'
 import PageTitle from '../../../../Components/LayoutHeader/PageTitle'
-import { ReactNode } from 'react'
 import { NodeStatus } from '../NodeStatus/NodeStatus'
 import { Quality } from '../Quality/Quality'
 import { Notifications } from '../Notifications/Notifications'
@@ -65,8 +67,22 @@ interface Props {
   title?: string
 }
 
-export const Header = ({ logo, title }: Props) => {
+export const Header = observer(({ logo, title }: Props) => {
   const isMobile = useMediaQuery(media.isMobileQuery)
+  const { headerStore } = useStores()
+
+  const intervalId = useMemo(() => headerStore.updateStateInterval(), [])
+
+  useEffect(() => {
+    headerStore.fetchState()
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(intervalId)
+    }
+  }, [intervalId])
+
   if (isMobile) {
     return (
       <LayoutRow>
@@ -89,4 +105,4 @@ export const Header = ({ logo, title }: Props) => {
       </Group>
     </Container>
   )
-}
+})
