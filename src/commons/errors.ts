@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { APIError } from 'mysterium-vpn-js'
+import { APIError, FieldError } from 'mysterium-vpn-js'
 import toasts from './toasts'
 
 export const UNKNOWN_API_ERROR = 'Unknown API Error'
@@ -24,6 +24,7 @@ export class ErrorWrapper {
   private readonly error?: Error
   private readonly errorHuman?: string
   private readonly errorCode?: string
+  private readonly errorFields?: Record<string, FieldError>
 
   constructor(error?: Error) {
     this.error = error
@@ -33,6 +34,7 @@ export class ErrorWrapper {
     if (error instanceof APIError) {
       this.errorHuman = error?.human()
       this.errorCode = error?.response.error.code
+      this.errorFields = error?.response.error.fields
     }
   }
 
@@ -41,6 +43,13 @@ export class ErrorWrapper {
 
     if (translation) {
       return translation.message
+    }
+
+    if (this.errorCode === 'validation_failed' && this.errorFields) {
+      const invalidFields = Object.keys(this.errorFields).map((x) => this.errorFields?.[x].message)
+      if (invalidFields.length > 0) {
+        return invalidFields.join('\n\n')
+      }
     }
 
     return this.errorHuman || UNKNOWN_API_ERROR
