@@ -156,7 +156,7 @@ const light: Omit<Theme, 'common'> = {
   nodeStatus: {
     bg: {
       pending: themeCommon.colorWarning,
-      monitoringFailed: themeCommon.colorWarning,
+      monitoringFailed: themeCommon.colorRed,
       offline: themeCommon.colorGrayBlue,
       online: themeCommon.colorGreen,
     },
