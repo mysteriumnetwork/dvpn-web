@@ -168,19 +168,18 @@ const Spinner = styled(CircularSpinner)`
   z-index: ${zIndexes.spinner};
 `
 
-interface Props {
+export type ModalProps = React.PropsWithChildren<{
   show?: boolean
   icon?: ReactNode
   title?: string
   subTitle?: string
-  children?: ReactNode
   onClickX?: () => void
   loading?: boolean
   disableBackdrop?: boolean
   disableX?: boolean
   size?: ModalSize
   zIndex?: number
-}
+}>
 
 export const Modal = ({
   show,
@@ -194,7 +193,7 @@ export const Modal = ({
   disableX,
   size,
   zIndex,
-}: Props) => {
+}: ModalProps) => {
   const isMobile = useMediaQuery(isMobileQuery)
   if (!show) {
     return <></>

@@ -25,10 +25,9 @@ const Content = styled.div`
   flex-direction: row;
   width: 100%;
   position: fixed;
-  height: 100px;
   top: 0;
   z-index: ${zIndexes.mobileNavigation};
-  padding: 0 10px 0 10px;
+  padding: 12px 10px 12px 10px;
   align-items: center;
   justify-content: space-between;
   background: ${({ theme }) => theme.navigation.bg};
@@ -39,7 +38,6 @@ const LogoContainer = styled.div`
   justify-content: center;
 `
 const LogoLink = styled(Link)`
-  margin-top: -30px;
   margin-right: 20px;
 `
 const InputGroupLeft = styled.div`
@@ -47,11 +45,8 @@ const InputGroupLeft = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 25px;
 `
-const InputGroupRight = styled.div`
-  margin-bottom: 25px;
-`
+const InputGroupRight = styled.div``
 
 export const MobileNavigation = () => {
   const theme = useAppSelector(remoteStorage.selector(UI_THEME_KEY))

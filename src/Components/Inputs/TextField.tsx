@@ -73,7 +73,7 @@ export type TextFieldVariant = ''
 
 interface Props {
   icon?: ReactNode
-  value: string
+  value?: string
   placeholder?: string
   onChange?: (v: string) => void
   disabled?: boolean
