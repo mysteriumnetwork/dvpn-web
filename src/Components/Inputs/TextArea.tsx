@@ -49,7 +49,7 @@ const StyledTextArea = styled.textarea<StyledTextAreaProps>`
 `
 
 interface Props {
-  value: string
+  value?: string
   placeholder?: string
   onChange?: (v: string) => void
   disabled?: boolean
@@ -58,9 +58,10 @@ interface Props {
   variant?: TextFieldVariant
   rows?: number
   cols?: number
+  register?: object
 }
 
-export const TextArea = ({ value, error, placeholder, rows, cols, onChange }: Props) => {
+export const TextArea = ({ value, error, placeholder, rows, cols, onChange, register = {} }: Props) => {
   return (
     <StyledTextArea
       value={value}
@@ -72,6 +73,7 @@ export const TextArea = ({ value, error, placeholder, rows, cols, onChange }: Pr
       }}
       rows={rows}
       cols={cols}
+      {...register}
     />
   )
 }

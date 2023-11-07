@@ -77,11 +77,12 @@ interface Props {
   placeholder?: string
   onChange?: (v: string) => void
   disabled?: boolean
-  type?: 'text' | 'password'
+  type?: 'text' | 'password' | 'email'
   error?: boolean
   textarea?: boolean
   variant?: TextFieldVariant
   tooltip?: boolean
+  register?: object
 }
 
 export const TextField = ({
@@ -93,6 +94,7 @@ export const TextField = ({
   error,
   placeholder,
   tooltip,
+  register = {},
 }: Props) => {
   return (
     <Container>
@@ -107,6 +109,7 @@ export const TextField = ({
           onChange(value)
         }}
         disabled={disabled}
+        {...register}
       />
       {icon && (
         <IconContainer>
