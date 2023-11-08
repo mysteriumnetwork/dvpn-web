@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import ROUTES from '../constants/routes'
-import { tequila } from '../api/tequila'
+import { GrantVerificationResponse, tequila } from '../api/tequila'
 import { strings } from '../commons/strngs'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import { useAppSelector } from '../commons/hooks'
@@ -38,63 +38,95 @@ export const ClickBoarding = () => {
   const [params] = useSearchParams()
   const { id, registrationStatus } = useAppSelector(selectors.currentIdentity)
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+
+  const toDashboardWithPassword = (password: string) =>
+    navigate(ROUTES.DASHBOARD, { replace: true, state: { generatedPassword: password } })
 
   const autoOnBoard = async () => {
     const authorizationGrantToken = params.get(AUTHORIZATION_GRANT)
+
     if (!authorizationGrantToken) {
       navigate(ROUTES.HOME, { replace: true })
       return
     }
 
     try {
-      setLoading(true)
       const info = await verifyOnboardingGrant({ authorizationGrantToken })
 
+      if (!info.isEligibleForFreeRegistration) {
+        await noFreeRegistrationsLeftFlow(info)
+        return
+      }
+
       if ([IdentityRegistrationStatus.InProgress, IdentityRegistrationStatus.Registered].includes(registrationStatus)) {
-        //Error - identity already registered or in progress
-        setLoading(false)
-        setError('Identity was already registered or registration is in progress!')
-        setTimeout(() => {
-          navigate(ROUTES.HOME, { replace: true })
-        }, 3000)
+        await identityAlreadyRegisteredFlow()
         return
       }
 
       if (!info.apiKey) {
-        //Error - no api key??
-        setLoading(false)
-        //TODO: Refine error messages
-        setError('Something bad happened. Please retry.')
-        setTimeout(() => {
-          navigate(ROUTES.HOME, { replace: true })
-        }, 3000)
+        noApiKeyFlow()
         return
       }
 
       if (!info.walletAddress) {
-        //Error - no wallet
-        setLoading(false)
-        setError('Please set your wallet on MystNodes to onboard your node')
-        setTimeout(() => {
-          navigate(ROUTES.HOME, { replace: true })
-        }, 3000)
+        noWalletFlow()
         return
       }
 
-      // Following actions must happen in this particular order
-      const newPassword = strings.generate(16)
-      await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
-      await tequila.api.setMMNApiKey(info.apiKey) // calls mystnodes.com and marks node for free registration if it is first one
-      await tequila.api.identityRegister(id, { beneficiary: info.walletAddress, stake: 0 })
-      await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
-      setLoading(false)
-      navigate(ROUTES.DASHBOARD, { replace: true, state: { generatedPassword: newPassword } })
+      await regularFlow(info)
     } catch (e: unknown) {
-      setLoading(false)
-      // TODO: Refine error messages
-      setError('Something bad happened, please retry')
+      setError('Could not proceed with Quick onboarding')
+      navigate(ROUTES.HOME)
     }
+  }
+
+  const noFreeRegistrationsLeftFlow = async (info: GrantVerificationResponse) => {
+    const newPassword = strings.generate(16)
+    await tequila.api.setMMNApiKey(info.apiKey) // just claim
+    await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
+    await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
+    toDashboardWithPassword(newPassword)
+
+    setTimeout(() => {
+      navigate(ROUTES.DASHBOARD, { replace: true })
+    }, 3000)
+  }
+
+  const identityAlreadyRegisteredFlow = async () => {
+    const newPassword = strings.generate(16)
+    await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
+    await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
+    toDashboardWithPassword(newPassword)
+
+    setTimeout(() => {
+      navigate(ROUTES.DASHBOARD, { replace: true })
+    }, 3000)
+  }
+
+  const noApiKeyFlow = () => {
+    //TODO: Refine error messages
+    setError('Something bad happened. Please retry.')
+
+    setTimeout(() => {
+      navigate(ROUTES.HOME, { replace: true })
+    }, 3000)
+  }
+
+  const noWalletFlow = () => {
+    setError('Please set your wallet on MystNodes to onboard your node')
+
+    setTimeout(() => {
+      navigate(ROUTES.HOME, { replace: true })
+    }, 3000)
+  }
+
+  const regularFlow = async (info: GrantVerificationResponse) => {
+    const newPassword = strings.generate(16)
+    await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
+    await tequila.api.setMMNApiKey(info.apiKey)
+    await tequila.api.identityRegister(id, { beneficiary: info.walletAddress, stake: 0 })
+    await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
+    toDashboardWithPassword(newPassword)
   }
 
   useEffect(() => {
@@ -111,12 +143,10 @@ export const ClickBoarding = () => {
         flexDirection: 'column',
       }}
     >
-      {loading && (
-        <Row>
-          <h1>Please wait while we onboard your node</h1>
-          <Spinner />
-        </Row>
-      )}
+      <Row>
+        <h1>Please wait while we onboard your node</h1>
+        <Spinner />
+      </Row>
       {error && <Error>{error}</Error>}
     </div>
   )
