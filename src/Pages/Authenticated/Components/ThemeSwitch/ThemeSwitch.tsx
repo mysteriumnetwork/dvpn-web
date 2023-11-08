@@ -35,7 +35,7 @@ const Selection = styled.button<SelectionProps>`
   padding: 5px 10px;
   border-radius: 10px;
   color: ${({ theme }) => theme.text.colorMain};
-  border: ${({ theme, $active }) => ($active ? `0.5px solid ${theme.text.colorSecondary}` : 'none')};
+  border: ${({ theme, $active }) => ($active ? `0.5px solid ${theme.text.colorSecondary}` : '0.5px solid transparent')};
   :hover {
     cursor: pointer;
     border: ${({ theme, $active }) =>

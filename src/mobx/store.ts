@@ -8,14 +8,17 @@ import React from 'react'
 import { configure } from 'mobx'
 import { HistoryPageStore } from '../Pages/Authenticated/HistoryPage/store'
 import { HeaderStore } from '../Pages/Authenticated/Components/Layout/store'
+import { AsyncBeneficiaryStore } from '../Pages/Authenticated/SettingsPage/Tabs/Account/asyncBeneficiary.store'
 
 export class MobXRootStore {
   historyPage: HistoryPageStore
   headerStore: HeaderStore
+  asyncBeneficiaryStore: AsyncBeneficiaryStore
 
   constructor() {
     this.historyPage = new HistoryPageStore()
     this.headerStore = new HeaderStore()
+    this.asyncBeneficiaryStore = new AsyncBeneficiaryStore()
     this.historyPage.setupReactions()
     this.headerStore.setupReactions()
   }

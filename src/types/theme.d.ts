@@ -301,6 +301,12 @@ export type Theme = {
     }
   }
 
+  asyncBeneficiaryModal: {
+    notice: {
+      bgColor: string
+    }
+  }
+
   common: Common
 }
 

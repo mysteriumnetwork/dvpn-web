@@ -26,15 +26,17 @@ export class ErrorWrapper {
   private readonly errorCode?: string
   private readonly errorFields?: Record<string, FieldError>
 
-  constructor(error?: Error) {
-    this.error = error
-
-    this.errorHuman = error?.message
-
+  constructor(error?: unknown) {
     if (error instanceof APIError) {
       this.errorHuman = error?.human()
       this.errorCode = error?.response.error.code
       this.errorFields = error?.response.error.fields
+    } else if (error instanceof Error) {
+      this.error = error
+      this.errorHuman = error?.message
+    } else {
+      this.errorCode = UNKNOWN_API_ERROR
+      this.errorHuman = error as string
     }
   }
 
@@ -64,7 +66,7 @@ const parseToastError = (error: any) => {
   toasts.toastError(apiError(error).human())
 }
 
-const apiError = (error: Error) => new ErrorWrapper(error)
+const apiError = (error: unknown) => new ErrorWrapper(error)
 
 const errors = {
   parseToastError,

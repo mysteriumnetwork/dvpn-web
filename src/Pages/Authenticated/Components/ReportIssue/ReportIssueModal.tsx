@@ -17,16 +17,12 @@ import { TextArea } from '../../../../Components/Inputs/TextArea'
 import { devices } from '../../../../theme/themes'
 import { useIntercom } from '../../../../intercom/intercom'
 import zIndexes from '../../../../constants/z-indexes'
-import errors from '../../../../commons/errors'
+import errorz from '../../../../commons/errors'
+import { useForm } from 'react-hook-form'
 
 const { api } = tequila
 
-interface Props {
-  show: boolean
-  onClose?: () => void
-}
-
-const Content = styled.div`
+const Content = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -63,28 +59,47 @@ const StyledBugButtonIcon = styled(BugButtonIcon)`
   }
 `
 
+interface Props {
+  show: boolean
+  onClose?: () => void
+}
+
+type FormData = {
+  email: string
+  description: string
+}
+
 export const ReportIssueModal = ({ show, onClose }: Props) => {
   const intercom = useIntercom()
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
+  const {
+    register,
+    watch,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>()
+
+  const email = watch('email')
+  const description = watch('description')
+
   const [sending, setSending] = useState(false)
+
   const handleClose = () => {
     if (!onClose) {
       return
     }
 
     onClose()
-    setEmail('')
-    setMessage('')
+    reset()
   }
 
-  const reportIssue = async () => {
+  const reportIssue = async ({ email, description }: FormData) => {
     setSending(true)
     try {
-      const res = await api.reportIssueSupport({ email: email, description: message }, 60000)
+      const res = await api.reportIssueSupport({ email, description }, 60000)
       intercom.reportIssue(res)
     } catch (err: any) {
-      errors.parseToastError(err)
+      errorz.parseToastError(err)
       setSending(false)
       return
     }
@@ -93,10 +108,9 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
   }
 
   const handleOpenIntercom = () => {
-    intercom.showNewMessage(`${email && `Email: ${email}`}${message && `${email && '\n'}${message}`}`)
+    intercom.showNewMessage(`${email && `Email: ${email}`}${description && `${email && '\n'}${description}`}`)
     handleClose()
   }
-
   return (
     <Modal
       show={show}
@@ -106,18 +120,23 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
       onClickX={handleClose}
       zIndex={zIndexes.overlay + 100}
     >
-      <Content>
-        <InputGroup input={<TextField value={email} placeholder="node@runner.com" onChange={(v) => setEmail(v)} />} />
+      <Content onSubmit={handleSubmit((d) => reportIssue(d as FormData))}>
+        <InputGroup
+          error={errors.email?.type === 'required' ? 'Required' : ''}
+          input={
+            <TextField register={register('email', { required: true })} type="email" placeholder="node@runner.com" />
+          }
+        />
         <InputGroup
           fluid
-          title={`Your message (${message.length})`}
+          error={errors.description?.type === 'required' ? 'Required' : ''}
+          title={`Your message (${description?.length || 0})`}
           input={
             <TextArea
+              register={register('description', { required: true })}
               textarea
               rows={5}
-              value={message}
               placeholder="Describe what went wrong (minimum 30 characters)"
-              onChange={(v) => setMessage(v)}
             />
           }
         />
@@ -138,7 +157,7 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
             }
             onClick={handleOpenIntercom}
           />
-          <Button loading={sending} rounded label={sending ? 'Sending' : 'Send'} onClick={reportIssue} />
+          <Button loading={sending} rounded label={sending ? 'Sending' : 'Send'} type="submit" />
         </Footer>
       </Content>
     </Modal>

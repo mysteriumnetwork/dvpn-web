@@ -295,6 +295,12 @@ const light: Omit<Theme, 'common'> = {
       textColor: themeCommon.colorDarkBlue,
     },
   },
+
+  asyncBeneficiaryModal: {
+    notice: {
+      bgColor: themeCommon.colorLightBlue,
+    },
+  },
 }
 
 export default light

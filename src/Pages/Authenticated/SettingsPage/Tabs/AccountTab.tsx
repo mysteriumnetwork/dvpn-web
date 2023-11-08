@@ -11,6 +11,7 @@ import { MystNodesClaim } from './Account/MystNodesClaim'
 import { PasswordChange } from './Account/PasswordChange'
 import { AvatarChoice } from './Account/AvatarChoice'
 import { IdentityExport } from './Account/IdentityExport'
+import { AsyncBeneficiary } from './Account/AsyncBeneficiary'
 
 const LOCALHOSTS = ['localhost', '127.0.0.1']
 
@@ -20,6 +21,7 @@ const AccountTab = () => {
     <LayoutGrid>
       <YourIdentity />
       <MystNodesClaim />
+      <AsyncBeneficiary />
       <PasswordChange />
       {isLocalhost && <IdentityExport />}
       <AvatarChoice />

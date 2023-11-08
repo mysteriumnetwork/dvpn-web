@@ -11,6 +11,7 @@ const mobileMenu = 1002
 const menuTooltip = 1002
 const mobileNavigation = 1002
 const settleModal = 1003
+const asyncBeneficiaryModal = 1004
 const onboardingModal = 1003
 const buttonOverlay = 10
 const buttonSpinner = 11
@@ -24,6 +25,7 @@ const zIndexes = {
   mobileNavigation,
   settleModal,
   onboardingModal,
+  asyncBeneficiaryModal,
   buttonOverlay,
   buttonSpinner,
   spinner,

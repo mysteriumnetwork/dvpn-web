@@ -33,7 +33,7 @@ const PageOverlay = styled.div`
 `
 const normalSize = css`
   width: 900px;
-  height: 440px;
+  min-height: 440px;
   left: 50%;
   top: 10%;
   transform: translate(-50%, 30%);
@@ -89,6 +89,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100%;
+  padding-bottom: 26px;
 `
 
 const Icon = styled.div`
@@ -168,19 +169,18 @@ const Spinner = styled(CircularSpinner)`
   z-index: ${zIndexes.spinner};
 `
 
-interface Props {
+export type ModalProps = React.PropsWithChildren<{
   show?: boolean
   icon?: ReactNode
   title?: string
   subTitle?: string
-  children?: ReactNode
   onClickX?: () => void
   loading?: boolean
   disableBackdrop?: boolean
   disableX?: boolean
   size?: ModalSize
   zIndex?: number
-}
+}>
 
 export const Modal = ({
   show,
@@ -194,7 +194,7 @@ export const Modal = ({
   disableX,
   size,
   zIndex,
-}: Props) => {
+}: ModalProps) => {
   const isMobile = useMediaQuery(isMobileQuery)
   if (!show) {
     return <></>

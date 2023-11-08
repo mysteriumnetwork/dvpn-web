@@ -13,7 +13,6 @@ import { feez } from '../../../../commons/fees'
 import styled from 'styled-components'
 import { Button } from '../../../../Components/Inputs/Button'
 import { SettleButtonIcon } from '../../../../Components/Icons/ButtonIcons'
-import { ReactComponent as EditIcon } from '../../../../assets/images/edit.svg'
 import { useAppDispatch, useAppSelector } from '../../../../commons/hooks'
 import { Card } from './Card'
 import { myst } from '../../../../commons/mysts'
@@ -21,11 +20,14 @@ import toasts from '../../../../commons/toasts'
 import { tequila } from '../../../../api/tequila'
 import identities from '../../../../commons/identities'
 import errors from '../../../../commons/errors'
-import { isValidEthereumAddress } from '../../../../commons/ethereum.utils'
 import { updateBeneficiaryTxStatusStore } from '../../../../redux/app.slice'
 import { devices } from '../../../../theme/themes'
 import complexActions from '../../../../redux/complex.actions'
 import zIndexes from '../../../../constants/z-indexes'
+import { useStores } from '../../../../mobx/store'
+import { observer } from 'mobx-react-lite'
+import { InternalLink } from '../../../../Components/Common/Link'
+import ROUTES from '../../../../constants/routes'
 
 const Error = styled.div`
   color: red;
@@ -34,6 +36,7 @@ const Error = styled.div`
 
 const Errors = styled.div`
   height: 40px;
+  width: 90%;
 `
 
 const Content = styled.div`
@@ -88,8 +91,16 @@ const Row = styled.div`
     gap: 10px;
   }
 `
-const StyledEditIcon = styled(EditIcon)`
-  cursor: pointer;
+
+const Notice = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  gap: 4px;
+
+  color: ${({ theme }) => theme.text.colorMain};
+  font-size: ${({ theme }) => theme.common.fontSizeSmall};
 `
 
 const { api } = tequila
@@ -105,21 +116,15 @@ interface State {
   errors: string[]
 }
 
-export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Props) => {
+export const SettleModal = observer(({ show, onClose = () => {}, onSave = () => {} }: Props) => {
+  const { asyncBeneficiaryStore } = useStores()
   const dispatch = useAppDispatch()
   const txStatus = useAppSelector(selectors.beneficiaryTxStatus)
 
-  const [externalWalletAddress, setExternalWalletAddress] = useState('')
-  const [inputDisabled, setInputDisabled] = useState(true)
   const [loading, setLoading] = useState(true)
   const [state, setState] = useState<State>({
     errors: [],
   })
-
-  const handleClose = () => {
-    onClose()
-    setInputDisabled(true)
-  }
 
   const { beneficiary } = useAppSelector(selectors.beneficiary)
   const { current, hermesPercent } = useAppSelector(selectors.fees)
@@ -131,15 +136,15 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
     identity.earningsTokens,
   ])
 
-  const isExternalWalletChanged = beneficiary !== externalWalletAddress
+  useEffect(() => {
+    asyncBeneficiaryStore.fetchBeneficiaryAsyncAddress(identity.id)
+  }, [identity.id])
 
   useEffect(() => {
     ;(async () => {
       if (identities.isEmpty(identity)) {
         return
       }
-
-      setExternalWalletAddress(beneficiary)
 
       try {
         const status = await api.beneficiaryTxStatus(identity.id).catch(() => undefined)
@@ -162,43 +167,32 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
         )} is required`,
       )
     }
-    if (!isValidEthereumAddress(externalWalletAddress)) {
-      errors.push('Invalid external wallet address')
+    if (asyncBeneficiaryStore.address === '') {
+      errors.push('Beneficiary wallet has not been set')
     }
     setState((p) => ({ ...p, errors: errors }))
-  }, [externalWalletAddress, calculatedFees.profitsWei])
-
-  const handleExternalWalletChange = (v: string) => setExternalWalletAddress(v)
-  const handleDisableChange = (v: boolean) => setInputDisabled(v)
+  }, [asyncBeneficiaryStore.address, calculatedFees.profitsWei])
 
   const handleSettle = async () => {
     setLoading(true)
 
     try {
-      if (isExternalWalletChanged) {
-        api.settleWithBeneficiary({
-          providerId: identity.id,
-          hermesId: '',
-          beneficiary: externalWalletAddress,
-        })
-      } else {
-        api.settleAsync({ providerId: identity.id, hermesIds: identities.hermesIds(identity) })
-      }
-
-      toastSuccess(`Automatic withdrawal to ${externalWalletAddress} request submitted`)
+      await api.settleAsync({ providerId: identity.id, hermesIds: identities.hermesIds(identity) })
+      toastSuccess(`Automatic withdrawal to ${asyncBeneficiaryStore.address} request submitted`)
       await complexActions.refreshBeneficiary(identity.id)
     } catch (err: any) {
       errors.parseToastError(err)
     }
+
     onSave()
-    handleClose()
+    onClose()
     setLoading(false)
   }
   const isNegativeProfit = calculatedFees.profitsWei.lte(0)
 
   const showErrors = state.errors.length > 0
   return (
-    <Modal show={show} title="Settle" icon={<SettleButtonIcon />} onClickX={handleClose} zIndex={zIndexes.settleModal}>
+    <Modal show={show} title="Settle" icon={<SettleButtonIcon />} onClickX={onClose} zIndex={zIndexes.settleModal}>
       <Content>
         <HeaderNote>External wallet address: </HeaderNote>
         <Container>
@@ -206,20 +200,16 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
             fluid
             input={
               <TextField
-                disabled={inputDisabled}
-                value={externalWalletAddress}
-                onChange={handleExternalWalletChange}
-                icon={
-                  <StyledEditIcon
-                    onClick={() => {
-                      handleDisableChange(false)
-                    }}
-                  />
-                }
+                disabled
+                value={asyncBeneficiaryStore.address}
+                placeholder="Beneficiary wallet has not been set"
               />
             }
           />
         </Container>
+        <Notice>
+          To set or change wallet address please follow this <InternalLink to={ROUTES.SETTINGS}>link</InternalLink>
+        </Notice>
         <Row>
           <Card title="Amount" amount={myst.display(calculatedFees.earningsWei, { fractions: 6 })} />
           <Card
@@ -242,16 +232,9 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
           </Errors>
         )}
         <Footer>
+          <Button label="Cancel" rounded variant={'outlined'} onClick={onClose} />
           <Button
-            label="Cancel"
-            rounded
-            variant={'outlined'}
-            onClick={() => {
-              handleClose()
-            }}
-          />
-          <Button
-            label={isExternalWalletChanged ? 'Settle and change wallet address' : 'Settle'}
+            label="Settle"
             rounded
             loading={loading}
             disabled={isNegativeProfit || state.errors.length !== 0}
@@ -263,4 +246,4 @@ export const SettleModal = ({ show, onClose = () => {}, onSave = () => {} }: Pro
       </Content>
     </Modal>
   )
-}
+})
