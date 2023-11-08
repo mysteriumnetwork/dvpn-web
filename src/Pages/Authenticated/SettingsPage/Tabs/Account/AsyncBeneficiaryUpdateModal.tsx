@@ -14,6 +14,8 @@ import zIndexes from '../../../../../constants/z-indexes'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { SettleButtonIcon } from '../../../../../Components/Icons/ButtonIcons'
+import { InfoIcon } from '../../../../../Components/Icons/Icons'
+import toasts from '../../../../../commons/toasts'
 
 const StyledForm = styled.form`
   display: flex;
@@ -30,9 +32,36 @@ const FlexGrow = styled.div`
 
 const Controls = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
+  justify-content: center;
   @media ${devices.tablet} {
   }
+`
+
+const ToolTipIcon = styled(InfoIcon)`
+  height: 20px;
+  width: 20px;
+
+  @media ${devices.tablet} {
+    height: 50px;
+    width: 50px;
+  }
+`
+
+const Notice = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 20px;
+  width: 90%;
+
+  color: ${({ theme }) => theme.text.colorMain};
+
+  background-color: ${({ theme }) => theme.asyncBeneficiaryModal.notice.bgColor};
 `
 
 class AsyncBeneficiaryModalStore {
@@ -76,6 +105,7 @@ export const AsyncBeneficiaryUpdateModal = observer(({ onClose, show, error, onC
     } catch (e) {
       return
     }
+    toasts.toastSuccess('Wallet address was successfully set')
     onClose && onClose()
     store.reset()
   }
@@ -89,6 +119,9 @@ export const AsyncBeneficiaryUpdateModal = observer(({ onClose, show, error, onC
       show={show}
       zIndex={zIndexes.asyncBeneficiaryModal}
     >
+      <Notice>
+        <ToolTipIcon /> Please make sure the address an ERC-20 Polygon compatible wallet e.g. MetaMask
+      </Notice>
       <StyledForm
         onSubmit={async (e) => {
           e.preventDefault()
@@ -97,17 +130,10 @@ export const AsyncBeneficiaryUpdateModal = observer(({ onClose, show, error, onC
       >
         <InputGroup
           error={error}
-          input={
-            <TextField
-              value={store.address}
-              onChange={(v) => store.setAddress(v)}
-              placeholder="Enter your settlement wallet address..."
-            />
-          }
+          input={<TextField value={store.address} onChange={(v) => store.setAddress(v)} placeholder="Wallet address" />}
         />
         <FlexGrow />
         <Controls>
-          <Button label="Change" variant="primary" type="submit" loading={store.loading} />
           <Button
             label="Cancel"
             variant="outlined"
@@ -116,7 +142,9 @@ export const AsyncBeneficiaryUpdateModal = observer(({ onClose, show, error, onC
               store.reset()
               onClose && onClose()
             }}
+            rounded
           />
+          <Button label="Save" variant="primary" type="submit" loading={store.loading} rounded />
         </Controls>
       </StyledForm>
     </Modal>

@@ -31,6 +31,7 @@ export class AsyncBeneficiaryStore {
 
   public setShowChangeModal(b = true) {
     this.showChangeModal = b
+    this.error = ''
   }
 
   public async fetchBeneficiaryAsyncAddress(identity: string) {
@@ -57,7 +58,7 @@ export class AsyncBeneficiaryStore {
       this.address = resp.address
     } catch (e: unknown) {
       errors.parseToastError(e)
-      this.error = errors.apiError(e).human()
+      this.error = 'Invalid wallet address format'
       throw e
     } finally {
       this.setLoading(false)

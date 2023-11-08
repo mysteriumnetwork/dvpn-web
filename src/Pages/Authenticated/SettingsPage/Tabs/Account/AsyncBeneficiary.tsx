@@ -22,6 +22,10 @@ const StyledEditIcon = styled(EditIcon)`
   cursor: pointer;
 `
 
+const Notice = styled.div`
+  color: ${({ theme }) => theme.text.colorMain};
+`
+
 const store = new AsyncBeneficiaryStore()
 
 export const AsyncBeneficiary = observer(() => {
@@ -33,6 +37,10 @@ export const AsyncBeneficiary = observer(() => {
 
   return (
     <SettingsCard loading={store.loading} title="Settlement Wallet">
+      <Notice>
+        Your earnings will automatically be paid out to the wallet address submitted below. If you have not set your
+        wallet or would like to update it, please do it now.
+      </Notice>
       <InputGroup
         input={
           <TextField
@@ -40,7 +48,7 @@ export const AsyncBeneficiary = observer(() => {
             value={store.address}
             icon={<StyledEditIcon onClick={() => store.setShowChangeModal()} />}
             onChange={(v) => store.setAddress(v)}
-            placeholder="Enter your settlement wallet address..."
+            placeholder="Beneficiary wallet has not been set"
           />
         }
       />
