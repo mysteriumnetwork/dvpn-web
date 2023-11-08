@@ -68,7 +68,7 @@
     "lodash": "^4.17.21",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
-    "mysterium-vpn-js": "27.0.2",
+    "mysterium-vpn-js": "28.0.0",
     "nanoid": "3.3.4",
     "password-validator": "^5.3.0",
     "qs": "^6.10.3",
