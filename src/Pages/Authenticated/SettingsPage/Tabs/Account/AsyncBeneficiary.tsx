@@ -12,11 +12,11 @@ import { useEffect } from 'react'
 
 import { useAppSelector } from '../../../../../commons/hooks'
 import { selectors } from '../../../../../redux/selectors'
-import { AsyncBeneficiaryStore } from './asyncBeneficiary.store'
 import { observer } from 'mobx-react-lite'
 import { ReactComponent as EditIcon } from '../../../../../assets/images/edit.svg'
 import styled from 'styled-components'
 import { AsyncBeneficiaryUpdateModal } from './AsyncBeneficiaryUpdateModal'
+import { useStores } from '../../../../../mobx/store'
 
 const StyledEditIcon = styled(EditIcon)`
   cursor: pointer;
@@ -26,9 +26,8 @@ const Notice = styled.div`
   color: ${({ theme }) => theme.text.colorMain};
 `
 
-const store = new AsyncBeneficiaryStore()
-
 export const AsyncBeneficiary = observer(() => {
+  const { asyncBeneficiaryStore: store } = useStores()
   const { id } = useAppSelector(selectors.currentIdentity)
 
   useEffect(() => {
