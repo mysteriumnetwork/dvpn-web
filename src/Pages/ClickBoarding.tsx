@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import ROUTES from '../constants/routes'
-import { GrantVerificationResponse, tequila } from '../api/tequila'
+import { tequila } from '../api/tequila'
 import { strings } from '../commons/strngs'
 import { DEFAULT_PASSWORD, DEFAULT_USERNAME } from '../constants/defaults'
 import { useAppSelector } from '../commons/hooks'
@@ -33,6 +33,13 @@ const Row = styled.div`
 const Error = styled.h2`
   color: ${({ theme }) => theme.common.colorKey};
 `
+
+type Info = {
+  readonly identity: string
+  readonly apiKey: string
+  readonly walletAddress: string
+}
+
 export const ClickBoarding = () => {
   const navigate = useNavigate()
   const [params] = useSearchParams()
@@ -51,40 +58,43 @@ export const ClickBoarding = () => {
     }
 
     try {
-      const info = await verifyOnboardingGrant({ authorizationGrantToken })
+      const mmnReport = await verifyOnboardingGrant({ authorizationGrantToken })
 
-      if (!info.isEligibleForFreeRegistration) {
+      if (!mmnReport.apiKey) {
+        noApiKeyFlow()
+        return
+      }
+
+      if (!mmnReport.walletAddress) {
+        noWalletFlow()
+        return
+      }
+
+      const info: Info = { identity: id, walletAddress: mmnReport.walletAddress, apiKey: mmnReport.apiKey }
+
+      if (!mmnReport.isEligibleForFreeRegistration) {
         await noFreeRegistrationsLeftFlow(info)
         return
       }
 
       if ([IdentityRegistrationStatus.InProgress, IdentityRegistrationStatus.Registered].includes(registrationStatus)) {
-        await identityAlreadyRegisteredFlow()
+        await identityAlreadyRegisteredFlow(info)
         return
       }
 
-      if (!info.apiKey) {
-        noApiKeyFlow()
-        return
-      }
-
-      if (!info.walletAddress) {
-        noWalletFlow()
-        return
-      }
-
-      await regularFlow(info)
+      await regularFlow({ identity: id, walletAddress: mmnReport.walletAddress, apiKey: mmnReport.apiKey })
     } catch (e: unknown) {
       setError('Could not proceed with Quick onboarding')
       navigate(ROUTES.HOME)
     }
   }
 
-  const noFreeRegistrationsLeftFlow = async (info: GrantVerificationResponse) => {
+  const noFreeRegistrationsLeftFlow = async ({ apiKey, identity, walletAddress }: Info) => {
     const newPassword = strings.generate(16)
-    await tequila.api.setMMNApiKey(info.apiKey) // just claim
+    await tequila.api.setMMNApiKey(apiKey) // just claim
     await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
     await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
+    await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
     toDashboardWithPassword(newPassword)
 
     setTimeout(() => {
@@ -92,16 +102,7 @@ export const ClickBoarding = () => {
     }, 3000)
   }
 
-  const identityAlreadyRegisteredFlow = async () => {
-    const newPassword = strings.generate(16)
-    await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
-    await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
-    toDashboardWithPassword(newPassword)
-
-    setTimeout(() => {
-      navigate(ROUTES.DASHBOARD, { replace: true })
-    }, 3000)
-  }
+  const identityAlreadyRegisteredFlow = noFreeRegistrationsLeftFlow
 
   const noApiKeyFlow = () => {
     //TODO: Refine error messages
@@ -120,12 +121,13 @@ export const ClickBoarding = () => {
     }, 3000)
   }
 
-  const regularFlow = async (info: GrantVerificationResponse) => {
+  const regularFlow = async ({ apiKey, walletAddress, identity }: Info) => {
     const newPassword = strings.generate(16)
     await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
-    await tequila.api.setMMNApiKey(info.apiKey)
-    await tequila.api.identityRegister(id, { beneficiary: info.walletAddress, stake: 0 })
+    await tequila.api.setMMNApiKey(apiKey)
+    await tequila.api.identityRegister(identity, { beneficiary: walletAddress, stake: 0 })
     await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
+    await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
     toDashboardWithPassword(newPassword)
   }
 
