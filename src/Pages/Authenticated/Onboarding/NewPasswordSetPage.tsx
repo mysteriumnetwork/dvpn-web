@@ -12,15 +12,27 @@ import FEATURES from '../../../commons/features'
 import { selectors } from '../../../redux/selectors'
 import { RootState } from '../../../redux/store'
 import { IdentityRegistrationStatus } from 'mysterium-vpn-js'
+import { configs } from '../../../commons/config'
 
 export const NewPasswordSetPage = () => {
   const isClickBoardDisabled = useIsFeatureEnabled(FEATURES.DISABLE_CLICKBOARDING)
   const identity = useAppSelector(selectors.currentIdentity)
   const location = useLocation()
+  const apiKey = configs.mmnApiKey()
 
   const isDefaultCredentials = useAppSelector(({ app }: RootState) => app.auth.withDefaultCredentials)
 
-  if (identity.registrationStatus !== IdentityRegistrationStatus.Unregistered && isDefaultCredentials) {
+  const isPasswordReset =
+    identity.registrationStatus !== IdentityRegistrationStatus.Unregistered && isDefaultCredentials
+
+  const isMissingApiKey = !apiKey && !isClickBoardDisabled
+
+  if (isPasswordReset) {
+    // special case for instant registration
+    if (isMissingApiKey) {
+      return <Navigate to={ROUTES.QUICK_ONBOARDING + location.search} replace />
+    }
+
     return <Navigate to={ROUTES.PASSWORD_RESET} />
   }
 
