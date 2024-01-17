@@ -163,7 +163,7 @@ export type Theme = {
   }
   nodeStatus: {
     bg: {
-      pending: string
+      unknown: string
       online: string
       offline: string
       monitoringFailed: string
