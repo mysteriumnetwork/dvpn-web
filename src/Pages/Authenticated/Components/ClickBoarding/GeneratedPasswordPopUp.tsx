@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { ConfirmationDialog } from '../../../../Components/ConfirmationDialog/ConfirmationDialog'
+import { useStores } from '../../../../mobx/store'
+import { observer } from 'mobx-react-lite'
 
 const Password = styled.div`
   font-size: ${({ theme }) => theme.common.fontSizeBigger};
@@ -33,20 +35,13 @@ const Column = styled.div`
   flex-direction: column;
 `
 
-export const GeneratedPasswordPopUp = () => {
+export const GeneratedPasswordPopUp = observer(() => {
+  const { clickBoardingStore: store } = useStores()
   const [show, setShow] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
-  const resolveGeneratedPassword = (): string | undefined => {
-    if (typeof location.state !== 'object') {
-      return
-    }
-    const state = location.state as Record<string, string>
-    return state?.generatedPassword
-  }
-
-  const generatedPassword = resolveGeneratedPassword()
+  const generatedPassword = store.generatedPassword
 
   useEffect(() => {
     if (generatedPassword) {
@@ -74,8 +69,9 @@ export const GeneratedPasswordPopUp = () => {
       title="Your NodeUI Password"
       onConfirm={() => {
         setShow(false)
+        store.generatedPassword = undefined
         navigate(location.pathname, { replace: true })
       }}
     ></ConfirmationDialog>
   )
-}
+})

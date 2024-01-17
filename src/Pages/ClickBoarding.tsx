@@ -17,6 +17,8 @@ import { IdentityRegistrationStatus } from 'mysterium-vpn-js'
 import complexActions from '../redux/complex.actions'
 import { CircularSpinner } from '../Components/CircularSpinner/CircularSpinner'
 import styled from 'styled-components'
+import { observer } from 'mobx-react-lite'
+import { useStores } from '../mobx/store'
 
 const AUTHORIZATION_GRANT = 'authorizationGrant'
 const { verifyOnboardingGrant } = tequila
@@ -40,14 +42,17 @@ type Info = {
   readonly walletAddress: string
 }
 
-export const ClickBoarding = () => {
+export const ClickBoarding = observer(() => {
+  const { clickBoardingStore: store } = useStores()
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const { id, registrationStatus } = useAppSelector(selectors.currentIdentity)
   const [error, setError] = useState('')
 
-  const toDashboardWithPassword = (password: string) =>
-    navigate(ROUTES.DASHBOARD, { replace: true, state: { generatedPassword: password } })
+  const toDashboardWithPassword = (password: string) => {
+    store.generatedPassword = password
+    navigate(ROUTES.DASHBOARD, { replace: true })
+  }
 
   const autoOnBoard = async () => {
     const authorizationGrantToken = params.get(AUTHORIZATION_GRANT)
@@ -96,10 +101,6 @@ export const ClickBoarding = () => {
     await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
     await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
     toDashboardWithPassword(newPassword)
-
-    setTimeout(() => {
-      navigate(ROUTES.DASHBOARD, { replace: true })
-    }, 3000)
   }
 
   const identityAlreadyRegisteredFlow = noFreeRegistrationsLeftFlow
@@ -152,4 +153,4 @@ export const ClickBoarding = () => {
       {error && <Error>{error}</Error>}
     </div>
   )
-}
+})

@@ -9,18 +9,21 @@ import { configure } from 'mobx'
 import { HistoryPageStore } from '../Pages/Authenticated/HistoryPage/store'
 import { HeaderStore } from '../Pages/Authenticated/Components/Layout/store'
 import { AsyncBeneficiaryStore } from '../Pages/Authenticated/SettingsPage/Tabs/Account/asyncBeneficiary.store'
+import { ClickBoardingStore } from './ClickBoarding.store'
 
 export class MobXRootStore {
   historyPage: HistoryPageStore
   headerStore: HeaderStore
   asyncBeneficiaryStore: AsyncBeneficiaryStore
+  clickBoardingStore: ClickBoardingStore
 
   constructor() {
     this.historyPage = new HistoryPageStore()
-    this.headerStore = new HeaderStore()
-    this.asyncBeneficiaryStore = new AsyncBeneficiaryStore()
     this.historyPage.setupReactions()
+    this.headerStore = new HeaderStore()
     this.headerStore.setupReactions()
+    this.asyncBeneficiaryStore = new AsyncBeneficiaryStore()
+    this.clickBoardingStore = new ClickBoardingStore()
   }
 }
 
