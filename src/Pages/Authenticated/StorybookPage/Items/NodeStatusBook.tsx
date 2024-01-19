@@ -8,7 +8,7 @@ import { CenteredColumn } from '../Components'
 import { Indicator, resolveStatusTitle } from '../../Components/NodeStatus/NodeStatus'
 import { StatusIndicatorVariants } from '../../Components/Layout/store'
 
-const VARIANTS: StatusIndicatorVariants[] = ['online', 'offline', 'monitoringFailed', 'pending']
+const VARIANTS: StatusIndicatorVariants[] = ['online', 'offline', 'monitoringFailed', 'unknown']
 
 const NodeStatusBook = () => {
   return (

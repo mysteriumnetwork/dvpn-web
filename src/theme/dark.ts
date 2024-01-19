@@ -158,7 +158,7 @@ const dark: Omit<Theme, 'common'> = {
 
   nodeStatus: {
     bg: {
-      pending: themeCommon.colorWarning,
+      unknown: themeCommon.colorWarning,
       monitoringFailed: themeCommon.colorRed,
       offline: themeCommon.colorGrayBlue2,
       online: themeCommon.colorGreen,

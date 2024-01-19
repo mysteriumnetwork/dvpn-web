@@ -44,7 +44,7 @@ export const resolveStatusTitle = (variant: StatusIndicatorVariants): string => 
       return 'Offline'
     case 'monitoringFailed':
       return 'Monitoring failed'
-    case 'pending':
+    case 'unknown':
       return 'Pending'
   }
 }
