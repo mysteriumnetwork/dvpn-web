@@ -4,11 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import '../index.css'
 import { tequila } from '../api/tequila'
 import { useAppDispatch, useFetch } from '../commons/hooks'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
 import { ReactNode, useEffect } from 'react'
-import styled from 'styled-components'
 import { HEALTHCHECK_EMPTY } from '../constants/instances'
 import { updateHealthCheckResponseStore } from '../redux/app.slice'
 
@@ -17,19 +17,6 @@ const { api } = tequila
 interface Props {
   children: ReactNode
 }
-
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100vh;
-
-  align-items: center;
-  text-align: center;
-`
-
-const SadMessage = styled.h1`
-  width: 100%;
-`
 
 export const NodeHealthcheckBarrier = ({ children }: Props) => {
   const dispatch = useAppDispatch()
@@ -47,9 +34,9 @@ export const NodeHealthcheckBarrier = ({ children }: Props) => {
 
   if (error) {
     return (
-      <Container>
-        <SadMessage>Looks like your node is unreachable... 😭</SadMessage>
-      </Container>
+      <div className="flex w-screen h-screen justify-center items-center">
+        <div className="md:text-3xl">Looks like your node is unreachable... 😭</div>
+      </div>
     )
   }
 
