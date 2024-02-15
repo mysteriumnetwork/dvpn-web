@@ -8,6 +8,7 @@ import { Checkbox } from '../../../../Components/Inputs/Checkbox'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { TOSModal } from '../../Components/TOSModal/TOSModal'
+import complexActions from '../../../../redux/complex.actions'
 
 const Container = styled.div`
   display: flex;
@@ -26,7 +27,7 @@ const LinkButton = styled.div`
 `
 
 type Props = {
-  onAgree: (b: boolean) => void
+  onAgree: (b: boolean) => void | Promise<void>
   isAgreed: boolean
 }
 
@@ -34,7 +35,16 @@ export const TOS = ({ onAgree, isAgreed }: Props) => {
   const [showTos, setShowTos] = useState(false)
   return (
     <Container>
-      <Checkbox checked={isAgreed} onChange={onAgree} /> I agree to
+      <Checkbox
+        checked={isAgreed}
+        onChange={async (c) => {
+          onAgree(c)
+          if (c) {
+            await complexActions.recordTerms()
+          }
+        }}
+      />{' '}
+      I agree to
       <LinkButton onClick={() => setShowTos(true)}>Terms and Conditions</LinkButton>
       <TOSModal show={showTos} hideAgree onClose={() => setShowTos(false)} onCloseLabel="Close" />
     </Container>

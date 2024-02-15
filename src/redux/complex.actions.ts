@@ -26,6 +26,8 @@ import { store } from './store'
 import errors from '../commons/errors'
 import { Config } from 'mysterium-vpn-js'
 import termsPackageJson from '@mysteriumnetwork/terms/package.json'
+import { DateTime } from 'luxon'
+import termsJson from '@mysteriumnetwork/terms/package.json'
 
 const { api } = tequila
 
@@ -174,6 +176,18 @@ const setFeatures = async (features: string[]): Promise<Config> => {
     .then(refreshStoreConfig)
 }
 
+const recordTerms = async (): Promise<unknown> => {
+  const now = DateTime.utc().toISODate()
+  return api
+    .updateUserConfig({
+      data: {
+        'ui-terms.agreedToVersion': termsJson.version,
+        'ui-terms.agreedAt': now,
+      },
+    })
+    .then(refreshStoreConfig)
+}
+
 const setUserConfig = async (data: any): Promise<Config> => {
   return await api.updateUserConfig({ data }).then(refreshStoreConfig)
 }
@@ -191,6 +205,7 @@ const complexActions = {
   refreshStoreConfig,
   setChatOpened,
   logout,
+  recordTerms,
 }
 
 export default complexActions
