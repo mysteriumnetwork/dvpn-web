@@ -5,38 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { CircularSpinner } from '../../../../Components/CircularSpinner/CircularSpinner'
-import styled from 'styled-components'
-import zIndexes from '../../../../constants/z-indexes'
+import { Spinner } from '../../../../Components/Spinner/Spinner'
 
-const Overlay = styled.div`
-  width: 100%;
-  opacity: 0.5;
-  z-index: ${zIndexes.overlay};
-  height: 100%;
-  background: #dfdfdf;
-  position: fixed;
-  top: 0;
-  left: 0;
-`
-
-const Spinner = styled(CircularSpinner)`
-  width: 6em;
-  height: 6em;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  z-index: ${zIndexes.spinner};
-  position: fixed;
-`
-
-export const FullPageSpinner = () => {
-  return (
-    <>
-      <Overlay />
-      <Spinner />
-    </>
-  )
-}
+export const FullPageSpinner = () => (
+  <div className="w-screen h-screen flex justify-center items-center">
+    <Spinner />
+  </div>
+)

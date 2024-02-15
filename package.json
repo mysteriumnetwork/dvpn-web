@@ -26,7 +26,7 @@
   ],
   "private": true,
   "engines": {
-    "node": "=16"
+    "node": "=18"
   },
   "scripts": {
     "dev": "react-scripts start",
@@ -50,8 +50,8 @@
     ]
   },
   "resolutions": {
-    "@types/react": "18.0.8",
-    "@types/react-dom": "18.0.0"
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
   },
   "dependencies": {
     "@floating-ui/react-dom-interactions": "^0.13.3",
@@ -66,6 +66,7 @@
     "buffer": "^6.0.3",
     "clipboard": "^2.0.8",
     "lodash": "^4.17.21",
+    "luxon": "^3.4.4",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
     "mysterium-vpn-js": "28.0.0",
@@ -73,9 +74,9 @@
     "password-validator": "^5.3.0",
     "qs": "^6.10.3",
     "rc-slider": "^10.0.0",
-    "react": "^18.1.0",
+    "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.0",
-    "react-dom": "^18.1.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
     "react-html-parser": "^2.0.2",
     "react-merge-refs": "^2.0.1",
@@ -89,7 +90,7 @@
     "react-switch": "^7.0.0",
     "react-toastify": "^9.0.5",
     "recharts": "2.1.10",
-    "semver": "^7.3.7",
+    "semver": "^7.6.0",
     "showdown": "^1.9.1",
     "styled-components": "^5.3.5",
     "typescript": "^4.6.3"
@@ -101,11 +102,12 @@
     "@types/intercom-web": "^2.8.23",
     "@types/jest": "^27.4.1",
     "@types/lodash": "^4.14.161",
+    "@types/luxon": "^3.4.2",
     "@types/node": "^16.11.31",
     "@types/qs": "^6.9.7",
-    "@types/react": "^18.0.8",
+    "@types/react": "^18.2.55",
     "@types/react-beautiful-dnd": "^13.1.2",
-    "@types/react-dom": "^18.0.0",
+    "@types/react-dom": "^18.2.19",
     "@types/react-html-parser": "^2.0.1",
     "@types/react-redux": "^7.1.9",
     "@types/react-simple-maps": "^1.0.8",
@@ -120,6 +122,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "msw": "^0.42.1",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "tailwindcss": "^3.4.1"
   }
 }

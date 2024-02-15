@@ -4,84 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import styled, { css } from 'styled-components'
-
-const CSS = css`
-  /* The container */
-  .container {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    cursor: pointer;
-    font-size: 22px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    width: 25px;
-    height: 25px;
-  }
-
-  /* Hide the browser's default checkbox */
-  .container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-
-  /* Create a custom checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: ${({ theme }) => theme.common.colorWhite};
-    border: 1px solid ${({ theme }) => theme.common.colorKey};
-    border-radius: 3px;
-  }
-
-  /* On mouse-over, add a grey background color */
-  .container:hover input ~ .checkmark {
-    background-color: ${({ theme }) => theme.common.colorWhite};
-  }
-
-  /* When the checkbox is checked, add a blue background */
-  .container input:checked ~ .checkmark {
-    background-color: ${({ theme }) => theme.common.colorKey};
-  }
-
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
-    content: '';
-    position: absolute;
-    display: none;
-  }
-
-  /* Show the checkmark when checked */
-  .container input:checked ~ .checkmark:after {
-    display: block;
-  }
-
-  /* Style the checkmark/indicator */
-  .container .checkmark:after {
-    left: 7px;
-    top: 3px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
-`
-
-const CSSLabel = styled.div`
-  ${CSS}
-`
 
 interface Props {
   checked: boolean
@@ -91,20 +13,40 @@ interface Props {
 
 export const Checkbox = ({ onChange, disabled, checked }: Props) => {
   return (
-    <CSSLabel>
-      <label className="container">
+    <div className="inline-flex items-center">
+      <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="blue">
         <input
-          className="checkbox"
-          disabled={disabled}
-          checked={checked}
           type="checkbox"
+          className="before:content[''] peer relative h-6 w-6 cursor-pointer appearance-none rounded-md border
+          border-primaryLight transition-all
+          before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4
+          before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity
+          checked:border-primaryLight checked:bg-primaryLight checked:before:bg-primaryLight hover:before:opacity-10"
+          id="blue"
+          checked={checked}
+          disabled={disabled}
           onChange={(e) => {
             const { checked } = e.target
             onChange && onChange(checked)
           }}
         />
-        <span className="checkmark" />
+        <span className="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3.5 w-3.5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            stroke="currentColor"
+            stroke-width="1"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </span>
       </label>
-    </CSSLabel>
+    </div>
   )
 }
