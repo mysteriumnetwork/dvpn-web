@@ -6,25 +6,8 @@
  */
 import { Checkbox } from '../../../../Components/Inputs/Checkbox'
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { TOSModal } from '../../Components/TOSModal/TOSModal'
 import complexActions from '../../../../redux/complex.actions'
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: ${({ theme }) => theme.text.colorSecondary};
-  font-size: ${({ theme }) => theme.common.fontSizeNormal};
-`
-
-const LinkButton = styled.div`
-  color: ${({ theme }) => theme.common.colorKey};
-  font-weight: 500;
-  text-decoration: none;
-  margin-left: 0.2em;
-  cursor: pointer;
-`
 
 type Props = {
   onAgree: (b: boolean) => void | Promise<void>
@@ -34,7 +17,7 @@ type Props = {
 export const TOS = ({ onAgree, isAgreed }: Props) => {
   const [showTos, setShowTos] = useState(false)
   return (
-    <Container>
+    <div className="flex items-center gap-1.5 text-light-secondary dark:text-dark-secondary text-sm">
       <Checkbox
         checked={isAgreed}
         onChange={async (c) => {
@@ -45,8 +28,14 @@ export const TOS = ({ onAgree, isAgreed }: Props) => {
         }}
       />{' '}
       I agree to
-      <LinkButton onClick={() => setShowTos(true)}>Terms and Conditions</LinkButton>
+      <div
+        className="font-semibold no-underline ml-2 cursor-pointer text-primary"
+        role="button"
+        onClick={() => setShowTos(true)}
+      >
+        Terms and Conditions
+      </div>
       <TOSModal show={showTos} hideAgree onClose={() => setShowTos(false)} onCloseLabel="Close" />
-    </Container>
+    </div>
   )
 }
