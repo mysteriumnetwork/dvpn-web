@@ -8,17 +8,13 @@ import '../index.css'
 import { tequila } from '../api/tequila'
 import { useAppDispatch, useFetch } from '../commons/hooks'
 import { FullPageSpinner } from './Authenticated/Components/Spinner/FullPageSpinner'
-import { ReactNode, useEffect } from 'react'
+import { PropsWithChildren, useEffect } from 'react'
 import { HEALTHCHECK_EMPTY } from '../constants/instances'
 import { updateHealthCheckResponseStore } from '../redux/app.slice'
 
 const { api } = tequila
 
-interface Props {
-  children: ReactNode
-}
-
-export const NodeHealthcheckBarrier = ({ children }: Props) => {
+export const NodeHealthcheckBarrier = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch()
   const [healthCheckResponse = HEALTHCHECK_EMPTY, loading, error] = useFetch(() => api.healthCheck(), [])
 
