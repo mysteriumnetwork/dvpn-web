@@ -6,7 +6,7 @@
  */
 import { PasswordSetComponents } from './PasswordSetComponents'
 import { TOS } from './TOS'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ROUTES from '../../../../constants/routes'
 import { InternalLink, Link } from '../../../../Components/Common/Link'
 import { useIsFeatureEnabled } from '../../../../commons/hooks'
@@ -27,6 +27,7 @@ import { tequila } from '../../../../api/tequila'
 import { InfoIcon } from '../../../../Components/Icons/Icons'
 import { Tooltip } from '../../../../Components/Tooltip/Tooltip'
 import { devices } from '../../../../theme/themes'
+import { events } from '../../../../commons/events'
 
 const { api } = tequila
 
@@ -100,6 +101,10 @@ export const AdvancedBoardingPage = () => {
     mmnApiKey: mmnApiKey ?? '',
   })
 
+  useEffect(() => {
+    events.send('page_view_advanced_onboarding')
+  }, [])
+
   const handlePassword = (value: string) => setState((p) => ({ ...p, password: value, passwordError: '' }))
   const handleConfirmPassword = (value: string) =>
     setState((p) => ({ ...p, confirmPassword: value, passwordError: '' }))
@@ -151,7 +156,7 @@ export const AdvancedBoardingPage = () => {
         oldPassword: DEFAULT_PASSWORD,
         newPassword: state.password,
       })
-
+      await events.send('click_advanced_onboarding_start')
       store.dispatch(updateAuthenticatedStore({ authenticated: true, withDefaultCredentials: false }))
     } catch (err: any) {
       errors.parseToastError(err)

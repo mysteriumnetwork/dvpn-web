@@ -18,6 +18,7 @@ import { tequila } from '../../../../api/tequila'
 import { urls } from '../../../../commons/urls'
 import { ANDROID_DEEPLINK_CLICKBOARDING } from '../../../../constants/urls'
 import toasts from '../../../../commons/toasts'
+import { events } from '../../../../commons/events'
 
 const { Page, LockRow, StartButton, GTitle, GDescription, GradientCard, Welcome, WhiteCard } = PasswordSetComponents
 
@@ -38,6 +39,7 @@ export const QuickOnboardingPage = () => {
     const { link } = await tequila.initClickBoarding(
       urls.featureAwareCurrentOrigin(config, routes.CLICKBOARDING, ANDROID_DEEPLINK_CLICKBOARDING),
     )
+    await events.send('click_quick_clickboarding_start')
     window.location.href = link
   }
 

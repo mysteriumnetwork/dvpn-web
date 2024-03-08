@@ -26,7 +26,7 @@
   ],
   "private": true,
   "engines": {
-    "node": "=18"
+    "node": ">=18"
   },
   "scripts": {
     "dev": "react-scripts start",
@@ -69,6 +69,7 @@
     "luxon": "^3.4.4",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
+    "murmurhash": "2.0.1",
     "mysterium-vpn-js": "28.0.0",
     "nanoid": "3.3.4",
     "password-validator": "^5.3.0",
@@ -93,7 +94,7 @@
     "semver": "^7.6.0",
     "showdown": "^1.9.1",
     "styled-components": "^5.3.5",
-    "typescript": "^4.6.3"
+    "typescript": "^4.9.5"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
