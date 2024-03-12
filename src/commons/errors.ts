@@ -68,9 +68,28 @@ const parseToastError = (error: any) => {
 
 const apiError = (error: unknown) => new ErrorWrapper(error)
 
-const errors = {
+const string = (err: unknown): string => {
+  if (typeof err === 'object') {
+    if (err === null) {
+      return 'error - null'
+    }
+
+    if (err instanceof Error) {
+      return `${err.name}: ${err.message}\n${err.stack}`
+    }
+    if ('message' in err) {
+      return String(err.message)
+    }
+
+    return `Unknown object!`
+  }
+  return String(err)
+}
+
+export const errors = {
   parseToastError,
   apiError,
+  string,
 }
 
 export default errors

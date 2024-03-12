@@ -19,6 +19,8 @@ import { CircularSpinner } from '../Components/CircularSpinner/CircularSpinner'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { useStores } from '../mobx/store'
+import { events } from '../commons/events'
+import errors from '../commons/errors'
 
 const AUTHORIZATION_GRANT = 'authorizationGrant'
 const { verifyOnboardingGrant } = tequila
@@ -49,8 +51,9 @@ export const ClickBoarding = observer(() => {
   const { id, registrationStatus } = useAppSelector(selectors.currentIdentity)
   const [error, setError] = useState('')
 
-  const toDashboardWithPassword = (password: string) => {
+  const toDashboardWithPassword = async (password: string) => {
     store.generatedPassword = password
+    await events.send('action_clickboarding_complete')
     navigate(ROUTES.DASHBOARD, { replace: true })
   }
 
@@ -90,6 +93,7 @@ export const ClickBoarding = observer(() => {
       await regularFlow({ identity: id, walletAddress: mmnReport.walletAddress, apiKey: mmnReport.apiKey })
     } catch (e: unknown) {
       setError('Could not proceed with Quick onboarding')
+      await events.send('error_clickboarding_flow', { error: errors.string(e).substring(0, 1024) })
       navigate(ROUTES.HOME)
     }
   }
@@ -100,7 +104,8 @@ export const ClickBoarding = observer(() => {
     await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
     await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
     await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
-    toDashboardWithPassword(newPassword)
+    await events.send('action_complete_clickboarding_no_free_registrations_left_flow')
+    await toDashboardWithPassword(newPassword)
   }
 
   const identityAlreadyRegisteredFlow = noFreeRegistrationsLeftFlow
@@ -129,11 +134,13 @@ export const ClickBoarding = observer(() => {
     await tequila.api.identityRegister(identity, { beneficiary: walletAddress, stake: 0 })
     await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
     await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
-    toDashboardWithPassword(newPassword)
+    await events.send('action_complete_clickboarding_regular_flow')
+    await toDashboardWithPassword(newPassword)
   }
 
   useEffect(() => {
     autoOnBoard()
+    events.send('page_view_clickboarding')
   }, [])
 
   return (
