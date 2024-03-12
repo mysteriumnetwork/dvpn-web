@@ -6,7 +6,7 @@
  */
 import { PasswordSetComponents } from './PasswordSetComponents'
 import { TOS } from './TOS'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ROUTES from '../../../../constants/routes'
 import routes from '../../../../constants/routes'
 import { InternalLink } from '../../../../Components/Common/Link'
@@ -30,6 +30,10 @@ export const QuickOnboardingPage = () => {
 
   const [agreedTOS, setAgreedTOS] = useState(false)
 
+  useEffect(() => {
+    events.send('page_view_quick_onboarding')
+  }, [])
+
   const getLinkAndRedirect = async () => {
     if (!agreedTOS) {
       toasts.toastError('You must agree to Terms and Conditions to proceed')
@@ -39,7 +43,7 @@ export const QuickOnboardingPage = () => {
     const { link } = await tequila.initClickBoarding(
       urls.featureAwareCurrentOrigin(config, routes.CLICKBOARDING, ANDROID_DEEPLINK_CLICKBOARDING),
     )
-    await events.send('click_quick_clickboarding_start')
+    await events.send('click_quick_onboarding_start')
     window.location.href = link
   }
 
