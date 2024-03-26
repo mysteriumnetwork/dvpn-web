@@ -51,14 +51,18 @@ interface Props {
   subTitle?: ReactNode
   input: ReactNode
   fluid?: boolean
+  required?: boolean
   error?: string
 }
 
-export const InputGroup = ({ input, title, subTitle, fluid, error }: Props) => {
+export const InputGroup = ({ input, title, subTitle, fluid, required, error }: Props) => {
   return (
     <Container $fluid={fluid}>
       <Header>
-        <Title>{title}</Title>
+        <Title>
+          {title}
+          <span className="text-xs align-top text-purple-300 pl-0.5">{required && '*'}</span>
+        </Title>
         {subTitle && <SubTitle>{subTitle}</SubTitle>}
       </Header>
       {input}
