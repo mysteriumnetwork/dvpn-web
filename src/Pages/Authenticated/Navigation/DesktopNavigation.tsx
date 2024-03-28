@@ -177,7 +177,7 @@ export const DesktopNavigation = () => {
   }, [open])
   return (
     <Content>
-      <LogoLink $open={open} to="" onClick={toggleMenu}>
+      <LogoLink $open={open} to="#" onClick={toggleMenu}>
         {isDark ? <LogoDark /> : <LogoLight />}
         <Title>Node UI</Title>
       </LogoLink>

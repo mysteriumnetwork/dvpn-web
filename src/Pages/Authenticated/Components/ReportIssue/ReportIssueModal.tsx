@@ -108,7 +108,9 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
   }
 
   const handleOpenIntercom = () => {
-    intercom.showNewMessage(`${email && `Email: ${email}`}${description && `${email && '\n'}${description}`}`)
+    intercom.showNewMessage(
+      (email || description) && `${email && `Email: ${email}`}${description && `${email && '\n'}${description}`}`,
+    )
     handleClose()
   }
   return (
@@ -122,18 +124,36 @@ export const ReportIssueModal = ({ show, onClose }: Props) => {
     >
       <Content onSubmit={handleSubmit((d) => reportIssue(d as FormData))}>
         <InputGroup
-          error={errors.email?.type === 'required' ? 'Required' : ''}
+          title="Email"
+          required
+          error={errors.email?.message}
           input={
-            <TextField register={register('email', { required: true })} type="email" placeholder="node@runner.com" />
+            <TextField
+              register={register('email', {
+                required: 'Field is required',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Please enter a valid email',
+                },
+              })}
+              placeholder="node@runner.com"
+            />
           }
         />
         <InputGroup
-          fluid
-          error={errors.description?.type === 'required' ? 'Required' : ''}
           title={`Your message (${description?.length || 0})`}
+          fluid
+          required
+          error={errors.description?.message}
           input={
             <TextArea
-              register={register('description', { required: true })}
+              register={register('description', {
+                required: 'Field is required',
+                minLength: {
+                  value: 30,
+                  message: 'Minimum 30 characters',
+                },
+              })}
               textarea
               rows={5}
               placeholder="Describe what went wrong (minimum 30 characters)"

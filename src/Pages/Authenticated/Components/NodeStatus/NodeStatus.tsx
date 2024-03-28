@@ -62,7 +62,7 @@ export const NodeStatus = observer(() => {
       variant="bubble"
       tooltip={
         <Tooltip>
-          <div>Indicated the status of your node.</div>
+          <div>Indicates the status of your node.</div>
           <Link href={NODE_STATUS} target="_blank">
             Learn more
           </Link>
