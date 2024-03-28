@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const overlay = 1005
+const overlay = 1000
 const modal = 1001
 const mobileMenu = 1002
-const menuTooltip = 1002
+const menuTooltip = 999
 const mobileNavigation = 1002
 const settleModal = 1003
 const asyncBeneficiaryModal = 1004
