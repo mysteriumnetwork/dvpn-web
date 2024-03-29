@@ -70,3 +70,17 @@ jobs:
           files: |
             dist.tar.gz
             compatibility.json
+
+  triggrt-go-package:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [ publish ]
+
+    steps:
+      - name: 'Trigger go-dvpn-web workflow'
+        run: |
+          curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.GIT_TOKEN }}" \
+          https://api.github.com/repos/mysteriumnetwork/go-dvpn-web/actions/workflows/main.yml/dispatches \
+          -d '{"ref":"master","inputs":{"version":"${{ github.ref_name }}"}}'
