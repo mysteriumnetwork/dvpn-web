@@ -50,7 +50,7 @@ const Dots = styled.div`
 
 const Dot = styled.div`
   border-radius: 100%;
-  border: 2px solid ${({ theme }) => theme.common.colorKeyLight}; ;
+  border: 2px solid ${({ theme }) => theme.common.colorKeyLight};
 `
 
 interface Props {

@@ -85,8 +85,7 @@ export const SUPPORTED_GATEWAYS: Map<string, GatewayDescriptor> = new Map<
       description:
         'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed. ',
       component: 'Gateway',
-      note:
-        'Note: After clicking Pay 1 USD below, new tab/window will be opened and you will be redirected to Paypal to complete transaction.',
+      note: 'Note: After clicking Pay 1 USD below, new tab/window will be opened and you will be redirected to Paypal to complete transaction.',
       logo: PayPal,
     },
   ],
@@ -98,8 +97,7 @@ export const SUPPORTED_GATEWAYS: Map<string, GatewayDescriptor> = new Map<
       description:
         'You will be charged 1 USD plus applicable VAT. Please select your country of residence below to proceed.',
       component: 'Gateway',
-      note:
-        'Note: After clicking Pay 1 USD below, new tab/window will be opened and you will be redirected to complete transaction.',
+      note: 'Note: After clicking Pay 1 USD below, new tab/window will be opened and you will be redirected to complete transaction.',
       logo: Stripe,
     },
   ],

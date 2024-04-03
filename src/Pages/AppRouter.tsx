@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import ROUTES, {
   ADMIN,
@@ -48,14 +48,14 @@ export default function AppRouter() {
   const { authenticated } = useAppSelector(selectors.auth)
   const onBoarding = useAppSelector(selectors.onBoarding)
 
-  return (
-    <RouterProvider
-      router={getAppRouter({
-        needsPasswordChange: onBoarding.needsPasswordChange,
-        loggedIn: authenticated,
-      })}
-    />
-  )
+  const appRouter = useMemo(() => {
+    return getAppRouter({
+      needsPasswordChange: onBoarding.needsPasswordChange,
+      loggedIn: authenticated,
+    })
+  }, [onBoarding.needsPasswordChange, authenticated])
+
+  return <RouterProvider key="app-router" router={appRouter} />
 }
 
 const getAppRouter = ({ loggedIn, needsPasswordChange }: { loggedIn: boolean; needsPasswordChange: boolean }) => {
@@ -133,7 +133,7 @@ const getAppRouter = ({ loggedIn, needsPasswordChange }: { loggedIn: boolean; ne
           ],
         },
         {
-          element: <Protected redirects={[{ condition: needsPasswordChange, to: HOME }]} />,
+          element: <Protected redirects={[{ condition: !needsPasswordChange, to: HOME }]} />,
           children: [
             {
               path: NEW_PASSWORD,

@@ -44,9 +44,10 @@ export const TransactionsPage = () => {
   const [state, setState] = useState(1)
   const handlePageChange = (page: number) => setState(page)
 
-  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY, loading] = useFetch(() => api.settlementHistory({ page: state }), [
-    state,
-  ])
+  const [data = SETTLEMENT_LIST_RESPONSE_EMPTY, loading] = useFetch(
+    () => api.settlementHistory({ page: state }),
+    [state],
+  )
   const noData = data.items.length === 0
 
   const Columns = useMemo<ColumnDef<Settlement>[]>(
