@@ -22,9 +22,7 @@ const localVersions = async (): Promise<LocalVersionsResponse<LocalVersion>> => 
 }
 
 const remoteVersions = async (r?: ListRemoteRequest): Promise<LocalVersionsResponse<RemoteVersion>> => {
-  return await http
-    .get<LocalVersionsResponse<RemoteVersion>>(`/ui/remote-versions`, { params: r })
-    .then((r) => r.data)
+  return await http.get<LocalVersionsResponse<RemoteVersion>>(`/ui/remote-versions`, { params: r }).then((r) => r.data)
 }
 
 const downloadStatus = async (): Promise<DownloadStatus> => {

@@ -128,10 +128,10 @@ export const Report = () => {
   })
   const [chartData, setChartData] = useState<ChartData>({ series: [], tooltipFormatter: () => '' })
 
-  const [seriesData = [], loadingSeries] = useFetch(() => series.pairs(selectedRange.value, selectedGraph.value), [
-    selectedRange.value,
-    selectedGraph.value,
-  ])
+  const [seriesData = [], loadingSeries] = useFetch(
+    () => series.pairs(selectedRange.value, selectedGraph.value),
+    [selectedRange.value, selectedGraph.value],
+  )
 
   const [sessionsData = SESSIONS_V2_RESPONSE_EMPTY, loadingSessions] = useFetch(
     () => tequila.api.provider.sessions({ range: selectedRange.value }),
