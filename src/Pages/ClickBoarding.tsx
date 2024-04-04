@@ -54,7 +54,6 @@ export const ClickBoarding = observer(() => {
   const toDashboardWithPassword = async (password: string) => {
     store.generatedPassword = password
     await events.send('action_clickboarding_complete')
-    store.setVerifyingOnboarding(false)
     navigate(ROUTES.DASHBOARD, { replace: true })
   }
 
@@ -67,7 +66,6 @@ export const ClickBoarding = observer(() => {
     }
 
     try {
-      store.setVerifyingOnboarding(true)
       const mmnReport = await verifyOnboardingGrant({ authorizationGrantToken })
 
       if (!mmnReport.apiKey) {
@@ -80,11 +78,7 @@ export const ClickBoarding = observer(() => {
         return
       }
 
-      const info: Info = {
-        identity: id,
-        walletAddress: mmnReport.walletAddress,
-        apiKey: mmnReport.apiKey,
-      }
+      const info: Info = { identity: id, walletAddress: mmnReport.walletAddress, apiKey: mmnReport.apiKey }
 
       if (!mmnReport.isEligibleForFreeRegistration) {
         await noFreeRegistrationsLeftFlow(info)
@@ -95,15 +89,12 @@ export const ClickBoarding = observer(() => {
         await identityAlreadyRegisteredFlow(info)
         return
       }
-      await regularFlow({
-        identity: id,
-        walletAddress: mmnReport.walletAddress,
-        apiKey: mmnReport.apiKey,
-      })
+
+      await regularFlow({ identity: id, walletAddress: mmnReport.walletAddress, apiKey: mmnReport.apiKey })
     } catch (e: unknown) {
       setError('Could not proceed with Quick onboarding')
       await events.send('error_clickboarding_flow', { error: errors.string(e).substring(0, 1024) })
-      navigate(ROUTES.HOME, { replace: true })
+      navigate(ROUTES.HOME)
     }
   }
 
@@ -148,9 +139,6 @@ export const ClickBoarding = observer(() => {
   }
 
   useEffect(() => {
-    if (store.isVerifyingOnboarding) {
-      return
-    }
     autoOnBoard()
     events.send('page_view_clickboarding')
   }, [])

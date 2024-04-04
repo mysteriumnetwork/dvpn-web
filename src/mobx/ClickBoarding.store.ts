@@ -8,7 +8,6 @@ import { makeAutoObservable } from 'mobx'
 
 export class ClickBoardingStore {
   _generatedPassword: string | undefined
-  isVerifyingOnboarding: boolean = false
 
   constructor() {
     makeAutoObservable(this)
@@ -16,10 +15,6 @@ export class ClickBoardingStore {
 
   set generatedPassword(password: string | undefined) {
     this._generatedPassword = password
-  }
-
-  setVerifyingOnboarding(b: boolean = true): void {
-    this.isVerifyingOnboarding = b
   }
 
   get generatedPassword(): string | undefined {
