@@ -55,14 +55,14 @@ export const MystNodesClaim = () => {
       title={
         <Title>
           <div>{capitalizeFirstLetter(MMN_SITE)} Integrations</div>
-          <Tooltip placement="top" content="Go to mystnodes.com/me">
+          <Tooltip placement="top" content="Go to my.mystnodes.com/me">
             <Link href={MMN_SITE_ME_URL} target="_blank" rel="noreferrer">
               <ExternalSVG />
             </Link>
           </Tooltip>
         </Title>
       }
-      footer={<ClaimButton label="Claim on mystnodes.com" />}
+      footer={<ClaimButton label="Claim on my.mystnodes.com" />}
     >
       <InputGroup
         title="API Key"

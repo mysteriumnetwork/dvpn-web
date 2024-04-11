@@ -91,8 +91,8 @@ export const TOSModal = ({ show = false, onClose, hideAgree, onCloseLabel }: Pro
         <Note>We have updated our Terms and Conditions. Please click agree to access NODE UI</Note>
         <Note>
           You can always find our terms and conditions on
-          <Link href="https://mystnodes.com/terms" target="_blank">
-            mystnodes.com/terms
+          <Link href="https://my.mystnodes.com/terms" target="_blank">
+            my.mystnodes.com/terms
           </Link>
         </Note>
         <Container>{ReactHtmlParser(termsHtml)}</Container>

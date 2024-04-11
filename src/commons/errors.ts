@@ -12,7 +12,7 @@ export const UNKNOWN_API_ERROR = 'Unknown API Error'
 const codeToMessage: { code: string; message: string }[] = [
   {
     code: 'err_mmn_registration',
-    message: 'Failed to register to mystnodes.com',
+    message: 'Failed to register to my.mystnodes.com',
   },
   {
     code: 'err_no_tax_state',
