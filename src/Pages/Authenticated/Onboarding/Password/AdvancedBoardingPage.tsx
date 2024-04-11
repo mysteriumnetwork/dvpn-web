@@ -221,15 +221,15 @@ export const AdvancedBoardingPage = () => {
                 }
               />
             </PasswordInputs>
-            <GSubTitle>Connect your Nodes whit Mystnodes.com </GSubTitle>
+            <GSubTitle>Connect your Nodes whit my.mystnodes.com</GSubTitle>
             <GDescription>
               To manage your node and view statistic on{' '}
-              <Link href="https://mystnodes.com" target="_blank">
-                mystnodes.com
+              <Link href="https://my.mystnodes.com" target="_blank">
+                my.mystnodes.com
               </Link>
               , enter your API key obtained from{' '}
-              <Link href="https://mystnodes.com/me" target="_blank">
-                mystnodes.com/me
+              <Link href="https://my.mystnodes.com/me" target="_blank">
+                my.mystnodes.com/me
               </Link>
               . As a first time user,you may be eligible for a free node registration.
             </GDescription>

@@ -30,7 +30,7 @@ const Content = styled.div`
 const Title = styled.div`
   font-family: 'Ubuntu', sans-serif;
   font-size: ${themeCommon.fontSizeSmall};
-  color: ${({ theme }) => theme.text.colorSecondary}; ;
+  color: ${({ theme }) => theme.text.colorSecondary};
 `
 const Value = styled.div`
   font-size: ${themeCommon.fontSizeBigger};
