@@ -130,11 +130,10 @@ export const SettleModal = observer(({ show, onClose = () => {}, onSave = () => 
   const { current, hermesPercent } = useAppSelector(selectors.fees)
   const identity = useAppSelector(selectors.currentIdentity)
 
-  const calculatedFees = useMemo(() => feez.calculateEarnings(identity.earningsTokens, current, hermesPercent), [
-    hermesPercent,
-    current.settlement.wei,
-    identity.earningsTokens,
-  ])
+  const calculatedFees = useMemo(
+    () => feez.calculateEarnings(identity.earningsTokens, current, hermesPercent),
+    [hermesPercent, current.settlement.wei, identity.earningsTokens],
+  )
 
   useEffect(() => {
     asyncBeneficiaryStore.fetchBeneficiaryAsyncAddress(identity.id)

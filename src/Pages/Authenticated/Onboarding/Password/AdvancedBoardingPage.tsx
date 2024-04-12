@@ -31,17 +31,8 @@ import { events } from '../../../../commons/events'
 
 const { api } = tequila
 
-const {
-  Page,
-  LockRow,
-  StartButton,
-  GTitle,
-  GSubTitle,
-  GDescription,
-  GradientCard,
-  Welcome,
-  WhiteCard,
-} = PasswordSetComponents
+const { Page, LockRow, StartButton, GTitle, GSubTitle, GDescription, GradientCard, Welcome, WhiteCard } =
+  PasswordSetComponents
 
 const PasswordInputs = styled.div`
   display: flex;

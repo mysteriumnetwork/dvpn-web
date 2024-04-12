@@ -62,9 +62,9 @@ export const Services = () => {
     )
 
     // @ts-ignore
-    const foundTotalNetworkEarningsfoundTotalNetworkEarnings:
-      | ServiceEarningsKeys
-      | undefined = earningKeys.find((key) => (key === serviceTotalNetworkEarningsKey ? key : undefined))
+    const foundTotalNetworkEarningsfoundTotalNetworkEarnings: ServiceEarningsKeys | undefined = earningKeys.find(
+      (key) => (key === serviceTotalNetworkEarningsKey ? key : undefined),
+    )
 
     const serviceWei = foundServiceEarnings ? earnings[foundServiceEarnings].wei : 0
     const totalServiceNetworkWei = foundTotalNetworkEarningsfoundTotalNetworkEarnings

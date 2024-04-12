@@ -4,40 +4,53 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { ReactElement } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import React from 'react'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAppSelector } from '../commons/hooks'
-import { RootState } from '../redux/store'
-import ROUTES, { NEW_PASSWORD } from '../constants/routes'
+import ROUTES from '../constants/routes'
+import { selectors } from '../redux/selectors'
 
-interface Redirect {
-  condition: boolean
-  to: string
-}
+const authenticatedRoutes = [
+  ROUTES.DASHBOARD,
+  ROUTES.NODE_CLAIM,
+  ROUTES.HISTORY,
+  ROUTES.SETTINGS,
+  ROUTES.SETTINGS_ACCOUNT,
+  ROUTES.SETTINGS_TRAFFIC,
+  ROUTES.SETTINGS_ADVANCED,
+  ROUTES.TRANSACTIONS,
+  ROUTES.SESSIONS_SIDE,
+  ROUTES.ADMIN,
+  ROUTES.STORYBOOK,
+]
 
-interface ProtectedProps {
-  redirects?: Redirect[]
-  children: ReactElement
-}
+const controlledRedirectRoutes = [
+  ROUTES.NEW_PASSWORD,
+  ROUTES.PASSWORD_RESET,
+  ROUTES.ADVANCED_ONBOARDING,
+  ROUTES.QUICK_ONBOARDING,
+]
 
-export const Protected = ({ children, redirects = [] }: ProtectedProps) => {
-  const defaultCredentials = useAppSelector(({ app }: RootState) => app.auth.withDefaultCredentials)
-
-  const redirect = redirects.find((r) => r.condition)
-
+export const Protected = () => {
   const location = useLocation()
-  if (
-    defaultCredentials &&
-    ![ROUTES.NEW_PASSWORD, ROUTES.ADVANCED_ONBOARDING, ROUTES.QUICK_ONBOARDING, ROUTES.PASSWORD_RESET].includes(
-      location.pathname.toLowerCase(),
-    )
-  ) {
-    return <Navigate to={NEW_PASSWORD} />
+  const auth = useAppSelector(selectors.auth)
+  const onBoarding = useAppSelector(selectors.onBoarding)
+
+  if (auth.withDefaultCredentials && !controlledRedirectRoutes.includes(location.pathname.toLowerCase())) {
+    return <Navigate to={ROUTES.NEW_PASSWORD} />
   }
 
-  if (redirect) {
-    return <Navigate to={redirect.to} />
+  if (!onBoarding.needsPasswordChange && controlledRedirectRoutes.includes(location.pathname.toLowerCase())) {
+    return <Navigate to={ROUTES.HOME} />
   }
 
-  return children
+  if (auth.authenticated && location.pathname.toLowerCase() === ROUTES.HOME) {
+    return <Navigate to={ROUTES.DASHBOARD} />
+  }
+
+  if (!auth.authenticated && authenticatedRoutes.includes(location.pathname.toLowerCase())) {
+    return <Navigate to={ROUTES.HOME} />
+  }
+
+  return <Outlet />
 }

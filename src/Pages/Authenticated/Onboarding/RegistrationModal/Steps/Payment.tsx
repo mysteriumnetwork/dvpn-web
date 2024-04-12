@@ -43,9 +43,10 @@ const Payment = ({ gateway, allGateways, back, next }: RegistrationStepProps) =>
 
   const [registrationPayment, setRegistrationPayment] = useState<RegistrationPaymentResponse>({ paid: false })
 
-  const Gateway = useMemo(() => React.lazy(() => import(`./Gateways/${gatewayDescriptor(gateway).component}`)), [
-    gateway,
-  ])
+  const Gateway = useMemo(
+    () => React.lazy(() => import(`./Gateways/${gatewayDescriptor(gateway).component}`)),
+    [gateway],
+  )
 
   useEffect(() => {
     const skipIfPaid = async () => {
