@@ -11,7 +11,7 @@ import errors from '../../../../commons/errors'
 const { api } = tequila
 
 export type QualityIndicatorVariants = 'good' | 'normal' | 'poor' | 'unknown'
-export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'unknown'
+export type StatusIndicatorVariants = 'online' | 'offline' | 'monitoringFailed' | 'unknown' | 'pending'
 
 export class HeaderStore {
   status: string = 'pending'
@@ -74,9 +74,11 @@ export class HeaderStore {
     if (this.status === 'success') {
       return 'online'
     }
-    if (this.status === 'unknown') {
-      return 'unknown'
+
+    if (this.status.toLowerCase().includes('failed')) {
+      return 'monitoringFailed'
     }
-    return 'monitoringFailed'
+
+    return 'pending'
   }
 }

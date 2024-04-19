@@ -159,6 +159,7 @@ const light: Omit<Theme, 'common'> = {
       monitoringFailed: themeCommon.colorRed,
       offline: themeCommon.colorGrayBlue,
       online: themeCommon.colorGreen,
+      pending: themeCommon.colorWarning,
     },
     textColor: themeCommon.colorDarkBlue,
   },
