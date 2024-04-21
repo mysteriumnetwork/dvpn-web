@@ -15,20 +15,16 @@ import { useAppSelector } from '../commons/hooks'
 import { selectors } from '../redux/selectors'
 import { IdentityRegistrationStatus } from 'mysterium-vpn-js'
 import complexActions from '../redux/complex.actions'
-import { CircularSpinner } from '../Components/CircularSpinner/CircularSpinner'
 import styled from 'styled-components'
 import { observer } from 'mobx-react-lite'
 import { useStores } from '../mobx/store'
 import { events } from '../commons/events'
 import errors from '../commons/errors'
+import { Spinner } from '../Components/Spinner/Spinner'
 
 const AUTHORIZATION_GRANT = 'authorizationGrant'
 const { verifyOnboardingGrant } = tequila
 
-const Spinner = styled(CircularSpinner)`
-  height: 50px;
-  width: 50px;
-`
 const Row = styled.div`
   display: flex;
   align-items: center;
@@ -155,7 +151,7 @@ export const ClickBoarding = observer(() => {
     >
       <Row>
         <h1>Please wait while we onboard your node</h1>
-        <Spinner />
+        <Spinner className="size-12" />
       </Row>
       {error && <Error>{error}</Error>}
     </div>
