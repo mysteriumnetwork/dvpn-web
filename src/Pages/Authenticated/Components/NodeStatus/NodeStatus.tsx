@@ -57,7 +57,7 @@ export const NodeStatus = observer(() => {
 
   const { headerStore } = useStores()
   const variant = anyOnline ? headerStore.resolveStatusVariant : 'offline'
-  console.log('resolveStatusTitle(variant)', variant, '#', resolveStatusTitle(variant))
+
   return (
     <HeaderItem
       title={resolveStatusTitle(variant)}
