@@ -159,6 +159,7 @@ const light: Omit<Theme, 'common'> = {
       monitoringFailed: themeCommon.colorRed,
       offline: themeCommon.colorGrayBlue,
       online: themeCommon.colorGreen,
+      pending: themeCommon.colorWarning,
     },
     textColor: themeCommon.colorDarkBlue,
   },
@@ -167,7 +168,7 @@ const light: Omit<Theme, 'common'> = {
       good: themeCommon.colorGreen,
       normal: themeCommon.colorWarning,
       poor: themeCommon.colorRed,
-      unknown: themeCommon.colorGrayBlue2,
+      unknown: themeCommon.colorGrayBlue,
     },
   },
   adminPanel: {

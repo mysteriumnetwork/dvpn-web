@@ -162,6 +162,7 @@ const dark: Omit<Theme, 'common'> = {
       monitoringFailed: themeCommon.colorRed,
       offline: themeCommon.colorGrayBlue2,
       online: themeCommon.colorGreen,
+      pending: themeCommon.colorWarning,
     },
     textColor: themeCommon.colorWhite,
   },

@@ -167,6 +167,7 @@ export type Theme = {
       online: string
       offline: string
       monitoringFailed: string
+      pending: string
     }
     textColor: string
   }

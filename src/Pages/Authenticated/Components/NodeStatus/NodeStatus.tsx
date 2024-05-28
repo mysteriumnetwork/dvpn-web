@@ -46,6 +46,8 @@ export const resolveStatusTitle = (variant: StatusIndicatorVariants): string => 
       return 'Monitoring failed'
     case 'unknown':
       return 'Pending'
+    case 'pending':
+      return 'Pending'
   }
 }
 
