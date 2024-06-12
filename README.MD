@@ -8,9 +8,9 @@
 ## Running
 
 ### Prerequisites
-  - NodeJS >= 16.0.0 (advise using [NVM tool](https://github.com/nvm-sh/nvm))
+  - NodeJS >= 18.0.0 (advise using [NVM tool](https://github.com/nvm-sh/nvm))
     ```shell
-    nvm install 16 && nvm use 16
+    nvm install 18 && nvm use 18
     ```
   - Yarn 
     ```shell 

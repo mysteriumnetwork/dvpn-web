@@ -4,7 +4,6 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { tw } from '../../commons/tailwind'
 
 type Props = {
   className?: string
@@ -15,7 +14,7 @@ export const Spinner = ({ className }: Props) => {
     <div role="status">
       <svg
         aria-hidden="true"
-        className={tw('inline w-24 h-24 text-gray-200 animate-spin fill-primary', className)}
+        className="inline w-24 h-24 text-gray-200 animate-spin fill-primary"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
