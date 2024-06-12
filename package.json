@@ -66,7 +66,6 @@
     "buffer": "^6.0.3",
     "clipboard": "^2.0.8",
     "lodash": "^4.17.21",
-    "luxon": "^3.4.4",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
     "murmurhash": "2.0.1",
@@ -94,7 +93,6 @@
     "semver": "^7.6.0",
     "showdown": "^1.9.1",
     "styled-components": "^5.3.5",
-    "tailwind-merge": "^2.3.0",
     "typescript": "^4.9.5"
   },
   "devDependencies": {
@@ -104,8 +102,7 @@
     "@types/intercom-web": "^2.8.23",
     "@types/jest": "^27.4.1",
     "@types/lodash": "^4.14.161",
-    "@types/luxon": "^3.4.2",
-    "@types/node": "^16.11.31",
+    "@types/node": "18",
     "@types/qs": "^6.9.7",
     "@types/react": "^18.2.55",
     "@types/react-beautiful-dnd": "^13.1.2",
