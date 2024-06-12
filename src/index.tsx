@@ -9,12 +9,8 @@ import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
 import AppRouter from './Pages/AppRouter'
-import { Settings as LuxonSettings } from 'luxon'
 
 import './index.css'
-
-LuxonSettings.defaultZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-LuxonSettings.defaultLocale = Intl.Locale.name
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

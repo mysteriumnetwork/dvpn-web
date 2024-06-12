@@ -151,7 +151,7 @@ export const ClickBoarding = observer(() => {
     >
       <Row>
         <h1>Please wait while we onboard your node</h1>
-        <Spinner className="size-12" />
+        <Spinner />
       </Row>
       {error && <Error>{error}</Error>}
     </div>

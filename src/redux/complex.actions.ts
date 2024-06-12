@@ -26,7 +26,6 @@ import { store } from './store'
 import errors from '../commons/errors'
 import { Config } from 'mysterium-vpn-js'
 import termsPackageJson from '@mysteriumnetwork/terms/package.json'
-import { DateTime } from 'luxon'
 import termsJson from '@mysteriumnetwork/terms/package.json'
 
 const { api } = tequila
@@ -177,7 +176,7 @@ const setFeatures = async (features: string[]): Promise<Config> => {
 }
 
 const recordTerms = async (): Promise<unknown> => {
-  const now = DateTime.utc().toISODate()
+  const now = new Date().toISOString().split('T')[0]
   return api
     .updateUserConfig({
       data: {
