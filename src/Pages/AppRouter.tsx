@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createHashRouter } from 'react-router-dom'
 import ROUTES, {
   ADMIN,
   DASHBOARD,
@@ -45,7 +45,7 @@ export default function AppRouter() {
   return <RouterProvider key="app-router" router={appRouter} />
 }
 
-const appRouter = createBrowserRouter([
+const appRouter = createHashRouter([
   {
     path: '/',
     element: <Layout />,
