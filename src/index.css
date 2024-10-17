@@ -1,3 +1,34 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+.rc-slider-rail {
+  @apply bg-gray-125 h-2
+}
+
+.rc-slider-track {
+  @apply bg-pink-525 h-2
+}
+
+.rc-slider-handle {
+  @apply bg-white border-pink-225 border-4 -bottom-0.5 opacity-100
+}
+
+.rc-slider-handle:hover {
+  @apply border-pink-300
+}
+.rc-slider-dot {
+  @apply hidden
+}
+
+.rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
+  @apply border-pink-525
+}
+
+.rc-slider-mark-text {
+  @apply text-gray-250 text-sm font-normal pt-4 mx-5 w-20
+}
+
+.rc-slider-mark-text:last-of-type {
+  @apply -ml-8 whitespace-nowrap
+}

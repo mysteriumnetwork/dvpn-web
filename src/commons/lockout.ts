@@ -6,7 +6,7 @@
  */
 import page from './page'
 import remoteStorage from './remoteStorage'
-import { LockoutButtonInfo } from '../Components/Inputs/types'
+import { LockoutButtonInfo } from '../components/Inputs/types'
 
 export type LockConfig = {
   id: string

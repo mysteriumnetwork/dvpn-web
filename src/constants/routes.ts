@@ -10,13 +10,7 @@ export const NODE_CLAIM = '/node-claim'
 export const NEW_PASSWORD = '/new-password'
 export const QUICK_ONBOARDING = '/quick-onboarding'
 export const ADVANCED_ONBOARDING = '/advanced-onboarding'
-export const HISTORY = '/history'
-export const TRANSACTIONS = '/transactions'
 export const SETTINGS = '/settings'
-export const SETTINGS_ACCOUNT = `${SETTINGS}/account`
-export const SETTINGS_TRAFFIC = `${SETTINGS}/traffic`
-export const SETTINGS_ADVANCED = `${SETTINGS}/advanced`
-export const SESSIONS_SIDE = '/sessions-side'
 export const ERROR = '/error'
 export const ADMIN = '/admin'
 export const STORYBOOK = '/storybook'
@@ -24,6 +18,10 @@ export const AUTH_SSO = '/auth-sso'
 export const CLAIM = '/node-claim'
 export const CLICKBOARDING = '/clickboarding'
 export const PASSWORD_RESET = '/password-reset'
+export const IDENTITY = '/identity'
+export const EARNINGS = '/earnings'
+export const SESSIONS = '/sessions'
+export const HELP = '/help'
 
 const ROUTES = {
   QUICK_ONBOARDING,
@@ -33,19 +31,17 @@ const ROUTES = {
   DASHBOARD,
   NODE_CLAIM,
   NEW_PASSWORD,
-  HISTORY,
-  TRANSACTIONS,
   SETTINGS,
-  SETTINGS_ACCOUNT,
-  SETTINGS_TRAFFIC,
-  SETTINGS_ADVANCED,
-  SESSIONS_SIDE,
   ERROR,
   ADMIN,
   STORYBOOK,
   AUTH_SSO,
   CLICKBOARDING,
   CLAIM,
+  IDENTITY,
+  EARNINGS,
+  SESSIONS,
+  HELP,
 }
 
 export default ROUTES

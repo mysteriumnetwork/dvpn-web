@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { toast as tostify } from 'react-toastify'
-import { ErrorToast, InfoToast, SuccessToast, WarningToast } from '../Components/Toasts/Toasts'
+import { ErrorToast, InfoToast, SuccessToast, WarningToast } from '../components/Toasts/Toasts'
 
 const toastSuccess = (msg: string) => {
   tostify.success(<SuccessToast message={msg} />)

@@ -72,7 +72,7 @@ const stunServers = (c?: Config): string[] => {
 }
 
 const zeroStakeSettlementThreshold = (c?: Config): number => {
-  return _.get<Config, any>(c, 'data.payments.zero-stake-unsettled-amount') || []
+  return _.get<Config, any>(c, 'data.payments.zero-stake-unsettled-amount') || 0
 }
 
 const docsAddress = (c?: Config): string => {

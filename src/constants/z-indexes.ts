@@ -16,6 +16,7 @@ const onboardingModal = 1003
 const buttonOverlay = 10
 const buttonSpinner = 11
 const spinner = 1001
+const zClassMenuTooltip = 'z-[999]'
 
 const zIndexes = {
   overlay,
@@ -29,6 +30,7 @@ const zIndexes = {
   buttonOverlay,
   buttonSpinner,
   spinner,
+  zClassMenuTooltip,
 }
 
 export default zIndexes

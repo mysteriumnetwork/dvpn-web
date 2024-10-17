@@ -18,3 +18,17 @@ export const NODE_STATUS = `${DOCS}/en/articles/8005209-troubleshoot-connection-
 export const ANDROID_DEEPLINK_SSO = 'mystnodes://sso'
 export const ANDROID_DEEPLINK_CLICKBOARDING = 'mystnodes://clickboarding'
 export const ANDROID_DEEPLINK_CLAIM = 'mystnodes://claim'
+
+export const BLOG = 'https://www.mystnodes.com/blog'
+export const TERMS = 'https://www.mystnodes.com/legal/terms-and-conditions'
+
+export const MMN_SITE_URL = 'https://my.mystnodes.com'
+export const MMN_SITE_ME_URL = `${MMN_SITE_URL}/me`
+export const MMN_SITE_NODES_URL = `${MMN_SITE_URL}/nodes`
+
+export const SOCIAL_LINKS = {
+  DISCORD: 'https://discordapp.com/invite/n3vtSwc',
+  X: 'https://twitter.com/MysteriumNet',
+  FACEBOOK: 'https://www.facebook.com/mystnodes',
+  YOUTUBE: 'https://www.youtube.com/channel/UCBxzWnZEHvuj-nfP00YImHQ',
+}
