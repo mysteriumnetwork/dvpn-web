@@ -12,19 +12,16 @@ import { useAppSelector } from '../../../commons/hooks'
 import { selectors } from '../../../redux/selectors'
 import { useStores } from '../../../mobx/store'
 
+const statusTitleMap: Record<NodeStatus, string> = {
+  online: 'Online',
+  offline: 'Offline',
+  monitoringFailed: 'Monitoring failed',
+  unknown: 'Pending',
+  pending: 'Pending',
+}
+
 export const resolveStatusTitle = (variant: NodeStatus): string => {
-  switch (variant) {
-    case 'online':
-      return 'Online'
-    case 'offline':
-      return 'Offline'
-    case 'monitoringFailed':
-      return 'Monitoring failed'
-    case 'unknown':
-      return 'Pending'
-    case 'pending':
-      return 'Pending'
-  }
+  return statusTitleMap[variant] || 'Pending'
 }
 
 const indicatorVariantByStatus: Record<NodeStatus, BubbleIndicatorVariant> = {

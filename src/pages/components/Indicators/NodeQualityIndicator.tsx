@@ -12,17 +12,15 @@ import { selectors } from '../../../redux/selectors'
 import { NodeQuality } from '../../../mobx/Indications.store'
 import { useStores } from '../../../mobx/store'
 
+const qualityTitleMap: Record<NodeQuality, string> = {
+  good: 'Great',
+  normal: 'Normal',
+  poor: 'Poor',
+  unknown: 'Unknown',
+}
+
 export const resolveStatusTitle = (variant: NodeQuality): string => {
-  switch (variant) {
-    case 'good':
-      return 'Great'
-    case 'normal':
-      return 'Normal'
-    case 'poor':
-      return 'Poor'
-    case 'unknown':
-      return 'Unknown'
-  }
+  return qualityTitleMap[variant] || 'Unknown'
 }
 
 const indicatorVariantByStatus: Record<NodeQuality, BubbleIndicatorVariant> = {

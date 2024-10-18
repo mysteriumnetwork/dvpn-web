@@ -8,29 +8,20 @@ import { twMerge } from 'tailwind-merge'
 
 type SpinnerSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
 
+const sizeStyleMap: Record<SpinnerSize, string> = {
+  xs: 'size-3 min-w-3',
+  sm: 'size-3.5 min-w-3.5',
+  base: 'size-4 min-w-4',
+  lg: 'size-5 min-w-5',
+  xl: 'size-6 min-w-6',
+  '2xl': 'size-8 min-w-8',
+  '3xl': 'size-12 min-w-12',
+  '4xl': 'size-16 min-w-16',
+  '5xl': 'size-20 min-w-20',
+}
+
 const resolveSize = (size: SpinnerSize): string => {
-  switch (size) {
-    case 'xs':
-      return 'size-3 min-w-3'
-    case 'sm':
-      return 'size-3.5 min-w-3.5'
-    case 'base':
-      return 'size-4 min-w-4'
-    case 'lg':
-      return 'size-5 min-w-5'
-    case 'xl':
-      return 'size-6 min-w-6'
-    case '2xl':
-      return 'size-8 min-w-8'
-    case '3xl':
-      return 'size-12 min-w-12'
-    case '4xl':
-      return 'size-16 min-w-16'
-    case '5xl':
-      return 'size-20 min-w-20'
-    default:
-      return 'size-4 min-w-4'
-  }
+  return sizeStyleMap[size] || 'size-4 min-w-4'
 }
 
 type Props = {
