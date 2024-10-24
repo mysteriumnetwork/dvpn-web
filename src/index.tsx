@@ -4,13 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import 'rc-slider/assets/index.css'
+import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
-import AppRouter from './Pages/AppRouter'
-
-import './index.css'
+import AppRouter from './pages/AppRouter'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

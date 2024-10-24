@@ -4,16 +4,19 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { ReactNode } from 'react'
 import { EarningsPerServiceResponse } from 'mysterium-vpn-js'
-import { ServiceTooltips } from '../Pages/Authenticated/Components/Service/ServiceCard'
-import { Fragment, ReactNode } from 'react'
-import { Link } from '../Components/Common/Link'
+import Link from '../components/Links/Link'
 
-export interface ServiceDescriptor {
-  type: string
-  name: string
-  description: string | ReactNode
-  tooltips?: ServiceTooltips
+type ServiceTooltips = {
+  readonly earnings?: ReactNode
+}
+
+type ServiceDescriptor = {
+  readonly type: string
+  readonly name: string
+  readonly description: string | ReactNode
+  readonly tooltips?: ServiceTooltips
 }
 
 export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
@@ -38,9 +41,12 @@ export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
     name: 'VPN',
     type: 'dvpn',
     description: (
-      <Fragment>
-        <Link href={'https://mysteriumvpn.com'}>Mysterium VPN </Link> app user traffic
-      </Fragment>
+      <>
+        <Link href="https://mysteriumvpn.com" target="_blank">
+          Mysterium VPN
+        </Link>{' '}
+        app user traffic
+      </>
     ),
     tooltips: {
       earnings: 'The total amount of MYST earned from VPN service in the last 30 days',
@@ -50,11 +56,13 @@ export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
     name: 'Public',
     type: 'wireguard',
     description: (
-      <Fragment>
-        Open to the whole network, including 3rd party and
-        <Link href={'https://mysteriumvpn.com/godark'}> Mysterium Dark </Link>
+      <>
+        Open to the whole network, including 3rd party and{' '}
+        <Link href="https://mysteriumvpn.com/godark" target="_blank">
+          Mysterium Dark
+        </Link>{' '}
         app user traffic
-      </Fragment>
+      </>
     ),
     tooltips: {
       earnings: 'The total amount of MYST earned from public service in the last 30 days',
@@ -82,15 +90,16 @@ export const SUPPORTED_SERVICES_MOBILE: ServiceDescriptor[] = [
   {
     name: 'VPN',
     type: 'dvpn',
-    // change this later
     description: (
-      <Fragment>
-        <Link href={'https://mysteriumvpn.com'}>Mysterium VPN</Link> app user traffic
-      </Fragment>
+      <>
+        <Link href="https://mysteriumvpn.com" target="_blank">
+          Mysterium VPN
+        </Link>{' '}
+        app user traffic
+      </>
     ),
     tooltips: {
-      //change this later
-      earnings: 'The total amount of MYST earned from dvpn service in the last 30 days',
+      earnings: 'The total amount of MYST earned from VPN service in the last 30 days',
     },
   },
 ]

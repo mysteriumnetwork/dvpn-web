@@ -11,8 +11,7 @@ import complexActions from '../redux/complex.actions'
 
 const DESKTOP_OPTIONS = {
   hide_default_launcher: true,
-  alignment: 'left',
-  horizontal_padding: 100,
+  alignment: 'right',
   vertical_padding: 200,
 }
 

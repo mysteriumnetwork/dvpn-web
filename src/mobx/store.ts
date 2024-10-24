@@ -6,24 +6,26 @@
  */
 import React from 'react'
 import { configure } from 'mobx'
-import { HistoryPageStore } from '../Pages/Authenticated/HistoryPage/store'
-import { HeaderStore } from '../Pages/Authenticated/Components/Layout/store'
-import { AsyncBeneficiaryStore } from '../Pages/Authenticated/SettingsPage/Tabs/Account/asyncBeneficiary.store'
+import { SessionsStore } from './Sessions.store'
+import { IndicationsStore } from './Indications.store'
+import { BeneficiaryStore } from './BeneficiaryStore'
 import { ClickBoardingStore } from './ClickBoarding.store'
+import { MenuStore } from './Menu.store'
 
 export class MobXRootStore {
-  historyPage: HistoryPageStore
-  headerStore: HeaderStore
-  asyncBeneficiaryStore: AsyncBeneficiaryStore
+  sessionsStore: SessionsStore
+  indicationsStore: IndicationsStore
+  beneficiaryStore: BeneficiaryStore
   clickBoardingStore: ClickBoardingStore
+  menuStore: MenuStore
 
   constructor() {
-    this.historyPage = new HistoryPageStore()
-    this.historyPage.setupReactions()
-    this.headerStore = new HeaderStore()
-    this.headerStore.setupReactions()
-    this.asyncBeneficiaryStore = new AsyncBeneficiaryStore()
+    this.sessionsStore = new SessionsStore()
+    this.indicationsStore = new IndicationsStore()
+    this.indicationsStore.setupReactions()
+    this.beneficiaryStore = new BeneficiaryStore()
     this.clickBoardingStore = new ClickBoardingStore()
+    this.menuStore = new MenuStore()
   }
 }
 

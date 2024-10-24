@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
 import { selectors } from '../redux/selectors'
@@ -46,4 +46,37 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 export const useIsFeatureEnabled = (feature: Feature) => {
   const config = useAppSelector(selectors.currentConfig)
   return configs.isFeatureEnabled(config, feature.name)
+}
+
+export const useKeyAction = ({ key, action }: { key: string; action?: () => void }) => {
+  const onKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.code === key) {
+      action && action()
+    }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [])
+}
+
+export const useScrollLock = (state: boolean) => {
+  const toggleScrollLock = (state: boolean) => {
+    document.querySelector('html')?.classList[state ? 'add' : 'remove']('overflow-hidden')
+  }
+
+  useEffect(() => {
+    toggleScrollLock(state)
+  }, [state])
+
+  useEffect(() => {
+    return () => {
+      toggleScrollLock(false)
+    }
+  }, [])
+
+  return { toggleScrollLock }
 }
