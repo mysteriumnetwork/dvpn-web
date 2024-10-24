@@ -53,7 +53,7 @@ const CopyToClipboard = ({ text, noToast }: Props) => {
   }
 
   return (
-    <StyledButton className={uid} data-clipboard-text={text} onClick={handleOnClick}>
+    <StyledButton className={`clipboard-${uid}`} data-clipboard-text={text} onClick={handleOnClick}>
       <Icon />
     </StyledButton>
   )

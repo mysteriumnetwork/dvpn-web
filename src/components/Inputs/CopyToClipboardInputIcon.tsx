@@ -32,7 +32,7 @@ const CopyToClipboardInputIcon = ({ text, noToast }: Props) => {
 
   return (
     <div
-      className={twMerge('flex items-center justify-center size-6 min-w-6 cursor-pointer', uid)}
+      className={twMerge('flex items-center justify-center size-6 min-w-6 cursor-pointer', `clipboard-${uid}`)}
       data-clipboard-text={text}
       onClick={handleOnClick}
     >
