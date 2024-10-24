@@ -92,7 +92,10 @@ export const BandwidthControlCard = () => {
         confirmLabel="Restart"
         onConfirm={async () => {
           setShowConfirmation(false)
-          await toggleShaping(!shapingEnabled, bandwidthMBps)
+          await toggleShaping(
+            conversions.mbps(configShapingKBps) === bandwidthMBps ? !shapingEnabled : shapingEnabled,
+            bandwidthMBps,
+          )
         }}
         onCancel={() => {
           setBandwidthMBps(conversions.mbps(configShapingKBps))
