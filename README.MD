@@ -1,10 +1,5 @@
 # Node WebUI
 
-> NOTE: Issues should be created in [node](https://github.com/mysteriumnetwork/node/issues) repo  
-> 
-[![pipeline status](https://gitlab.com/mysteriumnetwork/dvpn-web/badges/master/pipeline.svg)](https://gitlab.com/mysteriumneam/dvpn-web/-/commits/master)  
-[link to pipelines](https://gitlab.com/mysteriumnetwork/dvpn-web/-/pipelines)
-
 ## Running
 
 ### Prerequisites
@@ -27,23 +22,23 @@ This will start app on port 3000 and should automatically open browser and navig
 ## Release
 
 1. Start a Draft release from https://github.com/mysteriumnetwork/dvpn-web/releases  
-Set appropriate release version (i.e. 0.1.6 at the time of writing)
+Set appropriate release version (i.e. 3.0.2 at the time of writing)
 
 2. Creating release:
     * Generate a changelog: 
    ```shell
-   github_changelog_generator --user mysteriumnetwork --project dvpn-web -t $GITHUB_TOKEN --since-tag 0.1.5
+   github_changelog_generator --user mysteriumnetwork --project dvpn-web -t $GITHUB_TOKEN --since-tag 3.0.1
    ```
     * Use generated changelog as release description
-    * Enter appropriate `tag` and `version` names, they are usually same values (i.e. 0.1.6) 
+    * Enter appropriate `tag` and `version` names, they are usually same values (i.e. 3.0.2) 
   
-3. Wait until builds pass:  
-    - https://gitlab.com/mysteriumnetwork/dvpn-web/-/pipelines
-    - https://gitlab.com/mysteriumnetwork/go-dvpn-web/-/pipelines
+3. Wait until builds GH actions pass:  
+    - https://github.com/mysteriumnetwork/dvpn-web/actions
+    - https://github.com/mysteriumnetwork/go-dvpn-web/actions
 
 4. In [node go.mod](https://github.com/mysteriumnetwork/node/blob/master/go.mod) you need to update the `go-dvpn-web` bundler dependency. 
     ```shell
-    go get github.com/mysteriumnetwork/go-dvpn-web@v0.1.6
+    go get github.com/mysteriumnetwork/go-dvpn-web/v3@v3.0.2
     ```
     
     Also, it is a good practice to do a test run. You can spin up Node by:  
