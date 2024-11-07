@@ -31,10 +31,9 @@ export class IndicationsStore {
     })
   }
 
-  setupReactions(): void {}
-
-  updateStateInterval() {
-    return setInterval(() => this.fetchState(), 10 * 60 * 1000)
+  setupReactions(): void {
+    setInterval(() => this.fetchState(), 60 * 1000)
+    this.fetchState()
   }
 
   setStatus(status: string): void {
