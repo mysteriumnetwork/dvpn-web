@@ -21,17 +21,16 @@ import { lockouts } from '../../../commons/lockout'
 import { useAppSelector } from '../../../commons/hooks'
 
 const EarningsCard = (props: CardProps) => {
-  const identity = useAppSelector(selectors.currentIdentity)
   const config = useAppSelector(selectors.currentConfig)
-  const { earningsTokens } = useAppSelector(selectors.currentIdentity)
+  const { earningsTokens, earningsTotalTokens } = useAppSelector(selectors.currentIdentity)
   const settleThresholdMyst = configs.zeroStakeSettlementThreshold(config)
 
   const [showModal, setShowModal] = useState(false)
 
-  const unsettledAmount = useMemo(() => Number(myst.toEtherBig(earningsTokens.wei).toFixed(2)), [earningsTokens.wei])
+  const unsettledAmount = useMemo(() => myst.toBig(earningsTokens.wei), [earningsTokens.wei])
   const totalSettled = useMemo(
-    () => feez.calculateSettled(identity.earningsTokens, identity.earningsTotalTokens),
-    [identity.earningsTokens, identity.earningsTotalTokens],
+    () => feez.calculateSettled(earningsTokens, earningsTotalTokens),
+    [earningsTokens, earningsTotalTokens],
   )
 
   return (
