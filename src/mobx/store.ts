@@ -22,7 +22,6 @@ export class MobXRootStore {
   constructor() {
     this.sessionsStore = new SessionsStore()
     this.indicationsStore = new IndicationsStore()
-    this.indicationsStore.setupReactions()
     this.beneficiaryStore = new BeneficiaryStore()
     this.clickBoardingStore = new ClickBoardingStore()
     this.menuStore = new MenuStore()

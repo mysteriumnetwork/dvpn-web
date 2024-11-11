@@ -17,6 +17,7 @@ export class IndicationsStore {
   status: string = 'pending'
   quality: number = 0
   loading: boolean = true
+  interval: ReturnType<typeof setInterval> | undefined = undefined
 
   constructor() {
     makeObservable(this, {
@@ -32,7 +33,9 @@ export class IndicationsStore {
   }
 
   setupReactions(): void {
-    setInterval(() => this.fetchState(), 60 * 1000)
+    if (!this.interval) {
+      this.interval = setInterval(() => this.fetchState(), 60 * 1000)
+    }
     this.fetchState()
   }
 
