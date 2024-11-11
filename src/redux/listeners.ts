@@ -8,7 +8,7 @@ import { myst } from '../commons/mysts'
 import { addListener, PayloadAction } from '@reduxjs/toolkit'
 import { FeesResponse } from 'mysterium-vpn-js'
 import { store } from './store'
-import { updateFeesStore, updateMinimumRegistrationAmountWeiStore } from './app.slice'
+import { updateAuthenticatedStore, updateFeesStore, updateMinimumRegistrationAmountWeiStore } from './app.slice'
 
 const FEE_SPIKE_MULTIPLIER = 1.5
 
@@ -26,7 +26,18 @@ const registerMinimumRegistrationAmountListener = () =>
     }),
   )
 
+const registerAuthenticatedListener = (
+  callback: (action: PayloadAction<{ authenticated: boolean }>) => Promise<void> | void,
+) =>
+  store.dispatch(
+    addListener({
+      actionCreator: updateAuthenticatedStore,
+      effect: callback,
+    }),
+  )
+
 const listeners = {
+  registerAuthenticatedListener,
   registerMinimumRegistrationAmountListener,
 }
 

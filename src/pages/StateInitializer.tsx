@@ -14,6 +14,7 @@ import { selectors } from '../redux/selectors'
 import { tequila } from '../api/tequila'
 import ConnectToSSE from '../sse/server-sent-events'
 import listeners from '../redux/listeners'
+import { useStores } from '../mobx/store'
 import { IdentityRegistrationStatusListener } from './Authenticated/Components/Listeners/IdentityRegistrationStatusListener'
 
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export const StateInitializer = ({ children }: Props) => {
+  const { indicationsStore } = useStores()
   const dispatch = useAppDispatch()
   const actions = {
     updateLoadingStore: async (loading: boolean) => dispatch(updateLoadingStore(loading)),
@@ -56,6 +58,12 @@ export const StateInitializer = ({ children }: Props) => {
   }, [loggedIn])
 
   useEffect(() => {
+    listeners.registerAuthenticatedListener(({ payload }) => {
+      if (!payload.authenticated) {
+        return
+      }
+      indicationsStore.setupReactions()
+    })
     listeners.registerMinimumRegistrationAmountListener()
   }, [])
 
