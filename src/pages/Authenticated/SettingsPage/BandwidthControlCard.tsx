@@ -58,7 +58,7 @@ export const BandwidthControlCard = () => {
   }, [])
 
   return (
-    <Card fluid isLoading={loading}>
+    <Card fluid isLoading={loading} className="mb-10">
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
           <Label value="Limit bandwidth to"></Label>
