@@ -30,18 +30,9 @@ export default function PortForwardingCard() {
   }
   return (
     <Card fluid>
-      <Form
-        className="flex flex-col w-full max-w-[500px] min-w-[240px] gap-4"
-        onSubmit={handleConfigSave}
-      >
+      <Form className="flex flex-col w-full max-w-[500px] min-w-[240px] gap-4" onSubmit={handleConfigSave}>
         <div className="flex w-full flex-col">
-          <LabeledInput
-            fluid
-            label="UDP Port range"
-            value={value}
-            onChange={(val) => setValue(val)}
-            errorMessagePadding={false}
-          />
+          <LabeledInput fluid label="UDP Port range" value={value} onChange={setValue} errorMessagePadding={false} />
         </div>
         <div className="w-full sm:w-52">
           <Button fluid disabled={loading} type="submit" label="Save" />

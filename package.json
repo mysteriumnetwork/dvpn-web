@@ -34,7 +34,8 @@
     "server": "./bin/run.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "local_release": "yarn run build && tar -zcvf dist.tar.gz build/"
+    "local_release": "yarn run build && tar -zcvf dist.tar.gz build/",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
   },
   "proxy": "http://127.0.0.1:4449/",
   "browserslist": {
