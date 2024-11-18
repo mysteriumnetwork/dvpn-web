@@ -12,6 +12,7 @@ import Label from '../../../components/Typography/Label'
 import PasswordChangeCard from './PasswordChangeCard'
 import { NodeStatusControlCard } from './NodeStatusControlCard'
 import BandwidthControlCard from './BandwidthControlCard'
+import PortForwardingCard from './PortForwardingCard'
 
 const SettingsPage = () => {
   return (
@@ -25,6 +26,8 @@ const SettingsPage = () => {
       <NodeStatusControlCard />
       <Label value="Bandwidth" className="text-pink-525 mb-4" />
       <BandwidthControlCard />
+      <Label value="Port Forwarding" className="text-pink-525 mb-4" />
+      <PortForwardingCard />
     </PageLayout>
   )
 }
