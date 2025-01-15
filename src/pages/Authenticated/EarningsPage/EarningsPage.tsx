@@ -8,12 +8,14 @@ import EarningsCard from './EarningsCard'
 import Title from '../../../components/Typography/Title'
 import Label from '../../../components/Typography/Label'
 import { PageLayout } from '../../components/Layout/PageLayout'
+import WalletBanner from './WalletBanner'
 
 const EarningsPage = () => {
   return (
     <PageLayout>
       <Title value="Earnings" />
       <Label value="Earnings" className="text-pink-525 mb-4" />
+      <WalletBanner className="mb-4" />
       <EarningsCard fluid />
     </PageLayout>
   )
