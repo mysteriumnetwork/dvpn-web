@@ -37,7 +37,7 @@ const Error = styled.h2`
 type Info = {
   readonly identity: string
   readonly apiKey: string
-  readonly walletAddress: string
+  readonly walletAddress?: string
 }
 
 export const ClickBoarding = observer(() => {
@@ -69,11 +69,6 @@ export const ClickBoarding = observer(() => {
         return
       }
 
-      if (!mmnReport.walletAddress) {
-        noWalletFlow()
-        return
-      }
-
       const info: Info = { identity: id, walletAddress: mmnReport.walletAddress, apiKey: mmnReport.apiKey }
 
       if (!mmnReport.isEligibleForFreeRegistration) {
@@ -99,7 +94,9 @@ export const ClickBoarding = observer(() => {
     await tequila.api.setMMNApiKey(apiKey) // just claim
     await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
     await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
-    await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
+    if (walletAddress) {
+      await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
+    }
     await events.send('action_complete_clickboarding_no_free_registrations_left_flow')
     await toDashboardWithPassword(newPassword)
   }
@@ -115,21 +112,15 @@ export const ClickBoarding = observer(() => {
     }, 3000)
   }
 
-  const noWalletFlow = () => {
-    setError('Please set your wallet on MystNodes to onboard your node')
-
-    setTimeout(() => {
-      navigate(ROUTES.HOME, { replace: true })
-    }, 3000)
-  }
-
   const regularFlow = async ({ apiKey, walletAddress, identity }: Info) => {
     const newPassword = strings.generate(16)
     await tequila.api.authChangePassword({ oldPassword: DEFAULT_PASSWORD, newPassword, username: DEFAULT_USERNAME })
     await tequila.api.setMMNApiKey(apiKey)
     await tequila.api.identityRegister(identity, { beneficiary: walletAddress, stake: 0 })
     await complexActions.loadAppStateAfterAuthenticationAsync({ isDefaultPassword: false })
-    await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
+    if (walletAddress) {
+      await tequila.api.payment.changeBeneficiaryAsync({ identity, address: walletAddress })
+    }
     await events.send('action_complete_clickboarding_regular_flow')
     await toDashboardWithPassword(newPassword)
   }
