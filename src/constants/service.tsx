@@ -58,7 +58,7 @@ export const SUPPORTED_SERVICES: ServiceDescriptor[] = [
     description: (
       <>
         Open to the whole network, including 3rd party and{' '}
-        <Link href="https://mysteriumvpn.com/godark" target="_blank">
+        <Link href="https://www.mysteriumdark.com/downloads-dark" target="_blank">
           Mysterium Dark
         </Link>{' '}
         app user traffic
