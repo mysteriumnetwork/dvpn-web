@@ -23,7 +23,7 @@ export const Onboarding = () => {
     return (
       <ConfirmationModal
         title="Identity not loaded"
-        message="Something went wrong and node was not able to load you identity!"
+        message="Something went wrong, node was not able to load your identity!"
         isOpen={true}
       />
     )
